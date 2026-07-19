@@ -15,6 +15,7 @@ const Footer = () => (
       <p className="text-xs text-muted-foreground flex items-center justify-center gap-1">
         Built with <Heart className="h-3 w-3 text-ghana-red" /> for Ghana's next generation
       </p>
+      <p className="text-xs text-muted-foreground mt-2">© 2026 GhanaPath. All rights reserved.</p>
     </div>
   </footer>
 );
