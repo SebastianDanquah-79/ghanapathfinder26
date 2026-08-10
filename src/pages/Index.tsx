@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import CollegeRecommender from "@/components/CollegeRecommender";
 import UniversityDirectory from "@/components/UniversityDirectory";
+import ScholarshipSection from "@/components/ScholarshipSection";
 import CareerSection from "@/components/CareerSection";
 import CityGuide from "@/components/CityGuide";
 import StartupStories from "@/components/StartupStories";
@@ -14,6 +15,7 @@ const Index = () => (
     <HeroSection />
     <CollegeRecommender />
     <UniversityDirectory />
+    <ScholarshipSection />
     <CareerSection />
     <CityGuide />
     <StartupStories />
