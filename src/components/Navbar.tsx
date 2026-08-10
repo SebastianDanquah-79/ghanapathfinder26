@@ -16,6 +16,7 @@ const links = [
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const { user } = useAuth();
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
@@ -37,15 +38,30 @@ const Navbar = () => {
               {l.label}
             </a>
           ))}
+          <Link
+            to={user ? "/dashboard" : "/auth"}
+            className="ml-2 px-4 py-2 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+          >
+            {user ? "My dashboard" : "Sign in"}
+          </Link>
         </div>
 
-        <button
-          onClick={() => setOpen(!open)}
-          className="md:hidden p-2 text-muted-foreground hover:text-primary transition-colors"
-        >
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        <div className="md:hidden flex items-center gap-2">
+          <Link
+            to={user ? "/dashboard" : "/auth"}
+            className="px-3 py-1.5 text-xs font-medium rounded-lg bg-primary text-primary-foreground"
+          >
+            {user ? "Dashboard" : "Sign in"}
+          </Link>
+          <button
+            onClick={() => setOpen(!open)}
+            className="p-2 text-muted-foreground hover:text-primary transition-colors"
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
+
 
       <AnimatePresence>
         {open && (
