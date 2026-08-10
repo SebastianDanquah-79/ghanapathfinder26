@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, GraduationCap } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 const links = [
   { label: "Recommender", href: "#recommender" },
   { label: "Universities", href: "#universities" },
   { label: "Scholarships", href: "#scholarships" },
+  { label: "Matcher", href: "/matcher" },
+  { label: "Compare", href: "/compare" },
   { label: "Careers", href: "#careers" },
   { label: "City Guide", href: "#cityguide" },
-  { label: "Founders", href: "#founders" },
-  { label: "Roadmap", href: "#roadmap" },
 ];
 
 const Navbar = () => {
