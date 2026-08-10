@@ -14,16 +14,250 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      application_checklist: {
+        Row: {
+          created_at: string
+          done: boolean
+          due_date: string | null
+          id: string
+          target: string | null
+          task: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          done?: boolean
+          due_date?: string | null
+          id?: string
+          target?: string | null
+          task: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          done?: boolean
+          due_date?: string | null
+          id?: string
+          target?: string | null
+          task?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      deadlines: {
+        Row: {
+          category: string | null
+          created_at: string
+          due_date: string
+          id: string
+          notes: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          due_date: string
+          id?: string
+          notes?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          due_date?: string
+          id?: string
+          notes?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      parent_links: {
+        Row: {
+          created_at: string
+          id: string
+          invite_code: string
+          parent_email: string | null
+          parent_id: string | null
+          status: string
+          student_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          invite_code: string
+          parent_email?: string | null
+          parent_id?: string | null
+          status?: string
+          student_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          invite_code?: string
+          parent_email?: string | null
+          parent_id?: string | null
+          status?: string
+          student_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          account_type: string
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          interests: string[]
+          onboarded: boolean
+          region: string | null
+          school: string | null
+          target_career: string | null
+          updated_at: string
+        }
+        Insert: {
+          account_type?: string
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id: string
+          interests?: string[]
+          onboarded?: boolean
+          region?: string | null
+          school?: string | null
+          target_career?: string | null
+          updated_at?: string
+        }
+        Update: {
+          account_type?: string
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          interests?: string[]
+          onboarded?: boolean
+          region?: string | null
+          school?: string | null
+          target_career?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      saved_items: {
+        Row: {
+          created_at: string
+          id: string
+          item_key: string
+          item_type: string
+          metadata: Json
+          subtitle: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          item_key: string
+          item_type: string
+          metadata?: Json
+          subtitle?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          item_key?: string
+          item_type?: string
+          metadata?: Json
+          subtitle?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      wassce_results: {
+        Row: {
+          created_at: string
+          grade: string
+          id: string
+          subject: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          grade: string
+          id?: string
+          subject: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          grade?: string
+          id?: string
+          subject?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_linked_parent: {
+        Args: { _parent_id: string; _student_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "student" | "parent" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +384,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["student", "parent", "admin"],
+    },
   },
 } as const
