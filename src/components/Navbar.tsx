@@ -5,6 +5,7 @@ import { Menu, X, GraduationCap } from "lucide-react";
 const links = [
   { label: "Recommender", href: "#recommender" },
   { label: "Universities", href: "#universities" },
+  { label: "Scholarships", href: "#scholarships" },
   { label: "Careers", href: "#careers" },
   { label: "City Guide", href: "#cityguide" },
   { label: "Founders", href: "#founders" },
