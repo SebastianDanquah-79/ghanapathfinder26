@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Search, MapPin, GraduationCap, Building2 } from "lucide-react";
 import { universities } from "@/data/universities";
 import SectionHeader from "./SectionHeader";
+import SaveButton from "./SaveButton";
 
 const UniversityDirectory = () => {
   const [search, setSearch] = useState("");
@@ -103,7 +104,16 @@ const UniversityDirectory = () => {
                 </div>
               </div>
 
-              <p className="text-xs text-muted-foreground leading-relaxed">{u.campusVibe}</p>
+              <p className="text-xs text-muted-foreground leading-relaxed mb-4">{u.campusVibe}</p>
+
+              <SaveButton
+                item={{
+                  item_type: "university",
+                  item_key: u.shortName,
+                  title: u.name,
+                  subtitle: u.location,
+                }}
+              />
             </motion.div>
           ))}
         </div>
