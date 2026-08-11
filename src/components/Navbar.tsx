@@ -9,6 +9,7 @@ const links = [
   { label: "Universities", href: "#universities" },
   { label: "Scholarships", href: "#scholarships" },
   { label: "Matcher", href: "/matcher" },
+  { label: "My Scholarships", href: "/scholarships" },
   { label: "Compare", href: "/compare" },
   { label: "Careers", href: "#careers" },
   { label: "City Guide", href: "#cityguide" },

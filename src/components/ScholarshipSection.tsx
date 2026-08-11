@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { scholarships, scholarshipTips } from "@/data/scholarships";
 import SectionHeader from "./SectionHeader";
+import SaveButton from "./SaveButton";
 
 const types = ["All", "Government", "University", "Private", "International"] as const;
 
@@ -110,9 +111,21 @@ const ScholarshipSection = () => {
                   </div>
                 </div>
 
+                <div className="mt-auto mb-3">
+                  <SaveButton
+                    item={{
+                      item_type: "scholarship",
+                      item_key: s.name,
+                      title: s.name,
+                      subtitle: s.provider,
+                      metadata: { deadline: s.deadline, coverage: s.coverage },
+                    }}
+                  />
+                </div>
+
                 <button
                   onClick={() => setExpanded(isOpen ? null : s.name)}
-                  className="mt-auto flex items-center justify-between w-full text-xs font-medium text-primary"
+                  className="flex items-center justify-between w-full text-xs font-medium text-primary"
                 >
                   {isOpen ? "Hide details" : "Eligibility & how to apply"}
                   <ChevronDown

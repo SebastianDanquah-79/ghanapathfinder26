@@ -10,6 +10,8 @@ import Onboarding from "./pages/Onboarding.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import Matcher from "./pages/Matcher.tsx";
 import Compare from "./pages/Compare.tsx";
+import Scholarships from "./pages/Scholarships.tsx";
+import CompareScholarships from "./pages/CompareScholarships.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -28,6 +30,8 @@ const App = () => (
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/matcher" element={<Matcher />} />
             <Route path="/compare" element={<Compare />} />
+            <Route path="/scholarships" element={<Scholarships />} />
+            <Route path="/compare-scholarships" element={<CompareScholarships />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
