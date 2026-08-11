@@ -267,6 +267,7 @@ const Dashboard = () => {
               <Users className="h-4 w-4 text-primary" /> Next steps
             </h2>
             <ul className="text-sm text-muted-foreground space-y-2">
+              <li>• <Link to="/scholarships" className="text-primary">Open my scholarship hub (AI matches & alerts)</Link></li>
               <li>• <Link to="/matcher" className="text-primary">Run the scholarship matcher</Link></li>
               <li>• <Link to="/compare" className="text-primary">Compare universities side by side</Link></li>
               <li>• <Link to="/#universities" className="text-primary">Browse and save more schools</Link></li>
