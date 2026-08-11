@@ -30,6 +30,8 @@ const App = () => (
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/matcher" element={<Matcher />} />
             <Route path="/compare" element={<Compare />} />
+            <Route path="/scholarships" element={<Scholarships />} />
+            <Route path="/compare-scholarships" element={<CompareScholarships />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
