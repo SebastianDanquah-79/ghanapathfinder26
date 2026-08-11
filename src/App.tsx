@@ -10,6 +10,8 @@ import Onboarding from "./pages/Onboarding.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import Matcher from "./pages/Matcher.tsx";
 import Compare from "./pages/Compare.tsx";
+import Scholarships from "./pages/Scholarships.tsx";
+import CompareScholarships from "./pages/CompareScholarships.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
