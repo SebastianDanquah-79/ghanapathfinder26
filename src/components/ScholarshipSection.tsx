@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { scholarships, scholarshipTips } from "@/data/scholarships";
 import SectionHeader from "./SectionHeader";
+import SaveButton from "./SaveButton";
 
 const types = ["All", "Government", "University", "Private", "International"] as const;
 
