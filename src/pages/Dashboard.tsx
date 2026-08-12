@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { universities } from "@/data/universities";
 import MotivationPanel from "@/components/MotivationPanel";
+import ParentAccessCard from "@/components/ParentAccessCard";
 import { celebrate } from "@/lib/celebrate";
 import type { JourneyInput } from "@/lib/motivation";
 
@@ -299,11 +300,14 @@ const Dashboard = () => {
             </h2>
             <ul className="text-sm text-muted-foreground space-y-2">
               <li>• <Link to="/scholarships" className="text-primary">Open my scholarship hub (AI matches & alerts)</Link></li>
+              <li>• <Link to="/applications" className="text-primary">Track my scholarship applications</Link></li>
+              <li>• <Link to="/preferences" className="text-primary">Customise my match preferences</Link></li>
               <li>• <Link to="/matcher" className="text-primary">Run the scholarship matcher</Link></li>
               <li>• <Link to="/compare" className="text-primary">Compare universities side by side</Link></li>
               <li>• <Link to="/#universities" className="text-primary">Browse and save more schools</Link></li>
             </ul>
           </div>
+          <ParentAccessCard />
         </div>
       </div>
     </div>

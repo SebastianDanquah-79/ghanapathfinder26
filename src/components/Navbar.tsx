@@ -11,6 +11,7 @@ const links = [
   { label: "Matcher", href: "/matcher" },
   { label: "My Scholarships", href: "/scholarships" },
   { label: "Compare", href: "/compare" },
+  { label: "Parents", href: "/parent" },
   { label: "Inspiration", href: "/inspiration" },
   { label: "Careers", href: "#careers" },
   { label: "City Guide", href: "#cityguide" },

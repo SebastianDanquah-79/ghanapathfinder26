@@ -12,6 +12,9 @@ import Matcher from "./pages/Matcher.tsx";
 import Compare from "./pages/Compare.tsx";
 import Scholarships from "./pages/Scholarships.tsx";
 import CompareScholarships from "./pages/CompareScholarships.tsx";
+import ApplicationTracker from "./pages/ApplicationTracker.tsx";
+import Preferences from "./pages/Preferences.tsx";
+import ParentView from "./pages/ParentView.tsx";
 import Inspiration from "./pages/Inspiration.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
@@ -34,6 +37,9 @@ const App = () => (
             <Route path="/scholarships" element={<Scholarships />} />
             <Route path="/compare-scholarships" element={<CompareScholarships />} />
             <Route path="/inspiration" element={<Inspiration />} />
+            <Route path="/applications" element={<ApplicationTracker />} />
+            <Route path="/preferences" element={<Preferences />} />
+            <Route path="/parent" element={<ParentView />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
