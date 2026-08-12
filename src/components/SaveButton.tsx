@@ -1,6 +1,7 @@
 import { Bookmark, BookmarkCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { celebrate } from "@/lib/celebrate";
 import { SavedItemInput, useSavedItems, useToggleSaved } from "@/hooks/useSavedItems";
 
 interface Props {
@@ -26,7 +27,21 @@ const SaveButton = ({ item, label = "Save" }: Props) => {
           navigate("/auth");
           return;
         }
-        toggle.mutate({ item, saved: isSaved });
+        toggle.mutate(
+          { item, saved: isSaved },
+          {
+            onSuccess: () => {
+              if (!isSaved) {
+                celebrate(
+                  `Saved — nice move`,
+                  item.item_type === "scholarship"
+                    ? "It's now on your scholarship shortlist."
+                    : "It's waiting for you on your dashboard.",
+                );
+              }
+            },
+          },
+        );
       }}
       disabled={toggle.isPending}
       className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${

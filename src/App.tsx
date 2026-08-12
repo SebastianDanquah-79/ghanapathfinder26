@@ -12,6 +12,7 @@ import Matcher from "./pages/Matcher.tsx";
 import Compare from "./pages/Compare.tsx";
 import Scholarships from "./pages/Scholarships.tsx";
 import CompareScholarships from "./pages/CompareScholarships.tsx";
+import Inspiration from "./pages/Inspiration.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -32,6 +33,7 @@ const App = () => (
             <Route path="/compare" element={<Compare />} />
             <Route path="/scholarships" element={<Scholarships />} />
             <Route path="/compare-scholarships" element={<CompareScholarships />} />
+            <Route path="/inspiration" element={<Inspiration />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

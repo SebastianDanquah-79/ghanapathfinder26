@@ -6,6 +6,9 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { universities } from "@/data/universities";
+import MotivationPanel from "@/components/MotivationPanel";
+import { celebrate } from "@/lib/celebrate";
+import type { JourneyInput } from "@/lib/motivation";
 
 const GRADE_POINTS: Record<string, number> = { A1: 1, B2: 2, B3: 3, C4: 4, C5: 5, C6: 6, D7: 7, E8: 8, F9: 9 };
 
@@ -98,11 +101,37 @@ const Dashboard = () => {
   const toggleTask = async (id: string, done: boolean) => {
     await supabase.from("application_checklist").update({ done: !done }).eq("id", id);
     qc.invalidateQueries({ queryKey: ["checklist"] });
+    if (!done) {
+      const completed = checklist.filter((c) => c.done).length + 1;
+      celebrate(
+        completed === checklist.length ? "Checklist complete" : "Task done",
+        completed === checklist.length
+          ? "Every task ticked off. That is real preparation."
+          : `${completed} of ${checklist.length} tasks done — momentum is building.`,
+      );
+    }
   };
 
   const removeTask = async (id: string) => {
     await supabase.from("application_checklist").delete().eq("id", id);
     qc.invalidateQueries({ queryKey: ["checklist"] });
+  };
+
+  const journey: JourneyInput = {
+    fullName: profile?.full_name,
+    targetCareer: profile?.target_career,
+    school: profile?.school,
+    region: profile?.region,
+    interests: profile?.interests ?? [],
+    onboarded: profile?.onboarded,
+    resultsCount: results.length,
+    aggregate,
+    savedUniversities: saved.filter((s) => s.item_type === "university").length,
+    savedScholarships: saved.filter((s) => s.item_type === "scholarship").length,
+    savedCareers: saved.filter((s) => s.item_type === "career").length,
+    checklistTotal: checklist.length,
+    checklistDone: checklist.filter((c) => c.done).length,
+    deadlines: deadlines.length,
   };
 
   const addDeadline = async () => {
@@ -129,7 +158,7 @@ const Dashboard = () => {
     "w-full px-3 py-2 rounded-lg bg-secondary border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50";
 
   return (
-    <div className="min-h-screen bg-background px-4 py-10">
+    <div className="min-h-screen bg-background px-4 sm:px-6 py-10">
       <div className="max-w-6xl mx-auto">
         <header className="flex items-center justify-between mb-8">
           <Link to="/" className="flex items-center gap-2">
@@ -158,7 +187,9 @@ const Dashboard = () => {
           </p>
         </div>
 
-        <div className="grid gap-5 lg:grid-cols-3">
+        <MotivationPanel data={journey} />
+
+        <div className="grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-3">
           <div className={card}>
             <h2 className="font-display font-semibold text-foreground mb-3">Your profile</h2>
             <dl className="text-sm space-y-2 text-muted-foreground">
@@ -240,7 +271,7 @@ const Dashboard = () => {
             </div>
           ))}
 
-          <div className={`${card} lg:col-span-2`}>
+          <div id="checklist" className={`${card} md:col-span-2`}>
             <h2 className="font-display font-semibold text-foreground mb-3">Application checklist</h2>
             <ul className="space-y-2 mb-3">
               {checklist.map((c) => (
