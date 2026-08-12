@@ -80,6 +80,48 @@ export type Database = {
         }
         Relationships: []
       }
+      match_preferences: {
+        Row: {
+          created_at: string
+          field: string
+          funding_types: string[]
+          gender: string
+          level: string
+          min_coverage: string
+          need_based: boolean
+          region: string | null
+          study_abroad: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          field?: string
+          funding_types?: string[]
+          gender?: string
+          level?: string
+          min_coverage?: string
+          need_based?: boolean
+          region?: string | null
+          study_abroad?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          field?: string
+          funding_types?: string[]
+          gender?: string
+          level?: string
+          min_coverage?: string
+          need_based?: boolean
+          region?: string | null
+          study_abroad?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       parent_links: {
         Row: {
           created_at: string
@@ -191,6 +233,48 @@ export type Database = {
         }
         Relationships: []
       }
+      scholarship_applications: {
+        Row: {
+          created_at: string
+          deadline: string | null
+          id: string
+          link: string | null
+          notes: string | null
+          provider: string | null
+          scholarship_name: string
+          status: string
+          submitted_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          deadline?: string | null
+          id?: string
+          link?: string | null
+          notes?: string | null
+          provider?: string | null
+          scholarship_name: string
+          status?: string
+          submitted_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          deadline?: string | null
+          id?: string
+          link?: string | null
+          notes?: string | null
+          provider?: string | null
+          scholarship_name?: string
+          status?: string
+          submitted_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -244,6 +328,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      accept_parent_invite: { Args: { _code: string }; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

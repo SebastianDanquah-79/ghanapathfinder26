@@ -5,6 +5,8 @@ import {
   Award,
   ArrowLeft,
   Bell,
+  ClipboardList,
+  SlidersHorizontal,
   Download,
   ExternalLink,
   RefreshCw,
@@ -19,6 +21,7 @@ import { matchScholarships } from "@/lib/scholarshipMatcher";
 import { estimateDeadlineDate, toISODate, daysUntil, urgencyLabel } from "@/lib/scholarshipDates";
 import { buildPlanText, downloadPlan } from "@/lib/scholarshipPlan";
 import SaveButton from "@/components/SaveButton";
+import { useMatchPreferences } from "@/hooks/useMatchPreferences";
 
 const GRADE_POINTS: Record<string, number> = { A1: 1, B2: 2, B3: 3, C4: 4, C5: 5, C6: 6, D7: 7, E8: 8, F9: 9 };
 
@@ -91,6 +94,8 @@ const Scholarships = () => {
     },
   });
 
+  const { data: prefs } = useMatchPreferences();
+
   const graded = results.filter((r) => GRADE_POINTS[r.grade]);
   const aggregate = graded.length
     ? graded.map((r) => GRADE_POINTS[r.grade]).sort((a, b) => a - b).slice(0, 6).reduce((a, b) => a + b, 0)
@@ -102,14 +107,14 @@ const Scholarships = () => {
   const recheck = useMemo(
     () =>
       matchScholarships({
-        level: "Undergraduate",
-        field: profile?.target_career ?? "Any",
-        region: profile?.region ?? "",
-        needBased: true,
+        level: prefs?.level ?? "Undergraduate",
+        field: prefs?.field && prefs.field !== "Any" ? prefs.field : profile?.target_career ?? "Any",
+        region: prefs?.region ?? profile?.region ?? "",
+        needBased: prefs?.need_based ?? true,
         aggregate,
-        gender: "Prefer not to say",
+        gender: prefs?.gender ?? "Prefer not to say",
       }),
-    [profile, aggregate],
+    [profile, aggregate, prefs],
   );
 
   const statusFor = (name: string) => recheck.find((m) => m.scholarship.name === name);
@@ -121,6 +126,7 @@ const Scholarships = () => {
       const { data, error } = await supabase.functions.invoke("scholarship-match", {
         body: {
           profile: {
+            preferences: prefs,
             aggregate,
             subjects: graded.map((r) => `${r.subject}: ${r.grade}`),
             targetCareer: profile?.target_career,
@@ -198,7 +204,7 @@ const Scholarships = () => {
   const scholarshipDeadlines = deadlines.filter((d) => d.category === "scholarship");
 
   return (
-    <div className="min-h-screen bg-background px-4 py-10">
+    <div className="min-h-screen bg-background px-4 sm:px-6 py-10">
       <div className="max-w-5xl mx-auto">
         <Link to="/dashboard" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
           <ArrowLeft className="h-4 w-4" /> Back to dashboard
@@ -214,6 +220,18 @@ const Scholarships = () => {
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
+            <Link
+              to="/applications"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-secondary text-sm text-muted-foreground hover:text-foreground"
+            >
+              <ClipboardList className="h-4 w-4" /> Tracker
+            </Link>
+            <Link
+              to="/preferences"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-secondary text-sm text-muted-foreground hover:text-foreground"
+            >
+              <SlidersHorizontal className="h-4 w-4" /> Preferences
+            </Link>
             <Link
               to="/compare-scholarships"
               className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-secondary text-sm text-muted-foreground hover:text-foreground"
