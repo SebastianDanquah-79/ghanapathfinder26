@@ -198,6 +198,30 @@ export type Database = {
           },
         ]
       }
+      gtec_register_staging: {
+        Row: {
+          expiry_date: string | null
+          gtec_category: string
+          institution_id: string
+          is_active: boolean
+          start_date: string | null
+        }
+        Insert: {
+          expiry_date?: string | null
+          gtec_category: string
+          institution_id: string
+          is_active: boolean
+          start_date?: string | null
+        }
+        Update: {
+          expiry_date?: string | null
+          gtec_category?: string
+          institution_id?: string
+          is_active?: boolean
+          start_date?: string | null
+        }
+        Relationships: []
+      }
       match_preferences: {
         Row: {
           created_at: string
