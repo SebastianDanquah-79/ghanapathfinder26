@@ -40,7 +40,7 @@ const ScholarshipSection = () => {
           badge="Funding"
           title="Scholarships &"
           highlight="Financial Aid"
-          description="Real funding options for Ghanaian students — who they're for, what they cover, and exactly how to apply."
+          description="Who they're for, what they cover, how to apply."
         />
 
         <div className="flex flex-col sm:flex-row gap-3 mb-7 max-w-2xl mx-auto">

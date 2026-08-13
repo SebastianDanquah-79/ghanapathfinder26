@@ -43,7 +43,7 @@ const CollegeRecommender = () => {
           badge="Verified cut-offs"
           title="Find Your Realistic"
           highlight="University Match"
-          description="We rank programmes against official published cut-off aggregates only. Lower aggregates are stronger, and nothing here is invented."
+          description="Ranked against official published cut-offs. Lower aggregate is stronger."
         />
 
         <motion.form

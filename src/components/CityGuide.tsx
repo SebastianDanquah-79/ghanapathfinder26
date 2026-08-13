@@ -84,7 +84,7 @@ const CityGuide = () => {
           badge="Survival Guide"
           title="Student City"
           highlight="Guide"
-          description="Everything you need to know about living alone as a student in Ghana's top university cities."
+          description="Cost of living and student life by city."
         />
 
         <div className="flex justify-center gap-3 mb-7">

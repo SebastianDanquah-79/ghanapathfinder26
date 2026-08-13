@@ -64,7 +64,7 @@ const StartupRoadmap = () => (
         badge="Your 4-Year Plan"
         title="Startup Preparation"
         highlight="Roadmap"
-        description="A year-by-year guide to go from student to founder while still at university."
+        description="Student to founder, year by year."
       />
 
       <div className="relative">

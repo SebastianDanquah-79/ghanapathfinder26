@@ -40,7 +40,7 @@ const UniversityDirectory = () => {
           badge="Directory"
           title="Ghana University"
           highlight="Directory"
-          description="Explore Ghana's universities and technical universities. Search by name, region or type — live from the GhanaPath database."
+          description="Search by name, region or type."
         />
 
         <div className="flex flex-col sm:flex-row gap-3 mb-7 max-w-xl mx-auto">

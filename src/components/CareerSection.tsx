@@ -69,7 +69,7 @@ const CareerSection = () => {
           badge="Career Intelligence"
           title="Your Career Path"
           highlight="in Ghana"
-          description="Discover top job roles, hiring companies, salaries, and opportunities for every major."
+          description="Roles, employers and salaries by major."
         />
 
         <div className="flex flex-wrap justify-center gap-2 mb-7">

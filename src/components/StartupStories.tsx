@@ -167,7 +167,7 @@ const StartupStories = () => (
         badge="Inspiration"
         title="Real Founder"
         highlight="Stories"
-        description="How real African and global companies actually started — the first customer, the first prototype, the rejection. Every story links to an official source you can check yourself."
+        description="How real companies started — each story links to its source."
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
