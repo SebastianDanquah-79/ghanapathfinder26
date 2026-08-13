@@ -102,10 +102,13 @@ const ResultCard = ({ r }: { r: SearchResult }) => {
             <OfficialLink href={str("website_url")} label="Official website" variant="ghost" />
           </>
         )}
-        {r.kind !== "university" && (
+        {r.kind === "scholarship" && (
+          <OfficialLink href={str("application_url")} label="Apply" variant="ghost" />
+        )}
+        {r.kind === "programme" && (str("application_url") || str("programme_url")) && (
           <OfficialLink
             href={str("application_url") || str("programme_url")}
-            label={r.kind === "scholarship" ? "Apply" : "Programme page"}
+            label="Programme page"
             variant="ghost"
           />
         )}
