@@ -13,7 +13,7 @@ const SectionHeader = ({ badge, title, highlight, description }: SectionHeaderPr
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ duration: 0.6 }}
-    className="text-center mb-12 lg:mb-16"
+    className="text-center mb-8 lg:mb-10"
   >
     <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wider mb-4">
       {badge}

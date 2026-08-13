@@ -32,7 +32,7 @@ const Saved = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main className="pt-24 pb-16 px-4 sm:px-8 lg:px-12">
+      <main className="pt-20 pb-12 px-4 sm:px-8 lg:px-12">
         <div className="max-w-7xl mx-auto">
           <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-1 flex items-center gap-2">
             <Bookmark className="h-6 w-6 text-primary" /> Saved
@@ -61,7 +61,7 @@ const Saved = () => {
           </div>
 
           {!loading && !user && (
-            <div className="bg-glass rounded-xl p-6 text-center">
+            <div className="bg-glass rounded-xl p-5 text-center">
               <p className="text-sm text-muted-foreground mb-4">
                 Sign in to see everything you've saved.
               </p>
@@ -77,7 +77,7 @@ const Saved = () => {
           {user && isLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
 
           {user && !isLoading && items.length === 0 && (
-            <div className="bg-glass rounded-xl p-6 text-center">
+            <div className="bg-glass rounded-xl p-5 text-center">
               <p className="text-foreground font-medium mb-1">Nothing saved here yet.</p>
               <p className="text-sm text-muted-foreground mb-4">
                 Tap Save on any {tab} to keep it here.

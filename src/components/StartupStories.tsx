@@ -161,7 +161,7 @@ const stories: FounderStory[] = [
 ];
 
 const StartupStories = () => (
-  <section id="founders" className="py-20 lg:py-28 px-4">
+  <section id="founders" className="py-12 lg:py-28 px-4">
     <div className="max-w-7xl mx-auto">
       <SectionHeader
         badge="Inspiration"
@@ -178,7 +178,7 @@ const StartupStories = () => (
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: (i % 3) * 0.08, duration: 0.4 }}
-            className="bg-glass rounded-xl p-6 card-hover group flex flex-col"
+            className="bg-glass rounded-xl p-5 card-hover group flex flex-col"
           >
             <div className="flex items-start justify-between gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">

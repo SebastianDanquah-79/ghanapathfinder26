@@ -19,7 +19,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden py-24">
+    <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden py-14">
       <ParticleBackground />
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
 
@@ -29,7 +29,7 @@ const HeroSection = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-glass mb-8">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-glass mb-6">
             <Sparkles className="h-4 w-4 text-primary" />
             <span className="text-sm text-muted-foreground">AI-Powered Guidance for Ghana 🇬🇭</span>
           </div>
@@ -51,7 +51,7 @@ const HeroSection = () => {
             </AnimatePresence>
           </h1>
 
-          <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
+          <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-7">
             The ultimate college and career guidance platform for Ghanaian SHS students.
             AI-powered, beautifully designed, built for your success.
           </p>

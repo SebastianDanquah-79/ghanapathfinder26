@@ -69,15 +69,15 @@ const OAuthConsent = () => {
   };
 
   return (
-    <main className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-12">
-      <div className="flex items-center gap-2 mb-8">
+    <main className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-8">
+      <div className="flex items-center gap-2 mb-6">
         <GraduationCap className="h-7 w-7 text-primary" />
         <span className="font-display font-bold text-xl text-foreground">
           Ghana<span className="text-primary">Path</span>
         </span>
       </div>
 
-      <div className="w-full max-w-md bg-glass rounded-2xl p-6 sm:p-8 text-center space-y-4">
+      <div className="w-full max-w-md bg-glass rounded-2xl p-5 sm:p-6 text-center space-y-4">
         {error ? (
           <>
             <h1 className="font-display text-xl font-bold text-foreground">

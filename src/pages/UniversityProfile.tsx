@@ -14,7 +14,7 @@ const UniversityProfile = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main className="pt-24 pb-20 px-4">
+      <main className="pt-20 pb-12 px-4">
         <div className="max-w-4xl mx-auto">
           <Link
             to="/search?kind=university"
@@ -24,13 +24,13 @@ const UniversityProfile = () => {
           </Link>
 
           {isLoading && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground py-16 justify-center">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground py-10 justify-center">
               <Loader2 className="h-4 w-4 animate-spin" /> Loading university…
             </div>
           )}
 
           {isError && (
-            <div className="text-center py-16">
+            <div className="text-center py-10">
               <p className="text-sm text-muted-foreground mb-3">
                 Something went wrong loading this information. Please try again.
               </p>
@@ -44,14 +44,14 @@ const UniversityProfile = () => {
           )}
 
           {!isLoading && !isError && !uni && (
-            <p className="text-center py-16 text-muted-foreground">
+            <p className="text-center py-10 text-muted-foreground">
               We couldn't find that university. Try searching again.
             </p>
           )}
 
           {uni && (
             <>
-              <header className="bg-glass rounded-xl p-6 mb-6">
+              <header className="bg-glass rounded-xl p-5 mb-6">
                 <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
                   <div className="min-w-0">
                     <h1 className="font-display text-xl sm:text-2xl font-bold text-foreground break-words">

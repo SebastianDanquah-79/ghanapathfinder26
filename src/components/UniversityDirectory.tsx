@@ -34,7 +34,7 @@ const UniversityDirectory = () => {
   const total = data?.count ?? 0;
 
   return (
-    <section id="universities" className="py-20 lg:py-28 px-4">
+    <section id="universities" className="py-12 lg:py-28 px-4">
       <div className="max-w-7xl mx-auto">
         <SectionHeader
           badge="Directory"
@@ -43,7 +43,7 @@ const UniversityDirectory = () => {
           description="Explore Ghana's universities and technical universities. Search by name, region or type — live from the GhanaPath database."
         />
 
-        <div className="flex flex-col sm:flex-row gap-3 mb-10 max-w-xl mx-auto">
+        <div className="flex flex-col sm:flex-row gap-3 mb-7 max-w-xl mx-auto">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
@@ -76,13 +76,13 @@ const UniversityDirectory = () => {
         </div>
 
         {isLoading && (
-          <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground py-16">
+          <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground py-10">
             <Loader2 className="h-4 w-4 animate-spin" /> Loading universities…
           </div>
         )}
 
         {isError && (
-          <div className="text-center py-16">
+          <div className="text-center py-10">
             <p className="text-sm text-muted-foreground mb-3">
               Something went wrong loading this information. Please try again.
             </p>
@@ -96,7 +96,7 @@ const UniversityDirectory = () => {
         )}
 
         {!isLoading && !isError && rows.length === 0 && (
-          <p className="text-center py-16 text-muted-foreground">
+          <p className="text-center py-10 text-muted-foreground">
             No universities found. Try a different name, region or filter.
           </p>
         )}
@@ -109,7 +109,7 @@ const UniversityDirectory = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: Math.min(i, 6) * 0.05, duration: 0.4 }}
-              className="bg-glass rounded-xl p-6 card-hover flex flex-col"
+              className="bg-glass rounded-xl p-5 card-hover flex flex-col"
             >
               <div className="flex items-start justify-between gap-2 mb-3">
                 <div className="min-w-0">
@@ -191,7 +191,7 @@ const UniversityDirectory = () => {
         </div>
 
         {total > PAGE_SIZE && (
-          <div className="flex items-center justify-center gap-3 mt-10">
+          <div className="flex items-center justify-center gap-3 mt-7">
             <button
               disabled={page === 0 || isFetching}
               onClick={() => setPage((p) => Math.max(0, p - 1))}

@@ -64,8 +64,8 @@ const AdminData = () => {
     return (
       <div className="min-h-screen bg-background">
         <Navbar />
-        <main className="pt-24 pb-16 px-4 sm:px-8 lg:px-12">
-          <div className="max-w-2xl mx-auto bg-glass rounded-xl p-6 text-center">
+        <main className="pt-20 pb-12 px-4 sm:px-8 lg:px-12">
+          <div className="max-w-2xl mx-auto bg-glass rounded-xl p-5 text-center">
             <ShieldCheck className="h-8 w-8 text-primary mx-auto mb-3" />
             <h1 className="font-display text-xl font-bold text-foreground">Admin access required</h1>
             <p className="text-sm text-muted-foreground mt-2">
@@ -86,8 +86,8 @@ const AdminData = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main className="pt-24 pb-20 px-4 sm:px-8 lg:px-12">
-        <div className="max-w-7xl mx-auto space-y-8">
+      <main className="pt-20 pb-12 px-4 sm:px-8 lg:px-12">
+        <div className="max-w-7xl mx-auto space-y-5">
           <header>
             <h1 className="font-display text-2xl lg:text-4xl font-bold text-foreground flex items-center gap-2">
               <Database className="h-7 w-7 text-primary" /> Tertiary data console

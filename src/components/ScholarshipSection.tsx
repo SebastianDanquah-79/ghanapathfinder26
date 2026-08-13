@@ -34,7 +34,7 @@ const ScholarshipSection = () => {
   const rows = data ?? [];
 
   return (
-    <section id="scholarships" className="py-20 lg:py-28 px-4">
+    <section id="scholarships" className="py-12 lg:py-28 px-4">
       <div className="max-w-7xl mx-auto">
         <SectionHeader
           badge="Funding"
@@ -43,7 +43,7 @@ const ScholarshipSection = () => {
           description="Real funding options for Ghanaian students — who they're for, what they cover, and exactly how to apply."
         />
 
-        <div className="flex flex-col sm:flex-row gap-3 mb-10 max-w-2xl mx-auto">
+        <div className="flex flex-col sm:flex-row gap-3 mb-7 max-w-2xl mx-auto">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
@@ -73,13 +73,13 @@ const ScholarshipSection = () => {
         </div>
 
         {isLoading && (
-          <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground py-16">
+          <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground py-10">
             <Loader2 className="h-4 w-4 animate-spin" /> Loading scholarships…
           </div>
         )}
 
         {isError && (
-          <div className="text-center py-16">
+          <div className="text-center py-10">
             <p className="text-sm text-muted-foreground mb-3">
               Something went wrong loading this information. Please try again.
             </p>
@@ -93,7 +93,7 @@ const ScholarshipSection = () => {
         )}
 
         {!isLoading && !isError && rows.length === 0 && (
-          <p className="text-center py-16 text-muted-foreground">
+          <p className="text-center py-10 text-muted-foreground">
             No scholarships found. Try another provider, level or keyword.
           </p>
         )}
@@ -106,7 +106,7 @@ const ScholarshipSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: Math.min(i, 6) * 0.05, duration: 0.4 }}
-              className="bg-glass rounded-xl p-6 flex flex-col"
+              className="bg-glass rounded-xl p-5 flex flex-col"
             >
               <div className="flex items-start justify-between gap-3 mb-3">
                 <div className="min-w-0">
@@ -200,7 +200,7 @@ const ScholarshipSection = () => {
           ))}
         </div>
 
-        <div className="mt-12 bg-glass rounded-xl p-6">
+        <div className="mt-12 bg-glass rounded-xl p-5">
           <h3 className="flex items-center gap-2 font-display font-semibold text-foreground mb-3">
             <Lightbulb className="h-4 w-4 text-primary" /> Scholarship tips
           </h3>

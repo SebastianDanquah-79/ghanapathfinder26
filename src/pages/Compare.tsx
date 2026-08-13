@@ -30,7 +30,7 @@ const Compare = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-24 pb-16">
+    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-20 pb-12">
       <Navbar />
       <div className="max-w-7xl mx-auto">
         <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
@@ -43,7 +43,7 @@ const Compare = () => {
         </div>
         <p className="text-sm text-muted-foreground mb-6">Pick up to three schools to see them side by side.</p>
 
-        <div className="flex flex-wrap gap-2 mb-8">
+        <div className="flex flex-wrap gap-2 mb-6">
           {universities.map((u) => (
             <button
               key={u.shortName}

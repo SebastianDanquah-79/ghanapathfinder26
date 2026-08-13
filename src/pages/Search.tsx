@@ -300,7 +300,7 @@ const SearchPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main className="pt-24 pb-16 px-4 sm:px-8 lg:px-12">
+      <main className="pt-20 pb-12 px-4 sm:px-8 lg:px-12">
         <div className="max-w-6xl xl:max-w-7xl mx-auto">
           <h1 className="font-display text-xl sm:text-3xl font-bold text-foreground mb-1">
             Search GhanaPath
@@ -442,13 +442,13 @@ const SearchPage = () => {
           </div>
 
           {isLoading && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground py-16 justify-center">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground py-10 justify-center">
               <Loader2 className="h-4 w-4 animate-spin" /> Searching…
             </div>
           )}
 
           {isError && (
-            <div className="text-center py-16">
+            <div className="text-center py-10">
               <p className="text-sm text-muted-foreground mb-3">
                 We couldn't complete your search. Please try again.
               </p>
@@ -492,7 +492,7 @@ const SearchPage = () => {
                 ))}
               </div>
               {paginated && (
-                <div className="flex items-center justify-center gap-3 mt-8">
+                <div className="flex items-center justify-center gap-3 mt-6">
                   <button
                     disabled={page === 0 || isFetching}
                     onClick={() => setPage((p) => Math.max(0, p - 1))}
