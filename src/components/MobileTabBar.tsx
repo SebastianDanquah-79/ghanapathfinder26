@@ -26,17 +26,23 @@ const MobileTabBar = () => {
       <ul className="grid grid-cols-5">
         {tabs.map(({ to, label, icon: Icon }) => {
           const target = to === "/dashboard" && !user ? "/auth" : to;
-          const active = pathname === to;
+          const active = pathname === to || (to === "/dashboard" && pathname === "/saved");
           return (
             <li key={to}>
               <Link
                 to={target}
-                className={`flex flex-col items-center justify-center gap-1 min-h-[56px] px-1 text-[11px] font-medium transition-colors ${
-                  active ? "text-primary" : "text-muted-foreground"
+                className={`flex flex-col items-center justify-center gap-0.5 min-h-[60px] px-0.5 text-[10.5px] font-medium transition-colors ${
+                  active ? "text-primary" : "text-muted-foreground active:text-foreground"
                 }`}
                 aria-current={active ? "page" : undefined}
               >
-                <Icon className="h-5 w-5" />
+                <span
+                  className={`grid place-items-center h-7 w-12 rounded-full transition-colors ${
+                    active ? "bg-primary/15" : ""
+                  }`}
+                >
+                  <Icon className="h-[18px] w-[18px]" />
+                </span>
                 {label}
               </Link>
             </li>

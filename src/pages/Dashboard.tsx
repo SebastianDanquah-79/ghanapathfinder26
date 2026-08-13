@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { CalendarClock, GraduationCap, LogOut, Plus, Sparkles, Trash2, Users } from "lucide-react";
+import { Bookmark, CalendarClock, GraduationCap, LogOut, Plus, Sparkles, Trash2, Users } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -149,10 +149,19 @@ const Dashboard = () => {
   const input =
     "w-full px-3 py-2 rounded-lg bg-secondary border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50";
 
+  const quickActions = [
+    { to: "/admission-match", label: "Recommendations", icon: Sparkles },
+    { to: "/search?kind=university", label: "Universities", icon: GraduationCap },
+    { to: "/scholarships", label: "Scholarships", icon: GraduationCap },
+    { to: "/saved", label: "Saved", icon: Bookmark },
+    { to: "/onboarding", label: "My profile", icon: Users },
+    { to: "/applications", label: "Applications", icon: CalendarClock },
+  ];
+
   return (
-    <div className="min-h-screen bg-background px-4 sm:px-6 py-10">
+    <div className="min-h-screen bg-background px-4 sm:px-6 py-6 sm:py-10">
       <div className="max-w-6xl xl:max-w-7xl mx-auto">
-        <header className="flex items-center justify-between mb-8">
+        <header className="flex items-center justify-between mb-5">
           <Link to="/" className="flex items-center gap-2">
             <GraduationCap className="h-6 w-6 text-primary" />
             <span className="font-display font-bold text-lg text-foreground">
@@ -164,40 +173,60 @@ const Dashboard = () => {
               await signOut();
               navigate("/");
             }}
-            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+            className="inline-flex items-center gap-1.5 min-h-[44px] px-2 text-sm text-muted-foreground hover:text-foreground"
           >
             <LogOut className="h-4 w-4" /> Sign out
           </button>
         </header>
 
-        <div className="mb-8">
-          <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground">
+        <div className="mb-5">
+          <h1 className="font-display text-xl sm:text-3xl font-bold text-foreground">
             Welcome back{profile?.full_name ? `, ${profile.full_name.split(" ")[0]}` : ""} 👋
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Your saved schools, scholarships and deadlines in one place.
+            Your WASSCE profile, matches, saved schools and deadlines.
           </p>
         </div>
 
-        <MotivationPanel data={journey} />
+        {/* WASSCE snapshot — the number students care about most */}
+        <div className="bg-glass rounded-xl p-4 sm:p-5 mb-4">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-xs uppercase tracking-wide text-muted-foreground">WASSCE aggregate</p>
+              <p className="font-display text-3xl font-bold text-foreground leading-tight">
+                {aggregate ?? "—"}
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">
+                {results.length ? `${results.length} subjects recorded` : "Add your results to unlock matches"}
+              </p>
+            </div>
+            <Link
+              to="/onboarding"
+              className="shrink-0 inline-flex items-center min-h-[48px] px-4 rounded-xl bg-primary text-primary-foreground text-sm font-semibold"
+            >
+              {results.length ? "Edit results" : "Add results"}
+            </Link>
+          </div>
+        </div>
+
+        {/* Primary actions, thumb-reachable on mobile */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 mb-5">
+          {quickActions.map(({ to, label, icon: Icon }) => (
+            <Link
+              key={label}
+              to={to}
+              className="bg-glass rounded-xl p-3 min-h-[76px] flex flex-col justify-center gap-1.5 active:opacity-80"
+            >
+              <Icon className="h-4 w-4 text-primary" />
+              <span className="text-xs font-medium text-foreground leading-tight">{label}</span>
+            </Link>
+          ))}
+        </div>
 
         <div className="grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-3">
           <div className={card}>
-            <h2 className="font-display font-semibold text-foreground mb-3">Your profile</h2>
-            <dl className="text-sm space-y-2 text-muted-foreground">
-              <div className="flex justify-between"><dt>WASSCE aggregate</dt><dd className="text-foreground font-semibold">{aggregate ?? "—"}</dd></div>
-              <div className="flex justify-between"><dt>Target career</dt><dd className="text-foreground">{profile?.target_career ?? "—"}</dd></div>
-              <div className="flex justify-between"><dt>School</dt><dd className="text-foreground">{profile?.school ?? "—"}</dd></div>
-              <div className="flex justify-between"><dt>Region</dt><dd className="text-foreground">{profile?.region ?? "—"}</dd></div>
-            </dl>
-            <Link to="/onboarding" className="mt-4 inline-block text-sm text-primary font-medium">
-              Update my details
-            </Link>
-          </div>
-
-          <div className={card}>
             <h2 className="font-display font-semibold text-foreground mb-3 flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-primary" /> Admission match
+              <Sparkles className="h-4 w-4 text-primary" /> Top matches
             </h2>
             {topMatches.length ? (
               <ul className="space-y-2 text-sm">
@@ -218,10 +247,39 @@ const Dashboard = () => {
                 Add your WASSCE results to see the programmes your aggregate actually reaches.
               </p>
             )}
-            <Link to="/admission-match" className="mt-4 inline-block text-sm text-primary font-medium">
+            <Link to="/admission-match" className="mt-4 inline-block text-sm text-primary font-medium min-h-[44px]">
               See all matches and cut-offs
             </Link>
           </div>
+
+          {(["university", "scholarship"] as const).map((type) => (
+            <div key={type} className={card}>
+              <h2 className="font-display font-semibold text-foreground mb-3 capitalize">Saved {type}s</h2>
+              <ul className="space-y-2">
+                {savedBy(type).slice(0, 5).map((s) => (
+                  <li key={s.id} className="flex items-start justify-between gap-2 text-sm">
+                    <div className="min-w-0">
+                      <p className="text-foreground break-words">{s.title}</p>
+                      {s.subtitle && <p className="text-xs text-muted-foreground">{s.subtitle}</p>}
+                    </div>
+                    <button
+                      onClick={() => removeSaved(s.id)}
+                      className="shrink-0 min-h-[44px] min-w-[44px] grid place-items-center text-muted-foreground hover:text-destructive"
+                      aria-label="Remove"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  </li>
+                ))}
+                {!savedBy(type).length && (
+                  <li className="text-sm text-muted-foreground">Nothing saved yet.</li>
+                )}
+              </ul>
+              <Link to="/saved" className="mt-3 inline-block text-sm text-primary font-medium">
+                View all saved
+              </Link>
+            </div>
+          ))}
 
           <div className={card}>
             <h2 className="font-display font-semibold text-foreground mb-3 flex items-center gap-2">
@@ -229,9 +287,9 @@ const Dashboard = () => {
             </h2>
             <ul className="space-y-2 mb-3">
               {deadlines.map((d) => (
-                <li key={d.id} className="flex justify-between text-sm">
-                  <span className="text-foreground">{d.title}</span>
-                  <span className={daysLeft(d.due_date) < 14 ? "text-destructive text-xs" : "text-muted-foreground text-xs"}>
+                <li key={d.id} className="flex justify-between gap-2 text-sm">
+                  <span className="text-foreground break-words">{d.title}</span>
+                  <span className={daysLeft(d.due_date) < 14 ? "text-destructive text-xs shrink-0" : "text-muted-foreground text-xs shrink-0"}>
                     {daysLeft(d.due_date)} days
                   </span>
                 </li>
@@ -242,43 +300,58 @@ const Dashboard = () => {
               <input className={input} placeholder="Deadline title" maxLength={120} value={deadlineTitle} onChange={(e) => setDeadlineTitle(e.target.value)} />
               <div className="flex gap-2">
                 <input type="date" className={input} value={deadlineDate} onChange={(e) => setDeadlineDate(e.target.value)} />
-                <button onClick={addDeadline} className="px-3 rounded-lg bg-primary text-primary-foreground" aria-label="Add deadline">
+                <button onClick={addDeadline} className="px-4 min-h-[48px] rounded-xl bg-primary text-primary-foreground" aria-label="Add deadline">
                   <Plus className="h-4 w-4" />
                 </button>
               </div>
             </div>
           </div>
 
-          {(["university", "scholarship", "career"] as const).map((type) => (
-            <div key={type} className={card}>
-              <h2 className="font-display font-semibold text-foreground mb-3 capitalize">Saved {type}s</h2>
-              <ul className="space-y-2">
-                {savedBy(type).map((s) => (
-                  <li key={s.id} className="flex items-start justify-between gap-2 text-sm">
-                    <div>
-                      <p className="text-foreground">{s.title}</p>
-                      {s.subtitle && <p className="text-xs text-muted-foreground">{s.subtitle}</p>}
-                    </div>
-                    <button onClick={() => removeSaved(s.id)} className="text-muted-foreground hover:text-destructive" aria-label="Remove">
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </button>
-                  </li>
-                ))}
-                {!savedBy(type).length && (
-                  <li className="text-sm text-muted-foreground">Nothing saved yet.</li>
-                )}
-              </ul>
-            </div>
-          ))}
+          <div className="md:col-span-2 xl:col-span-3">
+            <MotivationPanel data={journey} />
+          </div>
+
+          <div className={card}>
+            <h2 className="font-display font-semibold text-foreground mb-3">Your profile</h2>
+            <dl className="text-sm space-y-2 text-muted-foreground">
+              <div className="flex justify-between gap-3"><dt>Target career</dt><dd className="text-foreground text-right">{profile?.target_career ?? "—"}</dd></div>
+              <div className="flex justify-between gap-3"><dt>School</dt><dd className="text-foreground text-right">{profile?.school ?? "—"}</dd></div>
+              <div className="flex justify-between gap-3"><dt>Region</dt><dd className="text-foreground text-right">{profile?.region ?? "—"}</dd></div>
+            </dl>
+            <Link to="/onboarding" className="mt-4 inline-block text-sm text-primary font-medium">
+              Update my details
+            </Link>
+          </div>
+
+          <div className={card}>
+            <h2 className="font-display font-semibold text-foreground mb-3 capitalize">Saved careers</h2>
+            <ul className="space-y-2">
+              {savedBy("career").map((s) => (
+                <li key={s.id} className="flex items-start justify-between gap-2 text-sm">
+                  <p className="text-foreground break-words">{s.title}</p>
+                  <button
+                    onClick={() => removeSaved(s.id)}
+                    className="shrink-0 min-h-[44px] min-w-[44px] grid place-items-center text-muted-foreground hover:text-destructive"
+                    aria-label="Remove"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </button>
+                </li>
+              ))}
+              {!savedBy("career").length && (
+                <li className="text-sm text-muted-foreground">Nothing saved yet.</li>
+              )}
+            </ul>
+          </div>
 
           <div id="checklist" className={`${card} md:col-span-2`}>
             <h2 className="font-display font-semibold text-foreground mb-3">Application checklist</h2>
             <ul className="space-y-2 mb-3">
               {checklist.map((c) => (
                 <li key={c.id} className="flex items-center gap-2 text-sm">
-                  <input type="checkbox" checked={c.done} onChange={() => toggleTask(c.id, c.done)} />
-                  <span className={c.done ? "line-through text-muted-foreground" : "text-foreground"}>{c.task}</span>
-                  <button onClick={() => removeTask(c.id)} className="ml-auto text-muted-foreground hover:text-destructive" aria-label="Remove task">
+                  <input type="checkbox" className="h-5 w-5 shrink-0" checked={c.done} onChange={() => toggleTask(c.id, c.done)} />
+                  <span className={c.done ? "line-through text-muted-foreground break-words" : "text-foreground break-words"}>{c.task}</span>
+                  <button onClick={() => removeTask(c.id)} className="ml-auto shrink-0 min-h-[44px] min-w-[44px] grid place-items-center text-muted-foreground hover:text-destructive" aria-label="Remove task">
                     <Trash2 className="h-3.5 w-3.5" />
                   </button>
                 </li>
@@ -287,7 +360,7 @@ const Dashboard = () => {
             </ul>
             <div className="flex gap-2">
               <input className={input} placeholder="e.g. Upload WASSCE results to UG portal" maxLength={160} value={task} onChange={(e) => setTask(e.target.value)} />
-              <button onClick={addTask} className="px-3 rounded-lg bg-primary text-primary-foreground" aria-label="Add task">
+              <button onClick={addTask} className="px-4 min-h-[48px] rounded-xl bg-primary text-primary-foreground" aria-label="Add task">
                 <Plus className="h-4 w-4" />
               </button>
             </div>
@@ -298,13 +371,10 @@ const Dashboard = () => {
               <Users className="h-4 w-4 text-primary" /> Next steps
             </h2>
             <ul className="text-sm text-muted-foreground space-y-2">
-              <li>• <Link to="/admission-match" className="text-primary">Check my real admission match (official cut-offs)</Link></li>
-              <li>• <Link to="/scholarships" className="text-primary">Open my scholarship hub (AI matches & alerts)</Link></li>
-              <li>• <Link to="/applications" className="text-primary">Track my scholarship applications</Link></li>
               <li>• <Link to="/preferences" className="text-primary">Customise my match preferences</Link></li>
               <li>• <Link to="/matcher" className="text-primary">Run the scholarship matcher</Link></li>
               <li>• <Link to="/compare" className="text-primary">Compare universities side by side</Link></li>
-              <li>• <Link to="/#universities" className="text-primary">Browse and save more schools</Link></li>
+              <li>• <Link to="/search" className="text-primary">Browse and save more schools</Link></li>
             </ul>
           </div>
           <ParentAccessCard />
@@ -313,5 +383,6 @@ const Dashboard = () => {
     </div>
   );
 };
+
 
 export default Dashboard;

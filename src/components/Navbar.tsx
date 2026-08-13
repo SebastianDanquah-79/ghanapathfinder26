@@ -8,9 +8,11 @@ const primary = [
   { label: "Search", href: "/search" },
   { label: "Universities", href: "/#universities" },
   { label: "Scholarships", href: "/#scholarships" },
+  { label: "Saved", href: "/saved" },
   { label: "Compare", href: "/compare" },
   { label: "Inspiration", href: "/inspiration" },
 ];
+
 
 const more = [
   { label: "Recommender", href: "/#recommender" },
@@ -105,7 +107,7 @@ const Navbar = () => {
         <div className="md:hidden flex items-center gap-2">
           <Link
             to={user ? "/dashboard" : "/auth"}
-            className="px-3 py-2 text-xs font-medium rounded-lg bg-primary text-primary-foreground"
+            className="inline-flex items-center px-3 min-h-[44px] text-xs font-medium rounded-lg bg-primary text-primary-foreground"
           >
             {user ? "Dashboard" : "Sign in"}
           </Link>

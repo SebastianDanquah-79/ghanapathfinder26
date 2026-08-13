@@ -205,23 +205,27 @@ const Auth = () => {
             </form>
 
             {mode === "signin" && (
-              <p className="text-center text-sm mt-4">
-                <button onClick={handleForgotPassword} className="text-muted-foreground hover:text-primary">
+              <p className="text-center text-sm mt-3">
+                <button
+                  onClick={handleForgotPassword}
+                  className="inline-flex items-center justify-center min-h-[44px] px-3 text-muted-foreground hover:text-primary"
+                >
                   Forgot password?
                 </button>
               </p>
             )}
 
 
-            <p className="text-center text-sm text-muted-foreground mt-5">
+            <p className="text-center text-sm text-muted-foreground mt-3">
               {mode === "signin" ? "New to GhanaPath?" : "Already have an account?"}{" "}
               <button
                 onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-                className="text-primary font-medium"
+                className="inline-flex items-center justify-center min-h-[44px] px-2 text-primary font-medium"
               >
                 {mode === "signin" ? "Create an account" : "Sign in"}
               </button>
             </p>
+
           </>
         )}
       </div>
