@@ -43,7 +43,9 @@ const Auth = () => {
           email: email.trim(),
           password,
           options: {
-            emailRedirectTo: window.location.origin,
+            emailRedirectTo: next
+              ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
+              : window.location.origin,
             data: { full_name: fullName.trim(), account_type: accountType },
           },
         });
@@ -52,14 +54,16 @@ const Auth = () => {
           setEmailSent(true);
           return;
         }
-        navigate("/onboarding", { replace: true });
+        if (next) window.location.href = next;
+        else navigate("/onboarding", { replace: true });
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email: email.trim(),
           password,
         });
         if (error) throw error;
-        navigate("/dashboard", { replace: true });
+        if (next) window.location.href = next;
+        else navigate("/dashboard", { replace: true });
       }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Something went wrong");
@@ -71,7 +75,9 @@ const Auth = () => {
   const handleGoogle = async () => {
     setLoading(true);
     const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
+      redirect_uri: next
+        ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
+        : window.location.origin,
     });
     if (result.error) {
       toast.error("Google sign-in failed. Please try again.");
@@ -79,7 +85,8 @@ const Auth = () => {
       return;
     }
     if (result.redirected) return;
-    navigate("/dashboard", { replace: true });
+    if (next) window.location.href = next;
+    else navigate("/dashboard", { replace: true });
   };
 
   return (
