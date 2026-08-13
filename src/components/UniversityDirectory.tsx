@@ -97,11 +97,11 @@ const UniversityDirectory = () => {
 
         {!isLoading && !isError && rows.length === 0 && (
           <p className="text-center py-10 text-muted-foreground">
-            No universities found. Try a different name, region or filter.
+            No universities match your filters.
           </p>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {rows.map((u, i) => (
             <motion.div
               key={u.id}
@@ -109,9 +109,9 @@ const UniversityDirectory = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: Math.min(i, 6) * 0.05, duration: 0.4 }}
-              className="bg-glass rounded-xl p-5 card-hover flex flex-col"
+              className="bg-glass rounded-xl p-4 card-hover flex flex-col"
             >
-              <div className="flex items-start justify-between gap-2 mb-3">
+              <div className="flex items-start justify-between gap-2 mb-2">
                 <div className="min-w-0">
                   <h3 className="font-display font-semibold text-lg text-foreground">
                     <Link to={`/university/${u.slug}`} className="hover:text-primary transition-colors">
@@ -131,12 +131,12 @@ const UniversityDirectory = () => {
                 </span>
               </div>
 
-              <div className="flex items-center gap-1 text-muted-foreground text-sm mb-3">
+              <div className="flex items-center gap-1 text-muted-foreground text-sm mb-2">
                 <MapPin className="h-3.5 w-3.5" />
                 <span>{u.location}</span>
               </div>
 
-              <div className="flex flex-wrap gap-1.5 mb-4">
+              <div className="flex flex-wrap gap-1.5 mb-2">
                 {u.top_programmes.slice(0, 3).map((p) => (
                   <span key={p} className="px-2 py-0.5 rounded-full bg-secondary text-xs text-muted-foreground">
                     {p}
@@ -144,7 +144,7 @@ const UniversityDirectory = () => {
                 ))}
               </div>
 
-              <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 gap-2 text-xs mb-4">
+              <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 gap-2 text-xs mb-2">
                 {u.admission_aggregate && (
                   <div className="flex items-center gap-1.5">
                     <GraduationCap className="h-3.5 w-3.5 text-primary" />
@@ -160,7 +160,7 @@ const UniversityDirectory = () => {
               </div>
 
               {u.campus_vibe && (
-                <p className="text-xs text-muted-foreground leading-relaxed mb-4">{u.campus_vibe}</p>
+                <p className="text-xs text-muted-foreground leading-snug mb-3 line-clamp-2">{u.campus_vibe}</p>
               )}
 
               <div className="flex flex-wrap items-center gap-2 mt-auto">
@@ -177,12 +177,12 @@ const UniversityDirectory = () => {
                   to={`/university/${u.slug}`}
                   className="inline-flex items-center gap-1.5 px-3 py-2 min-h-[44px] sm:min-h-[40px] rounded-lg text-xs font-medium bg-secondary text-muted-foreground hover:text-foreground"
                 >
-                  View profile
+                  Profile
                 </Link>
-                <OfficialLink href={u.website_url} label="Official site" variant="ghost" />
+                <OfficialLink href={u.website_url} label="Official" variant="ghost" />
               </div>
 
-              <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground mt-3">
+              <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground mt-2">
                 <ShieldCheck className="h-3 w-3 text-ghana-green" />
                 {formatVerified(u.last_verified_at)}
               </p>
