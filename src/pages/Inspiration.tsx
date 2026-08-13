@@ -8,10 +8,10 @@ const Inspiration = () => {
   const daily = getDailyMessage();
 
   return (
-    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-24 pb-16">
+    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-20 pb-12">
       <Navbar />
       <div className="max-w-7xl mx-auto">
-        <header className="flex items-center justify-between gap-3 mb-8">
+        <header className="flex items-center justify-between gap-3 mb-6">
           <Link to="/" className="flex items-center gap-2">
             <GraduationCap className="h-6 w-6 text-primary" />
             <span className="font-display font-bold text-lg text-foreground">
@@ -26,7 +26,7 @@ const Inspiration = () => {
           </Link>
         </header>
 
-        <div className="mb-8 max-w-2xl">
+        <div className="mb-6 max-w-2xl">
           <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wider mb-4">
             Inspiration
           </span>

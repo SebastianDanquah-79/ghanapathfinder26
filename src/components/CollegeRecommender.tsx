@@ -37,13 +37,13 @@ const CollegeRecommender = () => {
   };
 
   return (
-    <section id="recommender" className="py-20 lg:py-28 px-4">
+    <section id="recommender" className="py-12 lg:py-28 px-4">
       <div className="max-w-4xl mx-auto">
         <SectionHeader
           badge="Verified cut-offs"
           title="Find Your Realistic"
           highlight="University Match"
-          description="We rank programmes against official published cut-off aggregates only. Lower aggregates are stronger, and nothing here is invented."
+          description="Ranked against official published cut-offs. Lower aggregate is stronger."
         />
 
         <motion.form
@@ -51,7 +51,7 @@ const CollegeRecommender = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="bg-glass rounded-2xl p-6 sm:p-8 space-y-5 mb-8"
+          className="bg-glass rounded-2xl p-5 sm:p-6 space-y-5 mb-6"
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
@@ -129,7 +129,7 @@ const CollegeRecommender = () => {
             ref={resultRef}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-glass rounded-2xl p-6 sm:p-8"
+            className="bg-glass rounded-2xl p-5 sm:p-6"
           >
             <h3 className="font-display font-semibold text-lg text-foreground mb-1">
               Matches for {submitted.name}

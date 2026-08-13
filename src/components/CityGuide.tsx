@@ -78,16 +78,16 @@ const CityGuide = () => {
   ];
 
   return (
-    <section id="cityguide" className="py-20 lg:py-28 px-4">
+    <section id="cityguide" className="py-12 lg:py-28 px-4">
       <div className="max-w-5xl mx-auto">
         <SectionHeader
           badge="Survival Guide"
           title="Student City"
           highlight="Guide"
-          description="Everything you need to know about living alone as a student in Ghana's top university cities."
+          description="Cost of living and student life by city."
         />
 
-        <div className="flex justify-center gap-3 mb-10">
+        <div className="flex justify-center gap-3 mb-7">
           {cities.map((c) => (
             <button
               key={c}
@@ -105,7 +105,7 @@ const CityGuide = () => {
         </div>
 
         {loading && (
-          <div className="flex justify-center py-16">
+          <div className="flex justify-center py-10">
             <Loader2 className="h-8 w-8 text-primary animate-spin" />
           </div>
         )}
@@ -117,7 +117,7 @@ const CityGuide = () => {
             className="space-y-5"
           >
             {/* Budget Table */}
-            <div className="bg-glass rounded-xl p-6">
+            <div className="bg-glass rounded-xl p-5">
               <div className="flex items-center gap-2 mb-4">
                 <Wallet className="h-5 w-5 text-primary" />
                 <h3 className="font-display font-semibold text-foreground">Monthly Budget Breakdown</h3>
@@ -139,7 +139,7 @@ const CityGuide = () => {
                 { icon: Shield, title: "Safety Tips", items: data.safetyTips },
                 { icon: Users, title: "Networking & Social", items: data.networkingTips },
               ].map(({ icon: Icon, title, items }) => (
-                <div key={title} className="bg-glass rounded-xl p-6">
+                <div key={title} className="bg-glass rounded-xl p-5">
                   <div className="flex items-center gap-2 mb-4">
                     <Icon className="h-5 w-5 text-primary" />
                     <h3 className="font-display font-semibold text-foreground">{title}</h3>

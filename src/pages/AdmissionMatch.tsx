@@ -49,7 +49,7 @@ const AdmissionMatch = () => {
     "w-full px-3 py-2.5 rounded-lg bg-secondary border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50";
 
   return (
-    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-24 pb-16">
+    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-20 pb-12">
       <Navbar />
       <div className="max-w-7xl mx-auto">
         <Link to="/dashboard" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
@@ -254,7 +254,7 @@ const AdmissionMatch = () => {
           </button>
         )}
 
-        <p className="mt-8 text-xs text-muted-foreground">
+        <p className="mt-6 text-xs text-muted-foreground">
           Cut-off points change every year with the number of applicants and available places. GhanaPath shows
           the most recent officially published figures with a link to the source so you can verify them
           yourself. Always confirm with the university before applying.

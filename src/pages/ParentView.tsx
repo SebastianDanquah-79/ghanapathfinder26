@@ -64,14 +64,14 @@ const ParentView = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-24 pb-16">
+    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-20 pb-12">
       <Navbar />
       <div className="max-w-7xl mx-auto">
         <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
           <ArrowLeft className="h-4 w-4" /> Home
         </Link>
 
-        <div className="mb-8">
+        <div className="mb-6">
           <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-2">
             <Users className="h-6 w-6 text-primary" /> Parent view
           </h1>
@@ -111,7 +111,7 @@ const ParentView = () => {
           </div>
         )}
 
-        <div className="space-y-6">
+        <div className="space-y-4">
           {students.map((s) => (
             <section key={s.id} className="space-y-4">
               <h2 className="font-display font-semibold text-lg text-foreground">

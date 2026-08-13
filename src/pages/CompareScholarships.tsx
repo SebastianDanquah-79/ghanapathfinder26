@@ -47,7 +47,7 @@ const CompareScholarships = () => {
     );
 
   return (
-    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-24 pb-16">
+    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-20 pb-12">
       <Navbar />
       <div className="max-w-7xl mx-auto">
         <Link to="/scholarships" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
@@ -61,7 +61,7 @@ const CompareScholarships = () => {
           {options.length ? "Pick up to 3 of your saved scholarships." : "You haven't saved any yet — compare from the full list."}
         </p>
 
-        <div className="flex flex-wrap gap-2 mb-8">
+        <div className="flex flex-wrap gap-2 mb-6">
           {pool.map((s) => (
             <button
               key={s.name}

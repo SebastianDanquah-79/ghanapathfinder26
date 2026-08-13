@@ -52,14 +52,14 @@ const Preferences = () => {
     );
 
   return (
-    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-24 pb-16">
+    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-20 pb-12">
       <Navbar />
       <div className="max-w-4xl mx-auto">
         <Link to="/dashboard" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
           <ArrowLeft className="h-4 w-4" /> Back to dashboard
         </Link>
 
-        <div className="mb-8">
+        <div className="mb-6">
           <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-2">
             <SlidersHorizontal className="h-6 w-6 text-primary" /> Match preferences
           </h1>

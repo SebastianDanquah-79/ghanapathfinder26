@@ -146,7 +146,7 @@ const Dashboard = () => {
   const daysLeft = (d: string) =>
     Math.ceil((new Date(d).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
 
-  const card = "bg-glass rounded-xl p-5 lg:p-6";
+  const card = "bg-glass rounded-xl p-5 lg:p-5";
   const input =
     "w-full px-3 py-2 rounded-lg bg-secondary border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50";
 
@@ -160,10 +160,10 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-24 pb-16">
+    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-20 pb-12">
       <Navbar />
       <div className="max-w-7xl mx-auto">
-        <header className="flex flex-wrap items-end justify-between gap-4 mb-8">
+        <header className="flex flex-wrap items-end justify-between gap-4 mb-6">
           <div>
             <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">
               Welcome back{profile?.full_name ? `, ${profile.full_name.split(" ")[0]}` : ""} 👋
@@ -184,7 +184,7 @@ const Dashboard = () => {
         </header>
 
         {/* WASSCE snapshot — the number students care about most */}
-        <div className="bg-glass rounded-xl p-5 lg:p-7 mb-5 lg:mb-6">
+        <div className="bg-glass rounded-xl p-5 lg:p-5 mb-5 lg:mb-6">
           <div className="flex items-center justify-between gap-4">
             <div>
               <p className="text-xs uppercase tracking-wide text-muted-foreground">WASSCE aggregate</p>
@@ -205,7 +205,7 @@ const Dashboard = () => {
         </div>
 
         {/* Primary actions, thumb-reachable on mobile */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-4 mb-6 lg:mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-4 mb-6 lg:mb-6">
           {quickActions.map(({ to, label, icon: Icon }) => (
             <Link
               key={label}
@@ -218,7 +218,7 @@ const Dashboard = () => {
           ))}
         </div>
 
-        <div className="grid gap-5 lg:gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-5 lg:gap-4 md:grid-cols-2 xl:grid-cols-3">
           <div className={card}>
             <h2 className="font-display font-semibold text-foreground mb-3 flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-primary" /> Top matches

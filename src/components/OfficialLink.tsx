@@ -17,7 +17,7 @@ interface Props {
 const OfficialLink = ({
   href,
   label,
-  fallbackNote = "This link may no longer be available. Please check the institution's official website.",
+  fallbackNote = "Link unavailable — check the official website.",
   variant = "primary",
   className = "",
 }: Props) => {
@@ -33,10 +33,11 @@ const OfficialLink = ({
       <button
         type="button"
         onClick={() => toast.info(fallbackNote)}
+        title="Unverified link"
         className={`${base} bg-secondary text-muted-foreground/70 ${className}`}
       >
         <ExternalLink className="h-3.5 w-3.5" />
-        {label} (unverified)
+        {label}
       </button>
     );
   }
@@ -46,7 +47,7 @@ const OfficialLink = ({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      title={`${label} — opens the official website in a new tab (you are leaving GhanaPath)`}
+      title={`${label} — opens in a new tab`}
       className={`${base} ${styles} ${className}`}
     >
       <ExternalLink className="h-3.5 w-3.5" />

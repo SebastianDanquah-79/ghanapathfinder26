@@ -58,20 +58,20 @@ const years = [
 ];
 
 const StartupRoadmap = () => (
-  <section id="roadmap" className="py-20 lg:py-28 px-4">
+  <section id="roadmap" className="py-12 lg:py-28 px-4">
     <div className="max-w-5xl mx-auto">
       <SectionHeader
         badge="Your 4-Year Plan"
         title="Startup Preparation"
         highlight="Roadmap"
-        description="A year-by-year guide to go from student to founder while still at university."
+        description="Student to founder, year by year."
       />
 
       <div className="relative">
         {/* Timeline line */}
         <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-primary via-ghana-green to-primary/20 hidden md:block" />
 
-        <div className="space-y-8">
+        <div className="space-y-5">
           {years.map((y, i) => (
             <motion.div
               key={y.year}
@@ -84,7 +84,7 @@ const StartupRoadmap = () => (
               {/* Timeline dot */}
               <div className="absolute left-4 top-6 w-5 h-5 rounded-full bg-primary border-4 border-background hidden md:block" />
 
-              <div className={`bg-glass rounded-xl p-6 sm:p-8 bg-gradient-to-br ${y.color}`}>
+              <div className={`bg-glass rounded-xl p-5 sm:p-6 bg-gradient-to-br ${y.color}`}>
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
                     <y.icon className="h-5 w-5 text-primary" />

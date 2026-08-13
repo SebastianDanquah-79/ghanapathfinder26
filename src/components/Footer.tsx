@@ -1,7 +1,7 @@
 import { GraduationCap } from "lucide-react";
 
 const Footer = () => (
-  <footer className="py-12 px-4 border-t border-border/50">
+  <footer className="py-8 px-4 border-t border-border/50">
     <div className="max-w-7xl mx-auto text-center">
       <div className="flex items-center justify-center gap-2 mb-4">
         <GraduationCap className="h-6 w-6 text-primary" />

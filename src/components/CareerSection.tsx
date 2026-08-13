@@ -63,16 +63,16 @@ const CareerSection = () => {
   };
 
   return (
-    <section id="careers" className="py-20 lg:py-28 px-4">
+    <section id="careers" className="py-12 lg:py-28 px-4">
       <div className="max-w-5xl mx-auto">
         <SectionHeader
           badge="Career Intelligence"
           title="Your Career Path"
           highlight="in Ghana"
-          description="Discover top job roles, hiring companies, salaries, and opportunities for every major."
+          description="Roles, employers and salaries by major."
         />
 
-        <div className="flex flex-wrap justify-center gap-2 mb-10">
+        <div className="flex flex-wrap justify-center gap-2 mb-7">
           {popularMajors.map((m) => (
             <button
               key={m}
@@ -89,7 +89,7 @@ const CareerSection = () => {
         </div>
 
         {loading && (
-          <div className="flex justify-center py-16">
+          <div className="flex justify-center py-10">
             <Loader2 className="h-8 w-8 text-primary animate-spin" />
           </div>
         )}
@@ -100,7 +100,7 @@ const CareerSection = () => {
             animate={{ opacity: 1, y: 0 }}
             className="grid grid-cols-1 md:grid-cols-2 gap-5"
           >
-            <div className="bg-glass rounded-xl p-6">
+            <div className="bg-glass rounded-xl p-5">
               <div className="flex items-center gap-2 mb-4">
                 <Briefcase className="h-5 w-5 text-primary" />
                 <h3 className="font-display font-semibold text-foreground">Top 5 Job Roles</h3>
@@ -115,7 +115,7 @@ const CareerSection = () => {
               </ul>
             </div>
 
-            <div className="bg-glass rounded-xl p-6">
+            <div className="bg-glass rounded-xl p-5">
               <div className="flex items-center gap-2 mb-4">
                 <Building className="h-5 w-5 text-primary" />
                 <h3 className="font-display font-semibold text-foreground">Top Companies Hiring</h3>
@@ -127,7 +127,7 @@ const CareerSection = () => {
               </ul>
             </div>
 
-            <div className="bg-glass rounded-xl p-6">
+            <div className="bg-glass rounded-xl p-5">
               <div className="flex items-center gap-2 mb-4">
                 <DollarSign className="h-5 w-5 text-primary" />
                 <h3 className="font-display font-semibold text-foreground">Salary Range</h3>
@@ -136,7 +136,7 @@ const CareerSection = () => {
               <p className="text-xs text-muted-foreground">Average range for entry to mid-level positions in Ghana</p>
             </div>
 
-            <div className="bg-glass rounded-xl p-6">
+            <div className="bg-glass rounded-xl p-5">
               <div className="flex items-center gap-2 mb-4">
                 <Globe className="h-5 w-5 text-primary" />
                 <h3 className="font-display font-semibold text-foreground">Remote & International</h3>
@@ -144,7 +144,7 @@ const CareerSection = () => {
               <p className="text-sm text-muted-foreground leading-relaxed">{data.remote}</p>
             </div>
 
-            <div className="md:col-span-2 bg-glass rounded-xl p-6">
+            <div className="md:col-span-2 bg-glass rounded-xl p-5">
               <div className="flex items-center gap-2 mb-3">
                 <Search className="h-5 w-5 text-primary" />
                 <h3 className="font-display font-semibold text-foreground">LinkedIn Search Tips</h3>

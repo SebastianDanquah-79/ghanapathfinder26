@@ -96,16 +96,16 @@ const Onboarding = () => {
     "w-full px-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50";
 
   return (
-    <div className="min-h-screen bg-background px-4 py-12">
+    <div className="min-h-screen bg-background px-4 py-8">
       <div className="max-w-2xl mx-auto">
         <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-2">
           Let's set up your path
         </h1>
-        <p className="text-sm text-muted-foreground mb-8">
+        <p className="text-sm text-muted-foreground mb-6">
           This powers your matched programmes, scholarship matches and dashboard.
         </p>
 
-        <div className="space-y-6">
+        <div className="space-y-4">
           <div className="bg-glass rounded-xl p-5 space-y-3">
             <h2 className="font-display font-semibold text-foreground">About you</h2>
             <input className={inputClass} placeholder="Full name" value={fullName} maxLength={100} onChange={(e) => setFullName(e.target.value)} />

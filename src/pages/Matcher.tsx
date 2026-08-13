@@ -26,7 +26,7 @@ const Matcher = () => {
     "w-full px-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50";
 
   return (
-    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-24 pb-16">
+    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-20 pb-12">
       <Navbar />
       <div className="max-w-4xl mx-auto">
         <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
@@ -37,7 +37,7 @@ const Matcher = () => {
           <Award className="h-6 w-6 text-primary" />
           <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground">Scholarship Matcher</h1>
         </div>
-        <p className="text-sm text-muted-foreground mb-8">
+        <p className="text-sm text-muted-foreground mb-6">
           Answer six quick questions and we'll rank the funding options that fit you best.
         </p>
 
@@ -80,7 +80,7 @@ const Matcher = () => {
         </div>
 
         {submitted && (
-          <div className="mt-8 space-y-4">
+          <div className="mt-6 space-y-4">
             {matches.map(({ scholarship: s, score, reasons, gaps }) => (
               <div key={s.name} className="bg-glass rounded-xl p-5">
                 <div className="flex items-start justify-between gap-3 mb-2">
