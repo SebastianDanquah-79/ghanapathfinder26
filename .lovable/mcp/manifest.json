@@ -1,0 +1,160 @@
+{
+  "version": 1,
+  "sdk_version": "0.26.2",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://hodvuidwrhlaildtcpww.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "ghana-future-guide",
+      "version": "0.1.0",
+      "title": "Ghana Future Guide"
+    },
+    "tools": [
+      {
+        "name": "get_profile",
+        "title": "Get my GhanaPath profile",
+        "description": "Fetch the signed-in student's GhanaPath profile, WASSCE results and match preferences.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_saved_items",
+        "title": "List saved universities and scholarships",
+        "description": "List the signed-in student's saved GhanaPath items (universities, programmes, scholarships, careers).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "itemType": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Optional filter, e.g. 'scholarship' or 'university'."
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_scholarship_applications",
+        "title": "List scholarship applications",
+        "description": "List the signed-in student's tracked scholarship applications with status, deadline and notes.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Optional status filter, e.g. interested, preparing, submitted, interview, awarded, rejected."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "track_scholarship_application",
+        "title": "Add or update a scholarship application",
+        "description": "Add a scholarship to the signed-in student's tracker, or update the status/deadline/notes of an existing one.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "scholarshipName": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Scholarship name."
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "interested",
+                "preparing",
+                "submitted",
+                "interview",
+                "awarded",
+                "rejected"
+              ],
+              "default": "interested"
+            },
+            "provider": {
+              "type": "string",
+              "minLength": 1
+            },
+            "deadline": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Deadline as YYYY-MM-DD."
+            },
+            "link": {
+              "type": "string",
+              "format": "uri"
+            },
+            "notes": {
+              "type": "string",
+              "maxLength": 2000
+            }
+          },
+          "required": [
+            "scholarshipName"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_deadlines",
+        "title": "List upcoming deadlines",
+        "description": "List the signed-in student's upcoming GhanaPath deadlines and their application checklist tasks.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
