@@ -27,6 +27,7 @@ const SearchPage = lazy(() => import("./pages/Search.tsx"));
 const Saved = lazy(() => import("./pages/Saved.tsx"));
 const UniversityProfile = lazy(() => import("./pages/UniversityProfile.tsx"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword.tsx"));
+const AdminData = lazy(() => import("./pages/AdminData.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 const queryClient = new QueryClient({
