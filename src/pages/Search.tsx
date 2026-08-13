@@ -307,7 +307,7 @@ const SearchPage = () => {
             Search GhanaPath
           </h1>
           <p className="text-xs sm:text-sm text-muted-foreground mb-4">
-            Universities, programmes and scholarships — live from the GhanaPath database.
+            Universities, programmes and scholarships.
           </p>
 
           <div className="sticky top-16 z-30 -mx-4 px-4 py-2 bg-background/95 backdrop-blur">

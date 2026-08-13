@@ -235,27 +235,27 @@ export function evaluateMatch(
   });
 
   if (cutoff.cut_off_aggregate == null) {
-    gaps.push("No published cut-off aggregate for this programme, so no confidence score can be given.");
-    return base("Insufficient Data", null, "We do not have a verified cut-off for this programme.");
+    gaps.push("No published cut-off, so no score.");
+    return base("Insufficient Data", null, "No verified cut-off.");
   }
 
   if (!breakdown.hasEnoughSubjects || breakdown.aggregate == null) {
     if (breakdown.missingCores.length)
       gaps.push(`Missing a pass (C6 or better) in: ${breakdown.missingCores.join(", ")}.`);
-    gaps.push("Enter three core subjects and at least three electives to be scored.");
-    return base("Insufficient Data", null, "Add more WASSCE results before we can score this honestly.");
+    gaps.push("Add 3 cores and 3 electives to be scored.");
+    return base("Insufficient Data", null, "Add more WASSCE results to be scored.");
   }
 
   // Hard gates -------------------------------------------------------------
   const failedReq = requirementChecks.filter((c) => c.status === "failed");
   if (failedReq.length) {
     failedReq.forEach((c) => gaps.push(c.note));
-    return base("Not Eligible", 0, "You do not currently meet a stated subject requirement.");
+    return base("Not Eligible", 0, "Subject requirement not met.");
   }
 
   if (breakdown.aggregate > 36) {
-    gaps.push("An aggregate above 36 does not meet the minimum requirement for degree admission.");
-    return base("Not Eligible", 0, "This aggregate is below the minimum for degree entry.");
+    gaps.push("Above 36 is below the degree minimum.");
+    return base("Not Eligible", 0, "Below the minimum for degree entry.");
   }
 
   const margin = cutoff.cut_off_aggregate - breakdown.aggregate;
@@ -282,7 +282,7 @@ export function evaluateMatch(
     category = "Competitive";
     confidence = 52 + margin * 6;
     reasons.push(`Your aggregate of ${breakdown.aggregate} sits right on the cut-off of ${cutoff.cut_off_aggregate}.`);
-    gaps.push("Cut-offs move each year with the number of applicants, so an on-the-line aggregate is never guaranteed.");
+    gaps.push("Cut-offs move yearly — on-the-line is never guaranteed.");
   } else if (margin >= -2) {
     category = "Reach";
     confidence = 30 + margin * 8;
@@ -293,27 +293,27 @@ export function evaluateMatch(
     gaps.push(`Your aggregate of ${breakdown.aggregate} is ${Math.abs(margin)} points outside the cut-off of ${cutoff.cut_off_aggregate}.`);
   } else {
     gaps.push(`The published cut-off is ${cutoff.cut_off_aggregate}; your aggregate of ${breakdown.aggregate} is well outside it.`);
-    return base("Not Eligible", 0, "Your aggregate is far outside the published cut-off for this programme.");
+    return base("Not Eligible", 0, "Far outside the published cut-off.");
   }
 
   // Truthfulness adjustments ----------------------------------------------
   if (competitive && confidence > 80) confidence -= 6; // highly contested programmes
   if (unknownReq) confidence = Math.round(confidence * 0.85);
   if (cutoff.applicant_category === "Full-Fee Paying")
-    reasons.push("This cut-off applies to full-fee-paying admission, which costs more than the regular option.");
+    reasons.push("Full-fee-paying cut-off — costs more.");
 
   confidence = Math.max(1, Math.min(92, Math.round(confidence)));
 
   const headline =
     category === "Excellent Match"
-      ? "You are comfortably inside the published cut-off."
+      ? "Comfortably inside the cut-off."
       : category === "Strong Match"
-        ? "You are inside the cut-off, with room for the usual year-to-year movement."
+        ? "Inside the cut-off, with room to spare."
         : category === "Competitive"
-          ? "You are on the line — apply, but keep a safer second choice."
+          ? "On the line — keep a safer second choice."
           : category === "Reach"
-            ? "This is a stretch. Apply only alongside options you clearly qualify for."
-            : "Based on published cut-offs, this is unlikely this year.";
+            ? "A stretch — pair with safer options."
+            : "Unlikely on published cut-offs.";
 
   return { ...base(category, confidence, headline), category, confidence, headline, margin };
 }
@@ -345,7 +345,7 @@ export function evaluateAggregate(
       category: "Insufficient Data",
       confidence: null,
       margin: null,
-      explanation: "No verified cut-off is published for this programme, so we will not guess a score.",
+      explanation: "No verified cut-off published.",
     };
 
   if (aggregate > 36)
@@ -353,7 +353,7 @@ export function evaluateAggregate(
       category: "Not Eligible",
       confidence: 0,
       margin: cutOffAggregate - aggregate,
-      explanation: "An aggregate above 36 is below the minimum for degree admission.",
+      explanation: "Above 36 is below the degree minimum.",
     };
 
   const margin = cutOffAggregate - aggregate;
