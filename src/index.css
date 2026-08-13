@@ -59,12 +59,34 @@
   * {
     @apply border-border;
   }
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+  html, body {
+    @apply overflow-x-hidden;
+    max-width: 100%;
+  }
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Inter', sans-serif;
+    -webkit-tap-highlight-color: transparent;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Space Grotesk', sans-serif;
+    overflow-wrap: break-word;
+  }
+  img, svg, video, canvas {
+    max-width: 100%;
+  }
+  /* Prevent iOS zoom-on-focus for form controls on small screens */
+  @media (max-width: 767px) {
+    input, select, textarea {
+      font-size: 16px;
+    }
+    button, a[role="button"] {
+      touch-action: manipulation;
+    }
   }
 }
 
