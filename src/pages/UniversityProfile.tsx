@@ -198,9 +198,15 @@ const UniversityProfile = () => {
                             metadata: { university: uni.name, degree_type: p.degree_type },
                           }}
                         />
+                        <Link
+                          to={`/programme/${p.slug}`}
+                          className="inline-flex items-center gap-1.5 px-3 py-2 min-h-[40px] rounded-lg text-xs font-medium bg-secondary text-muted-foreground hover:text-foreground"
+                        >
+                          Details
+                        </Link>
                         <OfficialLink
                           href={p.application_url || p.programme_url || uni.admissions_url}
-                          label="Apply / details"
+                          label="Official"
                           variant="ghost"
                         />
                       </div>
