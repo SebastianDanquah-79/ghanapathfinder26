@@ -93,7 +93,7 @@ const ResultCard = ({ r }: { r: SearchResult }) => {
   const str = (k: string) => (typeof meta[k] === "string" ? (meta[k] as string) : null);
 
   return (
-    <div className="bg-glass rounded-xl p-4 sm:p-5 flex flex-col gap-3">
+    <div className="bg-glass rounded-xl p-4 flex flex-col gap-2">
       <div className="min-w-0">
         <span className="text-[10px] uppercase tracking-wide text-primary font-semibold">{r.kind}</span>
         <h3 className="font-display font-semibold text-base text-foreground break-words">
@@ -111,19 +111,20 @@ const ResultCard = ({ r }: { r: SearchResult }) => {
       {r.kind === "university" && str("accreditation_status") && (
         <p className="text-[11px] text-muted-foreground flex flex-wrap items-center gap-2">
           <span
+            title={str("accreditation_status")!}
             className={`px-2 py-0.5 rounded-full font-medium ${
               str("accreditation_status")!.startsWith("Accredited")
                 ? "bg-secondary text-primary"
                 : "bg-destructive/10 text-destructive"
             }`}
           >
-            {str("accreditation_status")}
+            {str("accreditation_status")!.startsWith("Accredited by regulator") ? "Regulator-accredited" : str("accreditation_status")}
           </span>
           {str("delivery_mode") && str("delivery_mode") !== "On campus" && (
             <span className="px-2 py-0.5 rounded-full bg-secondary text-foreground">{str("delivery_mode")}</span>
           )}
           {str("accreditation_expiry_date") && (
-            <span>Valid to {new Date(str("accreditation_expiry_date")!).toLocaleDateString()}</span>
+            <span>To {new Date(str("accreditation_expiry_date")!).toLocaleDateString("en-GB",{month:"short",year:"numeric"})}</span>
           )}
         </p>
       )}
@@ -146,13 +147,13 @@ const ResultCard = ({ r }: { r: SearchResult }) => {
             <GraduationCap className="h-3.5 w-3.5 text-primary shrink-0" />
             {str("university")}
           </p>
-          {str("entry_requirements") && <p>Entry: {str("entry_requirements")}</p>}
+          {str("entry_requirements") && <p className="line-clamp-2">Entry: {str("entry_requirements")}</p>}
         </div>
       )}
 
       {r.kind === "scholarship" && (
         <div className="text-xs text-muted-foreground space-y-1">
-          {str("eligibility") && <p className="line-clamp-3">{str("eligibility")}</p>}
+          {str("eligibility") && <p className="line-clamp-2">{str("eligibility")}</p>}
           {str("deadline_text") && (
             <p className="flex items-center gap-1.5">
               <CalendarDays className="h-3.5 w-3.5 text-primary shrink-0" />
@@ -180,7 +181,7 @@ const ResultCard = ({ r }: { r: SearchResult }) => {
             >
               <MapPin className="h-3.5 w-3.5" /> Profile
             </Link>
-            <OfficialLink href={str("website_url")} label="Official website" variant="ghost" />
+            <OfficialLink href={str("website_url")} label="Website" variant="ghost" />
           </>
         )}
         {r.kind === "scholarship" && (
@@ -189,7 +190,7 @@ const ResultCard = ({ r }: { r: SearchResult }) => {
         {r.kind === "programme" && (str("application_url") || str("programme_url")) && (
           <OfficialLink
             href={str("application_url") || str("programme_url")}
-            label="Programme page"
+            label="Programme"
             variant="ghost"
           />
         )}

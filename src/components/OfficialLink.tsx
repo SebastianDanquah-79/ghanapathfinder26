@@ -33,10 +33,11 @@ const OfficialLink = ({
       <button
         type="button"
         onClick={() => toast.info(fallbackNote)}
+        title="Unverified link"
         className={`${base} bg-secondary text-muted-foreground/70 ${className}`}
       >
         <ExternalLink className="h-3.5 w-3.5" />
-        {label} (unverified)
+        {label}
       </button>
     );
   }
