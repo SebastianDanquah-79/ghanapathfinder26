@@ -162,33 +162,26 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-24 pb-16">
       <Navbar />
-      <div className="max-w-6xl xl:max-w-7xl mx-auto">
-        <header className="flex items-center justify-between mb-5">
-          <Link to="/" className="flex items-center gap-2">
-            <GraduationCap className="h-6 w-6 text-primary" />
-            <span className="font-display font-bold text-lg text-foreground">
-              Ghana<span className="text-primary">Path</span>
-            </span>
-          </Link>
+      <div className="max-w-7xl mx-auto">
+        <header className="flex flex-wrap items-end justify-between gap-4 mb-8">
+          <div>
+            <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">
+              Welcome back{profile?.full_name ? `, ${profile.full_name.split(" ")[0]}` : ""} 👋
+            </h1>
+            <p className="text-sm lg:text-base text-muted-foreground mt-2 max-w-2xl">
+              Your WASSCE profile, matches, saved schools and deadlines.
+            </p>
+          </div>
           <button
             onClick={async () => {
               await signOut();
               navigate("/");
             }}
-            className="inline-flex items-center gap-1.5 min-h-[44px] px-2 text-sm text-muted-foreground hover:text-foreground"
+            className="inline-flex items-center gap-1.5 min-h-[44px] px-3 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors"
           >
             <LogOut className="h-4 w-4" /> Sign out
           </button>
         </header>
-
-        <div className="mb-5">
-          <h1 className="font-display text-xl sm:text-3xl font-bold text-foreground">
-            Welcome back{profile?.full_name ? `, ${profile.full_name.split(" ")[0]}` : ""} 👋
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Your WASSCE profile, matches, saved schools and deadlines.
-          </p>
-        </div>
 
         {/* WASSCE snapshot — the number students care about most */}
         <div className="bg-glass rounded-xl p-4 sm:p-5 mb-4">
