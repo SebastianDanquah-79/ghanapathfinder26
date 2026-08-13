@@ -8,9 +8,11 @@ const primary = [
   { label: "Search", href: "/search" },
   { label: "Universities", href: "/#universities" },
   { label: "Scholarships", href: "/#scholarships" },
+  { label: "Saved", href: "/saved" },
   { label: "Compare", href: "/compare" },
   { label: "Inspiration", href: "/inspiration" },
 ];
+
 
 const more = [
   { label: "Recommender", href: "/#recommender" },
