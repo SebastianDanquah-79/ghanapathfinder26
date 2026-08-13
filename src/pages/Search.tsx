@@ -200,12 +200,22 @@ const ResultCard = ({ r }: { r: SearchResult }) => {
         {r.kind === "scholarship" && (
           <OfficialLink href={str("application_url")} label="Apply" variant="ghost" />
         )}
-        {r.kind === "programme" && (str("application_url") || str("programme_url")) && (
-          <OfficialLink
-            href={str("application_url") || str("programme_url")}
-            label="Programme"
-            variant="ghost"
-          />
+        {r.kind === "programme" && (
+          <>
+            <Link
+              to={`/programme/${r.slug}`}
+              className="inline-flex items-center gap-1.5 px-3 py-2 min-h-[40px] rounded-lg text-xs font-medium bg-secondary text-muted-foreground hover:text-foreground"
+            >
+              <GraduationCap className="h-3.5 w-3.5" /> Details
+            </Link>
+            {(str("application_url") || str("programme_url")) && (
+              <OfficialLink
+                href={str("application_url") || str("programme_url")}
+                label="Official"
+                variant="ghost"
+              />
+            )}
+          </>
         )}
       </div>
     </div>
