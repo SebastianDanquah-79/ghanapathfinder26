@@ -97,8 +97,11 @@ const ResultCard = ({ r }: { r: SearchResult }) => {
       <div className="min-w-0">
         <span className="text-[10px] uppercase tracking-wide text-primary font-semibold">{r.kind}</span>
         <h3 className="font-display font-semibold text-base text-foreground break-words">
-          {r.kind === "university" ? (
-            <Link to={`/university/${r.slug}`} className="hover:text-primary transition-colors">
+          {r.kind === "university" || r.kind === "programme" ? (
+            <Link
+              to={r.kind === "university" ? `/university/${r.slug}` : `/programme/${r.slug}`}
+              className="hover:text-primary transition-colors"
+            >
               {r.title}
             </Link>
           ) : (
