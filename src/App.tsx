@@ -9,6 +9,7 @@ import Auth from "./pages/Auth.tsx";
 import Onboarding from "./pages/Onboarding.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import Matcher from "./pages/Matcher.tsx";
+import AdmissionMatch from "./pages/AdmissionMatch.tsx";
 import Compare from "./pages/Compare.tsx";
 import Scholarships from "./pages/Scholarships.tsx";
 import CompareScholarships from "./pages/CompareScholarships.tsx";
@@ -40,6 +41,7 @@ const App = () => (
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/matcher" element={<Matcher />} />
+            <Route path="/admission-match" element={<AdmissionMatch />} />
             <Route path="/compare" element={<Compare />} />
             <Route path="/scholarships" element={<Scholarships />} />
             <Route path="/compare-scholarships" element={<CompareScholarships />} />

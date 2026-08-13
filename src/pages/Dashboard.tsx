@@ -5,13 +5,12 @@ import { CalendarClock, GraduationCap, LogOut, Plus, Sparkles, Trash2, Users } f
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { universities } from "@/data/universities";
+import { useAdmissionMatches } from "@/hooks/useAdmissionMatch";
 import MotivationPanel from "@/components/MotivationPanel";
 import ParentAccessCard from "@/components/ParentAccessCard";
 import { celebrate } from "@/lib/celebrate";
 import type { JourneyInput } from "@/lib/motivation";
 
-const GRADE_POINTS: Record<string, number> = { A1: 1, B2: 2, B3: 3, C4: 4, C5: 5, C6: 6, D7: 7, E8: 8, F9: 9 };
 
 const Dashboard = () => {
   const { user, loading, signOut } = useAuth();
@@ -75,19 +74,11 @@ const Dashboard = () => {
     },
   });
 
-  const graded = results.filter((r) => GRADE_POINTS[r.grade]);
-  const aggregate = graded.length
-    ? graded.map((r) => GRADE_POINTS[r.grade]).sort((a, b) => a - b).slice(0, 6).reduce((a, b) => a + b, 0)
-    : null;
-
-  const matchedProgrammes = aggregate
-    ? universities
-        .filter((u) => {
-          const max = Number(u.admissionAggregate.split("-")[1] ?? 30);
-          return aggregate <= max;
-        })
-        .slice(0, 6)
-    : [];
+  const { matches, breakdown } = useAdmissionMatches();
+  const aggregate = breakdown.aggregate;
+  const topMatches = matches
+    .filter((m) => m.confidence != null && m.category !== "Not Eligible")
+    .slice(0, 5);
 
   const savedBy = (type: string) => saved.filter((s) => s.item_type === type);
 
@@ -206,22 +197,30 @@ const Dashboard = () => {
 
           <div className={card}>
             <h2 className="font-display font-semibold text-foreground mb-3 flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-primary" /> Matched universities
+              <Sparkles className="h-4 w-4 text-primary" /> Admission match
             </h2>
-            {matchedProgrammes.length ? (
+            {topMatches.length ? (
               <ul className="space-y-2 text-sm">
-                {matchedProgrammes.map((u) => (
-                  <li key={u.shortName} className="flex justify-between gap-2">
-                    <span className="text-foreground">{u.shortName}</span>
-                    <span className="text-xs text-muted-foreground">{u.topPrograms[0]}</span>
+                {topMatches.map((m) => (
+                  <li key={m.cutoff.id} className="flex justify-between gap-2">
+                    <span className="text-foreground truncate">
+                      {m.cutoff.programme_name}
+                      <span className="block text-xs text-muted-foreground">
+                        {m.cutoff.universities?.short_name} · cut-off {m.cutoff.cut_off_aggregate}
+                      </span>
+                    </span>
+                    <span className="shrink-0 text-xs text-muted-foreground">{m.category}</span>
                   </li>
                 ))}
               </ul>
             ) : (
               <p className="text-sm text-muted-foreground">
-                Add your WASSCE results to see universities you qualify for.
+                Add your WASSCE results to see the programmes your aggregate actually reaches.
               </p>
             )}
+            <Link to="/admission-match" className="mt-4 inline-block text-sm text-primary font-medium">
+              See all matches and cut-offs
+            </Link>
           </div>
 
           <div className={card}>
@@ -299,6 +298,7 @@ const Dashboard = () => {
               <Users className="h-4 w-4 text-primary" /> Next steps
             </h2>
             <ul className="text-sm text-muted-foreground space-y-2">
+              <li>• <Link to="/admission-match" className="text-primary">Check my real admission match (official cut-offs)</Link></li>
               <li>• <Link to="/scholarships" className="text-primary">Open my scholarship hub (AI matches & alerts)</Link></li>
               <li>• <Link to="/applications" className="text-primary">Track my scholarship applications</Link></li>
               <li>• <Link to="/preferences" className="text-primary">Customise my match preferences</Link></li>
