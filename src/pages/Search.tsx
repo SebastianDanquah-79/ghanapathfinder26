@@ -150,6 +150,16 @@ const ResultCard = ({ r }: { r: SearchResult }) => {
             <GraduationCap className="h-3.5 w-3.5 text-primary shrink-0" />
             {str("university")}
           </p>
+          {str("short_bio") && <p className="line-clamp-2">{str("short_bio")}</p>}
+          {Array.isArray(meta.careers) && (meta.careers as string[]).length > 0 && (
+            <div className="flex flex-wrap gap-1.5">
+              {(meta.careers as string[]).slice(0, 3).map((c) => (
+                <span key={c} className="px-2 py-0.5 rounded-full bg-secondary text-[11px]">
+                  {c}
+                </span>
+              ))}
+            </div>
+          )}
           {str("entry_requirements") && <p className="line-clamp-2">Entry: {str("entry_requirements")}</p>}
         </div>
       )}
