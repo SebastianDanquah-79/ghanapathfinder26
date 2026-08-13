@@ -10,6 +10,7 @@ import MotivationPanel from "@/components/MotivationPanel";
 import ParentAccessCard from "@/components/ParentAccessCard";
 import { celebrate } from "@/lib/celebrate";
 import type { JourneyInput } from "@/lib/motivation";
+import Navbar from "@/components/Navbar";
 
 
 const Dashboard = () => {
@@ -159,7 +160,8 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background px-4 sm:px-6 py-6 sm:py-10">
+    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-24 pb-16">
+      <Navbar />
       <div className="max-w-6xl xl:max-w-7xl mx-auto">
         <header className="flex items-center justify-between mb-5">
           <Link to="/" className="flex items-center gap-2">

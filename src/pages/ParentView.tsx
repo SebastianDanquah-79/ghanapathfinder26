@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { STATUS_META, ApplicationStatus } from "@/hooks/useApplications";
 import { daysUntil, urgencyLabel } from "@/lib/scholarshipDates";
+import Navbar from "@/components/Navbar";
 
 const card = "bg-glass rounded-xl p-5";
 const input =
@@ -63,8 +64,9 @@ const ParentView = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background px-4 sm:px-6 py-10">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-24 pb-16">
+      <Navbar />
+      <div className="max-w-7xl mx-auto">
         <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
           <ArrowLeft className="h-4 w-4" /> Home
         </Link>

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Award, ArrowLeft, ExternalLink } from "lucide-react";
 import { matchScholarships, MatcherAnswers } from "@/lib/scholarshipMatcher";
 import SaveButton from "@/components/SaveButton";
+import Navbar from "@/components/Navbar";
 
 const FIELDS = ["Any", "Technology", "Medicine", "Engineering", "Business", "Law", "Education", "Agriculture", "Arts"];
 const LEVELS = ["Undergraduate", "Postgraduate"];
@@ -25,8 +26,9 @@ const Matcher = () => {
     "w-full px-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50";
 
   return (
-    <div className="min-h-screen bg-background px-4 py-12">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-24 pb-16">
+      <Navbar />
+      <div className="max-w-4xl mx-auto">
         <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
           <ArrowLeft className="h-4 w-4" /> Back home
         </Link>

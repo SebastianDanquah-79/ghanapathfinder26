@@ -22,6 +22,7 @@ import { estimateDeadlineDate, toISODate, daysUntil, urgencyLabel } from "@/lib/
 import { buildPlanText, downloadPlan } from "@/lib/scholarshipPlan";
 import SaveButton from "@/components/SaveButton";
 import { useMatchPreferences } from "@/hooks/useMatchPreferences";
+import Navbar from "@/components/Navbar";
 
 const GRADE_POINTS: Record<string, number> = { A1: 1, B2: 2, B3: 3, C4: 4, C5: 5, C6: 6, D7: 7, E8: 8, F9: 9 };
 
@@ -204,8 +205,9 @@ const Scholarships = () => {
   const scholarshipDeadlines = deadlines.filter((d) => d.category === "scholarship");
 
   return (
-    <div className="min-h-screen bg-background px-4 sm:px-6 py-10">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-24 pb-16">
+      <Navbar />
+      <div className="max-w-7xl mx-auto">
         <Link to="/dashboard" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
           <ArrowLeft className="h-4 w-4" /> Back to dashboard
         </Link>

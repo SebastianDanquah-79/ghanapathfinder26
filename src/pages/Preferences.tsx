@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Loader2, SlidersHorizontal } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import {
+import Navbar from "@/components/Navbar";
   COVERAGE_LEVELS,
   DEFAULT_PREFERENCES,
   FIELDS,
@@ -51,8 +52,9 @@ const Preferences = () => {
     );
 
   return (
-    <div className="min-h-screen bg-background px-4 sm:px-6 py-10">
-      <div className="max-w-3xl mx-auto">
+    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-24 pb-16">
+      <Navbar />
+      <div className="max-w-4xl mx-auto">
         <Link to="/dashboard" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
           <ArrowLeft className="h-4 w-4" /> Back to dashboard
         </Link>

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, Scale } from "lucide-react";
 import { universities } from "@/data/universities";
 import SaveButton from "@/components/SaveButton";
+import Navbar from "@/components/Navbar";
 
 const Compare = () => {
   const [selected, setSelected] = useState<string[]>([]);
@@ -29,8 +30,9 @@ const Compare = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background px-4 py-12">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-24 pb-16">
+      <Navbar />
+      <div className="max-w-7xl mx-auto">
         <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
           <ArrowLeft className="h-4 w-4" /> Back home
         </Link>

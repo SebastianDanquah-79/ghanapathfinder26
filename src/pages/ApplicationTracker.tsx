@@ -7,6 +7,7 @@ import { celebrate } from "@/lib/celebrate";
 import { scholarships } from "@/data/scholarships";
 import { estimateDeadlineDate, toISODate, daysUntil, urgencyLabel } from "@/lib/scholarshipDates";
 import {
+import Navbar from "@/components/Navbar";
   APPLICATION_STATUSES,
   ApplicationStatus,
   STATUS_META,
@@ -86,8 +87,9 @@ const ApplicationTracker = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background px-4 sm:px-6 py-10">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-24 pb-16">
+      <Navbar />
+      <div className="max-w-7xl mx-auto">
         <Link to="/dashboard" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
           <ArrowLeft className="h-4 w-4" /> Back to dashboard
         </Link>
