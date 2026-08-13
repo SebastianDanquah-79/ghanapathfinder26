@@ -22,7 +22,7 @@ const OfficialLink = ({
   className = "",
 }: Props) => {
   const base =
-    "inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-colors";
+    "inline-flex items-center justify-center gap-1.5 px-3 py-2 min-h-[44px] sm:min-h-[40px] rounded-lg text-xs font-medium transition-colors";
   const styles =
     variant === "primary"
       ? "bg-primary text-primary-foreground hover:opacity-90"

@@ -46,7 +46,7 @@ const Compare = () => {
             <button
               key={u.shortName}
               onClick={() => toggle(u.shortName)}
-              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+              className={`px-3 min-h-[44px] rounded-full text-xs font-medium transition-colors ${
                 selected.includes(u.shortName)
                   ? "bg-primary text-primary-foreground"
                   : "bg-secondary text-muted-foreground hover:text-foreground"

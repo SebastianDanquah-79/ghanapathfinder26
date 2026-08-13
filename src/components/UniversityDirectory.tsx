@@ -175,7 +175,7 @@ const UniversityDirectory = () => {
                 />
                 <Link
                   to={`/university/${u.slug}`}
-                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium bg-secondary text-muted-foreground hover:text-foreground"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 min-h-[44px] sm:min-h-[40px] rounded-lg text-xs font-medium bg-secondary text-muted-foreground hover:text-foreground"
                 >
                   View profile
                 </Link>
