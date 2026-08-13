@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Loader2, SlidersHorizontal } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import {
-import Navbar from "@/components/Navbar";
   COVERAGE_LEVELS,
   DEFAULT_PREFERENCES,
   FIELDS,
@@ -14,6 +13,7 @@ import Navbar from "@/components/Navbar";
   useMatchPreferences,
   useSavePreferences,
 } from "@/hooks/useMatchPreferences";
+import Navbar from "@/components/Navbar";
 
 const REGIONS = [
   "Greater Accra", "Ashanti", "Central", "Eastern", "Western", "Volta",

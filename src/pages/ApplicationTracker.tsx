@@ -7,7 +7,6 @@ import { celebrate } from "@/lib/celebrate";
 import { scholarships } from "@/data/scholarships";
 import { estimateDeadlineDate, toISODate, daysUntil, urgencyLabel } from "@/lib/scholarshipDates";
 import {
-import Navbar from "@/components/Navbar";
   APPLICATION_STATUSES,
   ApplicationStatus,
   STATUS_META,
@@ -16,6 +15,7 @@ import Navbar from "@/components/Navbar";
   useDeleteApplication,
   useUpdateApplication,
 } from "@/hooks/useApplications";
+import Navbar from "@/components/Navbar";
 
 const card = "bg-glass rounded-xl p-5";
 const input =
