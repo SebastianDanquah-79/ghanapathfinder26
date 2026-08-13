@@ -151,7 +151,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-background px-4 sm:px-6 py-10">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl xl:max-w-7xl mx-auto">
         <header className="flex items-center justify-between mb-8">
           <Link to="/" className="flex items-center gap-2">
             <GraduationCap className="h-6 w-6 text-primary" />
