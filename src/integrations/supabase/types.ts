@@ -685,6 +685,8 @@ export type Database = {
       }
       universities: {
         Row: {
+          accreditation_expiry_date: string | null
+          accreditation_start_date: string | null
           accreditation_status: string
           admission_aggregate: string | null
           admission_info: string | null
@@ -694,8 +696,10 @@ export type Database = {
           category: string
           country: string
           created_at: string
+          delivery_mode: string
           description: string | null
           financial_aid_url: string | null
+          gtec_category: string | null
           id: string
           last_verified_at: string | null
           location: string | null
@@ -717,6 +721,8 @@ export type Database = {
           website_url: string | null
         }
         Insert: {
+          accreditation_expiry_date?: string | null
+          accreditation_start_date?: string | null
           accreditation_status?: string
           admission_aggregate?: string | null
           admission_info?: string | null
@@ -726,8 +732,10 @@ export type Database = {
           category?: string
           country?: string
           created_at?: string
+          delivery_mode?: string
           description?: string | null
           financial_aid_url?: string | null
+          gtec_category?: string | null
           id?: string
           last_verified_at?: string | null
           location?: string | null
@@ -749,6 +757,8 @@ export type Database = {
           website_url?: string | null
         }
         Update: {
+          accreditation_expiry_date?: string | null
+          accreditation_start_date?: string | null
           accreditation_status?: string
           admission_aggregate?: string | null
           admission_info?: string | null
@@ -758,8 +768,10 @@ export type Database = {
           category?: string
           country?: string
           created_at?: string
+          delivery_mode?: string
           description?: string | null
           financial_aid_url?: string | null
+          gtec_category?: string | null
           id?: string
           last_verified_at?: string | null
           location?: string | null
