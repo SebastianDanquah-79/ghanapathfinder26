@@ -1037,6 +1037,10 @@ export type Database = {
     }
     Functions: {
       accept_parent_invite: { Args: { _code: string }; Returns: string }
+      apply_programme_information: {
+        Args: { _programme_id: string }
+        Returns: undefined
+      }
       find_duplicate_institution: {
         Args: { _name: string }
         Returns: {
