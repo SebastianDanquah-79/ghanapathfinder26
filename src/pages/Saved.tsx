@@ -32,8 +32,8 @@ const Saved = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main className="pt-20 sm:pt-24 pb-12 px-4">
-        <div className="max-w-5xl mx-auto">
+      <main className="pt-24 pb-16 px-4 sm:px-8 lg:px-12">
+        <div className="max-w-7xl mx-auto">
           <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-1 flex items-center gap-2">
             <Bookmark className="h-6 w-6 text-primary" /> Saved
           </h1>

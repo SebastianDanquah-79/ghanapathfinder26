@@ -236,7 +236,7 @@ const SearchPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main className="pt-20 sm:pt-24 pb-10 px-4">
+      <main className="pt-24 pb-16 px-4 sm:px-8 lg:px-12">
         <div className="max-w-6xl xl:max-w-7xl mx-auto">
           <h1 className="font-display text-xl sm:text-3xl font-bold text-foreground mb-1">
             Search GhanaPath
