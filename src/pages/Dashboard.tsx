@@ -299,6 +299,7 @@ const Dashboard = () => {
               <Users className="h-4 w-4 text-primary" /> Next steps
             </h2>
             <ul className="text-sm text-muted-foreground space-y-2">
+              <li>• <Link to="/admission-match" className="text-primary">Check my real admission match (official cut-offs)</Link></li>
               <li>• <Link to="/scholarships" className="text-primary">Open my scholarship hub (AI matches & alerts)</Link></li>
               <li>• <Link to="/applications" className="text-primary">Track my scholarship applications</Link></li>
               <li>• <Link to="/preferences" className="text-primary">Customise my match preferences</Link></li>
