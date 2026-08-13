@@ -315,6 +315,59 @@ export type Database = {
         }
         Relationships: []
       }
+      programme_careers: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          last_verified: string | null
+          licence_note: string | null
+          occupation: string
+          programme_id: string
+          salary_data_source: string | null
+          salary_experience_level: string | null
+          salary_period: string | null
+          salary_range: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          last_verified?: string | null
+          licence_note?: string | null
+          occupation: string
+          programme_id: string
+          salary_data_source?: string | null
+          salary_experience_level?: string | null
+          salary_period?: string | null
+          salary_range?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          last_verified?: string | null
+          licence_note?: string | null
+          occupation?: string
+          programme_id?: string
+          salary_data_source?: string | null
+          salary_experience_level?: string | null
+          salary_period?: string | null
+          salary_range?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programme_careers_programme_id_fkey"
+            columns: ["programme_id"]
+            isOneToOne: false
+            referencedRelation: "programmes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       programme_cutoffs: {
         Row: {
           academic_year: string
@@ -390,6 +443,104 @@ export type Database = {
           },
         ]
       }
+      programme_field_library: {
+        Row: {
+          about: string
+          academic_difficulty: string
+          careers: Json
+          created_at: string
+          field: string
+          job_market: string
+          short_bio: string
+          study_areas: string[]
+          updated_at: string
+          why_choose: string
+        }
+        Insert: {
+          about: string
+          academic_difficulty?: string
+          careers?: Json
+          created_at?: string
+          field: string
+          job_market: string
+          short_bio: string
+          study_areas?: string[]
+          updated_at?: string
+          why_choose: string
+        }
+        Update: {
+          about?: string
+          academic_difficulty?: string
+          careers?: Json
+          created_at?: string
+          field?: string
+          job_market?: string
+          short_bio?: string
+          study_areas?: string[]
+          updated_at?: string
+          why_choose?: string
+        }
+        Relationships: []
+      }
+      programme_information: {
+        Row: {
+          academic_difficulty: string | null
+          career_opportunities: string[]
+          content_scope: string
+          created_at: string
+          description: string | null
+          id: string
+          job_market: string | null
+          last_updated: string
+          programme_id: string
+          short_bio: string | null
+          source: string | null
+          study_areas: string[]
+          updated_at: string
+          why_choose: string | null
+        }
+        Insert: {
+          academic_difficulty?: string | null
+          career_opportunities?: string[]
+          content_scope?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          job_market?: string | null
+          last_updated?: string
+          programme_id: string
+          short_bio?: string | null
+          source?: string | null
+          study_areas?: string[]
+          updated_at?: string
+          why_choose?: string | null
+        }
+        Update: {
+          academic_difficulty?: string | null
+          career_opportunities?: string[]
+          content_scope?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          job_market?: string | null
+          last_updated?: string
+          programme_id?: string
+          short_bio?: string | null
+          source?: string | null
+          study_areas?: string[]
+          updated_at?: string
+          why_choose?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programme_information_programme_id_fkey"
+            columns: ["programme_id"]
+            isOneToOne: true
+            referencedRelation: "programmes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       programme_requirements: {
         Row: {
           additional_requirement: string | null
@@ -427,6 +578,44 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "programme_requirements_programme_id_fkey"
+            columns: ["programme_id"]
+            isOneToOne: false
+            referencedRelation: "programmes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      programme_sources: {
+        Row: {
+          created_at: string
+          id: string
+          programme_id: string
+          source_type: string
+          source_url: string
+          verification_status: string
+          verified_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          programme_id: string
+          source_type?: string
+          source_url: string
+          verification_status?: string
+          verified_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          programme_id?: string
+          source_type?: string
+          source_url?: string
+          verification_status?: string
+          verified_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programme_sources_programme_id_fkey"
             columns: ["programme_id"]
             isOneToOne: false
             referencedRelation: "programmes"
@@ -848,6 +1037,10 @@ export type Database = {
     }
     Functions: {
       accept_parent_invite: { Args: { _code: string }; Returns: string }
+      apply_programme_information: {
+        Args: { _programme_id: string }
+        Returns: undefined
+      }
       find_duplicate_institution: {
         Args: { _name: string }
         Returns: {

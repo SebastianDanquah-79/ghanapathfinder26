@@ -97,8 +97,11 @@ const ResultCard = ({ r }: { r: SearchResult }) => {
       <div className="min-w-0">
         <span className="text-[10px] uppercase tracking-wide text-primary font-semibold">{r.kind}</span>
         <h3 className="font-display font-semibold text-base text-foreground break-words">
-          {r.kind === "university" ? (
-            <Link to={`/university/${r.slug}`} className="hover:text-primary transition-colors">
+          {r.kind === "university" || r.kind === "programme" ? (
+            <Link
+              to={r.kind === "university" ? `/university/${r.slug}` : `/programme/${r.slug}`}
+              className="hover:text-primary transition-colors"
+            >
               {r.title}
             </Link>
           ) : (
@@ -147,6 +150,16 @@ const ResultCard = ({ r }: { r: SearchResult }) => {
             <GraduationCap className="h-3.5 w-3.5 text-primary shrink-0" />
             {str("university")}
           </p>
+          {str("short_bio") && <p className="line-clamp-2">{str("short_bio")}</p>}
+          {Array.isArray(meta.careers) && (meta.careers as string[]).length > 0 && (
+            <div className="flex flex-wrap gap-1.5">
+              {(meta.careers as string[]).slice(0, 3).map((c) => (
+                <span key={c} className="px-2 py-0.5 rounded-full bg-secondary text-[11px]">
+                  {c}
+                </span>
+              ))}
+            </div>
+          )}
           {str("entry_requirements") && <p className="line-clamp-2">Entry: {str("entry_requirements")}</p>}
         </div>
       )}
@@ -187,12 +200,22 @@ const ResultCard = ({ r }: { r: SearchResult }) => {
         {r.kind === "scholarship" && (
           <OfficialLink href={str("application_url")} label="Apply" variant="ghost" />
         )}
-        {r.kind === "programme" && (str("application_url") || str("programme_url")) && (
-          <OfficialLink
-            href={str("application_url") || str("programme_url")}
-            label="Programme"
-            variant="ghost"
-          />
+        {r.kind === "programme" && (
+          <>
+            <Link
+              to={`/programme/${r.slug}`}
+              className="inline-flex items-center gap-1.5 px-3 py-2 min-h-[40px] rounded-lg text-xs font-medium bg-secondary text-muted-foreground hover:text-foreground"
+            >
+              <GraduationCap className="h-3.5 w-3.5" /> Details
+            </Link>
+            {(str("application_url") || str("programme_url")) && (
+              <OfficialLink
+                href={str("application_url") || str("programme_url")}
+                label="Official"
+                variant="ghost"
+              />
+            )}
+          </>
         )}
       </div>
     </div>
