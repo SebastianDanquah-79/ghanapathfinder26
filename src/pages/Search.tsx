@@ -141,7 +141,7 @@ const SearchPage = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <main className="pt-24 pb-20 px-4">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-6xl xl:max-w-7xl mx-auto">
           <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-2">
             Search GhanaPath
           </h1>
@@ -221,7 +221,7 @@ const SearchPage = () => {
 
           {!isError && results.length > 0 && (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {results.map((r) => (
                   <ResultCard key={`${r.kind}-${r.id}`} r={r} />
                 ))}

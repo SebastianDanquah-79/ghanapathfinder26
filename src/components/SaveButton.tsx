@@ -44,7 +44,7 @@ const SaveButton = ({ item, label = "Save" }: Props) => {
         );
       }}
       disabled={toggle.isPending}
-      className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+      className={`inline-flex items-center gap-1.5 px-3 py-2 min-h-[40px] sm:min-h-0 sm:py-1.5 rounded-lg text-xs font-medium transition-colors ${
         isSaved
           ? "bg-primary/15 text-primary"
           : "bg-secondary text-muted-foreground hover:text-foreground"

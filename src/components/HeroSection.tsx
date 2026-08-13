@@ -19,7 +19,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-[100svh] flex items-center justify-center overflow-hidden py-24">
       <ParticleBackground />
       <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
 
@@ -73,14 +73,15 @@ const HeroSection = () => {
           </div>
         </motion.div>
 
-        <motion.div
-          className="absolute bottom-10 left-1/2 -translate-x-1/2"
+      </div>
+
+      <motion.div
+          className="absolute bottom-24 md:bottom-10 left-1/2 -translate-x-1/2 z-10"
           animate={{ y: [0, 8, 0] }}
           transition={{ repeat: Infinity, duration: 2 }}
         >
           <ArrowDown className="h-5 w-5 text-muted-foreground" />
-        </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 };
