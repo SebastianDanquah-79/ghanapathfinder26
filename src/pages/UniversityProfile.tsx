@@ -115,10 +115,31 @@ const UniversityProfile = () => {
                   )}
                 </div>
 
-                <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground mt-4">
-                  <ShieldCheck className="h-3.5 w-3.5 text-ghana-green" />
-                  {formatVerified(uni.last_verified_at)}
-                </p>
+                <div className="mt-4 space-y-1">
+                  <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                    <ShieldCheck className="h-3.5 w-3.5 text-ghana-green" />
+                    {uni.accreditation_status ? `${uni.accreditation_status} · ` : ""}
+                    {formatVerified(uni.last_verified_at)}
+                  </p>
+                  {uni.source_url && (
+                    <p className="text-[11px] text-muted-foreground break-all">
+                      Source:{" "}
+                      <a
+                        href={uni.source_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary hover:underline"
+                      >
+                        {uni.source_url.includes("nmc.gov.gh")
+                          ? "Nursing and Midwifery Council of Ghana"
+                          : uni.source_url.includes("gtec.edu.gh")
+                            ? "Ghana Tertiary Education Commission (GTEC)"
+                            : uni.source_url}
+                      </a>
+                    </p>
+                  )}
+                </div>
+
               </header>
 
               <section>

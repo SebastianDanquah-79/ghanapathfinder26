@@ -43,14 +43,15 @@ export interface UniversityFilters {
   search?: string;
   type?: "All" | "Public" | "Private";
   region?: string;
+  category?: string;
   page?: number;
   pageSize?: number;
 }
 
 export const useUniversities = (filters: UniversityFilters = {}) => {
-  const { search = "", type = "All", region, page = 0, pageSize = 24 } = filters;
+  const { search = "", type = "All", region, category, page = 0, pageSize = 24 } = filters;
   return useQuery({
-    queryKey: ["universities", search, type, region, page, pageSize],
+    queryKey: ["universities", search, type, region, category, page, pageSize],
     queryFn: async () => {
       let q = supabase
         .from("universities")
@@ -60,10 +61,11 @@ export const useUniversities = (filters: UniversityFilters = {}) => {
 
       if (type !== "All") q = q.eq("type", type);
       if (region) q = q.eq("region", region);
+      if (category) q = q.eq("category", category);
       if (search.trim()) {
         const term = `%${search.trim()}%`;
         q = q.or(
-          `name.ilike.${term},short_name.ilike.${term},location.ilike.${term},region.ilike.${term}`,
+          `name.ilike.${term},short_name.ilike.${term},location.ilike.${term},region.ilike.${term},category.ilike.${term}`,
         );
       }
       const { data, error, count } = await q;
@@ -73,6 +75,7 @@ export const useUniversities = (filters: UniversityFilters = {}) => {
     staleTime: 60_000,
   });
 };
+
 
 export const useUniversity = (slug?: string) =>
   useQuery({

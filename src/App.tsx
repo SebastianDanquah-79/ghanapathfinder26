@@ -27,6 +27,7 @@ const SearchPage = lazy(() => import("./pages/Search.tsx"));
 const Saved = lazy(() => import("./pages/Saved.tsx"));
 const UniversityProfile = lazy(() => import("./pages/UniversityProfile.tsx"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword.tsx"));
+const AdminData = lazy(() => import("./pages/AdminData.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 
 const queryClient = new QueryClient({
@@ -74,7 +75,9 @@ const App = () => (
                 <Route path="/applications" element={<ApplicationTracker />} />
                 <Route path="/preferences" element={<Preferences />} />
                 <Route path="/parent" element={<ParentView />} />
+                <Route path="/admin/data" element={<AdminData />} />
                 <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
+
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

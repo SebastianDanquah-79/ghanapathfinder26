@@ -40,14 +40,42 @@ const REGIONS = [
   "Northern",
   "Bono",
   "Bono East",
+  "Ahafo",
+  "Western North",
+  "Oti",
+  "Savannah",
+  "North East",
   "Upper East",
   "Upper West",
+];
+
+const CATEGORIES = [
+  "University",
+  "Technical University",
+  "University College",
+  "College of Education",
+  "Nursing and Midwifery Training College",
+  "Private Nurses Training College",
+  "Health Training Institution",
+  "College of Agriculture",
+  "Professional Institution",
+  "Private Tertiary Institution",
+  "Chartered Private Institution",
+  "Private College of Education",
+  "Private Polytechnic",
 ];
 
 const UNI_TYPES = ["All", "Public", "Private"] as const;
 const SCHOLARSHIP_TYPES = ["All", "Government", "Private", "International", "University"];
 
-const suggestions = ["Computer Science", "University of Ghana", "Engineering", "Nursing", "Law", "Data Science"];
+const suggestions = [
+  "Computer Science",
+  "Nursing",
+  "Teacher Education",
+  "Wa",
+  "Technical University",
+  "Agriculture",
+];
 
 const emptyCopy: Record<Kind, string> = {
   all: "No results found.",
@@ -75,6 +103,17 @@ const ResultCard = ({ r }: { r: SearchResult }) => {
         </h3>
         {r.subtitle && <p className="text-xs text-muted-foreground mt-0.5 break-words">{r.subtitle}</p>}
       </div>
+
+      {r.kind === "university" && str("accreditation_status") && (
+        <p className="text-[11px] text-muted-foreground">
+          <span className="px-2 py-0.5 rounded-full bg-secondary text-primary font-medium">
+            {str("accreditation_status")}
+          </span>
+          {str("last_verified_at") && (
+            <span className="ml-2">Verified {new Date(str("last_verified_at")!).toLocaleDateString()}</span>
+          )}
+        </p>
+      )}
 
       {r.kind === "university" && (
         <div className="flex flex-wrap gap-1.5">
@@ -155,6 +194,7 @@ const SearchPage = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [uniType, setUniType] = useState<(typeof UNI_TYPES)[number]>("All");
   const [region, setRegion] = useState<string>("");
+  const [category, setCategory] = useState<string>("");
   const [schType, setSchType] = useState("All");
 
   useEffect(() => {
@@ -168,7 +208,7 @@ const SearchPage = () => {
   }, [term, kind]);
 
   const filtersActive =
-    (kind === "university" && (uniType !== "All" || !!region)) ||
+    (kind === "university" && (uniType !== "All" || !!region || !!category)) ||
     (kind === "scholarship" && schType !== "All");
 
   const useUniQuery = kind === "university";
@@ -179,6 +219,7 @@ const SearchPage = () => {
     search: debounced,
     type: uniType,
     region: region || undefined,
+    category: category || undefined,
     page,
     pageSize: PAGE_SIZE,
   });
@@ -193,8 +234,14 @@ const SearchPage = () => {
         id: u.id,
         slug: u.slug,
         title: u.name,
-        subtitle: [u.location, u.type].filter(Boolean).join(" · "),
-        meta: { top_programmes: u.top_programmes, website_url: u.website_url },
+        subtitle: [u.location, u.region, u.category].filter(Boolean).join(" · "),
+        meta: {
+          top_programmes: u.top_programmes,
+          website_url: u.website_url,
+          accreditation_status: u.accreditation_status,
+          last_verified_at: u.last_verified_at,
+          source_url: u.source_url,
+        },
         score: null,
       }));
     }
@@ -224,6 +271,7 @@ const SearchPage = () => {
   const clearFilters = () => {
     setUniType("All");
     setRegion("");
+    setCategory("");
     setSchType("All");
     setPage(0);
   };
@@ -319,6 +367,28 @@ const SearchPage = () => {
                         className={chip(region === r)}
                       >
                         {r}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <p className="text-[11px] uppercase tracking-wide text-muted-foreground mb-1.5">
+                    Institution type
+                  </p>
+                  <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
+                    <button onClick={() => setCategory("")} className={chip(category === "")}>
+                      All
+                    </button>
+                    {CATEGORIES.map((c) => (
+                      <button
+                        key={c}
+                        onClick={() => {
+                          setCategory(c);
+                          setPage(0);
+                        }}
+                        className={chip(category === c)}
+                      >
+                        {c}
                       </button>
                     ))}
                   </div>
