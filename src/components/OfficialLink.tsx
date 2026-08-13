@@ -1,0 +1,58 @@
+import { ExternalLink } from "lucide-react";
+import { toast } from "sonner";
+
+interface Props {
+  href?: string | null;
+  label: string;
+  /** Message shown when no verified link exists. */
+  fallbackNote?: string;
+  variant?: "primary" | "ghost";
+  className?: string;
+}
+
+/**
+ * External link that makes it clear the student is leaving GhanaPath,
+ * and never renders an unverified/missing URL as an active link.
+ */
+const OfficialLink = ({
+  href,
+  label,
+  fallbackNote = "This link may no longer be available. Please check the institution's official website.",
+  variant = "primary",
+  className = "",
+}: Props) => {
+  const base =
+    "inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-colors";
+  const styles =
+    variant === "primary"
+      ? "bg-primary text-primary-foreground hover:opacity-90"
+      : "bg-secondary text-muted-foreground hover:text-foreground";
+
+  if (!href) {
+    return (
+      <button
+        type="button"
+        onClick={() => toast.info(fallbackNote)}
+        className={`${base} bg-secondary text-muted-foreground/70 ${className}`}
+      >
+        <ExternalLink className="h-3.5 w-3.5" />
+        {label} (unverified)
+      </button>
+    );
+  }
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      title={`${label} — opens the official website in a new tab (you are leaving GhanaPath)`}
+      className={`${base} ${styles} ${className}`}
+    >
+      <ExternalLink className="h-3.5 w-3.5" />
+      {label}
+    </a>
+  );
+};
+
+export default OfficialLink;
