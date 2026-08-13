@@ -26,7 +26,7 @@ const more = [
 ];
 
 const linkClass =
-  "px-3 py-2 text-sm text-muted-foreground hover:text-primary transition-colors rounded-md hover:bg-secondary/50 whitespace-nowrap";
+  "px-2.5 py-1.5 text-sm text-muted-foreground hover:text-primary transition-colors rounded-md hover:bg-secondary/50 whitespace-nowrap";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -50,9 +50,9 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 gap-3">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-14 gap-3">
         <Link to="/" className="flex items-center gap-2 shrink-0">
-          <GraduationCap className="h-7 w-7 text-primary" />
+          <GraduationCap className="h-6 w-6 text-primary" />
           <span className="font-display font-bold text-lg sm:text-xl text-foreground">
             Ghana<span className="text-primary">Path</span>
           </span>
@@ -100,7 +100,7 @@ const Navbar = () => {
             to={user ? "/dashboard" : "/auth"}
             className="ml-2 px-4 py-2 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-opacity whitespace-nowrap"
           >
-            {user ? "My dashboard" : "Sign in"}
+            {user ? "Dashboard" : "Sign in"}
           </Link>
         </div>
 
