@@ -16,6 +16,7 @@ import ApplicationTracker from "./pages/ApplicationTracker.tsx";
 import Preferences from "./pages/Preferences.tsx";
 import ParentView from "./pages/ParentView.tsx";
 import Inspiration from "./pages/Inspiration.tsx";
+import OAuthConsent from "./pages/OAuthConsent.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const App = () => (
             <Route path="/applications" element={<ApplicationTracker />} />
             <Route path="/preferences" element={<Preferences />} />
             <Route path="/parent" element={<ParentView />} />
+            <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

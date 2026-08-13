@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import { GraduationCap, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,9 +9,15 @@ import { useEffect } from "react";
 
 type Mode = "signin" | "signup";
 
+// Only allow same-origin relative paths as a post-login redirect.
+const safeNext = (value: string | null) =>
+  value && value.startsWith("/") && !value.startsWith("//") ? value : null;
+
 const Auth = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [params] = useSearchParams();
+  const next = safeNext(params.get("next"));
   const [mode, setMode] = useState<Mode>("signin");
   const [accountType, setAccountType] = useState<"student" | "parent">("student");
   const [fullName, setFullName] = useState("");
@@ -21,8 +27,11 @@ const Auth = () => {
   const [emailSent, setEmailSent] = useState(false);
 
   useEffect(() => {
-    if (user) navigate("/dashboard", { replace: true });
-  }, [user, navigate]);
+    if (user) {
+      if (next) window.location.href = next;
+      else navigate("/dashboard", { replace: true });
+    }
+  }, [user, navigate, next]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +43,9 @@ const Auth = () => {
           email: email.trim(),
           password,
           options: {
-            emailRedirectTo: window.location.origin,
+            emailRedirectTo: next
+              ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
+              : window.location.origin,
             data: { full_name: fullName.trim(), account_type: accountType },
           },
         });
@@ -43,14 +54,16 @@ const Auth = () => {
           setEmailSent(true);
           return;
         }
-        navigate("/onboarding", { replace: true });
+        if (next) window.location.href = next;
+        else navigate("/onboarding", { replace: true });
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email: email.trim(),
           password,
         });
         if (error) throw error;
-        navigate("/dashboard", { replace: true });
+        if (next) window.location.href = next;
+        else navigate("/dashboard", { replace: true });
       }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Something went wrong");
@@ -62,7 +75,9 @@ const Auth = () => {
   const handleGoogle = async () => {
     setLoading(true);
     const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
+      redirect_uri: next
+        ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
+        : window.location.origin,
     });
     if (result.error) {
       toast.error("Google sign-in failed. Please try again.");
@@ -70,7 +85,8 @@ const Auth = () => {
       return;
     }
     if (result.redirected) return;
-    navigate("/dashboard", { replace: true });
+    if (next) window.location.href = next;
+    else navigate("/dashboard", { replace: true });
   };
 
   return (
