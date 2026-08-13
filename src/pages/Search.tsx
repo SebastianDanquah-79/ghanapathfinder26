@@ -1,11 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { Search as SearchIcon, Loader2, MapPin, GraduationCap, CalendarDays } from "lucide-react";
+import {
+  Search as SearchIcon,
+  Loader2,
+  MapPin,
+  GraduationCap,
+  CalendarDays,
+  SlidersHorizontal,
+  X,
+} from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SaveButton from "@/components/SaveButton";
 import OfficialLink from "@/components/OfficialLink";
-import { PAGE_SIZE, useCatalogueSearch, type SearchResult } from "@/hooks/useCatalogue";
+import {
+  PAGE_SIZE,
+  useCatalogueSearch,
+  useUniversities,
+  useScholarshipRecords,
+  type SearchResult,
+} from "@/hooks/useCatalogue";
 
 type Kind = "all" | "university" | "programme" | "scholarship";
 
@@ -15,6 +29,23 @@ const tabs: { key: Kind; label: string }[] = [
   { key: "programme", label: "Programmes" },
   { key: "scholarship", label: "Scholarships" },
 ];
+
+const REGIONS = [
+  "Greater Accra",
+  "Ashanti",
+  "Central",
+  "Eastern",
+  "Western",
+  "Volta",
+  "Northern",
+  "Bono",
+  "Bono East",
+  "Upper East",
+  "Upper West",
+];
+
+const UNI_TYPES = ["All", "Public", "Private"] as const;
+const SCHOLARSHIP_TYPES = ["All", "Government", "Private", "International", "University"];
 
 const suggestions = ["Computer Science", "University of Ghana", "Engineering", "Nursing", "Law", "Data Science"];
 
@@ -30,21 +61,19 @@ const ResultCard = ({ r }: { r: SearchResult }) => {
   const str = (k: string) => (typeof meta[k] === "string" ? (meta[k] as string) : null);
 
   return (
-    <div className="bg-glass rounded-xl p-5 flex flex-col gap-3">
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <span className="text-[10px] uppercase tracking-wide text-primary font-semibold">{r.kind}</span>
-          <h3 className="font-display font-semibold text-base text-foreground break-words">
-            {r.kind === "university" ? (
-              <Link to={`/university/${r.slug}`} className="hover:text-primary transition-colors">
-                {r.title}
-              </Link>
-            ) : (
-              r.title
-            )}
-          </h3>
-          {r.subtitle && <p className="text-xs text-muted-foreground mt-0.5">{r.subtitle}</p>}
-        </div>
+    <div className="bg-glass rounded-xl p-4 sm:p-5 flex flex-col gap-3">
+      <div className="min-w-0">
+        <span className="text-[10px] uppercase tracking-wide text-primary font-semibold">{r.kind}</span>
+        <h3 className="font-display font-semibold text-base text-foreground break-words">
+          {r.kind === "university" ? (
+            <Link to={`/university/${r.slug}`} className="hover:text-primary transition-colors">
+              {r.title}
+            </Link>
+          ) : (
+            r.title
+          )}
+        </h3>
+        {r.subtitle && <p className="text-xs text-muted-foreground mt-0.5 break-words">{r.subtitle}</p>}
       </div>
 
       {r.kind === "university" && (
@@ -95,9 +124,9 @@ const ResultCard = ({ r }: { r: SearchResult }) => {
           <>
             <Link
               to={`/university/${r.slug}`}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium bg-secondary text-muted-foreground hover:text-foreground"
+              className="inline-flex items-center gap-1.5 px-3 py-2 min-h-[40px] rounded-lg text-xs font-medium bg-secondary text-muted-foreground hover:text-foreground"
             >
-              <MapPin className="h-3.5 w-3.5" /> View profile
+              <MapPin className="h-3.5 w-3.5" /> Profile
             </Link>
             <OfficialLink href={str("website_url")} label="Official website" variant="ghost" />
           </>
@@ -123,6 +152,10 @@ const SearchPage = () => {
   const [debounced, setDebounced] = useState(term);
   const [kind, setKind] = useState<Kind>((params.get("kind") as Kind) ?? "all");
   const [page, setPage] = useState(0);
+  const [showFilters, setShowFilters] = useState(false);
+  const [uniType, setUniType] = useState<(typeof UNI_TYPES)[number]>("All");
+  const [region, setRegion] = useState<string>("");
+  const [schType, setSchType] = useState("All");
 
   useEffect(() => {
     const t = setTimeout(() => {
@@ -134,51 +167,192 @@ const SearchPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [term, kind]);
 
-  const { data, isLoading, isError, refetch, isFetching } = useCatalogueSearch(debounced, kind, page);
-  const results = data ?? [];
+  const filtersActive =
+    (kind === "university" && (uniType !== "All" || !!region)) ||
+    (kind === "scholarship" && schType !== "All");
+
+  const useUniQuery = kind === "university";
+  const useSchQuery = kind === "scholarship" && schType !== "All";
+
+  const catalogue = useCatalogueSearch(debounced, kind, page);
+  const unis = useUniversities({
+    search: debounced,
+    type: uniType,
+    region: region || undefined,
+    page,
+    pageSize: PAGE_SIZE,
+  });
+  const schs = useScholarshipRecords(debounced, schType);
+
+  const active = useUniQuery ? unis : useSchQuery ? schs : catalogue;
+
+  const results: SearchResult[] = useMemo(() => {
+    if (useUniQuery) {
+      return (unis.data?.rows ?? []).map((u) => ({
+        kind: "university" as const,
+        id: u.id,
+        slug: u.slug,
+        title: u.name,
+        subtitle: [u.location, u.type].filter(Boolean).join(" · "),
+        meta: { top_programmes: u.top_programmes, website_url: u.website_url },
+        score: null,
+      }));
+    }
+    if (useSchQuery) {
+      return (schs.data ?? []).map((s) => ({
+        kind: "scholarship" as const,
+        id: s.id,
+        slug: s.slug,
+        title: s.name,
+        subtitle: s.provider,
+        meta: {
+          eligibility: s.eligibility,
+          deadline_text: s.deadline_text,
+          application_url: s.application_url,
+        },
+        score: null,
+      }));
+    }
+    return catalogue.data ?? [];
+  }, [useUniQuery, useSchQuery, unis.data, schs.data, catalogue.data]);
+
+  const isLoading = active.isLoading;
+  const isError = active.isError;
+  const isFetching = active.isFetching;
+  const paginated = !useSchQuery;
+
+  const clearFilters = () => {
+    setUniType("All");
+    setRegion("");
+    setSchType("All");
+    setPage(0);
+  };
+
+  const chip = (on: boolean) =>
+    `whitespace-nowrap px-3 min-h-[40px] rounded-full text-xs font-medium transition-colors ${
+      on ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"
+    }`;
 
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <main className="pt-24 pb-20 px-4">
+      <main className="pt-20 sm:pt-24 pb-10 px-4">
         <div className="max-w-6xl xl:max-w-7xl mx-auto">
-          <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-2">
+          <h1 className="font-display text-xl sm:text-3xl font-bold text-foreground mb-1">
             Search GhanaPath
           </h1>
-          <p className="text-sm text-muted-foreground mb-6">
-            Universities, programmes and scholarships — searched live from the GhanaPath database.
+          <p className="text-xs sm:text-sm text-muted-foreground mb-4">
+            Universities, programmes and scholarships — live from the GhanaPath database.
           </p>
 
-          <div className="relative mb-4">
-            <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <input
-              autoFocus
-              type="search"
-              value={term}
-              onChange={(e) => setTerm(e.target.value)}
-              placeholder="Try “Computer Science”, “University of Ghana”, “Nursing”…"
-              className="w-full pl-10 pr-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-              aria-label="Search universities, programmes and scholarships"
-            />
-          </div>
+          <div className="sticky top-16 z-30 -mx-4 px-4 py-2 bg-background/95 backdrop-blur">
+            <div className="relative">
+              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <input
+                type="search"
+                value={term}
+                onChange={(e) => setTerm(e.target.value)}
+                placeholder="Search universities, programmes…"
+                className="w-full pl-10 pr-4 min-h-[48px] rounded-xl bg-secondary border border-border text-foreground text-base sm:text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                aria-label="Search universities, programmes and scholarships"
+              />
+            </div>
 
-          <div className="flex gap-2 overflow-x-auto pb-2 mb-6 -mx-1 px-1">
-            {tabs.map((t) => (
-              <button
-                key={t.key}
-                onClick={() => {
-                  setKind(t.key);
-                  setPage(0);
-                }}
-                className={`whitespace-nowrap px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                  kind === t.key
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-secondary text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {t.label}
-              </button>
-            ))}
+            <div className="flex gap-2 overflow-x-auto py-2 -mx-1 px-1 scrollbar-none">
+              {tabs.map((t) => (
+                <button
+                  key={t.key}
+                  onClick={() => {
+                    setKind(t.key);
+                    setPage(0);
+                  }}
+                  className={chip(kind === t.key)}
+                >
+                  {t.label}
+                </button>
+              ))}
+              {(kind === "university" || kind === "scholarship") && (
+                <button
+                  onClick={() => setShowFilters((v) => !v)}
+                  aria-expanded={showFilters}
+                  className={chip(showFilters || filtersActive)}
+                >
+                  <span className="inline-flex items-center gap-1.5">
+                    <SlidersHorizontal className="h-3.5 w-3.5" /> Filters
+                  </span>
+                </button>
+              )}
+            </div>
+
+            {showFilters && kind === "university" && (
+              <div className="bg-glass rounded-xl p-3 mb-2 space-y-3">
+                <div>
+                  <p className="text-[11px] uppercase tracking-wide text-muted-foreground mb-1.5">Type</p>
+                  <div className="flex gap-2">
+                    {UNI_TYPES.map((t) => (
+                      <button
+                        key={t}
+                        onClick={() => {
+                          setUniType(t);
+                          setPage(0);
+                        }}
+                        className={chip(uniType === t)}
+                      >
+                        {t}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <p className="text-[11px] uppercase tracking-wide text-muted-foreground mb-1.5">Region</p>
+                  <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
+                    <button onClick={() => setRegion("")} className={chip(region === "")}>
+                      All
+                    </button>
+                    {REGIONS.map((r) => (
+                      <button
+                        key={r}
+                        onClick={() => {
+                          setRegion(r);
+                          setPage(0);
+                        }}
+                        className={chip(region === r)}
+                      >
+                        {r}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                {filtersActive && (
+                  <button
+                    onClick={clearFilters}
+                    className="inline-flex items-center gap-1 text-xs text-primary font-medium min-h-[40px]"
+                  >
+                    <X className="h-3.5 w-3.5" /> Clear filters
+                  </button>
+                )}
+              </div>
+            )}
+
+            {showFilters && kind === "scholarship" && (
+              <div className="bg-glass rounded-xl p-3 mb-2">
+                <p className="text-[11px] uppercase tracking-wide text-muted-foreground mb-1.5">Funding type</p>
+                <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
+                  {SCHOLARSHIP_TYPES.map((t) => (
+                    <button
+                      key={t}
+                      onClick={() => {
+                        setSchType(t);
+                        setPage(0);
+                      }}
+                      className={chip(schType === t)}
+                    >
+                      {t}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {isLoading && (
@@ -193,8 +367,8 @@ const SearchPage = () => {
                 We couldn't complete your search. Please try again.
               </p>
               <button
-                onClick={() => refetch()}
-                className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium"
+                onClick={() => active.refetch()}
+                className="px-5 min-h-[48px] rounded-xl bg-primary text-primary-foreground text-sm font-medium"
               >
                 Retry
               </button>
@@ -202,7 +376,7 @@ const SearchPage = () => {
           )}
 
           {!isLoading && !isError && results.length === 0 && (
-            <div className="text-center py-16">
+            <div className="text-center py-14">
               <p className="text-foreground font-medium mb-2">{emptyCopy[kind]}</p>
               <p className="text-sm text-muted-foreground mb-4">Try one of these searches instead:</p>
               <div className="flex flex-wrap gap-2 justify-center">
@@ -210,7 +384,7 @@ const SearchPage = () => {
                   <button
                     key={s}
                     onClick={() => setTerm(s)}
-                    className="px-3 py-1.5 rounded-full bg-secondary text-xs text-muted-foreground hover:text-foreground"
+                    className="px-3 min-h-[40px] rounded-full bg-secondary text-xs text-muted-foreground"
                   >
                     {s}
                   </button>
@@ -221,33 +395,42 @@ const SearchPage = () => {
 
           {!isError && results.length > 0 && (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              <p className="text-xs text-muted-foreground mt-3 mb-3">
+                {useUniQuery && unis.data
+                  ? `${unis.data.count} universities`
+                  : `${results.length} result${results.length === 1 ? "" : "s"}`}
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
                 {results.map((r) => (
                   <ResultCard key={`${r.kind}-${r.id}`} r={r} />
                 ))}
               </div>
-              <div className="flex items-center justify-center gap-3 mt-8">
-                <button
-                  disabled={page === 0 || isFetching}
-                  onClick={() => setPage((p) => Math.max(0, p - 1))}
-                  className="px-4 py-2 rounded-lg bg-secondary text-sm text-muted-foreground disabled:opacity-40"
-                >
-                  Previous
-                </button>
-                <span className="text-xs text-muted-foreground">Page {page + 1}</span>
-                <button
-                  disabled={results.length < PAGE_SIZE || isFetching}
-                  onClick={() => setPage((p) => p + 1)}
-                  className="px-4 py-2 rounded-lg bg-secondary text-sm text-muted-foreground disabled:opacity-40"
-                >
-                  Next
-                </button>
-              </div>
+              {paginated && (
+                <div className="flex items-center justify-center gap-3 mt-8">
+                  <button
+                    disabled={page === 0 || isFetching}
+                    onClick={() => setPage((p) => Math.max(0, p - 1))}
+                    className="px-5 min-h-[48px] rounded-xl bg-secondary text-sm text-muted-foreground disabled:opacity-40"
+                  >
+                    Previous
+                  </button>
+                  <span className="text-xs text-muted-foreground">Page {page + 1}</span>
+                  <button
+                    disabled={results.length < PAGE_SIZE || isFetching}
+                    onClick={() => setPage((p) => p + 1)}
+                    className="px-5 min-h-[48px] rounded-xl bg-secondary text-sm text-muted-foreground disabled:opacity-40"
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
             </>
           )}
         </div>
       </main>
-      <Footer />
+      <div className="hidden sm:block">
+        <Footer />
+      </div>
     </div>
   );
 };
