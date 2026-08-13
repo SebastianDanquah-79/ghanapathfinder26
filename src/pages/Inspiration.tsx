@@ -2,13 +2,15 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowLeft, GraduationCap, Lightbulb, Quote } from "lucide-react";
 import { getDailyMessage, stories } from "@/lib/motivation";
+import Navbar from "@/components/Navbar";
 
 const Inspiration = () => {
   const daily = getDailyMessage();
 
   return (
-    <div className="min-h-screen bg-background px-4 sm:px-6 py-10">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-24 pb-16">
+      <Navbar />
+      <div className="max-w-7xl mx-auto">
         <header className="flex items-center justify-between gap-3 mb-8">
           <Link to="/" className="flex items-center gap-2">
             <GraduationCap className="h-6 w-6 text-primary" />

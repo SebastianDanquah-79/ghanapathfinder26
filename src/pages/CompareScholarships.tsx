@@ -5,6 +5,7 @@ import { ArrowLeft, Scale } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { scholarships, Scholarship } from "@/data/scholarships";
+import Navbar from "@/components/Navbar";
 
 const ROWS: { label: string; get: (s: Scholarship) => string }[] = [
   { label: "Provider", get: (s) => s.provider },
@@ -46,8 +47,9 @@ const CompareScholarships = () => {
     );
 
   return (
-    <div className="min-h-screen bg-background px-4 py-10">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-24 pb-16">
+      <Navbar />
+      <div className="max-w-7xl mx-auto">
         <Link to="/scholarships" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
           <ArrowLeft className="h-4 w-4" /> Back to scholarship hub
         </Link>

@@ -10,6 +10,7 @@ import MotivationPanel from "@/components/MotivationPanel";
 import ParentAccessCard from "@/components/ParentAccessCard";
 import { celebrate } from "@/lib/celebrate";
 import type { JourneyInput } from "@/lib/motivation";
+import Navbar from "@/components/Navbar";
 
 
 const Dashboard = () => {
@@ -145,7 +146,7 @@ const Dashboard = () => {
   const daysLeft = (d: string) =>
     Math.ceil((new Date(d).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
 
-  const card = "bg-glass rounded-xl p-5";
+  const card = "bg-glass rounded-xl p-5 lg:p-6";
   const input =
     "w-full px-3 py-2 rounded-lg bg-secondary border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50";
 
@@ -159,41 +160,35 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background px-4 sm:px-6 py-6 sm:py-10">
-      <div className="max-w-6xl xl:max-w-7xl mx-auto">
-        <header className="flex items-center justify-between mb-5">
-          <Link to="/" className="flex items-center gap-2">
-            <GraduationCap className="h-6 w-6 text-primary" />
-            <span className="font-display font-bold text-lg text-foreground">
-              Ghana<span className="text-primary">Path</span>
-            </span>
-          </Link>
+    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-24 pb-16">
+      <Navbar />
+      <div className="max-w-7xl mx-auto">
+        <header className="flex flex-wrap items-end justify-between gap-4 mb-8">
+          <div>
+            <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">
+              Welcome back{profile?.full_name ? `, ${profile.full_name.split(" ")[0]}` : ""} 👋
+            </h1>
+            <p className="text-sm lg:text-base text-muted-foreground mt-2 max-w-2xl">
+              Your WASSCE profile, matches, saved schools and deadlines.
+            </p>
+          </div>
           <button
             onClick={async () => {
               await signOut();
               navigate("/");
             }}
-            className="inline-flex items-center gap-1.5 min-h-[44px] px-2 text-sm text-muted-foreground hover:text-foreground"
+            className="inline-flex items-center gap-1.5 min-h-[44px] px-3 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors"
           >
             <LogOut className="h-4 w-4" /> Sign out
           </button>
         </header>
 
-        <div className="mb-5">
-          <h1 className="font-display text-xl sm:text-3xl font-bold text-foreground">
-            Welcome back{profile?.full_name ? `, ${profile.full_name.split(" ")[0]}` : ""} 👋
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Your WASSCE profile, matches, saved schools and deadlines.
-          </p>
-        </div>
-
         {/* WASSCE snapshot — the number students care about most */}
-        <div className="bg-glass rounded-xl p-4 sm:p-5 mb-4">
+        <div className="bg-glass rounded-xl p-5 lg:p-7 mb-5 lg:mb-6">
           <div className="flex items-center justify-between gap-4">
             <div>
               <p className="text-xs uppercase tracking-wide text-muted-foreground">WASSCE aggregate</p>
-              <p className="font-display text-3xl font-bold text-foreground leading-tight">
+              <p className="font-display text-3xl lg:text-5xl font-bold text-foreground leading-tight">
                 {aggregate ?? "—"}
               </p>
               <p className="text-xs text-muted-foreground mt-1">
@@ -210,20 +205,20 @@ const Dashboard = () => {
         </div>
 
         {/* Primary actions, thumb-reachable on mobile */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3 mb-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-4 mb-6 lg:mb-8">
           {quickActions.map(({ to, label, icon: Icon }) => (
             <Link
               key={label}
               to={to}
-              className="bg-glass rounded-xl p-3 min-h-[76px] flex flex-col justify-center gap-1.5 active:opacity-80"
+              className="bg-glass bg-glass-hover card-hover rounded-xl p-3 lg:p-4 min-h-[76px] lg:min-h-[92px] flex flex-col justify-center gap-1.5 lg:gap-2 active:opacity-80"
             >
-              <Icon className="h-4 w-4 text-primary" />
-              <span className="text-xs font-medium text-foreground leading-tight">{label}</span>
+              <Icon className="h-4 w-4 lg:h-5 lg:w-5 text-primary" />
+              <span className="text-xs lg:text-sm font-medium text-foreground leading-tight">{label}</span>
             </Link>
           ))}
         </div>
 
-        <div className="grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-5 lg:gap-6 md:grid-cols-2 xl:grid-cols-3">
           <div className={card}>
             <h2 className="font-display font-semibold text-foreground mb-3 flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-primary" /> Top matches
