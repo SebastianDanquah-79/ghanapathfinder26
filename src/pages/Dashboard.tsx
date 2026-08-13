@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { CalendarClock, GraduationCap, LogOut, Plus, Sparkles, Trash2, Users } from "lucide-react";
+import { Bookmark, CalendarClock, GraduationCap, LogOut, Plus, Sparkles, Trash2, Users } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
