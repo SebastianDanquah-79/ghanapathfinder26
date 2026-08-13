@@ -5,7 +5,7 @@ import { CalendarClock, GraduationCap, LogOut, Plus, Sparkles, Trash2, Users } f
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { universities } from "@/data/universities";
+import { useAdmissionMatches } from "@/hooks/useAdmissionMatch";
 import MotivationPanel from "@/components/MotivationPanel";
 import ParentAccessCard from "@/components/ParentAccessCard";
 import { celebrate } from "@/lib/celebrate";
@@ -80,14 +80,10 @@ const Dashboard = () => {
     ? graded.map((r) => GRADE_POINTS[r.grade]).sort((a, b) => a - b).slice(0, 6).reduce((a, b) => a + b, 0)
     : null;
 
-  const matchedProgrammes = aggregate
-    ? universities
-        .filter((u) => {
-          const max = Number(u.admissionAggregate.split("-")[1] ?? 30);
-          return aggregate <= max;
-        })
-        .slice(0, 6)
-    : [];
+  const { matches } = useAdmissionMatches();
+  const topMatches = matches
+    .filter((m) => m.confidence != null && m.category !== "Not Eligible")
+    .slice(0, 5);
 
   const savedBy = (type: string) => saved.filter((s) => s.item_type === type);
 
