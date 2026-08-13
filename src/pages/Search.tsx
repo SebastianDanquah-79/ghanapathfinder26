@@ -63,6 +63,10 @@ const CATEGORIES = [
   "Chartered Private Institution",
   "Private College of Education",
   "Private Polytechnic",
+  "Tutorial College",
+  "Distance Learning Institution",
+  "Registered Foreign Institution",
+  "Regional (West Africa) Institution",
 ];
 
 const UNI_TYPES = ["All", "Public", "Private"] as const;
@@ -105,12 +109,21 @@ const ResultCard = ({ r }: { r: SearchResult }) => {
       </div>
 
       {r.kind === "university" && str("accreditation_status") && (
-        <p className="text-[11px] text-muted-foreground">
-          <span className="px-2 py-0.5 rounded-full bg-secondary text-primary font-medium">
+        <p className="text-[11px] text-muted-foreground flex flex-wrap items-center gap-2">
+          <span
+            className={`px-2 py-0.5 rounded-full font-medium ${
+              str("accreditation_status")!.startsWith("Accredited")
+                ? "bg-secondary text-primary"
+                : "bg-destructive/10 text-destructive"
+            }`}
+          >
             {str("accreditation_status")}
           </span>
-          {str("last_verified_at") && (
-            <span className="ml-2">Verified {new Date(str("last_verified_at")!).toLocaleDateString()}</span>
+          {str("delivery_mode") && str("delivery_mode") !== "On campus" && (
+            <span className="px-2 py-0.5 rounded-full bg-secondary text-foreground">{str("delivery_mode")}</span>
+          )}
+          {str("accreditation_expiry_date") && (
+            <span>Valid to {new Date(str("accreditation_expiry_date")!).toLocaleDateString()}</span>
           )}
         </p>
       )}
@@ -239,6 +252,9 @@ const SearchPage = () => {
           top_programmes: u.top_programmes,
           website_url: u.website_url,
           accreditation_status: u.accreditation_status,
+          delivery_mode: u.delivery_mode,
+          accreditation_expiry_date: u.accreditation_expiry_date,
+          gtec_category: u.gtec_category,
           last_verified_at: u.last_verified_at,
           source_url: u.source_url,
         },
