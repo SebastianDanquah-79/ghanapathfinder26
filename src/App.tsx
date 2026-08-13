@@ -17,6 +17,9 @@ import Preferences from "./pages/Preferences.tsx";
 import ParentView from "./pages/ParentView.tsx";
 import Inspiration from "./pages/Inspiration.tsx";
 import OAuthConsent from "./pages/OAuthConsent.tsx";
+import SearchPage from "./pages/Search.tsx";
+import UniversityProfile from "./pages/UniversityProfile.tsx";
+import ResetPassword from "./pages/ResetPassword.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -31,6 +34,9 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="/university/:slug" element={<UniversityProfile />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/matcher" element={<Matcher />} />

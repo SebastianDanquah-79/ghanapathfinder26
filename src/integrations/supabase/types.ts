@@ -197,6 +197,77 @@ export type Database = {
         }
         Relationships: []
       }
+      programmes: {
+        Row: {
+          application_url: string | null
+          career_opportunities: string[]
+          created_at: string
+          degree_type: string
+          description: string | null
+          duration: string | null
+          entry_requirements: string | null
+          field: string | null
+          id: string
+          last_verified_at: string | null
+          name: string
+          programme_url: string | null
+          relevant_subjects: string[]
+          slug: string
+          university_id: string
+          updated_at: string
+          verified: boolean
+          wassce_requirements: string | null
+        }
+        Insert: {
+          application_url?: string | null
+          career_opportunities?: string[]
+          created_at?: string
+          degree_type?: string
+          description?: string | null
+          duration?: string | null
+          entry_requirements?: string | null
+          field?: string | null
+          id?: string
+          last_verified_at?: string | null
+          name: string
+          programme_url?: string | null
+          relevant_subjects?: string[]
+          slug: string
+          university_id: string
+          updated_at?: string
+          verified?: boolean
+          wassce_requirements?: string | null
+        }
+        Update: {
+          application_url?: string | null
+          career_opportunities?: string[]
+          created_at?: string
+          degree_type?: string
+          description?: string | null
+          duration?: string | null
+          entry_requirements?: string | null
+          field?: string | null
+          id?: string
+          last_verified_at?: string | null
+          name?: string
+          programme_url?: string | null
+          relevant_subjects?: string[]
+          slug?: string
+          university_id?: string
+          updated_at?: string
+          verified?: boolean
+          wassce_requirements?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programmes_university_id_fkey"
+            columns: ["university_id"]
+            isOneToOne: false
+            referencedRelation: "universities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       saved_items: {
         Row: {
           created_at: string
@@ -275,6 +346,165 @@ export type Database = {
         }
         Relationships: []
       }
+      scholarships: {
+        Row: {
+          academic_requirements: string | null
+          application_url: string | null
+          coverage: string | null
+          created_at: string
+          deadline_date: string | null
+          deadline_text: string | null
+          description: string | null
+          eligibility: string | null
+          fields: string[]
+          funding_type: string | null
+          how_to_apply: string | null
+          id: string
+          last_verified_at: string | null
+          location: string | null
+          name: string
+          nationality_requirement: string | null
+          provider: string | null
+          slug: string
+          study_level: string | null
+          type: string
+          updated_at: string
+          verified: boolean
+          website_url: string | null
+        }
+        Insert: {
+          academic_requirements?: string | null
+          application_url?: string | null
+          coverage?: string | null
+          created_at?: string
+          deadline_date?: string | null
+          deadline_text?: string | null
+          description?: string | null
+          eligibility?: string | null
+          fields?: string[]
+          funding_type?: string | null
+          how_to_apply?: string | null
+          id?: string
+          last_verified_at?: string | null
+          location?: string | null
+          name: string
+          nationality_requirement?: string | null
+          provider?: string | null
+          slug: string
+          study_level?: string | null
+          type?: string
+          updated_at?: string
+          verified?: boolean
+          website_url?: string | null
+        }
+        Update: {
+          academic_requirements?: string | null
+          application_url?: string | null
+          coverage?: string | null
+          created_at?: string
+          deadline_date?: string | null
+          deadline_text?: string | null
+          description?: string | null
+          eligibility?: string | null
+          fields?: string[]
+          funding_type?: string | null
+          how_to_apply?: string | null
+          id?: string
+          last_verified_at?: string | null
+          location?: string | null
+          name?: string
+          nationality_requirement?: string | null
+          provider?: string | null
+          slug?: string
+          study_level?: string | null
+          type?: string
+          updated_at?: string
+          verified?: boolean
+          website_url?: string | null
+        }
+        Relationships: []
+      }
+      universities: {
+        Row: {
+          admission_aggregate: string | null
+          admission_info: string | null
+          admissions_url: string | null
+          campus_vibe: string | null
+          category: string
+          country: string
+          created_at: string
+          description: string | null
+          financial_aid_url: string | null
+          id: string
+          last_verified_at: string | null
+          location: string | null
+          logo_url: string | null
+          name: string
+          region: string | null
+          scholarship_info: string | null
+          short_name: string | null
+          slug: string
+          top_programmes: string[]
+          tuition_range: string | null
+          type: string
+          updated_at: string
+          verified: boolean
+          website_url: string | null
+        }
+        Insert: {
+          admission_aggregate?: string | null
+          admission_info?: string | null
+          admissions_url?: string | null
+          campus_vibe?: string | null
+          category?: string
+          country?: string
+          created_at?: string
+          description?: string | null
+          financial_aid_url?: string | null
+          id?: string
+          last_verified_at?: string | null
+          location?: string | null
+          logo_url?: string | null
+          name: string
+          region?: string | null
+          scholarship_info?: string | null
+          short_name?: string | null
+          slug: string
+          top_programmes?: string[]
+          tuition_range?: string | null
+          type?: string
+          updated_at?: string
+          verified?: boolean
+          website_url?: string | null
+        }
+        Update: {
+          admission_aggregate?: string | null
+          admission_info?: string | null
+          admissions_url?: string | null
+          campus_vibe?: string | null
+          category?: string
+          country?: string
+          created_at?: string
+          description?: string | null
+          financial_aid_url?: string | null
+          id?: string
+          last_verified_at?: string | null
+          location?: string | null
+          logo_url?: string | null
+          name?: string
+          region?: string | null
+          scholarship_info?: string | null
+          short_name?: string | null
+          slug?: string
+          top_programmes?: string[]
+          tuition_range?: string | null
+          type?: string
+          updated_at?: string
+          verified?: boolean
+          website_url?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -340,6 +570,20 @@ export type Database = {
         Args: { _parent_id: string; _student_id: string }
         Returns: boolean
       }
+      search_catalogue: {
+        Args: { _kind?: string; _limit?: number; _offset?: number; _q: string }
+        Returns: {
+          id: string
+          kind: string
+          meta: Json
+          score: number
+          slug: string
+          subtitle: string
+          title: string
+        }[]
+      }
+      show_limit: { Args: never; Returns: number }
+      show_trgm: { Args: { "": string }; Returns: string[] }
     }
     Enums: {
       app_role: "student" | "parent" | "admin"

@@ -72,7 +72,22 @@ const Auth = () => {
     }
   };
 
+  const handleForgotPassword = async () => {
+    if (!email.trim()) {
+      toast.error("Enter your email address first, then tap “Forgot password”.");
+      return;
+    }
+    setLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setLoading(false);
+    if (error) toast.error(error.message);
+    else toast.success("Password reset link sent — check your email.");
+  };
+
   const handleGoogle = async () => {
+
     setLoading(true);
     const result = await lovable.auth.signInWithOAuth("google", {
       redirect_uri: next
@@ -188,6 +203,15 @@ const Auth = () => {
                 {mode === "signin" ? "Sign in" : "Create account"}
               </button>
             </form>
+
+            {mode === "signin" && (
+              <p className="text-center text-sm mt-4">
+                <button onClick={handleForgotPassword} className="text-muted-foreground hover:text-primary">
+                  Forgot password?
+                </button>
+              </p>
+            )}
+
 
             <p className="text-center text-sm text-muted-foreground mt-5">
               {mode === "signin" ? "New to GhanaPath?" : "Already have an account?"}{" "}

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 
 const links = [
+  { label: "Search", href: "/search" },
   { label: "Recommender", href: "#recommender" },
   { label: "Universities", href: "#universities" },
   { label: "Scholarships", href: "#scholarships" },
