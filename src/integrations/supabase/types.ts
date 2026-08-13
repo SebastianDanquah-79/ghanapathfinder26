@@ -197,6 +197,81 @@ export type Database = {
         }
         Relationships: []
       }
+      programme_cutoffs: {
+        Row: {
+          academic_year: string
+          admission_notes: string | null
+          applicant_category: string
+          created_at: string
+          cut_off_aggregate: number | null
+          id: string
+          last_verified_at: string | null
+          minimum_grades: Json
+          official_source_url: string | null
+          programme_id: string | null
+          programme_name: string
+          source_name: string | null
+          source_type: string
+          subject_requirements: string | null
+          university_id: string
+          updated_at: string
+          verification_status: string
+        }
+        Insert: {
+          academic_year: string
+          admission_notes?: string | null
+          applicant_category?: string
+          created_at?: string
+          cut_off_aggregate?: number | null
+          id?: string
+          last_verified_at?: string | null
+          minimum_grades?: Json
+          official_source_url?: string | null
+          programme_id?: string | null
+          programme_name: string
+          source_name?: string | null
+          source_type?: string
+          subject_requirements?: string | null
+          university_id: string
+          updated_at?: string
+          verification_status?: string
+        }
+        Update: {
+          academic_year?: string
+          admission_notes?: string | null
+          applicant_category?: string
+          created_at?: string
+          cut_off_aggregate?: number | null
+          id?: string
+          last_verified_at?: string | null
+          minimum_grades?: Json
+          official_source_url?: string | null
+          programme_id?: string | null
+          programme_name?: string
+          source_name?: string | null
+          source_type?: string
+          subject_requirements?: string | null
+          university_id?: string
+          updated_at?: string
+          verification_status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programme_cutoffs_programme_id_fkey"
+            columns: ["programme_id"]
+            isOneToOne: false
+            referencedRelation: "programmes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "programme_cutoffs_university_id_fkey"
+            columns: ["university_id"]
+            isOneToOne: false
+            referencedRelation: "universities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       programmes: {
         Row: {
           application_url: string | null
