@@ -204,6 +204,15 @@ const Auth = () => {
               </button>
             </form>
 
+            {mode === "signin" && (
+              <p className="text-center text-sm mt-4">
+                <button onClick={handleForgotPassword} className="text-muted-foreground hover:text-primary">
+                  Forgot password?
+                </button>
+              </p>
+            )}
+
+
             <p className="text-center text-sm text-muted-foreground mt-5">
               {mode === "signin" ? "New to GhanaPath?" : "Already have an account?"}{" "}
               <button
