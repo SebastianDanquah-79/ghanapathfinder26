@@ -1,49 +1,49 @@
-import { useState, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Sparkles, Loader2 } from "lucide-react";
+import { Sparkles, Loader2, ExternalLink } from "lucide-react";
+import { Link } from "react-router-dom";
 import SectionHeader from "./SectionHeader";
 import ShareButtons from "./ShareButtons";
+import { useCutoffs } from "@/hooks/useAdmissionMatch";
+import {
+  CATEGORY_STYLES,
+  evaluateAggregate,
+  formatVerifiedDate,
+} from "@/lib/admissionEngine";
 
-const majors = ["Computer Science", "Medicine", "Engineering", "Business", "Law", "Education", "Nursing", "Pharmacy", "Architecture", "Agriculture", "Arts & Humanities", "Economics", "Accounting", "Communication Studies"];
-const regions = ["Accra", "Kumasi", "Cape Coast", "Sunyani", "Tamale", "Ho", "Wa", "Any Region"];
-const preferences = ["Public Only", "Private Only", "No Preference"];
+const preferences = ["No Preference", "Public Only", "Private Only"] as const;
 
 const CollegeRecommender = () => {
-  const [form, setForm] = useState({ name: "", major: "", aggregate: "", career: "", region: "", preference: "" });
-  const [result, setResult] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [showShare, setShowShare] = useState(false);
+  const [form, setForm] = useState({ name: "", major: "", aggregate: "", preference: "No Preference" });
+  const [submitted, setSubmitted] = useState<typeof form | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setResult("");
-    setShowShare(false);
+  const { data: cutoffs = [], isLoading } = useCutoffs(submitted?.major ?? "");
 
-    // Simulated AI response with typewriter effect
-    const mockResult = generateMockRecommendation(form);
-    let i = 0;
-    const interval = setInterval(() => {
-      if (i < mockResult.length) {
-        setResult((prev) => prev + mockResult[i]);
-        i++;
-      } else {
-        clearInterval(interval);
-        setLoading(false);
-        setShowShare(true);
-      }
-    }, 8);
+  const ranked = useMemo(() => {
+    if (!submitted) return [];
+    const aggregate = Number(submitted.aggregate);
+    if (!Number.isFinite(aggregate)) return [];
+    return cutoffs
+      .map((c) => ({ cutoff: c, match: evaluateAggregate(c.cut_off_aggregate, aggregate) }))
+      .filter((r) => r.match.margin != null)
+      .sort((a, b) => (b.match.margin ?? 0) - (a.match.margin ?? 0))
+      .slice(0, 6);
+  }, [cutoffs, submitted]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted({ ...form });
   };
 
   return (
     <section id="recommender" className="py-20 lg:py-28 px-4">
       <div className="max-w-4xl mx-auto">
         <SectionHeader
-          badge="AI-Powered"
-          title="Find Your Perfect"
+          badge="Verified cut-offs"
+          title="Find Your Realistic"
           highlight="University Match"
-          description="Tell us about yourself and our AI will recommend the top 3 universities in Ghana that fit you best."
+          description="We rank programmes against official published cut-off aggregates only. Lower aggregates are stronger, and nothing here is invented."
         />
 
         <motion.form
@@ -55,29 +55,32 @@ const CollegeRecommender = () => {
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">Your Name</label>
+              <label className="block text-sm font-medium text-foreground mb-1.5">Your name</label>
               <input
                 required
                 value={form.name}
+                maxLength={80}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 placeholder="Kwame Asante"
                 className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">Intended Major</label>
-              <select
-                required
+              <label className="block text-sm font-medium text-foreground mb-1.5">
+                Programme or subject area
+              </label>
+              <input
                 value={form.major}
+                maxLength={60}
                 onChange={(e) => setForm({ ...form, major: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-              >
-                <option value="">Select major</option>
-                {majors.map((m) => <option key={m} value={m}>{m}</option>)}
-              </select>
+                placeholder="e.g. Computer Science, Nursing"
+                className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">WASSCE Aggregate</label>
+              <label className="block text-sm font-medium text-foreground mb-1.5">
+                WASSCE aggregate (lower is better)
+              </label>
               <input
                 required
                 type="number"
@@ -90,73 +93,116 @@ const CollegeRecommender = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">Career Goal</label>
-              <input
-                required
-                value={form.career}
-                onChange={(e) => setForm({ ...form, career: e.target.value })}
-                placeholder="Software Engineer, Doctor..."
-                className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">Preferred Region</label>
+              <label className="block text-sm font-medium text-foreground mb-1.5">
+                University preference
+              </label>
               <select
-                required
-                value={form.region}
-                onChange={(e) => setForm({ ...form, region: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-              >
-                <option value="">Select region</option>
-                {regions.map((r) => <option key={r} value={r}>{r}</option>)}
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">University Preference</label>
-              <select
-                required
                 value={form.preference}
                 onChange={(e) => setForm({ ...form, preference: e.target.value })}
                 className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
               >
-                <option value="">Select preference</option>
                 {preferences.map((p) => <option key={p} value={p}>{p}</option>)}
               </select>
             </div>
           </div>
 
+          <p className="text-xs text-muted-foreground">
+            Your career goal and interests do not change these results — only your grades against
+            published cut-offs do.
+          </p>
+
           <button
             type="submit"
-            disabled={loading}
+            disabled={isLoading && !!submitted}
             className="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-lg bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 glow-gold"
           >
-            {loading ? (
-              <><Loader2 className="h-5 w-5 animate-spin" /> Analyzing...</>
+            {isLoading && submitted ? (
+              <><Loader2 className="h-5 w-5 animate-spin" /> Checking published cut-offs...</>
             ) : (
               <><Sparkles className="h-5 w-5" /> Get My Recommendations</>
             )}
           </button>
         </motion.form>
 
-        {result && (
+        {submitted && !isLoading && (
           <motion.div
             ref={resultRef}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             className="bg-glass rounded-2xl p-6 sm:p-8"
           >
-            <div className="flex items-center gap-2 mb-4">
-              <Sparkles className="h-5 w-5 text-primary" />
-              <h3 className="font-display font-semibold text-lg text-foreground">
-                Recommendations for {form.name}
-              </h3>
-            </div>
-            <div className={`text-sm text-muted-foreground leading-relaxed whitespace-pre-line ${loading ? "typewriter-cursor" : ""}`}>
-              {result}
-            </div>
-            {showShare && (
+            <h3 className="font-display font-semibold text-lg text-foreground mb-1">
+              Matches for {submitted.name}
+            </h3>
+            <p className="text-xs text-muted-foreground mb-5">
+              Aggregate {submitted.aggregate} · ranked purely on academic fit against verified cut-offs.
+            </p>
+
+            {ranked.length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                We do not hold a verified cut-off for that programme yet, so we will not guess.
+                Try a broader subject area, or browse the{" "}
+                <Link to="/admission-match" className="text-primary font-medium">
+                  Admission Match tool
+                </Link>{" "}
+                to see every programme we have official data for.
+              </p>
+            ) : (
+              <div className="space-y-3">
+                {ranked.map(({ cutoff, match }) => (
+                  <div key={cutoff.id} className="rounded-xl border border-border bg-background/40 p-4">
+                    <div className="flex flex-wrap items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="font-medium text-foreground text-sm">{cutoff.programme_name}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {cutoff.universities?.name ?? "University"} · {cutoff.academic_year} ·{" "}
+                          {cutoff.applicant_category}
+                        </p>
+                      </div>
+                      <span
+                        className={`shrink-0 px-2.5 py-1 rounded-full border text-xs font-medium ${CATEGORY_STYLES[match.category]}`}
+                      >
+                        {match.category}
+                        {match.confidence != null ? ` · ${match.confidence}%` : ""}
+                      </span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">{match.explanation}</p>
+                    {cutoff.subject_requirements && (
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Subject requirement: {cutoff.subject_requirements}
+                      </p>
+                    )}
+                    <div className="flex flex-wrap items-center gap-3 mt-2">
+                      <span className="text-[11px] text-muted-foreground">
+                        Verified {formatVerifiedDate(cutoff.last_verified_at)}
+                      </span>
+                      {cutoff.official_source_url && (
+                        <a
+                          href={cutoff.official_source_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-[11px] text-primary"
+                        >
+                          {cutoff.source_name ?? "Official source"}
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <p className="text-xs text-muted-foreground mt-5">
+              Cut-offs shift each year with applicant numbers. For a full check that also enforces
+              subject requirements, sign in and use the{" "}
+              <Link to="/admission-match" className="text-primary font-medium">Admission Match</Link>{" "}
+              tool.
+            </p>
+
+            {ranked.length > 0 && (
               <div className="mt-6 pt-6 border-t border-border">
-                <ShareButtons studentName={form.name} resultRef={resultRef} />
+                <ShareButtons studentName={submitted.name} resultRef={resultRef} />
               </div>
             )}
           </motion.div>
@@ -165,52 +211,5 @@ const CollegeRecommender = () => {
     </section>
   );
 };
-
-function generateMockRecommendation(form: { name: string; major: string; aggregate: string; career: string; region: string; preference: string }) {
-  return `🎓 Top 3 University Matches for ${form.name}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-🥇 #1 — University of Ghana (UG), Legon
-📍 Accra | Public University
-📚 Program: BSc ${form.major}
-📊 Required Aggregate: 6-12 | Your Aggregate: ${form.aggregate}
-💰 Tuition: GHS 1,500 - 5,000/year
-🎯 For a real confidence score, run the Admission Match tool — it compares your grades to UG and KNUST's published cut-offs.
-
-Why it fits you: UG's ${form.major} program is one of the most respected in West Africa. With your aggregate of ${form.aggregate} and career goal of becoming a ${form.career}, UG offers strong industry connections, research opportunities, and an alumni network that spans the globe. The campus in Legon is vibrant with countless student organizations to build your network.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-🥈 #2 — KNUST, Kumasi
-📍 Kumasi | Public University
-📚 Program: BSc ${form.major}
-📊 Required Aggregate: 6-14 | Your Aggregate: ${form.aggregate}
-💰 Tuition: GHS 1,500 - 4,500/year
-🎯 Confidence is only shown where an official cut-off exists — check the Admission Match tool.
-
-Why it fits you: KNUST is Ghana's premier STEM university. Their ${form.major} department has state-of-the-art facilities and strong ties to industry. The Kumasi tech ecosystem is growing rapidly, giving you real-world experience even before graduation. Perfect for someone aiming to become a ${form.career}.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-🥉 #3 — Ashesi University
-📍 Berekuso, Greater Accra | Private University
-📚 Program: BSc ${form.major}
-📊 Required Aggregate: 6-12 | Your Aggregate: ${form.aggregate}
-💰 Tuition: GHS 25,000 - 45,000/year (scholarships available)
-🎯 Confidence is only shown where an official cut-off exists — check the Admission Match tool.
-
-Why it fits you: Ashesi is Africa's #1 liberal arts university with a focus on ethical leadership and innovation. Their ${form.major} program combines technical skills with critical thinking. With generous financial aid covering up to 100% of tuition, it's more accessible than you think. The entrepreneurial culture makes it ideal if you want to eventually build something as a ${form.career}.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-💡 Pro Tips:
-• Apply early — deadlines are usually December-February
-• Prepare for entrance exams at UG and KNUST
-• Check scholarship portals monthly
-• Visit campuses if possible before making your final decision
-
-Your future in Ghana is bright, ${form.name}! 🇬🇭✨`;
-}
 
 export default CollegeRecommender;

@@ -47,16 +47,20 @@ export const useToggleSaved = () => {
         if (error) throw error;
         return "removed" as const;
       }
-      const { error } = await supabase.from("saved_items").insert({
-        user_id: user.id,
-        item_type: item.item_type,
-        item_key: item.item_key,
-        title: item.title,
-        subtitle: item.subtitle ?? null,
-        metadata: (item.metadata ?? {}) as never,
-      });
+      const { error } = await supabase.from("saved_items").upsert(
+        {
+          user_id: user.id,
+          item_type: item.item_type,
+          item_key: item.item_key,
+          title: item.title,
+          subtitle: item.subtitle ?? null,
+          metadata: (item.metadata ?? {}) as never,
+        },
+        { onConflict: "user_id,item_type,item_key" },
+      );
       if (error) throw error;
       return "saved" as const;
+
     },
     onSuccess: (result) => {
       qc.invalidateQueries({ queryKey: ["saved_items"] });

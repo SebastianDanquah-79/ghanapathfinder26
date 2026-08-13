@@ -54,24 +54,27 @@ const Onboarding = () => {
     if (!user) return;
     setSaving(true);
     try {
-      const { error } = await supabase
-        .from("profiles")
-        .update({
+      const { error } = await supabase.from("profiles").upsert(
+        {
+          id: user.id,
+          email: user.email ?? null,
           full_name: fullName.trim() || null,
           school: school.trim() || null,
           region: region || null,
           target_career: career.trim() || null,
           interests,
           onboarded: true,
-        })
-        .eq("id", user.id);
+        },
+        { onConflict: "id" },
+      );
       if (error) throw error;
 
       const rows = results
         .filter((r) => r.subject.trim() && r.grade)
         .map((r) => ({ user_id: user.id, subject: r.subject.trim(), grade: r.grade }));
 
-      await supabase.from("wassce_results").delete().eq("user_id", user.id);
+      const { error: dErr } = await supabase.from("wassce_results").delete().eq("user_id", user.id);
+      if (dErr) throw dErr;
       if (rows.length) {
         const { error: rErr } = await supabase.from("wassce_results").insert(rows);
         if (rErr) throw rErr;
@@ -80,11 +83,14 @@ const Onboarding = () => {
       toast.success("Profile saved");
       navigate("/dashboard", { replace: true });
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Could not save profile");
+      const message = err instanceof Error ? err.message : "Could not save profile";
+      console.error("Profile save failed", err);
+      toast.error(`Could not save profile: ${message}`);
     } finally {
       setSaving(false);
     }
   };
+
 
   const inputClass =
     "w-full px-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50";

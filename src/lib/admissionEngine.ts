@@ -322,3 +322,82 @@ export const formatVerifiedDate = (iso: string | null) =>
   iso
     ? new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })
     : "Not yet verified";
+
+/**
+ * Score a raw, self-reported aggregate against one cut-off record.
+ * Used by the landing-page recommender, where we have an aggregate but not the
+ * subject-by-subject breakdown. Academic fit only — career goals, interests and
+ * region never change the score, they only filter the list.
+ */
+export interface AggregateMatch {
+  category: MatchCategory;
+  confidence: number | null;
+  margin: number | null;
+  explanation: string;
+}
+
+export function evaluateAggregate(
+  cutOffAggregate: number | null,
+  aggregate: number,
+): AggregateMatch {
+  if (cutOffAggregate == null)
+    return {
+      category: "Insufficient Data",
+      confidence: null,
+      margin: null,
+      explanation: "No verified cut-off is published for this programme, so we will not guess a score.",
+    };
+
+  if (aggregate > 36)
+    return {
+      category: "Not Eligible",
+      confidence: 0,
+      margin: cutOffAggregate - aggregate,
+      explanation: "An aggregate above 36 is below the minimum for degree admission.",
+    };
+
+  const margin = cutOffAggregate - aggregate;
+  const inside = `Your aggregate of ${aggregate} against a published cut-off of ${cutOffAggregate}`;
+
+  if (margin >= 4)
+    return {
+      category: "Excellent Match",
+      confidence: Math.min(92, 84 + margin),
+      margin,
+      explanation: `${inside} — ${margin} points inside it.`,
+    };
+  if (margin >= 2)
+    return {
+      category: "Strong Match",
+      confidence: 72 + margin * 3,
+      margin,
+      explanation: `${inside} — comfortably inside it.`,
+    };
+  if (margin >= 0)
+    return {
+      category: "Competitive",
+      confidence: 52 + margin * 6,
+      margin,
+      explanation: `${inside} — you are on the line, and cut-offs move each year.`,
+    };
+  if (margin >= -2)
+    return {
+      category: "Reach",
+      confidence: Math.max(1, 30 + margin * 8),
+      margin,
+      explanation: `${inside} — ${Math.abs(margin)} point(s) outside it.`,
+    };
+  if (margin >= -6)
+    return {
+      category: "Low Match",
+      confidence: Math.max(5, 14 + margin),
+      margin,
+      explanation: `${inside} — ${Math.abs(margin)} points outside it.`,
+    };
+  return {
+    category: "Not Eligible",
+    confidence: 0,
+    margin,
+    explanation: `${inside} — far outside it for this admission year.`,
+  };
+}
