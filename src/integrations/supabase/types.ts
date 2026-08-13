@@ -47,6 +47,92 @@ export type Database = {
         }
         Relationships: []
       }
+      campuses: {
+        Row: {
+          accreditation_status: string
+          campus_name: string
+          created_at: string
+          id: string
+          institution_id: string
+          last_verified_at: string | null
+          location: string | null
+          region: string | null
+          source_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          accreditation_status?: string
+          campus_name: string
+          created_at?: string
+          id?: string
+          institution_id: string
+          last_verified_at?: string | null
+          location?: string | null
+          region?: string | null
+          source_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          accreditation_status?: string
+          campus_name?: string
+          created_at?: string
+          id?: string
+          institution_id?: string
+          last_verified_at?: string | null
+          location?: string | null
+          region?: string | null
+          source_url?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campuses_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "universities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      data_sources: {
+        Row: {
+          created_at: string
+          id: string
+          record_id: string
+          record_type: string
+          source_name: string | null
+          source_type: string
+          source_url: string
+          updated_at: string
+          verification_status: string
+          verified_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          record_id: string
+          record_type: string
+          source_name?: string | null
+          source_type?: string
+          source_url: string
+          updated_at?: string
+          verification_status?: string
+          verified_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          record_id?: string
+          record_type?: string
+          source_name?: string | null
+          source_type?: string
+          source_url?: string
+          updated_at?: string
+          verification_status?: string
+          verified_at?: string
+        }
+        Relationships: []
+      }
       deadlines: {
         Row: {
           category: string | null
@@ -79,6 +165,38 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      faculties: {
+        Row: {
+          created_at: string
+          id: string
+          institution_id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          institution_id: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          institution_id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "faculties_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "universities"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       match_preferences: {
         Row: {
@@ -272,8 +390,53 @@ export type Database = {
           },
         ]
       }
+      programme_requirements: {
+        Row: {
+          additional_requirement: string | null
+          aggregate_requirement: number | null
+          created_at: string
+          id: string
+          minimum_grade: string | null
+          programme_id: string
+          required_subject: string
+          source_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          additional_requirement?: string | null
+          aggregate_requirement?: number | null
+          created_at?: string
+          id?: string
+          minimum_grade?: string | null
+          programme_id: string
+          required_subject: string
+          source_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          additional_requirement?: string | null
+          aggregate_requirement?: number | null
+          created_at?: string
+          id?: string
+          minimum_grade?: string | null
+          programme_id?: string
+          required_subject?: string
+          source_url?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programme_requirements_programme_id_fkey"
+            columns: ["programme_id"]
+            isOneToOne: false
+            referencedRelation: "programmes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       programmes: {
         Row: {
+          academic_year: string | null
           application_url: string | null
           career_opportunities: string[]
           created_at: string
@@ -281,19 +444,24 @@ export type Database = {
           description: string | null
           duration: string | null
           entry_requirements: string | null
+          faculty_id: string | null
           field: string | null
           id: string
           last_verified_at: string | null
           name: string
           programme_url: string | null
+          qualification: string | null
           relevant_subjects: string[]
           slug: string
+          source_url: string | null
           university_id: string
           updated_at: string
+          verification_status: string
           verified: boolean
           wassce_requirements: string | null
         }
         Insert: {
+          academic_year?: string | null
           application_url?: string | null
           career_opportunities?: string[]
           created_at?: string
@@ -301,19 +469,24 @@ export type Database = {
           description?: string | null
           duration?: string | null
           entry_requirements?: string | null
+          faculty_id?: string | null
           field?: string | null
           id?: string
           last_verified_at?: string | null
           name: string
           programme_url?: string | null
+          qualification?: string | null
           relevant_subjects?: string[]
           slug: string
+          source_url?: string | null
           university_id: string
           updated_at?: string
+          verification_status?: string
           verified?: boolean
           wassce_requirements?: string | null
         }
         Update: {
+          academic_year?: string | null
           application_url?: string | null
           career_opportunities?: string[]
           created_at?: string
@@ -321,19 +494,30 @@ export type Database = {
           description?: string | null
           duration?: string | null
           entry_requirements?: string | null
+          faculty_id?: string | null
           field?: string | null
           id?: string
           last_verified_at?: string | null
           name?: string
           programme_url?: string | null
+          qualification?: string | null
           relevant_subjects?: string[]
           slug?: string
+          source_url?: string | null
           university_id?: string
           updated_at?: string
+          verification_status?: string
           verified?: boolean
           wassce_requirements?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "programmes_faculty_id_fkey"
+            columns: ["faculty_id"]
+            isOneToOne: false
+            referencedRelation: "faculties"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "programmes_university_id_fkey"
             columns: ["university_id"]
@@ -501,9 +685,11 @@ export type Database = {
       }
       universities: {
         Row: {
+          accreditation_status: string
           admission_aggregate: string | null
           admission_info: string | null
           admissions_url: string | null
+          aliases: string[]
           campus_vibe: string | null
           category: string
           country: string
@@ -515,21 +701,27 @@ export type Database = {
           location: string | null
           logo_url: string | null
           name: string
+          ownership: string | null
           region: string | null
           scholarship_info: string | null
           short_name: string | null
           slug: string
+          source_type: string
+          source_url: string | null
           top_programmes: string[]
           tuition_range: string | null
           type: string
           updated_at: string
+          verification_status: string
           verified: boolean
           website_url: string | null
         }
         Insert: {
+          accreditation_status?: string
           admission_aggregate?: string | null
           admission_info?: string | null
           admissions_url?: string | null
+          aliases?: string[]
           campus_vibe?: string | null
           category?: string
           country?: string
@@ -541,21 +733,27 @@ export type Database = {
           location?: string | null
           logo_url?: string | null
           name: string
+          ownership?: string | null
           region?: string | null
           scholarship_info?: string | null
           short_name?: string | null
           slug: string
+          source_type?: string
+          source_url?: string | null
           top_programmes?: string[]
           tuition_range?: string | null
           type?: string
           updated_at?: string
+          verification_status?: string
           verified?: boolean
           website_url?: string | null
         }
         Update: {
+          accreditation_status?: string
           admission_aggregate?: string | null
           admission_info?: string | null
           admissions_url?: string | null
+          aliases?: string[]
           campus_vibe?: string | null
           category?: string
           country?: string
@@ -567,14 +765,18 @@ export type Database = {
           location?: string | null
           logo_url?: string | null
           name?: string
+          ownership?: string | null
           region?: string | null
           scholarship_info?: string | null
           short_name?: string | null
           slug?: string
+          source_type?: string
+          source_url?: string | null
           top_programmes?: string[]
           tuition_range?: string | null
           type?: string
           updated_at?: string
+          verification_status?: string
           verified?: boolean
           website_url?: string | null
         }
@@ -634,6 +836,15 @@ export type Database = {
     }
     Functions: {
       accept_parent_invite: { Args: { _code: string }; Returns: string }
+      find_duplicate_institution: {
+        Args: { _name: string }
+        Returns: {
+          id: string
+          name: string
+          similarity: number
+          slug: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
