@@ -163,7 +163,11 @@ const UniversityProfile = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {programmes?.map((p) => (
                     <article key={p.id} className="bg-glass rounded-xl p-5 flex flex-col gap-2">
-                      <h3 className="font-medium text-foreground text-sm">{p.name}</h3>
+                      <h3 className="font-medium text-foreground text-sm">
+                        <Link to={`/programme/${p.slug}`} className="hover:text-primary transition-colors">
+                          {p.name}
+                        </Link>
+                      </h3>
                       <p className="text-xs text-muted-foreground">
                         {[p.degree_type, p.duration, p.field].filter(Boolean).join(" • ")}
                       </p>
