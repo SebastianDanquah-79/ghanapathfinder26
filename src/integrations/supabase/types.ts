@@ -1033,7 +1033,14 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      programme_facets: {
+        Row: {
+          count: number | null
+          kind: string | null
+          value: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       accept_parent_invite: { Args: { _code: string }; Returns: string }
