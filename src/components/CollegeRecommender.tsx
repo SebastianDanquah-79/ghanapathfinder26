@@ -176,7 +176,7 @@ function generateMockRecommendation(form: { name: string; major: string; aggrega
 📚 Program: BSc ${form.major}
 📊 Required Aggregate: 6-12 | Your Aggregate: ${form.aggregate}
 💰 Tuition: GHS 1,500 - 5,000/year
-🎯 Match Confidence: 94%
+🎯 For a real confidence score, run the Admission Match tool — it compares your grades to UG and KNUST's published cut-offs.
 
 Why it fits you: UG's ${form.major} program is one of the most respected in West Africa. With your aggregate of ${form.aggregate} and career goal of becoming a ${form.career}, UG offers strong industry connections, research opportunities, and an alumni network that spans the globe. The campus in Legon is vibrant with countless student organizations to build your network.
 
@@ -187,7 +187,7 @@ Why it fits you: UG's ${form.major} program is one of the most respected in West
 📚 Program: BSc ${form.major}
 📊 Required Aggregate: 6-14 | Your Aggregate: ${form.aggregate}
 💰 Tuition: GHS 1,500 - 4,500/year
-🎯 Match Confidence: 89%
+🎯 Confidence is only shown where an official cut-off exists — check the Admission Match tool.
 
 Why it fits you: KNUST is Ghana's premier STEM university. Their ${form.major} department has state-of-the-art facilities and strong ties to industry. The Kumasi tech ecosystem is growing rapidly, giving you real-world experience even before graduation. Perfect for someone aiming to become a ${form.career}.
 
@@ -198,7 +198,7 @@ Why it fits you: KNUST is Ghana's premier STEM university. Their ${form.major} d
 📚 Program: BSc ${form.major}
 📊 Required Aggregate: 6-12 | Your Aggregate: ${form.aggregate}
 💰 Tuition: GHS 25,000 - 45,000/year (scholarships available)
-🎯 Match Confidence: 85%
+🎯 Confidence is only shown where an official cut-off exists — check the Admission Match tool.
 
 Why it fits you: Ashesi is Africa's #1 liberal arts university with a focus on ethical leadership and innovation. Their ${form.major} program combines technical skills with critical thinking. With generous financial aid covering up to 100% of tuition, it's more accessible than you think. The entrepreneurial culture makes it ideal if you want to eventually build something as a ${form.career}.
 
