@@ -16,6 +16,7 @@ import ApplicationTracker from "./pages/ApplicationTracker.tsx";
 import Preferences from "./pages/Preferences.tsx";
 import ParentView from "./pages/ParentView.tsx";
 import Inspiration from "./pages/Inspiration.tsx";
+import OAuthConsent from "./pages/OAuthConsent.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
