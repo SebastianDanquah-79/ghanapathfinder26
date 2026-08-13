@@ -75,12 +75,8 @@ const Dashboard = () => {
     },
   });
 
-  const graded = results.filter((r) => GRADE_POINTS[r.grade]);
-  const aggregate = graded.length
-    ? graded.map((r) => GRADE_POINTS[r.grade]).sort((a, b) => a - b).slice(0, 6).reduce((a, b) => a + b, 0)
-    : null;
-
-  const { matches } = useAdmissionMatches();
+  const { matches, breakdown } = useAdmissionMatches();
+  const aggregate = breakdown.aggregate;
   const topMatches = matches
     .filter((m) => m.confidence != null && m.category !== "Not Eligible")
     .slice(0, 5);
