@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS public.gtec_register_staging;
