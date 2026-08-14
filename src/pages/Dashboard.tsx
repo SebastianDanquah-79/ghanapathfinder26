@@ -10,6 +10,8 @@ import MotivationPanel from "@/components/MotivationPanel";
 import ParentAccessCard from "@/components/ParentAccessCard";
 import type { JourneyInput } from "@/lib/motivation";
 import Navbar from "@/components/Navbar";
+import SwipeRow from "@/components/SwipeRow";
+
 
 
 const Dashboard = () => {
