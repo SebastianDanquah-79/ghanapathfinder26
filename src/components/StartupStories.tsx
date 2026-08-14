@@ -170,7 +170,7 @@ const StartupStories = () => (
         description="How real companies started — each story links to its source."
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="flex hscroll hscroll-bleed snap-x snap-mandatory scroll-smooth [&>*]:w-[18rem] [&>*]:shrink-0 [&>*]:snap-start md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:mx-0 md:px-0 md:[&>*]:w-auto gap-5">
         {stories.map((s, i) => (
           <motion.div
             key={s.company}

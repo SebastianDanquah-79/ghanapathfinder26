@@ -98,7 +98,7 @@ const ScholarshipSection = () => {
           </p>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div className="flex hscroll hscroll-bleed snap-x snap-mandatory scroll-smooth [&>*]:w-[19rem] [&>*]:shrink-0 [&>*]:snap-start lg:grid lg:grid-cols-2 lg:overflow-visible lg:mx-0 lg:px-0 lg:[&>*]:w-auto gap-5">
           {rows.map((s, i) => (
             <motion.div
               key={s.id}
