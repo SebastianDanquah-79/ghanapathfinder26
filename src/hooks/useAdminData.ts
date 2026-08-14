@@ -208,3 +208,82 @@ export const useImportInstitutions = () => {
     },
   });
 };
+
+/** Programmes queue for verification work, newest-unverified first. */
+export const useAdminProgrammes = (search: string, onlyUnverified: boolean, enabled: boolean) =>
+  useQuery({
+    queryKey: ["admin_programmes", search, onlyUnverified],
+    enabled,
+    queryFn: async () => {
+      let q = supabase
+        .from("programmes")
+        .select("id, name, slug, field, degree_type, qualification, verification_status, verified, source_url, programme_url, last_verified_at, universities(name)")
+        .order("name")
+        .limit(60);
+      if (onlyUnverified) q = q.neq("verification_status", "verified");
+      if (search.trim()) {
+        const t = `%${search.trim()}%`;
+        q = q.or(`name.ilike.${t},field.ilike.${t}`);
+      }
+      const { data, error } = await q;
+      if (error) throw error;
+      return (data ?? []) as unknown as (Pick<
+        ProgrammeRow,
+        | "id"
+        | "name"
+        | "slug"
+        | "field"
+        | "degree_type"
+        | "qualification"
+        | "verification_status"
+        | "verified"
+        | "source_url"
+        | "programme_url"
+        | "last_verified_at"
+      > & { universities: { name: string } | null })[];
+    },
+  });
+
+export const useUpdateProgramme = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, patch }: { id: string; patch: Partial<ProgrammeRow> }) => {
+      const { error } = await supabase.from("programmes").update(patch).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin_programmes"] });
+      qc.invalidateQueries({ queryKey: ["completeness_report"] });
+      qc.invalidateQueries({ queryKey: ["programme_detail"] });
+    },
+  });
+};
+
+export type FeedbackRow = Tables<"programme_feedback"> & { programmes: { name: string; slug: string } | null };
+
+/** Student feedback queue for admins. */
+export const useProgrammeFeedbackQueue = (enabled: boolean) =>
+  useQuery({
+    queryKey: ["admin_programme_feedback"],
+    enabled,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("programme_feedback")
+        .select("*, programmes(name, slug)")
+        .order("created_at", { ascending: false })
+        .limit(80);
+      if (error) throw error;
+      return (data ?? []) as unknown as FeedbackRow[];
+    },
+  });
+
+export const useUpdateFeedback = () => {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, patch }: { id: string; patch: Partial<Tables<"programme_feedback">> }) => {
+      const { error } = await supabase.from("programme_feedback").update(patch).eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin_programme_feedback"] }),
+  });
+};
