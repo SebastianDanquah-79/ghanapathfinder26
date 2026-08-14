@@ -76,36 +76,6 @@ const Dashboard = () => {
 
   const savedBy = (type: string) => saved.filter((s) => s.item_type === type);
 
-  const addTask = async () => {
-    if (!task.trim() || !user) return;
-    const { error } = await supabase.from("application_checklist").insert({ user_id: user.id, task: task.trim() });
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
-    setTask("");
-    qc.invalidateQueries({ queryKey: ["checklist"] });
-  };
-
-  const toggleTask = async (id: string, done: boolean) => {
-    await supabase.from("application_checklist").update({ done: !done }).eq("id", id);
-    qc.invalidateQueries({ queryKey: ["checklist"] });
-    if (!done) {
-      const completed = checklist.filter((c) => c.done).length + 1;
-      celebrate(
-        completed === checklist.length ? "Checklist complete" : "Task done",
-        completed === checklist.length
-          ? "Every task ticked off. That is real preparation."
-          : `${completed} of ${checklist.length} tasks done — momentum is building.`,
-      );
-    }
-  };
-
-  const removeTask = async (id: string) => {
-    await supabase.from("application_checklist").delete().eq("id", id);
-    qc.invalidateQueries({ queryKey: ["checklist"] });
-  };
-
   const journey: JourneyInput = {
     fullName: profile?.full_name ?? null,
     targetCareer: profile?.target_career ?? null,
@@ -118,8 +88,6 @@ const Dashboard = () => {
     savedUniversities: saved.filter((s) => s.item_type === "university").length,
     savedScholarships: saved.filter((s) => s.item_type === "scholarship").length,
     savedCareers: saved.filter((s) => s.item_type === "career").length,
-    checklistTotal: checklist.length,
-    checklistDone: checklist.filter((c) => c.done).length,
     deadlines: deadlines.length,
   };
 
