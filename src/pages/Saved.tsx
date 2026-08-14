@@ -108,14 +108,28 @@ const Saved = () => {
                       <GraduationCap className="h-3.5 w-3.5" /> View profile
                     </Link>
                   )}
+                  {s.item_type === "programme" && (
+                    <Link
+                      to={`/programme/${s.item_key}`}
+                      className="mt-2 inline-flex items-center gap-1.5 text-xs text-primary font-medium"
+                    >
+                      <BookOpen className="h-3.5 w-3.5" /> View profile
+                    </Link>
+                  )}
+                  {s.item_type === "scholarship" && (
+                    <Link
+                      to="/scholarships"
+                      className="mt-2 inline-flex items-center gap-1.5 text-xs text-primary font-medium"
+                    >
+                      <ExternalLink className="h-3.5 w-3.5" /> View details
+                    </Link>
+                  )}
                 </div>
-                <button
-                  onClick={() => remove(s.id)}
-                  className="shrink-0 min-h-[44px] min-w-[44px] grid place-items-center rounded-lg text-muted-foreground hover:text-destructive"
-                  aria-label={`Remove ${s.title}`}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
+                <ConfirmRemoveButton
+                  title={s.title}
+                  itemLabel={s.item_type}
+                  onConfirm={() => remove(s.id)}
+                />
               </li>
             ))}
           </ul>
