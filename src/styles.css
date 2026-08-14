@@ -231,24 +231,13 @@
   }
 
   /*
-   * Mobile "desktop view": keep the laptop layout at its native width and let
-   * the user swipe horizontally instead of squashing components down.
+   * Mobile "desktop view": the root viewport meta pins the layout viewport to
+   * 1280px, so phones render the real laptop layout and pan horizontally
+   * instead of squashing components. Keep touch panning smooth and contained.
    */
-  @media (max-width: 767px) {
-    html, body {
-      overflow-x: auto;
-      max-width: none;
-      -webkit-overflow-scrolling: touch;
-      overscroll-behavior-x: contain;
-    }
-    .desktop-shell {
-      min-width: 1280px;
-    }
-    /* Fixed chrome must span the same virtual width so it doesn't detach. */
-    nav.fixed,
-    .desktop-shell ~ nav.fixed {
-      min-width: 1280px;
-    }
+  .desktop-shell {
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x pan-y;
   }
 
   body {
