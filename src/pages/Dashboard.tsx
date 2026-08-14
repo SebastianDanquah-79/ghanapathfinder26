@@ -317,7 +317,7 @@ const Dashboard = () => {
 
           <div className={card}>
             <h2 className="font-display font-semibold text-foreground mb-3">Your profile</h2>
-            <dl className="hscroll text-sm space-y-2 text-muted-foreground">
+            <dl className="text-sm space-y-2 text-muted-foreground">
               <div className="flex justify-between gap-3"><dt>Target career</dt><dd className="text-foreground text-right">{profile?.target_career ?? "—"}</dd></div>
               <div className="flex justify-between gap-3"><dt>School</dt><dd className="text-foreground text-right">{profile?.school ?? "—"}</dd></div>
               <div className="flex justify-between gap-3"><dt>Region</dt><dd className="text-foreground text-right">{profile?.region ?? "—"}</dd></div>
