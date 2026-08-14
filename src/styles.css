@@ -231,13 +231,13 @@
   }
 
   /*
-   * Mobile "desktop view": the root viewport meta pins the layout viewport to
-   * 1280px, so phones render the real laptop layout and pan horizontally
-   * instead of squashing components. Keep touch panning smooth and contained.
+   * One responsive app: phones get the mobile layout, laptops the full desktop
+   * layout. Only wide sections (.hscroll) scroll sideways — never the page.
    */
   .desktop-shell {
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-x pan-y;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
   }
 
   body {
