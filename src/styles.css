@@ -226,9 +226,10 @@
     scroll-behavior: smooth;
   }
   html, body {
-    overflow-x: hidden;
+    overflow-x: clip;
     max-width: 100%;
   }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
