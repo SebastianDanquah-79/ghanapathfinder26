@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { Bookmark, GraduationCap, Search, Trash2 } from "lucide-react";
+import { Bookmark, GraduationCap, Search, BookOpen, ExternalLink } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import Navbar from "@/components/Navbar";
+import ConfirmRemoveButton from "@/components/ConfirmRemoveButton";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useSavedItems } from "@/hooks/useSavedItems";
