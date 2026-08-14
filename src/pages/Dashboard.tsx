@@ -320,23 +320,28 @@ const Dashboard = () => {
 
           <div className={card}>
             <h2 className="font-display font-semibold text-foreground mb-3 capitalize">Saved careers</h2>
-            <ul className="hscroll space-y-2">
-              {savedBy("career").map((s) => (
-                <li key={s.id} className="flex items-start justify-between gap-2 text-sm">
-                  <p className="text-foreground break-words">{s.title}</p>
-                  <button
-                    onClick={() => removeSaved(s.id)}
-                    className="shrink-0 min-h-[44px] min-w-[44px] grid place-items-center text-muted-foreground hover:text-destructive"
-                    aria-label="Remove"
+            {savedBy("career").length ? (
+              <SwipeRow count={savedBy("career").length}>
+                {savedBy("career").map((s) => (
+                  <li
+                    key={s.id}
+                    className="flex items-start justify-between gap-2 rounded-lg border border-border/60 bg-secondary/40 p-3 text-sm md:border-0 md:bg-transparent md:p-0"
                   >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </button>
-                </li>
-              ))}
-              {!savedBy("career").length && (
-                <li className="text-sm text-muted-foreground">Nothing saved yet.</li>
-              )}
-            </ul>
+                    <p className="text-foreground break-words">{s.title}</p>
+                    <button
+                      onClick={() => removeSaved(s.id)}
+                      className="shrink-0 min-h-[44px] min-w-[44px] grid place-items-center text-muted-foreground hover:text-destructive"
+                      aria-label="Remove"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  </li>
+                ))}
+              </SwipeRow>
+            ) : (
+              <p className="text-sm text-muted-foreground">Nothing saved yet.</p>
+            )}
+
           </div>
 
 
