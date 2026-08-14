@@ -125,8 +125,8 @@ const Scholarships = () => {
     setBusy(true);
     setAi(null);
     try {
-      const { data, error } = await supabase.functions.invoke("scholarship-match", {
-        body: {
+      const data = await scholarshipMatch({
+        data: {
           profile: {
             preferences: prefs,
             aggregate,
@@ -148,8 +148,6 @@ const Scholarships = () => {
           })),
         },
       });
-      if (error) throw error;
-      if (data?.error) throw new Error(data.details || data.error);
       setAi(data);
       toast.success("AI matches ready");
     } catch (e) {
