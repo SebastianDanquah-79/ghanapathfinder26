@@ -99,16 +99,6 @@ export const getNextStep = (d: JourneyInput, milestones: Milestone[]): NextStep 
       cta: "Take me there",
     };
   }
-  if (d.checklistTotal > d.checklistDone) {
-    return {
-      title: "Clear one more checklist task",
-      body: `You have ${d.checklistTotal - d.checklistDone} task${
-        d.checklistTotal - d.checklistDone === 1 ? "" : "s"
-      } left. One today is enough.`,
-      href: "#checklist",
-      cta: "Open my checklist",
-    };
-  }
   return {
     title: `Research entry requirements for your top ${d.savedUniversities > 1 ? "universities" : "university"}`,
     body: "You have the basics in place. Compare your shortlist and confirm what each school asks for.",
