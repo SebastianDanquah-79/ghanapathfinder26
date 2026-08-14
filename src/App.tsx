@@ -27,6 +27,7 @@ const SearchPage = lazy(() => import("./pages/Search.tsx"));
 const Saved = lazy(() => import("./pages/Saved.tsx"));
 const UniversityProfile = lazy(() => import("./pages/UniversityProfile.tsx"));
 const ProgrammePage = lazy(() => import("./pages/Programme.tsx"));
+const ProgrammesDirectory = lazy(() => import("./pages/Programmes.tsx"));
 const ResetPassword = lazy(() => import("./pages/ResetPassword.tsx"));
 const AdminData = lazy(() => import("./pages/AdminData.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
@@ -64,6 +65,7 @@ const App = () => (
                 <Route path="/search" element={<SearchPage />} />
                 <Route path="/saved" element={<Saved />} />
                 <Route path="/university/:slug" element={<UniversityProfile />} />
+                <Route path="/programmes" element={<ProgrammesDirectory />} />
                 <Route path="/programme/:slug" element={<ProgrammePage />} />
                 <Route path="/reset-password" element={<ResetPassword />} />
                 <Route path="/onboarding" element={<Onboarding />} />
