@@ -12,6 +12,7 @@ import {
   X,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import Seo from "@/components/Seo";
 import SaveButton from "@/components/SaveButton";
 import {
   DIRECTORY_PAGE_SIZE,

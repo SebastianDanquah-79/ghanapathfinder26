@@ -7,6 +7,7 @@ import { useUniversities } from "@/hooks/useCatalogue";
 import { CATEGORY_STYLES, formatVerifiedDate, type MatchCategory } from "@/lib/admissionEngine";
 import SaveButton from "@/components/SaveButton";
 import Navbar from "@/components/Navbar";
+import Seo from "@/components/Seo";
 
 const CATEGORIES: MatchCategory[] = [
   "Excellent Match",

@@ -23,6 +23,7 @@ import { buildPlanText, downloadPlan } from "@/lib/scholarshipPlan";
 import SaveButton from "@/components/SaveButton";
 import { useMatchPreferences } from "@/hooks/useMatchPreferences";
 import Navbar from "@/components/Navbar";
+import Seo from "@/components/Seo";
 
 const GRADE_POINTS: Record<string, number> = { A1: 1, B2: 2, B3: 3, C4: 4, C5: 5, C6: 6, D7: 7, E8: 8, F9: 9 };
 
