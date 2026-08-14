@@ -43,7 +43,7 @@ function RootComponent() {
           <Sonner />
           <AuthProvider>
             <OfflineBanner />
-            <div className="pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0">
+            <div className="desktop-shell pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0">
               <Outlet />
             </div>
             <MobileTabBar />
@@ -93,7 +93,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1.0, viewport-fit=cover" },
+      { name: "viewport", content: "width=1280, initial-scale=1.0, viewport-fit=cover" },
       { title: "GhanaPath — AI College & Career Guide for Ghana" },
       {
         name: "description",
