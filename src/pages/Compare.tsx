@@ -160,7 +160,7 @@ const Compare = () => {
                             item_type: "university",
                             item_key: u.slug,
                             title: u.name,
-                            subtitle: u.location ?? undefined,
+                            ...(u.location != null ? { subtitle: u.location } : {}),
                             metadata: { website_url: u.website_url, type: u.type },
                           }}
                         />

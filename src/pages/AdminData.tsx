@@ -43,7 +43,7 @@ const AdminData = () => {
   const parsed = useMemo<ImportRow[]>(() => {
     const lines = csv.split("\n").map((l) => l.trim()).filter(Boolean);
     if (!lines.length) return [];
-    const header = lines[0].split(",").map((h) => h.trim().toLowerCase());
+    const header = (lines[0] ?? "").split(",").map((h) => h.trim().toLowerCase());
     return lines.slice(1).map((line) => {
       const cells = line.split(",").map((c) => c.trim());
       const row: Record<string, string> = {};

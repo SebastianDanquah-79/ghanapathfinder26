@@ -55,7 +55,10 @@ const ApplicationTracker = () => {
   const addFromCatalogue = async () => {
     const s = scholarships.find((x) => x.name === picked);
     if (!s) return;
-    if (apps.some((a) => a.scholarship_name === s.name)) return toast.info("Already in your tracker");
+    if (apps.some((a) => a.scholarship_name === s.name)) {
+      toast.info("Already in your tracker");
+      return;
+    }
     const date = estimateDeadlineDate(s.deadline);
     await addApp.mutateAsync({
       scholarship_name: s.name,
@@ -70,8 +73,10 @@ const ApplicationTracker = () => {
   const addManual = async () => {
     const name = manual.trim();
     if (!name) return;
-    if (apps.some((a) => a.scholarship_name.toLowerCase() === name.toLowerCase()))
-      return toast.info("Already in your tracker");
+    if (apps.some((a) => a.scholarship_name.toLowerCase() === name.toLowerCase())) {
+      toast.info("Already in your tracker");
+      return;
+    }
     await addApp.mutateAsync({ scholarship_name: name });
     setManual("");
     celebrate("Added to your tracker", "Update its status as you make progress.");
@@ -80,7 +85,10 @@ const ApplicationTracker = () => {
   const setStatus = async (id: string, status: ApplicationStatus, name: string) => {
     await updateApp.mutateAsync({
       id,
-      patch: { status, submitted_at: status === "submitted" ? new Date().toISOString().slice(0, 10) : undefined },
+      patch: {
+        status,
+        ...(status === "submitted" ? { submitted_at: new Date().toISOString().slice(0, 10) } : {}),
+      },
     });
     if (status === "submitted") celebrate("Application submitted", `${name} is officially in. Well done.`);
     if (status === "awarded") celebrate("You were awarded!", `${name} came through. Enjoy this one.`);
@@ -114,7 +122,7 @@ const ApplicationTracker = () => {
           </div>
           <div className={card}>
             <p className="text-xs text-muted-foreground">Awarded</p>
-            <p className="font-display text-2xl font-bold text-foreground">{counts.awarded ?? 0}</p>
+            <p className="font-display text-2xl font-bold text-foreground">{counts['awarded'] ?? 0}</p>
           </div>
         </div>
 
