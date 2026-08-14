@@ -204,7 +204,7 @@ const Scholarships = () => {
         };
       }),
       deadlines: deadlines.map((d) => ({ title: d.title, due_date: d.due_date })),
-      checklist: checklist.map((c) => ({ task: c.task, done: c.done })),
+      
     });
     downloadPlan(text);
     toast.success("Plan downloaded");
