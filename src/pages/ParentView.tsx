@@ -57,7 +57,10 @@ const ParentView = () => {
   const link = async () => {
     if (!code.trim()) return;
     const { error } = await supabase.rpc("accept_parent_invite", { _code: code.trim() });
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     setCode("");
     toast.success("Linked — you can now follow their scholarship progress");
     qc.invalidateQueries({ queryKey: ["parent_links_as_parent"] });

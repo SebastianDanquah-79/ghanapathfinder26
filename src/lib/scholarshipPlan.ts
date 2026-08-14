@@ -1,21 +1,21 @@
 export interface PlanScholarship {
   name: string;
-  provider?: string | null;
-  coverage?: string;
-  deadline?: string;
-  score?: number;
-  why?: string;
-  gaps?: string[];
-  nextStep?: string;
+  provider?: string | null | undefined;
+  coverage?: string | undefined;
+  deadline?: string | undefined;
+  score?: number | undefined;
+  why?: string | undefined;
+  gaps?: string[] | undefined;
+  nextStep?: string | undefined;
 }
 
 export interface PlanInput {
-  studentName?: string | null;
-  aggregate?: number | null;
-  targetCareer?: string | null;
-  region?: string | null;
-  school?: string | null;
-  summary?: string;
+  studentName?: string | null | undefined;
+  aggregate?: number | null | undefined;
+  targetCareer?: string | null | undefined;
+  region?: string | null | undefined;
+  school?: string | null | undefined;
+  summary?: string | undefined;
   scholarships: PlanScholarship[];
   deadlines: { title: string; due_date: string }[];
   checklist: { task: string; done: boolean }[];

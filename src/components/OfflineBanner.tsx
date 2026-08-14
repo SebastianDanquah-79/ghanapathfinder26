@@ -3,9 +3,12 @@ import { WifiOff } from "lucide-react";
 
 /** Slim, non-blocking banner shown when the student loses network. */
 const OfflineBanner = () => {
-  const [offline, setOffline] = useState(!navigator.onLine);
+  // Start as "online" on both server and client so SSR HTML matches the first
+  // client render; the real status is read after hydration in the effect.
+  const [offline, setOffline] = useState(false);
 
   useEffect(() => {
+    setOffline(!navigator.onLine);
     const on = () => setOffline(false);
     const off = () => setOffline(true);
     window.addEventListener("online", on);

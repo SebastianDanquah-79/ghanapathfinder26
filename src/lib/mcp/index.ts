@@ -5,7 +5,11 @@ import listApplicationsTool from "./tools/list-applications";
 import trackApplicationTool from "./tools/track-application";
 import listDeadlinesTool from "./tools/list-deadlines";
 
-const projectRef = import.meta.env.VITE_SUPABASE_PROJECT_ID ?? "project-ref-unset";
+const projectRef = import.meta.env['VITE_SUPABASE_PROJECT_ID'] ?? "project-ref-unset";
+
+// The library's tool array type predates exactOptionalPropertyTypes; the
+// per-tool generics are erased here (same shape, stricter optionality).
+type McpTools = Parameters<typeof defineMcp>[0]["tools"];
 
 export default defineMcp({
   name: "ghana-future-guide",
@@ -23,5 +27,5 @@ export default defineMcp({
     listApplicationsTool,
     trackApplicationTool,
     listDeadlinesTool,
-  ],
+  ] as unknown as McpTools,
 });

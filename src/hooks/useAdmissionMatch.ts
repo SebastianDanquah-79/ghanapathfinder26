@@ -74,7 +74,7 @@ export const useAdmissionMatches = (search = "", universityId?: string) => {
       (c) => ({ ...evaluateMatch(c, results, breakdown), cutoff: c }) as ScoredMatch,
     );
     return scored.sort((a, b) => {
-      const d = ORDER[a.category] - ORDER[b.category];
+      const d = (ORDER[a.category] ?? 99) - (ORDER[b.category] ?? 99);
       if (d !== 0) return d;
       return (b.confidence ?? -1) - (a.confidence ?? -1);
     });

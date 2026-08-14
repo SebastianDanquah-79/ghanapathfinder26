@@ -5,15 +5,15 @@ import type { Programme, University } from "@/hooks/useCatalogue";
 export const DIRECTORY_PAGE_SIZE = 24;
 
 export interface DirectoryFilters {
-  search?: string;
-  field?: string;
-  region?: string;
-  qualification?: string;
-  degreeType?: string;
-  institution?: string;
-  verifiedOnly?: boolean;
-  sort?: "name" | "newest";
-  page?: number;
+  search?: string | undefined;
+  field?: string | undefined;
+  region?: string | undefined;
+  qualification?: string | undefined;
+  degreeType?: string | undefined;
+  institution?: string | undefined;
+  verifiedOnly?: boolean | undefined;
+  sort?: "name" | "newest" | undefined;
+  page?: number | undefined;
 }
 
 export type DirectoryProgramme = Programme & {

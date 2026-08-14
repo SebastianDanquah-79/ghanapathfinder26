@@ -13,7 +13,7 @@ interface NavLinkCompatProps extends Omit<ComponentProps<typeof Link>, "classNam
 const NavLink = forwardRef<HTMLAnchorElement, NavLinkCompatProps>(
   ({ className, activeClassName, pendingClassName, to, end, children, ...props }, ref) => {
     const { pathname } = useLocation();
-    const target = to.split("?")[0].split("#")[0] || "/";
+    const target = (to.split("?")[0] ?? "").split("#")[0] || "/";
     const isActive = end
       ? pathname === target
       : pathname === target || pathname.startsWith(`${target === "/" ? "" : target}/`) || (target === "/" && pathname === "/");

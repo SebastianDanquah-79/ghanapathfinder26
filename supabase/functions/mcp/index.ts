@@ -38,7 +38,7 @@ function supabasePublishableKey() {
       const parsed = JSON.parse(keyset);
       if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
         const keys = parsed;
-        const key = [keys.default, ...Object.values(keys)].find((v) => typeof v === "string" && v.trim().startsWith("sb_publishable_"))?.trim();
+        const key = [keys["default"], ...Object.values(keys)].find((v) => typeof v === "string" && v.trim().startsWith("sb_publishable_"))?.trim();
         if (key) return key;
       }
     } catch {
@@ -166,12 +166,12 @@ var track_application_default = defineTool4({
     const { data: existing, error: findError } = await supabase.from("scholarship_applications").select("id").eq("user_id", userId).eq("scholarship_name", scholarshipName).maybeSingle();
     if (findError) return { content: [{ type: "text", text: findError.message }], isError: true };
     const patch = {};
-    if (status) patch.status = status;
-    if (provider) patch.provider = provider;
-    if (deadline) patch.deadline = deadline;
-    if (link) patch.link = link;
-    if (notes) patch.notes = notes;
-    if (status === "submitted") patch.submitted_at = (/* @__PURE__ */ new Date()).toISOString();
+    if (status) patch["status"] = status;
+    if (provider) patch["provider"] = provider;
+    if (deadline) patch["deadline"] = deadline;
+    if (link) patch["link"] = link;
+    if (notes) patch["notes"] = notes;
+    if (status === "submitted") patch["submitted_at"] = (/* @__PURE__ */ new Date()).toISOString();
     const { data, error } = existing ? await supabase.from("scholarship_applications").update(patch).eq("id", existing.id).eq("user_id", userId).select() : await supabase.from("scholarship_applications").insert({
       user_id: userId,
       scholarship_name: scholarshipName,

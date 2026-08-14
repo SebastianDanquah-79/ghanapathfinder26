@@ -86,7 +86,10 @@ const Dashboard = () => {
   const addTask = async () => {
     if (!task.trim() || !user) return;
     const { error } = await supabase.from("application_checklist").insert({ user_id: user.id, task: task.trim() });
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     setTask("");
     qc.invalidateQueries({ queryKey: ["checklist"] });
   };
@@ -111,12 +114,12 @@ const Dashboard = () => {
   };
 
   const journey: JourneyInput = {
-    fullName: profile?.full_name,
-    targetCareer: profile?.target_career,
-    school: profile?.school,
-    region: profile?.region,
+    fullName: profile?.full_name ?? null,
+    targetCareer: profile?.target_career ?? null,
+    school: profile?.school ?? null,
+    region: profile?.region ?? null,
     interests: profile?.interests ?? [],
-    onboarded: profile?.onboarded,
+    onboarded: profile?.onboarded ?? false,
     resultsCount: results.length,
     aggregate,
     savedUniversities: saved.filter((s) => s.item_type === "university").length,
@@ -132,7 +135,10 @@ const Dashboard = () => {
     const { error } = await supabase
       .from("deadlines")
       .insert({ user_id: user.id, title: deadlineTitle.trim(), due_date: deadlineDate });
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     setDeadlineTitle("");
     setDeadlineDate("");
     qc.invalidateQueries({ queryKey: ["deadlines"] });
