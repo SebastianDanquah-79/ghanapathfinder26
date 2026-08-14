@@ -33,12 +33,12 @@ export default defineTool({
     if (findError) return { content: [{ type: "text", text: findError.message }], isError: true };
 
     const patch: Record<string, unknown> = {};
-    if (status) patch.status = status;
-    if (provider) patch.provider = provider;
-    if (deadline) patch.deadline = deadline;
-    if (link) patch.link = link;
-    if (notes) patch.notes = notes;
-    if (status === "submitted") patch.submitted_at = new Date().toISOString();
+    if (status) patch['status'] = status;
+    if (provider) patch['provider'] = provider;
+    if (deadline) patch['deadline'] = deadline;
+    if (link) patch['link'] = link;
+    if (notes) patch['notes'] = notes;
+    if (status === "submitted") patch['submitted_at'] = new Date().toISOString();
 
     const { data, error } = existing
       ? await supabase
