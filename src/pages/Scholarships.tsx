@@ -20,6 +20,7 @@ import { scholarships } from "@/data/scholarships";
 import { matchScholarships } from "@/lib/scholarshipMatcher";
 import { estimateDeadlineDate, toISODate, daysUntil, urgencyLabel } from "@/lib/scholarshipDates";
 import { buildPlanText, downloadPlan } from "@/lib/scholarshipPlan";
+import { scholarshipMatch } from "@/lib/scholarship-match.functions";
 import SaveButton from "@/components/SaveButton";
 import { useMatchPreferences } from "@/hooks/useMatchPreferences";
 import Navbar from "@/components/Navbar";
