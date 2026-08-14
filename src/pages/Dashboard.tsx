@@ -113,7 +113,7 @@ const Dashboard = () => {
   const daysLeft = (d: string) =>
     Math.ceil((new Date(d).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
 
-  const card = "bg-glass rounded-xl p-5 lg:p-5";
+  const card = "bg-glass rounded-xl p-5 lg:p-5 min-w-0 max-w-full";
   const input =
     "w-full px-3 py-2 rounded-lg bg-secondary border border-border text-foreground text-sm focus:outline-hidden focus:ring-2 focus:ring-primary/50";
 

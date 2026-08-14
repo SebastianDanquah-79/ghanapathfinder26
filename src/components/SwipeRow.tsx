@@ -13,8 +13,8 @@ const SwipeRow = ({
   count?: number;
   hint?: string;
 }) => (
-  <div>
-    <ul className="hscroll hscroll-bleed snap-x snap-mandatory scroll-smooth flex gap-3 [&>li]:shrink-0 [&>li]:w-[15rem] [&>li]:snap-start md:overflow-visible md:mx-0 md:px-0 md:flex-col md:gap-2 md:[&>li]:w-full">
+  <div className="min-w-0 max-w-full">
+    <ul className="hscroll hscroll-bleed snap-x snap-mandatory scroll-smooth flex gap-3 min-w-0 max-w-full [&>li]:shrink-0 [&>li]:w-[15rem] [&>li]:snap-start md:overflow-visible md:mx-0 md:px-0 md:flex-col md:gap-2 md:[&>li]:w-full">
       {children}
     </ul>
     {count > 1 && <p className="mt-2 text-xs text-muted-foreground md:hidden">{hint}</p>}
