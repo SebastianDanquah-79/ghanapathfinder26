@@ -353,7 +353,7 @@ const Dashboard = () => {
 
           <div className={card}>
             <h2 className="font-display font-semibold text-foreground mb-3 capitalize">Saved careers</h2>
-            <ul className="space-y-2">
+            <ul className="hscroll space-y-2">
               {savedBy("career").map((s) => (
                 <li key={s.id} className="flex items-start justify-between gap-2 text-sm">
                   <p className="text-foreground break-words">{s.title}</p>
