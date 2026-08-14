@@ -23,6 +23,7 @@ import { buildPlanText, downloadPlan } from "@/lib/scholarshipPlan";
 import SaveButton from "@/components/SaveButton";
 import { useMatchPreferences } from "@/hooks/useMatchPreferences";
 import Navbar from "@/components/Navbar";
+import Seo from "@/components/Seo";
 
 const GRADE_POINTS: Record<string, number> = { A1: 1, B2: 2, B3: 3, C4: 4, C5: 5, C6: 6, D7: 7, E8: 8, F9: 9 };
 
@@ -206,6 +207,11 @@ const Scholarships = () => {
 
   return (
     <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-20 pb-12">
+      <Seo
+        title="Scholarships for Ghanaian Students | GhanaPath"
+        description="Browse and track scholarships open to Ghanaian students, with deadlines, eligibility checks and personalised matches based on your profile."
+        path="/scholarships"
+      />
       <Navbar />
       <div className="max-w-7xl mx-auto">
         <Link to="/dashboard" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground mb-6">

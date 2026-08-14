@@ -10,6 +10,7 @@ import {
   X,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import Seo from "@/components/Seo";
 import Footer from "@/components/Footer";
 import SaveButton from "@/components/SaveButton";
 import OfficialLink from "@/components/OfficialLink";
@@ -96,7 +97,7 @@ const ResultCard = ({ r }: { r: SearchResult }) => {
     <div className="bg-glass rounded-xl p-4 flex flex-col gap-2">
       <div className="min-w-0">
         <span className="text-[10px] uppercase tracking-wide text-primary font-semibold">{r.kind}</span>
-        <h3 className="font-display font-semibold text-base text-foreground break-words">
+        <h2 className="font-display font-semibold text-base text-foreground break-words">
           {r.kind === "university" || r.kind === "programme" ? (
             <Link
               to={r.kind === "university" ? `/university/${r.slug}` : `/programme/${r.slug}`}
@@ -107,7 +108,7 @@ const ResultCard = ({ r }: { r: SearchResult }) => {
           ) : (
             r.title
           )}
-        </h3>
+        </h2>
         {r.subtitle && <p className="text-xs text-muted-foreground mt-0.5 break-words">{r.subtitle}</p>}
       </div>
 
@@ -323,6 +324,11 @@ const SearchPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Search Universities & Programmes in Ghana | GhanaPath"
+        description="Search accredited Ghanaian universities, degree programmes and scholarships in one place, with WASSCE requirements and verified official links."
+        path="/search"
+      />
       <Navbar />
       <main className="pt-20 pb-12 px-4 sm:px-8 lg:px-12">
         <div className="max-w-6xl xl:max-w-7xl mx-auto">

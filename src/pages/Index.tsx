@@ -1,5 +1,6 @@
 import { Suspense, lazy } from "react";
 import Navbar from "@/components/Navbar";
+import Seo from "@/components/Seo";
 import HeroSection from "@/components/HeroSection";
 import CollegeRecommender from "@/components/CollegeRecommender";
 import UniversityDirectory from "@/components/UniversityDirectory";
@@ -13,6 +14,24 @@ const Footer = lazy(() => import("@/components/Footer"));
 
 const Index = () => (
   <div className="min-h-screen bg-background">
+    <Seo
+      title="GhanaPath — University, Programme & Scholarship Guide"
+      description="Find accredited Ghanaian universities and programmes that match your WASSCE results, track scholarships and plan your career — free for SHS students."
+      path="/"
+      jsonLd={[
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "GhanaPath",
+          url: "https://ghanapathfinder26.lovable.app",
+          potentialAction: {
+            "@type": "SearchAction",
+            target: "https://ghanapathfinder26.lovable.app/search?q={search_term_string}",
+            "query-input": "required name=search_term_string",
+          },
+        },
+      ]}
+    />
     <Navbar />
     <HeroSection />
     <CollegeRecommender />

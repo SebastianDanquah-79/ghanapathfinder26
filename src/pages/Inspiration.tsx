@@ -3,12 +3,18 @@ import { motion } from "framer-motion";
 import { ArrowLeft, GraduationCap, Lightbulb, Quote } from "lucide-react";
 import { getDailyMessage, stories } from "@/lib/motivation";
 import Navbar from "@/components/Navbar";
+import Seo from "@/components/Seo";
 
 const Inspiration = () => {
   const daily = getDailyMessage();
 
   return (
     <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-20 pb-12">
+      <Seo
+        title="Student Success Stories & Career Inspiration | GhanaPath"
+        description="Honest stories from Ghanaian students, graduates, professionals and founders — the setbacks they faced and what they would tell you today."
+        path="/inspiration"
+      />
       <Navbar />
       <div className="max-w-7xl mx-auto">
         <header className="flex items-center justify-between gap-3 mb-6">
@@ -31,7 +37,7 @@ const Inspiration = () => {
             Inspiration
           </span>
           <h1 className="font-display font-bold text-3xl sm:text-4xl text-foreground mb-3">
-            Real journeys, <span className="text-gradient-gold">real setbacks</span>
+            Student success stories &amp; <span className="text-gradient-gold">career inspiration</span>
           </h1>
           <p className="text-muted-foreground">
             Short, honest stories from Ghanaian students, graduates, professionals and founders — and what

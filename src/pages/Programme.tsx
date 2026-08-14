@@ -12,6 +12,7 @@ import {
   Wallet,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import Seo, { breadcrumbLd } from "@/components/Seo";
 import Footer from "@/components/Footer";
 import SaveButton from "@/components/SaveButton";
 import OfficialLink from "@/components/OfficialLink";
@@ -74,6 +75,20 @@ const ProgrammePage = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {p && (
+        <Seo
+          title={`${p.name}${uni?.short_name ? ` — ${uni.short_name}` : ""} | GhanaPath`}
+          description={(info?.short_bio || p.description || `${p.name} at ${uni?.name ?? "a Ghanaian institution"}: entry requirements, curriculum, careers and cut-off aggregates.`).slice(0, 155)}
+          path={`/programme/${p.slug}`}
+          jsonLd={[
+            breadcrumbLd([
+              { name: "Home", path: "/" },
+              { name: "Programmes", path: "/programmes" },
+              { name: p.name, path: `/programme/${p.slug}` },
+            ]),
+          ]}
+        />
+      )}
       <Navbar />
       <main className="pt-20 pb-12 px-4">
         <div className="max-w-4xl mx-auto">
