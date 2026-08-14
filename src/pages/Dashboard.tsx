@@ -279,17 +279,26 @@ const Dashboard = () => {
             <h2 className="font-display font-semibold text-foreground mb-3 flex items-center gap-2">
               <CalendarClock className="h-4 w-4 text-primary" /> Deadlines
             </h2>
-            <ul className="hscroll space-y-2 mb-3">
-              {deadlines.map((d) => (
-                <li key={d.id} className="flex justify-between gap-2 text-sm">
-                  <span className="text-foreground break-words">{d.title}</span>
-                  <span className={daysLeft(d.due_date) < 14 ? "text-destructive text-xs shrink-0" : "text-muted-foreground text-xs shrink-0"}>
-                    {daysLeft(d.due_date)} days
-                  </span>
-                </li>
-              ))}
-              {!deadlines.length && <li className="text-sm text-muted-foreground">No deadlines yet.</li>}
-            </ul>
+            <div className="mb-3">
+              {deadlines.length ? (
+                <SwipeRow count={deadlines.length}>
+                  {deadlines.map((d) => (
+                    <li
+                      key={d.id}
+                      className="flex justify-between gap-2 rounded-lg border border-border/60 bg-secondary/40 p-3 text-sm md:border-0 md:bg-transparent md:p-0"
+                    >
+                      <span className="text-foreground break-words">{d.title}</span>
+                      <span className={daysLeft(d.due_date) < 14 ? "text-destructive text-xs shrink-0" : "text-muted-foreground text-xs shrink-0"}>
+                        {daysLeft(d.due_date)} days
+                      </span>
+                    </li>
+                  ))}
+                </SwipeRow>
+              ) : (
+                <p className="text-sm text-muted-foreground">No deadlines yet.</p>
+              )}
+            </div>
+
             <div className="space-y-2">
               <input className={input} placeholder="Deadline title" maxLength={120} value={deadlineTitle} onChange={(e) => setDeadlineTitle(e.target.value)} />
               <div className="hscroll flex gap-2">
