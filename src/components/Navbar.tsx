@@ -7,6 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 const primary = [
   { label: "Search", href: "/search" },
   { label: "Universities", href: "/#universities" },
+  { label: "Programmes", href: "/programmes" },
   { label: "Scholarships", href: "/#scholarships" },
   { label: "Saved", href: "/saved" },
   { label: "Compare", href: "/compare" },

@@ -1,10 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, Search, Target, GraduationCap, LayoutDashboard } from "lucide-react";
+import { Home, Search, Target, GraduationCap, LayoutDashboard, BookOpen } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 
 const tabs = [
   { to: "/", label: "Home", icon: Home },
   { to: "/search", label: "Search", icon: Search },
+  { to: "/programmes", label: "Programmes", icon: BookOpen },
   { to: "/admission-match", label: "Match", icon: Target },
   { to: "/scholarships", label: "Funding", icon: GraduationCap },
   { to: "/dashboard", label: "Me", icon: LayoutDashboard },
@@ -23,7 +24,7 @@ const MobileTabBar = () => {
       aria-label="Primary"
       className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border/60 pb-[env(safe-area-inset-bottom)]"
     >
-      <ul className="grid grid-cols-5">
+      <ul className="grid grid-cols-6">
         {tabs.map(({ to, label, icon: Icon }) => {
           const target = to === "/dashboard" && !user ? "/auth" : to;
           const active = pathname === to || (to === "/dashboard" && pathname === "/saved");

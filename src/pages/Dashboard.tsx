@@ -218,6 +218,25 @@ const Dashboard = () => {
           ))}
         </div>
 
+        {/* Saved shortcuts */}
+        <div className="flex flex-wrap gap-2 mb-6">
+          {[
+            { type: "university", label: "Universities" },
+            { type: "programme", label: "Programmes" },
+            { type: "scholarship", label: "Scholarships" },
+          ].map(({ type, label }) => (
+            <Link
+              key={type}
+              to="/saved"
+              className="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-xl bg-glass bg-glass-hover text-sm text-foreground"
+            >
+              <Bookmark className="h-4 w-4 text-primary" />
+              {label}
+              <span className="text-xs text-muted-foreground">{savedBy(type).length}</span>
+            </Link>
+          ))}
+        </div>
+
         <div className="grid gap-5 lg:gap-4 md:grid-cols-2 xl:grid-cols-3">
           <div className={card}>
             <h2 className="font-display font-semibold text-foreground mb-3 flex items-center gap-2">
