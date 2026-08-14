@@ -31,7 +31,7 @@ const Inspiration = () => {
             Inspiration
           </span>
           <h1 className="font-display font-bold text-3xl sm:text-4xl text-foreground mb-3">
-            Real journeys, <span className="text-gradient-gold">real setbacks</span>
+            Student success stories &amp; <span className="text-gradient-gold">career inspiration</span>
           </h1>
           <p className="text-muted-foreground">
             Short, honest stories from Ghanaian students, graduates, professionals and founders — and what
