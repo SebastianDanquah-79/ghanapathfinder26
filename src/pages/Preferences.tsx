@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "@/lib/router-compat";
 import { ArrowLeft, Loader2, SlidersHorizontal } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import {

@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Sparkles, Loader2, ExternalLink } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import SectionHeader from "./SectionHeader";
 import ShareButtons from "./ShareButtons";
 import { useCutoffs } from "@/hooks/useAdmissionMatch";

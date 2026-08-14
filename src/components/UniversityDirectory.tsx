@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import { Search, MapPin, GraduationCap, Building2, Loader2, ShieldCheck } from "lucide-react";
 import SectionHeader from "./SectionHeader";
 import SaveButton from "./SaveButton";

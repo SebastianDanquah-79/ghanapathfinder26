@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "@/lib/router-compat";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Bookmark, CalendarClock, GraduationCap, LogOut, Plus, Sparkles, Trash2, Users } from "lucide-react";
 import { toast } from "sonner";

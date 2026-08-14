@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "@/lib/router-compat";
 import { ArrowLeft, ExternalLink, Info, Loader2, Target } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useAdmissionMatches } from "@/hooks/useAdmissionMatch";
