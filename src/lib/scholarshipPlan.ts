@@ -10,12 +10,12 @@ export interface PlanScholarship {
 }
 
 export interface PlanInput {
-  studentName?: string | null;
-  aggregate?: number | null;
-  targetCareer?: string | null;
-  region?: string | null;
-  school?: string | null;
-  summary?: string;
+  studentName?: string | null | undefined;
+  aggregate?: number | null | undefined;
+  targetCareer?: string | null | undefined;
+  region?: string | null | undefined;
+  school?: string | null | undefined;
+  summary?: string | undefined;
   scholarships: PlanScholarship[];
   deadlines: { title: string; due_date: string }[];
   checklist: { task: string; done: boolean }[];
