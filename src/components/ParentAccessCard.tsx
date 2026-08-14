@@ -31,7 +31,10 @@ const ParentAccessCard = () => {
     const { error } = await supabase
       .from("parent_links")
       .insert({ student_id: user.id, invite_code: makeCode(), status: "pending" });
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     qc.invalidateQueries({ queryKey: ["parent_links_as_student"] });
   };
 

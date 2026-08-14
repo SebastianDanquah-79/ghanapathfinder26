@@ -3,7 +3,7 @@ import { Share2, Copy, Download, Check, MessageCircle } from "lucide-react";
 
 interface ShareButtonsProps {
   studentName: string;
-  resultRef: RefObject<HTMLDivElement>;
+  resultRef: RefObject<HTMLDivElement | null>;
 }
 
 const ShareButtons = ({ studentName, resultRef }: ShareButtonsProps) => {

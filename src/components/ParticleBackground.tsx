@@ -46,13 +46,16 @@ const ParticleBackground = () => {
       // Draw connections
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
+          const a = particles[i];
+          const b = particles[j];
+          if (!a || !b) continue;
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < 120) {
             ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
             ctx.strokeStyle = `hsla(43, 96%, 56%, ${0.06 * (1 - dist / 120)})`;
             ctx.stroke();
           }

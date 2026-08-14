@@ -17,6 +17,7 @@ export const estimateDeadlineDate = (text: string): Date | null => {
   if (!found.length) return null;
 
   const month = found[found.length - 1];
+  if (month === undefined) return null;
   const now = new Date();
   const year = month < now.getMonth() ? now.getFullYear() + 1 : now.getFullYear();
   // Assume end of the closing month
