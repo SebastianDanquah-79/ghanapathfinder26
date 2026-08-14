@@ -214,24 +214,26 @@ const Dashboard = () => {
               <Sparkles className="h-4 w-4 text-primary" /> Top matches
             </h2>
             {topMatches.length ? (
-              <ul className="hscroll space-y-2 text-sm">
+              <SwipeRow count={topMatches.length}>
                 {topMatches.map((m) => (
-                  <li key={m.cutoff.id} className="flex justify-between gap-2">
-                    <span className="text-foreground truncate">
-                      {m.cutoff.programme_name}
-                      <span className="block text-xs text-muted-foreground">
-                        {m.cutoff.universities?.short_name} · cut-off {m.cutoff.cut_off_aggregate}
-                      </span>
-                    </span>
-                    <span className="shrink-0 text-xs text-muted-foreground">{m.category}</span>
+                  <li
+                    key={m.cutoff.id}
+                    className="rounded-lg border border-border/60 bg-secondary/40 p-3 text-sm md:border-0 md:bg-transparent md:p-0"
+                  >
+                    <p className="text-foreground font-medium break-words">{m.cutoff.programme_name}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5 break-words">
+                      {m.cutoff.universities?.short_name} · cut-off {m.cutoff.cut_off_aggregate}
+                    </p>
+                    <p className="text-xs text-primary mt-1">{m.category}</p>
                   </li>
                 ))}
-              </ul>
+              </SwipeRow>
             ) : (
               <p className="text-sm text-muted-foreground">
                 Add your WASSCE results to see the programmes your aggregate actually reaches.
               </p>
             )}
+
             <Link to="/admission-match" className="mt-4 inline-block text-sm text-primary font-medium min-h-[44px]">
               See all matches and cut-offs
             </Link>
