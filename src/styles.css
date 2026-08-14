@@ -190,6 +190,33 @@
   }
 }
 
+/*
+ * Touch-friendly horizontal scroll container for sections that genuinely need
+ * more width than a phone screen (filter rows, comparison tables, wide cards).
+ * Keeps the scroll contained so the page itself never scrolls sideways.
+ */
+@utility hscroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x pan-y;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    height: 0;
+    display: none;
+  }
+}
+
+/* Lets a scroll row bleed into the page gutter without overflowing the page. */
+@utility hscroll-bleed {
+  margin-inline: -1rem;
+  padding-inline: 1rem;
+  scroll-padding-inline: 1rem;
+}
+
+
 @layer base {
   * {
     border-color: var(--color-border);
