@@ -143,7 +143,7 @@ const Compare = () => {
         </div>
 
         {chosen.length ? (
-          <div className="overflow-x-auto bg-glass rounded-xl p-4">
+          <div className="hscroll bg-glass rounded-xl p-4">
             <table className="w-full text-sm min-w-[540px]">
               <thead>
                 <tr>

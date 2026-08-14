@@ -105,7 +105,7 @@ const Navbar = () => {
           </Link>
         </div>
 
-        <div className="md:hidden flex items-center gap-2">
+        <div className="md:hidden flex min-w-0 items-center gap-2">
           <Link
             to={user ? "/dashboard" : "/auth"}
             className="inline-flex items-center px-3 min-h-[44px] text-xs font-medium rounded-lg bg-primary text-primary-foreground"

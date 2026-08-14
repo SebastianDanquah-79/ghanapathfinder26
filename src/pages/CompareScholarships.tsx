@@ -78,7 +78,7 @@ const CompareScholarships = () => {
         </div>
 
         {selected.length ? (
-          <div className="overflow-x-auto bg-glass rounded-xl p-1">
+          <div className="hscroll bg-glass rounded-xl p-1">
             <table className="w-full text-sm min-w-[640px]">
               <thead>
                 <tr>
