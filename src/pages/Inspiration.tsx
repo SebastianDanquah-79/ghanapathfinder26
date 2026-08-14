@@ -10,6 +10,11 @@ const Inspiration = () => {
 
   return (
     <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-20 pb-12">
+      <Seo
+        title="Student Success Stories & Career Inspiration | GhanaPath"
+        description="Honest stories from Ghanaian students, graduates, professionals and founders — the setbacks they faced and what they would tell you today."
+        path="/inspiration"
+      />
       <Navbar />
       <div className="max-w-7xl mx-auto">
         <header className="flex items-center justify-between gap-3 mb-6">

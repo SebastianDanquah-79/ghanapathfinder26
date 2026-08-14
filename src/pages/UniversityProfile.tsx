@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, Loader2, MapPin, ShieldCheck, Wallet, GraduationCap } from "lucide-react";
 import Navbar from "@/components/Navbar";
-import Seo from "@/components/Seo";
+import Seo, { breadcrumbLd } from "@/components/Seo";
 import Footer from "@/components/Footer";
 import SaveButton from "@/components/SaveButton";
 import OfficialLink from "@/components/OfficialLink";
@@ -14,6 +14,34 @@ const UniversityProfile = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {uni && (
+        <Seo
+          title={`${uni.name} — Programmes & Admissions | GhanaPath`}
+          description={(uni.description || `${uni.name}${uni.location ? ` in ${uni.location}` : ""}: accreditation status, programmes, tuition range and admissions information.`).slice(0, 155)}
+          path={`/university/${uni.slug}`}
+          jsonLd={[
+            {
+              "@context": "https://schema.org",
+              "@type": "EducationalOrganization",
+              name: uni.name,
+              alternateName: uni.short_name ?? undefined,
+              description: uni.description ?? undefined,
+              url: uni.website_url ?? undefined,
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: uni.location ?? undefined,
+                addressRegion: uni.region ?? undefined,
+                addressCountry: uni.country,
+              },
+            },
+            breadcrumbLd([
+              { name: "Home", path: "/" },
+              { name: "Universities", path: "/search?kind=university" },
+              { name: uni.name, path: `/university/${uni.slug}` },
+            ]),
+          ]}
+        />
+      )}
       <Navbar />
       <main className="pt-20 pb-12 px-4">
         <div className="max-w-4xl mx-auto">

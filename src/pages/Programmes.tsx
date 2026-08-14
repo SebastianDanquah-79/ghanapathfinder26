@@ -12,7 +12,7 @@ import {
   X,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
-import Seo from "@/components/Seo";
+import Seo, { breadcrumbLd } from "@/components/Seo";
 import SaveButton from "@/components/SaveButton";
 import {
   DIRECTORY_PAGE_SIZE,
@@ -158,6 +158,12 @@ const Programmes = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo
+        title="Programme Directory — Degrees in Ghana | GhanaPath"
+        description="Every accredited degree, diploma and certificate programme recorded in GhanaPath — filter by field, institution, region and WASSCE requirements."
+        path="/programmes"
+        jsonLd={[breadcrumbLd([{ name: "Home", path: "/" }, { name: "Programmes", path: "/programmes" }])]}
+      />
       <Navbar />
       <main className="pt-20 pb-14 px-4 sm:px-8 lg:px-12">
         <div className="max-w-7xl mx-auto">
