@@ -281,7 +281,8 @@ const Dashboard = () => {
           {(["university", "scholarship"] as const).map((type) => (
             <div key={type} className={card}>
               <h2 className="font-display font-semibold text-foreground mb-3 capitalize">Saved {type}s</h2>
-              <ul className="space-y-2">
+              <ul className="hscroll space-y-2">
+
                 {savedBy(type).slice(0, 5).map((s) => (
                   <li key={s.id} className="flex items-start justify-between gap-2 text-sm">
                     <div className="min-w-0">
