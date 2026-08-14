@@ -60,10 +60,7 @@ export const buildPlanText = (p: PlanInput) => {
   p.deadlines.forEach((d) => out.push(`- ${d.due_date} — ${d.title}`));
   out.push("");
 
-  out.push("APPLICATION CHECKLIST");
-  if (!p.checklist.length) out.push("Nothing added yet.");
-  p.checklist.forEach((c) => out.push(`[${c.done ? "x" : " "}] ${c.task}`));
-  out.push("", line, "ghanapathfinder26.lovable.app");
+  out.push(line, "ghanapathfinder26.lovable.app");
 
   return out.join("\n");
 };
