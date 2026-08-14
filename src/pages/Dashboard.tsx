@@ -8,7 +8,6 @@ import { useAuth } from "@/hooks/useAuth";
 import { useAdmissionMatches } from "@/hooks/useAdmissionMatch";
 import MotivationPanel from "@/components/MotivationPanel";
 import ParentAccessCard from "@/components/ParentAccessCard";
-import { celebrate } from "@/lib/celebrate";
 import type { JourneyInput } from "@/lib/motivation";
 import Navbar from "@/components/Navbar";
 
@@ -17,7 +16,6 @@ const Dashboard = () => {
   const { user, loading, signOut } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
-  const [task, setTask] = useState("");
   const [deadlineTitle, setDeadlineTitle] = useState("");
   const [deadlineDate, setDeadlineDate] = useState("");
 
