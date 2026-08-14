@@ -244,27 +244,31 @@ const Dashboard = () => {
           {(["university", "scholarship"] as const).map((type) => (
             <div key={type} className={card}>
               <h2 className="font-display font-semibold text-foreground mb-3 capitalize">Saved {type}s</h2>
-              <ul className="hscroll space-y-2">
-
-                {savedBy(type).slice(0, 5).map((s) => (
-                  <li key={s.id} className="flex items-start justify-between gap-2 text-sm">
-                    <div className="min-w-0">
-                      <p className="text-foreground break-words">{s.title}</p>
-                      {s.subtitle && <p className="text-xs text-muted-foreground">{s.subtitle}</p>}
-                    </div>
-                    <button
-                      onClick={() => removeSaved(s.id)}
-                      className="shrink-0 min-h-[44px] min-w-[44px] grid place-items-center text-muted-foreground hover:text-destructive"
-                      aria-label="Remove"
+              {savedBy(type).length ? (
+                <SwipeRow count={savedBy(type).length}>
+                  {savedBy(type).slice(0, 5).map((s) => (
+                    <li
+                      key={s.id}
+                      className="flex items-start justify-between gap-2 rounded-lg border border-border/60 bg-secondary/40 p-3 text-sm md:border-0 md:bg-transparent md:p-0"
                     >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </button>
-                  </li>
-                ))}
-                {!savedBy(type).length && (
-                  <li className="text-sm text-muted-foreground">Nothing saved yet.</li>
-                )}
-              </ul>
+                      <div className="min-w-0">
+                        <p className="text-foreground break-words">{s.title}</p>
+                        {s.subtitle && <p className="text-xs text-muted-foreground break-words">{s.subtitle}</p>}
+                      </div>
+                      <button
+                        onClick={() => removeSaved(s.id)}
+                        className="shrink-0 min-h-[44px] min-w-[44px] grid place-items-center text-muted-foreground hover:text-destructive"
+                        aria-label="Remove"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </button>
+                    </li>
+                  ))}
+                </SwipeRow>
+              ) : (
+                <p className="text-sm text-muted-foreground">Nothing saved yet.</p>
+              )}
+
               <Link to="/saved" className="mt-3 inline-block text-sm text-primary font-medium">
                 View all saved
               </Link>
