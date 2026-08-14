@@ -312,7 +312,7 @@ const Dashboard = () => {
             <h2 className="font-display font-semibold text-foreground mb-3 flex items-center gap-2">
               <CalendarClock className="h-4 w-4 text-primary" /> Deadlines
             </h2>
-            <ul className="space-y-2 mb-3">
+            <ul className="hscroll space-y-2 mb-3">
               {deadlines.map((d) => (
                 <li key={d.id} className="flex justify-between gap-2 text-sm">
                   <span className="text-foreground break-words">{d.title}</span>
@@ -325,13 +325,14 @@ const Dashboard = () => {
             </ul>
             <div className="space-y-2">
               <input className={input} placeholder="Deadline title" maxLength={120} value={deadlineTitle} onChange={(e) => setDeadlineTitle(e.target.value)} />
-              <div className="flex gap-2">
-                <input type="date" className={input} value={deadlineDate} onChange={(e) => setDeadlineDate(e.target.value)} />
-                <button onClick={addDeadline} className="px-4 min-h-[48px] rounded-xl bg-primary text-primary-foreground" aria-label="Add deadline">
+              <div className="hscroll flex gap-2">
+                <input type="date" className={`${input} min-w-[9rem]`} value={deadlineDate} onChange={(e) => setDeadlineDate(e.target.value)} />
+                <button onClick={addDeadline} className="shrink-0 px-4 min-h-[48px] rounded-xl bg-primary text-primary-foreground" aria-label="Add deadline">
                   <Plus className="h-4 w-4" />
                 </button>
               </div>
             </div>
+
           </div>
 
           <div className="md:col-span-2 xl:col-span-3">
