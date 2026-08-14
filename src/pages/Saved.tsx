@@ -42,7 +42,7 @@ const Saved = () => {
             Everything you save syncs to your account — phone, tablet or laptop.
           </p>
 
-          <div className="flex gap-2 hscroll hscroll-bleed pb-2 mb-5">
+          <div className="flex gap-2 [&>*]:shrink-0 hscroll hscroll-bleed pb-2 mb-5">
             {tabs.map((t) => (
               <button
                 key={t.key}
