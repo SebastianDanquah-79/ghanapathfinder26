@@ -390,12 +390,27 @@ const Dashboard = () => {
             <h2 className="font-display font-semibold text-foreground mb-3 flex items-center gap-2">
               <Users className="h-4 w-4 text-primary" /> Next steps
             </h2>
-            <ul className="text-sm text-muted-foreground space-y-2">
-              <li>• <Link to="/preferences" className="text-primary">Customise my match preferences</Link></li>
-              <li>• <Link to="/matcher" className="text-primary">Run the scholarship matcher</Link></li>
-              <li>• <Link to="/compare" className="text-primary">Compare universities side by side</Link></li>
-              <li>• <Link to="/search" className="text-primary">Browse and save more schools</Link></li>
-            </ul>
+            <div className="hscroll hscroll-bleed md:overflow-visible md:mx-0 md:px-0 mt-1">
+              <ul className="flex gap-2 [&>*]:shrink-0 md:flex-col md:gap-2">
+                {[
+                  { to: "/preferences", label: "Customise my match preferences" },
+                  { to: "/matcher", label: "Run the scholarship matcher" },
+                  { to: "/compare", label: "Compare universities side by side" },
+                  { to: "/search", label: "Browse and save more schools" },
+                ].map((s) => (
+                  <li key={s.to} className="md:w-full">
+                    <Link
+                      to={s.to}
+                      className="block rounded-lg border border-border/60 bg-secondary/40 px-3 py-2 text-sm text-primary md:border-0 md:bg-transparent md:px-0 md:py-0"
+                    >
+                      {s.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <p className="mt-2 text-xs text-muted-foreground md:hidden">Swipe for more →</p>
+
           </div>
           <ParentAccessCard />
         </div>
