@@ -240,6 +240,39 @@ export type Database = {
         }
         Relationships: []
       }
+      occupation_salaries: {
+        Row: {
+          created_at: string
+          data_source: string
+          experience_level: string
+          last_verified: string
+          occupation: string
+          salary_period: string
+          salary_range: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          data_source?: string
+          experience_level?: string
+          last_verified?: string
+          occupation: string
+          salary_period?: string
+          salary_range: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          data_source?: string
+          experience_level?: string
+          last_verified?: string
+          occupation?: string
+          salary_period?: string
+          salary_range?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       parent_links: {
         Row: {
           created_at: string
@@ -368,6 +401,50 @@ export type Database = {
           },
         ]
       }
+      programme_curriculum: {
+        Row: {
+          courses: string[]
+          created_at: string
+          id: string
+          note: string | null
+          position: number
+          programme_id: string
+          source: string
+          updated_at: string
+          year_label: string
+        }
+        Insert: {
+          courses?: string[]
+          created_at?: string
+          id?: string
+          note?: string | null
+          position?: number
+          programme_id: string
+          source?: string
+          updated_at?: string
+          year_label: string
+        }
+        Update: {
+          courses?: string[]
+          created_at?: string
+          id?: string
+          note?: string | null
+          position?: number
+          programme_id?: string
+          source?: string
+          updated_at?: string
+          year_label?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programme_curriculum_programme_id_fkey"
+            columns: ["programme_id"]
+            isOneToOne: false
+            referencedRelation: "programmes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       programme_cutoffs: {
         Row: {
           academic_year: string
@@ -439,6 +516,53 @@ export type Database = {
             columns: ["university_id"]
             isOneToOne: false
             referencedRelation: "universities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      programme_feedback: {
+        Row: {
+          admin_note: string | null
+          comment: string | null
+          created_at: string
+          id: string
+          issue_type: string
+          programme_id: string
+          rating: number
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          admin_note?: string | null
+          comment?: string | null
+          created_at?: string
+          id?: string
+          issue_type?: string
+          programme_id: string
+          rating: number
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          admin_note?: string | null
+          comment?: string | null
+          created_at?: string
+          id?: string
+          issue_type?: string
+          programme_id?: string
+          rating?: number
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programme_feedback_programme_id_fkey"
+            columns: ["programme_id"]
+            isOneToOne: false
+            referencedRelation: "programmes"
             referencedColumns: ["id"]
           },
         ]
@@ -1044,6 +1168,14 @@ export type Database = {
     }
     Functions: {
       accept_parent_invite: { Args: { _code: string }; Returns: string }
+      apply_occupation_salaries: {
+        Args: { _programme_id?: string }
+        Returns: undefined
+      }
+      apply_programme_curriculum: {
+        Args: { _programme_id: string }
+        Returns: undefined
+      }
       apply_programme_information: {
         Args: { _programme_id: string }
         Returns: undefined
