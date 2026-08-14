@@ -87,15 +87,6 @@ const Scholarships = () => {
     },
   });
 
-  const { data: checklist = [] } = useQuery({
-    queryKey: ["checklist", user?.id],
-    enabled: !!user,
-    queryFn: async () => {
-      const { data, error } = await supabase.from("application_checklist").select("*").order("created_at");
-      if (error) throw error;
-      return data ?? [];
-    },
-  });
 
   const { data: prefs } = useMatchPreferences();
 
@@ -204,7 +195,7 @@ const Scholarships = () => {
         };
       }),
       deadlines: deadlines.map((d) => ({ title: d.title, due_date: d.due_date })),
-      checklist: checklist.map((c) => ({ task: c.task, done: c.done })),
+      
     });
     downloadPlan(text);
     toast.success("Plan downloaded");

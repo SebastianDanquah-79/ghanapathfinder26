@@ -193,21 +193,16 @@ import { defineTool as defineTool5 } from "npm:@lovable.dev/mcp-js@0.26.2";
 var list_deadlines_default = defineTool5({
   name: "list_deadlines",
   title: "List upcoming deadlines",
-  description: "List the signed-in student's upcoming GhanaPath deadlines and their application checklist tasks.",
+  description: "List the signed-in student's upcoming GhanaPath deadlines.",
   inputSchema: {},
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async (_input, ctx) => {
     if (!ctx.isAuthenticated())
       return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
     const supabase = supabaseForUser(ctx);
-    const userId = ctx.getUserId();
-    const [deadlines, checklist] = await Promise.all([
-      supabase.from("deadlines").select("id, title, category, due_date, notes").eq("user_id", userId).order("due_date", { ascending: true }),
-      supabase.from("application_checklist").select("id, task, target, due_date, done").eq("user_id", userId).order("due_date", { ascending: true, nullsFirst: false })
-    ]);
-    const error = deadlines.error ?? checklist.error;
+    const { data, error } = await supabase.from("deadlines").select("id, title, category, due_date, notes").eq("user_id", ctx.getUserId()).order("due_date", { ascending: true });
     if (error) return { content: [{ type: "text", text: error.message }], isError: true };
-    const payload = { deadlines: deadlines.data ?? [], checklist: checklist.data ?? [] };
+    const payload = { deadlines: data ?? [] };
     return {
       content: [{ type: "text", text: JSON.stringify(payload, null, 2) }],
       structuredContent: payload

@@ -8,7 +8,6 @@ import { useAuth } from "@/hooks/useAuth";
 import { useAdmissionMatches } from "@/hooks/useAdmissionMatch";
 import MotivationPanel from "@/components/MotivationPanel";
 import ParentAccessCard from "@/components/ParentAccessCard";
-import { celebrate } from "@/lib/celebrate";
 import type { JourneyInput } from "@/lib/motivation";
 import Navbar from "@/components/Navbar";
 
@@ -17,7 +16,6 @@ const Dashboard = () => {
   const { user, loading, signOut } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
-  const [task, setTask] = useState("");
   const [deadlineTitle, setDeadlineTitle] = useState("");
   const [deadlineDate, setDeadlineDate] = useState("");
 
@@ -55,15 +53,8 @@ const Dashboard = () => {
     },
   });
 
-  const { data: checklist = [] } = useQuery({
-    queryKey: ["checklist", user?.id],
-    enabled: !!user,
-    queryFn: async () => {
-      const { data, error } = await supabase.from("application_checklist").select("*").order("created_at");
-      if (error) throw error;
-      return data ?? [];
-    },
-  });
+
+
 
   const { data: deadlines = [] } = useQuery({
     queryKey: ["deadlines", user?.id],
@@ -83,36 +74,6 @@ const Dashboard = () => {
 
   const savedBy = (type: string) => saved.filter((s) => s.item_type === type);
 
-  const addTask = async () => {
-    if (!task.trim() || !user) return;
-    const { error } = await supabase.from("application_checklist").insert({ user_id: user.id, task: task.trim() });
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
-    setTask("");
-    qc.invalidateQueries({ queryKey: ["checklist"] });
-  };
-
-  const toggleTask = async (id: string, done: boolean) => {
-    await supabase.from("application_checklist").update({ done: !done }).eq("id", id);
-    qc.invalidateQueries({ queryKey: ["checklist"] });
-    if (!done) {
-      const completed = checklist.filter((c) => c.done).length + 1;
-      celebrate(
-        completed === checklist.length ? "Checklist complete" : "Task done",
-        completed === checklist.length
-          ? "Every task ticked off. That is real preparation."
-          : `${completed} of ${checklist.length} tasks done — momentum is building.`,
-      );
-    }
-  };
-
-  const removeTask = async (id: string) => {
-    await supabase.from("application_checklist").delete().eq("id", id);
-    qc.invalidateQueries({ queryKey: ["checklist"] });
-  };
-
   const journey: JourneyInput = {
     fullName: profile?.full_name ?? null,
     targetCareer: profile?.target_career ?? null,
@@ -125,8 +86,6 @@ const Dashboard = () => {
     savedUniversities: saved.filter((s) => s.item_type === "university").length,
     savedScholarships: saved.filter((s) => s.item_type === "scholarship").length,
     savedCareers: saved.filter((s) => s.item_type === "career").length,
-    checklistTotal: checklist.length,
-    checklistDone: checklist.filter((c) => c.done).length,
     deadlines: deadlines.length,
   };
 
@@ -372,28 +331,8 @@ const Dashboard = () => {
             </ul>
           </div>
 
-          <div id="checklist" className={`${card} md:col-span-2`}>
-            <h2 className="font-display font-semibold text-foreground mb-3">Application checklist</h2>
-            <ul className="hscroll space-y-2 mb-3">
-              {checklist.map((c) => (
-                <li key={c.id} className="flex items-center gap-2 text-sm">
-                  <input type="checkbox" className="h-5 w-5 shrink-0" checked={c.done} onChange={() => toggleTask(c.id, c.done)} />
-                  <span className={c.done ? "line-through text-muted-foreground break-words" : "text-foreground break-words"}>{c.task}</span>
-                  <button onClick={() => removeTask(c.id)} className="ml-auto shrink-0 min-h-[44px] min-w-[44px] grid place-items-center text-muted-foreground hover:text-destructive" aria-label="Remove task">
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </button>
-                </li>
-              ))}
-              {!checklist.length && <li className="text-sm text-muted-foreground">Add your first application task.</li>}
-            </ul>
-            <div className="hscroll flex gap-2">
-              <input className={`${input} min-w-[12rem]`} placeholder="e.g. Upload WASSCE results to UG portal" maxLength={160} value={task} onChange={(e) => setTask(e.target.value)} />
-              <button onClick={addTask} className="shrink-0 px-4 min-h-[48px] rounded-xl bg-primary text-primary-foreground" aria-label="Add task">
-                <Plus className="h-4 w-4" />
-              </button>
-            </div>
 
-          </div>
+
 
           <div className={card}>
             <h2 className="font-display font-semibold text-foreground mb-3 flex items-center gap-2">

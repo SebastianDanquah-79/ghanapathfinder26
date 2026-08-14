@@ -142,7 +142,7 @@
       {
         "name": "list_deadlines",
         "title": "List upcoming deadlines",
-        "description": "List the signed-in student's upcoming GhanaPath deadlines and their application checklist tasks.",
+        "description": "List the signed-in student's upcoming GhanaPath deadlines.",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,

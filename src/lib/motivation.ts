@@ -10,8 +10,6 @@ export interface JourneyInput {
   savedUniversities: number;
   savedScholarships: number;
   savedCareers: number;
-  checklistTotal: number;
-  checklistDone: number;
   deadlines: number;
 }
 
@@ -66,20 +64,6 @@ export const buildMilestones = (d: JourneyInput): Milestone[] => [
     hint: "Add one application deadline so nothing slips past you.",
     href: "/scholarships",
   },
-  {
-    key: "checklist",
-    label: "Start your application checklist",
-    done: d.checklistTotal > 0,
-    hint: "Break your application into small, doable tasks.",
-    href: "/dashboard",
-  },
-  {
-    key: "checklist-progress",
-    label: "Finish 3 checklist tasks",
-    done: d.checklistDone >= 3,
-    hint: "Tick off three tasks to build real momentum.",
-    href: "/dashboard",
-  },
 ];
 
 export interface NextStep {
@@ -99,16 +83,6 @@ export const getNextStep = (d: JourneyInput, milestones: Milestone[]): NextStep 
       cta: "Take me there",
     };
   }
-  if (d.checklistTotal > d.checklistDone) {
-    return {
-      title: "Clear one more checklist task",
-      body: `You have ${d.checklistTotal - d.checklistDone} task${
-        d.checklistTotal - d.checklistDone === 1 ? "" : "s"
-      } left. One today is enough.`,
-      href: "#checklist",
-      cta: "Open my checklist",
-    };
-  }
   return {
     title: `Research entry requirements for your top ${d.savedUniversities > 1 ? "universities" : "university"}`,
     body: "You have the basics in place. Compare your shortlist and confirm what each school asks for.",
@@ -122,19 +96,8 @@ export const getSmartMessages = (d: JourneyInput): string[] => {
   const msgs: string[] = [];
   const firstName = d.fullName?.split(" ")[0];
 
-  if (d.checklistTotal > 0) {
-    if (d.checklistDone === d.checklistTotal) {
-      msgs.push("Every task on your checklist is done. That is real preparation, not luck.");
-    } else if (d.checklistDone > 0) {
-      msgs.push(
-        `You've completed ${d.checklistDone} of your ${d.checklistTotal} application tasks. Just ${
-          d.checklistTotal - d.checklistDone
-        } more to go.`,
-      );
-    } else {
-      msgs.push("Your application checklist is ready. Complete one task today and keep your momentum going.");
-    }
-  }
+
+
 
   if (d.savedScholarships > 0) {
     msgs.push(
