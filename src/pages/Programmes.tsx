@@ -199,7 +199,7 @@ const Programmes = () => {
           </div>
 
           {/* Popular searches */}
-          <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1">
+          <div className="flex gap-2 [&>*]:shrink-0 hscroll hscroll-bleed pb-2">
             <span className="inline-flex items-center gap-1 text-xs text-muted-foreground pr-1 whitespace-nowrap">
               <Sparkles className="h-3.5 w-3.5 text-primary" /> Popular
             </span>
@@ -211,7 +211,7 @@ const Programmes = () => {
           </div>
 
           {/* Category chips */}
-          <div className="flex gap-2 overflow-x-auto pb-2 mt-1 -mx-1 px-1">
+          <div className="flex gap-2 [&>*]:shrink-0 hscroll hscroll-bleed pb-2 mt-1">
             <button onClick={() => setParam("field")} className={chip(!field)}>
               All categories
             </button>

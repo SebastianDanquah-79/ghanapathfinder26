@@ -352,7 +352,7 @@ const SearchPage = () => {
               />
             </div>
 
-            <div className="flex gap-2 overflow-x-auto py-2 -mx-1 px-1 scrollbar-none">
+            <div className="flex gap-2 [&>*]:shrink-0 hscroll hscroll-bleed py-2">
               {tabs.map((t) => (
                 <button
                   key={t.key}
@@ -382,7 +382,7 @@ const SearchPage = () => {
               <div className="bg-glass rounded-xl p-3 mb-2 space-y-3">
                 <div>
                   <p className="text-[11px] uppercase tracking-wide text-muted-foreground mb-1.5">Type</p>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 [&>*]:shrink-0 hscroll pb-1">
                     {UNI_TYPES.map((t) => (
                       <button
                         key={t}
@@ -399,7 +399,7 @@ const SearchPage = () => {
                 </div>
                 <div>
                   <p className="text-[11px] uppercase tracking-wide text-muted-foreground mb-1.5">Region</p>
-                  <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
+                  <div className="flex gap-2 [&>*]:shrink-0 hscroll hscroll-bleed pb-1">
                     <button onClick={() => setRegion("")} className={chip(region === "")}>
                       All
                     </button>
@@ -421,7 +421,7 @@ const SearchPage = () => {
                   <p className="text-[11px] uppercase tracking-wide text-muted-foreground mb-1.5">
                     Institution type
                   </p>
-                  <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
+                  <div className="flex gap-2 [&>*]:shrink-0 hscroll hscroll-bleed pb-1">
                     <button onClick={() => setCategory("")} className={chip(category === "")}>
                       All
                     </button>
@@ -453,7 +453,7 @@ const SearchPage = () => {
             {showFilters && kind === "scholarship" && (
               <div className="bg-glass rounded-xl p-3 mb-2">
                 <p className="text-[11px] uppercase tracking-wide text-muted-foreground mb-1.5">Funding type</p>
-                <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
+                <div className="flex gap-2 [&>*]:shrink-0 hscroll hscroll-bleed pb-1">
                   {SCHOLARSHIP_TYPES.map((t) => (
                     <button
                       key={t}
