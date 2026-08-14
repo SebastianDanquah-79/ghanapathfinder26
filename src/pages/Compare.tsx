@@ -34,6 +34,8 @@ const useUniversitySearch = (search: string) =>
       let q = supabase.from("universities").select(FIELDS).order("name").limit(60);
       const term = search.trim();
       if (term) q = q.or(`name.ilike.%${term}%,short_name.ilike.%${term}%,location.ilike.%${term}%`);
+      // With no search, surface the institutions that have full comparable profiles.
+      else q = q.not("campus_vibe", "is", null);
       const { data, error } = await q;
       if (error) throw error;
       return (data ?? []) as unknown as UniversityRow[];
