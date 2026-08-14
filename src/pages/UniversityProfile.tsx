@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams } from "@/lib/router-compat";
 import { ArrowLeft, Loader2, MapPin, ShieldCheck, Wallet, GraduationCap } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Seo, { breadcrumbLd } from "@/components/Seo";

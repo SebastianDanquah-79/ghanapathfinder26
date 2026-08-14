@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import { Search, MapPin, GraduationCap, Building2, Loader2, ShieldCheck } from "lucide-react";
 import SectionHeader from "./SectionHeader";
 import SaveButton from "./SaveButton";
@@ -52,7 +52,7 @@ const UniversityDirectory = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               aria-label="Search universities"
-              className="w-full pl-10 pr-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="w-full pl-10 pr-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50"
             />
           </div>
           <div className="flex gap-2">

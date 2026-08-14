@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "@/lib/router-compat";
 import {
   Search as SearchIcon,
   Loader2,
@@ -339,7 +339,7 @@ const SearchPage = () => {
             Universities, programmes and scholarships.
           </p>
 
-          <div className="sticky top-16 z-30 -mx-4 px-4 py-2 bg-background/95 backdrop-blur">
+          <div className="sticky top-16 z-30 -mx-4 px-4 py-2 bg-background/95 backdrop-blur-sm">
             <div className="relative">
               <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <input
@@ -347,7 +347,7 @@ const SearchPage = () => {
                 value={term}
                 onChange={(e) => setTerm(e.target.value)}
                 placeholder="Search universities, programmes…"
-                className="w-full pl-10 pr-4 min-h-[48px] rounded-xl bg-secondary border border-border text-foreground text-base sm:text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="w-full pl-10 pr-4 min-h-[48px] rounded-xl bg-secondary border border-border text-foreground text-base sm:text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50"
                 aria-label="Search universities, programmes and scholarships"
               />
             </div>

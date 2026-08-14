@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import { Bookmark, GraduationCap, Search, BookOpen, ExternalLink } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import Navbar from "@/components/Navbar";

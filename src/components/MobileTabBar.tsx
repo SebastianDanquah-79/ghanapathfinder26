@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "@/lib/router-compat";
 import { Home, Search, Target, GraduationCap, LayoutDashboard, BookOpen } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 

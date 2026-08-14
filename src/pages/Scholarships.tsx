@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "@/lib/router-compat";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Award,
@@ -20,6 +20,7 @@ import { scholarships } from "@/data/scholarships";
 import { matchScholarships } from "@/lib/scholarshipMatcher";
 import { estimateDeadlineDate, toISODate, daysUntil, urgencyLabel } from "@/lib/scholarshipDates";
 import { buildPlanText, downloadPlan } from "@/lib/scholarshipPlan";
+import { scholarshipMatch } from "@/lib/scholarship-match.functions";
 import SaveButton from "@/components/SaveButton";
 import { useMatchPreferences } from "@/hooks/useMatchPreferences";
 import Navbar from "@/components/Navbar";
@@ -125,8 +126,8 @@ const Scholarships = () => {
     setBusy(true);
     setAi(null);
     try {
-      const { data, error } = await supabase.functions.invoke("scholarship-match", {
-        body: {
+      const data = await scholarshipMatch({
+        data: {
           profile: {
             preferences: prefs,
             aggregate,
@@ -148,8 +149,6 @@ const Scholarships = () => {
           })),
         },
       });
-      if (error) throw error;
-      if (data?.error) throw new Error(data.details || data.error);
       setAi(data);
       toast.success("AI matches ready");
     } catch (e) {

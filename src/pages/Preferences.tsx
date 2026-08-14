@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "@/lib/router-compat";
 import { ArrowLeft, Loader2, SlidersHorizontal } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import {
@@ -23,7 +23,7 @@ const REGIONS = [
 
 const card = "bg-glass rounded-xl p-5";
 const input =
-  "w-full px-3 py-2.5 rounded-lg bg-secondary border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50";
+  "w-full px-3 py-2.5 rounded-lg bg-secondary border border-border text-foreground text-sm focus:outline-hidden focus:ring-2 focus:ring-primary/50";
 
 const Preferences = () => {
   const { user, loading } = useAuth();

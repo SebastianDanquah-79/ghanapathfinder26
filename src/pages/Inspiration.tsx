@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import { motion } from "framer-motion";
 import { ArrowLeft, GraduationCap, Lightbulb, Quote } from "lucide-react";
 import { getDailyMessage, stories } from "@/lib/motivation";
