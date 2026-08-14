@@ -255,7 +255,7 @@ const Dashboard = () => {
               <Sparkles className="h-4 w-4 text-primary" /> Top matches
             </h2>
             {topMatches.length ? (
-              <ul className="space-y-2 text-sm">
+              <ul className="hscroll space-y-2 text-sm">
                 {topMatches.map((m) => (
                   <li key={m.cutoff.id} className="flex justify-between gap-2">
                     <span className="text-foreground truncate">
