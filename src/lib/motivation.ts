@@ -122,19 +122,8 @@ export const getSmartMessages = (d: JourneyInput): string[] => {
   const msgs: string[] = [];
   const firstName = d.fullName?.split(" ")[0];
 
-  if (d.checklistTotal > 0) {
-    if (d.checklistDone === d.checklistTotal) {
-      msgs.push("Every task on your checklist is done. That is real preparation, not luck.");
-    } else if (d.checklistDone > 0) {
-      msgs.push(
-        `You've completed ${d.checklistDone} of your ${d.checklistTotal} application tasks. Just ${
-          d.checklistTotal - d.checklistDone
-        } more to go.`,
-      );
-    } else {
-      msgs.push("Your application checklist is ready. Complete one task today and keep your momentum going.");
-    }
-  }
+
+
 
   if (d.savedScholarships > 0) {
     msgs.push(
