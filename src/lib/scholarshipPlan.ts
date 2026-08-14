@@ -18,7 +18,7 @@ export interface PlanInput {
   summary?: string | undefined;
   scholarships: PlanScholarship[];
   deadlines: { title: string; due_date: string }[];
-  checklist: { task: string; done: boolean }[];
+  
 }
 
 export const buildPlanText = (p: PlanInput) => {
