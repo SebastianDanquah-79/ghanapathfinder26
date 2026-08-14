@@ -210,38 +210,44 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Primary actions, thumb-reachable on mobile */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-4 mb-6 lg:mb-6">
-          {quickActions.map(({ to, label, icon: Icon }) => (
-            <Link
-              key={label}
-              to={to}
-              className="bg-glass bg-glass-hover card-hover rounded-xl p-3 lg:p-4 min-h-[76px] lg:min-h-[92px] flex flex-col justify-center gap-1.5 lg:gap-2 active:opacity-80"
-            >
-              <Icon className="h-4 w-4 lg:h-5 lg:w-5 text-primary" />
-              <span className="text-xs lg:text-sm font-medium text-foreground leading-tight">{label}</span>
-            </Link>
-          ))}
+        {/* Primary actions, thumb-reachable on mobile — swipeable row on phones */}
+        <div className="hscroll hscroll-bleed sm:overflow-visible sm:mx-0 sm:px-0 mb-2 sm:mb-6 lg:mb-6">
+          <div className="flex gap-3 [&>*]:shrink-0 sm:grid sm:grid-cols-3 lg:grid-cols-6 sm:gap-3 lg:gap-4">
+            {quickActions.map(({ to, label, icon: Icon }) => (
+              <Link
+                key={label}
+                to={to}
+                className="w-[8.5rem] sm:w-auto bg-glass bg-glass-hover card-hover rounded-xl p-3 lg:p-4 min-h-[76px] lg:min-h-[92px] flex flex-col justify-center gap-1.5 lg:gap-2 active:opacity-80"
+              >
+                <Icon className="h-4 w-4 lg:h-5 lg:w-5 text-primary" />
+                <span className="text-xs lg:text-sm font-medium text-foreground leading-tight">{label}</span>
+              </Link>
+            ))}
+          </div>
         </div>
+        <p className="text-xs text-muted-foreground mb-4 sm:hidden">Swipe for more →</p>
 
         {/* Saved shortcuts */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          {[
-            { type: "university", label: "Universities" },
-            { type: "programme", label: "Programmes" },
-            { type: "scholarship", label: "Scholarships" },
-          ].map(({ type, label }) => (
-            <Link
-              key={type}
-              to="/saved"
-              className="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-xl bg-glass bg-glass-hover text-sm text-foreground"
-            >
-              <Bookmark className="h-4 w-4 text-primary" />
-              {label}
-              <span className="text-xs text-muted-foreground">{savedBy(type).length}</span>
-            </Link>
-          ))}
+        <div className="hscroll hscroll-bleed sm:overflow-visible sm:mx-0 sm:px-0 mb-6">
+          <div className="flex gap-2 [&>*]:shrink-0 sm:flex-wrap">
+            {[
+              { type: "university", label: "Universities" },
+              { type: "programme", label: "Programmes" },
+              { type: "scholarship", label: "Scholarships" },
+            ].map(({ type, label }) => (
+              <Link
+                key={type}
+                to="/saved"
+                className="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-xl bg-glass bg-glass-hover text-sm text-foreground"
+              >
+                <Bookmark className="h-4 w-4 text-primary" />
+                {label}
+                <span className="text-xs text-muted-foreground">{savedBy(type).length}</span>
+              </Link>
+            ))}
+          </div>
         </div>
+
 
         <div className="grid gap-5 lg:gap-4 md:grid-cols-2 xl:grid-cols-3">
           <div className={card}>
