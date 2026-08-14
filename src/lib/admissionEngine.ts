@@ -82,7 +82,7 @@ export function findGrade(results: SubjectResult[], wanted: string): SubjectResu
     return !!wKey && (sKey === wKey || sKey.includes(wKey) || wKey.includes(sKey));
   });
   if (!candidates.length) return null;
-  return candidates.sort((a, b) => (GRADE_POINTS[a.grade] ?? 9) - (GRADE_POINTS[b.grade] ?? 9))[0];
+  return candidates.sort((a, b) => (GRADE_POINTS[a.grade] ?? 9) - (GRADE_POINTS[b.grade] ?? 9))[0] ?? null;
 }
 
 export interface AggregateBreakdown {
@@ -100,8 +100,8 @@ export interface AggregateBreakdown {
  */
 export function computeAggregate(results: SubjectResult[]): AggregateBreakdown {
   const clean = results.filter((r) => GRADE_POINTS[r.grade]);
-  const failedSubjects = clean.filter((r) => GRADE_POINTS[r.grade] > 6);
-  const passes = clean.filter((r) => GRADE_POINTS[r.grade] <= 6);
+  const failedSubjects = clean.filter((r) => (GRADE_POINTS[r.grade] ?? 0) > 6);
+  const passes = clean.filter((r) => (GRADE_POINTS[r.grade] ?? 9) <= 6);
 
   const missingCores: string[] = [];
   const coreUsed: SubjectResult[] = [];
@@ -113,7 +113,7 @@ export function computeAggregate(results: SubjectResult[]): AggregateBreakdown {
 
   const electives = passes
     .filter((r) => !isCore(r.subject))
-    .sort((a, b) => GRADE_POINTS[a.grade] - GRADE_POINTS[b.grade])
+    .sort((a, b) => (GRADE_POINTS[a.grade] ?? 9) - (GRADE_POINTS[b.grade] ?? 9))
     .slice(0, 3);
 
   const usedSubjects = [...coreUsed, ...electives];
@@ -121,7 +121,7 @@ export function computeAggregate(results: SubjectResult[]): AggregateBreakdown {
 
   return {
     aggregate: hasEnoughSubjects
-      ? usedSubjects.reduce((sum, r) => sum + GRADE_POINTS[r.grade], 0)
+      ? usedSubjects.reduce((sum, r) => sum + (GRADE_POINTS[r.grade] ?? 0), 0)
       : null,
     usedSubjects,
     missingCores,
@@ -150,8 +150,8 @@ export function checkSubjectRequirements(
   const re = /([A-F][1-9])\s*(?:or\s+better\s*)?in\s+([^,;]+)/gi;
   let m: RegExpExecArray | null;
   while ((m = re.exec(text))) {
-    const required = m[1].toUpperCase();
-    const rawSubjects = m[2].replace(/\band\b/gi, ",");
+    const required = (m[1] ?? "").toUpperCase();
+    const rawSubjects = (m[2] ?? "").replace(/\band\b/gi, ",");
     for (const subj of rawSubjects.split(",").map((s) => s.trim()).filter(Boolean)) {
       const hit = findGrade(results, subj);
       if (!hit) {
@@ -162,7 +162,7 @@ export function checkSubjectRequirements(
           status: "unknown",
           note: `${subj} is required at ${required} or better — you have not entered a grade for it.`,
         });
-      } else if (GRADE_POINTS[hit.grade] <= GRADE_POINTS[required]) {
+      } else if ((GRADE_POINTS[hit.grade] ?? 9) <= (GRADE_POINTS[required] ?? 9)) {
         checks.push({
           label: subj,
           required,
