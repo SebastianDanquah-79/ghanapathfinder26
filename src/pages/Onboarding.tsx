@@ -93,7 +93,7 @@ const Onboarding = () => {
 
 
   const inputClass =
-    "w-full px-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50";
+    "w-full px-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50";
 
   return (
     <div className="min-h-screen bg-background px-4 py-8">

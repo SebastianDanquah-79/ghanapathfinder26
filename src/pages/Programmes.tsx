@@ -185,7 +185,7 @@ const Programmes = () => {
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search Mechatronics, Artificial Intelligence, Nursing…"
               aria-label="Search programmes"
-              className="w-full min-h-[48px] pl-10 pr-10 rounded-xl bg-glass border border-border/60 text-base sm:text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
+              className="w-full min-h-[48px] pl-10 pr-10 rounded-xl bg-glass border border-border/60 text-base sm:text-sm text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/40"
             />
             {search && (
               <button
@@ -280,7 +280,7 @@ const Programmes = () => {
                       id={`filter-${group.key}`}
                       value={params.get(group.key) ?? ""}
                       onChange={(e) => setParam(group.key, e.target.value || undefined)}
-                      className="w-full min-h-[44px] rounded-lg bg-secondary px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
+                      className="w-full min-h-[44px] rounded-lg bg-secondary px-3 text-sm text-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/40"
                     >
                       <option value="">All</option>
                       {(group.options ?? []).map((o) => (

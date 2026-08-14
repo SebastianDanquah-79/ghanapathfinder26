@@ -113,7 +113,7 @@ const Compare = () => {
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name, short name or city"
             aria-label="Search universities"
-            className="w-full min-h-[44px] pl-9 pr-3 rounded-lg bg-secondary text-sm text-foreground placeholder:text-muted-foreground outline-none focus:ring-2 focus:ring-primary/40"
+            className="w-full min-h-[44px] pl-9 pr-3 rounded-lg bg-secondary text-sm text-foreground placeholder:text-muted-foreground outline-hidden focus:ring-2 focus:ring-primary/40"
           />
         </div>
 

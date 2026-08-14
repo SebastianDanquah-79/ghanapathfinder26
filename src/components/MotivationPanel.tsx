@@ -53,14 +53,14 @@ const MotivationPanel = ({ data }: { data: JourneyInput }) => {
         {internal ? (
           <Link
             to={nextStep.href}
-            className="mt-4 inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="mt-4 inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
           >
             {nextStep.cta} <ArrowRight className="h-4 w-4" />
           </Link>
         ) : (
           <a
             href={nextStep.href}
-            className="mt-4 inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="mt-4 inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
           >
             {nextStep.cta} <ArrowRight className="h-4 w-4" />
           </a>
@@ -158,7 +158,7 @@ const MotivationPanel = ({ data }: { data: JourneyInput }) => {
         </div>
         <Link
           to="/inspiration"
-          className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-secondary text-foreground text-sm font-medium hover:bg-secondary/70 transition-colors shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-secondary text-foreground text-sm font-medium hover:bg-secondary/70 transition-colors shrink-0 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
         >
           Open Inspiration <ArrowRight className="h-4 w-4" />
         </Link>

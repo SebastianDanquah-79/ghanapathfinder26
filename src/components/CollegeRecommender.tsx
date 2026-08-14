@@ -62,7 +62,7 @@ const CollegeRecommender = () => {
                 maxLength={80}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 placeholder="Kwame Asante"
-                className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50"
               />
             </div>
             <div>
@@ -74,7 +74,7 @@ const CollegeRecommender = () => {
                 maxLength={60}
                 onChange={(e) => setForm({ ...form, major: e.target.value })}
                 placeholder="e.g. Computer Science, Nursing"
-                className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50"
               />
             </div>
             <div>
@@ -89,7 +89,7 @@ const CollegeRecommender = () => {
                 value={form.aggregate}
                 onChange={(e) => setForm({ ...form, aggregate: e.target.value })}
                 placeholder="e.g. 12"
-                className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50"
               />
             </div>
             <div>
@@ -99,7 +99,7 @@ const CollegeRecommender = () => {
               <select
                 value={form.preference}
                 onChange={(e) => setForm({ ...form, preference: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-foreground text-sm focus:outline-hidden focus:ring-2 focus:ring-primary/50"
               >
                 {preferences.map((p) => <option key={p} value={p}>{p}</option>)}
               </select>

@@ -148,7 +148,7 @@ const Dashboard = () => {
 
   const card = "bg-glass rounded-xl p-5 lg:p-5";
   const input =
-    "w-full px-3 py-2 rounded-lg bg-secondary border border-border text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/50";
+    "w-full px-3 py-2 rounded-lg bg-secondary border border-border text-foreground text-sm focus:outline-hidden focus:ring-2 focus:ring-primary/50";
 
   const quickActions = [
     { to: "/admission-match", label: "Recommendations", icon: Sparkles },

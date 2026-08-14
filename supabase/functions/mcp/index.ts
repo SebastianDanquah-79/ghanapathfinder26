@@ -90,7 +90,7 @@ var get_profile_default = defineTool({
 
 // src/lib/mcp/tools/list-saved-items.ts
 import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.26.2";
-import { z } from "npm:zod@^3.25.76";
+import { z } from "npm:zod@^3.24.2";
 var list_saved_items_default = defineTool2({
   name: "list_saved_items",
   title: "List saved universities and scholarships",
@@ -117,7 +117,7 @@ var list_saved_items_default = defineTool2({
 
 // src/lib/mcp/tools/list-applications.ts
 import { defineTool as defineTool3 } from "npm:@lovable.dev/mcp-js@0.26.2";
-import { z as z2 } from "npm:zod@^3.25.76";
+import { z as z2 } from "npm:zod@^3.24.2";
 var list_applications_default = defineTool3({
   name: "list_scholarship_applications",
   title: "List scholarship applications",
@@ -143,7 +143,7 @@ var list_applications_default = defineTool3({
 
 // src/lib/mcp/tools/track-application.ts
 import { defineTool as defineTool4 } from "npm:@lovable.dev/mcp-js@0.26.2";
-import { z as z3 } from "npm:zod@^3.25.76";
+import { z as z3 } from "npm:zod@^3.24.2";
 var STATUSES = ["interested", "preparing", "submitted", "interview", "awarded", "rejected"];
 var track_application_default = defineTool4({
   name: "track_scholarship_application",

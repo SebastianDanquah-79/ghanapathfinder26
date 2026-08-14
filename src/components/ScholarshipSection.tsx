@@ -52,7 +52,7 @@ const ScholarshipSection = () => {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               aria-label="Search scholarships"
-              className="w-full pl-10 pr-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+              className="w-full pl-10 pr-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50"
             />
           </div>
           <div className="flex gap-2 flex-wrap">

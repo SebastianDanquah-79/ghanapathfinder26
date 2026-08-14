@@ -1,0 +1,29 @@
+{
+  "customizations": [
+    { "token": "--ghana-gold", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--ghana-gold-light", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--ghana-green", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--ghana-red", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--navy-deep", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--navy-mid", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--navy-light", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--glow-gold", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "custom dark navy/gold shadcn token set (:root)", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "--font-sans Inter / --font-display Space Grotesk", "source": "src/index.css + tailwind.config.ts", "reappliedIn": "src/styles.css" },
+    { "token": "--radius 0.75rem", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "container (center, 2rem padding, 1400px cap)", "source": "tailwind.config.ts", "reappliedIn": "src/styles.css" },
+    { "token": "animate-float keyframes", "source": "tailwind.config.ts", "reappliedIn": "src/styles.css" },
+    { "token": "animate-pulse-glow keyframes", "source": "tailwind.config.ts", "reappliedIn": "src/styles.css" },
+    { "token": "text-gradient-gold", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "bg-glass", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "bg-glass-hover", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "glow-gold", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "glow-gold-sm", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "card-hover", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "scrollbar-none", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "custom scrollbar CSS", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "typewriter-cursor", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "particles-canvas", "source": "src/index.css", "reappliedIn": "src/styles.css" },
+    { "token": "base layer mobile/typography rules", "source": "src/index.css", "reappliedIn": "src/styles.css" }
+  ]
+}
