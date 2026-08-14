@@ -160,7 +160,7 @@ const ProgrammePage = () => {
                     }}
                   />
                   <OfficialLink
-                    href={p.programme_url || p.application_url || uni?.admissions_url}
+                    href={p.programme_url || p.application_url || uni?.admissions_url || null}
                     label="Official programme"
                   />
                 </div>

@@ -101,7 +101,7 @@ const Scholarships = () => {
 
   const graded = results.filter((r) => GRADE_POINTS[r.grade]);
   const aggregate = graded.length
-    ? graded.map((r) => GRADE_POINTS[r.grade]).sort((a, b) => a - b).slice(0, 6).reduce((a, b) => a + b, 0)
+    ? graded.map((r) => GRADE_POINTS[r.grade] ?? 0).sort((a, b) => a - b).slice(0, 6).reduce((a, b) => a + b, 0)
     : null;
 
   const savedScholarships = saved.filter((s) => s.item_type === "scholarship");
@@ -161,13 +161,22 @@ const Scholarships = () => {
   const trackDeadline = async (name: string, deadlineText: string) => {
     if (!user) return;
     const date = estimateDeadlineDate(deadlineText);
-    if (!date) return toast.error("This scholarship has no fixed month — add a reminder manually.");
+    if (!date) {
+      toast.error("This scholarship has no fixed month — add a reminder manually.");
+      return;
+    }
     const iso = toISODate(date);
-    if (deadlines.some((d) => d.title === name)) return toast.info("Already tracking this deadline");
+    if (deadlines.some((d) => d.title === name)) {
+      toast.info("Already tracking this deadline");
+      return;
+    }
     const { error } = await supabase
       .from("deadlines")
       .insert({ user_id: user.id, title: name, due_date: iso, category: "scholarship", notes: deadlineText });
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     qc.invalidateQueries({ queryKey: ["deadlines"] });
     toast.success(`Reminder set for ${iso}`);
   };

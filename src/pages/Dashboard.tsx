@@ -135,7 +135,10 @@ const Dashboard = () => {
     const { error } = await supabase
       .from("deadlines")
       .insert({ user_id: user.id, title: deadlineTitle.trim(), due_date: deadlineDate });
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     setDeadlineTitle("");
     setDeadlineDate("");
     qc.invalidateQueries({ queryKey: ["deadlines"] });

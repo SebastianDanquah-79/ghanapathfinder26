@@ -40,12 +40,12 @@ export const useCatalogueSearch = (
   });
 
 export interface UniversityFilters {
-  search?: string;
-  type?: "All" | "Public" | "Private";
-  region?: string;
-  category?: string;
-  page?: number;
-  pageSize?: number;
+  search?: string | undefined;
+  type?: "All" | "Public" | "Private" | undefined;
+  region?: string | undefined;
+  category?: string | undefined;
+  page?: number | undefined;
+  pageSize?: number | undefined;
 }
 
 export const useUniversities = (filters: UniversityFilters = {}) => {

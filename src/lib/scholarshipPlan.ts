@@ -1,12 +1,12 @@
 export interface PlanScholarship {
   name: string;
-  provider?: string | null;
-  coverage?: string;
-  deadline?: string;
-  score?: number;
-  why?: string;
-  gaps?: string[];
-  nextStep?: string;
+  provider?: string | null | undefined;
+  coverage?: string | undefined;
+  deadline?: string | undefined;
+  score?: number | undefined;
+  why?: string | undefined;
+  gaps?: string[] | undefined;
+  nextStep?: string | undefined;
 }
 
 export interface PlanInput {
