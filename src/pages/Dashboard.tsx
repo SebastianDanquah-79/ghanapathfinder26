@@ -10,6 +10,8 @@ import MotivationPanel from "@/components/MotivationPanel";
 import ParentAccessCard from "@/components/ParentAccessCard";
 import type { JourneyInput } from "@/lib/motivation";
 import Navbar from "@/components/Navbar";
+import SwipeRow from "@/components/SwipeRow";
+
 
 
 const Dashboard = () => {
@@ -214,24 +216,26 @@ const Dashboard = () => {
               <Sparkles className="h-4 w-4 text-primary" /> Top matches
             </h2>
             {topMatches.length ? (
-              <ul className="hscroll space-y-2 text-sm">
+              <SwipeRow count={topMatches.length}>
                 {topMatches.map((m) => (
-                  <li key={m.cutoff.id} className="flex justify-between gap-2">
-                    <span className="text-foreground truncate">
-                      {m.cutoff.programme_name}
-                      <span className="block text-xs text-muted-foreground">
-                        {m.cutoff.universities?.short_name} · cut-off {m.cutoff.cut_off_aggregate}
-                      </span>
-                    </span>
-                    <span className="shrink-0 text-xs text-muted-foreground">{m.category}</span>
+                  <li
+                    key={m.cutoff.id}
+                    className="rounded-lg border border-border/60 bg-secondary/40 p-3 text-sm md:border-0 md:bg-transparent md:p-0"
+                  >
+                    <p className="text-foreground font-medium break-words">{m.cutoff.programme_name}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5 break-words">
+                      {m.cutoff.universities?.short_name} · cut-off {m.cutoff.cut_off_aggregate}
+                    </p>
+                    <p className="text-xs text-primary mt-1">{m.category}</p>
                   </li>
                 ))}
-              </ul>
+              </SwipeRow>
             ) : (
               <p className="text-sm text-muted-foreground">
                 Add your WASSCE results to see the programmes your aggregate actually reaches.
               </p>
             )}
+
             <Link to="/admission-match" className="mt-4 inline-block text-sm text-primary font-medium min-h-[44px]">
               See all matches and cut-offs
             </Link>
@@ -240,27 +244,31 @@ const Dashboard = () => {
           {(["university", "scholarship"] as const).map((type) => (
             <div key={type} className={card}>
               <h2 className="font-display font-semibold text-foreground mb-3 capitalize">Saved {type}s</h2>
-              <ul className="hscroll space-y-2">
-
-                {savedBy(type).slice(0, 5).map((s) => (
-                  <li key={s.id} className="flex items-start justify-between gap-2 text-sm">
-                    <div className="min-w-0">
-                      <p className="text-foreground break-words">{s.title}</p>
-                      {s.subtitle && <p className="text-xs text-muted-foreground">{s.subtitle}</p>}
-                    </div>
-                    <button
-                      onClick={() => removeSaved(s.id)}
-                      className="shrink-0 min-h-[44px] min-w-[44px] grid place-items-center text-muted-foreground hover:text-destructive"
-                      aria-label="Remove"
+              {savedBy(type).length ? (
+                <SwipeRow count={savedBy(type).length}>
+                  {savedBy(type).slice(0, 5).map((s) => (
+                    <li
+                      key={s.id}
+                      className="flex items-start justify-between gap-2 rounded-lg border border-border/60 bg-secondary/40 p-3 text-sm md:border-0 md:bg-transparent md:p-0"
                     >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </button>
-                  </li>
-                ))}
-                {!savedBy(type).length && (
-                  <li className="text-sm text-muted-foreground">Nothing saved yet.</li>
-                )}
-              </ul>
+                      <div className="min-w-0">
+                        <p className="text-foreground break-words">{s.title}</p>
+                        {s.subtitle && <p className="text-xs text-muted-foreground break-words">{s.subtitle}</p>}
+                      </div>
+                      <button
+                        onClick={() => removeSaved(s.id)}
+                        className="shrink-0 min-h-[44px] min-w-[44px] grid place-items-center text-muted-foreground hover:text-destructive"
+                        aria-label="Remove"
+                      >
+                        <Trash2 className="h-3.5 w-3.5" />
+                      </button>
+                    </li>
+                  ))}
+                </SwipeRow>
+              ) : (
+                <p className="text-sm text-muted-foreground">Nothing saved yet.</p>
+              )}
+
               <Link to="/saved" className="mt-3 inline-block text-sm text-primary font-medium">
                 View all saved
               </Link>
@@ -271,17 +279,26 @@ const Dashboard = () => {
             <h2 className="font-display font-semibold text-foreground mb-3 flex items-center gap-2">
               <CalendarClock className="h-4 w-4 text-primary" /> Deadlines
             </h2>
-            <ul className="hscroll space-y-2 mb-3">
-              {deadlines.map((d) => (
-                <li key={d.id} className="flex justify-between gap-2 text-sm">
-                  <span className="text-foreground break-words">{d.title}</span>
-                  <span className={daysLeft(d.due_date) < 14 ? "text-destructive text-xs shrink-0" : "text-muted-foreground text-xs shrink-0"}>
-                    {daysLeft(d.due_date)} days
-                  </span>
-                </li>
-              ))}
-              {!deadlines.length && <li className="text-sm text-muted-foreground">No deadlines yet.</li>}
-            </ul>
+            <div className="mb-3">
+              {deadlines.length ? (
+                <SwipeRow count={deadlines.length}>
+                  {deadlines.map((d) => (
+                    <li
+                      key={d.id}
+                      className="flex justify-between gap-2 rounded-lg border border-border/60 bg-secondary/40 p-3 text-sm md:border-0 md:bg-transparent md:p-0"
+                    >
+                      <span className="text-foreground break-words">{d.title}</span>
+                      <span className={daysLeft(d.due_date) < 14 ? "text-destructive text-xs shrink-0" : "text-muted-foreground text-xs shrink-0"}>
+                        {daysLeft(d.due_date)} days
+                      </span>
+                    </li>
+                  ))}
+                </SwipeRow>
+              ) : (
+                <p className="text-sm text-muted-foreground">No deadlines yet.</p>
+              )}
+            </div>
+
             <div className="space-y-2">
               <input className={input} placeholder="Deadline title" maxLength={120} value={deadlineTitle} onChange={(e) => setDeadlineTitle(e.target.value)} />
               <div className="hscroll flex gap-2">
@@ -300,7 +317,7 @@ const Dashboard = () => {
 
           <div className={card}>
             <h2 className="font-display font-semibold text-foreground mb-3">Your profile</h2>
-            <dl className="hscroll text-sm space-y-2 text-muted-foreground">
+            <dl className="text-sm space-y-2 text-muted-foreground">
               <div className="flex justify-between gap-3"><dt>Target career</dt><dd className="text-foreground text-right">{profile?.target_career ?? "—"}</dd></div>
               <div className="flex justify-between gap-3"><dt>School</dt><dd className="text-foreground text-right">{profile?.school ?? "—"}</dd></div>
               <div className="flex justify-between gap-3"><dt>Region</dt><dd className="text-foreground text-right">{profile?.region ?? "—"}</dd></div>
@@ -312,23 +329,28 @@ const Dashboard = () => {
 
           <div className={card}>
             <h2 className="font-display font-semibold text-foreground mb-3 capitalize">Saved careers</h2>
-            <ul className="hscroll space-y-2">
-              {savedBy("career").map((s) => (
-                <li key={s.id} className="flex items-start justify-between gap-2 text-sm">
-                  <p className="text-foreground break-words">{s.title}</p>
-                  <button
-                    onClick={() => removeSaved(s.id)}
-                    className="shrink-0 min-h-[44px] min-w-[44px] grid place-items-center text-muted-foreground hover:text-destructive"
-                    aria-label="Remove"
+            {savedBy("career").length ? (
+              <SwipeRow count={savedBy("career").length}>
+                {savedBy("career").map((s) => (
+                  <li
+                    key={s.id}
+                    className="flex items-start justify-between gap-2 rounded-lg border border-border/60 bg-secondary/40 p-3 text-sm md:border-0 md:bg-transparent md:p-0"
                   >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </button>
-                </li>
-              ))}
-              {!savedBy("career").length && (
-                <li className="text-sm text-muted-foreground">Nothing saved yet.</li>
-              )}
-            </ul>
+                    <p className="text-foreground break-words">{s.title}</p>
+                    <button
+                      onClick={() => removeSaved(s.id)}
+                      className="shrink-0 min-h-[44px] min-w-[44px] grid place-items-center text-muted-foreground hover:text-destructive"
+                      aria-label="Remove"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  </li>
+                ))}
+              </SwipeRow>
+            ) : (
+              <p className="text-sm text-muted-foreground">Nothing saved yet.</p>
+            )}
+
           </div>
 
 
