@@ -43,7 +43,7 @@ function RootComponent() {
           <Sonner />
           <AuthProvider>
             <OfflineBanner />
-            <div className="pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0">
+            <div className="desktop-shell pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0">
               <Outlet />
             </div>
             <MobileTabBar />
