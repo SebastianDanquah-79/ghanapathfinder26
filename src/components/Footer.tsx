@@ -12,7 +12,19 @@ const Footer = () => (
       <p className="text-sm text-muted-foreground mb-2">
         AI-powered college and career guidance for Ghanaian SHS students 🇬🇭
       </p>
+      <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 text-sm">
+        <p className="text-foreground">
+          <span className="text-primary font-medium">Twi:</span> Yɛda wo ase sɛ wode GhanaPath adi dwuma
+        </p>
+        <p className="text-foreground">
+          <span className="text-primary font-medium">Ewe:</span> Akpe na wò be nèzã GhanaPath
+        </p>
+        <p className="text-foreground">
+          <span className="text-primary font-medium">Ga:</span> Oyiwaladɔŋŋ akɛ okɛ GhanaPath tsu nii
+        </p>
+      </div>
       <p className="text-xs text-muted-foreground mt-3">© 2026 GhanaPath. All rights reserved.</p>
+
     </div>
   </footer>
 );
