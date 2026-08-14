@@ -66,20 +66,6 @@ export const buildMilestones = (d: JourneyInput): Milestone[] => [
     hint: "Add one application deadline so nothing slips past you.",
     href: "/scholarships",
   },
-  {
-    key: "checklist",
-    label: "Start your application checklist",
-    done: d.checklistTotal > 0,
-    hint: "Break your application into small, doable tasks.",
-    href: "/dashboard",
-  },
-  {
-    key: "checklist-progress",
-    label: "Finish 3 checklist tasks",
-    done: d.checklistDone >= 3,
-    hint: "Tick off three tasks to build real momentum.",
-    href: "/dashboard",
-  },
 ];
 
 export interface NextStep {
