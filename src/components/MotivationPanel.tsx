@@ -121,7 +121,7 @@ const MotivationPanel = ({ data }: { data: JourneyInput }) => {
         </p>
         <Bar value={percent} />
 
-        <div className="grid gap-x-6 gap-y-2 sm:grid-cols-2 mt-4">
+        <div className="hscroll grid gap-x-6 gap-y-2 sm:grid-cols-2 mt-4">
           {milestones.map((m) => (
             <div key={m.key} className="flex items-start gap-2 text-sm py-0.5">
               {m.done ? (

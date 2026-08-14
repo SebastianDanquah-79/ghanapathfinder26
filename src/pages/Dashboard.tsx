@@ -255,7 +255,7 @@ const Dashboard = () => {
               <Sparkles className="h-4 w-4 text-primary" /> Top matches
             </h2>
             {topMatches.length ? (
-              <ul className="space-y-2 text-sm">
+              <ul className="hscroll space-y-2 text-sm">
                 {topMatches.map((m) => (
                   <li key={m.cutoff.id} className="flex justify-between gap-2">
                     <span className="text-foreground truncate">
@@ -281,7 +281,8 @@ const Dashboard = () => {
           {(["university", "scholarship"] as const).map((type) => (
             <div key={type} className={card}>
               <h2 className="font-display font-semibold text-foreground mb-3 capitalize">Saved {type}s</h2>
-              <ul className="space-y-2">
+              <ul className="hscroll space-y-2">
+
                 {savedBy(type).slice(0, 5).map((s) => (
                   <li key={s.id} className="flex items-start justify-between gap-2 text-sm">
                     <div className="min-w-0">
@@ -311,7 +312,7 @@ const Dashboard = () => {
             <h2 className="font-display font-semibold text-foreground mb-3 flex items-center gap-2">
               <CalendarClock className="h-4 w-4 text-primary" /> Deadlines
             </h2>
-            <ul className="space-y-2 mb-3">
+            <ul className="hscroll space-y-2 mb-3">
               {deadlines.map((d) => (
                 <li key={d.id} className="flex justify-between gap-2 text-sm">
                   <span className="text-foreground break-words">{d.title}</span>
@@ -324,13 +325,14 @@ const Dashboard = () => {
             </ul>
             <div className="space-y-2">
               <input className={input} placeholder="Deadline title" maxLength={120} value={deadlineTitle} onChange={(e) => setDeadlineTitle(e.target.value)} />
-              <div className="flex gap-2">
-                <input type="date" className={input} value={deadlineDate} onChange={(e) => setDeadlineDate(e.target.value)} />
-                <button onClick={addDeadline} className="px-4 min-h-[48px] rounded-xl bg-primary text-primary-foreground" aria-label="Add deadline">
+              <div className="hscroll flex gap-2">
+                <input type="date" className={`${input} min-w-[9rem]`} value={deadlineDate} onChange={(e) => setDeadlineDate(e.target.value)} />
+                <button onClick={addDeadline} className="shrink-0 px-4 min-h-[48px] rounded-xl bg-primary text-primary-foreground" aria-label="Add deadline">
                   <Plus className="h-4 w-4" />
                 </button>
               </div>
             </div>
+
           </div>
 
           <div className="md:col-span-2 xl:col-span-3">
@@ -339,7 +341,7 @@ const Dashboard = () => {
 
           <div className={card}>
             <h2 className="font-display font-semibold text-foreground mb-3">Your profile</h2>
-            <dl className="text-sm space-y-2 text-muted-foreground">
+            <dl className="hscroll text-sm space-y-2 text-muted-foreground">
               <div className="flex justify-between gap-3"><dt>Target career</dt><dd className="text-foreground text-right">{profile?.target_career ?? "—"}</dd></div>
               <div className="flex justify-between gap-3"><dt>School</dt><dd className="text-foreground text-right">{profile?.school ?? "—"}</dd></div>
               <div className="flex justify-between gap-3"><dt>Region</dt><dd className="text-foreground text-right">{profile?.region ?? "—"}</dd></div>
@@ -351,7 +353,7 @@ const Dashboard = () => {
 
           <div className={card}>
             <h2 className="font-display font-semibold text-foreground mb-3 capitalize">Saved careers</h2>
-            <ul className="space-y-2">
+            <ul className="hscroll space-y-2">
               {savedBy("career").map((s) => (
                 <li key={s.id} className="flex items-start justify-between gap-2 text-sm">
                   <p className="text-foreground break-words">{s.title}</p>
@@ -372,7 +374,7 @@ const Dashboard = () => {
 
           <div id="checklist" className={`${card} md:col-span-2`}>
             <h2 className="font-display font-semibold text-foreground mb-3">Application checklist</h2>
-            <ul className="space-y-2 mb-3">
+            <ul className="hscroll space-y-2 mb-3">
               {checklist.map((c) => (
                 <li key={c.id} className="flex items-center gap-2 text-sm">
                   <input type="checkbox" className="h-5 w-5 shrink-0" checked={c.done} onChange={() => toggleTask(c.id, c.done)} />
@@ -384,12 +386,13 @@ const Dashboard = () => {
               ))}
               {!checklist.length && <li className="text-sm text-muted-foreground">Add your first application task.</li>}
             </ul>
-            <div className="flex gap-2">
-              <input className={input} placeholder="e.g. Upload WASSCE results to UG portal" maxLength={160} value={task} onChange={(e) => setTask(e.target.value)} />
-              <button onClick={addTask} className="px-4 min-h-[48px] rounded-xl bg-primary text-primary-foreground" aria-label="Add task">
+            <div className="hscroll flex gap-2">
+              <input className={`${input} min-w-[12rem]`} placeholder="e.g. Upload WASSCE results to UG portal" maxLength={160} value={task} onChange={(e) => setTask(e.target.value)} />
+              <button onClick={addTask} className="shrink-0 px-4 min-h-[48px] rounded-xl bg-primary text-primary-foreground" aria-label="Add task">
                 <Plus className="h-4 w-4" />
               </button>
             </div>
+
           </div>
 
           <div className={card}>
