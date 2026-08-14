@@ -374,7 +374,7 @@ const Dashboard = () => {
 
           <div id="checklist" className={`${card} md:col-span-2`}>
             <h2 className="font-display font-semibold text-foreground mb-3">Application checklist</h2>
-            <ul className="space-y-2 mb-3">
+            <ul className="hscroll space-y-2 mb-3">
               {checklist.map((c) => (
                 <li key={c.id} className="flex items-center gap-2 text-sm">
                   <input type="checkbox" className="h-5 w-5 shrink-0" checked={c.done} onChange={() => toggleTask(c.id, c.done)} />
@@ -386,12 +386,13 @@ const Dashboard = () => {
               ))}
               {!checklist.length && <li className="text-sm text-muted-foreground">Add your first application task.</li>}
             </ul>
-            <div className="flex gap-2">
-              <input className={input} placeholder="e.g. Upload WASSCE results to UG portal" maxLength={160} value={task} onChange={(e) => setTask(e.target.value)} />
-              <button onClick={addTask} className="px-4 min-h-[48px] rounded-xl bg-primary text-primary-foreground" aria-label="Add task">
+            <div className="hscroll flex gap-2">
+              <input className={`${input} min-w-[12rem]`} placeholder="e.g. Upload WASSCE results to UG portal" maxLength={160} value={task} onChange={(e) => setTask(e.target.value)} />
+              <button onClick={addTask} className="shrink-0 px-4 min-h-[48px] rounded-xl bg-primary text-primary-foreground" aria-label="Add task">
                 <Plus className="h-4 w-4" />
               </button>
             </div>
+
           </div>
 
           <div className={card}>
