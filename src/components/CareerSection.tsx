@@ -98,7 +98,7 @@ const CareerSection = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-5"
+            className="flex hscroll hscroll-bleed snap-x snap-mandatory scroll-smooth [&>*]:w-[18rem] [&>*]:shrink-0 [&>*]:snap-start md:grid md:grid-cols-2 md:overflow-visible md:mx-0 md:px-0 md:[&>*]:w-auto gap-5"
           >
             <div className="bg-glass rounded-xl p-5">
               <div className="flex items-center gap-2 mb-4">

@@ -101,7 +101,7 @@ const UniversityDirectory = () => {
           </p>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="flex hscroll hscroll-bleed snap-x snap-mandatory scroll-smooth [&>*]:w-[17rem] [&>*]:shrink-0 [&>*]:snap-start md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:overflow-visible md:mx-0 md:px-0 md:[&>*]:w-auto gap-4">
           {rows.map((u, i) => (
             <motion.div
               key={u.id}
