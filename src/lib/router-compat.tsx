@@ -17,8 +17,8 @@ import { useMemo, useCallback, forwardRef, type ComponentProps, type ReactNode }
 
 // ---------- shared URL parsing ----------
 
-function parseTo(to: string): { pathname: string; search?: Record<string, string>; hash?: string } {
-  const [beforeHash, hashStr] = (to ?? "").split("#");
+function parseTo(to: string): { pathname: string; search: Record<string, string> | undefined; hash: string | undefined } {
+  const [beforeHash = "", hashStr] = (to ?? "").split("#");
   const [pathname, searchStr] = beforeHash.split("?");
   return {
     // react-router keeps the current path for search-only ("?a=1") and
@@ -50,9 +50,9 @@ export function useNavigate(): NavigateFn {
     tsNav({
       to: pathname,
       search: search as never,
-      hash,
+      ...(hash !== undefined ? { hash } : {}),
       state: options?.state as never,
-      replace: options?.replace,
+      replace: options?.replace ?? false,
     });
   }, [tsNav, router]) as NavigateFn;
 }
@@ -105,7 +105,7 @@ export function useSearchParams(): [URLSearchParams, (init: URLSearchParams | Re
             : new URLSearchParams(init);
       const searchObj: Record<string, string> = {};
       next.forEach((v, k) => { searchObj[k] = v; });
-      nav({ to: live.pathname, search: searchObj as never, replace: opts?.replace });
+      nav({ to: live.pathname, search: searchObj as never, replace: opts?.replace ?? false });
     },
     [nav, router],
   );
@@ -131,8 +131,8 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
       ref={ref as never}
       to={pathname as never}
       search={search as never}
-      hash={hash}
-      replace={replace}
+      {...(hash !== undefined ? { hash } : {})}
+      replace={replace ?? false}
       state={state as never}
       {...((rest ?? {}) as Record<string, unknown>)}
     >
@@ -146,7 +146,15 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
 
 export function Navigate({ to, replace, state }: { to: string; replace?: boolean; state?: unknown }) {
   const { pathname, search, hash } = parseTo(to);
-  return <TSNavigate to={pathname as never} search={search as never} hash={hash} state={state as never} replace={replace} />;
+  return (
+    <TSNavigate
+      to={pathname as never}
+      search={search as never}
+      {...(hash !== undefined ? { hash } : {})}
+      state={state as never}
+      replace={replace ?? false}
+    />
+  );
 }
 
 // ---------- Outlet ----------
