@@ -10,8 +10,6 @@ export interface JourneyInput {
   savedUniversities: number;
   savedScholarships: number;
   savedCareers: number;
-  checklistTotal: number;
-  checklistDone: number;
   deadlines: number;
 }
 
