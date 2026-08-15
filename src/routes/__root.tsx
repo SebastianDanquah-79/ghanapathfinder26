@@ -107,7 +107,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "AI-powered college and career guidance for Ghanaian SHS students. Find your perfect university, explore careers, and plan your future.",
       },
-      { name: "google-site-verification", content: "ps3Qez774mlEy2zaGtBDPpePxy-vtWffWkypOKpNNrU" },
+      { name: "google-site-verification", content: "AX0O529bwE2xFh92n_bKT9tdS7ax1ulGLgrKzrm1kLE" },
       { name: "author", content: "GhanaPath" },
       { name: "theme-color", content: "#0a0f1c" },
       { name: "mobile-web-app-capable", content: "yes" },
