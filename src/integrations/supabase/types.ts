@@ -348,6 +348,63 @@ export type Database = {
         }
         Relationships: []
       }
+      programme_admission_estimates: {
+        Row: {
+          confidence_level: string
+          created_at: string
+          estimate_high: number
+          estimate_low: number
+          evidence: string
+          id: string
+          method: string
+          programme_id: string
+          sample_size: number
+          university_id: string
+          updated_at: string
+        }
+        Insert: {
+          confidence_level?: string
+          created_at?: string
+          estimate_high: number
+          estimate_low: number
+          evidence: string
+          id?: string
+          method: string
+          programme_id: string
+          sample_size?: number
+          university_id: string
+          updated_at?: string
+        }
+        Update: {
+          confidence_level?: string
+          created_at?: string
+          estimate_high?: number
+          estimate_low?: number
+          evidence?: string
+          id?: string
+          method?: string
+          programme_id?: string
+          sample_size?: number
+          university_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programme_admission_estimates_programme_id_fkey"
+            columns: ["programme_id"]
+            isOneToOne: true
+            referencedRelation: "programmes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "programme_admission_estimates_university_id_fkey"
+            columns: ["university_id"]
+            isOneToOne: false
+            referencedRelation: "universities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       programme_careers: {
         Row: {
           created_at: string
@@ -1196,10 +1253,15 @@ export type Database = {
         }
         Returns: boolean
       }
+      institution_tier_offset: {
+        Args: { _category: string; _short: string; _type: string }
+        Returns: number
+      }
       is_linked_parent: {
         Args: { _parent_id: string; _student_id: string }
         Returns: boolean
       }
+      refresh_admission_estimates: { Args: never; Returns: number }
       search_catalogue: {
         Args: { _kind?: string; _limit?: number; _offset?: number; _q: string }
         Returns: {
