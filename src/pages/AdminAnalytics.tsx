@@ -67,7 +67,6 @@ const AdminAnalytics = () => {
         title="Admin Analytics | GhanaPath"
         description="Verified GhanaPath usage analytics for administrators: registered users, sessions, recommendation runs and saved items."
         path="/admin/analytics"
-        noIndex
       />
       <Navbar />
       <div className="max-w-6xl mx-auto">
