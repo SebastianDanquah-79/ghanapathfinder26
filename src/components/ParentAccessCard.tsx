@@ -4,7 +4,6 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 
-const makeCode = () => Math.random().toString(36).slice(2, 8).toUpperCase();
 
 const ParentAccessCard = () => {
   const { user } = useAuth();
@@ -30,7 +29,7 @@ const ParentAccessCard = () => {
     if (!user) return;
     const { error } = await supabase
       .from("parent_links")
-      .insert({ student_id: user.id, invite_code: makeCode(), status: "pending" });
+      .insert({ student_id: user.id, status: "pending" });
     if (error) {
       toast.error(error.message);
       return;
