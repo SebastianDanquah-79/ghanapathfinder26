@@ -219,7 +219,7 @@ const CityGuide = () => {
           description="Cost of living and student life by city."
         />
 
-        <div className="flex justify-center gap-3 mb-7">
+        <div className="hscroll hscroll-bleed snap-x snap-mandatory scroll-smooth flex gap-3 mb-7 md:flex-wrap md:justify-center md:overflow-visible md:mx-0 md:px-0">
           {cities.map((c) => (
             <button
               key={c}
