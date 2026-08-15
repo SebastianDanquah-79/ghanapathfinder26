@@ -3,7 +3,21 @@ import { motion } from "framer-motion";
 import { MapPin, Wallet, Shield, Users, Home, Loader2 } from "lucide-react";
 import SectionHeader from "./SectionHeader";
 
-const cities = ["Accra", "Kumasi", "Cape Coast"];
+const cities = [
+  "Accra",
+  "Kumasi",
+  "Cape Coast",
+  "Tamale",
+  "Takoradi",
+  "Ho",
+  "Sunyani",
+  "Koforidua",
+  "Winneba",
+  "Wa",
+  "Bolgatanga",
+  "Navrongo",
+];
+
 
 interface CityData {
   budget: { item: string; amount: string }[];
@@ -53,7 +67,125 @@ const cityData: Record<string, CityData> = {
     safetyTips: ["The beach is beautiful but swim carefully — strong currents", "Campus and surroundings are generally safe", "Stay aware during festivals (Fetu Afahye)", "Keep doors locked in off-campus housing"],
     networkingTips: ["UCC has a strong education and arts community", "Join the SRC and its sub-committees", "Cape Coast has a growing creative arts scene", "Volunteer with local NGOs for experience"],
   },
+  Tamale: {
+    budget: [
+      { item: "Rent (shared room)", amount: "GHS 150 - 350/mo" },
+      { item: "Food", amount: "GHS 280 - 480/mo" },
+      { item: "Transport", amount: "GHS 60 - 150/mo" },
+      { item: "Data/Internet", amount: "GHS 50 - 100/mo" },
+      { item: "Miscellaneous", amount: "GHS 70 - 130/mo" },
+    ],
+    neighborhoods: ["Dungu (near UDS Nyankpala route)", "Kalpohin", "Vittin", "Gumbihini", "Education Ridge"],
+    moneyTips: ["One of Ghana's cheapest student cities", "Buy grains and staples at Aboabo Market", "Motorbike (okada) is the cheapest way around", "Share accommodation to cut rent further"],
+    safetyTips: ["Wear a helmet if you use okada", "Dress modestly in respect of local customs", "Carry water — the harmattan and heat are intense", "Avoid unfamiliar routes after dark"],
+    networkingTips: ["UDS has strong agriculture and development networks", "Volunteer with northern-focused NGOs", "Join the students' representative council", "Attend Tamale tech and youth hub events"],
+  },
+  Takoradi: {
+    budget: [
+      { item: "Rent (shared room)", amount: "GHS 250 - 550/mo" },
+      { item: "Food", amount: "GHS 350 - 600/mo" },
+      { item: "Transport", amount: "GHS 100 - 220/mo" },
+      { item: "Data/Internet", amount: "GHS 50 - 120/mo" },
+      { item: "Miscellaneous", amount: "GHS 90 - 160/mo" },
+    ],
+    neighborhoods: ["Butumagyebu (near TTU)", "Effiakuma", "Anaji", "Kwesimintsim", "Fijai"],
+    moneyTips: ["Oil-city prices are higher — budget weekly", "Market Circle has the best food prices", "Use shared taxis on fixed routes", "Look for part-time work in hospitality"],
+    safetyTips: ["Keep valuables secure around Market Circle", "Be careful swimming at unpatrolled beaches", "Travel in groups at night", "Save your hostel's location offline"],
+    networkingTips: ["Oil, gas and engineering employers recruit locally", "Attend Takoradi Technical University career fairs", "Connect with maritime and logistics professionals", "Join engineering student associations early"],
+  },
+  Ho: {
+    budget: [
+      { item: "Rent (shared room)", amount: "GHS 150 - 350/mo" },
+      { item: "Food", amount: "GHS 280 - 480/mo" },
+      { item: "Transport", amount: "GHS 60 - 150/mo" },
+      { item: "Data/Internet", amount: "GHS 50 - 100/mo" },
+      { item: "Miscellaneous", amount: "GHS 70 - 130/mo" },
+    ],
+    neighborhoods: ["Ho Bankoe", "Dome (near HTU)", "Ahoe", "Housing Estate", "Sokode (near UHAS route)"],
+    moneyTips: ["Very affordable town living", "Buy fresh produce at Ho Central Market", "Walking distance housing saves transport money", "Split data bundles with roommates"],
+    safetyTips: ["Ho is calm and generally safe", "Be cautious on hilly roads at night", "Keep hostel doors locked", "Watch out during rainy-season flooding"],
+    networkingTips: ["UHAS builds strong health-sector connections", "Join Volta Region youth and health networks", "Volunteer at district health facilities", "Attend HTU innovation events"],
+  },
+  Sunyani: {
+    budget: [
+      { item: "Rent (shared room)", amount: "GHS 150 - 380/mo" },
+      { item: "Food", amount: "GHS 280 - 500/mo" },
+      { item: "Transport", amount: "GHS 60 - 150/mo" },
+      { item: "Data/Internet", amount: "GHS 50 - 100/mo" },
+      { item: "Miscellaneous", amount: "GHS 70 - 130/mo" },
+    ],
+    neighborhoods: ["Fiapre (near UENR)", "Area 4", "Penkwase", "New Dormaa", "Abesim"],
+    moneyTips: ["Food is cheap in the Bono breadbasket", "Buy in bulk from Sunyani Market", "Shared taxis to Fiapre are inexpensive", "Avoid weekend impulse spending"],
+    safetyTips: ["Quiet, low-crime city overall", "Use lit routes between Fiapre and town", "Keep phone secure in trotro stations", "Note the campus security number"],
+    networkingTips: ["UENR is strong in energy and natural resources", "Connect with cocoa and agribusiness employers", "Join renewable-energy student clubs", "Attend regional agric fairs"],
+  },
+  Koforidua: {
+    budget: [
+      { item: "Rent (shared room)", amount: "GHS 180 - 420/mo" },
+      { item: "Food", amount: "GHS 300 - 520/mo" },
+      { item: "Transport", amount: "GHS 70 - 170/mo" },
+      { item: "Data/Internet", amount: "GHS 50 - 110/mo" },
+      { item: "Miscellaneous", amount: "GHS 80 - 140/mo" },
+    ],
+    neighborhoods: ["Effiduase", "Adweso", "Zongo (budget)", "Oyoko (near AAMUSTED/KTU routes)", "Srodae"],
+    moneyTips: ["Close to Accra without Accra prices", "Buy at the Thursday market for the best deals", "Share transport to Accra for weekend trips", "Track your mobile money spending"],
+    safetyTips: ["Generally safe and walkable", "Care on the Accra–Koforidua road at night", "Secure laptops in shared hostels", "Watch for slippery roads in the rainy season"],
+    networkingTips: ["KTU has active engineering and IT clubs", "Proximity to Accra makes internships easier", "Join Eastern Region youth business groups", "Attend Koforidua tech meetups"],
+  },
+  Winneba: {
+    budget: [
+      { item: "Rent (shared room)", amount: "GHS 160 - 380/mo" },
+      { item: "Food", amount: "GHS 280 - 500/mo" },
+      { item: "Transport", amount: "GHS 60 - 150/mo" },
+      { item: "Data/Internet", amount: "GHS 50 - 100/mo" },
+      { item: "Miscellaneous", amount: "GHS 70 - 130/mo" },
+    ],
+    neighborhoods: ["North Campus area", "South Campus area", "Sir Charles Beach side", "Ateitu", "Gyahadze"],
+    moneyTips: ["Small-town costs keep budgets low", "Fresh fish at the landing beach is cheap", "Walk or cycle between campuses", "Split cooking gas with housemates"],
+    safetyTips: ["Be careful with strong sea currents", "Stay alert during Aboakyir festival crowds", "Use lit paths between campuses", "Lock rooms in shared compounds"],
+    networkingTips: ["UEW is Ghana's education-training hub", "Join teaching practice networks early", "Connect with sports and creative-arts programmes", "Build relationships with mentor lecturers"],
+  },
+  Wa: {
+    budget: [
+      { item: "Rent (shared room)", amount: "GHS 130 - 320/mo" },
+      { item: "Food", amount: "GHS 260 - 460/mo" },
+      { item: "Transport", amount: "GHS 50 - 130/mo" },
+      { item: "Data/Internet", amount: "GHS 50 - 100/mo" },
+      { item: "Miscellaneous", amount: "GHS 60 - 120/mo" },
+    ],
+    neighborhoods: ["Bamahu (near SDD-UBIDS)", "Kpaguri", "Dobile", "Konta", "Kambali"],
+    moneyTips: ["Among the lowest living costs in Ghana", "Buy staples at Wa Central Market", "Bicycles are common and cheap", "Plan for higher travel costs to the south"],
+    safetyTips: ["Prepare for extreme heat — hydrate", "Avoid long night journeys on rural roads", "Respect local customs and dress codes", "Keep emergency contacts saved offline"],
+    networkingTips: ["SDD-UBIDS focuses on business and development", "Volunteer with Upper West NGOs", "Join entrepreneurship clubs", "Connect with district assembly internships"],
+  },
+  Bolgatanga: {
+    budget: [
+      { item: "Rent (shared room)", amount: "GHS 130 - 320/mo" },
+      { item: "Food", amount: "GHS 260 - 460/mo" },
+      { item: "Transport", amount: "GHS 50 - 130/mo" },
+      { item: "Data/Internet", amount: "GHS 50 - 100/mo" },
+      { item: "Miscellaneous", amount: "GHS 60 - 120/mo" },
+    ],
+    neighborhoods: ["Sumbrungu", "Zaare", "Tanzui", "Yikene", "Bolga Central"],
+    moneyTips: ["Low rents keep monthly costs down", "Bolga Market is great for cheap produce", "Crafts and basket weaving offer side income", "Share okada fares with classmates"],
+    safetyTips: ["Hydrate and shield from the sun", "Be cautious travelling near border routes", "Use trusted okada riders", "Avoid isolated areas at night"],
+    networkingTips: ["Strong development and NGO presence", "Join BTU student associations", "Volunteer on health and education projects", "Connect with regional artisan businesses"],
+  },
+  Navrongo: {
+    budget: [
+      { item: "Rent (shared room)", amount: "GHS 120 - 300/mo" },
+      { item: "Food", amount: "GHS 250 - 450/mo" },
+      { item: "Transport", amount: "GHS 50 - 120/mo" },
+      { item: "Data/Internet", amount: "GHS 50 - 100/mo" },
+      { item: "Miscellaneous", amount: "GHS 60 - 110/mo" },
+    ],
+    neighborhoods: ["Navrongo campus area (C.K. Tedam University)", "Manyoro road", "Wuru", "Pungu", "Doba road"],
+    moneyTips: ["Very cheap student town", "Cook in groups to save on gas", "Buy in bulk before term starts", "Budget ahead for travel to Accra/Kumasi"],
+    safetyTips: ["Heat and dust are the main hazards", "Travel in daylight on rural roads", "Keep devices dust-protected", "Save campus security contacts"],
+    networkingTips: ["CKT-UTAS is strong in applied sciences", "Link with Navrongo Health Research Centre", "Join science and ICT student clubs", "Seek research assistant opportunities"],
+  },
 };
+
 
 const CityGuide = () => {
   const [city, setCity] = useState("");
