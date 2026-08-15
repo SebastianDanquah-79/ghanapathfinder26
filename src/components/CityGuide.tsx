@@ -3,7 +3,21 @@ import { motion } from "framer-motion";
 import { MapPin, Wallet, Shield, Users, Home, Loader2 } from "lucide-react";
 import SectionHeader from "./SectionHeader";
 
-const cities = ["Accra", "Kumasi", "Cape Coast"];
+const cities = [
+  "Accra",
+  "Kumasi",
+  "Cape Coast",
+  "Tamale",
+  "Takoradi",
+  "Ho",
+  "Sunyani",
+  "Koforidua",
+  "Winneba",
+  "Wa",
+  "Bolgatanga",
+  "Navrongo",
+];
+
 
 interface CityData {
   budget: { item: string; amount: string }[];
