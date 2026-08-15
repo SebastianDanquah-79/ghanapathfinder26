@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, GraduationCap, ChevronDown } from "lucide-react";
 import { Link, useLocation } from "@/lib/router-compat";
 import { useAuth } from "@/hooks/useAuth";
+import TopGreetingBar from "@/components/TopGreetingBar";
+
 
 const primary = [
   { label: "Search", href: "/search" },
@@ -51,7 +53,9 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
+      <TopGreetingBar />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-14 gap-3">
+
         <Link to="/" className="flex items-center gap-2 shrink-0">
           <GraduationCap className="h-6 w-6 text-primary" />
           <span className="font-display font-bold text-lg sm:text-xl text-foreground">
