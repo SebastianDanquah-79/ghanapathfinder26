@@ -225,7 +225,6 @@ const CityGuide = () => {
               key={c}
               onClick={() => handleSelect(c)}
               className={`shrink-0 snap-start px-6 py-3 rounded-xl text-sm font-semibold transition-all ${
-
                 city === c
                   ? "bg-primary text-primary-foreground glow-gold"
                   : "bg-glass bg-glass-hover text-muted-foreground"
@@ -265,14 +264,14 @@ const CityGuide = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="hscroll hscroll-bleed snap-x snap-mandatory scroll-smooth flex gap-4 md:grid md:grid-cols-2 md:gap-5 md:overflow-visible md:mx-0 md:px-0">
               {[
                 { icon: Home, title: "Best Neighborhoods", items: data.neighborhoods },
                 { icon: Wallet, title: "Money Management", items: data.moneyTips },
                 { icon: Shield, title: "Safety Tips", items: data.safetyTips },
                 { icon: Users, title: "Networking & Social", items: data.networkingTips },
               ].map(({ icon: Icon, title, items }) => (
-                <div key={title} className="bg-glass rounded-xl p-5">
+                <div key={title} className="bg-glass rounded-xl p-5 shrink-0 w-[80vw] max-w-xs snap-start md:w-auto md:max-w-none md:shrink">
                   <div className="flex items-center gap-2 mb-4">
                     <Icon className="h-5 w-5 text-primary" />
                     <h3 className="font-display font-semibold text-foreground">{title}</h3>
