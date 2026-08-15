@@ -16,6 +16,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import MobileTabBar from "@/components/MobileTabBar";
 import OfflineBanner from "@/components/OfflineBanner";
 import NotFound from "@/pages/NotFound";
+import { usePageViews } from "@/hooks/useTracking";
 import { reportLovableError } from "@/lib/lovable-error-reporting";
 import appCss from "../styles.css?url";
 
@@ -33,6 +34,11 @@ function RootShell({ children }: { children: React.ReactNode }) {
   );
 }
 
+function AnalyticsTracker() {
+  usePageViews();
+  return null;
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
@@ -42,6 +48,7 @@ function RootComponent() {
           <Toaster />
           <Sonner />
           <AuthProvider>
+            <AnalyticsTracker />
             <OfflineBanner />
             <div className="desktop-shell pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0">
               <Outlet />

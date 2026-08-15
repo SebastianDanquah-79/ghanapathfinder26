@@ -17,6 +17,7 @@ import Footer from "@/components/Footer";
 import SaveButton from "@/components/SaveButton";
 import OfficialLink from "@/components/OfficialLink";
 import { useProgrammeDetail, useProgrammeMatch } from "@/hooks/useProgrammeDetail";
+import { useTrackView } from "@/hooks/useTracking";
 import { CATEGORY_STYLES, formatVerifiedDate } from "@/lib/admissionEngine";
 
 const Chips = ({ items }: { items: string[] }) => (
@@ -66,6 +67,7 @@ const ProgrammePage = () => {
   const { slug } = useParams<{ slug: string }>();
   const { data, isLoading, isError, refetch } = useProgrammeDetail(slug);
   const match = useProgrammeMatch(data?.cutoffs);
+  useTrackView("programme_view", "programme", slug);
 
   const p = data?.programme;
   const uni = data?.university;
