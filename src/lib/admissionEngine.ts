@@ -38,7 +38,9 @@ export interface CutoffRecord {
 export type MatchCategory =
   | "Excellent Match"
   | "Strong Match"
+  | "Good Match"
   | "Competitive"
+  | "Possible"
   | "Reach"
   | "Low Match"
   | "Not Eligible"
@@ -46,13 +48,16 @@ export type MatchCategory =
 
 export const CATEGORY_STYLES: Record<MatchCategory, string> = {
   "Excellent Match": "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
-  "Strong Match": "bg-primary/15 text-primary border-primary/30",
+  "Strong Match": "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
+  "Good Match": "bg-primary/15 text-primary border-primary/30",
   Competitive: "bg-amber-500/15 text-amber-400 border-amber-500/30",
+  Possible: "bg-amber-500/15 text-amber-400 border-amber-500/30",
   Reach: "bg-orange-500/15 text-orange-400 border-orange-500/30",
   "Low Match": "bg-destructive/15 text-destructive border-destructive/30",
   "Not Eligible": "bg-muted text-muted-foreground border-border",
   "Insufficient Data": "bg-muted text-muted-foreground border-border",
 };
+
 
 const CORE_PATTERNS: Array<{ key: string; label: string; test: RegExp }> = [
   { key: "english", label: "English Language", test: /english/i },
