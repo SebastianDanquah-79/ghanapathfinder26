@@ -224,7 +224,8 @@ const CityGuide = () => {
             <button
               key={c}
               onClick={() => handleSelect(c)}
-              className={`px-6 py-3 rounded-xl text-sm font-semibold transition-all ${
+              className={`shrink-0 snap-start px-6 py-3 rounded-xl text-sm font-semibold transition-all ${
+
                 city === c
                   ? "bg-primary text-primary-foreground glow-gold"
                   : "bg-glass bg-glass-hover text-muted-foreground"
