@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, GraduationCap, ChevronDown } from "lucide-react";
 import { Link, useLocation } from "@/lib/router-compat";
 import { useAuth } from "@/hooks/useAuth";
+import TopGreetingBar from "@/components/TopGreetingBar";
+
 
 const primary = [
   { label: "Search", href: "/search" },
