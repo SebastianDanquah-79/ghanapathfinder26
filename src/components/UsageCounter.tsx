@@ -3,7 +3,7 @@ import { PUBLIC_METRICS, useUsageStats } from "@/hooks/useUsageStats";
 
 /**
  * Real, verified usage counter. The number always comes from stored analytics
- * in the GhanaPath database — never a hardcoded marketing figure. Aggregate
+ * in the GhanaPathFinder database — never a hardcoded marketing figure. Aggregate
  * only: no individual student is ever identifiable.
  */
 const UsageCounter = ({ className = "" }: { className?: string }) => {
@@ -18,8 +18,8 @@ const UsageCounter = ({ className = "" }: { className?: string }) => {
     chosen.key === "website_visits"
       ? "website visits"
       : chosen.key === "recommendation_runs"
-        ? "recommendation runs on GhanaPath"
-        : "students exploring their future with GhanaPath";
+        ? "recommendation runs on GhanaPathFinder"
+        : "students exploring their future with GhanaPathFinder";
 
   return (
     <p

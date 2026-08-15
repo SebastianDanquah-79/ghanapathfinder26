@@ -18,7 +18,7 @@ const UniversityProfile = () => {
     <div className="min-h-screen bg-background">
       {uni && (
         <Seo
-          title={`${uni.name} — Programmes & Admissions | GhanaPath`}
+          title={`${uni.name} — Programmes & Admissions | GhanaPathFinder`}
           description={(uni.description || `${uni.name}${uni.location ? ` in ${uni.location}` : ""}: accreditation status, programmes, tuition range and admissions information.`).slice(0, 155)}
           path={`/university/${uni.slug}`}
           jsonLd={[
@@ -175,7 +175,7 @@ const UniversityProfile = () => {
 
               <section>
                 <h2 className="font-display text-lg font-semibold text-foreground mb-3">
-                  Programmes on GhanaPath
+                  Programmes on GhanaPathFinder
                 </h2>
 
                 {loadingProgrammes && (

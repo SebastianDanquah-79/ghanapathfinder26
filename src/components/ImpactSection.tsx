@@ -7,8 +7,8 @@ const ImpactSection = () => {
   const { data } = useUsageStats();
 
   const stats = [
-    { icon: Users, label: "Students with GhanaPath accounts", value: data?.students ?? 0 },
-    { icon: UserCheck, label: "Students actively using GhanaPath", value: data?.active_students ?? 0 },
+    { icon: Users, label: "Students with GhanaPathFinder accounts", value: data?.students ?? 0 },
+    { icon: UserCheck, label: "Students actively using GhanaPathFinder", value: data?.active_students ?? 0 },
     { icon: Eye, label: "Website visits (unique sessions)", value: data?.website_visits ?? 0 },
     { icon: Sparkles, label: "Recommendation runs", value: data?.recommendation_runs ?? 0 },
   ];
@@ -17,9 +17,9 @@ const ImpactSection = () => {
     <section id="impact" className="py-12 lg:py-24 px-4">
       <div className="max-w-5xl mx-auto">
         <SectionHeader
-          badge="GhanaPath Impact"
+          badge="GhanaPathFinder Impact"
           title="People who have used"
-          highlight="GhanaPath so far"
+          highlight="GhanaPathFinder so far"
           description="Live, verified numbers counted from real activity. Aggregate only — no student is ever identified."
         />
 
@@ -43,7 +43,7 @@ const ImpactSection = () => {
         </div>
 
         <p className="text-[11px] text-muted-foreground text-center mt-4">
-          Updated automatically as students use GhanaPath.
+          Updated automatically as students use GhanaPathFinder.
         </p>
       </div>
     </section>

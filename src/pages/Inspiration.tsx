@@ -11,7 +11,7 @@ const Inspiration = () => {
   return (
     <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-20 pb-12">
       <Seo
-        title="Student Success Stories & Career Inspiration | GhanaPath"
+        title="Student Success Stories & Career Inspiration | GhanaPathFinder"
         description="Honest stories from Ghanaian students, graduates, professionals and founders — the setbacks they faced and what they would tell you today."
         path="/inspiration"
       />
@@ -21,7 +21,7 @@ const Inspiration = () => {
           <Link to="/" className="flex items-center gap-2">
             <GraduationCap className="h-6 w-6 text-primary" />
             <span className="font-display font-bold text-lg text-foreground">
-              Ghana<span className="text-primary">Path</span>
+              Ghana<span className="text-primary">PathFinder</span>
             </span>
           </Link>
           <Link

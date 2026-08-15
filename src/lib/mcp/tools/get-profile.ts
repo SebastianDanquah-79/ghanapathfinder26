@@ -3,9 +3,9 @@ import { supabaseForUser } from "../supabase";
 
 export default defineTool({
   name: "get_profile",
-  title: "Get my GhanaPath profile",
+  title: "Get my GhanaPathFinder profile",
   description:
-    "Fetch the signed-in student's GhanaPath profile, WASSCE results and match preferences.",
+    "Fetch the signed-in student's GhanaPathFinder profile, WASSCE results and match preferences.",
   inputSchema: {},
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async (_input, ctx) => {

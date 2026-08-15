@@ -73,7 +73,7 @@ const OAuthConsent = () => {
       <div className="flex items-center gap-2 mb-6">
         <GraduationCap className="h-7 w-7 text-primary" />
         <span className="font-display font-bold text-xl text-foreground">
-          Ghana<span className="text-primary">Path</span>
+          Ghana<span className="text-primary">PathFinder</span>
         </span>
       </div>
 
@@ -92,7 +92,7 @@ const OAuthConsent = () => {
         ) : (
           <>
             <h1 className="font-display text-xl font-bold text-foreground">
-              Connect {details.client?.name ?? "an app"} to your GhanaPath account
+              Connect {details.client?.name ?? "an app"} to your GhanaPathFinder account
             </h1>
             <p className="text-sm text-muted-foreground">
               This lets {details.client?.name ?? "the app"} read your profile, saved schools and

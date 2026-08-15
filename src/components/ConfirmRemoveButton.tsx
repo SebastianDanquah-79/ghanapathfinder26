@@ -36,7 +36,7 @@ const ConfirmRemoveButton = ({ title, itemLabel, onConfirm, showLabel = false }:
       <AlertDialogHeader>
         <AlertDialogTitle>Remove this {itemLabel} from Saved?</AlertDialogTitle>
         <AlertDialogDescription>
-          “{title}” will be removed from your saved list. It stays in the GhanaPath directory, so
+          “{title}” will be removed from your saved list. It stays in the GhanaPathFinder directory, so
           you can save it again anytime.
         </AlertDialogDescription>
       </AlertDialogHeader>

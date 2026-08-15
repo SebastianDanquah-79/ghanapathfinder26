@@ -1,6 +1,6 @@
 {
-  "name": "GhanaPath — College & Career Guide",
-  "short_name": "GhanaPath",
+  "name": "GhanaPathFinder — College & Career Guide",
+  "short_name": "GhanaPathFinder",
   "description": "AI-powered college, scholarship and career guidance for Ghanaian students.",
   "start_url": "/",
   "scope": "/",

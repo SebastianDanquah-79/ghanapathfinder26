@@ -54,7 +54,7 @@ const AdminAnalytics = () => {
     return (
       <div className="min-h-screen bg-background grid place-items-center px-4">
         <p className="text-sm text-muted-foreground">
-          This analytics area is for GhanaPath administrators only.
+          This analytics area is for GhanaPathFinder administrators only.
         </p>
       </div>
     );
@@ -64,8 +64,8 @@ const AdminAnalytics = () => {
   return (
     <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-20 pb-12">
       <Seo
-        title="Admin Analytics | GhanaPath"
-        description="Verified GhanaPath usage analytics for administrators: registered users, sessions, recommendation runs and saved items."
+        title="Admin Analytics | GhanaPathFinder"
+        description="Verified GhanaPathFinder usage analytics for administrators: registered users, sessions, recommendation runs and saved items."
         path="/admin/analytics"
       />
       <Navbar />

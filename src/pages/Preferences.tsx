@@ -64,7 +64,7 @@ const Preferences = () => {
             <SlidersHorizontal className="h-6 w-6 text-primary" /> Match preferences
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Tune how GhanaPath ranks scholarships for you. Saved once, used everywhere.
+            Tune how GhanaPathFinder ranks scholarships for you. Saved once, used everywhere.
           </p>
         </div>
 

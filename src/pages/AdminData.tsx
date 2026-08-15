@@ -69,7 +69,7 @@ const AdminData = () => {
             <ShieldCheck className="h-8 w-8 text-primary mx-auto mb-3" />
             <h1 className="font-display text-xl font-bold text-foreground">Admin access required</h1>
             <p className="text-sm text-muted-foreground mt-2">
-              The data console is limited to GhanaPath administrators.
+              The data console is limited to GhanaPathFinder administrators.
             </p>
             <Link to="/dashboard" className="inline-block mt-4 text-sm text-primary font-medium">
               Back to dashboard
@@ -99,7 +99,7 @@ const AdminData = () => {
               <Database className="h-7 w-7 text-primary" /> Tertiary data console
             </h1>
             <p className="text-sm text-muted-foreground mt-1">
-              Reconcile GhanaPath against GTEC, NMC and institutional sources. Import, verify and clean records.
+              Reconcile GhanaPathFinder against GTEC, NMC and institutional sources. Import, verify and clean records.
             </p>
           </header>
 

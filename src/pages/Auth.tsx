@@ -109,7 +109,7 @@ const Auth = () => {
       <Link to="/" className="flex items-center gap-2 mb-6">
         <GraduationCap className="h-7 w-7 text-primary" />
         <span className="font-display font-bold text-xl text-foreground">
-          Ghana<span className="text-primary">Path</span>
+          Ghana<span className="text-primary">PathFinder</span>
         </span>
       </Link>
 
@@ -119,7 +119,7 @@ const Auth = () => {
             <h1 className="font-display text-xl font-bold text-foreground">Check your email</h1>
             <p className="text-sm text-muted-foreground">
               We sent a confirmation link to <span className="text-foreground">{email}</span>. Click
-              it to activate your GhanaPath account.
+              it to activate your GhanaPathFinder account.
             </p>
           </div>
         ) : (
@@ -217,7 +217,7 @@ const Auth = () => {
 
 
             <p className="text-center text-sm text-muted-foreground mt-3">
-              {mode === "signin" ? "New to GhanaPath?" : "Already have an account?"}{" "}
+              {mode === "signin" ? "New to GhanaPathFinder?" : "Already have an account?"}{" "}
               <button
                 onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
                 className="inline-flex items-center justify-center min-h-[44px] px-2 text-primary font-medium"

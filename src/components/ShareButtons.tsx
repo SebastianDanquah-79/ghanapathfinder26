@@ -10,7 +10,7 @@ const ShareButtons = ({ studentName, resultRef }: ShareButtonsProps) => {
   const [copied, setCopied] = useState(false);
 
   const pageUrl = typeof window !== "undefined" ? window.location.href : "";
-  const shareText = `I just found my perfect university match on GhanaPath 🇬🇭 Check it out!`;
+  const shareText = `I just found my perfect university match on GhanaPathFinder 🇬🇭 Check it out!`;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(`${shareText}\n${pageUrl}`);
@@ -26,7 +26,7 @@ const ShareButtons = ({ studentName, resultRef }: ShareButtonsProps) => {
       scale: 2,
     });
     const link = document.createElement("a");
-    link.download = `GhanaPath-${studentName.replace(/\s+/g, "-")}.png`;
+    link.download = `GhanaPathFinder-${studentName.replace(/\s+/g, "-")}.png`;
     link.href = canvas.toDataURL("image/png");
     link.click();
   };

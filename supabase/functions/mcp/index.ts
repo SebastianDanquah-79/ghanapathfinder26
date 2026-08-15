@@ -60,8 +60,8 @@ function supabaseForUser(ctx) {
 // src/lib/mcp/tools/get-profile.ts
 var get_profile_default = defineTool({
   name: "get_profile",
-  title: "Get my GhanaPath profile",
-  description: "Fetch the signed-in student's GhanaPath profile, WASSCE results and match preferences.",
+  title: "Get my GhanaPathFinder profile",
+  description: "Fetch the signed-in student's GhanaPathFinder profile, WASSCE results and match preferences.",
   inputSchema: {},
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async (_input, ctx) => {
@@ -94,7 +94,7 @@ import { z } from "npm:zod@^3.24.2";
 var list_saved_items_default = defineTool2({
   name: "list_saved_items",
   title: "List saved universities and scholarships",
-  description: "List the signed-in student's saved GhanaPath items (universities, programmes, scholarships, careers).",
+  description: "List the signed-in student's saved GhanaPathFinder items (universities, programmes, scholarships, careers).",
   inputSchema: {
     itemType: z.string().trim().min(1).optional().describe("Optional filter, e.g. 'scholarship' or 'university'."),
     limit: z.number().int().min(1).max(100).default(50).optional()
@@ -193,7 +193,7 @@ import { defineTool as defineTool5 } from "npm:@lovable.dev/mcp-js@0.26.2";
 var list_deadlines_default = defineTool5({
   name: "list_deadlines",
   title: "List upcoming deadlines",
-  description: "List the signed-in student's upcoming GhanaPath deadlines.",
+  description: "List the signed-in student's upcoming GhanaPathFinder deadlines.",
   inputSchema: {},
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async (_input, ctx) => {
@@ -216,7 +216,7 @@ var mcp_default = defineMcp({
   name: "ghana-future-guide",
   title: "Ghana Future Guide",
   version: "0.1.0",
-  instructions: "Tools for GhanaPath, a college, scholarship and career companion for Ghanaian students. Read the signed-in student's profile, saved universities and scholarships, tracked scholarship applications, deadlines and checklist, and add or update applications in their tracker.",
+  instructions: "Tools for GhanaPathFinder, a college, scholarship and career companion for Ghanaian students. Read the signed-in student's profile, saved universities and scholarships, tracked scholarship applications, deadlines and checklist, and add or update applications in their tracker.",
   auth: auth.oauth.issuer({
     issuer: `https://${projectRef}.supabase.co/auth/v1`,
     acceptedAudiences: "authenticated"

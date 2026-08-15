@@ -59,7 +59,7 @@ const Navbar = () => {
         <Link to="/" className="flex items-center gap-2 shrink-0">
           <GraduationCap className="h-6 w-6 text-primary" />
           <span className="font-display font-bold text-lg sm:text-xl text-foreground">
-            Ghana<span className="text-primary">Path</span>
+            Ghana<span className="text-primary">PathFinder</span>
           </span>
         </Link>
 

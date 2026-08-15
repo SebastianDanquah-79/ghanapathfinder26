@@ -18,8 +18,8 @@
     "tools": [
       {
         "name": "get_profile",
-        "title": "Get my GhanaPath profile",
-        "description": "Fetch the signed-in student's GhanaPath profile, WASSCE results and match preferences.",
+        "title": "Get my GhanaPathFinder profile",
+        "description": "Fetch the signed-in student's GhanaPathFinder profile, WASSCE results and match preferences.",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,
@@ -35,7 +35,7 @@
       {
         "name": "list_saved_items",
         "title": "List saved universities and scholarships",
-        "description": "List the signed-in student's saved GhanaPath items (universities, programmes, scholarships, careers).",
+        "description": "List the signed-in student's saved GhanaPathFinder items (universities, programmes, scholarships, careers).",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,
@@ -142,7 +142,7 @@
       {
         "name": "list_deadlines",
         "title": "List upcoming deadlines",
-        "description": "List the signed-in student's upcoming GhanaPath deadlines.",
+        "description": "List the signed-in student's upcoming GhanaPathFinder deadlines.",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,

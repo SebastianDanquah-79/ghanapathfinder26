@@ -209,7 +209,7 @@ const Scholarships = () => {
   return (
     <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-20 pb-12">
       <Seo
-        title="Scholarships for Ghanaian Students | GhanaPath"
+        title="Scholarships for Ghanaian Students | GhanaPathFinder"
         description="Browse and track scholarships open to Ghanaian students, with deadlines, eligibility checks and personalised matches based on your profile."
         path="/scholarships"
       />

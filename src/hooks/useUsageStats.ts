@@ -10,8 +10,8 @@ export interface PublicUsageStats {
 }
 
 export const PUBLIC_METRICS: Array<{ key: string; label: string; field: keyof PublicUsageStats }> = [
-  { key: "students", label: "Students using GhanaPath (registered accounts)", field: "students" },
-  { key: "active_students", label: "Students who have actively used GhanaPath", field: "active_students" },
+  { key: "students", label: "Students using GhanaPathFinder (registered accounts)", field: "students" },
+  { key: "active_students", label: "Students who have actively used GhanaPathFinder", field: "active_students" },
   { key: "website_visits", label: "Website visits (unique sessions)", field: "website_visits" },
   { key: "recommendation_runs", label: "Recommendation runs", field: "recommendation_runs" },
 ];

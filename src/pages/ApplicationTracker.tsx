@@ -131,7 +131,7 @@ const ApplicationTracker = () => {
           <div className="grid gap-3 md:grid-cols-2">
             <div className="flex gap-2">
               <select className={input} value={picked} onChange={(e) => setPicked(e.target.value)}>
-                <option value="">Pick from GhanaPath scholarships</option>
+                <option value="">Pick from GhanaPathFinder scholarships</option>
                 {scholarships.map((s) => (
                   <option key={s.name} value={s.name}>
                     {s.name}
