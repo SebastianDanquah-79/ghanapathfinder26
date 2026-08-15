@@ -11,7 +11,7 @@ interface Props {
 }
 
 /**
- * External link that makes it clear the student is leaving GhanaPath,
+ * External link that makes it clear the student is leaving GhanaPathFinder,
  * and never renders an unverified/missing URL as an active link.
  */
 const OfficialLink = ({

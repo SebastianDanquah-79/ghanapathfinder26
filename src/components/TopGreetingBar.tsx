@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import UsageCounter from "@/components/UsageCounter";
 
 const thanks = [
-  { lang: "Twi", text: "Yɛda wo ase sɛ wode GhanaPath adi dwuma" },
-  { lang: "Ewe", text: "Akpe na wò be nèzã GhanaPath" },
-  { lang: "Ga", text: "Oyiwaladɔŋŋ akɛ okɛ GhanaPath tsu nii" },
+  { lang: "Twi", text: "Yɛda wo ase sɛ wode GhanaPathFinder adi dwuma" },
+  { lang: "Ewe", text: "Akpe na wò be nèzã GhanaPathFinder" },
+  { lang: "Ga", text: "Oyiwaladɔŋŋ akɛ okɛ GhanaPathFinder tsu nii" },
 ];
 
 const TopGreetingBar = () => {

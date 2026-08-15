@@ -6,7 +6,7 @@ export default defineTool({
   name: "list_saved_items",
   title: "List saved universities and scholarships",
   description:
-    "List the signed-in student's saved GhanaPath items (universities, programmes, scholarships, careers).",
+    "List the signed-in student's saved GhanaPathFinder items (universities, programmes, scholarships, careers).",
   inputSchema: {
     itemType: z
       .string()

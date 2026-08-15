@@ -325,7 +325,7 @@ const SearchPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Seo
-        title="Search Universities & Programmes in Ghana | GhanaPath"
+        title="Search Universities & Programmes in Ghana | GhanaPathFinder"
         description="Search accredited Ghanaian universities, degree programmes and scholarships in one place, with WASSCE requirements and verified official links."
         path="/search"
       />
@@ -333,7 +333,7 @@ const SearchPage = () => {
       <main className="pt-20 pb-12 px-4 sm:px-8 lg:px-12">
         <div className="max-w-6xl xl:max-w-7xl mx-auto">
           <h1 className="font-display text-xl sm:text-3xl font-bold text-foreground mb-1">
-            Search GhanaPath
+            Search GhanaPathFinder
           </h1>
           <p className="text-xs sm:text-sm text-muted-foreground mb-4">
             Universities, programmes and scholarships.

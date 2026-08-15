@@ -63,7 +63,7 @@ const AdmissionMatch = () => {
   return (
     <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-20 pb-12">
       <Seo
-        title="WASSCE Admission Match Calculator | GhanaPath"
+        title="WASSCE Admission Match Calculator | GhanaPathFinder"
         description="Enter your WASSCE grades to see which Ghanaian university, technical university and college programmes you qualify for, using verified cut-offs and evidence-based estimated ranges."
         path="/admission-match"
       />
@@ -290,7 +290,7 @@ const AdmissionMatch = () => {
 
         <p className="mt-6 text-xs text-muted-foreground">
           Cut-off points change every year with the number of applicants and available places. Estimated
-          ranges are GhanaPath's own evidence-based working, not official figures. Always confirm with the
+          ranges are GhanaPathFinder's own evidence-based working, not official figures. Always confirm with the
           institution before applying.
         </p>
       </div>

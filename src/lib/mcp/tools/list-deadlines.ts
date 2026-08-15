@@ -4,7 +4,7 @@ import { supabaseForUser } from "../supabase";
 export default defineTool({
   name: "list_deadlines",
   title: "List upcoming deadlines",
-  description: "List the signed-in student's upcoming GhanaPath deadlines.",
+  description: "List the signed-in student's upcoming GhanaPathFinder deadlines.",
   inputSchema: {},
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async (_input, ctx) => {

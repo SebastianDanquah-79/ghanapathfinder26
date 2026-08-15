@@ -1,5 +1,5 @@
 /**
- * GhanaPath Admission Match Confidence Engine
+ * GhanaPathFinder Admission Match Confidence Engine
  *
  * Principles:
  *  - WASSCE aggregates are golf scores: LOWER is better (aggregate 7 beats aggregate 8).
@@ -524,7 +524,7 @@ export function evaluateReference(
     return out(
       "Insufficient Data",
       null,
-      "This institution has not published a cut-off and there is not enough evidence for a fair estimate, so GhanaPath will not invent one.",
+      "This institution has not published a cut-off and there is not enough evidence for a fair estimate, so GhanaPathFinder will not invent one.",
     );
 
   const failedReq = requirementChecks.filter((c) => c.status === "failed");

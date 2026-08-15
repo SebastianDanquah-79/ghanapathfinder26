@@ -79,7 +79,7 @@ const ProgrammePage = () => {
     <div className="min-h-screen bg-background">
       {p && (
         <Seo
-          title={`${p.name}${uni?.short_name ? ` — ${uni.short_name}` : ""} | GhanaPath`}
+          title={`${p.name}${uni?.short_name ? ` — ${uni.short_name}` : ""} | GhanaPathFinder`}
           description={(info?.short_bio || p.description || `${p.name} at ${uni?.name ?? "a Ghanaian institution"}: entry requirements, curriculum, careers and cut-off aggregates.`).slice(0, 155)}
           path={`/programme/${p.slug}`}
           jsonLd={[

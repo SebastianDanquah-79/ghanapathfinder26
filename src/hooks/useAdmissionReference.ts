@@ -10,7 +10,7 @@ import {
 } from "@/lib/admissionEngine";
 
 /**
- * Every verified programme in the GhanaPath database, with either an official
+ * Every verified programme in the GhanaPathFinder database, with either an official
  * cut-off or an evidence-based estimated range attached. Never restricted to a
  * handful of institutions.
  */

@@ -86,7 +86,7 @@ const ParentView = () => {
         <div className={`${card} mb-6`}>
           <h2 className="font-display font-semibold text-foreground mb-1">Link to a student</h2>
           <p className="text-xs text-muted-foreground mb-3">
-            Ask your child for the invite code on their GhanaPath dashboard.
+            Ask your child for the invite code on their GhanaPathFinder dashboard.
           </p>
           <div className="flex flex-col sm:flex-row gap-2">
             <input

@@ -88,7 +88,7 @@ const Compare = () => {
   return (
     <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-20 pb-12">
       <Seo
-        title="Compare Universities in Ghana Side by Side | GhanaPath"
+        title="Compare Universities in Ghana Side by Side | GhanaPathFinder"
         description="Compare up to three accredited Ghanaian universities on location, type, tuition, admission aggregate and top programmes using verified GTEC data."
         path="/compare"
       />

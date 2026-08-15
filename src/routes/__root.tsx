@@ -101,22 +101,22 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1.0, viewport-fit=cover" },
-      { title: "GhanaPath - AI-Powered College and Career Guidance" },
+      { title: "GhanaPathFinder - AI-Powered College and Career Guidance" },
       {
         name: "description",
         content:
           "AI-powered college and career guidance for Ghanaian SHS students. Find your perfect university, explore careers, and plan your future.",
       },
       { name: "google-site-verification", content: "AX0O529bwE2xFh92n_bKT9tdS7ax1ulGLgrKzrm1kLE" },
-      { name: "author", content: "GhanaPath" },
+      { name: "author", content: "GhanaPathFinder" },
       { name: "theme-color", content: "#0a0f1c" },
       { name: "mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
-      { name: "apple-mobile-web-app-title", content: "GhanaPath" },
+      { name: "apple-mobile-web-app-title", content: "GhanaPathFinder" },
       { property: "og:type", content: "website" },
-      { property: "og:site_name", content: "GhanaPath" },
-      { property: "og:title", content: "GhanaPath - AI-Powered College and Career Guidance" },
+      { property: "og:site_name", content: "GhanaPathFinder" },
+      { property: "og:title", content: "GhanaPathFinder - AI-Powered College and Career Guidance" },
       {
         property: "og:description",
         content:
@@ -129,7 +129,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "GhanaPath - AI-Powered College and Career Guidance" },
+      { name: "twitter:title", content: "GhanaPathFinder - AI-Powered College and Career Guidance" },
       {
         name: "twitter:description",
         content:
@@ -153,7 +153,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Organization",
-          name: "GhanaPath",
+          name: "GhanaPathFinder",
           url: "https://ghanapathfinder26.lovable.app",
           description:
             "University, programme and scholarship guidance for Ghanaian senior high school students.",
