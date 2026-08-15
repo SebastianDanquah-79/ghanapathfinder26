@@ -3,7 +3,31 @@ import { motion } from "framer-motion";
 import { Briefcase, Building, DollarSign, Globe, Search, Loader2 } from "lucide-react";
 import SectionHeader from "./SectionHeader";
 
-const popularMajors = ["Computer Science", "Medicine", "Engineering", "Business", "Law", "Nursing", "Accounting", "Architecture"];
+const popularMajors = [
+  "Computer Science",
+  "Medicine",
+  "Engineering",
+  "Business",
+  "Law",
+  "Nursing",
+  "Accounting",
+  "Architecture",
+  "Pharmacy",
+  "Agriculture",
+  "Education",
+  "Economics",
+  "Marketing",
+  "Psychology",
+  "Journalism & Media",
+  "Hospitality & Tourism",
+  "Data Science & Statistics",
+  "Banking & Finance",
+  "Public Health",
+  "Human Resource Management",
+  "Environmental Science",
+  "Fashion & Creative Arts",
+];
+
 
 interface CareerData {
   major: string;
