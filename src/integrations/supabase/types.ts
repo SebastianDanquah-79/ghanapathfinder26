@@ -338,7 +338,7 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
-          invite_code: string
+          invite_code?: string
           parent_email?: string | null
           parent_id?: string | null
           status?: string
@@ -1329,6 +1329,7 @@ export type Database = {
           slug: string
         }[]
       }
+      gen_invite_code: { Args: never; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
