@@ -101,7 +101,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1.0, viewport-fit=cover" },
-      { title: "GhanaPath — AI College & Career Guide for Ghana" },
+      { title: "GhanaPath - AI-Powered College and Career Guidance" },
       {
         name: "description",
         content:
@@ -116,7 +116,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "apple-mobile-web-app-title", content: "GhanaPath" },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "GhanaPath" },
-      { property: "og:title", content: "GhanaPath — AI College & Career Guide for Ghana" },
+      { property: "og:title", content: "GhanaPath - AI-Powered College and Career Guidance" },
       {
         property: "og:description",
         content:
@@ -129,7 +129,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "GhanaPath — AI College & Career Guide for Ghana" },
+      { name: "twitter:title", content: "GhanaPath - AI-Powered College and Career Guidance" },
       {
         name: "twitter:description",
         content:
