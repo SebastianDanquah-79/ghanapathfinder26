@@ -29,7 +29,7 @@ const ParentAccessCard = () => {
     if (!user) return;
     const { error } = await supabase
       .from("parent_links")
-      .insert({ student_id: user.id, invite_code: makeCode(), status: "pending" });
+      .insert({ student_id: user.id, status: "pending" });
     if (error) {
       toast.error(error.message);
       return;
