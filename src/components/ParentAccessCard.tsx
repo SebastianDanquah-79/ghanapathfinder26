@@ -4,7 +4,6 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 
-const makeCode = () => Math.random().toString(36).slice(2, 8).toUpperCase();
 
 const ParentAccessCard = () => {
   const { user } = useAuth();
