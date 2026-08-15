@@ -14,9 +14,15 @@ import {
  * cut-off or an evidence-based estimated range attached. Never restricted to a
  * handful of institutions.
  */
-export const useAdmissionReference = (search = "", universityId?: string, limit = 400) =>
+export const useAdmissionReference = (
+  search = "",
+  universityId?: string,
+  limit = 400,
+  enabled = true,
+) =>
   useQuery({
     queryKey: ["admission_reference", search, universityId, limit],
+    enabled,
     queryFn: async () => {
       const { data, error } = await supabase.rpc("admission_reference" as never, {
         _q: search,
@@ -36,7 +42,10 @@ export const useAggregateRecommendations = (
   enabled = true,
 ) => {
   const { data: references = [], isLoading, error } = useAdmissionReference(
-    enabled ? search : "\u0000never",
+    search,
+    undefined,
+    400,
+    enabled,
   );
 
   const matches = useMemo<ReferenceMatch[]>(() => {
