@@ -16,6 +16,7 @@ const cities = [
   "Wa",
   "Bolgatanga",
   "Navrongo",
+  "Tarkwa",
 ];
 
 
@@ -170,6 +171,19 @@ const cityData: Record<string, CityData> = {
     moneyTips: ["Low rents keep monthly costs down", "Bolga Market is great for cheap produce", "Crafts and basket weaving offer side income", "Share okada fares with classmates"],
     safetyTips: ["Hydrate and shield from the sun", "Be cautious travelling near border routes", "Use trusted okada riders", "Avoid isolated areas at night"],
     networkingTips: ["Strong development and NGO presence", "Join BTU student associations", "Volunteer on health and education projects", "Connect with regional artisan businesses"],
+  },
+  Tarkwa: {
+    budget: [
+      { item: "Rent (shared room)", amount: "GHS 200 - 480/mo" },
+      { item: "Food", amount: "GHS 320 - 560/mo" },
+      { item: "Transport", amount: "GHS 70 - 160/mo" },
+      { item: "Data/Internet", amount: "GHS 60 - 120/mo" },
+      { item: "Miscellaneous", amount: "GHS 80 - 160/mo" },
+    ],
+    neighborhoods: ["UMaT campus area", "Tarkwa Banso", "Cyanide", "New Atuabo", "Nsuaem road"],
+    moneyTips: ["Mining town prices are higher than nearby towns — compare rents early", "Share taxis to campus with coursemates", "Buy produce at Tarkwa Market rather than campus shops", "Look out for paid mining vacation attachments"],
+    safetyTips: ["Avoid galamsey/mining pits and unmarked sites", "Roads get slippery in the heavy rains — travel early", "Use registered taxis at night", "Follow lab and field safety rules strictly"],
+    networkingTips: ["UMaT is Ghana's hub for mining and engineering", "Network with Goldfields and AngloGold engineers", "Join the student chapters of mining/geo societies", "Target internships with mining service companies"],
   },
   Navrongo: {
     budget: [

@@ -23,6 +23,7 @@ const UsageCounter = ({ className = "" }: { className?: string }) => {
 
   return (
     <p
+      suppressHydrationWarning
       className={`inline-flex items-center gap-2 text-xs sm:text-sm text-muted-foreground ${className}`}
     >
       <Users className="h-4 w-4 text-primary shrink-0" />

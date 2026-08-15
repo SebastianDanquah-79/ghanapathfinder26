@@ -34,7 +34,7 @@ const ImpactSection = () => {
               className="bg-glass rounded-xl p-4 sm:p-5 text-center min-w-0"
             >
               <s.icon className="h-5 w-5 text-primary mx-auto mb-2" />
-              <p className="font-display font-bold text-2xl sm:text-3xl text-foreground">
+              <p className="font-display font-bold text-2xl sm:text-3xl text-foreground" suppressHydrationWarning>
                 {Number(s.value).toLocaleString("en-GB")}
               </p>
               <p className="text-[11px] sm:text-xs text-muted-foreground mt-1 leading-snug">{s.label}</p>
