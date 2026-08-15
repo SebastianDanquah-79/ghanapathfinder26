@@ -26,6 +26,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SavedRouteImport } from './routes/saved'
 import { Route as ScholarshipsRouteImport } from './routes/scholarships'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as AdminAnalyticsRouteImport } from './routes/admin/analytics'
 import { Route as AdminDataRouteImport } from './routes/admin/data'
 import { Route as ProgrammeSlugRouteImport } from './routes/programme/$slug'
 import { Route as UniversitySlugRouteImport } from './routes/university/$slug'
@@ -116,6 +117,11 @@ const SearchRoute = SearchRouteImport.update({
   path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
+  id: '/admin/analytics',
+  path: '/admin/analytics',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminDataRoute = AdminDataRouteImport.update({
   id: '/admin/data',
   path: '/admin/data',
@@ -155,6 +161,7 @@ export interface FileRoutesByFullPath {
   '/saved': typeof SavedRoute
   '/scholarships': typeof ScholarshipsRoute
   '/search': typeof SearchRoute
+  '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
@@ -178,6 +185,7 @@ export interface FileRoutesByTo {
   '/saved': typeof SavedRoute
   '/scholarships': typeof ScholarshipsRoute
   '/search': typeof SearchRoute
+  '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
@@ -202,6 +210,7 @@ export interface FileRoutesById {
   '/saved': typeof SavedRoute
   '/scholarships': typeof ScholarshipsRoute
   '/search': typeof SearchRoute
+  '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
@@ -227,6 +236,7 @@ export interface FileRouteTypes {
     | '/saved'
     | '/scholarships'
     | '/search'
+    | '/admin/analytics'
     | '/admin/data'
     | '/programme/$slug'
     | '/university/$slug'
@@ -250,6 +260,7 @@ export interface FileRouteTypes {
     | '/saved'
     | '/scholarships'
     | '/search'
+    | '/admin/analytics'
     | '/admin/data'
     | '/programme/$slug'
     | '/university/$slug'
@@ -273,6 +284,7 @@ export interface FileRouteTypes {
     | '/saved'
     | '/scholarships'
     | '/search'
+    | '/admin/analytics'
     | '/admin/data'
     | '/programme/$slug'
     | '/university/$slug'
@@ -297,6 +309,7 @@ export interface RootRouteChildren {
   SavedRoute: typeof SavedRoute
   ScholarshipsRoute: typeof ScholarshipsRoute
   SearchRoute: typeof SearchRoute
+  AdminAnalyticsRoute: typeof AdminAnalyticsRoute
   AdminDataRoute: typeof AdminDataRoute
   ProgrammeSlugRoute: typeof ProgrammeSlugRoute
   UniversitySlugRoute: typeof UniversitySlugRoute
@@ -424,6 +437,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SearchRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/analytics': {
+      id: '/admin/analytics'
+      path: '/admin/analytics'
+      fullPath: '/admin/analytics'
+      preLoaderRoute: typeof AdminAnalyticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/data': {
       id: '/admin/data'
       path: '/admin/data'
@@ -473,6 +493,7 @@ const rootRouteChildren: RootRouteChildren = {
   SavedRoute: SavedRoute,
   ScholarshipsRoute: ScholarshipsRoute,
   SearchRoute: SearchRoute,
+  AdminAnalyticsRoute: AdminAnalyticsRoute,
   AdminDataRoute: AdminDataRoute,
   ProgrammeSlugRoute: ProgrammeSlugRoute,
   UniversitySlugRoute: UniversitySlugRoute,

@@ -38,7 +38,9 @@ export interface CutoffRecord {
 export type MatchCategory =
   | "Excellent Match"
   | "Strong Match"
+  | "Good Match"
   | "Competitive"
+  | "Possible"
   | "Reach"
   | "Low Match"
   | "Not Eligible"
@@ -46,13 +48,16 @@ export type MatchCategory =
 
 export const CATEGORY_STYLES: Record<MatchCategory, string> = {
   "Excellent Match": "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
-  "Strong Match": "bg-primary/15 text-primary border-primary/30",
+  "Strong Match": "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
+  "Good Match": "bg-primary/15 text-primary border-primary/30",
   Competitive: "bg-amber-500/15 text-amber-400 border-amber-500/30",
+  Possible: "bg-amber-500/15 text-amber-400 border-amber-500/30",
   Reach: "bg-orange-500/15 text-orange-400 border-orange-500/30",
   "Low Match": "bg-destructive/15 text-destructive border-destructive/30",
   "Not Eligible": "bg-muted text-muted-foreground border-border",
   "Insufficient Data": "bg-muted text-muted-foreground border-border",
 };
+
 
 const CORE_PATTERNS: Array<{ key: string; label: string; test: RegExp }> = [
   { key: "english", label: "English Language", test: /english/i },
@@ -400,4 +405,232 @@ export function evaluateAggregate(
     margin,
     explanation: `${inside} — far outside it for this admission year.`,
   };
+}
+
+/* ===========================================================================
+ * Broad recommendation engine
+ * Works across EVERY verified programme in the database, using either an
+ * officially published cut-off or a clearly-labelled estimated range.
+ * ========================================================================= */
+
+export interface AdmissionReference {
+  programme_id: string;
+  programme_slug: string;
+  programme_name: string;
+  field: string | null;
+  degree_type: string;
+  university_id: string;
+  university_name: string;
+  university_short: string | null;
+  university_slug: string;
+  university_type: string;
+  university_category: string;
+  region: string | null;
+  basis: "official" | "estimated" | "none";
+  official_cutoff: number | null;
+  applicant_category: string | null;
+  academic_year: string | null;
+  subject_requirements: string | null;
+  official_source_url: string | null;
+  source_name: string | null;
+  last_verified_at: string | null;
+  estimate_low: number | null;
+  estimate_high: number | null;
+  estimate_method: string | null;
+  estimate_evidence: string | null;
+  estimate_confidence: string | null;
+  entry_requirements: string | null;
+}
+
+export interface ReferenceMatch {
+  reference: AdmissionReference;
+  category: MatchCategory;
+  confidence: number | null;
+  /** e.g. "Official cut-off: 7" or "Estimated range: 14–19" */
+  benchmarkLabel: string;
+  /** "Officially published" | "Estimated — not officially published" | "Official cut-off unavailable" */
+  benchmarkKind: string;
+  why: string;
+  requirementChecks: RequirementCheck[];
+  gaps: string[];
+  rank: number;
+}
+
+const RANK: Record<MatchCategory, number> = {
+  "Excellent Match": 0,
+  "Strong Match": 1,
+  "Good Match": 2,
+  Competitive: 3,
+  Possible: 3,
+  Reach: 4,
+  "Low Match": 5,
+  "Not Eligible": 6,
+  "Insufficient Data": 7,
+};
+
+export const categoryRank = (c: MatchCategory) => RANK[c] ?? 9;
+
+/**
+ * Score a student's aggregate against one programme, using an official cut-off
+ * when one exists and an evidence-based estimated range otherwise.
+ * Career goals, interests and chosen major never raise the score.
+ */
+export function evaluateReference(
+  reference: AdmissionReference,
+  aggregate: number | null,
+  results: SubjectResult[] = [],
+): ReferenceMatch {
+  const requirementChecks = checkSubjectRequirements(reference.subject_requirements, results);
+  const gaps: string[] = [];
+
+  const low = reference.estimate_low;
+  const high = reference.estimate_high;
+  const official = reference.official_cutoff;
+
+  const benchmarkKind =
+    reference.basis === "official"
+      ? "Officially published"
+      : reference.basis === "estimated"
+        ? "Estimated — not officially published"
+        : "Official cut-off unavailable";
+
+  const benchmarkLabel =
+    reference.basis === "official"
+      ? `Official cut-off: ${official}`
+      : reference.basis === "estimated"
+        ? `Estimated range: ${low}–${high}`
+        : "Official cut-off unavailable";
+
+  const out = (
+    category: MatchCategory,
+    confidence: number | null,
+    why: string,
+  ): ReferenceMatch => ({
+    reference,
+    category,
+    confidence: confidence == null ? null : Math.max(1, Math.min(92, Math.round(confidence))),
+    benchmarkLabel,
+    benchmarkKind,
+    why,
+    requirementChecks,
+    gaps,
+    rank: categoryRank(category),
+  });
+
+  if (aggregate == null || !Number.isFinite(aggregate))
+    return out("Insufficient Data", null, "Enter your WASSCE results to be scored.");
+
+  if (reference.basis === "none")
+    return out(
+      "Insufficient Data",
+      null,
+      "This institution has not published a cut-off and there is not enough evidence for a fair estimate, so GhanaPath will not invent one.",
+    );
+
+  const failedReq = requirementChecks.filter((c) => c.status === "failed");
+  if (failedReq.length) {
+    failedReq.forEach((c) => gaps.push(c.note));
+    return out("Not Eligible", 0, "You do not meet a required subject grade for this programme.");
+  }
+  requirementChecks
+    .filter((c) => c.status === "unknown" || c.status === "manual")
+    .forEach((c) => gaps.push(c.note));
+
+  if (aggregate > 36)
+    return out("Not Eligible", 0, "An aggregate above 36 is below the minimum for tertiary entry.");
+
+  let category: MatchCategory;
+  let confidence: number;
+  let why: string;
+
+  if (reference.basis === "official" && official != null) {
+    const margin = official - aggregate;
+    if (margin >= 3) {
+      category = "Strong Match";
+      confidence = Math.min(90, 80 + margin);
+      why = `Your aggregate of ${aggregate} is ${margin} points better than the published cut-off of ${official}.`;
+    } else if (margin >= 1) {
+      category = "Good Match";
+      confidence = 66 + margin * 4;
+      why = `Your aggregate of ${aggregate} is inside the published cut-off of ${official}.`;
+    } else if (margin >= -1) {
+      category = "Possible";
+      confidence = 50 + margin * 6;
+      why = `Your aggregate of ${aggregate} sits on the published cut-off of ${official}, and cut-offs move each year.`;
+    } else if (margin >= -4) {
+      category = "Reach";
+      confidence = 34 + margin * 4;
+      why = `Your aggregate of ${aggregate} is ${Math.abs(margin)} points outside the published cut-off of ${official}.`;
+    } else if (margin >= -8) {
+      category = "Low Match";
+      confidence = Math.max(5, 18 + margin);
+      why = `Your aggregate of ${aggregate} is well outside the published cut-off of ${official}.`;
+    } else {
+      return out(
+        "Not Eligible",
+        0,
+        `The published cut-off is ${official}; an aggregate of ${aggregate} is far outside it.`,
+      );
+    }
+    if (official <= 10 && confidence > 78) confidence -= 6; // heavily contested programmes
+    if (reference.applicant_category === "Full-Fee Paying")
+      gaps.push("This is the full-fee-paying cut-off, which costs more.");
+  } else {
+    const lo = low ?? 36;
+    const hi = high ?? 36;
+    const mid = (lo + hi) / 2;
+    if (aggregate <= lo - 2) {
+      category = "Strong Match";
+      confidence = Math.min(78, 68 + (lo - aggregate));
+      why = `Your aggregate of ${aggregate} is better than the whole estimated admission range of ${lo}–${hi}.`;
+    } else if (aggregate <= mid) {
+      category = "Good Match";
+      confidence = 64;
+      why = `Your aggregate of ${aggregate} falls inside the estimated admission range of ${lo}–${hi}.`;
+    } else if (aggregate <= hi) {
+      category = "Possible";
+      confidence = 50;
+      why = `Your aggregate of ${aggregate} is at the weaker end of the estimated admission range of ${lo}–${hi}.`;
+    } else if (aggregate <= hi + 3) {
+      category = "Reach";
+      confidence = 30;
+      why = `Your aggregate of ${aggregate} is just outside the estimated admission range of ${lo}–${hi}.`;
+    } else if (aggregate <= hi + 8) {
+      category = "Low Match";
+      confidence = 14;
+      why = `Your aggregate of ${aggregate} is outside the estimated admission range of ${lo}–${hi}.`;
+    } else {
+      return out(
+        "Not Eligible",
+        0,
+        `The estimated admission range is ${lo}–${hi}; an aggregate of ${aggregate} is far outside it.`,
+      );
+    }
+    // Estimates are never as certain as published figures.
+    confidence *= reference.estimate_confidence === "low" ? 0.85 : 0.95;
+    gaps.push("This range is an estimate, not an officially published cut-off. Confirm with the institution.");
+  }
+
+  if (requirementChecks.some((c) => c.status === "unknown" || c.status === "manual"))
+    confidence *= 0.85;
+
+  return out(category, confidence, why);
+}
+
+/** Keep the shortlist broad: at most `perUniversity` programmes from any one institution. */
+export function diversify<T extends { reference: AdmissionReference }>(
+  matches: T[],
+  perUniversity = 2,
+  limit = 12,
+): T[] {
+  const seen = new Map<string, number>();
+  const out: T[] = [];
+  for (const m of matches) {
+    const n = seen.get(m.reference.university_id) ?? 0;
+    if (n >= perUniversity) continue;
+    seen.set(m.reference.university_id, n + 1);
+    out.push(m);
+    if (out.length >= limit) break;
+  }
+  return out;
 }

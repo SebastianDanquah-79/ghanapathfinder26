@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      analytics_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          path: string | null
+          ref_id: string | null
+          ref_type: string | null
+          session_id: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          path?: string | null
+          ref_id?: string | null
+          ref_type?: string | null
+          session_id: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          path?: string | null
+          ref_id?: string | null
+          ref_type?: string | null
+          session_id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      app_settings: {
+        Row: {
+          key: string
+          updated_at: string
+          value: Json
+        }
+        Insert: {
+          key: string
+          updated_at?: string
+          value: Json
+        }
+        Update: {
+          key?: string
+          updated_at?: string
+          value?: Json
+        }
+        Relationships: []
+      }
       application_checklist: {
         Row: {
           created_at: string
@@ -347,6 +398,63 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      programme_admission_estimates: {
+        Row: {
+          confidence_level: string
+          created_at: string
+          estimate_high: number
+          estimate_low: number
+          evidence: string
+          id: string
+          method: string
+          programme_id: string
+          sample_size: number
+          university_id: string
+          updated_at: string
+        }
+        Insert: {
+          confidence_level?: string
+          created_at?: string
+          estimate_high: number
+          estimate_low: number
+          evidence: string
+          id?: string
+          method: string
+          programme_id: string
+          sample_size?: number
+          university_id: string
+          updated_at?: string
+        }
+        Update: {
+          confidence_level?: string
+          created_at?: string
+          estimate_high?: number
+          estimate_low?: number
+          evidence?: string
+          id?: string
+          method?: string
+          programme_id?: string
+          sample_size?: number
+          university_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programme_admission_estimates_programme_id_fkey"
+            columns: ["programme_id"]
+            isOneToOne: true
+            referencedRelation: "programmes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "programme_admission_estimates_university_id_fkey"
+            columns: ["university_id"]
+            isOneToOne: false
+            referencedRelation: "universities"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       programme_careers: {
         Row: {
@@ -1168,6 +1276,38 @@ export type Database = {
     }
     Functions: {
       accept_parent_invite: { Args: { _code: string }; Returns: string }
+      admin_analytics: { Args: never; Returns: Json }
+      admission_reference: {
+        Args: { _limit?: number; _q?: string; _university_id?: string }
+        Returns: {
+          academic_year: string
+          applicant_category: string
+          basis: string
+          degree_type: string
+          entry_requirements: string
+          estimate_confidence: string
+          estimate_evidence: string
+          estimate_high: number
+          estimate_low: number
+          estimate_method: string
+          field: string
+          last_verified_at: string
+          official_cutoff: number
+          official_source_url: string
+          programme_id: string
+          programme_name: string
+          programme_slug: string
+          region: string
+          source_name: string
+          subject_requirements: string
+          university_category: string
+          university_id: string
+          university_name: string
+          university_short: string
+          university_slug: string
+          university_type: string
+        }[]
+      }
       apply_occupation_salaries: {
         Args: { _programme_id?: string }
         Returns: undefined
@@ -1196,10 +1336,16 @@ export type Database = {
         }
         Returns: boolean
       }
+      institution_tier_offset: {
+        Args: { _category: string; _short: string; _type: string }
+        Returns: number
+      }
       is_linked_parent: {
         Args: { _parent_id: string; _student_id: string }
         Returns: boolean
       }
+      public_usage_stats: { Args: never; Returns: Json }
+      refresh_admission_estimates: { Args: never; Returns: number }
       search_catalogue: {
         Args: { _kind?: string; _limit?: number; _offset?: number; _q: string }
         Returns: {

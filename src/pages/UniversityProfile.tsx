@@ -6,10 +6,12 @@ import Footer from "@/components/Footer";
 import SaveButton from "@/components/SaveButton";
 import OfficialLink from "@/components/OfficialLink";
 import { formatVerified, useProgrammes, useUniversity } from "@/hooks/useCatalogue";
+import { useTrackView } from "@/hooks/useTracking";
 
 const UniversityProfile = () => {
   const { slug } = useParams<{ slug: string }>();
   const { data: uni, isLoading, isError, refetch } = useUniversity(slug);
+  useTrackView("university_view", "university", slug);
   const { data: programmes, isLoading: loadingProgrammes } = useProgrammes(uni?.id);
 
   return (
