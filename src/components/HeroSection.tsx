@@ -1,3 +1,4 @@
+import UsageCounter from "@/components/UsageCounter";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowDown, Sparkles } from "lucide-react";
@@ -54,6 +55,10 @@ const HeroSection = () => {
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
             Universities, scholarships and careers matched to your WASSCE results.
           </p>
+
+          <div className="flex justify-center mb-6">
+            <UsageCounter />
+          </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a

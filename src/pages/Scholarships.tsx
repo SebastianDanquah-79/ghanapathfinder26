@@ -1,3 +1,4 @@
+import { useTrackView } from "@/hooks/useTracking";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "@/lib/router-compat";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -37,6 +38,7 @@ interface AiMatch {
 }
 
 const Scholarships = () => {
+  useTrackView("scholarship_view", "scholarships", "list");
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
