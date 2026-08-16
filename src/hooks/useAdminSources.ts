@@ -69,7 +69,7 @@ export const useAdminSources = (search: string, enabled: boolean) =>
   });
 
 export interface SourceInput {
-  id?: string;
+  id?: string | undefined;
   record_type: string;
   record_id: string;
   source_url: string;
