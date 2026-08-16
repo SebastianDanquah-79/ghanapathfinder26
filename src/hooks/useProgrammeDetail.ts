@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { useWassceResults } from "@/hooks/useAdmissionMatch";
@@ -27,10 +27,11 @@ export interface ProgrammeDetail {
 }
 
 /** Everything shown on a single programme profile page. */
-export const useProgrammeDetail = (slug?: string) =>
-  useQuery({
+export const programmeDetailQueryOptions = (slug: string) =>
+  queryOptions({
     queryKey: ["programme_detail", slug],
-    enabled: !!slug,
+    staleTime: 60_000,
+
     queryFn: async (): Promise<ProgrammeDetail | null> => {
       const { data: prog, error } = await supabase
         .from("programmes")
@@ -69,6 +70,11 @@ export const useProgrammeDetail = (slug?: string) =>
       };
     },
   });
+
+export const useProgrammeDetail = (slug?: string) =>
+  useQuery({ ...programmeDetailQueryOptions(slug ?? ""), enabled: !!slug });
+
+
 
 /** WASSCE-based match confidence for this programme, when a verified cut-off exists. */
 export const useProgrammeMatch = (cutoffs: ProgrammeCutoff[] | undefined): MatchResult | null => {
