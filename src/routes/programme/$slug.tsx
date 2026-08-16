@@ -12,7 +12,7 @@ export const Route = createFileRoute("/programme/$slug")({
     return {
       name: detail?.programme.name ?? null,
       university: detail?.university?.name ?? null,
-      description: detail?.information?.overview ?? detail?.programme.description ?? null,
+      description: detail?.information?.description ?? detail?.programme.description ?? null,
       slug: params.slug,
     };
   },
