@@ -17,7 +17,7 @@ import {
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { scholarships } from "@/data/scholarships";
+import { scholarships, scholarshipSlug } from "@/data/scholarships";
 import { matchScholarships } from "@/lib/scholarshipMatcher";
 import { estimateDeadlineDate, toISODate, daysUntil, urgencyLabel } from "@/lib/scholarshipDates";
 import { buildPlanText, downloadPlan } from "@/lib/scholarshipPlan";
