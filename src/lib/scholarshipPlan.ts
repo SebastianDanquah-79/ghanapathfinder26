@@ -60,7 +60,7 @@ export const buildPlanText = (p: PlanInput) => {
   p.deadlines.forEach((d) => out.push(`- ${d.due_date} — ${d.title}`));
   out.push("");
 
-  out.push(line, "ghanapathfinder26.lovable.app");
+  out.push(line, "ghanapathfinder.com");
 
   return out.join("\n");
 };

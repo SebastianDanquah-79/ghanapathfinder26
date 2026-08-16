@@ -172,3 +172,13 @@ export const scholarshipTips = [
   "Ask a teacher for a reference letter early — a rushed reference is the most common reason strong applications get weakened.",
   "Never pay a 'processing fee' to anyone promising a scholarship. Legitimate schemes in Ghana are free to apply for.",
 ];
+
+export const scholarshipSlug = (name: string) =>
+  name
+    .toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+export const scholarshipBySlug = (slug: string) =>
+  scholarships.find((s) => scholarshipSlug(s.name) === slug);

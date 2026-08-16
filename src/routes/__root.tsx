@@ -101,11 +101,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1.0, viewport-fit=cover" },
-      { title: "GhanaPathFinder - AI-Powered College and Career Guidance" },
+      { title: "GhanaPathFinder — Connect. Discover. Grow." },
       {
         name: "description",
         content:
-          "AI-powered college and career guidance for Ghanaian SHS students. Find your perfect university, explore careers, and plan your future.",
+          "GhanaPathFinder is an education and career platform helping Ghanaian students discover universities, programmes, scholarships, career paths and opportunities.",
       },
       { name: "google-site-verification", content: "AX0O529bwE2xFh92n_bKT9tdS7ax1ulGLgrKzrm1kLE" },
       { name: "author", content: "GhanaPathFinder" },
@@ -116,30 +116,22 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "apple-mobile-web-app-title", content: "GhanaPathFinder" },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "GhanaPathFinder" },
-      { property: "og:title", content: "GhanaPathFinder - AI-Powered College and Career Guidance" },
+      { property: "og:title", content: "GhanaPathFinder — Connect. Discover. Grow." },
       {
         property: "og:description",
         content:
-          "AI-powered college and career guidance for Ghanaian SHS students. Find your perfect university, explore careers, and plan your future.",
+          "GhanaPathFinder is an education and career platform helping Ghanaian students discover universities, programmes, scholarships, career paths and opportunities.",
       },
-      {
-        property: "og:image",
-        content:
-          "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/21c37729-a5ee-4108-aef0-0cec43a690b8",
-      },
+      { property: "og:url", content: "https://ghanapathfinder.com" },
+      { property: "og:image", content: "https://ghanapathfinder.com/app-icon-512.png" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "GhanaPathFinder - AI-Powered College and Career Guidance" },
+      { name: "twitter:title", content: "GhanaPathFinder — Connect. Discover. Grow." },
       {
         name: "twitter:description",
         content:
-          "AI-powered college and career guidance for Ghanaian SHS students. Find your perfect university, explore careers, and plan your future.",
+          "GhanaPathFinder is an education and career platform helping Ghanaian students discover universities, programmes, scholarships, career paths and opportunities.",
       },
-      {
-        name: "twitter:image",
-        content:
-          "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/21c37729-a5ee-4108-aef0-0cec43a690b8",
-      },
+      { name: "twitter:image", content: "https://ghanapathfinder.com/app-icon-512.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -153,11 +145,40 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Organization",
+          "@id": "https://ghanapathfinder.com/#organization",
           name: "GhanaPathFinder",
-          url: "https://ghanapathfinder26.lovable.app",
+          alternateName: ["Ghana Path Finder", "GhanaPath Finder"],
+          url: "https://ghanapathfinder.com",
+          logo: {
+            "@type": "ImageObject",
+            url: "https://ghanapathfinder.com/app-icon-512.png",
+            width: 512,
+            height: 512,
+          },
           description:
-            "University, programme and scholarship guidance for Ghanaian senior high school students.",
+            "Education and career technology platform for Ghanaian students.",
           areaServed: "GH",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "@id": "https://ghanapathfinder.com/#website",
+          name: "GhanaPathFinder",
+          alternateName: "Ghana Path Finder",
+          url: "https://ghanapathfinder.com",
+          inLanguage: "en-GH",
+          publisher: { "@id": "https://ghanapathfinder.com/#organization" },
+          potentialAction: {
+            "@type": "SearchAction",
+            target: {
+              "@type": "EntryPoint",
+              urlTemplate: "https://ghanapathfinder.com/search?q={search_term_string}",
+            },
+            "query-input": "required name=search_term_string",
+          },
         }),
       },
     ],

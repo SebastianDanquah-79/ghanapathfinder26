@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://ghanapathfinder26.lovable.app/sitemap.xml
+Sitemap: https://ghanapathfinder.com/sitemap.xml

@@ -21,14 +21,19 @@ import { Route as MatcherRouteImport } from './routes/matcher'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as ParentRouteImport } from './routes/parent'
 import { Route as PreferencesRouteImport } from './routes/preferences'
-import { Route as ProgrammesRouteImport } from './routes/programmes'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SavedRouteImport } from './routes/saved'
-import { Route as ScholarshipsRouteImport } from './routes/scholarships'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin/analytics'
 import { Route as AdminDataRouteImport } from './routes/admin/data'
+import { Route as CareersIndexRouteImport } from './routes/careers/index'
+import { Route as CareersSlugRouteImport } from './routes/careers/$slug'
 import { Route as ProgrammeSlugRouteImport } from './routes/programme/$slug'
+import { Route as ProgrammesIndexRouteImport } from './routes/programmes/index'
+import { Route as ProgrammesSlugRouteImport } from './routes/programmes/$slug'
+import { Route as ScholarshipsIndexRouteImport } from './routes/scholarships/index'
+import { Route as ScholarshipsSlugRouteImport } from './routes/scholarships/$slug'
+import { Route as UniversitiesSlugRouteImport } from './routes/universities/$slug'
 import { Route as UniversitySlugRouteImport } from './routes/university/$slug'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 
@@ -92,11 +97,6 @@ const PreferencesRoute = PreferencesRouteImport.update({
   path: '/preferences',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProgrammesRoute = ProgrammesRouteImport.update({
-  id: '/programmes',
-  path: '/programmes',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
@@ -105,11 +105,6 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
 const SavedRoute = SavedRouteImport.update({
   id: '/saved',
   path: '/saved',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ScholarshipsRoute = ScholarshipsRouteImport.update({
-  id: '/scholarships',
-  path: '/scholarships',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SearchRoute = SearchRouteImport.update({
@@ -127,9 +122,44 @@ const AdminDataRoute = AdminDataRouteImport.update({
   path: '/admin/data',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CareersIndexRoute = CareersIndexRouteImport.update({
+  id: '/careers/',
+  path: '/careers/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CareersSlugRoute = CareersSlugRouteImport.update({
+  id: '/careers/$slug',
+  path: '/careers/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProgrammeSlugRoute = ProgrammeSlugRouteImport.update({
   id: '/programme/$slug',
   path: '/programme/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProgrammesIndexRoute = ProgrammesIndexRouteImport.update({
+  id: '/programmes/',
+  path: '/programmes/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProgrammesSlugRoute = ProgrammesSlugRouteImport.update({
+  id: '/programmes/$slug',
+  path: '/programmes/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScholarshipsIndexRoute = ScholarshipsIndexRouteImport.update({
+  id: '/scholarships/',
+  path: '/scholarships/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScholarshipsSlugRoute = ScholarshipsSlugRouteImport.update({
+  id: '/scholarships/$slug',
+  path: '/scholarships/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UniversitiesSlugRoute = UniversitiesSlugRouteImport.update({
+  id: '/universities/$slug',
+  path: '/universities/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const UniversitySlugRoute = UniversitySlugRouteImport.update({
@@ -156,15 +186,20 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
   '/preferences': typeof PreferencesRoute
-  '/programmes': typeof ProgrammesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/saved': typeof SavedRoute
-  '/scholarships': typeof ScholarshipsRoute
   '/search': typeof SearchRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
+  '/careers/$slug': typeof CareersSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
+  '/programmes/$slug': typeof ProgrammesSlugRoute
+  '/scholarships/$slug': typeof ScholarshipsSlugRoute
+  '/universities/$slug': typeof UniversitiesSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
+  '/careers/': typeof CareersIndexRoute
+  '/programmes/': typeof ProgrammesIndexRoute
+  '/scholarships/': typeof ScholarshipsIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
 export interface FileRoutesByTo {
@@ -180,15 +215,20 @@ export interface FileRoutesByTo {
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
   '/preferences': typeof PreferencesRoute
-  '/programmes': typeof ProgrammesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/saved': typeof SavedRoute
-  '/scholarships': typeof ScholarshipsRoute
   '/search': typeof SearchRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
+  '/careers/$slug': typeof CareersSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
+  '/programmes/$slug': typeof ProgrammesSlugRoute
+  '/scholarships/$slug': typeof ScholarshipsSlugRoute
+  '/universities/$slug': typeof UniversitiesSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
+  '/careers': typeof CareersIndexRoute
+  '/programmes': typeof ProgrammesIndexRoute
+  '/scholarships': typeof ScholarshipsIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
 export interface FileRoutesById {
@@ -205,15 +245,20 @@ export interface FileRoutesById {
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
   '/preferences': typeof PreferencesRoute
-  '/programmes': typeof ProgrammesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/saved': typeof SavedRoute
-  '/scholarships': typeof ScholarshipsRoute
   '/search': typeof SearchRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
+  '/careers/$slug': typeof CareersSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
+  '/programmes/$slug': typeof ProgrammesSlugRoute
+  '/scholarships/$slug': typeof ScholarshipsSlugRoute
+  '/universities/$slug': typeof UniversitiesSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
+  '/careers/': typeof CareersIndexRoute
+  '/programmes/': typeof ProgrammesIndexRoute
+  '/scholarships/': typeof ScholarshipsIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
 export interface FileRouteTypes {
@@ -231,15 +276,20 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/parent'
     | '/preferences'
-    | '/programmes'
     | '/reset-password'
     | '/saved'
-    | '/scholarships'
     | '/search'
     | '/admin/analytics'
     | '/admin/data'
+    | '/careers/$slug'
     | '/programme/$slug'
+    | '/programmes/$slug'
+    | '/scholarships/$slug'
+    | '/universities/$slug'
     | '/university/$slug'
+    | '/careers/'
+    | '/programmes/'
+    | '/scholarships/'
     | '/.lovable/oauth/consent'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -255,15 +305,20 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/parent'
     | '/preferences'
-    | '/programmes'
     | '/reset-password'
     | '/saved'
-    | '/scholarships'
     | '/search'
     | '/admin/analytics'
     | '/admin/data'
+    | '/careers/$slug'
     | '/programme/$slug'
+    | '/programmes/$slug'
+    | '/scholarships/$slug'
+    | '/universities/$slug'
     | '/university/$slug'
+    | '/careers'
+    | '/programmes'
+    | '/scholarships'
     | '/.lovable/oauth/consent'
   id:
     | '__root__'
@@ -279,15 +334,20 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/parent'
     | '/preferences'
-    | '/programmes'
     | '/reset-password'
     | '/saved'
-    | '/scholarships'
     | '/search'
     | '/admin/analytics'
     | '/admin/data'
+    | '/careers/$slug'
     | '/programme/$slug'
+    | '/programmes/$slug'
+    | '/scholarships/$slug'
+    | '/universities/$slug'
     | '/university/$slug'
+    | '/careers/'
+    | '/programmes/'
+    | '/scholarships/'
     | '/.lovable/oauth/consent'
   fileRoutesById: FileRoutesById
 }
@@ -304,15 +364,20 @@ export interface RootRouteChildren {
   OnboardingRoute: typeof OnboardingRoute
   ParentRoute: typeof ParentRoute
   PreferencesRoute: typeof PreferencesRoute
-  ProgrammesRoute: typeof ProgrammesRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SavedRoute: typeof SavedRoute
-  ScholarshipsRoute: typeof ScholarshipsRoute
   SearchRoute: typeof SearchRoute
   AdminAnalyticsRoute: typeof AdminAnalyticsRoute
   AdminDataRoute: typeof AdminDataRoute
+  CareersSlugRoute: typeof CareersSlugRoute
   ProgrammeSlugRoute: typeof ProgrammeSlugRoute
+  ProgrammesSlugRoute: typeof ProgrammesSlugRoute
+  ScholarshipsSlugRoute: typeof ScholarshipsSlugRoute
+  UniversitiesSlugRoute: typeof UniversitiesSlugRoute
   UniversitySlugRoute: typeof UniversitySlugRoute
+  CareersIndexRoute: typeof CareersIndexRoute
+  ProgrammesIndexRoute: typeof ProgrammesIndexRoute
+  ScholarshipsIndexRoute: typeof ScholarshipsIndexRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
 }
 
@@ -402,13 +467,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PreferencesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/programmes': {
-      id: '/programmes'
-      path: '/programmes'
-      fullPath: '/programmes'
-      preLoaderRoute: typeof ProgrammesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/reset-password': {
       id: '/reset-password'
       path: '/reset-password'
@@ -421,13 +479,6 @@ declare module '@tanstack/react-router' {
       path: '/saved'
       fullPath: '/saved'
       preLoaderRoute: typeof SavedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/scholarships': {
-      id: '/scholarships'
-      path: '/scholarships'
-      fullPath: '/scholarships'
-      preLoaderRoute: typeof ScholarshipsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/search': {
@@ -451,11 +502,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDataRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/careers/': {
+      id: '/careers/'
+      path: '/careers'
+      fullPath: '/careers/'
+      preLoaderRoute: typeof CareersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/careers/$slug': {
+      id: '/careers/$slug'
+      path: '/careers/$slug'
+      fullPath: '/careers/$slug'
+      preLoaderRoute: typeof CareersSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/programme/$slug': {
       id: '/programme/$slug'
       path: '/programme/$slug'
       fullPath: '/programme/$slug'
       preLoaderRoute: typeof ProgrammeSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/programmes/': {
+      id: '/programmes/'
+      path: '/programmes'
+      fullPath: '/programmes/'
+      preLoaderRoute: typeof ProgrammesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/programmes/$slug': {
+      id: '/programmes/$slug'
+      path: '/programmes/$slug'
+      fullPath: '/programmes/$slug'
+      preLoaderRoute: typeof ProgrammesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scholarships/': {
+      id: '/scholarships/'
+      path: '/scholarships'
+      fullPath: '/scholarships/'
+      preLoaderRoute: typeof ScholarshipsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scholarships/$slug': {
+      id: '/scholarships/$slug'
+      path: '/scholarships/$slug'
+      fullPath: '/scholarships/$slug'
+      preLoaderRoute: typeof ScholarshipsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/universities/$slug': {
+      id: '/universities/$slug'
+      path: '/universities/$slug'
+      fullPath: '/universities/$slug'
+      preLoaderRoute: typeof UniversitiesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/university/$slug': {
@@ -488,15 +588,20 @@ const rootRouteChildren: RootRouteChildren = {
   OnboardingRoute: OnboardingRoute,
   ParentRoute: ParentRoute,
   PreferencesRoute: PreferencesRoute,
-  ProgrammesRoute: ProgrammesRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SavedRoute: SavedRoute,
-  ScholarshipsRoute: ScholarshipsRoute,
   SearchRoute: SearchRoute,
   AdminAnalyticsRoute: AdminAnalyticsRoute,
   AdminDataRoute: AdminDataRoute,
+  CareersSlugRoute: CareersSlugRoute,
   ProgrammeSlugRoute: ProgrammeSlugRoute,
+  ProgrammesSlugRoute: ProgrammesSlugRoute,
+  ScholarshipsSlugRoute: ScholarshipsSlugRoute,
+  UniversitiesSlugRoute: UniversitiesSlugRoute,
   UniversitySlugRoute: UniversitySlugRoute,
+  CareersIndexRoute: CareersIndexRoute,
+  ProgrammesIndexRoute: ProgrammesIndexRoute,
+  ScholarshipsIndexRoute: ScholarshipsIndexRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
 }
 export const routeTree = rootRouteImport
