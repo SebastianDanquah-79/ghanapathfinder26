@@ -5,6 +5,7 @@ const links = [
   { label: "About GhanaPathFinder", to: "/about" },
   { label: "Disclaimer", to: "/disclaimer" },
   { label: "References & Acknowledgements", to: "/references" },
+  { label: "Professional Councils", to: "/professional-councils" },
   { label: "Privacy Policy", to: "/privacy" },
   { label: "Terms of Use", to: "/terms" },
   { label: "Contact", to: "/contact" },

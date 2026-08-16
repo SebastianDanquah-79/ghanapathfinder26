@@ -3,8 +3,18 @@ import { BookMarked, ExternalLink, Loader2, Search as SearchIcon, ShieldCheck } 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo, { breadcrumbLd } from "@/components/Seo";
-import { useSourceDirectory } from "@/hooks/useSourceDirectory";
-import { REFERENCES_PARAGRAPHS, formatVerified, prettyHost, sourceTypeLabel } from "@/lib/legal";
+import { useSourceDirectory, type SourceRecord } from "@/hooks/useSourceDirectory";
+import { ACCREDITATION_SOURCES } from "@/data/professionalBodies";
+import { Link } from "@/lib/router-compat";
+import {
+  REFERENCES_PARAGRAPHS,
+  REFERENCE_GROUPS,
+  referenceGroupFor,
+  formatVerified,
+  prettyHost,
+  sourceTypeLabel,
+  type ReferenceGroup,
+} from "@/lib/legal";
 
 const References = () => {
   const { data: sources = [], isLoading } = useSourceDirectory();
@@ -27,6 +37,19 @@ const References = () => {
           s.usedFor.join(" ").toLowerCase().includes(needle)),
     );
   }, [sources, q, type]);
+
+  const grouped = useMemo(() => {
+    const map = new Map<ReferenceGroup, SourceRecord[]>();
+    for (const s of filtered) {
+      const g = referenceGroupFor(s.type, s.usedFor);
+      const list = map.get(g);
+      if (list) list.push(s);
+      else map.set(g, [s]);
+    }
+    return REFERENCE_GROUPS.filter((g) => map.has(g)).map(
+      (g) => [g, map.get(g)!] as [ReferenceGroup, SourceRecord[]],
+    );
+  }, [filtered]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -51,6 +74,37 @@ const References = () => {
               </p>
             ))}
           </div>
+
+          <section className="mt-6" aria-label="Ghana tertiary education and accreditation">
+            <h2 className="font-display text-lg font-semibold text-foreground mb-3">
+              Ghana tertiary education &amp; accreditation
+            </h2>
+            <div className="grid gap-3 md:grid-cols-2">
+              {ACCREDITATION_SOURCES.map((a) => (
+                <article key={a.website} className="bg-glass rounded-xl p-4">
+                  <h3 className="font-display font-semibold text-sm text-foreground">{a.name}</h3>
+                  <p className="text-xs text-muted-foreground mt-1">{a.note}</p>
+                  <p className="text-xs text-muted-foreground mt-1">Last verified: {a.lastVerified}</p>
+                  <a
+                    href={a.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 mt-2 text-xs font-medium text-primary min-h-[36px]"
+                  >
+                    <ExternalLink className="h-3.5 w-3.5" /> Accreditation source
+                  </a>
+                </article>
+              ))}
+            </div>
+            <Link
+              to="/professional-councils"
+              className="inline-block mt-3 text-xs font-medium text-primary underline"
+            >
+              Professional councils &amp; career regulation
+            </Link>
+          </section>
+
+
 
           <section className="mt-6" aria-label="Source directory">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
@@ -90,42 +144,50 @@ const References = () => {
                 No sources match this search.
               </p>
             ) : (
-              <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-                {filtered.map((s) => (
-                  <article key={s.url} className="bg-glass rounded-xl p-4">
-                    <div className="flex items-start justify-between gap-2">
-                      <h3 className="font-display font-semibold text-sm text-foreground">{s.name}</h3>
-                      {s.status === "verified" && (
-                        <span className="inline-flex items-center gap-1 text-[10px] text-ghana-green shrink-0">
-                          <ShieldCheck className="h-3 w-3" /> Verified
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-[11px] uppercase tracking-wide text-primary mt-1">
-                      {sourceTypeLabel(s.type)}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-2">
-                      Information obtained: {s.usedFor.join(", ")}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Records traced to this source: {s.records}
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {formatVerified(s.lastVerified)
-                        ? `Last verified: ${formatVerified(s.lastVerified)}`
-                        : "Last verified: date unavailable"}
-                    </p>
-                    <a
-                      href={s.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 mt-3 text-xs font-medium text-primary min-h-[36px]"
-                    >
-                      <ExternalLink className="h-3.5 w-3.5" /> {prettyHost(s.url)}
-                    </a>
-                  </article>
-                ))}
-              </div>
+              grouped.map(([group, items]) => (
+                <div key={group} className="mb-7">
+                  <h3 className="font-display text-base font-semibold text-foreground mb-1">
+                    {group}
+                  </h3>
+                  <p className="text-xs text-muted-foreground mb-3">{items.length} sources</p>
+                  <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                    {items.map((s) => (
+                      <article key={s.url} className="bg-glass rounded-xl p-4">
+                        <div className="flex items-start justify-between gap-2">
+                          <h4 className="font-display font-semibold text-sm text-foreground">{s.name}</h4>
+                          {s.status === "verified" && (
+                            <span className="inline-flex items-center gap-1 text-[10px] text-ghana-green shrink-0">
+                              <ShieldCheck className="h-3 w-3" /> Verified
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-[11px] uppercase tracking-wide text-primary mt-1">
+                          {sourceTypeLabel(s.type)}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-2">
+                          Information obtained: {s.usedFor.join(", ")}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Records traced to this source: {s.records}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {formatVerified(s.lastVerified)
+                            ? `Last verified: ${formatVerified(s.lastVerified)}`
+                            : "Last verified: date unavailable"}
+                        </p>
+                        <a
+                          href={s.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 mt-3 text-xs font-medium text-primary min-h-[36px]"
+                        >
+                          <ExternalLink className="h-3.5 w-3.5" /> {prettyHost(s.url)}
+                        </a>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+              ))
             )}
           </section>
         </div>

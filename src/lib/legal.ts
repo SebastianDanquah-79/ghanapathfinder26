@@ -1,7 +1,7 @@
 /** Public-facing legal / transparency copy, shared by the homepage teasers and full pages. */
 
 export const DISCLAIMER_SUMMARY =
-  "GhanaPathFinder is an independent guidance platform. Information, match confidence and estimated cut-off points are guidance only — not guarantees of admission. Always verify requirements, deadlines and fees directly with the institution or provider.";
+  "GhanaPathFinder is an independent education and career guidance platform for students exploring Ghana universities, tertiary institutions, programmes, scholarships and career paths. University recommendations and WASSCE match confidence are estimates, not guarantees of admission. Cut-off points, admission requirements, programmes, scholarships, fees and deadlines may change. Always verify important information with the relevant official institution or regulatory body before applying. Estimated information is clearly labelled and should not be treated as official.";
 
 export const DISCLAIMER_PARAGRAPHS: string[] = [
   "GhanaPathFinder is an independent education and career guidance platform designed to help students explore universities, programmes, scholarships, career paths, and educational opportunities in Ghana.",
@@ -14,22 +14,111 @@ export const DISCLAIMER_PARAGRAPHS: string[] = [
 ];
 
 export const ABOUT_PARAGRAPHS: string[] = [
-  "GhanaPathFinder is an education and career technology platform designed to help students in Ghana make more informed decisions about their future.",
-  "GhanaPathFinder brings university discovery, programme exploration, career paths, scholarships, funding opportunities, WASSCE-based recommendations, and application planning into one platform.",
-  "Students can explore universities and programmes, understand potential career opportunities, discover scholarships, save opportunities, and receive personalized recommendations based on their academic information.",
+  "GhanaPathFinder is an education and career technology platform helping Ghanaian students discover universities, tertiary institutions, programmes, scholarships and career paths.",
+  "Students can explore their options, compare programmes, understand admission requirements, use WASSCE-based recommendations, save opportunities and plan their next steps.",
+  "Our mission is to connect students with reliable information and opportunities that help them make better education and career decisions.",
 ];
 
 export const ABOUT_GOAL =
-  "Connect students to the information and opportunities they need to make clearer decisions about education and their future careers.";
+  "Connect students with reliable information and opportunities that help them make better education and career decisions.";
 
 export const ABOUT_CLOSING =
   "GhanaPathFinder is continuously developing its database and improving its recommendations, user experience, and information sources.";
 
 export const REFERENCES_PARAGRAPHS: string[] = [
-  "GhanaPathFinder acknowledges the universities, tertiary institutions, government agencies, regulators, scholarship providers, official websites, public databases, and other information sources that provide information used to develop and maintain the platform.",
-  "Where appropriate, GhanaPathFinder uses official institutional and regulatory sources to verify information about institutions, programmes, admissions, accreditation, scholarships, and other educational opportunities.",
-  "Important information should always be verified with the original source because requirements and information can change.",
+  "GhanaPathFinder acknowledges the official universities, tertiary institutions, regulatory bodies, professional councils, scholarship providers and public information sources used to research and verify information presented on the platform.",
+  "Information is sourced from official websites and authoritative sources wherever available. Each university, programme, admission requirement, scholarship and regulatory record should have its relevant source attached.",
+  "Source information may change, so students should verify current requirements with the original source before applying.",
 ];
+
+/** Public grouping of Ghanaian / foreign tertiary institutions used across the site. */
+export const INSTITUTION_GROUPS = [
+  "Traditional Universities",
+  "Technical Universities",
+  "Private Universities",
+  "Other Accredited Institutions",
+  "Foreign Universities",
+  "Professional & Specialised Institutions",
+] as const;
+
+export type InstitutionGroup = (typeof INSTITUTION_GROUPS)[number];
+
+const FOREIGN_CATEGORIES = ["Registered Foreign Institution", "Regional (West Africa) Institution"];
+const PRIVATE_UNI_CATEGORIES = ["University", "University College", "Chartered Private Institution"];
+
+/** Category/type combinations that make up each public group (used for DB filtering). */
+export const groupFilter = (
+  group: InstitutionGroup,
+): { categories: string[]; type?: "Public" | "Private" } => {
+  switch (group) {
+    case "Traditional Universities":
+      return { categories: ["University"], type: "Public" };
+    case "Technical Universities":
+      return { categories: ["Technical University", "Private Polytechnic"] };
+    case "Private Universities":
+      return { categories: PRIVATE_UNI_CATEGORIES, type: "Private" };
+    case "Foreign Universities":
+      return { categories: FOREIGN_CATEGORIES };
+    case "Professional & Specialised Institutions":
+      return { categories: ["Professional Institution"] };
+    default:
+      return {
+        categories: [
+          "College of Education",
+          "Private College of Education",
+          "College of Agriculture",
+          "Nursing and Midwifery Training College",
+          "Private Nurses Training College",
+          "Health Training Institution",
+          "Private Tertiary Institution",
+          "Tutorial College",
+          "Distance Learning Institution",
+        ],
+      };
+  }
+};
+
+/** Which public group an institution row belongs to. */
+export const institutionGroup = (
+  category?: string | null,
+  type?: string | null,
+): InstitutionGroup => {
+  const c = category ?? "";
+  if (FOREIGN_CATEGORIES.includes(c)) return "Foreign Universities";
+  if (c === "Technical University" || c === "Private Polytechnic") return "Technical Universities";
+  if (c === "Professional Institution") return "Professional & Specialised Institutions";
+  if (PRIVATE_UNI_CATEGORIES.includes(c)) {
+    return type === "Private" ? "Private Universities" : "Traditional Universities";
+  }
+  return "Other Accredited Institutions";
+};
+
+/** Reference-page categories for the source directory. */
+export const REFERENCE_GROUPS = [
+  "Ghana Tertiary Education & Accreditation",
+  "Universities & Tertiary Institutions",
+  "Admissions & Requirements",
+  "Programme Information",
+  "Professional & Regulatory Bodies",
+  "Scholarship & Funding Sources",
+  "Other Verified Sources",
+] as const;
+
+export type ReferenceGroup = (typeof REFERENCE_GROUPS)[number];
+
+export const referenceGroupFor = (sourceType?: string | null, usedFor?: string[]): ReferenceGroup => {
+  const t = sourceType ?? "";
+  if (t === "regulator" || t === "regulatory") return "Professional & Regulatory Bodies";
+  if (t === "government") return "Ghana Tertiary Education & Accreditation";
+  if (t === "scholarship_provider") return "Scholarship & Funding Sources";
+  if (t === "admissions_portal") return "Admissions & Requirements";
+  if (usedFor?.includes("Programme details")) return "Programme Information";
+  if (t === "official_university" || t === "official_institution" || t === "institution")
+    return "Universities & Tertiary Institutions";
+  return "Other Verified Sources";
+};
+
+export const UNVERIFIED_NOTE = "Official information unavailable.";
 
 /** Human labels for the raw source_type values stored in the database. */
 export const SOURCE_TYPE_LABELS: Record<string, string> = {

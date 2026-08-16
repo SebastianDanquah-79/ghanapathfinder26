@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
+import { groupFilter, type InstitutionGroup } from "@/lib/legal";
 
 export type University = Tables<"universities">;
 export type Programme = Tables<"programmes">;
@@ -44,14 +45,23 @@ export interface UniversityFilters {
   type?: "All" | "Public" | "Private" | undefined;
   region?: string | undefined;
   category?: string | undefined;
+  group?: InstitutionGroup | "All" | undefined;
   page?: number | undefined;
   pageSize?: number | undefined;
 }
 
 export const useUniversities = (filters: UniversityFilters = {}) => {
-  const { search = "", type = "All", region, category, page = 0, pageSize = 24 } = filters;
+  const {
+    search = "",
+    type = "All",
+    region,
+    category,
+    group = "All",
+    page = 0,
+    pageSize = 24,
+  } = filters;
   return useQuery({
-    queryKey: ["universities", search, type, region, category, page, pageSize],
+    queryKey: ["universities", search, type, region, category, group, page, pageSize],
     queryFn: async () => {
       let q = supabase
         .from("universities")
@@ -59,6 +69,11 @@ export const useUniversities = (filters: UniversityFilters = {}) => {
         .order("name")
         .range(page * pageSize, page * pageSize + pageSize - 1);
 
+      if (group !== "All") {
+        const gf = groupFilter(group);
+        q = q.in("category", gf.categories);
+        if (gf.type) q = q.eq("type", gf.type);
+      }
       if (type !== "All") q = q.eq("type", type);
       if (region) q = q.eq("region", region);
       if (category) q = q.eq("category", category);
