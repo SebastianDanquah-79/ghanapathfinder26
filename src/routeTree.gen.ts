@@ -31,6 +31,7 @@ import { Route as CareersSlugRouteImport } from './routes/careers/$slug'
 import { Route as ProgrammeSlugRouteImport } from './routes/programme/$slug'
 import { Route as ProgrammesIndexRouteImport } from './routes/programmes/index'
 import { Route as ScholarshipsIndexRouteImport } from './routes/scholarships/index'
+import { Route as ScholarshipsSlugRouteImport } from './routes/scholarships/$slug'
 import { Route as UniversitySlugRouteImport } from './routes/university/$slug'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 
@@ -144,6 +145,11 @@ const ScholarshipsIndexRoute = ScholarshipsIndexRouteImport.update({
   path: '/scholarships/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScholarshipsSlugRoute = ScholarshipsSlugRouteImport.update({
+  id: '/scholarships/$slug',
+  path: '/scholarships/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const UniversitySlugRoute = UniversitySlugRouteImport.update({
   id: '/university/$slug',
   path: '/university/$slug',
@@ -175,6 +181,7 @@ export interface FileRoutesByFullPath {
   '/admin/data': typeof AdminDataRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
+  '/scholarships/$slug': typeof ScholarshipsSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
   '/careers/': typeof CareersIndexRoute
   '/programmes/': typeof ProgrammesIndexRoute
@@ -201,6 +208,7 @@ export interface FileRoutesByTo {
   '/admin/data': typeof AdminDataRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
+  '/scholarships/$slug': typeof ScholarshipsSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
   '/careers': typeof CareersIndexRoute
   '/programmes': typeof ProgrammesIndexRoute
@@ -228,6 +236,7 @@ export interface FileRoutesById {
   '/admin/data': typeof AdminDataRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
+  '/scholarships/$slug': typeof ScholarshipsSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
   '/careers/': typeof CareersIndexRoute
   '/programmes/': typeof ProgrammesIndexRoute
@@ -256,6 +265,7 @@ export interface FileRouteTypes {
     | '/admin/data'
     | '/careers/$slug'
     | '/programme/$slug'
+    | '/scholarships/$slug'
     | '/university/$slug'
     | '/careers/'
     | '/programmes/'
@@ -282,6 +292,7 @@ export interface FileRouteTypes {
     | '/admin/data'
     | '/careers/$slug'
     | '/programme/$slug'
+    | '/scholarships/$slug'
     | '/university/$slug'
     | '/careers'
     | '/programmes'
@@ -308,6 +319,7 @@ export interface FileRouteTypes {
     | '/admin/data'
     | '/careers/$slug'
     | '/programme/$slug'
+    | '/scholarships/$slug'
     | '/university/$slug'
     | '/careers/'
     | '/programmes/'
@@ -335,6 +347,7 @@ export interface RootRouteChildren {
   AdminDataRoute: typeof AdminDataRoute
   CareersSlugRoute: typeof CareersSlugRoute
   ProgrammeSlugRoute: typeof ProgrammeSlugRoute
+  ScholarshipsSlugRoute: typeof ScholarshipsSlugRoute
   UniversitySlugRoute: typeof UniversitySlugRoute
   CareersIndexRoute: typeof CareersIndexRoute
   ProgrammesIndexRoute: typeof ProgrammesIndexRoute
@@ -498,6 +511,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScholarshipsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scholarships/$slug': {
+      id: '/scholarships/$slug'
+      path: '/scholarships/$slug'
+      fullPath: '/scholarships/$slug'
+      preLoaderRoute: typeof ScholarshipsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/university/$slug': {
       id: '/university/$slug'
       path: '/university/$slug'
@@ -535,6 +555,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminDataRoute: AdminDataRoute,
   CareersSlugRoute: CareersSlugRoute,
   ProgrammeSlugRoute: ProgrammeSlugRoute,
+  ScholarshipsSlugRoute: ScholarshipsSlugRoute,
   UniversitySlugRoute: UniversitySlugRoute,
   CareersIndexRoute: CareersIndexRoute,
   ProgrammesIndexRoute: ProgrammesIndexRoute,
