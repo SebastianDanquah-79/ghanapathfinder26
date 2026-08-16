@@ -26,6 +26,7 @@ import { Route as SavedRouteImport } from './routes/saved'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin/analytics'
 import { Route as AdminDataRouteImport } from './routes/admin/data'
+import { Route as CareersIndexRouteImport } from './routes/careers/index'
 import { Route as ProgrammeSlugRouteImport } from './routes/programme/$slug'
 import { Route as ProgrammesIndexRouteImport } from './routes/programmes/index'
 import { Route as ScholarshipsIndexRouteImport } from './routes/scholarships/index'
@@ -117,6 +118,11 @@ const AdminDataRoute = AdminDataRouteImport.update({
   path: '/admin/data',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CareersIndexRoute = CareersIndexRouteImport.update({
+  id: '/careers/',
+  path: '/careers/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProgrammeSlugRoute = ProgrammeSlugRouteImport.update({
   id: '/programme/$slug',
   path: '/programme/$slug',
@@ -163,6 +169,7 @@ export interface FileRoutesByFullPath {
   '/admin/data': typeof AdminDataRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
+  '/careers/': typeof CareersIndexRoute
   '/programmes/': typeof ProgrammesIndexRoute
   '/scholarships/': typeof ScholarshipsIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
@@ -187,6 +194,7 @@ export interface FileRoutesByTo {
   '/admin/data': typeof AdminDataRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
+  '/careers': typeof CareersIndexRoute
   '/programmes': typeof ProgrammesIndexRoute
   '/scholarships': typeof ScholarshipsIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
@@ -212,6 +220,7 @@ export interface FileRoutesById {
   '/admin/data': typeof AdminDataRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
+  '/careers/': typeof CareersIndexRoute
   '/programmes/': typeof ProgrammesIndexRoute
   '/scholarships/': typeof ScholarshipsIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
@@ -238,6 +247,7 @@ export interface FileRouteTypes {
     | '/admin/data'
     | '/programme/$slug'
     | '/university/$slug'
+    | '/careers/'
     | '/programmes/'
     | '/scholarships/'
     | '/.lovable/oauth/consent'
@@ -262,6 +272,7 @@ export interface FileRouteTypes {
     | '/admin/data'
     | '/programme/$slug'
     | '/university/$slug'
+    | '/careers'
     | '/programmes'
     | '/scholarships'
     | '/.lovable/oauth/consent'
@@ -286,6 +297,7 @@ export interface FileRouteTypes {
     | '/admin/data'
     | '/programme/$slug'
     | '/university/$slug'
+    | '/careers/'
     | '/programmes/'
     | '/scholarships/'
     | '/.lovable/oauth/consent'
@@ -311,6 +323,7 @@ export interface RootRouteChildren {
   AdminDataRoute: typeof AdminDataRoute
   ProgrammeSlugRoute: typeof ProgrammeSlugRoute
   UniversitySlugRoute: typeof UniversitySlugRoute
+  CareersIndexRoute: typeof CareersIndexRoute
   ProgrammesIndexRoute: typeof ProgrammesIndexRoute
   ScholarshipsIndexRoute: typeof ScholarshipsIndexRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
@@ -437,6 +450,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDataRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/careers/': {
+      id: '/careers/'
+      path: '/careers'
+      fullPath: '/careers/'
+      preLoaderRoute: typeof CareersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/programme/$slug': {
       id: '/programme/$slug'
       path: '/programme/$slug'
@@ -495,6 +515,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminDataRoute: AdminDataRoute,
   ProgrammeSlugRoute: ProgrammeSlugRoute,
   UniversitySlugRoute: UniversitySlugRoute,
+  CareersIndexRoute: CareersIndexRoute,
   ProgrammesIndexRoute: ProgrammesIndexRoute,
   ScholarshipsIndexRoute: ScholarshipsIndexRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
