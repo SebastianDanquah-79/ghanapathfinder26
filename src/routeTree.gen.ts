@@ -10,20 +10,26 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdmissionMatchRouteImport } from './routes/admission-match'
 import { Route as ApplicationsRouteImport } from './routes/applications'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as CompareScholarshipsRouteImport } from './routes/compare-scholarships'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as InspirationRouteImport } from './routes/inspiration'
 import { Route as MatcherRouteImport } from './routes/matcher'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as ParentRouteImport } from './routes/parent'
 import { Route as PreferencesRouteImport } from './routes/preferences'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ReferencesRouteImport } from './routes/references'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SavedRouteImport } from './routes/saved'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin/analytics'
 import { Route as AdminDataRouteImport } from './routes/admin/data'
 import { Route as CareersIndexRouteImport } from './routes/careers/index'
@@ -40,6 +46,11 @@ import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdmissionMatchRoute = AdmissionMatchRouteImport.update({
@@ -67,9 +78,19 @@ const CompareScholarshipsRoute = CompareScholarshipsRouteImport.update({
   path: '/compare-scholarships',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DisclaimerRoute = DisclaimerRouteImport.update({
+  id: '/disclaimer',
+  path: '/disclaimer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InspirationRoute = InspirationRouteImport.update({
@@ -97,6 +118,16 @@ const PreferencesRoute = PreferencesRouteImport.update({
   path: '/preferences',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReferencesRoute = ReferencesRouteImport.update({
+  id: '/references',
+  path: '/references',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
@@ -110,6 +141,11 @@ const SavedRoute = SavedRouteImport.update({
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
@@ -175,20 +211,26 @@ const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
+  '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
+  '/disclaimer': typeof DisclaimerRoute
   '/inspiration': typeof InspirationRoute
   '/matcher': typeof MatcherRoute
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
   '/preferences': typeof PreferencesRoute
+  '/privacy': typeof PrivacyRoute
+  '/references': typeof ReferencesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
+  '/terms': typeof TermsRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
   '/careers/$slug': typeof CareersSlugRoute
@@ -204,20 +246,26 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
+  '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
+  '/disclaimer': typeof DisclaimerRoute
   '/inspiration': typeof InspirationRoute
   '/matcher': typeof MatcherRoute
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
   '/preferences': typeof PreferencesRoute
+  '/privacy': typeof PrivacyRoute
+  '/references': typeof ReferencesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
+  '/terms': typeof TermsRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
   '/careers/$slug': typeof CareersSlugRoute
@@ -234,20 +282,26 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
+  '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
+  '/disclaimer': typeof DisclaimerRoute
   '/inspiration': typeof InspirationRoute
   '/matcher': typeof MatcherRoute
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
   '/preferences': typeof PreferencesRoute
+  '/privacy': typeof PrivacyRoute
+  '/references': typeof ReferencesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
+  '/terms': typeof TermsRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
   '/careers/$slug': typeof CareersSlugRoute
@@ -265,20 +319,26 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/admission-match'
     | '/applications'
     | '/auth'
     | '/compare'
     | '/compare-scholarships'
+    | '/contact'
     | '/dashboard'
+    | '/disclaimer'
     | '/inspiration'
     | '/matcher'
     | '/onboarding'
     | '/parent'
     | '/preferences'
+    | '/privacy'
+    | '/references'
     | '/reset-password'
     | '/saved'
     | '/search'
+    | '/terms'
     | '/admin/analytics'
     | '/admin/data'
     | '/careers/$slug'
@@ -294,20 +354,26 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/admission-match'
     | '/applications'
     | '/auth'
     | '/compare'
     | '/compare-scholarships'
+    | '/contact'
     | '/dashboard'
+    | '/disclaimer'
     | '/inspiration'
     | '/matcher'
     | '/onboarding'
     | '/parent'
     | '/preferences'
+    | '/privacy'
+    | '/references'
     | '/reset-password'
     | '/saved'
     | '/search'
+    | '/terms'
     | '/admin/analytics'
     | '/admin/data'
     | '/careers/$slug'
@@ -323,20 +389,26 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/admission-match'
     | '/applications'
     | '/auth'
     | '/compare'
     | '/compare-scholarships'
+    | '/contact'
     | '/dashboard'
+    | '/disclaimer'
     | '/inspiration'
     | '/matcher'
     | '/onboarding'
     | '/parent'
     | '/preferences'
+    | '/privacy'
+    | '/references'
     | '/reset-password'
     | '/saved'
     | '/search'
+    | '/terms'
     | '/admin/analytics'
     | '/admin/data'
     | '/careers/$slug'
@@ -353,20 +425,26 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   AdmissionMatchRoute: typeof AdmissionMatchRoute
   ApplicationsRoute: typeof ApplicationsRoute
   AuthRoute: typeof AuthRoute
   CompareRoute: typeof CompareRoute
   CompareScholarshipsRoute: typeof CompareScholarshipsRoute
+  ContactRoute: typeof ContactRoute
   DashboardRoute: typeof DashboardRoute
+  DisclaimerRoute: typeof DisclaimerRoute
   InspirationRoute: typeof InspirationRoute
   MatcherRoute: typeof MatcherRoute
   OnboardingRoute: typeof OnboardingRoute
   ParentRoute: typeof ParentRoute
   PreferencesRoute: typeof PreferencesRoute
+  PrivacyRoute: typeof PrivacyRoute
+  ReferencesRoute: typeof ReferencesRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SavedRoute: typeof SavedRoute
   SearchRoute: typeof SearchRoute
+  TermsRoute: typeof TermsRoute
   AdminAnalyticsRoute: typeof AdminAnalyticsRoute
   AdminDataRoute: typeof AdminDataRoute
   CareersSlugRoute: typeof CareersSlugRoute
@@ -388,6 +466,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admission-match': {
@@ -425,11 +510,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CompareScholarshipsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/disclaimer': {
+      id: '/disclaimer'
+      path: '/disclaimer'
+      fullPath: '/disclaimer'
+      preLoaderRoute: typeof DisclaimerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/inspiration': {
@@ -467,6 +566,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PreferencesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/references': {
+      id: '/references'
+      path: '/references'
+      fullPath: '/references'
+      preLoaderRoute: typeof ReferencesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reset-password': {
       id: '/reset-password'
       path: '/reset-password'
@@ -486,6 +599,13 @@ declare module '@tanstack/react-router' {
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/analytics': {
@@ -577,20 +697,26 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   AdmissionMatchRoute: AdmissionMatchRoute,
   ApplicationsRoute: ApplicationsRoute,
   AuthRoute: AuthRoute,
   CompareRoute: CompareRoute,
   CompareScholarshipsRoute: CompareScholarshipsRoute,
+  ContactRoute: ContactRoute,
   DashboardRoute: DashboardRoute,
+  DisclaimerRoute: DisclaimerRoute,
   InspirationRoute: InspirationRoute,
   MatcherRoute: MatcherRoute,
   OnboardingRoute: OnboardingRoute,
   ParentRoute: ParentRoute,
   PreferencesRoute: PreferencesRoute,
+  PrivacyRoute: PrivacyRoute,
+  ReferencesRoute: ReferencesRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SavedRoute: SavedRoute,
   SearchRoute: SearchRoute,
+  TermsRoute: TermsRoute,
   AdminAnalyticsRoute: AdminAnalyticsRoute,
   AdminDataRoute: AdminDataRoute,
   CareersSlugRoute: CareersSlugRoute,

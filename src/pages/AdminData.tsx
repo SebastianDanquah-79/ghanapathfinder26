@@ -3,6 +3,7 @@ import { Link } from "@/lib/router-compat";
 import { Loader2, Database, ShieldCheck, AlertTriangle, Upload, Search as SearchIcon } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SourceManager from "@/components/admin/SourceManager";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import {
@@ -262,6 +263,8 @@ const AdminData = () => {
               </div>
             )}
           </section>
+
+          <SourceManager enabled={enabled} />
         </div>
       </main>
       <Footer />

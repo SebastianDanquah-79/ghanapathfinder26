@@ -1,4 +1,15 @@
 import { GraduationCap } from "lucide-react";
+import { Link } from "@/lib/router-compat";
+
+const links = [
+  { label: "About GhanaPathFinder", to: "/about" },
+  { label: "Disclaimer", to: "/disclaimer" },
+  { label: "References & Acknowledgements", to: "/references" },
+  { label: "Privacy Policy", to: "/privacy" },
+  { label: "Terms of Use", to: "/terms" },
+  { label: "Contact", to: "/contact" },
+  { label: "Official Sources", to: "/references" },
+];
 
 const Footer = () => (
   <footer className="py-8 px-4 border-t border-border/50">
@@ -12,6 +23,22 @@ const Footer = () => (
       <p className="text-sm text-muted-foreground mb-2">
         AI-powered college and career guidance for Ghanaian SHS students 🇬🇭
       </p>
+
+      <nav
+        aria-label="Footer"
+        className="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-sm"
+      >
+        {links.map((l) => (
+          <Link
+            key={l.label}
+            to={l.to}
+            className="text-muted-foreground hover:text-primary transition-colors py-1.5"
+          >
+            {l.label}
+          </Link>
+        ))}
+      </nav>
+
       <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 text-sm">
         <p className="text-foreground">
           <span className="text-primary font-medium">Twi:</span> Yɛda wo ase sɛ wode GhanaPathFinder adi dwuma
@@ -23,8 +50,12 @@ const Footer = () => (
           <span className="text-primary font-medium">Ga:</span> Oyiwaladɔŋŋ akɛ okɛ GhanaPathFinder tsu nii
         </p>
       </div>
-      <p className="text-xs text-muted-foreground mt-3">© 2026 GhanaPathFinder. All rights reserved.</p>
 
+      <p className="text-xs text-muted-foreground mt-4 max-w-3xl mx-auto">
+        Information on GhanaPathFinder is guidance only. Match confidence and estimated cut-off points
+        are not guarantees of admission — always verify with the institution.
+      </p>
+      <p className="text-xs text-muted-foreground mt-3">© 2026 GhanaPathFinder. All rights reserved.</p>
     </div>
   </footer>
 );

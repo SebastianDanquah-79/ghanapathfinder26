@@ -2,6 +2,8 @@ import { Suspense, lazy } from "react";
 import Navbar from "@/components/Navbar";
 import Seo from "@/components/Seo";
 import HeroSection from "@/components/HeroSection";
+import DisclaimerBanner from "@/components/DisclaimerBanner";
+import AboutSection from "@/components/AboutSection";
 import CollegeRecommender from "@/components/CollegeRecommender";
 import UniversityDirectory from "@/components/UniversityDirectory";
 import ScholarshipSection from "@/components/ScholarshipSection";
@@ -41,6 +43,10 @@ const Index = () => (
       ]}
     />
     <Navbar />
+    <div className="pt-20">
+      <DisclaimerBanner />
+      <AboutSection />
+    </div>
     <HeroSection />
     <CollegeRecommender />
     <UniversityDirectory />

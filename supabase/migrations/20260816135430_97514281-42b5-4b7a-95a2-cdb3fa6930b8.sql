@@ -1,0 +1,1 @@
+ALTER TABLE public.data_sources ADD COLUMN IF NOT EXISTS notes text;
