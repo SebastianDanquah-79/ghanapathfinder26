@@ -2,8 +2,10 @@
 
 import { writeFileSync } from "fs";
 import { resolve } from "path";
+import { mockCareerData, careerSlug } from "../src/data/careers";
+import { scholarships, scholarshipSlug } from "../src/data/scholarships";
 
-const BASE_URL = "https://ghanapathfinder26.lovable.app";
+const BASE_URL = "https://ghanapathfinder.com";
 
 const SUPABASE_URL = "https://hodvuidwrhlaildtcpww.supabase.co";
 const SUPABASE_KEY = "sb_publishable_wqp_iN83ecIrDOA3coovlA_mPt57xlX";
@@ -23,6 +25,7 @@ const staticEntries: SitemapEntry[] = [
   { path: "/matcher", changefreq: "monthly", priority: "0.6" },
   { path: "/compare", changefreq: "monthly", priority: "0.6" },
   { path: "/compare-scholarships", changefreq: "monthly", priority: "0.6" },
+  { path: "/careers", changefreq: "monthly", priority: "0.8" },
   { path: "/inspiration", changefreq: "monthly", priority: "0.6" },
   { path: "/auth", changefreq: "yearly", priority: "0.3" },
 ];
@@ -79,6 +82,16 @@ const [universities, programmes] = await Promise.all([
 
 const entries: SitemapEntry[] = [
   ...staticEntries,
+  ...Object.values(mockCareerData).map((c) => ({
+    path: `/careers/${careerSlug(c.major)}`,
+    changefreq: "monthly" as const,
+    priority: "0.7",
+  })),
+  ...scholarships.map((s) => ({
+    path: `/scholarships/${scholarshipSlug(s.name)}`,
+    changefreq: "monthly" as const,
+    priority: "0.7",
+  })),
   ...universities.map((u) => ({
     path: `/university/${u.slug}`,
     changefreq: "monthly" as const,
