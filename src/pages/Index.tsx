@@ -16,18 +16,25 @@ const Footer = lazy(() => import("@/components/Footer"));
 const Index = () => (
   <div className="min-h-screen bg-background">
     <Seo
-      title="GhanaPathFinder — University, Programme & Scholarship Guide"
-      description="Find accredited Ghanaian universities and programmes that match your WASSCE results, track scholarships and plan your career — free for SHS students."
+      title="GhanaPathFinder — Connect. Discover. Grow."
+      description="GhanaPathFinder is an education and career platform helping Ghanaian students discover universities, programmes, scholarships, career paths and opportunities."
       path="/"
       jsonLd={[
         {
           "@context": "https://schema.org",
           "@type": "WebSite",
+          "@id": "https://ghanapathfinder.com/#website",
           name: "GhanaPathFinder",
-          url: "https://ghanapathfinder26.lovable.app",
+          alternateName: "Ghana Path Finder",
+          url: "https://ghanapathfinder.com",
+          inLanguage: "en-GH",
+          publisher: { "@id": "https://ghanapathfinder.com/#organization" },
           potentialAction: {
             "@type": "SearchAction",
-            target: "https://ghanapathfinder26.lovable.app/search?q={search_term_string}",
+            target: {
+              "@type": "EntryPoint",
+              urlTemplate: "https://ghanapathfinder.com/search?q={search_term_string}",
+            },
             "query-input": "required name=search_term_string",
           },
         },
