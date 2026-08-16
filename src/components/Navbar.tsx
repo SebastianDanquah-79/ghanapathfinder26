@@ -24,7 +24,7 @@ const more = [
   { label: "My scholarships", href: "/scholarships" },
   { label: "Applications", href: "/applications" },
   { label: "Parents", href: "/parent" },
-  { label: "Careers", href: "/#careers" },
+  { label: "Careers", href: "/careers" },
   { label: "City guide", href: "/#cityguide" },
 ];
 
