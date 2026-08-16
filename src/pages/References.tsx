@@ -28,6 +28,19 @@ const References = () => {
     );
   }, [sources, q, type]);
 
+  const grouped = useMemo(() => {
+    const map = new Map<ReferenceGroup, SourceRecord[]>();
+    for (const s of filtered) {
+      const g = referenceGroupFor(s.type, s.usedFor);
+      const list = map.get(g);
+      if (list) list.push(s);
+      else map.set(g, [s]);
+    }
+    return REFERENCE_GROUPS.filter((g) => map.has(g)).map(
+      (g) => [g, map.get(g)!] as [ReferenceGroup, SourceRecord[]],
+    );
+  }, [filtered]);
+
   return (
     <div className="min-h-screen bg-background">
       <Seo
