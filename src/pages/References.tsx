@@ -3,8 +3,18 @@ import { BookMarked, ExternalLink, Loader2, Search as SearchIcon, ShieldCheck } 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo, { breadcrumbLd } from "@/components/Seo";
-import { useSourceDirectory } from "@/hooks/useSourceDirectory";
-import { REFERENCES_PARAGRAPHS, formatVerified, prettyHost, sourceTypeLabel } from "@/lib/legal";
+import { useSourceDirectory, type SourceRecord } from "@/hooks/useSourceDirectory";
+import { ACCREDITATION_SOURCES } from "@/data/professionalBodies";
+import { Link } from "@/lib/router-compat";
+import {
+  REFERENCES_PARAGRAPHS,
+  REFERENCE_GROUPS,
+  referenceGroupFor,
+  formatVerified,
+  prettyHost,
+  sourceTypeLabel,
+  type ReferenceGroup,
+} from "@/lib/legal";
 
 const References = () => {
   const { data: sources = [], isLoading } = useSourceDirectory();
