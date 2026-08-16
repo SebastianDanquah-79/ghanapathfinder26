@@ -27,6 +27,7 @@ import { Route as SearchRouteImport } from './routes/search'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin/analytics'
 import { Route as AdminDataRouteImport } from './routes/admin/data'
 import { Route as CareersIndexRouteImport } from './routes/careers/index'
+import { Route as CareersSlugRouteImport } from './routes/careers/$slug'
 import { Route as ProgrammeSlugRouteImport } from './routes/programme/$slug'
 import { Route as ProgrammesIndexRouteImport } from './routes/programmes/index'
 import { Route as ScholarshipsIndexRouteImport } from './routes/scholarships/index'
@@ -123,6 +124,11 @@ const CareersIndexRoute = CareersIndexRouteImport.update({
   path: '/careers/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CareersSlugRoute = CareersSlugRouteImport.update({
+  id: '/careers/$slug',
+  path: '/careers/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProgrammeSlugRoute = ProgrammeSlugRouteImport.update({
   id: '/programme/$slug',
   path: '/programme/$slug',
@@ -167,6 +173,7 @@ export interface FileRoutesByFullPath {
   '/search': typeof SearchRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
+  '/careers/$slug': typeof CareersSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
   '/careers/': typeof CareersIndexRoute
@@ -192,6 +199,7 @@ export interface FileRoutesByTo {
   '/search': typeof SearchRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
+  '/careers/$slug': typeof CareersSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
   '/careers': typeof CareersIndexRoute
@@ -218,6 +226,7 @@ export interface FileRoutesById {
   '/search': typeof SearchRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
+  '/careers/$slug': typeof CareersSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
   '/careers/': typeof CareersIndexRoute
@@ -245,6 +254,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/admin/analytics'
     | '/admin/data'
+    | '/careers/$slug'
     | '/programme/$slug'
     | '/university/$slug'
     | '/careers/'
@@ -270,6 +280,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/admin/analytics'
     | '/admin/data'
+    | '/careers/$slug'
     | '/programme/$slug'
     | '/university/$slug'
     | '/careers'
@@ -295,6 +306,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/admin/analytics'
     | '/admin/data'
+    | '/careers/$slug'
     | '/programme/$slug'
     | '/university/$slug'
     | '/careers/'
@@ -321,6 +333,7 @@ export interface RootRouteChildren {
   SearchRoute: typeof SearchRoute
   AdminAnalyticsRoute: typeof AdminAnalyticsRoute
   AdminDataRoute: typeof AdminDataRoute
+  CareersSlugRoute: typeof CareersSlugRoute
   ProgrammeSlugRoute: typeof ProgrammeSlugRoute
   UniversitySlugRoute: typeof UniversitySlugRoute
   CareersIndexRoute: typeof CareersIndexRoute
@@ -457,6 +470,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CareersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/careers/$slug': {
+      id: '/careers/$slug'
+      path: '/careers/$slug'
+      fullPath: '/careers/$slug'
+      preLoaderRoute: typeof CareersSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/programme/$slug': {
       id: '/programme/$slug'
       path: '/programme/$slug'
@@ -513,6 +533,7 @@ const rootRouteChildren: RootRouteChildren = {
   SearchRoute: SearchRoute,
   AdminAnalyticsRoute: AdminAnalyticsRoute,
   AdminDataRoute: AdminDataRoute,
+  CareersSlugRoute: CareersSlugRoute,
   ProgrammeSlugRoute: ProgrammeSlugRoute,
   UniversitySlugRoute: UniversitySlugRoute,
   CareersIndexRoute: CareersIndexRoute,
