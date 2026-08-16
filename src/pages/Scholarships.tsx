@@ -430,9 +430,29 @@ const Scholarships = () => {
               </p>
             )}
           </div>
+
+          <div className="mt-8">
+            <h2 className="font-display font-semibold text-foreground mb-3">
+              Scholarship guides
+            </h2>
+            <ul className="grid gap-2 sm:grid-cols-2">
+              {scholarships.map((s) => (
+                <li key={s.name}>
+                  <Link
+                    to={`/scholarships/${scholarshipSlug(s.name)}`}
+                    className="block rounded-lg bg-secondary/60 px-3 py-2 text-sm text-muted-foreground hover:text-foreground"
+                  >
+                    {s.name}
+                    <span className="block text-xs text-muted-foreground/80">{s.provider}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </div>
+
   );
 };
 
