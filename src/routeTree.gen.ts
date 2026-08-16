@@ -23,6 +23,7 @@ import { Route as MatcherRouteImport } from './routes/matcher'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as ParentRouteImport } from './routes/parent'
 import { Route as PreferencesRouteImport } from './routes/preferences'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ReferencesRouteImport } from './routes/references'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SavedRouteImport } from './routes/saved'
@@ -108,6 +109,11 @@ const ParentRoute = ParentRouteImport.update({
 const PreferencesRoute = PreferencesRouteImport.update({
   id: '/preferences',
   path: '/preferences',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReferencesRoute = ReferencesRouteImport.update({
@@ -206,6 +212,7 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
   '/preferences': typeof PreferencesRoute
+  '/privacy': typeof PrivacyRoute
   '/references': typeof ReferencesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/saved': typeof SavedRoute
@@ -238,6 +245,7 @@ export interface FileRoutesByTo {
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
   '/preferences': typeof PreferencesRoute
+  '/privacy': typeof PrivacyRoute
   '/references': typeof ReferencesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/saved': typeof SavedRoute
@@ -271,6 +279,7 @@ export interface FileRoutesById {
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
   '/preferences': typeof PreferencesRoute
+  '/privacy': typeof PrivacyRoute
   '/references': typeof ReferencesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/saved': typeof SavedRoute
@@ -305,6 +314,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/parent'
     | '/preferences'
+    | '/privacy'
     | '/references'
     | '/reset-password'
     | '/saved'
@@ -337,6 +347,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/parent'
     | '/preferences'
+    | '/privacy'
     | '/references'
     | '/reset-password'
     | '/saved'
@@ -369,6 +380,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/parent'
     | '/preferences'
+    | '/privacy'
     | '/references'
     | '/reset-password'
     | '/saved'
@@ -402,6 +414,7 @@ export interface RootRouteChildren {
   OnboardingRoute: typeof OnboardingRoute
   ParentRoute: typeof ParentRoute
   PreferencesRoute: typeof PreferencesRoute
+  PrivacyRoute: typeof PrivacyRoute
   ReferencesRoute: typeof ReferencesRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SavedRoute: typeof SavedRoute
@@ -518,6 +531,13 @@ declare module '@tanstack/react-router' {
       path: '/preferences'
       fullPath: '/preferences'
       preLoaderRoute: typeof PreferencesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/references': {
@@ -650,6 +670,7 @@ const rootRouteChildren: RootRouteChildren = {
   OnboardingRoute: OnboardingRoute,
   ParentRoute: ParentRoute,
   PreferencesRoute: PreferencesRoute,
+  PrivacyRoute: PrivacyRoute,
   ReferencesRoute: ReferencesRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SavedRoute: SavedRoute,
