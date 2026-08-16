@@ -77,6 +77,7 @@ export interface SourceInput {
   source_type: string;
   verification_status: string;
   verified_at: string;
+  notes: string;
 }
 
 export const useSaveSource = () => {
@@ -91,6 +92,7 @@ export const useSaveSource = () => {
         source_type: input.source_type,
         verification_status: input.verification_status,
         verified_at: new Date(input.verified_at).toISOString(),
+        notes: input.notes.trim() || null,
       };
       const { error } = input.id
         ? await supabase.from("data_sources").update(payload).eq("id", input.id)
