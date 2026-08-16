@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Programme, University } from "@/hooks/useCatalogue";
 
@@ -21,7 +21,7 @@ export type DirectoryProgramme = Programme & {
 };
 
 /** Server-side filtered, paginated programme directory — never loads the whole catalogue. */
-export const useProgrammeDirectory = (filters: DirectoryFilters = {}) => {
+export const programmeDirectoryQueryOptions = (filters: DirectoryFilters = {}) => {
   const {
     search = "",
     field,
@@ -34,7 +34,7 @@ export const useProgrammeDirectory = (filters: DirectoryFilters = {}) => {
     page = 0,
   } = filters;
 
-  return useQuery({
+  return queryOptions({
     queryKey: [
       "programme_directory",
       search,
@@ -77,14 +77,17 @@ export const useProgrammeDirectory = (filters: DirectoryFilters = {}) => {
   });
 };
 
+export const useProgrammeDirectory = (filters: DirectoryFilters = {}) =>
+  useQuery(programmeDirectoryQueryOptions(filters));
+
 export interface Facet {
   kind: "field" | "degree_type" | "qualification" | "region" | "institution";
   value: string;
   count: number;
 }
 
-export const useProgrammeFacets = () =>
-  useQuery({
+export const programmeFacetsQueryOptions = () =>
+  queryOptions({
     queryKey: ["programme_facets"],
     staleTime: 10 * 60_000,
     queryFn: async () => {
@@ -106,3 +109,5 @@ export const useProgrammeFacets = () =>
       };
     },
   });
+
+export const useProgrammeFacets = () => useQuery(programmeFacetsQueryOptions());

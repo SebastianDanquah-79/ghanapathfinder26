@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { groupFilter, type InstitutionGroup } from "@/lib/legal";
@@ -20,12 +20,12 @@ export interface SearchResult {
 export const PAGE_SIZE = 12;
 
 /** Unified, database-backed search across universities, programmes and scholarships. */
-export const useCatalogueSearch = (
+export const catalogueSearchQueryOptions = (
   query: string,
   kind: "all" | "university" | "programme" | "scholarship" = "all",
   page = 0,
 ) =>
-  useQuery({
+  queryOptions({
     queryKey: ["catalogue_search", query, kind, page],
     queryFn: async () => {
       const { data, error } = await supabase.rpc("search_catalogue", {
@@ -40,6 +40,12 @@ export const useCatalogueSearch = (
     staleTime: 60_000,
   });
 
+export const useCatalogueSearch = (
+  query: string,
+  kind: "all" | "university" | "programme" | "scholarship" = "all",
+  page = 0,
+) => useQuery(catalogueSearchQueryOptions(query, kind, page));
+
 export interface UniversityFilters {
   search?: string | undefined;
   type?: "All" | "Public" | "Private" | undefined;
@@ -50,7 +56,7 @@ export interface UniversityFilters {
   pageSize?: number | undefined;
 }
 
-export const useUniversities = (filters: UniversityFilters = {}) => {
+export const universitiesQueryOptions = (filters: UniversityFilters = {}) => {
   const {
     search = "",
     type = "All",
@@ -60,7 +66,7 @@ export const useUniversities = (filters: UniversityFilters = {}) => {
     page = 0,
     pageSize = 24,
   } = filters;
-  return useQuery({
+  return queryOptions({
     queryKey: ["universities", search, type, region, category, group, page, pageSize],
     queryFn: async () => {
       let q = supabase
@@ -91,6 +97,8 @@ export const useUniversities = (filters: UniversityFilters = {}) => {
   });
 };
 
+export const useUniversities = (filters: UniversityFilters = {}) =>
+  useQuery(universitiesQueryOptions(filters));
 
 export const useUniversity = (slug?: string) =>
   useQuery({
@@ -139,8 +147,8 @@ export const useProgramme = (slug?: string) =>
     },
   });
 
-export const useScholarshipRecords = (search = "", type: string = "All") =>
-  useQuery({
+export const scholarshipRecordsQueryOptions = (search = "", type: string = "All") =>
+  queryOptions({
     queryKey: ["scholarships_db", search, type],
     queryFn: async () => {
       let q = supabase.from("scholarships").select("*").order("name").limit(100);
@@ -157,6 +165,9 @@ export const useScholarshipRecords = (search = "", type: string = "All") =>
     },
     staleTime: 60_000,
   });
+
+export const useScholarshipRecords = (search = "", type: string = "All") =>
+  useQuery(scholarshipRecordsQueryOptions(search, type));
 
 export const formatVerified = (iso: string | null) =>
   iso
