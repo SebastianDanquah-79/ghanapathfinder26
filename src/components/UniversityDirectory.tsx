@@ -67,7 +67,7 @@ const UniversityDirectory = () => {
           description="Search by name, region or type."
         />
 
-        <div className="flex flex-col sm:flex-row gap-3 mb-7 max-w-xl mx-auto">
+        <div className="flex flex-col sm:flex-row gap-3 mb-3 max-w-3xl mx-auto">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
@@ -79,24 +79,61 @@ const UniversityDirectory = () => {
               className="w-full pl-10 pr-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50"
             />
           </div>
-          <div className="flex gap-2">
-            {(["All", "Public", "Private"] as const).map((t) => (
-              <button
-                key={t}
-                onClick={() => {
-                  setTypeFilter(t);
-                  setPage(0);
-                }}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  typeFilter === t
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-secondary text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {t}
-              </button>
+          <select
+            value={region}
+            onChange={(e) => {
+              setRegion(e.target.value);
+              setPage(0);
+            }}
+            aria-label="Filter by region"
+            className="rounded-lg bg-secondary border border-border px-3 py-3 text-sm text-foreground"
+          >
+            <option value="">All regions</option>
+            {REGIONS.map((r) => (
+              <option key={r} value={r}>
+                {r}
+              </option>
             ))}
-          </div>
+          </select>
+          {group === "All" && (
+            <div className="flex gap-2">
+              {(["All", "Public", "Private"] as const).map((t) => (
+                <button
+                  key={t}
+                  onClick={() => {
+                    setTypeFilter(t);
+                    setPage(0);
+                  }}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    typeFilter === t
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-secondary text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="flex hscroll hscroll-bleed gap-2 mb-7 md:flex-wrap md:justify-center md:overflow-visible md:mx-0 md:px-0">
+          {(["All", ...INSTITUTION_GROUPS] as const).map((g) => (
+            <button
+              key={g}
+              onClick={() => {
+                setGroup(g);
+                setPage(0);
+              }}
+              className={`shrink-0 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                group === g
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-secondary text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {g === "All" ? "All institutions" : g}
+            </button>
+          ))}
         </div>
 
         {isLoading && (
