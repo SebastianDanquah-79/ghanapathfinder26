@@ -30,6 +30,7 @@ import { Route as CareersIndexRouteImport } from './routes/careers/index'
 import { Route as CareersSlugRouteImport } from './routes/careers/$slug'
 import { Route as ProgrammeSlugRouteImport } from './routes/programme/$slug'
 import { Route as ProgrammesIndexRouteImport } from './routes/programmes/index'
+import { Route as ProgrammesSlugRouteImport } from './routes/programmes/$slug'
 import { Route as ScholarshipsIndexRouteImport } from './routes/scholarships/index'
 import { Route as ScholarshipsSlugRouteImport } from './routes/scholarships/$slug'
 import { Route as UniversitiesSlugRouteImport } from './routes/universities/$slug'
@@ -141,6 +142,11 @@ const ProgrammesIndexRoute = ProgrammesIndexRouteImport.update({
   path: '/programmes/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProgrammesSlugRoute = ProgrammesSlugRouteImport.update({
+  id: '/programmes/$slug',
+  path: '/programmes/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ScholarshipsIndexRoute = ScholarshipsIndexRouteImport.update({
   id: '/scholarships/',
   path: '/scholarships/',
@@ -187,6 +193,7 @@ export interface FileRoutesByFullPath {
   '/admin/data': typeof AdminDataRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
+  '/programmes/$slug': typeof ProgrammesSlugRoute
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
   '/universities/$slug': typeof UniversitiesSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
@@ -215,6 +222,7 @@ export interface FileRoutesByTo {
   '/admin/data': typeof AdminDataRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
+  '/programmes/$slug': typeof ProgrammesSlugRoute
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
   '/universities/$slug': typeof UniversitiesSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
@@ -244,6 +252,7 @@ export interface FileRoutesById {
   '/admin/data': typeof AdminDataRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
+  '/programmes/$slug': typeof ProgrammesSlugRoute
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
   '/universities/$slug': typeof UniversitiesSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
@@ -274,6 +283,7 @@ export interface FileRouteTypes {
     | '/admin/data'
     | '/careers/$slug'
     | '/programme/$slug'
+    | '/programmes/$slug'
     | '/scholarships/$slug'
     | '/universities/$slug'
     | '/university/$slug'
@@ -302,6 +312,7 @@ export interface FileRouteTypes {
     | '/admin/data'
     | '/careers/$slug'
     | '/programme/$slug'
+    | '/programmes/$slug'
     | '/scholarships/$slug'
     | '/universities/$slug'
     | '/university/$slug'
@@ -330,6 +341,7 @@ export interface FileRouteTypes {
     | '/admin/data'
     | '/careers/$slug'
     | '/programme/$slug'
+    | '/programmes/$slug'
     | '/scholarships/$slug'
     | '/universities/$slug'
     | '/university/$slug'
@@ -359,6 +371,7 @@ export interface RootRouteChildren {
   AdminDataRoute: typeof AdminDataRoute
   CareersSlugRoute: typeof CareersSlugRoute
   ProgrammeSlugRoute: typeof ProgrammeSlugRoute
+  ProgrammesSlugRoute: typeof ProgrammesSlugRoute
   ScholarshipsSlugRoute: typeof ScholarshipsSlugRoute
   UniversitiesSlugRoute: typeof UniversitiesSlugRoute
   UniversitySlugRoute: typeof UniversitySlugRoute
@@ -517,6 +530,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProgrammesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/programmes/$slug': {
+      id: '/programmes/$slug'
+      path: '/programmes/$slug'
+      fullPath: '/programmes/$slug'
+      preLoaderRoute: typeof ProgrammesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/scholarships/': {
       id: '/scholarships/'
       path: '/scholarships'
@@ -575,6 +595,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminDataRoute: AdminDataRoute,
   CareersSlugRoute: CareersSlugRoute,
   ProgrammeSlugRoute: ProgrammeSlugRoute,
+  ProgrammesSlugRoute: ProgrammesSlugRoute,
   ScholarshipsSlugRoute: ScholarshipsSlugRoute,
   UniversitiesSlugRoute: UniversitiesSlugRoute,
   UniversitySlugRoute: UniversitySlugRoute,
