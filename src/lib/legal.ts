@@ -1,7 +1,7 @@
 /** Public-facing legal / transparency copy, shared by the homepage teasers and full pages. */
 
 export const DISCLAIMER_SUMMARY =
-  "GhanaPathFinder is an independent guidance platform. Information, match confidence and estimated cut-off points are guidance only — not guarantees of admission. Always verify requirements, deadlines and fees directly with the institution or provider.";
+  "GhanaPathFinder is an independent education and career guidance platform for students exploring Ghana universities, tertiary institutions, programmes, scholarships and career paths. University recommendations and WASSCE match confidence are estimates, not guarantees of admission. Cut-off points, admission requirements, programmes, scholarships, fees and deadlines may change. Always verify important information with the relevant official institution or regulatory body before applying. Estimated information is clearly labelled and should not be treated as official.";
 
 export const DISCLAIMER_PARAGRAPHS: string[] = [
   "GhanaPathFinder is an independent education and career guidance platform designed to help students explore universities, programmes, scholarships, career paths, and educational opportunities in Ghana.",
