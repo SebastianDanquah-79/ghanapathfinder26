@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Briefcase, Building, DollarSign, Globe, Search, Loader2 } from "lucide-react";
 import SectionHeader from "./SectionHeader";
 
-import { popularMajors, mockCareerData } from "@/data/careers";
+import { popularMajors, mockCareerData, type CareerData } from "@/data/careers";
 
 
 
