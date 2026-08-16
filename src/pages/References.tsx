@@ -75,6 +75,37 @@ const References = () => {
             ))}
           </div>
 
+          <section className="mt-6" aria-label="Ghana tertiary education and accreditation">
+            <h2 className="font-display text-lg font-semibold text-foreground mb-3">
+              Ghana tertiary education &amp; accreditation
+            </h2>
+            <div className="grid gap-3 md:grid-cols-2">
+              {ACCREDITATION_SOURCES.map((a) => (
+                <article key={a.website} className="bg-glass rounded-xl p-4">
+                  <h3 className="font-display font-semibold text-sm text-foreground">{a.name}</h3>
+                  <p className="text-xs text-muted-foreground mt-1">{a.note}</p>
+                  <p className="text-xs text-muted-foreground mt-1">Last verified: {a.lastVerified}</p>
+                  <a
+                    href={a.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 mt-2 text-xs font-medium text-primary min-h-[36px]"
+                  >
+                    <ExternalLink className="h-3.5 w-3.5" /> Accreditation source
+                  </a>
+                </article>
+              ))}
+            </div>
+            <Link
+              to="/professional-councils"
+              className="inline-block mt-3 text-xs font-medium text-primary underline"
+            >
+              Professional councils &amp; career regulation
+            </Link>
+          </section>
+
+
+
           <section className="mt-6" aria-label="Source directory">
             <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
               <h2 className="font-display text-lg font-semibold text-foreground">Source directory</h2>
