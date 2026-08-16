@@ -25,6 +25,7 @@ import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as ParentRouteImport } from './routes/parent'
 import { Route as PreferencesRouteImport } from './routes/preferences'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ProfessionalCouncilsRouteImport } from './routes/professional-councils'
 import { Route as ReferencesRouteImport } from './routes/references'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SavedRouteImport } from './routes/saved'
@@ -121,6 +122,11 @@ const PreferencesRoute = PreferencesRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfessionalCouncilsRoute = ProfessionalCouncilsRouteImport.update({
+  id: '/professional-councils',
+  path: '/professional-councils',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReferencesRoute = ReferencesRouteImport.update({
@@ -226,6 +232,7 @@ export interface FileRoutesByFullPath {
   '/parent': typeof ParentRoute
   '/preferences': typeof PreferencesRoute
   '/privacy': typeof PrivacyRoute
+  '/professional-councils': typeof ProfessionalCouncilsRoute
   '/references': typeof ReferencesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/saved': typeof SavedRoute
@@ -261,6 +268,7 @@ export interface FileRoutesByTo {
   '/parent': typeof ParentRoute
   '/preferences': typeof PreferencesRoute
   '/privacy': typeof PrivacyRoute
+  '/professional-councils': typeof ProfessionalCouncilsRoute
   '/references': typeof ReferencesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/saved': typeof SavedRoute
@@ -297,6 +305,7 @@ export interface FileRoutesById {
   '/parent': typeof ParentRoute
   '/preferences': typeof PreferencesRoute
   '/privacy': typeof PrivacyRoute
+  '/professional-councils': typeof ProfessionalCouncilsRoute
   '/references': typeof ReferencesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/saved': typeof SavedRoute
@@ -334,6 +343,7 @@ export interface FileRouteTypes {
     | '/parent'
     | '/preferences'
     | '/privacy'
+    | '/professional-councils'
     | '/references'
     | '/reset-password'
     | '/saved'
@@ -369,6 +379,7 @@ export interface FileRouteTypes {
     | '/parent'
     | '/preferences'
     | '/privacy'
+    | '/professional-councils'
     | '/references'
     | '/reset-password'
     | '/saved'
@@ -404,6 +415,7 @@ export interface FileRouteTypes {
     | '/parent'
     | '/preferences'
     | '/privacy'
+    | '/professional-councils'
     | '/references'
     | '/reset-password'
     | '/saved'
@@ -440,6 +452,7 @@ export interface RootRouteChildren {
   ParentRoute: typeof ParentRoute
   PreferencesRoute: typeof PreferencesRoute
   PrivacyRoute: typeof PrivacyRoute
+  ProfessionalCouncilsRoute: typeof ProfessionalCouncilsRoute
   ReferencesRoute: typeof ReferencesRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SavedRoute: typeof SavedRoute
@@ -571,6 +584,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/professional-councils': {
+      id: '/professional-councils'
+      path: '/professional-councils'
+      fullPath: '/professional-councils'
+      preLoaderRoute: typeof ProfessionalCouncilsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/references': {
@@ -712,6 +732,7 @@ const rootRouteChildren: RootRouteChildren = {
   ParentRoute: ParentRoute,
   PreferencesRoute: PreferencesRoute,
   PrivacyRoute: PrivacyRoute,
+  ProfessionalCouncilsRoute: ProfessionalCouncilsRoute,
   ReferencesRoute: ReferencesRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SavedRoute: SavedRoute,
