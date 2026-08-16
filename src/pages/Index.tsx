@@ -41,6 +41,10 @@ const Index = () => (
       ]}
     />
     <Navbar />
+    <div className="pt-20">
+      <DisclaimerBanner />
+      <AboutSection />
+    </div>
     <HeroSection />
     <CollegeRecommender />
     <UniversityDirectory />
