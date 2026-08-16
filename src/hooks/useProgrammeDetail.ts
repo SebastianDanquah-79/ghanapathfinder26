@@ -27,10 +27,11 @@ export interface ProgrammeDetail {
 }
 
 /** Everything shown on a single programme profile page. */
-export const useProgrammeDetail = (slug?: string) =>
-  useQuery({
+export const programmeDetailQueryOptions = (slug: string) =>
+  queryOptions({
     queryKey: ["programme_detail", slug],
-    enabled: !!slug,
+    staleTime: 60_000,
+
     queryFn: async (): Promise<ProgrammeDetail | null> => {
       const { data: prog, error } = await supabase
         .from("programmes")
