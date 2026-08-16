@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
+import { groupFilter, type InstitutionGroup } from "@/lib/legal";
 
 export type University = Tables<"universities">;
 export type Programme = Tables<"programmes">;
