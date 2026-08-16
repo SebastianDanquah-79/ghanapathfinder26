@@ -100,25 +100,27 @@ export const universitiesQueryOptions = (filters: UniversityFilters = {}) => {
 export const useUniversities = (filters: UniversityFilters = {}) =>
   useQuery(universitiesQueryOptions(filters));
 
-export const useUniversity = (slug?: string) =>
-  useQuery({
+export const universityQueryOptions = (slug: string) =>
+  queryOptions({
     queryKey: ["university", slug],
-    enabled: !!slug,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("universities")
         .select("*")
-        .eq("slug", slug!)
+        .eq("slug", slug)
         .maybeSingle();
       if (error) throw error;
       return data as University | null;
     },
+    staleTime: 60_000,
   });
 
-export const useProgrammes = (universityId?: string, search = "") =>
-  useQuery({
+export const useUniversity = (slug?: string) =>
+  useQuery({ ...universityQueryOptions(slug ?? ""), enabled: !!slug });
+
+export const programmesQueryOptions = (universityId?: string, search = "") =>
+  queryOptions({
     queryKey: ["programmes", universityId, search],
-    enabled: !!universityId || !!search,
     queryFn: async () => {
       let q = supabase.from("programmes").select("*").order("name").limit(100);
       if (universityId) q = q.eq("university_id", universityId);
@@ -130,7 +132,15 @@ export const useProgrammes = (universityId?: string, search = "") =>
       if (error) throw error;
       return (data ?? []) as Programme[];
     },
+    staleTime: 60_000,
   });
+
+export const useProgrammes = (universityId?: string, search = "") =>
+  useQuery({
+    ...programmesQueryOptions(universityId, search),
+    enabled: !!universityId || !!search,
+  });
+
 
 export const useProgramme = (slug?: string) =>
   useQuery({
