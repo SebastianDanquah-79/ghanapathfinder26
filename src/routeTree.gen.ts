@@ -16,6 +16,7 @@ import { Route as ApplicationsRouteImport } from './routes/applications'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as CompareScholarshipsRouteImport } from './routes/compare-scholarships'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as InspirationRouteImport } from './routes/inspiration'
@@ -75,6 +76,11 @@ const CompareRoute = CompareRouteImport.update({
 const CompareScholarshipsRoute = CompareScholarshipsRouteImport.update({
   id: '/compare-scholarships',
   path: '/compare-scholarships',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -211,6 +217,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
+  '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/inspiration': typeof InspirationRoute
@@ -245,6 +252,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
+  '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/inspiration': typeof InspirationRoute
@@ -280,6 +288,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
+  '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/inspiration': typeof InspirationRoute
@@ -316,6 +325,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/compare'
     | '/compare-scholarships'
+    | '/contact'
     | '/dashboard'
     | '/disclaimer'
     | '/inspiration'
@@ -350,6 +360,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/compare'
     | '/compare-scholarships'
+    | '/contact'
     | '/dashboard'
     | '/disclaimer'
     | '/inspiration'
@@ -384,6 +395,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/compare'
     | '/compare-scholarships'
+    | '/contact'
     | '/dashboard'
     | '/disclaimer'
     | '/inspiration'
@@ -419,6 +431,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   CompareRoute: typeof CompareRoute
   CompareScholarshipsRoute: typeof CompareScholarshipsRoute
+  ContactRoute: typeof ContactRoute
   DashboardRoute: typeof DashboardRoute
   DisclaimerRoute: typeof DisclaimerRoute
   InspirationRoute: typeof InspirationRoute
@@ -495,6 +508,13 @@ declare module '@tanstack/react-router' {
       path: '/compare-scholarships'
       fullPath: '/compare-scholarships'
       preLoaderRoute: typeof CompareScholarshipsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -683,6 +703,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   CompareRoute: CompareRoute,
   CompareScholarshipsRoute: CompareScholarshipsRoute,
+  ContactRoute: ContactRoute,
   DashboardRoute: DashboardRoute,
   DisclaimerRoute: DisclaimerRoute,
   InspirationRoute: InspirationRoute,
