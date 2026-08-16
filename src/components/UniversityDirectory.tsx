@@ -6,13 +6,35 @@ import SectionHeader from "./SectionHeader";
 import SaveButton from "./SaveButton";
 import OfficialLink from "./OfficialLink";
 import { formatVerified, useUniversities } from "@/hooks/useCatalogue";
+import { INSTITUTION_GROUPS, type InstitutionGroup } from "@/lib/legal";
 
 const PAGE_SIZE = 12;
+
+const REGIONS = [
+  "Greater Accra",
+  "Ashanti",
+  "Central",
+  "Eastern",
+  "Western",
+  "Western North",
+  "Volta",
+  "Oti",
+  "Northern",
+  "Savannah",
+  "North East",
+  "Upper East",
+  "Upper West",
+  "Bono",
+  "Bono East",
+  "Ahafo",
+];
 
 const UniversityDirectory = () => {
   const [search, setSearch] = useState("");
   const [debounced, setDebounced] = useState("");
   const [typeFilter, setTypeFilter] = useState<"All" | "Public" | "Private">("All");
+  const [group, setGroup] = useState<InstitutionGroup | "All">("All");
+  const [region, setRegion] = useState("");
   const [page, setPage] = useState(0);
 
   useEffect(() => {
@@ -25,7 +47,9 @@ const UniversityDirectory = () => {
 
   const { data, isLoading, isError, refetch, isFetching } = useUniversities({
     search: debounced,
-    type: typeFilter,
+    type: group === "All" ? typeFilter : "All",
+    group,
+    region: region || undefined,
     page,
     pageSize: PAGE_SIZE,
   });
