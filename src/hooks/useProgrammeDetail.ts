@@ -71,6 +71,11 @@ export const programmeDetailQueryOptions = (slug: string) =>
     },
   });
 
+export const useProgrammeDetail = (slug?: string) =>
+  useQuery({ ...programmeDetailQueryOptions(slug ?? ""), enabled: !!slug });
+
+
+
 /** WASSCE-based match confidence for this programme, when a verified cut-off exists. */
 export const useProgrammeMatch = (cutoffs: ProgrammeCutoff[] | undefined): MatchResult | null => {
   const { data: results = [] } = useWassceResults();
