@@ -1,17 +1,19 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Sparkles, Loader2, ExternalLink, Info } from "@/lib/icons";
+import { Sparkles, Loader2, ExternalLink, Info, Lock } from "@/lib/icons";
 import { Link } from "@/lib/router-compat";
 import SectionHeader from "./SectionHeader";
 import ShareButtons from "./ShareButtons";
 import UsageCounter from "./UsageCounter";
 import { useAggregateRecommendations } from "@/hooks/useAdmissionReference";
+import { useAuth } from "@/hooks/useAuth";
 import { CATEGORY_STYLES, diversify, formatVerifiedDate } from "@/lib/admissionEngine";
 import { track } from "@/lib/analytics";
 
 const preferences = ["No Preference", "Public Only", "Private Only"] as const;
 
 const CollegeRecommender = () => {
+  const { user, loading: authLoading } = useAuth();
   const [form, setForm] = useState({ name: "", major: "", aggregate: "", preference: "No Preference" });
   const [submitted, setSubmitted] = useState<typeof form | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
