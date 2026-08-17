@@ -8,8 +8,17 @@ import { useLivePresence } from "@/hooks/useLivePresence";
  * student is ever identifiable, and nothing is ever fabricated or padded.
  */
 const UsageCounter = ({ className = "" }: { className?: string }) => {
-  const { data, isError } = useLivePresence();
-  if (!data || isError) return null;
+  const { data, isError, isLoading } = useLivePresence();
+
+  if (isError && !data) {
+    return (
+      <p className={`text-xs sm:text-sm text-muted-foreground ${className}`}>
+        Live count unavailable
+      </p>
+    );
+  }
+  if (!data || isLoading) return null;
+
 
   return (
     <p
