@@ -126,6 +126,7 @@ const Navbar = () => {
           >
             <Search className="h-5 w-5" />
           </Link>
+          <ThemeToggle className="h-11 w-11" />
           <Link
             to={user ? "/dashboard" : "/auth"}
             className="inline-flex items-center px-3 min-h-[44px] text-xs font-medium rounded-lg bg-primary text-primary-foreground"
