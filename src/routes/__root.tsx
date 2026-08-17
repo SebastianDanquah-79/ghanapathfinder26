@@ -101,7 +101,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1.0, viewport-fit=cover" },
-      { title: "GhanaPathFinder — Connect. Discover. Grow." },
+      { title: "GhanaPathFinder — Ghana Universities & Scholarships Guide" },
       {
         name: "description",
         content:
@@ -116,7 +116,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "apple-mobile-web-app-title", content: "GhanaPathFinder" },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "GhanaPathFinder" },
-      { property: "og:title", content: "GhanaPathFinder — Connect. Discover. Grow." },
+      { property: "og:title", content: "GhanaPathFinder — Ghana Universities & Scholarships Guide" },
       {
         property: "og:description",
         content:
@@ -125,7 +125,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:url", content: "https://ghanapathfinder.com" },
       { property: "og:image", content: "https://ghanapathfinder.com/app-icon-512.png" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "GhanaPathFinder — Connect. Discover. Grow." },
+      { name: "twitter:title", content: "GhanaPathFinder — Ghana Universities & Scholarships Guide" },
       {
         name: "twitter:description",
         content:
