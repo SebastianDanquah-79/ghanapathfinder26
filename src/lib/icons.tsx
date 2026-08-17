@@ -17,7 +17,7 @@ export const BrandLogoIcon = LucideGraduationCap;
 export type IconProps = Omit<ComponentPropsWithoutRef<"span">, "children"> & {
   size?: number | string;
   strokeWidth?: number;
-} as const;
+};
 
 const makeIcon = (glyph: string, displayName: string) => {
   const Icon = ({ className, style, size, strokeWidth: _sw, ...rest }: IconProps) => (
@@ -35,7 +35,7 @@ const makeIcon = (glyph: string, displayName: string) => {
   );
   Icon.displayName = displayName;
   return Icon;
-} as const;
+};
 
 const glyphs = {
   AlertTriangle: "!",
