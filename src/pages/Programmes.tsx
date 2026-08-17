@@ -14,6 +14,7 @@ import {
 import Navbar from "@/components/Navbar";
 import Seo, { breadcrumbLd } from "@/components/Seo";
 import SaveButton from "@/components/SaveButton";
+import VerificationBadge from "@/components/VerificationBadge";
 import {
   DIRECTORY_PAGE_SIZE,
   useProgrammeDirectory,
@@ -51,6 +52,15 @@ const ProgrammeCard = ({ p }: { p: DirectoryProgramme }) => (
       </h3>
       {p.verified && <BadgeCheck className="h-4 w-4 text-primary shrink-0" aria-label="Verified" />}
     </div>
+
+    <VerificationBadge
+      verified={p.verification_status === "verified" || p.verified}
+      lastVerifiedAt={p.last_verified_at}
+      sourceUrl={p.source_url ?? p.programme_url ?? null}
+      subject={`${p.name}${p.universities?.name ? ` , ${p.universities.name}` : ""}`}
+      whatVerified="Programme name, qualification, duration and published entry requirements were checked against the institution's official programme or admissions page."
+    />
+
 
     <p className="text-xs text-muted-foreground line-clamp-1">
       {p.universities?.name ?? "Institution unavailable"}
