@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -18,25 +19,74 @@ export const PUBLIC_METRICS: Array<{ key: string; label: string; field: keyof Pu
 
 export const USAGE_STATS_KEY = ["public_usage_stats"] as const;
 
-export const useUsageStats = () =>
-  useQuery({
+interface UsageCounterRow extends PublicUsageStats {
+  id: string;
+  updated_at: string;
+}
+
+const toStats = (row: Partial<UsageCounterRow> | null | undefined): PublicUsageStats => ({
+  metric: row?.metric ?? "students",
+  students: Number(row?.students ?? 0),
+  active_students: Number(row?.active_students ?? 0),
+  website_visits: Number(row?.website_visits ?? 0),
+  recommendation_runs: Number(row?.recommendation_runs ?? 0),
+});
+
+/**
+ * Live usage counter.
+ *
+ * The snapshot row `usage_counters.global` is recomputed by database triggers
+ * whenever a visit, event or account is recorded, and streamed to every open
+ * browser over the realtime WebSocket, so the number updates instantly for all
+ * users without polling.
+ */
+export const useUsageStats = () => {
+  const qc = useQueryClient();
+
+  const query = useQuery({
     queryKey: USAGE_STATS_KEY,
     queryFn: async () => {
-      const { data, error } = await supabase.rpc("public_usage_stats" as never);
+      const { data, error } = await supabase
+        .from("usage_counters" as never)
+        .select("*")
+        .eq("id" as never, "global" as never)
+        .maybeSingle();
       if (error) throw error;
-      return data as unknown as PublicUsageStats;
+      return toStats(data as unknown as UsageCounterRow | null);
     },
-    // Always show a fresh count: refetch on every mount, on tab focus,
-    // when the connection returns, and on a light background interval.
     staleTime: 0,
-    gcTime: 5 * 60_000,
     refetchOnMount: "always",
     refetchOnWindowFocus: true,
     refetchOnReconnect: true,
-    refetchInterval: 30_000,
-    refetchIntervalInBackground: false,
     retry: 1,
   });
+
+  useEffect(() => {
+    const channel = supabase
+      .channel("usage_counters_live")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "usage_counters", filter: "id=eq.global" },
+        (payload) => {
+          const row = payload.new as Partial<UsageCounterRow> | null;
+          if (row && Object.keys(row).length > 0) {
+            qc.setQueryData(USAGE_STATS_KEY, toStats(row));
+          } else {
+            void qc.invalidateQueries({ queryKey: USAGE_STATS_KEY });
+          }
+        },
+      )
+      .subscribe();
+
+    return () => {
+      void supabase.removeChannel(channel);
+    };
+  }, [qc]);
+
+  return query;
+};
+
+
 
 
 export interface PeriodMetrics {
