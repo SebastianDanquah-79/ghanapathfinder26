@@ -1224,6 +1224,36 @@ export type Database = {
         }
         Relationships: []
       }
+      usage_counters: {
+        Row: {
+          active_students: number
+          id: string
+          metric: string
+          recommendation_runs: number
+          students: number
+          updated_at: string
+          website_visits: number
+        }
+        Insert: {
+          active_students?: number
+          id: string
+          metric?: string
+          recommendation_runs?: number
+          students?: number
+          updated_at?: string
+          website_visits?: number
+        }
+        Update: {
+          active_students?: number
+          id?: string
+          metric?: string
+          recommendation_runs?: number
+          students?: number
+          updated_at?: string
+          website_visits?: number
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -1356,6 +1386,7 @@ export type Database = {
       }
       public_usage_stats: { Args: never; Returns: Json }
       refresh_admission_estimates: { Args: never; Returns: number }
+      refresh_usage_counters: { Args: never; Returns: undefined }
       search_catalogue: {
         Args: { _kind?: string; _limit?: number; _offset?: number; _q: string }
         Returns: {
