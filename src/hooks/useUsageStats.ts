@@ -32,6 +32,45 @@ const toStats = (row: Partial<UsageCounterRow> | null | undefined): PublicUsageS
   recommendation_runs: Number(row?.recommendation_runs ?? 0),
 });
 
+type Listener = (stats: PublicUsageStats) => void;
+
+/**
+ * One shared realtime channel for the whole app, ref-counted across every
+ * mounted counter. Supabase rejects a second `.on()` on an already-subscribed
+ * channel, so the channel must never be created per component.
+ */
+const listeners = new Set<Listener>();
+let channel: ReturnType<typeof supabase.channel> | null = null;
+
+const subscribeUsageCounters = (listener: Listener): (() => void) => {
+  listeners.add(listener);
+
+  if (!channel) {
+    channel = supabase
+      .channel("usage_counters_live")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "usage_counters", filter: "id=eq.global" },
+        (payload) => {
+          const row = payload.new as Partial<UsageCounterRow> | null;
+          if (!row || Object.keys(row).length === 0) return;
+          const stats = toStats(row);
+          listeners.forEach((fn) => fn(stats));
+        },
+      )
+      .subscribe();
+  }
+
+  return () => {
+    listeners.delete(listener);
+    if (listeners.size === 0 && channel) {
+      const current = channel;
+      channel = null;
+      void supabase.removeChannel(current);
+    }
+  };
+};
+
 /**
  * Live usage counter.
  *
