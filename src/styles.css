@@ -6,7 +6,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * GhanaPathFinder design system — dark navy + Ghana gold.
+ * GhanaPathFinder design system: light default plus deep navy-black dark theme.
  * Tokens kept as raw HSL triplets (matching the pre-migration theme) so
  * existing `hsl(var(--token) / alpha)` usages in components keep working.
  */
@@ -135,6 +135,59 @@
   --sidebar-ring: 40 92% 46%;
 }
 
+/* Deep navy-black dark theme */
+.dark {
+  --background: 222 52% 6%;
+  --foreground: 210 30% 94%;
+
+  --card: 222 45% 9%;
+  --card-foreground: 210 30% 94%;
+
+  --popover: 222 45% 9%;
+  --popover-foreground: 210 30% 94%;
+
+  --primary: 43 96% 56%;
+  --primary-foreground: 222 52% 8%;
+
+  --secondary: 222 38% 14%;
+  --secondary-foreground: 210 30% 94%;
+
+  --muted: 222 34% 13%;
+  --muted-foreground: 215 18% 68%;
+
+  --accent: 43 96% 56%;
+  --accent-foreground: 222 52% 8%;
+
+  --destructive: 0 68% 52%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 220 28% 18%;
+  --input: 220 28% 18%;
+  --ring: 43 96% 56%;
+
+  --ghana-gold: 43 96% 56%;
+  --ghana-gold-light: 45 96% 68%;
+  --ghana-green: 145 45% 44%;
+  --ghana-red: 0 65% 55%;
+  --navy-deep: 222 52% 6%;
+  --navy-mid: 222 34% 20%;
+  --navy-light: 220 20% 40%;
+  --glow-gold: 43 96% 56% / 0.12;
+
+  --sidebar-background: 222 45% 9%;
+  --sidebar-foreground: 210 30% 94%;
+  --sidebar-primary: 43 96% 56%;
+  --sidebar-primary-foreground: 222 52% 8%;
+  --sidebar-accent: 222 38% 14%;
+  --sidebar-accent-foreground: 210 30% 94%;
+  --sidebar-border: 220 28% 18%;
+  --sidebar-ring: 43 96% 56%;
+}
+
+.dark {
+  color-scheme: dark;
+}
+
 
 /* Container behaviour ported from the Tailwind v3 config (centered, 2rem padding, 1400px cap) */
 @utility container {
@@ -233,7 +286,7 @@
 
   /*
    * One responsive app: phones get the mobile layout, laptops the full desktop
-   * layout. Only wide sections (.hscroll) scroll sideways — never the page.
+   * layout. Only wide sections (.hscroll) scroll sideways, never the page.
    */
   .desktop-shell {
     width: 100%;

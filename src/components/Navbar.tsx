@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, GraduationCap, ChevronDown, Search } from "lucide-react";
 import { Link, useLocation } from "@/lib/router-compat";
 import { useAuth } from "@/hooks/useAuth";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const primary = [
   { label: "Home", href: "/" },
@@ -106,6 +107,9 @@ const Navbar = () => {
             <Search className="h-[18px] w-[18px]" />
           </Link>
 
+          <ThemeToggle className="h-9 w-9" />
+
+
           <Link
             to={user ? "/dashboard" : "/auth"}
             className="ml-2 px-4 py-2 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-opacity whitespace-nowrap"
@@ -122,9 +126,10 @@ const Navbar = () => {
           >
             <Search className="h-5 w-5" />
           </Link>
+          <ThemeToggle className="h-11 w-11" />
           <Link
             to={user ? "/dashboard" : "/auth"}
-            className="inline-flex items-center px-3 min-h-[44px] text-xs font-medium rounded-lg bg-primary text-primary-foreground"
+            className="inline-flex items-center whitespace-nowrap px-3 min-h-[40px] text-xs font-medium rounded-lg bg-primary text-primary-foreground"
           >
             {user ? "Dashboard" : "Sign in"}
           </Link>
