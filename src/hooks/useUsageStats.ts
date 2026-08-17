@@ -16,16 +16,28 @@ export const PUBLIC_METRICS: Array<{ key: string; label: string; field: keyof Pu
   { key: "recommendation_runs", label: "Recommendation runs", field: "recommendation_runs" },
 ];
 
+export const USAGE_STATS_KEY = ["public_usage_stats"] as const;
+
 export const useUsageStats = () =>
   useQuery({
-    queryKey: ["public_usage_stats"],
+    queryKey: USAGE_STATS_KEY,
     queryFn: async () => {
       const { data, error } = await supabase.rpc("public_usage_stats" as never);
       if (error) throw error;
       return data as unknown as PublicUsageStats;
     },
-    staleTime: 5 * 60_000,
+    // Always show a fresh count: refetch on every mount, on tab focus,
+    // when the connection returns, and on a light background interval.
+    staleTime: 0,
+    gcTime: 5 * 60_000,
+    refetchOnMount: "always",
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+    refetchInterval: 30_000,
+    refetchIntervalInBackground: false,
+    retry: 1,
   });
+
 
 export interface PeriodMetrics {
   registered_users: number;
