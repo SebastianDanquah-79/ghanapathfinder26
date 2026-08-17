@@ -32,8 +32,12 @@ const subscribePresence = (listener: PresenceListener): (() => void) => {
       config: { presence: { key: getSessionId() } },
     });
     presenceChannel = channel;
+    let lastLive = -1;
     const emit = () => {
       const live = Object.keys(channel.presenceState()).length;
+      // Only react when the number of connected browsers actually changed.
+      if (live === lastLive) return;
+      lastLive = live;
       presenceListeners.forEach((l) => l(live));
     };
     channel
