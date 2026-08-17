@@ -1,34 +1,38 @@
 import { Users } from "@/lib/icons";
-import { PUBLIC_METRICS, useUsageStats } from "@/hooks/useUsageStats";
+import { useLivePresence } from "@/hooks/useLivePresence";
 
 /**
- * Real, verified usage counter. The number always comes from stored analytics
- * in the GhanaPathFinder database , never a hardcoded marketing figure. Aggregate
- * only: no individual student is ever identifiable.
+ * Real, verified usage counter. Both numbers come from the GhanaPathFinder
+ * database: "Live now" is the count of genuinely active sessions in the last
+ * 90 seconds, "total" is registered accounts. Aggregate only, so no individual
+ * student is ever identifiable, and nothing is ever fabricated or padded.
  */
 const UsageCounter = ({ className = "" }: { className?: string }) => {
-  const { data } = useUsageStats();
-  if (!data) return null;
-
-  const chosen = PUBLIC_METRICS.find((m) => m.key === data.metric) ?? PUBLIC_METRICS[0]!;
-  const value = Number(data[chosen.field] ?? 0);
-  if (!value) return null;
-
-  const noun =
-    chosen.key === "website_visits"
-      ? "website visits"
-      : chosen.key === "recommendation_runs"
-        ? "recommendation runs on GhanaPathFinder"
-        : "students exploring their future with GhanaPathFinder";
+  const { data, isError } = useLivePresence();
+  if (!data || isError) return null;
 
   return (
     <p
       suppressHydrationWarning
-      className={`inline-flex items-center gap-2 text-xs sm:text-sm text-muted-foreground ${className}`}
+      className={`inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-xs sm:text-sm text-muted-foreground ${className}`}
     >
-      <Users className="h-4 w-4 text-primary shrink-0" />
-      <span>
-        <span className="font-semibold text-foreground">{value.toLocaleString("en-GB")}</span> {noun}
+      <span className="inline-flex items-center gap-1.5">
+        <span className="relative flex h-2 w-2">
+          <span className="absolute inline-flex h-full w-full rounded-full bg-primary opacity-60 animate-ping" />
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+        </span>
+        <span className="font-semibold text-foreground">
+          {data.live_now.toLocaleString("en-GB")}
+        </span>
+        live now
+      </span>
+      <span aria-hidden className="text-border">|</span>
+      <span className="inline-flex items-center gap-1.5">
+        <Users className="h-4 w-4 text-primary shrink-0" />
+        <span className="font-semibold text-foreground">
+          {data.total_users.toLocaleString("en-GB")}
+        </span>
+        students on GhanaPathFinder
       </span>
     </p>
   );
