@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import Seo, { breadcrumbLd } from "@/components/Seo";
 import { Link } from "@/lib/router-compat";
 import founderPhoto from "@/assets/founder-sebastian.jpg.asset.json";
+import cofounderPhoto from "@/assets/founder-som.jpg.asset.json";
 
 const expectations = [
   "Personalised university recommendations",
