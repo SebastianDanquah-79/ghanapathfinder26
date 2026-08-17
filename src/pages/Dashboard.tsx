@@ -186,7 +186,7 @@ const Dashboard = () => {
             ))}
           </div>
         </div>
-        <p className="text-xs text-muted-foreground mb-4 sm:hidden">Swipe for more -></p>
+        <p className="text-xs text-muted-foreground mb-4 sm:hidden">Swipe for more</p>
 
         {/* Saved shortcuts */}
         <div className="hscroll hscroll-bleed sm:overflow-visible sm:mx-0 sm:px-0 mb-6">
@@ -379,7 +379,7 @@ const Dashboard = () => {
                 ))}
               </ul>
             </div>
-            <p className="mt-2 text-xs text-muted-foreground md:hidden">Swipe for more -></p>
+            <p className="mt-2 text-xs text-muted-foreground md:hidden">Swipe for more</p>
 
           </div>
           <ParentAccessCard />

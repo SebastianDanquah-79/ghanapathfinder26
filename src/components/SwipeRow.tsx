@@ -7,7 +7,7 @@ import type { ReactNode } from "react";
 const SwipeRow = ({
   children,
   count = 0,
-  hint = "Swipe for more ->",
+  hint = "Swipe for more",
 }: {
   children: ReactNode;
   count?: number;

@@ -28,7 +28,7 @@ const points: { h: string; p: string }[] = [
 const Privacy = () => (
   <div className="min-h-screen bg-background">
     <Seo
-      title="Privacy Policy , GhanaPathFinder"
+      title="Privacy Policy | GhanaPathFinder"
       description="What GhanaPathFinder stores, why it is stored, how anonymous usage counts work and how students control their data."
       path="/privacy"
       jsonLd={[breadcrumbLd([{ name: "Home", path: "/" }, { name: "Privacy", path: "/privacy" }])]}

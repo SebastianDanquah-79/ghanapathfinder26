@@ -4,7 +4,7 @@ import About from "@/pages/About";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "About GhanaPathFinder , Education & Career Platform for Ghana" },
+      { title: "About GhanaPathFinder: Education & Career Platform for Ghana" },
       {
         name: "description",
         content:

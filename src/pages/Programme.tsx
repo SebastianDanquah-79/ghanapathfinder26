@@ -371,7 +371,7 @@ const ProgrammePage = () => {
                   {info?.source && <li className="text-[11px] text-muted-foreground">{info.source}</li>}
                   <li className="text-[11px] pt-1">
                     <Link to="/references" className="text-primary hover:underline">
-                      View all sources &amp; acknowledgements ->
+                      View all sources &amp; acknowledgements
                     </Link>
                   </li>
                 </ul>
