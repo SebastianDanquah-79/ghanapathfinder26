@@ -272,7 +272,7 @@
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: hsl(var(--navy-deep));
+  background: hsl(var(--muted));
 }
 ::-webkit-scrollbar-thumb {
   background: hsl(var(--navy-light));
