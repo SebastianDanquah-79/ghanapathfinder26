@@ -1,17 +1,19 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Sparkles, Loader2, ExternalLink, Info } from "@/lib/icons";
+import { Sparkles, Loader2, ExternalLink, Info, Lock } from "@/lib/icons";
 import { Link } from "@/lib/router-compat";
 import SectionHeader from "./SectionHeader";
 import ShareButtons from "./ShareButtons";
 import UsageCounter from "./UsageCounter";
 import { useAggregateRecommendations } from "@/hooks/useAdmissionReference";
+import { useAuth } from "@/hooks/useAuth";
 import { CATEGORY_STYLES, diversify, formatVerifiedDate } from "@/lib/admissionEngine";
 import { track } from "@/lib/analytics";
 
 const preferences = ["No Preference", "Public Only", "Private Only"] as const;
 
 const CollegeRecommender = () => {
+  const { user, loading: authLoading } = useAuth();
   const [form, setForm] = useState({ name: "", major: "", aggregate: "", preference: "No Preference" });
   const [submitted, setSubmitted] = useState<typeof form | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
@@ -44,6 +46,7 @@ const CollegeRecommender = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) return; // recommendations require a signed-in account
     setSubmitted({ ...form });
   };
 
@@ -126,17 +129,34 @@ const CollegeRecommender = () => {
             published cut-offs, or evidence-based estimated ranges, do.
           </p>
 
-          <button
-            type="submit"
-            disabled={isLoading && !!submitted}
-            className="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-lg bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 glow-gold"
-          >
-            {isLoading && submitted ? (
-              <><Loader2 className="h-5 w-5 animate-spin" /> Searching every accredited institution...</>
-            ) : (
-              <><Sparkles className="h-5 w-5" /> Get My Recommendations</>
-            )}
-          </button>
+          {!authLoading && !user ? (
+            <div className="rounded-lg border border-border bg-muted/60 p-4 text-center space-y-3">
+              <p className="text-sm text-foreground font-medium flex items-center justify-center gap-2">
+                <Lock className="h-4 w-4 text-primary" /> Sign in to see your recommendations
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Your matches are saved to your account so you can come back to them on any device.
+              </p>
+              <Link
+                to="/auth"
+                className="inline-flex min-h-[48px] items-center justify-center gap-2 px-6 rounded-lg bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-opacity"
+              >
+                <Sparkles className="h-5 w-5" /> Sign in to continue
+              </Link>
+            </div>
+          ) : (
+            <button
+              type="submit"
+              disabled={authLoading || (isLoading && !!submitted)}
+              className="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-lg bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 glow-gold"
+            >
+              {isLoading && submitted ? (
+                <><Loader2 className="h-5 w-5 animate-spin" /> Searching every accredited institution...</>
+              ) : (
+                <><Sparkles className="h-5 w-5" /> Get My Recommendations</>
+              )}
+            </button>
+          )}
         </motion.form>
 
         {submitted && !isLoading && (
