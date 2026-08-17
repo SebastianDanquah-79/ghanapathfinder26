@@ -16,6 +16,7 @@ import Seo, { breadcrumbLd } from "@/components/Seo";
 import Footer from "@/components/Footer";
 import SaveButton from "@/components/SaveButton";
 import OfficialLink from "@/components/OfficialLink";
+import VerificationBadge from "@/components/VerificationBadge";
 import { useProgrammeDetail, useProgrammeMatch } from "@/hooks/useProgrammeDetail";
 import { useTrackView } from "@/hooks/useTracking";
 import { CATEGORY_STYLES, formatVerifiedDate } from "@/lib/admissionEngine";
