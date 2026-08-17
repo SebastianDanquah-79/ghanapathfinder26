@@ -9,7 +9,7 @@ const years = [
     icon: BookOpen,
     color: "from-primary/20 to-primary/5",
     items: [
-      "Develop a growth mindset — read 'The Lean Startup' and 'Zero to One'",
+      "Develop a growth mindset , read 'The Lean Startup' and 'Zero to One'",
       "Join entrepreneurship clubs and attend campus talks",
       "Learn a practical skill: coding, design, or digital marketing",
       "Start following Ghana's startup ecosystem (Twitter, LinkedIn)",
@@ -22,7 +22,7 @@ const years = [
     icon: Users,
     color: "from-ghana-green/20 to-ghana-green/5",
     items: [
-      "Start a small side project — solve a real problem you see daily",
+      "Start a small side project , solve a real problem you see daily",
       "Find a potential co-founder with complementary skills",
       "Participate in your first hackathon (KNUST, Ashesi, or virtual)",
       "Intern at a Ghanaian startup to learn how they operate",
@@ -35,7 +35,7 @@ const years = [
     icon: Code,
     color: "from-primary/20 to-primary/5",
     items: [
-      "Build your MVP — the simplest version that works",
+      "Build your MVP , the simplest version that works",
       "Talk to 50+ potential customers and validate your idea",
       "Apply for grants: Tony Elumelu Foundation, Ghana Innovation Hub",
       "Join an incubator or accelerator program",
@@ -48,7 +48,7 @@ const years = [
     icon: Rocket,
     color: "from-ghana-gold/20 to-ghana-gold/5",
     items: [
-      "Launch publicly — even if it's not perfect",
+      "Launch publicly , even if it's not perfect",
       "Enter pitch competitions: Seedstars, Ghana Startup Awards",
       "Map out Ghana's ecosystem: investors, mentors, partners",
       "Plan your post-graduation path: full-time startup or hybrid",

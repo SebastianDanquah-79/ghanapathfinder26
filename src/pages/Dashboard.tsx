@@ -133,7 +133,7 @@ const Dashboard = () => {
         <header className="flex flex-wrap items-end justify-between gap-4 mb-6">
           <div>
             <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">
-              Welcome back{profile?.full_name ? `, ${profile.full_name.split(" ")[0]}` : ""} 👋
+              Welcome back{profile?.full_name ? `, ${profile.full_name.split(" ")[0]}` : ""} 
             </h1>
             <p className="text-sm lg:text-base text-muted-foreground mt-2 max-w-2xl">
               Your WASSCE profile, matches, saved schools and deadlines.
@@ -150,13 +150,13 @@ const Dashboard = () => {
           </button>
         </header>
 
-        {/* WASSCE snapshot — the number students care about most */}
+        {/* WASSCE snapshot , the number students care about most */}
         <div className="bg-glass rounded-xl p-5 lg:p-5 mb-5 lg:mb-6">
           <div className="flex items-center justify-between gap-4">
             <div>
               <p className="text-xs uppercase tracking-wide text-muted-foreground">WASSCE aggregate</p>
               <p className="font-display text-3xl lg:text-5xl font-bold text-foreground leading-tight">
-                {aggregate ?? "—"}
+                {aggregate ?? ","}
               </p>
               <p className="text-xs text-muted-foreground mt-1">
                 {results.length ? `${results.length} subjects recorded` : "Add your results to unlock matches"}
@@ -171,7 +171,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Primary actions, thumb-reachable on mobile — swipeable row on phones */}
+        {/* Primary actions, thumb-reachable on mobile , swipeable row on phones */}
         <div className="hscroll hscroll-bleed sm:overflow-visible sm:mx-0 sm:px-0 mb-2 sm:mb-6 lg:mb-6">
           <div className="flex gap-3 [&>*]:shrink-0 sm:grid sm:grid-cols-3 lg:grid-cols-6 sm:gap-3 lg:gap-4">
             {quickActions.map(({ to, label, icon: Icon }) => (
@@ -186,7 +186,7 @@ const Dashboard = () => {
             ))}
           </div>
         </div>
-        <p className="text-xs text-muted-foreground mb-4 sm:hidden">Swipe for more →</p>
+        <p className="text-xs text-muted-foreground mb-4 sm:hidden">Swipe for more</p>
 
         {/* Saved shortcuts */}
         <div className="hscroll hscroll-bleed sm:overflow-visible sm:mx-0 sm:px-0 mb-6">
@@ -318,9 +318,9 @@ const Dashboard = () => {
           <div className={card}>
             <h2 className="font-display font-semibold text-foreground mb-3">Your profile</h2>
             <dl className="text-sm space-y-2 text-muted-foreground">
-              <div className="flex justify-between gap-3"><dt>Target career</dt><dd className="text-foreground text-right">{profile?.target_career ?? "—"}</dd></div>
-              <div className="flex justify-between gap-3"><dt>School</dt><dd className="text-foreground text-right">{profile?.school ?? "—"}</dd></div>
-              <div className="flex justify-between gap-3"><dt>Region</dt><dd className="text-foreground text-right">{profile?.region ?? "—"}</dd></div>
+              <div className="flex justify-between gap-3"><dt>Target career</dt><dd className="text-foreground text-right">{profile?.target_career ?? ","}</dd></div>
+              <div className="flex justify-between gap-3"><dt>School</dt><dd className="text-foreground text-right">{profile?.school ?? ","}</dd></div>
+              <div className="flex justify-between gap-3"><dt>Region</dt><dd className="text-foreground text-right">{profile?.region ?? ","}</dd></div>
             </dl>
             <Link to="/onboarding" className="mt-4 inline-block text-sm text-primary font-medium">
               Update my details
@@ -379,7 +379,7 @@ const Dashboard = () => {
                 ))}
               </ul>
             </div>
-            <p className="mt-2 text-xs text-muted-foreground md:hidden">Swipe for more →</p>
+            <p className="mt-2 text-xs text-muted-foreground md:hidden">Swipe for more</p>
 
           </div>
           <ParentAccessCard />

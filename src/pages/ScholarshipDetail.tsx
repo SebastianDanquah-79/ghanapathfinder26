@@ -31,7 +31,7 @@ const ScholarshipDetail = () => {
   return (
     <div className="min-h-screen bg-background">
       <Seo
-        title={`${s.name} — Eligibility & How to Apply | GhanaPathFinder`}
+        title={`${s.name} , Eligibility & How to Apply | GhanaPathFinder`}
         description={description.slice(0, 155)}
         path={path}
         jsonLd={[

@@ -32,7 +32,7 @@ const stories: FounderStory[] = [
     place: "Ghana",
     year: "2007",
     story:
-      "Simons was working on organic farming traceability when he realised the bigger killer was fake medicine. mPedigree put a scratch-off code on drug packs so any patient could text the code free of charge and get an instant genuine-or-fake reply — built on plain SMS because that was what people already had.",
+      "Simons was working on organic farming traceability when he realised the bigger killer was fake medicine. mPedigree put a scratch-off code on drug packs so any patient could text the code free of charge and get an instant genuine-or-fake reply , built on plain SMS because that was what people already had.",
     lesson:
       "Build on the technology your users already own. SMS beat a beautiful app because everyone had a phone that could text.",
     source: "https://mpedigree.com/",
@@ -56,7 +56,7 @@ const stories: FounderStory[] = [
     place: "Uganda / Ghana",
     year: "2018",
     story:
-      "The two met as students at Grinnell College in the US — Ham from Uganda, Maijid from Ghana. Frustrated by how expensive and slow it was to send money home and across African borders, they moved to San Francisco and built a free cross-border transfer app, now used by millions across Africa.",
+      "The two met as students at Grinnell College in the US , Ham from Uganda, Maijid from Ghana. Frustrated by how expensive and slow it was to send money home and across African borders, they moved to San Francisco and built a free cross-border transfer app, now used by millions across Africa.",
     lesson:
       "Your own frustration is market research. They built the product they personally needed every month.",
     source: "https://chippercash.com/about",
@@ -68,7 +68,7 @@ const stories: FounderStory[] = [
     place: "Nigeria",
     year: "2016",
     story:
-      "The idea came from a tweet: a woman described saving money daily in a wooden piggy bank until she had enough to grow her business. The team — who had already built a jobs site together — turned that habit into an app, launching as Piggybank.ng with automated daily, weekly and monthly savings.",
+      "The idea came from a tweet: a woman described saving money daily in a wooden piggy bank until she had enough to grow her business. The team , who had already built a jobs site together , turned that habit into an app, launching as Piggybank.ng with automated daily, weekly and monthly savings.",
     lesson:
       "Digitise a habit people already have instead of teaching them a brand new one.",
     source: "https://www.piggyvest.com/about",
@@ -167,7 +167,7 @@ const StartupStories = () => (
         badge="Inspiration"
         title="Real Founder"
         highlight="Stories"
-        description="How real companies started — each story links to its source."
+        description="How real companies started , each story links to its source."
       />
 
       <div className="flex hscroll hscroll-bleed snap-x snap-mandatory scroll-smooth [&>*]:w-[18rem] [&>*]:shrink-0 [&>*]:snap-start md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:mx-0 md:px-0 md:[&>*]:w-auto gap-5">

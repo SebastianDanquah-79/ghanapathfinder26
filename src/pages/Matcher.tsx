@@ -94,7 +94,7 @@ const Matcher = () => {
                 </div>
 
                 <ul className="text-xs text-muted-foreground space-y-1 mb-3">
-                  {reasons.map((r) => <li key={r}>✓ {r}</li>)}
+                  {reasons.map((r) => <li key={r}> {r}</li>)}
                   {gaps.map((g) => <li key={g} className="text-ghana-gold">! {g}</li>)}
                 </ul>
 

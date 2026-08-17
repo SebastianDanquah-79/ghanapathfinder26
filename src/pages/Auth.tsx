@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/useAuth";
+import { TERMS_VERSION } from "@/lib/legal";
 import { useEffect } from "react";
 
 type Mode = "signin" | "signup";
@@ -25,6 +26,14 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+
+  const recordAcceptance = async (userId: string) => {
+    await supabase
+      .from("profiles")
+      .update({ terms_accepted_at: new Date().toISOString(), terms_version: TERMS_VERSION })
+      .eq("id", userId);
+  };
 
   useEffect(() => {
     if (user) {
@@ -35,6 +44,10 @@ const Auth = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!acceptedTerms) {
+      toast.error("Please accept the Terms & Conditions to continue.");
+      return;
+    }
     setLoading(true);
     try {
       if (mode === "signup") {
@@ -54,14 +67,16 @@ const Auth = () => {
           setEmailSent(true);
           return;
         }
+        if (data.user) await recordAcceptance(data.user.id);
         if (next) window.location.href = next;
         else navigate("/onboarding", { replace: true });
       } else {
-        const { error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await supabase.auth.signInWithPassword({
           email: email.trim(),
           password,
         });
         if (error) throw error;
+        if (data.user) await recordAcceptance(data.user.id);
         if (next) window.location.href = next;
         else navigate("/dashboard", { replace: true });
       }
@@ -83,10 +98,14 @@ const Auth = () => {
     });
     setLoading(false);
     if (error) toast.error(error.message);
-    else toast.success("Password reset link sent — check your email.");
+    else toast.success("Password reset link sent , check your email.");
   };
 
   const handleGoogle = async () => {
+    if (!acceptedTerms) {
+      toast.error("Please accept the Terms & Conditions to continue.");
+      return;
+    }
 
     setLoading(true);
     const result = await lovable.auth.signInWithOAuth("google", {
@@ -133,10 +152,31 @@ const Auth = () => {
                 : "Save recommendations, scholarships and deadlines in one place."}
             </p>
 
+            <label className="flex items-start gap-3 mb-4 p-3 rounded-xl border border-border bg-secondary/50 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={acceptedTerms}
+                onChange={(e) => setAcceptedTerms(e.target.checked)}
+                className="mt-0.5 h-5 w-5 shrink-0 accent-[hsl(var(--primary))]"
+                aria-describedby="terms-help"
+              />
+              <span id="terms-help" className="text-sm text-muted-foreground">
+                I agree to the{" "}
+                <Link to="/terms" target="_blank" rel="noopener" className="text-primary underline">
+                  Terms &amp; Conditions
+                </Link>{" "}
+                and{" "}
+                <Link to="/privacy" target="_blank" rel="noopener" className="text-primary underline">
+                  Privacy Policy
+                </Link>
+                .
+              </span>
+            </label>
+
             <button
               onClick={handleGoogle}
-              disabled={loading}
-              className="w-full mb-5 px-4 py-3 rounded-lg bg-secondary text-foreground text-sm font-medium hover:bg-secondary/70 transition-colors"
+              disabled={loading || !acceptedTerms}
+              className="w-full mb-5 px-4 py-3 rounded-lg border border-border bg-secondary text-foreground text-sm font-medium hover:bg-secondary/70 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Continue with Google
             </button>
@@ -196,8 +236,8 @@ const Auth = () => {
               />
               <button
                 type="submit"
-                disabled={loading}
-                className="w-full px-4 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+                disabled={loading || !acceptedTerms}
+                className="w-full px-4 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading && <Loader2 className="h-4 w-4 animate-spin" />}
                 {mode === "signin" ? "Sign in" : "Create account"}

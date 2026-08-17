@@ -2,8 +2,6 @@ import { Suspense, lazy } from "react";
 import Navbar from "@/components/Navbar";
 import Seo from "@/components/Seo";
 import HeroSection from "@/components/HeroSection";
-import DisclaimerBanner from "@/components/DisclaimerBanner";
-import AboutSection from "@/components/AboutSection";
 import CollegeRecommender from "@/components/CollegeRecommender";
 import UniversityDirectory from "@/components/UniversityDirectory";
 import ScholarshipSection from "@/components/ScholarshipSection";
@@ -18,7 +16,7 @@ const Footer = lazy(() => import("@/components/Footer"));
 const Index = () => (
   <div className="min-h-screen bg-background">
     <Seo
-      title="GhanaPathFinder — Ghana Universities & Scholarships Guide"
+      title="GhanaPathFinder: Ghana Universities & Scholarships Guide"
       description="GhanaPathFinder is an education and career platform helping Ghanaian students discover universities, programmes, scholarships, career paths and opportunities."
       path="/"
       jsonLd={[
@@ -43,11 +41,10 @@ const Index = () => (
       ]}
     />
     <Navbar />
-    <div className="pt-20">
-      <DisclaimerBanner />
-      <AboutSection />
+    <div className="pt-14">
+      <HeroSection />
     </div>
-    <HeroSection />
+
     <CollegeRecommender />
     <UniversityDirectory />
     <ScholarshipSection />

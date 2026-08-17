@@ -155,7 +155,7 @@ const Scholarships = () => {
     if (!user) return;
     const date = estimateDeadlineDate(deadlineText);
     if (!date) {
-      toast.error("This scholarship has no fixed month — add a reminder manually.");
+      toast.error("This scholarship has no fixed month , add a reminder manually.");
       return;
     }
     const iso = toISODate(date);
@@ -371,7 +371,7 @@ const Scholarships = () => {
               <RefreshCw className="h-4 w-4 text-primary" /> Eligibility recheck
             </h2>
             <p className="text-xs text-muted-foreground mb-3">
-              Checked against your current aggregate {aggregate ?? "—"} and profile.
+              Checked against your current aggregate {aggregate ?? ","} and profile.
             </p>
             {savedScholarships.length ? (
               <ul className="space-y-3">
@@ -426,7 +426,7 @@ const Scholarships = () => {
               </div>
             ) : (
               <p className="text-sm text-muted-foreground">
-                Nothing saved yet — <Link to="/matcher" className="text-primary">run the matcher</Link> to find options.
+                Nothing saved yet , <Link to="/matcher" className="text-primary">run the matcher</Link> to find options.
               </p>
             )}
           </div>

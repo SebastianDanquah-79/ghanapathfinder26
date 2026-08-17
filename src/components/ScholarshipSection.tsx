@@ -194,7 +194,7 @@ const ScholarshipSection = () => {
                 <ShieldCheck
                   className={`h-3 w-3 ${s.verified ? "text-ghana-green" : "text-muted-foreground"}`}
                 />
-                {s.verified ? formatVerified(s.last_verified_at) : "Link not verified — confirm with the provider"}
+                {s.verified ? formatVerified(s.last_verified_at) : "Link not verified , confirm with the provider"}
               </p>
             </motion.div>
           ))}

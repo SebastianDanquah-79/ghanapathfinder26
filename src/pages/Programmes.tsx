@@ -81,7 +81,7 @@ const ProgrammeCard = ({ p }: { p: DirectoryProgramme }) => (
 
     <p className="text-[11px] text-muted-foreground line-clamp-2">
       <span className="text-foreground/80 font-medium">WASSCE: </span>
-      {p.wassce_requirements || "Requirements unavailable — check the official admissions page."}
+      {p.wassce_requirements || "Requirements unavailable , check the official admissions page."}
     </p>
 
     <div className="mt-auto pt-2 flex items-center justify-between gap-2">
@@ -159,8 +159,8 @@ const Programmes = () => {
   return (
     <div className="min-h-screen bg-background">
       <Seo
-        title="Programme Directory — Degrees in Ghana | GhanaPathFinder"
-        description="Every accredited degree, diploma and certificate programme recorded in GhanaPathFinder — filter by field, institution, region and WASSCE requirements."
+        title="Programme Directory: Degrees in Ghana | GhanaPathFinder"
+        description="Every accredited degree, diploma and certificate programme recorded in GhanaPathFinder: filter by field, institution, region and WASSCE requirements."
         path="/programmes"
         jsonLd={[breadcrumbLd([{ name: "Home", path: "/" }, { name: "Programmes", path: "/programmes" }])]}
       />
@@ -172,7 +172,7 @@ const Programmes = () => {
               <GraduationCap className="h-6 w-6 lg:h-8 lg:w-8 text-primary" /> Programme Directory
             </h1>
             <p className="text-sm text-muted-foreground mt-1">
-              Every programme recorded in GhanaPathFinder — search by subject, institution, region or
+              Every programme recorded in GhanaPathFinder: search by subject, institution, region or
               qualification. {total.toLocaleString()} programmes match your view.
             </p>
           </header>
@@ -259,7 +259,7 @@ const Programmes = () => {
           </div>
 
           <div className="lg:grid lg:grid-cols-[240px,1fr] lg:gap-6">
-            {/* Filters — sidebar on desktop, collapsible on mobile */}
+            {/* Filters , sidebar on desktop, collapsible on mobile */}
             <aside className={`${showFilters ? "block" : "hidden"} lg:block mb-4 lg:mb-0`}>
               <div className="bg-glass rounded-xl p-4 space-y-4 lg:sticky lg:top-20">
                 {[

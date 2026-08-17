@@ -31,7 +31,7 @@ const Contact = () => (
             <Flag className="h-5 w-5 text-primary mb-2" />
             <h2 className="font-display font-semibold text-foreground text-sm mb-1">Report wrong information</h2>
             <p className="text-xs text-muted-foreground">
-              Every programme page has a feedback control — use it to flag an out-of-date requirement,
+              Every programme page has a feedback control , use it to flag an out-of-date requirement,
               cut-off point or link, and include the official source if you have it.
             </p>
           </section>

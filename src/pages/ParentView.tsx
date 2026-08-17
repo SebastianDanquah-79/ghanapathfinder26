@@ -62,7 +62,7 @@ const ParentView = () => {
       return;
     }
     setCode("");
-    toast.success("Linked — you can now follow their scholarship progress");
+    toast.success("Linked , you can now follow their scholarship progress");
     qc.invalidateQueries({ queryKey: ["parent_links_as_parent"] });
   };
 
@@ -79,7 +79,7 @@ const ParentView = () => {
             <Users className="h-6 w-6 text-primary" /> Parent view
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            A read-only window into your child's scholarship search — applications, shortlists and deadlines.
+            A read-only window into your child's scholarship search , applications, shortlists and deadlines.
           </p>
         </div>
 

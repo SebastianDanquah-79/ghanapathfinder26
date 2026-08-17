@@ -122,7 +122,7 @@ const CollegeRecommender = () => {
           </div>
 
           <p className="text-xs text-muted-foreground">
-            Your career goal and interests do not change these results — only your grades against
+            Your career goal and interests do not change these results , only your grades against
             published cut-offs, or evidence-based estimated ranges, do.
           </p>
 
@@ -236,7 +236,7 @@ const CollegeRecommender = () => {
 
             <p className="text-xs text-muted-foreground mt-5">
               Estimated ranges are derived from officially published cut-offs for comparable
-              programmes and published entry requirements — they are not official figures. For a full
+              programmes and published entry requirements , they are not official figures. For a full
               check that also enforces subject requirements, sign in and use the{" "}
               <Link to="/admission-match" className="text-primary font-medium">Admission Match</Link>{" "}
               tool.

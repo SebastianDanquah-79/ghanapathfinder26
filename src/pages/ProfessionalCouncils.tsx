@@ -10,7 +10,7 @@ import { UNVERIFIED_NOTE } from "@/lib/legal";
 const ProfessionalCouncils = () => (
   <div className="min-h-screen bg-background">
     <Seo
-      title="Professional Councils & Career Regulation — GhanaPathFinder"
+      title="Professional Councils & Career Regulation | GhanaPathFinder"
       description="Which professional council or regulator oversees careers such as nursing, medicine, teaching and allied health in Ghana, with links to each official body."
       path="/professional-councils"
       jsonLd={[

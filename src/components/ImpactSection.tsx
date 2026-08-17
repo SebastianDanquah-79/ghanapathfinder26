@@ -20,7 +20,7 @@ const ImpactSection = () => {
           badge="GhanaPathFinder Impact"
           title="People who have used"
           highlight="GhanaPathFinder so far"
-          description="Live, verified numbers counted from real activity. Aggregate only — no student is ever identified."
+          description="Live, verified numbers counted from real activity. Aggregate only , no student is ever identified."
         />
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">

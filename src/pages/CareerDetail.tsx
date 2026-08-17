@@ -33,7 +33,7 @@ const CareerDetail = () => {
   return (
     <div className="min-h-screen bg-background">
       <Seo
-        title={`${career.major} Careers in Ghana — Roles, Employers & Salary | GhanaPathFinder`}
+        title={`${career.major} Careers in Ghana , Roles, Employers & Salary | GhanaPathFinder`}
         description={description.slice(0, 155)}
         path={path}
         jsonLd={[

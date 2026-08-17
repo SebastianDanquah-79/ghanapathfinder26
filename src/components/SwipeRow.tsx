@@ -2,12 +2,12 @@ import type { ReactNode } from "react";
 
 /**
  * Mobile: horizontally swipeable card row (snap, smooth touch scroll).
- * Desktop: plain vertical list — unchanged layout.
+ * Desktop: plain vertical list , unchanged layout.
  */
 const SwipeRow = ({
   children,
   count = 0,
-  hint = "Swipe for more →",
+  hint = "Swipe for more",
 }: {
   children: ReactNode;
   count?: number;

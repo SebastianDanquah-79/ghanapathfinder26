@@ -1,6 +1,6 @@
 /**
  * Professional councils and regulators used as reference sources by GhanaPathFinder.
- * Only bodies whose official website was checked and reachable are listed here —
+ * Only bodies whose official website was checked and reachable are listed here ,
  * nothing on this list is invented. Where a body's official site could not be
  * reached at verification time, `website` is null and the UI shows
  * "Official information unavailable." instead of a fabricated link.
@@ -79,7 +79,7 @@ export const ACCREDITATION_SOURCES = [
     lastVerified: "August 2026",
   },
   {
-    name: "GTEC — Explore accredited institutions",
+    name: "GTEC , Explore accredited institutions",
     website: "https://gtec.edu.gh/explore-institutions/",
     note: "Institution and accreditation verification",
     lastVerified: "August 2026",

@@ -372,6 +372,8 @@ export type Database = {
           region: string | null
           school: string | null
           target_career: string | null
+          terms_accepted_at: string | null
+          terms_version: string | null
           updated_at: string
         }
         Insert: {
@@ -385,6 +387,8 @@ export type Database = {
           region?: string | null
           school?: string | null
           target_career?: string | null
+          terms_accepted_at?: string | null
+          terms_version?: string | null
           updated_at?: string
         }
         Update: {
@@ -398,6 +402,8 @@ export type Database = {
           region?: string | null
           school?: string | null
           target_career?: string | null
+          terms_accepted_at?: string | null
+          terms_version?: string | null
           updated_at?: string
         }
         Relationships: []

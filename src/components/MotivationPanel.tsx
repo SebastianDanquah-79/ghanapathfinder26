@@ -138,8 +138,8 @@ const MotivationPanel = ({ data }: { data: JourneyInput }) => {
 
         <p className="text-xs text-muted-foreground mt-4">
           {remaining.length
-            ? `${remaining.length} milestone${remaining.length === 1 ? "" : "s"} left — no rush, one at a time.`
-            : "Every milestone is complete. You are genuinely ready — keep refining."}
+            ? `${remaining.length} milestone${remaining.length === 1 ? "" : "s"} left , no rush, one at a time.`
+            : "Every milestone is complete. You are genuinely ready , keep refining."}
         </p>
       </motion.div>
 

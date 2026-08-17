@@ -1,5 +1,5 @@
 /**
- * Router-compat shim — bridges react-router-dom v6 call sites to
+ * Router-compat shim , bridges react-router-dom v6 call sites to
  * @tanstack/react-router without hand-rewriting every component.
  * This is the same load-bearing pattern used in Klar's dev-copy migration.
  */
@@ -93,7 +93,7 @@ export function useSearchParams(): [URLSearchParams, (init: URLSearchParams | Re
       opts?: { replace?: boolean },
     ) => {
       // Functional updaters read the router's live location, not the render
-      // snapshot — react-router passes call-time params, and chained updates
+      // snapshot , react-router passes call-time params, and chained updates
       // within one tick must see each other's writes.
       const live = router.state.location;
       const current = new URLSearchParams(live.searchStr ?? "");

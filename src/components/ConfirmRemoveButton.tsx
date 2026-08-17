@@ -18,7 +18,7 @@ interface Props {
   showLabel?: boolean;
 }
 
-/** Trash control with a lightweight confirmation — only removes from the student's saved list. */
+/** Trash control with a lightweight confirmation , only removes from the student's saved list. */
 const ConfirmRemoveButton = ({ title, itemLabel, onConfirm, showLabel = false }: Props) => (
   <AlertDialog>
     <AlertDialogTrigger asChild>

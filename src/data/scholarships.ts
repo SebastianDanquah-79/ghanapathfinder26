@@ -32,7 +32,7 @@ export const scholarships: Scholarship[] = [
     level: "Undergraduate & Postgraduate",
     eligibility:
       "Ghanaian students in accredited institutions, strong academic record and demonstrated financial need.",
-    deadline: "Rolling — advertised in national dailies",
+    deadline: "Rolling , advertised in national dailies",
     howToApply:
       "Apply through your institution's scholarship/financial aid office with admission letter and proof of need.",
   },
@@ -46,7 +46,7 @@ export const scholarships: Scholarship[] = [
       "Outstanding WASSCE results (typically aggregate 6–12), demonstrated leadership and verified financial need.",
     deadline: "Early round November; regular round February",
     howToApply:
-      "Apply for admission to Ashesi and tick the financial aid option — submit the family financial statement with supporting documents.",
+      "Apply for admission to Ashesi and tick the financial aid option , submit the family financial statement with supporting documents.",
     link: "https://www.ashesi.edu.gh/admissions/financial-aid",
   },
   {
@@ -166,10 +166,10 @@ export const scholarships: Scholarship[] = [
 ];
 
 export const scholarshipTips = [
-  "Start a folder now with your Ghana Card, WASSCE results slip, admission letter and passport photos — most applications ask for the same documents.",
+  "Start a folder now with your Ghana Card, WASSCE results slip, admission letter and passport photos , most applications ask for the same documents.",
   "Apply to at least five scholarships. Even full-tuition awards get fewer applicants than you'd expect because students assume they won't win.",
   "Write one strong personal statement about your goals and adapt it per application instead of starting from scratch each time.",
-  "Ask a teacher for a reference letter early — a rushed reference is the most common reason strong applications get weakened.",
+  "Ask a teacher for a reference letter early , a rushed reference is the most common reason strong applications get weakened.",
   "Never pay a 'processing fee' to anyone promising a scholarship. Legitimate schemes in Ghana are free to apply for.",
 ];
 

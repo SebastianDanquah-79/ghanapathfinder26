@@ -93,7 +93,7 @@ const AdminData = () => {
             to="/admin/analytics"
             className="inline-flex items-center gap-1.5 text-sm text-primary font-medium"
           >
-            View usage analytics →
+            View usage analytics
           </Link>
           <header>
             <h1 className="font-display text-2xl lg:text-4xl font-bold text-foreground flex items-center gap-2">

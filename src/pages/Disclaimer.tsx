@@ -7,7 +7,7 @@ import { DISCLAIMER_PARAGRAPHS } from "@/lib/legal";
 const Disclaimer = () => (
   <div className="min-h-screen bg-background">
     <Seo
-      title="Disclaimer — GhanaPathFinder"
+      title="Disclaimer | GhanaPathFinder"
       description="How to use GhanaPathFinder information responsibly: recommendations and estimated cut-off points are guidance only and must be verified with the institution."
       path="/disclaimer"
       jsonLd={[breadcrumbLd([{ name: "Home", path: "/" }, { name: "Disclaimer", path: "/disclaimer" }])]}

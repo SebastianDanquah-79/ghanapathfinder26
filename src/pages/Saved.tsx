@@ -39,7 +39,7 @@ const Saved = () => {
             <Bookmark className="h-6 w-6 text-primary" /> Saved
           </h1>
           <p className="text-sm text-muted-foreground mb-5">
-            Everything you save syncs to your account — phone, tablet or laptop.
+            Everything you save syncs to your account , phone, tablet or laptop.
           </p>
 
           <div className="flex gap-2 [&>*]:shrink-0 hscroll hscroll-bleed pb-2 mb-5">

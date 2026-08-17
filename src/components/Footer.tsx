@@ -54,7 +54,7 @@ const Footer = () => (
 
       <p className="text-xs text-muted-foreground mt-4 max-w-3xl mx-auto">
         Information on GhanaPathFinder is guidance only. Match confidence and estimated cut-off points
-        are not guarantees of admission — always verify with the institution.
+        are not guarantees of admission , always verify with the institution.
       </p>
       <p className="text-xs text-muted-foreground mt-3">© 2026 GhanaPathFinder. All rights reserved.</p>
     </div>
