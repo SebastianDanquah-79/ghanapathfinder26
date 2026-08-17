@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { ShieldCheck, ShieldAlert, ExternalLink } from "@/lib/icons";
+import { ShieldCheck, Shield, ExternalLink } from "@/lib/icons";
 import { prettyHost } from "@/lib/legal";
 
 export type VerificationBadgeProps = {
