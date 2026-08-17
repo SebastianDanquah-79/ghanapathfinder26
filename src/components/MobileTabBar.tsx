@@ -1,5 +1,5 @@
 import { Link, useLocation } from "@/lib/router-compat";
-import { Home, Target, GraduationCap, LayoutDashboard, BookOpen } from "lucide-react";
+import { Home, Target, GraduationCap, LayoutDashboard, BookOpen } from "@/lib/icons";
 import { useAuth } from "@/hooks/useAuth";
 
 const tabs = [

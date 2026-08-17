@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "@/lib/router-compat";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ArrowLeft, Users } from "lucide-react";
+import { ArrowLeft, Users } from "@/lib/icons";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";

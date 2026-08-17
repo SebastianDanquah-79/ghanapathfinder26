@@ -1,4 +1,4 @@
-import { Users } from "lucide-react";
+import { Users } from "@/lib/icons";
 import { PUBLIC_METRICS, useUsageStats } from "@/hooks/useUsageStats";
 
 /**

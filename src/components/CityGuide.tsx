@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { MapPin, Wallet, Shield, Users, Home, Loader2 } from "lucide-react";
+import { MapPin, Wallet, Shield, Users, Home, Loader2 } from "@/lib/icons";
 import SectionHeader from "./SectionHeader";
 
 const cities = [

@@ -10,7 +10,7 @@ import {
   ShieldCheck,
   Sparkles,
   Wallet,
-} from "lucide-react";
+} from "@/lib/icons";
 import Navbar from "@/components/Navbar";
 import Seo, { breadcrumbLd } from "@/components/Seo";
 import Footer from "@/components/Footer";

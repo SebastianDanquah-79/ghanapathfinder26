@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "@/lib/router-compat";
-import { GraduationCap, Loader2 } from "lucide-react";
+import { Loader2, BrandLogoIcon } from "@/lib/icons";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -34,7 +34,7 @@ const ResetPassword = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-8">
       <Link to="/" className="flex items-center gap-2 mb-6">
-        <GraduationCap className="h-7 w-7 text-primary" />
+        <BrandLogoIcon className="h-7 w-7 text-primary" />
         <span className="font-display font-bold text-xl text-foreground">
           Ghana<span className="text-primary">PathFinder</span>
         </span>

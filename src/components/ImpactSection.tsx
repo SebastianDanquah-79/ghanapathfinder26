@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Users, Eye, Sparkles, UserCheck } from "lucide-react";
+import { Users, Eye, Sparkles, UserCheck } from "@/lib/icons";
 import SectionHeader from "./SectionHeader";
 import { useUsageStats } from "@/hooks/useUsageStats";
 

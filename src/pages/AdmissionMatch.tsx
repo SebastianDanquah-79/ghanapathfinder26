@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "@/lib/router-compat";
-import { ArrowLeft, ExternalLink, Info, Loader2, Target } from "lucide-react";
+import { ArrowLeft, ExternalLink, Info, Loader2, Target } from "@/lib/icons";
 import { useAuth } from "@/hooks/useAuth";
 import { useReferenceMatches } from "@/hooks/useAdmissionReference";
 import { useUniversities } from "@/hooks/useCatalogue";

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "@/lib/router-compat";
-import { Bookmark, GraduationCap, Search, BookOpen, ExternalLink } from "lucide-react";
+import { Bookmark, GraduationCap, Search, BookOpen, ExternalLink } from "@/lib/icons";
 import { useQueryClient } from "@tanstack/react-query";
 import Navbar from "@/components/Navbar";
 import ConfirmRemoveButton from "@/components/ConfirmRemoveButton";

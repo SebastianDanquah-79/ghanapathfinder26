@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "@/lib/router-compat";
-import { Search, MapPin, GraduationCap, Building2, Loader2, ShieldCheck } from "lucide-react";
+import { Search, MapPin, GraduationCap, Building2, Loader2, ShieldCheck } from "@/lib/icons";
 import SectionHeader from "./SectionHeader";
 import SaveButton from "./SaveButton";
 import OfficialLink from "./OfficialLink";

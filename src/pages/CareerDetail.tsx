@@ -1,5 +1,5 @@
 import { Link, useParams } from "@/lib/router-compat";
-import { ArrowLeft, Briefcase, Building, DollarSign, Globe } from "lucide-react";
+import { ArrowLeft, Briefcase, Building, DollarSign, Globe } from "@/lib/icons";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo, { breadcrumbLd } from "@/components/Seo";

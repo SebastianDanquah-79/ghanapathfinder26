@@ -1,5 +1,5 @@
 import { Link, useParams } from "@/lib/router-compat";
-import { ArrowLeft, Loader2, MapPin, ShieldCheck, Wallet, GraduationCap } from "lucide-react";
+import { ArrowLeft, Loader2, MapPin, ShieldCheck, Wallet, GraduationCap } from "@/lib/icons";
 import Navbar from "@/components/Navbar";
 import Seo, { breadcrumbLd } from "@/components/Seo";
 import Footer from "@/components/Footer";

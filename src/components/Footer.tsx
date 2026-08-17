@@ -1,4 +1,4 @@
-import { GraduationCap } from "lucide-react";
+import { BrandLogoIcon } from "@/lib/icons";
 import { Link } from "@/lib/router-compat";
 
 const links = [
@@ -16,7 +16,7 @@ const Footer = () => (
   <footer className="py-8 px-4 border-t border-border/50">
     <div className="max-w-7xl mx-auto text-center">
       <div className="flex items-center justify-center gap-2 mb-4">
-        <GraduationCap className="h-6 w-6 text-primary" />
+        <BrandLogoIcon className="h-6 w-6 text-primary" />
         <span className="font-display font-bold text-lg text-foreground">
           Ghana<span className="text-primary">PathFinder</span>
         </span>

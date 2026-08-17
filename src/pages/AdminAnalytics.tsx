@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "@/lib/router-compat";
-import { ArrowLeft, BarChart3, Loader2 } from "lucide-react";
+import { ArrowLeft, BarChart3, Loader2 } from "@/lib/icons";
 import Navbar from "@/components/Navbar";
 import Seo from "@/components/Seo";
 import { useAuth } from "@/hooks/useAuth";

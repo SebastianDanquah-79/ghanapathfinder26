@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { BookOpen, Users, Code, Rocket } from "lucide-react";
+import { BookOpen, Users, Code, Rocket } from "@/lib/icons";
 import SectionHeader from "./SectionHeader";
 
 const years = [

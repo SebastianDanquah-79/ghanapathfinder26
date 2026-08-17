@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo, { breadcrumbLd } from "@/components/Seo";
 import { Link } from "@/lib/router-compat";
-import { Mail, Flag, BookMarked } from "lucide-react";
+import { Mail, Flag, BookMarked } from "@/lib/icons";
 
 const Contact = () => (
   <div className="min-h-screen bg-background">

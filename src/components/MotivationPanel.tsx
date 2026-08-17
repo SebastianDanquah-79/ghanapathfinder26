@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Link } from "@/lib/router-compat";
 import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle2, Circle, Compass, Flame, Quote, Sunrise } from "lucide-react";
+import { ArrowRight, CheckCircle2, Circle, Compass, Flame, Quote, Sunrise } from "@/lib/icons";
 import {
   JourneyInput,
   buildMilestones,

@@ -1,4 +1,4 @@
-import { Bookmark, BookmarkCheck } from "lucide-react";
+import { Bookmark, BookmarkCheck } from "@/lib/icons";
 import { useNavigate } from "@/lib/router-compat";
 import { useAuth } from "@/hooks/useAuth";
 import { celebrate } from "@/lib/celebrate";
