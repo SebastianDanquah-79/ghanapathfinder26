@@ -43,7 +43,7 @@ const VerificationBadge = ({
             verified ? "text-ghana-green" : "text-muted-foreground"
           }`}
         >
-          {verified ? <ShieldCheck className="h-3.5 w-3.5" /> : <ShieldAlert className="h-3.5 w-3.5" />}
+          {verified ? <ShieldCheck className="h-3.5 w-3.5" /> : <Shield className="h-3.5 w-3.5" />}
           {verified ? "Verified" : "Not verified"}
         </span>
         <button
