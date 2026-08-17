@@ -14,10 +14,13 @@ export type VerificationBadgeProps = {
   sourceName?: string | null;
   /** Short description of what exactly was checked. */
   whatVerified?: string;
+  /** Recorded reason a record is not verified, when the database stores one. */
+  reason?: string | null;
   /** Title of the record being described. */
   subject?: string;
   className?: string;
 };
+
 
 const formatDate = (iso?: string | null) =>
   iso
@@ -30,8 +33,10 @@ const VerificationBadge = ({
   sourceUrl,
   sourceName,
   whatVerified = "Institution details, accreditation status and published programme information.",
+  reason,
   subject,
   className = "",
+
 }: VerificationBadgeProps) => {
   const [open, setOpen] = useState(false);
 
@@ -88,6 +93,21 @@ const VerificationBadge = ({
                     <dt className="text-foreground">Status</dt>
                     <dd>Verified against official information</dd>
                   </div>
+                  {sourceUrl && (
+                    <div>
+                      <dt className="text-foreground">Official source</dt>
+                      <dd className="break-all">
+                        <a
+                          href={sourceUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary hover:underline"
+                        >
+                          {sourceUrl}
+                        </a>
+                      </dd>
+                    </div>
+                  )}
                   <div>
                     <dt className="text-foreground">What was verified</dt>
                     <dd>{whatVerified}</dd>
@@ -101,13 +121,19 @@ const VerificationBadge = ({
             ) : (
               <>
                 <p>
-                  This information has not yet been confirmed through an authoritative official
-                  source. Not verified means GhanaPathFinder could not confirm the information
-                  through a sufficiently reliable official or authoritative source. It does not
-                  necessarily mean the information is incorrect.
+                  Not verified means GhanaPathFinder has not yet confirmed the information through a
+                  sufficiently reliable official or authoritative source. It does not automatically
+                  mean the information is incorrect.
                 </p>
+                <dl className="space-y-2 rounded-lg bg-secondary p-3 text-[13px]">
+                  <div>
+                    <dt className="text-foreground">Reason</dt>
+                    <dd>{reason || "No official source has been recorded for this entry yet."}</dd>
+                  </div>
+                </dl>
               </>
             )}
+
 
             {sourceUrl && (
               <a
