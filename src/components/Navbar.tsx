@@ -129,7 +129,7 @@ const Navbar = () => {
           <ThemeToggle className="h-11 w-11" />
           <Link
             to={user ? "/dashboard" : "/auth"}
-            className="inline-flex items-center px-3 min-h-[44px] text-xs font-medium rounded-lg bg-primary text-primary-foreground"
+            className="inline-flex items-center whitespace-nowrap px-3 min-h-[40px] text-xs font-medium rounded-lg bg-primary text-primary-foreground"
           >
             {user ? "Dashboard" : "Sign in"}
           </Link>

@@ -32,7 +32,7 @@ const HeroSection = () => {
         >
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-glass mb-5">
             <Sparkles className="h-4 w-4 text-primary" />
-            <span className="text-sm text-muted-foreground">AI guidance for Ghana 🇬🇭</span>
+            <span className="text-sm text-muted-foreground">AI guidance for Ghana</span>
           </div>
 
           <h1 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl mb-6 leading-tight">
