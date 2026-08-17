@@ -141,6 +141,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     scripts: [
       {
+        children:
+          "try{var t=localStorage.getItem('gpf-theme');if(t==='dark')document.documentElement.classList.add('dark');}catch(e){}",
+      },
+      {
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
