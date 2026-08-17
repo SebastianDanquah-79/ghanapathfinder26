@@ -152,35 +152,35 @@
 }
 
 @utility bg-glass {
-  background-color: hsl(var(--secondary) / 0.6);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid hsl(var(--border) / 0.5);
+  background-color: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 1px 2px hsl(222 47% 12% / 0.04), 0 8px 24px -16px hsl(222 47% 12% / 0.12);
 }
 
 @utility bg-glass-hover {
-  transition: all 300ms;
+  transition: all 200ms;
   &:hover {
-    background-color: hsl(var(--secondary) / 0.8);
-    border-color: hsl(var(--primary) / 0.3);
+    border-color: hsl(var(--primary) / 0.4);
+    box-shadow: 0 2px 6px hsl(222 47% 12% / 0.06), 0 12px 28px -18px hsl(222 47% 12% / 0.18);
   }
 }
 
 @utility glow-gold {
-  box-shadow: 0 0 30px hsl(var(--ghana-gold) / 0.15), 0 0 60px hsl(var(--ghana-gold) / 0.05);
+  box-shadow: 0 8px 30px -18px hsl(var(--ghana-gold) / 0.5);
 }
 
 @utility glow-gold-sm {
-  box-shadow: 0 0 15px hsl(var(--ghana-gold) / 0.1);
+  box-shadow: 0 4px 14px -10px hsl(var(--ghana-gold) / 0.45);
 }
 
 @utility card-hover {
-  transition: all 300ms;
+  transition: all 200ms;
   &:hover {
-    transform: translateY(-0.25rem);
-    box-shadow: 0 8px 30px hsl(var(--ghana-gold) / 0.1);
+    transform: translateY(-0.125rem);
+    box-shadow: 0 10px 30px -20px hsl(222 47% 12% / 0.35);
   }
 }
+
 
 @utility scrollbar-none {
   -ms-overflow-style: none;
