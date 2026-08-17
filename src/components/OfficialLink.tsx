@@ -1,4 +1,4 @@
-import { ExternalLink } from "lucide-react";
+import { ExternalLink } from "@/lib/icons";
 import { toast } from "sonner";
 
 interface Props {

@@ -1,5 +1,5 @@
 import { toast } from "sonner";
-import { Sparkles } from "lucide-react";
+import { Sparkles } from "@/lib/icons";
 import { createElement } from "react";
 
 /** Subtle, grown-up celebration for meaningful actions. */

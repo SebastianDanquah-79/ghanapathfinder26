@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "@/lib/router-compat";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, Scale, Search, Loader2, ExternalLink } from "lucide-react";
+import { ArrowLeft, Scale, Search, Loader2, ExternalLink } from "@/lib/icons";
 import { supabase } from "@/integrations/supabase/client";
 import SaveButton from "@/components/SaveButton";
 import Navbar from "@/components/Navbar";

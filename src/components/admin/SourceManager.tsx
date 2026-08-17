@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Loader2, Link2, Trash2, Search as SearchIcon } from "lucide-react";
+import { Loader2, Link2, Trash2, Search as SearchIcon } from "@/lib/icons";
 import { toast } from "sonner";
 import {
   RECORD_TYPES,

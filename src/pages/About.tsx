@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Mail, Phone, Linkedin, Quote, Compass, GraduationCap, Wallet, Briefcase, Bookmark, Sparkles } from "lucide-react";
+import { Mail, Phone, Linkedin, Quote, Compass, GraduationCap, Wallet, Briefcase, Bookmark, Sparkles } from "@/lib/icons";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo, { breadcrumbLd } from "@/components/Seo";

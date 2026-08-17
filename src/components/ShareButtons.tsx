@@ -1,5 +1,5 @@
 import { useState, RefObject } from "react";
-import { Share2, Copy, Download, Check, MessageCircle } from "lucide-react";
+import { Share2, Copy, Download, Check, MessageCircle } from "@/lib/icons";
 
 interface ShareButtonsProps {
   studentName: string;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "@/lib/router-compat";
-import { GraduationCap, Loader2 } from "lucide-react";
+import { GraduationCap, Loader2 } from "@/lib/icons";
 import { supabase } from "@/integrations/supabase/client";
 
 type OAuthApi = {

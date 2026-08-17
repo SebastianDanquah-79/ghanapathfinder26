@@ -10,7 +10,7 @@ import {
   Lightbulb,
   Loader2,
   ShieldCheck,
-} from "lucide-react";
+} from "@/lib/icons";
 import { scholarshipTips } from "@/data/scholarships";
 import SectionHeader from "./SectionHeader";
 import SaveButton from "./SaveButton";

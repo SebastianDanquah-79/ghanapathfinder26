@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "@/lib/router-compat";
-import { GraduationCap, Loader2 } from "lucide-react";
+import { GraduationCap, Loader2 } from "@/lib/icons";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 

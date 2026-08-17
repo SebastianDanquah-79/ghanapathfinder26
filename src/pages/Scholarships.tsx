@@ -13,7 +13,7 @@ import {
   RefreshCw,
   Scale,
   Sparkles,
-} from "lucide-react";
+} from "@/lib/icons";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";

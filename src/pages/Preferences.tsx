@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "@/lib/router-compat";
-import { ArrowLeft, Loader2, SlidersHorizontal } from "lucide-react";
+import { ArrowLeft, Loader2, SlidersHorizontal } from "@/lib/icons";
 import { useAuth } from "@/hooks/useAuth";
 import {
   COVERAGE_LEVELS,

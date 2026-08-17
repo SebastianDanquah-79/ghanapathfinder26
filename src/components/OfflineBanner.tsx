@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { WifiOff } from "lucide-react";
+import { WifiOff } from "@/lib/icons";
 
 /** Slim, non-blocking banner shown when the student loses network. */
 const OfflineBanner = () => {

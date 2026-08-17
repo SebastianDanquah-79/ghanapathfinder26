@@ -1,4 +1,4 @@
-import { GraduationCap } from "lucide-react";
+import { GraduationCap } from "@/lib/icons";
 import { Link } from "@/lib/router-compat";
 
 const links = [

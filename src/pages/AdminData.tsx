@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "@/lib/router-compat";
-import { Loader2, Database, ShieldCheck, AlertTriangle, Upload, Search as SearchIcon } from "lucide-react";
+import { Loader2, Database, ShieldCheck, AlertTriangle, Upload, Search as SearchIcon } from "@/lib/icons";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SourceManager from "@/components/admin/SourceManager";

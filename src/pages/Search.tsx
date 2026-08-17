@@ -8,7 +8,7 @@ import {
   CalendarDays,
   SlidersHorizontal,
   X,
-} from "lucide-react";
+} from "@/lib/icons";
 import Navbar from "@/components/Navbar";
 import Seo from "@/components/Seo";
 import Footer from "@/components/Footer";

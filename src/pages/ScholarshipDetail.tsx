@@ -1,5 +1,5 @@
 import { Link, useParams } from "@/lib/router-compat";
-import { ArrowLeft, Award, CalendarClock, ExternalLink } from "lucide-react";
+import { ArrowLeft, Award, CalendarClock, ExternalLink } from "@/lib/icons";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo, { breadcrumbLd } from "@/components/Seo";

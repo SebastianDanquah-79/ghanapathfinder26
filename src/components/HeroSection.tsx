@@ -1,7 +1,7 @@
 import UsageCounter from "@/components/UsageCounter";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowDown, Sparkles } from "lucide-react";
+import { ArrowDown, Sparkles } from "@/lib/icons";
 import ParticleBackground from "./ParticleBackground";
 
 const phrases = [

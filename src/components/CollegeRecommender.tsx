@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Sparkles, Loader2, ExternalLink, Info } from "lucide-react";
+import { Sparkles, Loader2, ExternalLink, Info } from "@/lib/icons";
 import { Link } from "@/lib/router-compat";
 import SectionHeader from "./SectionHeader";
 import ShareButtons from "./ShareButtons";

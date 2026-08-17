@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Lightbulb, Rocket, ExternalLink, MapPin } from "lucide-react";
+import { Lightbulb, Rocket, ExternalLink, MapPin } from "@/lib/icons";
 import SectionHeader from "./SectionHeader";
 
 interface FounderStory {

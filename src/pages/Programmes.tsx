@@ -10,7 +10,7 @@ import {
   Search as SearchIcon,
   Sparkles,
   X,
-} from "lucide-react";
+} from "@/lib/icons";
 import Navbar from "@/components/Navbar";
 import Seo, { breadcrumbLd } from "@/components/Seo";
 import SaveButton from "@/components/SaveButton";

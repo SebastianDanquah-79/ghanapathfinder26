@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "@/lib/router-compat";
-import { Award, ArrowLeft, ExternalLink } from "lucide-react";
+import { Award, ArrowLeft, ExternalLink } from "@/lib/icons";
 import { matchScholarships, MatcherAnswers } from "@/lib/scholarshipMatcher";
 import SaveButton from "@/components/SaveButton";
 import Navbar from "@/components/Navbar";

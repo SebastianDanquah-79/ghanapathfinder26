@@ -1,6 +1,6 @@
 import { Link } from "@/lib/router-compat";
 import { motion } from "framer-motion";
-import { ArrowLeft, GraduationCap, Lightbulb, Quote } from "lucide-react";
+import { ArrowLeft, GraduationCap, Lightbulb, Quote } from "@/lib/icons";
 import { getDailyMessage, stories } from "@/lib/motivation";
 import Navbar from "@/components/Navbar";
 import Seo from "@/components/Seo";
