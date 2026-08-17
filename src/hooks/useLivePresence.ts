@@ -146,7 +146,6 @@ export const useLivePresence = () => {
       }));
       // …then reconcile with the database, which counts each signed-in account
       // once and includes browsers whose heartbeat arrives a moment later.
-      void qc.invalidateQueries({ queryKey: LIVE_PRESENCE_KEY });
       window.clearTimeout(reconcile);
       reconcile = window.setTimeout(() => {
         if (!cancelled) void qc.invalidateQueries({ queryKey: LIVE_PRESENCE_KEY });
