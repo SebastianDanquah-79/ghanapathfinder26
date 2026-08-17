@@ -12,7 +12,7 @@ const Inspiration = () => {
     <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-20 pb-12">
       <Seo
         title="Student Success Stories & Career Inspiration | GhanaPathFinder"
-        description="Honest stories from Ghanaian students, graduates, professionals and founders — the setbacks they faced and what they would tell you today."
+        description="Honest stories from Ghanaian students, graduates, professionals and founders , the setbacks they faced and what they would tell you today."
         path="/inspiration"
       />
       <Navbar />
@@ -40,7 +40,7 @@ const Inspiration = () => {
             Student success stories &amp; <span className="text-gradient-gold">career inspiration</span>
           </h1>
           <p className="text-muted-foreground">
-            Short, honest stories from Ghanaian students, graduates, professionals and founders — and what
+            Short, honest stories from Ghanaian students, graduates, professionals and founders , and what
             each of them would tell you today.
           </p>
         </div>

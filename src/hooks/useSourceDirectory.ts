@@ -39,7 +39,7 @@ const push = (
 
 /**
  * Builds the public source directory strictly from records already stored in the
- * GhanaPathFinder database — nothing is invented or hard-coded.
+ * GhanaPathFinder database , nothing is invented or hard-coded.
  */
 export const useSourceDirectory = () =>
   useQuery({

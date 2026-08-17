@@ -54,7 +54,7 @@ const References = () => {
   return (
     <div className="min-h-screen bg-background">
       <Seo
-        title="References & Acknowledgements — GhanaPathFinder"
+        title="References & Acknowledgements , GhanaPathFinder"
         description="Where GhanaPathFinder gets its information: official universities, GTEC and other regulators, admissions portals and scholarship providers, with verification dates."
         path="/references"
         jsonLd={[

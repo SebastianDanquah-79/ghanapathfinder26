@@ -19,7 +19,7 @@ const UniversityProfile = () => {
       {uni && (
         <Seo
           jsonLdOnly
-          title={`${uni.name} — Programmes & Admissions | GhanaPathFinder`}
+          title={`${uni.name} , Programmes & Admissions | GhanaPathFinder`}
           description={(uni.description || `${uni.name}${uni.location ? ` in ${uni.location}` : ""}: accreditation status, programmes, tuition range and admissions information.`).slice(0, 155)}
           path={`/university/${uni.slug}`}
           jsonLd={[

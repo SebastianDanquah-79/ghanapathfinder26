@@ -33,7 +33,7 @@ const SaveButton = ({ item, label = "Save" }: Props) => {
             onSuccess: () => {
               if (!isSaved) {
                 celebrate(
-                  `Saved — nice move`,
+                  `Saved , nice move`,
                   item.item_type === "scholarship"
                     ? "It's now on your scholarship shortlist."
                     : "It's waiting for you on your dashboard.",

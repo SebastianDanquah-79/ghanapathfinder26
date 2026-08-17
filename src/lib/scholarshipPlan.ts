@@ -24,16 +24,16 @@ export interface PlanInput {
 export const buildPlanText = (p: PlanInput) => {
   const line = "=".repeat(52);
   const out: string[] = [];
-  out.push("GHANAPATH — MY SCHOLARSHIP PLAN");
+  out.push("GHANAPATH , MY SCHOLARSHIP PLAN");
   out.push(`Generated ${new Date().toLocaleDateString("en-GB", { dateStyle: "long" })}`);
   out.push(line, "");
 
   out.push("STUDENT");
-  out.push(`Name: ${p.studentName ?? "—"}`);
-  out.push(`School: ${p.school ?? "—"}`);
-  out.push(`Region: ${p.region ?? "—"}`);
-  out.push(`WASSCE aggregate: ${p.aggregate ?? "—"}`);
-  out.push(`Target career: ${p.targetCareer ?? "—"}`);
+  out.push(`Name: ${p.studentName ?? ","}`);
+  out.push(`School: ${p.school ?? ","}`);
+  out.push(`Region: ${p.region ?? ","}`);
+  out.push(`WASSCE aggregate: ${p.aggregate ?? ","}`);
+  out.push(`Target career: ${p.targetCareer ?? ","}`);
   out.push("");
 
   if (p.summary) {
@@ -45,7 +45,7 @@ export const buildPlanText = (p: PlanInput) => {
   out.push("MY SCHOLARSHIPS");
   if (!p.scholarships.length) out.push("None saved yet.");
   p.scholarships.forEach((s, i) => {
-    out.push(`${i + 1}. ${s.name}${s.score ? ` — ${s.score}% match` : ""}`);
+    out.push(`${i + 1}. ${s.name}${s.score ? ` , ${s.score}% match` : ""}`);
     if (s.provider) out.push(`   Provider: ${s.provider}`);
     if (s.coverage) out.push(`   Covers: ${s.coverage}`);
     if (s.deadline) out.push(`   Deadline: ${s.deadline}`);
@@ -57,7 +57,7 @@ export const buildPlanText = (p: PlanInput) => {
 
   out.push("DEADLINE REMINDERS");
   if (!p.deadlines.length) out.push("None tracked yet.");
-  p.deadlines.forEach((d) => out.push(`- ${d.due_date} — ${d.title}`));
+  p.deadlines.forEach((d) => out.push(`- ${d.due_date} , ${d.title}`));
   out.push("");
 
   out.push(line, "ghanapathfinder.com");

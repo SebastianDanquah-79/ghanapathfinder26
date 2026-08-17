@@ -58,7 +58,7 @@ const CompareScholarships = () => {
           <Scale className="h-6 w-6 text-primary" /> Compare scholarships
         </h1>
         <p className="text-sm text-muted-foreground mb-6">
-          {options.length ? "Pick up to 3 of your saved scholarships." : "You haven't saved any yet — compare from the full list."}
+          {options.length ? "Pick up to 3 of your saved scholarships." : "You haven't saved any yet , compare from the full list."}
         </p>
 
         <div className="flex flex-wrap gap-2 mb-6">

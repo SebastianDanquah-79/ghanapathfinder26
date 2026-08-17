@@ -17,7 +17,7 @@ interface Props {
 const OfficialLink = ({
   href,
   label,
-  fallbackNote = "Link unavailable — check the official website.",
+  fallbackNote = "Link unavailable , check the official website.",
   variant = "primary",
   className = "",
 }: Props) => {
@@ -47,7 +47,7 @@ const OfficialLink = ({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      title={`${label} — opens in a new tab`}
+      title={`${label} , opens in a new tab`}
       className={`${base} ${styles} ${className}`}
     >
       <ExternalLink className="h-3.5 w-3.5" />

@@ -14,7 +14,7 @@ const points: { h: string; p: string }[] = [
   },
   {
     h: "Your account",
-    p: "Keep your login details private. Enter accurate academic information — recommendations depend on it. Do not use the platform to upload unlawful content or to attempt to access other students' data.",
+    p: "Keep your login details private. Enter accurate academic information , recommendations depend on it. Do not use the platform to upload unlawful content or to attempt to access other students' data.",
   },
   {
     h: "Availability and changes",
@@ -29,7 +29,7 @@ const points: { h: string; p: string }[] = [
 const Terms = () => (
   <div className="min-h-screen bg-background">
     <Seo
-      title="Terms of Use — GhanaPathFinder"
+      title="Terms of Use , GhanaPathFinder"
       description="The terms that apply when using GhanaPathFinder: guidance-only information, verification responsibility, account rules and platform availability."
       path="/terms"
       jsonLd={[breadcrumbLd([{ name: "Home", path: "/" }, { name: "Terms", path: "/terms" }])]}

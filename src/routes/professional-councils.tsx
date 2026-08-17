@@ -4,7 +4,7 @@ import ProfessionalCouncils from "@/pages/ProfessionalCouncils";
 export const Route = createFileRoute("/professional-councils")({
   head: () => ({
     meta: [
-      { title: "Professional Councils & Career Regulation — GhanaPathFinder" },
+      { title: "Professional Councils & Career Regulation , GhanaPathFinder" },
       {
         name: "description",
         content:
@@ -12,7 +12,7 @@ export const Route = createFileRoute("/professional-councils")({
       },
       {
         property: "og:title",
-        content: "Professional Councils & Career Regulation — GhanaPathFinder",
+        content: "Professional Councils & Career Regulation , GhanaPathFinder",
       },
       {
         property: "og:description",

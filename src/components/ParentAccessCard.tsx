@@ -53,7 +53,7 @@ const ParentAccessCard = () => {
           <p className="text-xs text-muted-foreground mb-2">
             {active.status === "accepted"
               ? "A parent is following your scholarship progress (read-only)."
-              : "Give this code to your parent — they enter it on the parent page."}
+              : "Give this code to your parent , they enter it on the parent page."}
           </p>
           <div className="flex flex-wrap items-center gap-2">
             <code className="px-3 py-2 rounded-lg bg-secondary text-foreground font-mono tracking-widest text-sm">

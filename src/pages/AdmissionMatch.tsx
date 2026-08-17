@@ -80,7 +80,7 @@ const AdmissionMatch = () => {
         <p className="text-sm text-muted-foreground mb-6 max-w-3xl">
           Scored across {institutions} accredited Ghanaian institutions. Where an institution publishes
           a cut-off we use it. Where it does not, we show a clearly-labelled estimated range built from
-          published evidence — and where there is not enough evidence, we say so instead of guessing.
+          published evidence , and where there is not enough evidence, we say so instead of guessing.
         </p>
 
         {/* Aggregate summary */}
@@ -89,7 +89,7 @@ const AdmissionMatch = () => {
             <div>
               <p className="text-xs text-muted-foreground uppercase tracking-wide">Your WASSCE aggregate</p>
               <p className="font-display text-3xl font-bold text-foreground">
-                {breakdown.aggregate ?? "—"}
+                {breakdown.aggregate ?? ","}
               </p>
               {!!breakdown.usedSubjects.length && (
                 <p className="text-xs text-muted-foreground mt-1">
@@ -202,7 +202,7 @@ const AdmissionMatch = () => {
                   </p>
                   <p className="text-muted-foreground">
                     Your aggregate:{" "}
-                    <span className="text-foreground font-semibold">{breakdown.aggregate ?? "—"}</span>
+                    <span className="text-foreground font-semibold">{breakdown.aggregate ?? ","}</span>
                   </p>
                 </div>
 
@@ -221,7 +221,7 @@ const AdmissionMatch = () => {
                   <ul className="text-xs space-y-1 mb-3">
                     {m.requirementChecks
                       .filter((c) => c.status === "met")
-                      .map((c) => <li key={c.note} className="text-muted-foreground">✓ {c.note}</li>)}
+                      .map((c) => <li key={c.note} className="text-muted-foreground"> {c.note}</li>)}
                   </ul>
                 )}
                 {!!m.gaps.length && (

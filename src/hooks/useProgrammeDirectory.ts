@@ -20,7 +20,7 @@ export type DirectoryProgramme = Programme & {
   universities: Pick<University, "id" | "name" | "slug" | "region" | "type" | "location"> | null;
 };
 
-/** Server-side filtered, paginated programme directory — never loads the whole catalogue. */
+/** Server-side filtered, paginated programme directory , never loads the whole catalogue. */
 export const programmeDirectoryQueryOptions = (filters: DirectoryFilters = {}) => {
   const {
     search = "",

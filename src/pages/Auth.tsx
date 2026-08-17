@@ -83,7 +83,7 @@ const Auth = () => {
     });
     setLoading(false);
     if (error) toast.error(error.message);
-    else toast.success("Password reset link sent — check your email.");
+    else toast.success("Password reset link sent , check your email.");
   };
 
   const handleGoogle = async () => {

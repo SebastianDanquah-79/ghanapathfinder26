@@ -91,7 +91,7 @@ export const getNextStep = (d: JourneyInput, milestones: Milestone[]): NextStep 
   };
 };
 
-/** Activity-aware encouragement lines — no guilt, no filler. */
+/** Activity-aware encouragement lines , no guilt, no filler. */
 export const getSmartMessages = (d: JourneyInput): string[] => {
   const msgs: string[] = [];
   const firstName = d.fullName?.split(" ")[0];
@@ -110,7 +110,7 @@ export const getSmartMessages = (d: JourneyInput): string[] => {
     );
   }
   if (d.aggregate !== null) {
-    msgs.push(`Your aggregate of ${d.aggregate} is on record — now we can match you to programmes you actually qualify for.`);
+    msgs.push(`Your aggregate of ${d.aggregate} is on record , now we can match you to programmes you actually qualify for.`);
   }
   if (d.targetCareer) {
     msgs.push(`${firstName ? firstName + ", y" : "Y"}our path towards ${d.targetCareer} starts with the small steps you take today.`);
@@ -133,7 +133,7 @@ const DAILY_MESSAGES = [
   "Small consistent steps beat one big burst of effort you can't repeat.",
   "The student who starts the application in August is calmer in November.",
   "Being unsure is normal. Staying still is the only real risk.",
-  "You don't need the whole plan today — just the next honest step.",
+  "You don't need the whole plan today , just the next honest step.",
   "Every professional you admire was once a student with more questions than answers.",
   "Progress you can't see is still progress. Keep records, keep going.",
   "Choosing a course you love makes the hard semesters survivable.",
@@ -161,7 +161,7 @@ export const stories: Story[] = [
     role: "Medical student, University of Ghana",
     region: "Central Region",
     quote:
-      "I missed my first-choice programme by two points. Instead of sitting at home, I re-sat two subjects, worked at a pharmacy and reapplied. I started one year later than my friends — and finished with them.",
+      "I missed my first-choice programme by two points. Instead of sitting at home, I re-sat two subjects, worked at a pharmacy and reapplied. I started one year later than my friends , and finished with them.",
     lesson: "A delay is not a denial. Re-sits and second attempts are normal paths, not failures.",
   },
   {

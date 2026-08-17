@@ -139,7 +139,7 @@ const Onboarding = () => {
           <div className="bg-glass rounded-xl p-5">
             <h2 className="font-display font-semibold text-foreground mb-1">WASSCE results</h2>
             <p className="text-xs text-muted-foreground mb-4">
-              Add your best six subjects — we use them to calculate your aggregate.
+              Add your best six subjects , we use them to calculate your aggregate.
             </p>
             <div className="space-y-2">
               {results.map((r, idx) => (

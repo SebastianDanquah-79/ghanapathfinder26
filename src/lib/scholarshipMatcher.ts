@@ -75,8 +75,8 @@ export const matchScholarships = (a: MatcherAnswers): ScholarshipMatch[] => {
       }
 
       if (/ghanaian/.test(body)) reasons.push("Open to Ghanaian citizens");
-      if (s.type === "International") gaps.push("International award — extra documents and English test may apply");
-      if (!reasons.length) reasons.push("General eligibility — worth checking the full criteria");
+      if (s.type === "International") gaps.push("International award , extra documents and English test may apply");
+      if (!reasons.length) reasons.push("General eligibility , worth checking the full criteria");
 
       return {
         scholarship: s,

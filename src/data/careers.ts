@@ -38,7 +38,7 @@ export const mockCareerData: Record<string, CareerData> = {
     roles: ["Software Developer", "Data Analyst", "IT Consultant", "Cybersecurity Specialist", "Mobile App Developer"],
     companies: ["MTN Ghana", "Vodafone Ghana", "Hubtel", "Turntabl", "Andela Ghana"],
     salary: "GHS 2,500 - 12,000/month",
-    remote: "High remote potential — many international companies hire Ghanaian devs. Check Andela, Toptal, and Turing.",
+    remote: "High remote potential , many international companies hire Ghanaian devs. Check Andela, Toptal, and Turing.",
     linkedinTip: "Use keywords: 'Software Developer Ghana', 'Junior Developer Accra'. Join 'Tech in Ghana' groups.",
   },
   "Medicine": {
@@ -134,7 +134,7 @@ export const mockCareerData: Record<string, CareerData> = {
     roles: ["Digital Marketing Executive", "Brand Manager", "Social Media Manager", "Market Research Analyst", "Sales Executive"],
     companies: ["MTN Ghana", "Unilever Ghana", "Origin8", "Jumia Ghana", "Guinness Ghana"],
     salary: "GHS 2,000 - 9,000/month",
-    remote: "Very high — digital marketing is one of the easiest remote entries.",
+    remote: "Very high , digital marketing is one of the easiest remote entries.",
     linkedinTip: "Search: 'Digital Marketing Ghana'. Get Google/Meta certifications and show campaign results.",
   },
   "Psychology": {
@@ -166,7 +166,7 @@ export const mockCareerData: Record<string, CareerData> = {
     roles: ["Data Analyst", "Data Scientist", "Business Intelligence Analyst", "Monitoring & Evaluation Officer", "Statistician"],
     companies: ["Ghana Statistical Service", "MTN Ghana", "Stanbic Bank", "Zeepay", "World Bank / UN agencies"],
     salary: "GHS 3,000 - 15,000/month",
-    remote: "Very high — global remote demand for analysts and data engineers.",
+    remote: "Very high , global remote demand for analysts and data engineers.",
     linkedinTip: "Show SQL/Python projects. Search: 'Data Analyst Ghana', 'M&E Officer'.",
   },
   "Banking & Finance": {
@@ -207,7 +207,7 @@ export const mockCareerData: Record<string, CareerData> = {
     companies: ["Christie Brown", "Studio 189", "Chocolate Clothing", "Ad agencies (Origin8, Global Media Alliance)", "Own label"],
     salary: "GHS 1,500 - 10,000/month",
     remote: "Design and digital creative work sells well online and abroad.",
-    linkedinTip: "Portfolio first — Behance/Instagram links. Search: 'Graphic Designer Ghana'.",
+    linkedinTip: "Portfolio first , Behance/Instagram links. Search: 'Graphic Designer Ghana'.",
   },
 };
 

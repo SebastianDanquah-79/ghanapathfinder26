@@ -80,7 +80,7 @@ const AdminAnalytics = () => {
         </div>
         <p className="text-sm text-muted-foreground mb-6 max-w-2xl">
           Every figure below is counted from real stored events. Individual students are never
-          identified — only aggregates are shown.
+          identified , only aggregates are shown.
         </p>
 
         <div className="bg-glass rounded-xl p-5 mb-6">

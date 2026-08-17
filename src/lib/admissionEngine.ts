@@ -165,7 +165,7 @@ export function checkSubjectRequirements(
           required,
           studentGrade: null,
           status: "unknown",
-          note: `${subj} is required at ${required} or better — you have not entered a grade for it.`,
+          note: `${subj} is required at ${required} or better , you have not entered a grade for it.`,
         });
       } else if ((GRADE_POINTS[hit.grade] ?? 9) <= (GRADE_POINTS[required] ?? 9)) {
         checks.push({
@@ -287,7 +287,7 @@ export function evaluateMatch(
     category = "Competitive";
     confidence = 52 + margin * 6;
     reasons.push(`Your aggregate of ${breakdown.aggregate} sits right on the cut-off of ${cutoff.cut_off_aggregate}.`);
-    gaps.push("Cut-offs move yearly — on-the-line is never guaranteed.");
+    gaps.push("Cut-offs move yearly , on-the-line is never guaranteed.");
   } else if (margin >= -2) {
     category = "Reach";
     confidence = 30 + margin * 8;
@@ -305,7 +305,7 @@ export function evaluateMatch(
   if (competitive && confidence > 80) confidence -= 6; // highly contested programmes
   if (unknownReq) confidence = Math.round(confidence * 0.85);
   if (cutoff.applicant_category === "Full-Fee Paying")
-    reasons.push("Full-fee-paying cut-off — costs more.");
+    reasons.push("Full-fee-paying cut-off , costs more.");
 
   confidence = Math.max(1, Math.min(92, Math.round(confidence)));
 
@@ -315,9 +315,9 @@ export function evaluateMatch(
       : category === "Strong Match"
         ? "Inside the cut-off, with room to spare."
         : category === "Competitive"
-          ? "On the line — keep a safer second choice."
+          ? "On the line , keep a safer second choice."
           : category === "Reach"
-            ? "A stretch — pair with safer options."
+            ? "A stretch , pair with safer options."
             : "Unlikely on published cut-offs.";
 
   return { ...base(category, confidence, headline), category, confidence, headline, margin };
@@ -331,7 +331,7 @@ export const formatVerifiedDate = (iso: string | null) =>
 /**
  * Score a raw, self-reported aggregate against one cut-off record.
  * Used by the landing-page recommender, where we have an aggregate but not the
- * subject-by-subject breakdown. Academic fit only — career goals, interests and
+ * subject-by-subject breakdown. Academic fit only , career goals, interests and
  * region never change the score, they only filter the list.
  */
 export interface AggregateMatch {
@@ -369,41 +369,41 @@ export function evaluateAggregate(
       category: "Excellent Match",
       confidence: Math.min(92, 84 + margin),
       margin,
-      explanation: `${inside} — ${margin} points inside it.`,
+      explanation: `${inside} , ${margin} points inside it.`,
     };
   if (margin >= 2)
     return {
       category: "Strong Match",
       confidence: 72 + margin * 3,
       margin,
-      explanation: `${inside} — comfortably inside it.`,
+      explanation: `${inside} , comfortably inside it.`,
     };
   if (margin >= 0)
     return {
       category: "Competitive",
       confidence: 52 + margin * 6,
       margin,
-      explanation: `${inside} — you are on the line, and cut-offs move each year.`,
+      explanation: `${inside} , you are on the line, and cut-offs move each year.`,
     };
   if (margin >= -2)
     return {
       category: "Reach",
       confidence: Math.max(1, 30 + margin * 8),
       margin,
-      explanation: `${inside} — ${Math.abs(margin)} point(s) outside it.`,
+      explanation: `${inside} , ${Math.abs(margin)} point(s) outside it.`,
     };
   if (margin >= -6)
     return {
       category: "Low Match",
       confidence: Math.max(5, 14 + margin),
       margin,
-      explanation: `${inside} — ${Math.abs(margin)} points outside it.`,
+      explanation: `${inside} , ${Math.abs(margin)} points outside it.`,
     };
   return {
     category: "Not Eligible",
     confidence: 0,
     margin,
-    explanation: `${inside} — far outside it for this admission year.`,
+    explanation: `${inside} , far outside it for this admission year.`,
   };
 }
 
@@ -448,7 +448,7 @@ export interface ReferenceMatch {
   confidence: number | null;
   /** e.g. "Official cut-off: 7" or "Estimated range: 14–19" */
   benchmarkLabel: string;
-  /** "Officially published" | "Estimated — not officially published" | "Official cut-off unavailable" */
+  /** "Officially published" | "Estimated , not officially published" | "Official cut-off unavailable" */
   benchmarkKind: string;
   why: string;
   requirementChecks: RequirementCheck[];
@@ -491,7 +491,7 @@ export function evaluateReference(
     reference.basis === "official"
       ? "Officially published"
       : reference.basis === "estimated"
-        ? "Estimated — not officially published"
+        ? "Estimated , not officially published"
         : "Official cut-off unavailable";
 
   const benchmarkLabel =

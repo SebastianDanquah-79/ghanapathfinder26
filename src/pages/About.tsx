@@ -7,7 +7,7 @@ import { ABOUT_PARAGRAPHS, ABOUT_GOAL, ABOUT_CLOSING } from "@/lib/legal";
 const About = () => (
   <div className="min-h-screen bg-background">
     <Seo
-      title="About GhanaPathFinder — Education & Career Platform for Ghana"
+      title="About GhanaPathFinder , Education & Career Platform for Ghana"
       description="GhanaPathFinder brings university discovery, programmes, careers, scholarships and WASSCE-based recommendations into one platform for students in Ghana."
       path="/about"
       jsonLd={[

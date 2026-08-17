@@ -19,7 +19,7 @@ export const Route = createFileRoute("/university/$slug")({
   },
   head: ({ loaderData }) => {
     const name = loaderData?.name ?? "University";
-    const title = `${name} — Programmes & Admissions | GhanaPathFinder`;
+    const title = `${name} , Programmes & Admissions | GhanaPathFinder`;
     const description = (
       loaderData?.description ||
       `${name}${loaderData?.location ? ` in ${loaderData.location}` : ""}: accreditation status, programmes, tuition range and admissions information in Ghana.`

@@ -189,7 +189,7 @@ const ApplicationTracker = () => {
               <p className="text-sm text-muted-foreground">
                 {apps.length
                   ? "Nothing in this stage yet."
-                  : "Add your first scholarship above — even one entry makes the next step obvious."}
+                  : "Add your first scholarship above , even one entry makes the next step obvious."}
               </p>
             </div>
           )}
@@ -255,7 +255,7 @@ const ApplicationTracker = () => {
 
                 <textarea
                   className={`${input} mt-3 min-h-20`}
-                  placeholder="Notes — documents needed, referees, essay ideas…"
+                  placeholder="Notes , documents needed, referees, essay ideas…"
                   defaultValue={a.notes ?? ""}
                   maxLength={1000}
                   onBlur={(e) => {

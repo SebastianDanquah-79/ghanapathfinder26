@@ -80,7 +80,7 @@ const ProgrammePage = () => {
       {p && (
         <Seo
           jsonLdOnly
-          title={`${p.name}${uni?.short_name ? ` — ${uni.short_name}` : ""} | GhanaPathFinder`}
+          title={`${p.name}${uni?.short_name ? ` , ${uni.short_name}` : ""} | GhanaPathFinder`}
           description={(info?.short_bio || p.description || `${p.name} at ${uni?.name ?? "a Ghanaian institution"}: entry requirements, curriculum, careers and cut-off aggregates.`).slice(0, 155)}
           path={`/programme/${p.slug}`}
           jsonLd={[
@@ -201,7 +201,7 @@ const ProgrammePage = () => {
                   <p className="text-[11px] text-muted-foreground">
                     {info.content_scope === "institution_and_field"
                       ? "Institution description plus typical field guidance."
-                      : "Typical programme areas — not the official curriculum."}
+                      : "Typical programme areas , not the official curriculum."}
                   </p>
                 )}
               </Section>
@@ -223,7 +223,7 @@ const ProgrammePage = () => {
                           view on the institution's site
                         </a>
                       ) : (
-                        "Information unavailable — confirm with the institution."
+                        "Information unavailable , confirm with the institution."
                       )}
                     </p>
                   </>
@@ -239,7 +239,7 @@ const ProgrammePage = () => {
                       <li key={c.id} className="text-sm text-foreground">
                         {c.occupation}
                         {c.description && (
-                          <span className="text-muted-foreground"> — {c.description}</span>
+                          <span className="text-muted-foreground"> , {c.description}</span>
                         )}
                         {c.licence_note && (
                           <span className="block text-[11px] text-primary/90">{c.licence_note}</span>
@@ -251,7 +251,7 @@ const ProgrammePage = () => {
                   <p className="text-sm text-muted-foreground">Information unavailable.</p>
                 )}
                 <p className="text-[11px] text-muted-foreground">
-                  Graduating does not automatically qualify you for every role listed — some require licensing,
+                  Graduating does not automatically qualify you for every role listed , some require licensing,
                   certification or postgraduate training.
                 </p>
               </Section>
@@ -336,7 +336,7 @@ const ProgrammePage = () => {
                     </>
                   ) : (
                     <p className="text-[11px]">
-                      No verified cut-off recorded for this programme yet — check the official admissions page.
+                      No verified cut-off recorded for this programme yet , check the official admissions page.
                     </p>
                   )}
                   {!p.wassce_requirements && !p.entry_requirements && !cutoff && (
@@ -371,7 +371,7 @@ const ProgrammePage = () => {
                   {info?.source && <li className="text-[11px] text-muted-foreground">{info.source}</li>}
                   <li className="text-[11px] pt-1">
                     <Link to="/references" className="text-primary hover:underline">
-                      View all sources &amp; acknowledgements →
+                      View all sources &amp; acknowledgements ->
                     </Link>
                   </li>
                 </ul>
