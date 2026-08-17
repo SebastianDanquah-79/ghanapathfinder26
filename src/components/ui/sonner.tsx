@@ -10,6 +10,14 @@ const Toaster = ({ ...props }: ToasterProps) => {
     <Sonner
       theme={(theme ?? "system") as "light" | "dark" | "system"}
       className="toaster group"
+      // Text glyphs instead of the library's built-in SVG status icons.
+      icons={{
+        success: <span aria-hidden="true">{"\u2713"}</span>,
+        info: <span aria-hidden="true">i</span>,
+        warning: <span aria-hidden="true">!</span>,
+        error: <span aria-hidden="true">{"\u2715"}</span>,
+        loading: <span aria-hidden="true">{"\u25CC"}</span>,
+      }}
       toastOptions={{
         classNames: {
           toast:
