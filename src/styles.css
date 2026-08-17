@@ -286,7 +286,7 @@
 
   /*
    * One responsive app: phones get the mobile layout, laptops the full desktop
-   * layout. Only wide sections (.hscroll) scroll sideways — never the page.
+   * layout. Only wide sections (.hscroll) scroll sideways, never the page.
    */
   .desktop-shell {
     width: 100%;
