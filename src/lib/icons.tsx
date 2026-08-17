@@ -8,7 +8,61 @@
  * The single exception is `BrandLogoIcon`, the official GhanaPathFinder
  * graduation-cap logo mark, which is intentionally kept as-is.
  */
-import { GraduationCap as LucideGraduationCap } from "lucide-react";
+import {
+  GraduationCap as LucideGraduationCap,
+  Search,
+  Menu,
+  X,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ChevronUp,
+  Loader2,
+  Check,
+  CheckCircle2,
+  AlertTriangle,
+  Info,
+  Home,
+  LayoutDashboard,
+  BookOpen,
+  Bookmark,
+  BookmarkCheck,
+  Users,
+  Trash2,
+  Download,
+  Upload,
+  ExternalLink,
+  Plus,
+  ArrowLeft,
+  ArrowRight,
+  Bell,
+  CalendarDays,
+  CalendarClock,
+  Sun,
+  Moon,
+  LogOut,
+  Filter,
+  SlidersHorizontal,
+  Sparkles,
+  MapPin,
+  Mail,
+  Phone,
+  Share2,
+  Copy,
+  Eye,
+  RefreshCw,
+  Target,
+  Award,
+  Briefcase,
+  Building2,
+  Globe,
+  Shield,
+  ShieldCheck,
+  MessageCircle,
+  Linkedin,
+  Quote,
+  Lightbulb,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ComponentPropsWithoutRef } from "react";
 
@@ -117,80 +171,97 @@ const glyphs = {
   X: "\u2715",
 } as const;
 
-export const AlertTriangle = makeIcon(glyphs.AlertTriangle, "AlertTriangle");
 export const ArrowDown = makeIcon(glyphs.ArrowDown, "ArrowDown");
-export const ArrowLeft = makeIcon(glyphs.ArrowLeft, "ArrowLeft");
-export const ArrowRight = makeIcon(glyphs.ArrowRight, "ArrowRight");
-export const Award = makeIcon(glyphs.Award, "Award");
+
 export const BadgeCheck = makeIcon(glyphs.BadgeCheck, "BadgeCheck");
 export const BarChart3 = makeIcon(glyphs.BarChart3, "BarChart3");
-export const Bell = makeIcon(glyphs.Bell, "Bell");
+
 export const BookMarked = makeIcon(glyphs.BookMarked, "BookMarked");
-export const BookOpen = makeIcon(glyphs.BookOpen, "BookOpen");
-export const Bookmark = makeIcon(glyphs.Bookmark, "Bookmark");
-export const BookmarkCheck = makeIcon(glyphs.BookmarkCheck, "BookmarkCheck");
-export const Briefcase = makeIcon(glyphs.Briefcase, "Briefcase");
+
 export const Building = makeIcon(glyphs.Building, "Building");
-export const Building2 = makeIcon(glyphs.Building2, "Building2");
-export const CalendarClock = makeIcon(glyphs.CalendarClock, "CalendarClock");
-export const CalendarDays = makeIcon(glyphs.CalendarDays, "CalendarDays");
-export const Check = makeIcon(glyphs.Check, "Check");
-export const CheckCircle2 = makeIcon(glyphs.CheckCircle2, "CheckCircle2");
-export const ChevronDown = makeIcon(glyphs.ChevronDown, "ChevronDown");
-export const ChevronLeft = makeIcon(glyphs.ChevronLeft, "ChevronLeft");
-export const ChevronRight = makeIcon(glyphs.ChevronRight, "ChevronRight");
-export const ChevronUp = makeIcon(glyphs.ChevronUp, "ChevronUp");
+
 export const Circle = makeIcon(glyphs.Circle, "Circle");
 export const ClipboardList = makeIcon(glyphs.ClipboardList, "ClipboardList");
 export const Code = makeIcon(glyphs.Code, "Code");
 export const Compass = makeIcon(glyphs.Compass, "Compass");
-export const Copy = makeIcon(glyphs.Copy, "Copy");
+
 export const Database = makeIcon(glyphs.Database, "Database");
 export const DollarSign = makeIcon(glyphs.DollarSign, "DollarSign");
 export const Dot = makeIcon(glyphs.Dot, "Dot");
-export const Download = makeIcon(glyphs.Download, "Download");
-export const ExternalLink = makeIcon(glyphs.ExternalLink, "ExternalLink");
-export const Eye = makeIcon(glyphs.Eye, "Eye");
-export const Filter = makeIcon(glyphs.Filter, "Filter");
+
 export const Flag = makeIcon(glyphs.Flag, "Flag");
 export const Flame = makeIcon(glyphs.Flame, "Flame");
-export const Globe = makeIcon(glyphs.Globe, "Globe");
+
 export const GraduationCap = makeIcon(glyphs.GraduationCap, "GraduationCap");
 export const GripVertical = makeIcon(glyphs.GripVertical, "GripVertical");
-export const Home = makeIcon(glyphs.Home, "Home");
-export const Info = makeIcon(glyphs.Info, "Info");
-export const LayoutDashboard = makeIcon(glyphs.LayoutDashboard, "LayoutDashboard");
-export const Lightbulb = makeIcon(glyphs.Lightbulb, "Lightbulb");
+
 export const Link2 = makeIcon(glyphs.Link2, "Link2");
-export const Linkedin = makeIcon(glyphs.Linkedin, "Linkedin");
-export const Loader2 = makeIcon(glyphs.Loader2, "Loader2");
-export const LogOut = makeIcon(glyphs.LogOut, "LogOut");
-export const Mail = makeIcon(glyphs.Mail, "Mail");
-export const MapPin = makeIcon(glyphs.MapPin, "MapPin");
-export const Menu = makeIcon(glyphs.Menu, "Menu");
-export const MessageCircle = makeIcon(glyphs.MessageCircle, "MessageCircle");
-export const Moon = makeIcon(glyphs.Moon, "Moon");
+
 export const MoreHorizontal = makeIcon(glyphs.MoreHorizontal, "MoreHorizontal");
 export const PanelLeft = makeIcon(glyphs.PanelLeft, "PanelLeft");
-export const Phone = makeIcon(glyphs.Phone, "Phone");
-export const Plus = makeIcon(glyphs.Plus, "Plus");
-export const Quote = makeIcon(glyphs.Quote, "Quote");
-export const RefreshCw = makeIcon(glyphs.RefreshCw, "RefreshCw");
+
 export const Rocket = makeIcon(glyphs.Rocket, "Rocket");
 export const Scale = makeIcon(glyphs.Scale, "Scale");
-export const Search = makeIcon(glyphs.Search, "Search");
-export const Share2 = makeIcon(glyphs.Share2, "Share2");
-export const Shield = makeIcon(glyphs.Shield, "Shield");
-export const ShieldCheck = makeIcon(glyphs.ShieldCheck, "ShieldCheck");
-export const SlidersHorizontal = makeIcon(glyphs.SlidersHorizontal, "SlidersHorizontal");
-export const Sparkles = makeIcon(glyphs.Sparkles, "Sparkles");
-export const Sun = makeIcon(glyphs.Sun, "Sun");
+
 export const Sunrise = makeIcon(glyphs.Sunrise, "Sunrise");
-export const Target = makeIcon(glyphs.Target, "Target");
-export const Trash2 = makeIcon(glyphs.Trash2, "Trash2");
-export const Upload = makeIcon(glyphs.Upload, "Upload");
+
 export const UserCheck = makeIcon(glyphs.UserCheck, "UserCheck");
-export const Users = makeIcon(glyphs.Users, "Users");
+
 export const Wallet = makeIcon(glyphs.Wallet, "Wallet");
 export const WifiOff = makeIcon(glyphs.WifiOff, "WifiOff");
-export const X = makeIcon(glyphs.X, "X");
+
+// Meaningful UI icons keep their original vector rendering.
+export {
+  Search,
+  Menu,
+  X,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ChevronUp,
+  Loader2,
+  Check,
+  CheckCircle2,
+  AlertTriangle,
+  Info,
+  Home,
+  LayoutDashboard,
+  BookOpen,
+  Bookmark,
+  BookmarkCheck,
+  Users,
+  Trash2,
+  Download,
+  Upload,
+  ExternalLink,
+  Plus,
+  ArrowLeft,
+  ArrowRight,
+  Bell,
+  CalendarDays,
+  CalendarClock,
+  Sun,
+  Moon,
+  LogOut,
+  Filter,
+  SlidersHorizontal,
+  Sparkles,
+  MapPin,
+  Mail,
+  Phone,
+  Share2,
+  Copy,
+  Eye,
+  RefreshCw,
+  Target,
+  Award,
+  Briefcase,
+  Building2,
+  Globe,
+  Shield,
+  ShieldCheck,
+  MessageCircle,
+  Linkedin,
+  Quote,
+  Lightbulb,
+};
