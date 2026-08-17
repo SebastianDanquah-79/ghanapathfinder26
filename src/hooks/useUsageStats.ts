@@ -61,27 +61,8 @@ export const useUsageStats = () => {
     retry: 1,
   });
 
-  useEffect(() => {
-    const channel = supabase
-      .channel("usage_counters_live")
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "usage_counters", filter: "id=eq.global" },
-        (payload) => {
-          const row = payload.new as Partial<UsageCounterRow> | null;
-          if (row && Object.keys(row).length > 0) {
-            qc.setQueryData(USAGE_STATS_KEY, toStats(row));
-          } else {
-            void qc.invalidateQueries({ queryKey: USAGE_STATS_KEY });
-          }
-        },
-      )
-      .subscribe();
+  useEffect(() => subscribeUsageCounters((stats) => qc.setQueryData(USAGE_STATS_KEY, stats)), [qc]);
 
-    return () => {
-      void supabase.removeChannel(channel);
-    };
-  }, [qc]);
 
   return query;
 };
