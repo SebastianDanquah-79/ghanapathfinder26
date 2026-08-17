@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Loader2 } from "lucide-react";
-import { useRouterState, useNavigate } from "@tanstack/react-router";
+import { useRouterState } from "@tanstack/react-router";
 import { useAuth } from "@/hooks/useAuth";
 
 // Routes that stay reachable without an account.
