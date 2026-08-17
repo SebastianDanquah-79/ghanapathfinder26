@@ -12,7 +12,7 @@ export interface LivePresence {
 
 export const LIVE_PRESENCE_KEY = ["live_presence"] as const;
 
-const HEARTBEAT_MS = 30_000;
+const HEARTBEAT_MS = 60_000;
 
 const toPresence = (row: unknown): LivePresence => {
   const r = (row ?? {}) as Partial<LivePresence>;
@@ -87,21 +87,14 @@ export const useLivePresence = () => {
     const onVisible = () => {
       if (document.visibilityState === "visible") void beat();
     };
-    const onLeave = () => {
-      // Best effort: drop this session immediately when the tab goes away.
-      void supabase.rpc("end_session" as never, { _session_id: sessionId } as never);
-    };
-
     document.addEventListener("visibilitychange", onVisible);
     window.addEventListener("online", onVisible);
-    window.addEventListener("pagehide", onLeave);
 
     return () => {
       cancelled = true;
       window.clearInterval(timer);
       document.removeEventListener("visibilitychange", onVisible);
       window.removeEventListener("online", onVisible);
-      window.removeEventListener("pagehide", onLeave);
     };
   }, [qc]);
 
