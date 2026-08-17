@@ -46,6 +46,7 @@ const CollegeRecommender = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) return; // recommendations require a signed-in account
     setSubmitted({ ...form });
   };
 
