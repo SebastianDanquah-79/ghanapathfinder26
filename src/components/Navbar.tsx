@@ -107,6 +107,9 @@ const Navbar = () => {
             <Search className="h-[18px] w-[18px]" />
           </Link>
 
+          <ThemeToggle className="h-9 w-9" />
+
+
           <Link
             to={user ? "/dashboard" : "/auth"}
             className="ml-2 px-4 py-2 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-opacity whitespace-nowrap"
