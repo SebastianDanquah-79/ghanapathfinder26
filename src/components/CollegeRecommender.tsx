@@ -128,17 +128,34 @@ const CollegeRecommender = () => {
             published cut-offs, or evidence-based estimated ranges, do.
           </p>
 
-          <button
-            type="submit"
-            disabled={isLoading && !!submitted}
-            className="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-lg bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 glow-gold"
-          >
-            {isLoading && submitted ? (
-              <><Loader2 className="h-5 w-5 animate-spin" /> Searching every accredited institution...</>
-            ) : (
-              <><Sparkles className="h-5 w-5" /> Get My Recommendations</>
-            )}
-          </button>
+          {!authLoading && !user ? (
+            <div className="rounded-lg border border-border bg-muted/60 p-4 text-center space-y-3">
+              <p className="text-sm text-foreground font-medium flex items-center justify-center gap-2">
+                <Lock className="h-4 w-4 text-primary" /> Sign in to see your recommendations
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Your matches are saved to your account so you can come back to them on any device.
+              </p>
+              <Link
+                to="/auth"
+                className="inline-flex min-h-[48px] items-center justify-center gap-2 px-6 rounded-lg bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-opacity"
+              >
+                <Sparkles className="h-5 w-5" /> Sign in to continue
+              </Link>
+            </div>
+          ) : (
+            <button
+              type="submit"
+              disabled={authLoading || (isLoading && !!submitted)}
+              className="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-lg bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 glow-gold"
+            >
+              {isLoading && submitted ? (
+                <><Loader2 className="h-5 w-5 animate-spin" /> Searching every accredited institution...</>
+              ) : (
+                <><Sparkles className="h-5 w-5" /> Get My Recommendations</>
+              )}
+            </button>
+          )}
         </motion.form>
 
         {submitted && !isLoading && (
