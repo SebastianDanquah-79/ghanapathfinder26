@@ -48,12 +48,14 @@ function RootComponent() {
           <Toaster />
           <Sonner />
           <AuthProvider>
-            <AnalyticsTracker />
-            <OfflineBanner />
-            <div className="desktop-shell pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0">
-              <Outlet />
-            </div>
-            <MobileTabBar />
+            <AuthGate>
+              <AnalyticsTracker />
+              <OfflineBanner />
+              <div className="desktop-shell pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0">
+                <Outlet />
+              </div>
+              <MobileTabBar />
+            </AuthGate>
           </AuthProvider>
         </TooltipProvider>
       </QueryClientProvider>
