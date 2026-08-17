@@ -1,5 +1,17 @@
 /** Public-facing legal / transparency copy, shared by the homepage teasers and full pages. */
 
+
+/** Current Terms & Conditions version recorded against a user's acceptance. */
+export const TERMS_VERSION = "2026-08-17";
+
+/** Short 4-line disclaimer shown on the Terms & Conditions page. */
+export const SHORT_DISCLAIMER: string[] = [
+  "GhanaPathFinder provides educational guidance and recommendations for informational purposes only.",
+  "Admission requirements, cut-off points, scholarships and programme information may change.",
+  "Always verify important information with the relevant university or official institution.",
+  "GhanaPathFinder does not guarantee admission, scholarships, employment or any specific outcome.",
+];
+
 export const DISCLAIMER_SUMMARY =
   "GhanaPathFinder is an independent education and career guidance platform for students exploring Ghana universities, tertiary institutions, programmes, scholarships and career paths. University recommendations and WASSCE match confidence are estimates, not guarantees of admission. Cut-off points, admission requirements, programmes, scholarships, fees and deadlines may change. Always verify important information with the relevant official institution or regulatory body before applying. Estimated information is clearly labelled and should not be treated as official.";
 
