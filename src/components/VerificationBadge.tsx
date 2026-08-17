@@ -14,10 +14,13 @@ export type VerificationBadgeProps = {
   sourceName?: string | null;
   /** Short description of what exactly was checked. */
   whatVerified?: string;
+  /** Recorded reason a record is not verified, when the database stores one. */
+  reason?: string | null;
   /** Title of the record being described. */
   subject?: string;
   className?: string;
 };
+
 
 const formatDate = (iso?: string | null) =>
   iso
