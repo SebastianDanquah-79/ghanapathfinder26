@@ -51,14 +51,21 @@ export const useLivePresence = () => {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const sessionId = getSessionId();
     let cancelled = false;
+    // Read the id on every beat: if two tabs opened at once and raced to create
+    // one, they converge on the stored value instead of counting twice.
+    let sessionId = getSessionId();
 
     const beat = async () => {
       if (cancelled) return;
       if (typeof document !== "undefined" && document.visibilityState === "hidden") return;
       if (typeof navigator !== "undefined" && navigator.onLine === false) return;
+      const previous = sessionId;
+      sessionId = getSessionId();
       try {
+        if (previous !== sessionId) {
+          void supabase.rpc("end_session" as never, { _session_id: previous } as never);
+        }
         const { data, error } = await supabase.rpc("heartbeat_session" as never, {
           _session_id: sessionId,
         } as never);
