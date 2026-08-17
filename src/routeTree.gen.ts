@@ -43,6 +43,7 @@ import { Route as ScholarshipsSlugRouteImport } from './routes/scholarships/$slu
 import { Route as UniversitiesSlugRouteImport } from './routes/universities/$slug'
 import { Route as UniversitySlugRouteImport } from './routes/university/$slug'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
+import { Route as FunctionsV1McpRouteImport } from './routes/functions/v1/mcp'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -214,6 +215,11 @@ const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
   path: '/.lovable/oauth/consent',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FunctionsV1McpRoute = FunctionsV1McpRouteImport.update({
+  id: '/functions/v1/mcp',
+  path: '/functions/v1/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -250,6 +256,7 @@ export interface FileRoutesByFullPath {
   '/programmes/': typeof ProgrammesIndexRoute
   '/scholarships/': typeof ScholarshipsIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/functions/v1/mcp': typeof FunctionsV1McpRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -286,6 +293,7 @@ export interface FileRoutesByTo {
   '/programmes': typeof ProgrammesIndexRoute
   '/scholarships': typeof ScholarshipsIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/functions/v1/mcp': typeof FunctionsV1McpRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -323,6 +331,7 @@ export interface FileRoutesById {
   '/programmes/': typeof ProgrammesIndexRoute
   '/scholarships/': typeof ScholarshipsIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/functions/v1/mcp': typeof FunctionsV1McpRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -361,6 +370,7 @@ export interface FileRouteTypes {
     | '/programmes/'
     | '/scholarships/'
     | '/.lovable/oauth/consent'
+    | '/functions/v1/mcp'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -397,6 +407,7 @@ export interface FileRouteTypes {
     | '/programmes'
     | '/scholarships'
     | '/.lovable/oauth/consent'
+    | '/functions/v1/mcp'
   id:
     | '__root__'
     | '/'
@@ -433,6 +444,7 @@ export interface FileRouteTypes {
     | '/programmes/'
     | '/scholarships/'
     | '/.lovable/oauth/consent'
+    | '/functions/v1/mcp'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -470,6 +482,7 @@ export interface RootRouteChildren {
   ProgrammesIndexRoute: typeof ProgrammesIndexRoute
   ScholarshipsIndexRoute: typeof ScholarshipsIndexRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
+  FunctionsV1McpRoute: typeof FunctionsV1McpRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -712,6 +725,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DotlovableOauthConsentRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/functions/v1/mcp': {
+      id: '/functions/v1/mcp'
+      path: '/functions/v1/mcp'
+      fullPath: '/functions/v1/mcp'
+      preLoaderRoute: typeof FunctionsV1McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -750,6 +770,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProgrammesIndexRoute: ProgrammesIndexRoute,
   ScholarshipsIndexRoute: ScholarshipsIndexRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
+  FunctionsV1McpRoute: FunctionsV1McpRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
