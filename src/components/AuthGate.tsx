@@ -19,7 +19,6 @@ export const isPublicPath = (pathname: string) =>
 
 const AuthGate = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
-  const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const search = useRouterState({ select: (s) => s.location.searchStr });
   const allowed = isPublicPath(pathname);
@@ -27,8 +26,8 @@ const AuthGate = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (loading || allowed || user) return;
     const next = encodeURIComponent(`${pathname}${search ?? ""}`);
-    navigate({ to: "/auth", search: { next } as never, replace: true });
-  }, [loading, allowed, user, pathname, search, navigate]);
+    window.location.replace(`/auth?next=${next}`);
+  }, [loading, allowed, user, pathname, search]);
 
   if (allowed || user) return <>{children}</>;
 
