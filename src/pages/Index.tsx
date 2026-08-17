@@ -18,7 +18,7 @@ const Footer = lazy(() => import("@/components/Footer"));
 const Index = () => (
   <div className="min-h-screen bg-background">
     <Seo
-      title="GhanaPathFinder — Connect. Discover. Grow."
+      title="GhanaPathFinder — Ghana Universities & Scholarships Guide"
       description="GhanaPathFinder is an education and career platform helping Ghanaian students discover universities, programmes, scholarships, career paths and opportunities."
       path="/"
       jsonLd={[
