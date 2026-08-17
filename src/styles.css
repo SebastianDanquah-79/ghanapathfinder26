@@ -87,53 +87,54 @@
 }
 
 :root {
-  --background: 222 47% 6%;
-  --foreground: 45 100% 96%;
+  --background: 0 0% 100%;
+  --foreground: 222 47% 12%;
 
-  --card: 222 40% 10%;
-  --card-foreground: 45 100% 96%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 12%;
 
-  --popover: 222 40% 10%;
-  --popover-foreground: 45 100% 96%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 12%;
 
-  --primary: 43 96% 56%;
-  --primary-foreground: 222 47% 6%;
+  --primary: 40 92% 46%;
+  --primary-foreground: 0 0% 100%;
 
-  --secondary: 222 30% 16%;
-  --secondary-foreground: 45 100% 96%;
+  --secondary: 40 40% 96%;
+  --secondary-foreground: 222 47% 12%;
 
-  --muted: 222 25% 14%;
-  --muted-foreground: 220 15% 55%;
+  --muted: 220 20% 96%;
+  --muted-foreground: 220 12% 40%;
 
-  --accent: 43 96% 56%;
-  --accent-foreground: 222 47% 6%;
+  --accent: 40 92% 46%;
+  --accent-foreground: 0 0% 100%;
 
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 210 40% 98%;
+  --destructive: 0 72% 48%;
+  --destructive-foreground: 0 0% 100%;
 
-  --border: 222 25% 18%;
-  --input: 222 25% 18%;
-  --ring: 43 96% 56%;
-  --radius: 0.75rem;
+  --border: 220 16% 88%;
+  --input: 220 16% 88%;
+  --ring: 40 92% 46%;
+  --radius: 0.875rem;
 
-  --ghana-gold: 43 96% 56%;
-  --ghana-gold-light: 43 90% 70%;
-  --ghana-green: 145 63% 42%;
-  --ghana-red: 0 72% 51%;
-  --navy-deep: 222 47% 6%;
-  --navy-mid: 222 40% 12%;
-  --navy-light: 222 30% 20%;
-  --glow-gold: 0 0% 100% / 0.05;
+  --ghana-gold: 40 92% 46%;
+  --ghana-gold-light: 43 96% 62%;
+  --ghana-green: 145 55% 34%;
+  --ghana-red: 0 68% 46%;
+  --navy-deep: 222 47% 12%;
+  --navy-mid: 222 30% 28%;
+  --navy-light: 220 16% 82%;
+  --glow-gold: 40 92% 46% / 0.08;
 
-  --sidebar-background: 222 40% 10%;
-  --sidebar-foreground: 45 100% 96%;
-  --sidebar-primary: 43 96% 56%;
-  --sidebar-primary-foreground: 222 47% 6%;
-  --sidebar-accent: 222 30% 16%;
-  --sidebar-accent-foreground: 45 100% 96%;
-  --sidebar-border: 222 25% 18%;
-  --sidebar-ring: 43 96% 56%;
+  --sidebar-background: 0 0% 100%;
+  --sidebar-foreground: 222 47% 12%;
+  --sidebar-primary: 40 92% 46%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 40 40% 96%;
+  --sidebar-accent-foreground: 222 47% 12%;
+  --sidebar-border: 220 16% 88%;
+  --sidebar-ring: 40 92% 46%;
 }
+
 
 /* Container behaviour ported from the Tailwind v3 config (centered, 2rem padding, 1400px cap) */
 @utility container {
