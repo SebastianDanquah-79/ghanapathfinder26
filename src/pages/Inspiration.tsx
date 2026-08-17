@@ -1,6 +1,6 @@
 import { Link } from "@/lib/router-compat";
 import { motion } from "framer-motion";
-import { ArrowLeft, GraduationCap, Lightbulb, Quote } from "@/lib/icons";
+import { ArrowLeft, Lightbulb, Quote, BrandLogoIcon } from "@/lib/icons";
 import { getDailyMessage, stories } from "@/lib/motivation";
 import Navbar from "@/components/Navbar";
 import Seo from "@/components/Seo";
@@ -19,7 +19,7 @@ const Inspiration = () => {
       <div className="max-w-7xl mx-auto">
         <header className="flex items-center justify-between gap-3 mb-6">
           <Link to="/" className="flex items-center gap-2">
-            <GraduationCap className="h-6 w-6 text-primary" />
+            <BrandLogoIcon className="h-6 w-6 text-primary" />
             <span className="font-display font-bold text-lg text-foreground">
               Ghana<span className="text-primary">PathFinder</span>
             </span>
