@@ -5,6 +5,7 @@ import Seo, { breadcrumbLd } from "@/components/Seo";
 import Footer from "@/components/Footer";
 import SaveButton from "@/components/SaveButton";
 import OfficialLink from "@/components/OfficialLink";
+import VerificationBadge from "@/components/VerificationBadge";
 import { formatVerified, useProgrammes, useUniversity } from "@/hooks/useCatalogue";
 import { useTrackView } from "@/hooks/useTracking";
 
@@ -148,6 +149,20 @@ const UniversityProfile = () => {
                 </div>
 
                 <div className="mt-4 space-y-1">
+                  <VerificationBadge
+                    verified={uni.verification_status === "verified" || uni.verified}
+                    lastVerifiedAt={uni.last_verified_at}
+                    sourceUrl={uni.source_url ?? uni.website_url}
+                    sourceName={
+                      uni.source_url?.includes("nmc.gov.gh")
+                        ? "Nursing and Midwifery Council of Ghana"
+                        : uni.source_url?.includes("gtec.edu.gh")
+                          ? "Ghana Tertiary Education Commission (GTEC)"
+                          : `${uni.name} official website`
+                    }
+                    subject={uni.name}
+                    whatVerified="Institution name, accreditation status, location, tuition guidance and listed programmes."
+                  />
                   <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
                     <ShieldCheck className="h-3.5 w-3.5 text-ghana-green" />
                     {uni.accreditation_status ? `${uni.accreditation_status} · ` : ""}

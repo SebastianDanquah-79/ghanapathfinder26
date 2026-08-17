@@ -16,6 +16,7 @@ import Seo, { breadcrumbLd } from "@/components/Seo";
 import Footer from "@/components/Footer";
 import SaveButton from "@/components/SaveButton";
 import OfficialLink from "@/components/OfficialLink";
+import VerificationBadge from "@/components/VerificationBadge";
 import { useProgrammeDetail, useProgrammeMatch } from "@/hooks/useProgrammeDetail";
 import { useTrackView } from "@/hooks/useTracking";
 import { CATEGORY_STYLES, formatVerifiedDate } from "@/lib/admissionEngine";
@@ -349,6 +350,15 @@ const ProgrammePage = () => {
                 <h2 className="font-display text-sm font-semibold text-foreground flex items-center gap-1.5 mb-2">
                   <ShieldCheck className="h-4 w-4 text-ghana-green" /> Sources
                 </h2>
+                <VerificationBadge
+                  className="mb-2"
+                  verified={p.verification_status === "verified" || p.verified}
+                  lastVerifiedAt={p.last_verified_at}
+                  sourceUrl={p.source_url ?? p.programme_url ?? p.application_url}
+                  sourceName={data?.sources?.[0]?.source_url ? `${p.name} official programme page` : null}
+                  subject={p.name}
+                  whatVerified="Programme name, qualification, duration and published entry requirements."
+                />
                 <ul className="space-y-1">
                   {(data?.sources ?? []).map((s) => (
                     <li key={s.id} className="text-[11px] text-muted-foreground break-all">

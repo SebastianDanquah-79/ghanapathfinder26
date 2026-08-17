@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "@/lib/router-compat";
-import { Search, MapPin, GraduationCap, Building2, Loader2, ShieldCheck } from "@/lib/icons";
+import { Search, MapPin, GraduationCap, Building2, Loader2 } from "@/lib/icons";
+import VerificationBadge from "./VerificationBadge";
 import SectionHeader from "./SectionHeader";
 import SaveButton from "./SaveButton";
 import OfficialLink from "./OfficialLink";
@@ -243,10 +244,19 @@ const UniversityDirectory = () => {
                 <OfficialLink href={u.website_url} label="Official" variant="ghost" />
               </div>
 
-              <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground mt-2">
-                <ShieldCheck className="h-3 w-3 text-ghana-green" />
-                {formatVerified(u.last_verified_at)}
-              </p>
+              <div className="mt-2">
+                <VerificationBadge
+                  verified={u.verification_status === "verified" || u.verified}
+                  lastVerifiedAt={u.last_verified_at}
+                  sourceUrl={u.source_url ?? u.website_url}
+                  sourceName={u.source_url ? null : `${u.name} official website`}
+                  subject={u.name}
+                  whatVerified="Institution name, accreditation status, location and listed programmes."
+                />
+                <p className="text-[11px] text-muted-foreground mt-1">
+                  {formatVerified(u.last_verified_at)}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>

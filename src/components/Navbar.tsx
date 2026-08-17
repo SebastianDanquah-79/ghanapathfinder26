@@ -135,11 +135,11 @@ const Navbar = () => {
           </Link>
           <button
             onClick={() => setOpen(!open)}
-            className="p-2.5 -mr-1 text-muted-foreground hover:text-primary transition-colors"
+            className="grid place-items-center h-12 w-12 -mr-1 rounded-lg border border-border bg-secondary text-foreground hover:text-primary active:text-primary transition-colors"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
           >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
       </div>
