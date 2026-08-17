@@ -1,13 +1,7 @@
 import { useEffect } from "react";
 import type { QueryClient } from "@tanstack/react-query";
 import { QueryClientProvider } from "@tanstack/react-query";
-import {
-  createRootRouteWithContext,
-  HeadContent,
-  Outlet,
-  Scripts,
-  useRouter,
-} from "@tanstack/react-router";
+import { createRootRouteWithContext, HeadContent, Outlet, Scripts, useRouter } from "@tanstack/react-router";
 import { HelmetProvider } from "react-helmet-async";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
@@ -41,6 +35,16 @@ function AnalyticsTracker() {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !("serviceWorker" in navigator) || !import.meta.env.PROD) {
+      return;
+    }
+    navigator.serviceWorker.register("/sw.js").catch((err) => {
+      console.error("SW registration failed:", err);
+    });
+  }, []);
+
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
@@ -71,9 +75,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
     <div className="min-h-screen flex items-center justify-center bg-background text-foreground p-6">
       <div className="max-w-md w-full text-center space-y-4">
         <h1 className="text-xl font-semibold">This page didn't load</h1>
-        <p className="text-muted-foreground">
-          Something went wrong on our end. You can try again or head back home.
-        </p>
+        <p className="text-muted-foreground">Something went wrong on our end. You can try again or head back home.</p>
         <div className="flex items-center justify-center gap-2">
           <button
             className="px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm font-medium"
@@ -84,10 +86,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
           >
             Try again
           </button>
-          <a
-            className="px-4 py-2 rounded-md border border-border text-sm font-medium"
-            href="/"
-          >
+          <a className="px-4 py-2 rounded-md border border-border text-sm font-medium" href="/">
             Go home
           </a>
         </div>
@@ -159,8 +158,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             width: 512,
             height: 512,
           },
-          description:
-            "Education and career technology platform for Ghanaian students.",
+          description: "Education and career technology platform for Ghanaian students.",
           areaServed: "GH",
         }),
       },
