@@ -10,7 +10,7 @@ const careers = Object.values(mockCareerData);
 const Careers = () => (
   <div className="min-h-screen bg-background">
     <Seo
-      title="Career Paths in Ghana , Roles, Employers & Salaries | GhanaPathFinder"
+      title="Career Paths in Ghana: Roles, Employers & Salaries | GhanaPathFinder"
       description="Explore career paths open to Ghanaian graduates: typical roles, employers hiring in Ghana, salary ranges and remote-work potential for each field of study."
       path="/careers"
       jsonLd={[

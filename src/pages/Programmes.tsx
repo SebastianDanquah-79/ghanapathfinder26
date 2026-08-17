@@ -159,7 +159,7 @@ const Programmes = () => {
   return (
     <div className="min-h-screen bg-background">
       <Seo
-        title="Programme Directory , Degrees in Ghana | GhanaPathFinder"
+        title="Programme Directory: Degrees in Ghana | GhanaPathFinder"
         description="Every accredited degree, diploma and certificate programme recorded in GhanaPathFinder: filter by field, institution, region and WASSCE requirements."
         path="/programmes"
         jsonLd={[breadcrumbLd([{ name: "Home", path: "/" }, { name: "Programmes", path: "/programmes" }])]}
