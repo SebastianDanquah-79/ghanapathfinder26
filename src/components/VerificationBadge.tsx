@@ -33,8 +33,10 @@ const VerificationBadge = ({
   sourceUrl,
   sourceName,
   whatVerified = "Institution details, accreditation status and published programme information.",
+  reason,
   subject,
   className = "",
+
 }: VerificationBadgeProps) => {
   const [open, setOpen] = useState(false);
 
