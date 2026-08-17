@@ -25,8 +25,9 @@ const AuthGate = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (loading || allowed || user) return;
-    const next = encodeURIComponent(`${pathname}${search ?? ""}`);
-    window.location.replace(`/auth?next=${next}`.replace(/%25/g, "%"));
+    const target = `${pathname}${search ?? ""}`;
+    const qs = new URLSearchParams({ next: target }).toString();
+    window.location.replace(`/auth?${qs}`);
   }, [loading, allowed, user, pathname, search]);
 
   if (allowed || user) return <>{children}</>;
