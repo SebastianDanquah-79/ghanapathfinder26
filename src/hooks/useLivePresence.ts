@@ -14,6 +14,49 @@ export const LIVE_PRESENCE_KEY = ["live_presence"] as const;
 
 const HEARTBEAT_MS = 60_000;
 
+type PresenceListener = (live: number) => void;
+
+/**
+ * One shared realtime presence channel per browser tab, no matter how many
+ * counters are on the page. Joining/leaving pushes an instant update to every
+ * other open browser, so the number moves without a refresh.
+ */
+let presenceChannel: ReturnType<typeof supabase.channel> | null = null;
+const presenceListeners = new Set<PresenceListener>();
+
+const subscribePresence = (listener: PresenceListener): (() => void) => {
+  presenceListeners.add(listener);
+
+  if (!presenceChannel) {
+    const channel = supabase.channel("live-presence", {
+      config: { presence: { key: getSessionId() } },
+    });
+    presenceChannel = channel;
+    let lastLive = -1;
+    const emit = () => {
+      const live = Object.keys(channel.presenceState()).length;
+      // Only react when the number of connected browsers actually changed.
+      if (live === lastLive) return;
+      lastLive = live;
+      presenceListeners.forEach((l) => l(live));
+    };
+    channel
+      .on("presence", { event: "sync" }, emit)
+      .on("presence", { event: "join" }, emit)
+      .on("presence", { event: "leave" }, emit)
+      .subscribe((status) => {
+        if (status === "SUBSCRIBED") void channel.track({ at: Date.now() });
+      });
+  }
+
+  // The channel itself lives for the lifetime of the tab: one presence entry per
+  // browser, and re-creating it on every unmount would double-count and race
+  // with the socket teardown.
+  return () => {
+    presenceListeners.delete(listener);
+  };
+};
+
 const toPresence = (row: unknown): LivePresence => {
   const r = (row ?? {}) as Partial<LivePresence>;
   return {
@@ -90,11 +133,32 @@ export const useLivePresence = () => {
     document.addEventListener("visibilitychange", onVisible);
     window.addEventListener("online", onVisible);
 
+    // Realtime presence: every open browser joins one shared channel, so a new
+    // visitor arriving or leaving pushes an update to everyone instantly,
+    // without waiting for the next poll or a page refresh.
+    let reconcile: number | undefined;
+    const unsubscribe = subscribePresence((live) => {
+      if (cancelled) return;
+      // Show the pushed presence count immediately…
+      qc.setQueryData(LIVE_PRESENCE_KEY, (prev: LivePresence | undefined) => ({
+        live_now: Math.max(live, 1),
+        total_users: prev?.total_users ?? 0,
+      }));
+      // …then reconcile with the database, which counts each signed-in account
+      // once and includes browsers whose heartbeat arrives a moment later.
+      window.clearTimeout(reconcile);
+      reconcile = window.setTimeout(() => {
+        if (!cancelled) void qc.invalidateQueries({ queryKey: LIVE_PRESENCE_KEY });
+      }, 2500);
+    });
+
     return () => {
       cancelled = true;
       window.clearInterval(timer);
+      window.clearTimeout(reconcile);
       document.removeEventListener("visibilitychange", onVisible);
       window.removeEventListener("online", onVisible);
+      unsubscribe();
     };
   }, [qc]);
 

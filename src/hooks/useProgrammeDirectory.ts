@@ -51,7 +51,7 @@ export const programmeDirectoryQueryOptions = (filters: DirectoryFilters = {}) =
       let q = supabase
         .from("programmes")
         .select(
-          "id, slug, name, field, degree_type, qualification, duration, description, wassce_requirements, verification_status, verified, created_at, university_id, universities!inner(id, name, slug, region, type, location)",
+          "id, slug, name, field, degree_type, qualification, duration, description, wassce_requirements, verification_status, verified, last_verified_at, source_url, programme_url, created_at, university_id, universities!inner(id, name, slug, region, type, location)",
           { count: "exact" },
         )
         .range(page * DIRECTORY_PAGE_SIZE, page * DIRECTORY_PAGE_SIZE + DIRECTORY_PAGE_SIZE - 1);
