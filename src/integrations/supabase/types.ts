@@ -14,6 +14,27 @@ export type Database = {
   }
   public: {
     Tables: {
+      active_sessions: {
+        Row: {
+          created_at: string
+          last_seen: string
+          session_id: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          last_seen?: string
+          session_id: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          last_seen?: string
+          session_id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       analytics_events: {
         Row: {
           created_at: string
@@ -1359,6 +1380,7 @@ export type Database = {
         Args: { _programme_id: string }
         Returns: undefined
       }
+      end_session: { Args: { _session_id: string }; Returns: undefined }
       find_duplicate_institution: {
         Args: { _name: string }
         Returns: {
@@ -1376,6 +1398,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      heartbeat_session: { Args: { _session_id: string }; Returns: number }
       institution_tier_offset: {
         Args: { _category: string; _short: string; _type: string }
         Returns: number
@@ -1384,6 +1407,7 @@ export type Database = {
         Args: { _parent_id: string; _student_id: string }
         Returns: boolean
       }
+      live_presence: { Args: never; Returns: Json }
       public_usage_stats: { Args: never; Returns: Json }
       refresh_admission_estimates: { Args: never; Returns: number }
       refresh_usage_counters: { Args: never; Returns: undefined }
