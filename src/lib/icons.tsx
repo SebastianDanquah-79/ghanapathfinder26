@@ -10,6 +10,7 @@
  */
 import {
   GraduationCap as LucideGraduationCap,
+  Lock,
   Search,
   Menu,
   X,
@@ -212,6 +213,7 @@ export const WifiOff = makeIcon(glyphs.WifiOff, "WifiOff");
 
 // Meaningful UI icons keep their original vector rendering.
 export {
+  Lock,
   Search,
   Menu,
   X,
