@@ -13,6 +13,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
+import AuthGate from "@/components/AuthGate";
 import MobileTabBar from "@/components/MobileTabBar";
 import OfflineBanner from "@/components/OfflineBanner";
 import NotFound from "@/pages/NotFound";
