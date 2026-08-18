@@ -19,28 +19,41 @@ const ShareButtons = ({ studentName, resultRef }: ShareButtonsProps) => {
   };
 
   const handleDownload = async () => {
-    if (!resultRef.current) return;
+    console.log("1. Button clicked");
+    if (!resultRef.current) {
+      console.log("2. STOPPED: resultRef.current is null");
+      return;
+    }
+    console.log("2. resultRef found, element:", resultRef.current);
     try {
+      console.log("3. Loading html2canvas...");
       const html2canvas = (await import("html2canvas")).default;
+      console.log("4. html2canvas loaded, starting capture...");
       const canvas = await html2canvas(resultRef.current, {
         backgroundColor: "#0a1628",
         scale: 2,
-        useCORS: true, // let it pull cross-origin images cleanly instead of tainting the canvas
+        useCORS: true,
       });
+      console.log("5. Canvas captured, size:", canvas.width, canvas.height);
       canvas.toBlob((blob) => {
-        if (!blob) return;
+        console.log("6. toBlob callback fired, blob:", blob);
+        if (!blob) {
+          console.log("7. STOPPED: blob is null");
+          return;
+        }
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.download = `GhanaPathFinder-${studentName.replace(/\s+/g, "-")}.png`;
         link.href = url;
-        document.body.appendChild(link); // attach before clicking
+        document.body.appendChild(link);
+        console.log("8. Triggering click on:", link);
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
+        console.log("9. Done");
       }, "image/png");
     } catch (err) {
-      console.error("Download failed:", err);
-      // TODO: surface a toast here so it's not silent for the user
+      console.log("ERROR CAUGHT:", err);
     }
   };
 
