@@ -20,15 +20,28 @@ const ShareButtons = ({ studentName, resultRef }: ShareButtonsProps) => {
 
   const handleDownload = async () => {
     if (!resultRef.current) return;
-    const html2canvas = (await import("html2canvas")).default;
-    const canvas = await html2canvas(resultRef.current, {
-      backgroundColor: "#0a1628",
-      scale: 2,
-    });
-    const link = document.createElement("a");
-    link.download = `GhanaPathFinder-${studentName.replace(/\s+/g, "-")}.png`;
-    link.href = canvas.toDataURL("image/png");
-    link.click();
+    try {
+      const html2canvas = (await import("html2canvas")).default;
+      const canvas = await html2canvas(resultRef.current, {
+        backgroundColor: "#0a1628",
+        scale: 2,
+        useCORS: true, // let it pull cross-origin images cleanly instead of tainting the canvas
+      });
+      canvas.toBlob((blob) => {
+        if (!blob) return;
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.download = `GhanaPathFinder-${studentName.replace(/\s+/g, "-")}.png`;
+        link.href = url;
+        document.body.appendChild(link); // attach before clicking
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }, "image/png");
+    } catch (err) {
+      console.error("Download failed:", err);
+      // TODO: surface a toast here so it's not silent for the user
+    }
   };
 
   const shareWhatsApp = () => {
@@ -50,20 +63,35 @@ const ShareButtons = ({ studentName, resultRef }: ShareButtonsProps) => {
         Share Your Results
       </p>
       <div className="flex flex-wrap gap-2">
-        <button onClick={shareWhatsApp} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#25D366]/20 text-[#25D366] text-sm font-medium hover:bg-[#25D366]/30 transition-colors">
+        <button
+          onClick={shareWhatsApp}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#25D366]/20 text-[#25D366] text-sm font-medium hover:bg-[#25D366]/30 transition-colors"
+        >
           <MessageCircle className="h-4 w-4" /> WhatsApp
         </button>
-        <button onClick={shareFacebook} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#1877F2]/20 text-[#1877F2] text-sm font-medium hover:bg-[#1877F2]/30 transition-colors">
+        <button
+          onClick={shareFacebook}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#1877F2]/20 text-[#1877F2] text-sm font-medium hover:bg-[#1877F2]/30 transition-colors"
+        >
           Facebook
         </button>
-        <button onClick={shareLinkedIn} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0A66C2]/20 text-[#0A66C2] text-sm font-medium hover:bg-[#0A66C2]/30 transition-colors">
+        <button
+          onClick={shareLinkedIn}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0A66C2]/20 text-[#0A66C2] text-sm font-medium hover:bg-[#0A66C2]/30 transition-colors"
+        >
           LinkedIn
         </button>
-        <button onClick={handleCopy} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary text-muted-foreground text-sm font-medium hover:text-foreground transition-colors">
+        <button
+          onClick={handleCopy}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary text-muted-foreground text-sm font-medium hover:text-foreground transition-colors"
+        >
           {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
           {copied ? "Copied!" : "Copy Link"}
         </button>
-        <button onClick={handleDownload} className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/20 text-primary text-sm font-medium hover:bg-primary/30 transition-colors">
+        <button
+          onClick={handleDownload}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/20 text-primary text-sm font-medium hover:bg-primary/30 transition-colors"
+        >
           <Download className="h-4 w-4" /> Download PNG
         </button>
       </div>
