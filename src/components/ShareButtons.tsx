@@ -27,7 +27,7 @@ const ShareButtons = ({ studentName, resultRef }: ShareButtonsProps) => {
     console.log("2. resultRef found, element:", resultRef.current);
     try {
       console.log("3. Loading html2canvas...");
-      const html2canvas = (await import("html2canvas")).default;
+      const const html2canvas = (await import("html2canvas-pro")).default;
       console.log("4. html2canvas loaded, starting capture...");
       const canvas = await html2canvas(resultRef.current, {
         backgroundColor: "#0a1628",
