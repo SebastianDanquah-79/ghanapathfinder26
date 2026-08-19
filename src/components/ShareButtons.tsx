@@ -18,42 +18,56 @@ const ShareButtons = ({ studentName, resultRef }: ShareButtonsProps) => {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const [downloading, setDownloading] = useState(false);
+
   const handleDownload = async () => {
-    console.log("1. Button clicked");
-    if (!resultRef.current) {
-      console.log("2. STOPPED: resultRef.current is null");
-      return;
-    }
-    console.log("2. resultRef found, element:", resultRef.current);
+    if (!resultRef.current || downloading) return;
+    setDownloading(true);
     try {
-      console.log("3. Loading html2canvas...");
-      const const html2canvas = (await import("html2canvas-pro")).default;
-      console.log("4. html2canvas loaded, starting capture...");
+      const html2canvas = (await import("html2canvas-pro")).default;
       const canvas = await html2canvas(resultRef.current, {
         backgroundColor: "#0a1628",
-        scale: 2,
+        scale: Math.min(2, window.devicePixelRatio || 1) || 1,
         useCORS: true,
+        logging: false,
       });
-      console.log("5. Canvas captured, size:", canvas.width, canvas.height);
-      canvas.toBlob((blob) => {
-        console.log("6. toBlob callback fired, blob:", blob);
-        if (!blob) {
-          console.log("7. STOPPED: blob is null");
+
+      const blob: Blob | null = await new Promise((resolve) =>
+        canvas.toBlob((b) => resolve(b), "image/png"),
+      );
+      if (!blob) throw new Error("Could not create image");
+
+      const filename = `GhanaPathFinder-${(studentName || "results").replace(/[^\w-]+/g, "-")}.png`;
+      const file = new File([blob], filename, { type: "image/png" });
+
+      // Mobile: anchor downloads are unreliable (esp. iOS Safari) , use the share sheet.
+      const nav = navigator as Navigator & {
+        canShare?: (data: { files: File[] }) => boolean;
+        share?: (data: { files: File[]; title?: string }) => Promise<void>;
+      };
+      if (nav.canShare?.({ files: [file] }) && nav.share) {
+        try {
+          await nav.share({ files: [file], title: filename });
           return;
+        } catch (shareErr) {
+          if ((shareErr as Error)?.name === "AbortError") return;
+          // fall through to anchor download
         }
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.download = `GhanaPathFinder-${studentName.replace(/\s+/g, "-")}.png`;
-        link.href = url;
-        document.body.appendChild(link);
-        console.log("8. Triggering click on:", link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-        console.log("9. Done");
-      }, "image/png");
+      }
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.download = filename;
+      link.href = url;
+      link.rel = "noopener";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
     } catch (err) {
-      console.log("ERROR CAUGHT:", err);
+      console.error("PNG download failed:", err);
+    } finally {
+      setDownloading(false);
     }
   };
 
