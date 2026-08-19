@@ -32,6 +32,8 @@ const ShareButtons = ({ studentName, resultRef }: ShareButtonsProps) => {
         logging: false,
       });
 
+      if (!canvas.width || !canvas.height) throw new Error("Nothing to capture");
+
       const blob: Blob | null = await new Promise((resolve) =>
         canvas.toBlob((b) => resolve(b), "image/png"),
       );
