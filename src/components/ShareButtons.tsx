@@ -117,9 +117,10 @@ const ShareButtons = ({ studentName, resultRef }: ShareButtonsProps) => {
         </button>
         <button
           onClick={handleDownload}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/20 text-primary text-sm font-medium hover:bg-primary/30 transition-colors"
+          disabled={downloading}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/20 text-primary text-sm font-medium hover:bg-primary/30 transition-colors disabled:opacity-60"
         >
-          <Download className="h-4 w-4" /> Download PNG
+          <Download className="h-4 w-4" /> {downloading ? "Preparing..." : "Download PNG"}
         </button>
       </div>
     </div>
