@@ -1,12 +1,12 @@
 import { Link, useLocation } from "@/lib/router-compat";
-import { Home, Target, GraduationCap, LayoutDashboard, BookOpen } from "@/lib/icons";
+import { Home, Users, GraduationCap, LayoutDashboard, BookOpen } from "@/lib/icons";
 import { useAuth } from "@/hooks/useAuth";
 
 const tabs = [
   { to: "/", label: "Home", icon: Home },
   { to: "/programmes", label: "Programmes", icon: BookOpen },
-  { to: "/admission-match", label: "Match", icon: Target },
   { to: "/scholarships", label: "Funding", icon: GraduationCap },
+  { to: "/community", label: "Community", icon: Users },
   { to: "/dashboard", label: "Profile", icon: LayoutDashboard },
 ];
 
