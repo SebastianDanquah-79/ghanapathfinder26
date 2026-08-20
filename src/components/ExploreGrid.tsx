@@ -2,7 +2,7 @@ import { Link } from "@/lib/router-compat";
 
 const items = [
   {
-    to: "/universities",
+    to: "/search?kind=university",
     title: "Universities",
     desc: "Every accredited institution in Ghana, with verified sources.",
   },
