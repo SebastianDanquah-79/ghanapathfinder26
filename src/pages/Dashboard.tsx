@@ -150,6 +150,37 @@ const Dashboard = () => {
           </button>
         </header>
 
+        <section className="bg-glass rounded-xl p-4 sm:p-5 mb-6">
+          <h2 className="font-display text-base sm:text-lg font-semibold text-foreground">
+            Welcome to GhanaPathFinder
+          </h2>
+          <p className="text-sm text-muted-foreground mt-1 max-w-3xl">
+            Your AI-powered education and career companion built to help you discover universities,
+            programmes, scholarships, careers and opportunities that fit your path.
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {[
+              { label: "Find universities", to: "/search?kind=university" },
+              { label: "Explore programmes", to: "/programmes" },
+              { label: "Discover careers", to: "/careers" },
+              { label: "Find scholarships", to: "/scholarships" },
+              { label: "Compare universities", to: "/compare" },
+              { label: "Track deadlines", to: "/applications" },
+              { label: "Student experiences", to: "/community" },
+              { label: "Saved opportunities", to: "/saved" },
+            ].map((a) => (
+              <Link
+                key={a.to}
+                to={a.to}
+                className="px-3 py-2 rounded-lg bg-secondary text-xs font-medium text-muted-foreground hover:text-foreground"
+              >
+                {a.label}
+              </Link>
+            ))}
+          </div>
+        </section>
+
+
         {/* WASSCE snapshot , the number students care about most */}
         <div className="bg-glass rounded-xl p-5 lg:p-5 mb-5 lg:mb-6">
           <div className="flex items-center justify-between gap-4">
