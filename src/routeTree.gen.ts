@@ -42,6 +42,7 @@ import { Route as ProgrammesIndexRouteImport } from './routes/programmes/index'
 import { Route as ProgrammesSlugRouteImport } from './routes/programmes/$slug'
 import { Route as ScholarshipsIndexRouteImport } from './routes/scholarships/index'
 import { Route as ScholarshipsSlugRouteImport } from './routes/scholarships/$slug'
+import { Route as SkillsIndexRouteImport } from './routes/skills/index'
 import { Route as UniversitiesSlugRouteImport } from './routes/universities/$slug'
 import { Route as UniversitySlugRouteImport } from './routes/university/$slug'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
@@ -212,6 +213,11 @@ const ScholarshipsSlugRoute = ScholarshipsSlugRouteImport.update({
   path: '/scholarships/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SkillsIndexRoute = SkillsIndexRouteImport.update({
+  id: '/skills/',
+  path: '/skills/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const UniversitiesSlugRoute = UniversitiesSlugRouteImport.update({
   id: '/universities/$slug',
   path: '/universities/$slug',
@@ -269,6 +275,7 @@ export interface FileRoutesByFullPath {
   '/careers/': typeof CareersIndexRoute
   '/programmes/': typeof ProgrammesIndexRoute
   '/scholarships/': typeof ScholarshipsIndexRoute
+  '/skills/': typeof SkillsIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/functions/v1/mcp': typeof FunctionsV1McpRoute
 }
@@ -308,6 +315,7 @@ export interface FileRoutesByTo {
   '/careers': typeof CareersIndexRoute
   '/programmes': typeof ProgrammesIndexRoute
   '/scholarships': typeof ScholarshipsIndexRoute
+  '/skills': typeof SkillsIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/functions/v1/mcp': typeof FunctionsV1McpRoute
 }
@@ -348,6 +356,7 @@ export interface FileRoutesById {
   '/careers/': typeof CareersIndexRoute
   '/programmes/': typeof ProgrammesIndexRoute
   '/scholarships/': typeof ScholarshipsIndexRoute
+  '/skills/': typeof SkillsIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/functions/v1/mcp': typeof FunctionsV1McpRoute
 }
@@ -389,6 +398,7 @@ export interface FileRouteTypes {
     | '/careers/'
     | '/programmes/'
     | '/scholarships/'
+    | '/skills/'
     | '/.lovable/oauth/consent'
     | '/functions/v1/mcp'
   fileRoutesByTo: FileRoutesByTo
@@ -428,6 +438,7 @@ export interface FileRouteTypes {
     | '/careers'
     | '/programmes'
     | '/scholarships'
+    | '/skills'
     | '/.lovable/oauth/consent'
     | '/functions/v1/mcp'
   id:
@@ -467,6 +478,7 @@ export interface FileRouteTypes {
     | '/careers/'
     | '/programmes/'
     | '/scholarships/'
+    | '/skills/'
     | '/.lovable/oauth/consent'
     | '/functions/v1/mcp'
   fileRoutesById: FileRoutesById
@@ -507,6 +519,7 @@ export interface RootRouteChildren {
   CareersIndexRoute: typeof CareersIndexRoute
   ProgrammesIndexRoute: typeof ProgrammesIndexRoute
   ScholarshipsIndexRoute: typeof ScholarshipsIndexRoute
+  SkillsIndexRoute: typeof SkillsIndexRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   FunctionsV1McpRoute: typeof FunctionsV1McpRoute
 }
@@ -744,6 +757,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScholarshipsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/skills/': {
+      id: '/skills/'
+      path: '/skills'
+      fullPath: '/skills/'
+      preLoaderRoute: typeof SkillsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/universities/$slug': {
       id: '/universities/$slug'
       path: '/universities/$slug'
@@ -811,6 +831,7 @@ const rootRouteChildren: RootRouteChildren = {
   CareersIndexRoute: CareersIndexRoute,
   ProgrammesIndexRoute: ProgrammesIndexRoute,
   ScholarshipsIndexRoute: ScholarshipsIndexRoute,
+  SkillsIndexRoute: SkillsIndexRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   FunctionsV1McpRoute: FunctionsV1McpRoute,
 }
