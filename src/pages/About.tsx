@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo, { breadcrumbLd } from "@/components/Seo";
 import { Link } from "@/lib/router-compat";
-import founderPhoto from "@/assets/founder-sebastian.jpg.asset.json";
+import founderPhoto from "@/assets/founder-sebastian-2.png.asset.json";
 import cofounderPhoto from "@/assets/founder-som.jpg.asset.json";
 
 const expectations = [
