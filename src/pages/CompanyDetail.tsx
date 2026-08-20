@@ -6,7 +6,7 @@ import VerificationBadge from "@/components/VerificationBadge";
 import { useCompany, useCompanyInternships } from "@/hooks/useOpportunities";
 
 const CompanyDetail = () => {
-  const { slug } = useParams({ strict: false }) as { slug?: string };
+  const { slug } = useParams<{ slug: string }>();
   const { data: company, isLoading } = useCompany(slug);
   const { data: opportunities } = useCompanyInternships(company?.id);
 
