@@ -239,6 +239,9 @@ const CareerDetail = () => {
                   <Bullets items={path.further_education} />
                 </Section>
               </div>
+
+              <SkillsMap major={career.major} />
+
             </>
           )}
 
