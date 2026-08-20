@@ -105,7 +105,9 @@ const CareerDetail = () => {
         {
           label: "Skills",
           detail: path.skills.technical.slice(0, 4).join(", "),
+          to: "/skills",
         },
+
         { label: "Projects", detail: path.projects[0] ?? "Build a public portfolio of work." },
         { label: "Internship", detail: path.internships[0] ?? "Industrial attachment or national service." },
         { label: "Entry-level role", detail: path.entry_level_roles.slice(0, 3).join(", ") },
