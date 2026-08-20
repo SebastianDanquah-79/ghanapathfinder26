@@ -27,11 +27,17 @@ const items = [
     desc: "Where each path leads, and what the work really looks like.",
   },
   {
+    to: "/skills",
+    title: "Skills",
+    desc: "Free courses and videos for the skills each career needs.",
+  },
+  {
     to: "/community",
     title: "Community",
     desc: "Honest, anonymous experiences from students already there.",
   },
 ];
+
 
 const ExploreGrid = () => (
   <section aria-labelledby="explore" className="border-t border-border bg-card/30">

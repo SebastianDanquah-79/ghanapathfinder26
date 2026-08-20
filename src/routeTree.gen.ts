@@ -18,6 +18,7 @@ import { Route as CommunityRouteImport } from './routes/community'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as CompareScholarshipsRouteImport } from './routes/compare-scholarships'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CreditsRouteImport } from './routes/credits'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as InspirationRouteImport } from './routes/inspiration'
@@ -42,6 +43,8 @@ import { Route as ProgrammesIndexRouteImport } from './routes/programmes/index'
 import { Route as ProgrammesSlugRouteImport } from './routes/programmes/$slug'
 import { Route as ScholarshipsIndexRouteImport } from './routes/scholarships/index'
 import { Route as ScholarshipsSlugRouteImport } from './routes/scholarships/$slug'
+import { Route as SkillsIndexRouteImport } from './routes/skills/index'
+import { Route as SkillsSlugRouteImport } from './routes/skills/$slug'
 import { Route as UniversitiesSlugRouteImport } from './routes/universities/$slug'
 import { Route as UniversitySlugRouteImport } from './routes/university/$slug'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
@@ -90,6 +93,11 @@ const CompareScholarshipsRoute = CompareScholarshipsRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreditsRoute = CreditsRouteImport.update({
+  id: '/credits',
+  path: '/credits',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -212,6 +220,16 @@ const ScholarshipsSlugRoute = ScholarshipsSlugRouteImport.update({
   path: '/scholarships/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SkillsIndexRoute = SkillsIndexRouteImport.update({
+  id: '/skills/',
+  path: '/skills/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SkillsSlugRoute = SkillsSlugRouteImport.update({
+  id: '/skills/$slug',
+  path: '/skills/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const UniversitiesSlugRoute = UniversitiesSlugRouteImport.update({
   id: '/universities/$slug',
   path: '/universities/$slug',
@@ -243,6 +261,7 @@ export interface FileRoutesByFullPath {
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
   '/contact': typeof ContactRoute
+  '/credits': typeof CreditsRoute
   '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/inspiration': typeof InspirationRoute
@@ -264,11 +283,13 @@ export interface FileRoutesByFullPath {
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/programmes/$slug': typeof ProgrammesSlugRoute
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
+  '/skills/$slug': typeof SkillsSlugRoute
   '/universities/$slug': typeof UniversitiesSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
   '/careers/': typeof CareersIndexRoute
   '/programmes/': typeof ProgrammesIndexRoute
   '/scholarships/': typeof ScholarshipsIndexRoute
+  '/skills/': typeof SkillsIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/functions/v1/mcp': typeof FunctionsV1McpRoute
 }
@@ -282,6 +303,7 @@ export interface FileRoutesByTo {
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
   '/contact': typeof ContactRoute
+  '/credits': typeof CreditsRoute
   '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/inspiration': typeof InspirationRoute
@@ -303,11 +325,13 @@ export interface FileRoutesByTo {
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/programmes/$slug': typeof ProgrammesSlugRoute
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
+  '/skills/$slug': typeof SkillsSlugRoute
   '/universities/$slug': typeof UniversitiesSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
   '/careers': typeof CareersIndexRoute
   '/programmes': typeof ProgrammesIndexRoute
   '/scholarships': typeof ScholarshipsIndexRoute
+  '/skills': typeof SkillsIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/functions/v1/mcp': typeof FunctionsV1McpRoute
 }
@@ -322,6 +346,7 @@ export interface FileRoutesById {
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
   '/contact': typeof ContactRoute
+  '/credits': typeof CreditsRoute
   '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/inspiration': typeof InspirationRoute
@@ -343,11 +368,13 @@ export interface FileRoutesById {
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/programmes/$slug': typeof ProgrammesSlugRoute
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
+  '/skills/$slug': typeof SkillsSlugRoute
   '/universities/$slug': typeof UniversitiesSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
   '/careers/': typeof CareersIndexRoute
   '/programmes/': typeof ProgrammesIndexRoute
   '/scholarships/': typeof ScholarshipsIndexRoute
+  '/skills/': typeof SkillsIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/functions/v1/mcp': typeof FunctionsV1McpRoute
 }
@@ -363,6 +390,7 @@ export interface FileRouteTypes {
     | '/compare'
     | '/compare-scholarships'
     | '/contact'
+    | '/credits'
     | '/dashboard'
     | '/disclaimer'
     | '/inspiration'
@@ -384,11 +412,13 @@ export interface FileRouteTypes {
     | '/programme/$slug'
     | '/programmes/$slug'
     | '/scholarships/$slug'
+    | '/skills/$slug'
     | '/universities/$slug'
     | '/university/$slug'
     | '/careers/'
     | '/programmes/'
     | '/scholarships/'
+    | '/skills/'
     | '/.lovable/oauth/consent'
     | '/functions/v1/mcp'
   fileRoutesByTo: FileRoutesByTo
@@ -402,6 +432,7 @@ export interface FileRouteTypes {
     | '/compare'
     | '/compare-scholarships'
     | '/contact'
+    | '/credits'
     | '/dashboard'
     | '/disclaimer'
     | '/inspiration'
@@ -423,11 +454,13 @@ export interface FileRouteTypes {
     | '/programme/$slug'
     | '/programmes/$slug'
     | '/scholarships/$slug'
+    | '/skills/$slug'
     | '/universities/$slug'
     | '/university/$slug'
     | '/careers'
     | '/programmes'
     | '/scholarships'
+    | '/skills'
     | '/.lovable/oauth/consent'
     | '/functions/v1/mcp'
   id:
@@ -441,6 +474,7 @@ export interface FileRouteTypes {
     | '/compare'
     | '/compare-scholarships'
     | '/contact'
+    | '/credits'
     | '/dashboard'
     | '/disclaimer'
     | '/inspiration'
@@ -462,11 +496,13 @@ export interface FileRouteTypes {
     | '/programme/$slug'
     | '/programmes/$slug'
     | '/scholarships/$slug'
+    | '/skills/$slug'
     | '/universities/$slug'
     | '/university/$slug'
     | '/careers/'
     | '/programmes/'
     | '/scholarships/'
+    | '/skills/'
     | '/.lovable/oauth/consent'
     | '/functions/v1/mcp'
   fileRoutesById: FileRoutesById
@@ -481,6 +517,7 @@ export interface RootRouteChildren {
   CompareRoute: typeof CompareRoute
   CompareScholarshipsRoute: typeof CompareScholarshipsRoute
   ContactRoute: typeof ContactRoute
+  CreditsRoute: typeof CreditsRoute
   DashboardRoute: typeof DashboardRoute
   DisclaimerRoute: typeof DisclaimerRoute
   InspirationRoute: typeof InspirationRoute
@@ -502,11 +539,13 @@ export interface RootRouteChildren {
   ProgrammeSlugRoute: typeof ProgrammeSlugRoute
   ProgrammesSlugRoute: typeof ProgrammesSlugRoute
   ScholarshipsSlugRoute: typeof ScholarshipsSlugRoute
+  SkillsSlugRoute: typeof SkillsSlugRoute
   UniversitiesSlugRoute: typeof UniversitiesSlugRoute
   UniversitySlugRoute: typeof UniversitySlugRoute
   CareersIndexRoute: typeof CareersIndexRoute
   ProgrammesIndexRoute: typeof ProgrammesIndexRoute
   ScholarshipsIndexRoute: typeof ScholarshipsIndexRoute
+  SkillsIndexRoute: typeof SkillsIndexRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   FunctionsV1McpRoute: typeof FunctionsV1McpRoute
 }
@@ -574,6 +613,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/credits': {
+      id: '/credits'
+      path: '/credits'
+      fullPath: '/credits'
+      preLoaderRoute: typeof CreditsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -744,6 +790,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScholarshipsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/skills/': {
+      id: '/skills/'
+      path: '/skills'
+      fullPath: '/skills/'
+      preLoaderRoute: typeof SkillsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/skills/$slug': {
+      id: '/skills/$slug'
+      path: '/skills/$slug'
+      fullPath: '/skills/$slug'
+      preLoaderRoute: typeof SkillsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/universities/$slug': {
       id: '/universities/$slug'
       path: '/universities/$slug'
@@ -785,6 +845,7 @@ const rootRouteChildren: RootRouteChildren = {
   CompareRoute: CompareRoute,
   CompareScholarshipsRoute: CompareScholarshipsRoute,
   ContactRoute: ContactRoute,
+  CreditsRoute: CreditsRoute,
   DashboardRoute: DashboardRoute,
   DisclaimerRoute: DisclaimerRoute,
   InspirationRoute: InspirationRoute,
@@ -806,11 +867,13 @@ const rootRouteChildren: RootRouteChildren = {
   ProgrammeSlugRoute: ProgrammeSlugRoute,
   ProgrammesSlugRoute: ProgrammesSlugRoute,
   ScholarshipsSlugRoute: ScholarshipsSlugRoute,
+  SkillsSlugRoute: SkillsSlugRoute,
   UniversitiesSlugRoute: UniversitiesSlugRoute,
   UniversitySlugRoute: UniversitySlugRoute,
   CareersIndexRoute: CareersIndexRoute,
   ProgrammesIndexRoute: ProgrammesIndexRoute,
   ScholarshipsIndexRoute: ScholarshipsIndexRoute,
+  SkillsIndexRoute: SkillsIndexRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   FunctionsV1McpRoute: FunctionsV1McpRoute,
 }

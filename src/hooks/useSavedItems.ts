@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "./useAuth";
 
-export type SavedItemType = "university" | "scholarship" | "career" | "programme";
+export type SavedItemType = "university" | "scholarship" | "career" | "programme" | "skill";
 
 export interface SavedItemInput {
   item_type: SavedItemType;

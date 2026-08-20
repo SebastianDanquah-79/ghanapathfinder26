@@ -5,6 +5,8 @@ import Footer from "@/components/Footer";
 import Seo, { breadcrumbLd } from "@/components/Seo";
 import SaveButton from "@/components/SaveButton";
 import CareerPathway, { type PathwayStep } from "@/components/CareerPathway";
+import SkillsMap from "@/components/SkillsMap";
+
 import { careerBySlug, careerSlug } from "@/data/careers";
 import { careerPathByMajor } from "@/data/careerPaths";
 import { useCareerProgrammes } from "@/hooks/useCareerProgrammes";
@@ -105,7 +107,9 @@ const CareerDetail = () => {
         {
           label: "Skills",
           detail: path.skills.technical.slice(0, 4).join(", "),
+          to: "/skills",
         },
+
         { label: "Projects", detail: path.projects[0] ?? "Build a public portfolio of work." },
         { label: "Internship", detail: path.internships[0] ?? "Industrial attachment or national service." },
         { label: "Entry-level role", detail: path.entry_level_roles.slice(0, 3).join(", ") },
@@ -204,13 +208,8 @@ const CareerDetail = () => {
                   <p className="mt-3 mb-1.5 text-xs font-medium text-foreground">Alternative programmes</p>
                   <Chips items={path.alternative_programmes} />
                 </Section>
-                <Section title="Technical skills">
-                  <Chips items={path.skills.technical} />
-                </Section>
-                <Section title="Soft skills">
-                  <Chips items={path.skills.soft} />
-                </Section>
                 <Section title="Recommended certifications">
+
                   <Bullets items={path.certifications} />
                 </Section>
                 <Section title="Projects you can build">
@@ -239,6 +238,9 @@ const CareerDetail = () => {
                   <Bullets items={path.further_education} />
                 </Section>
               </div>
+
+              <SkillsMap major={career.major} />
+
             </>
           )}
 
