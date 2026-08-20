@@ -204,13 +204,8 @@ const CareerDetail = () => {
                   <p className="mt-3 mb-1.5 text-xs font-medium text-foreground">Alternative programmes</p>
                   <Chips items={path.alternative_programmes} />
                 </Section>
-                <Section title="Technical skills">
-                  <Chips items={path.skills.technical} />
-                </Section>
-                <Section title="Soft skills">
-                  <Chips items={path.skills.soft} />
-                </Section>
                 <Section title="Recommended certifications">
+
                   <Bullets items={path.certifications} />
                 </Section>
                 <Section title="Projects you can build">
