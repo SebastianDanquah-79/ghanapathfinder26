@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import SaveButton from "@/components/SaveButton";
 import OfficialLink from "@/components/OfficialLink";
 import VerificationBadge from "@/components/VerificationBadge";
+import StudentInsights from "@/components/StudentInsights";
 import { formatVerified, useProgrammes, useUniversity } from "@/hooks/useCatalogue";
 import { useTrackView } from "@/hooks/useTracking";
 
@@ -261,6 +262,8 @@ const UniversityProfile = () => {
                   ))}
                 </div>
               </section>
+
+              <StudentInsights universityId={uni.id} universityName={uni.name} />
             </>
           )}
         </div>

@@ -14,6 +14,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdmissionMatchRouteImport } from './routes/admission-match'
 import { Route as ApplicationsRouteImport } from './routes/applications'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as CommunityRouteImport } from './routes/community'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as CompareScholarshipsRouteImport } from './routes/compare-scholarships'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -33,6 +34,7 @@ import { Route as SearchRouteImport } from './routes/search'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin/analytics'
 import { Route as AdminDataRouteImport } from './routes/admin/data'
+import { Route as AdminInsightsRouteImport } from './routes/admin/insights'
 import { Route as CareersIndexRouteImport } from './routes/careers/index'
 import { Route as CareersSlugRouteImport } from './routes/careers/$slug'
 import { Route as ProgrammeSlugRouteImport } from './routes/programme/$slug'
@@ -68,6 +70,11 @@ const ApplicationsRoute = ApplicationsRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommunityRoute = CommunityRouteImport.update({
+  id: '/community',
+  path: '/community',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CompareRoute = CompareRouteImport.update({
@@ -165,6 +172,11 @@ const AdminDataRoute = AdminDataRouteImport.update({
   path: '/admin/data',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminInsightsRoute = AdminInsightsRouteImport.update({
+  id: '/admin/insights',
+  path: '/admin/insights',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CareersIndexRoute = CareersIndexRouteImport.update({
   id: '/careers/',
   path: '/careers/',
@@ -227,6 +239,7 @@ export interface FileRoutesByFullPath {
   '/admission-match': typeof AdmissionMatchRoute
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
+  '/community': typeof CommunityRoute
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
   '/contact': typeof ContactRoute
@@ -246,6 +259,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
+  '/admin/insights': typeof AdminInsightsRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/programmes/$slug': typeof ProgrammesSlugRoute
@@ -264,6 +278,7 @@ export interface FileRoutesByTo {
   '/admission-match': typeof AdmissionMatchRoute
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
+  '/community': typeof CommunityRoute
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
   '/contact': typeof ContactRoute
@@ -283,6 +298,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
+  '/admin/insights': typeof AdminInsightsRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/programmes/$slug': typeof ProgrammesSlugRoute
@@ -302,6 +318,7 @@ export interface FileRoutesById {
   '/admission-match': typeof AdmissionMatchRoute
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
+  '/community': typeof CommunityRoute
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
   '/contact': typeof ContactRoute
@@ -321,6 +338,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
+  '/admin/insights': typeof AdminInsightsRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/programmes/$slug': typeof ProgrammesSlugRoute
@@ -341,6 +359,7 @@ export interface FileRouteTypes {
     | '/admission-match'
     | '/applications'
     | '/auth'
+    | '/community'
     | '/compare'
     | '/compare-scholarships'
     | '/contact'
@@ -360,6 +379,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/admin/analytics'
     | '/admin/data'
+    | '/admin/insights'
     | '/careers/$slug'
     | '/programme/$slug'
     | '/programmes/$slug'
@@ -378,6 +398,7 @@ export interface FileRouteTypes {
     | '/admission-match'
     | '/applications'
     | '/auth'
+    | '/community'
     | '/compare'
     | '/compare-scholarships'
     | '/contact'
@@ -397,6 +418,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/admin/analytics'
     | '/admin/data'
+    | '/admin/insights'
     | '/careers/$slug'
     | '/programme/$slug'
     | '/programmes/$slug'
@@ -415,6 +437,7 @@ export interface FileRouteTypes {
     | '/admission-match'
     | '/applications'
     | '/auth'
+    | '/community'
     | '/compare'
     | '/compare-scholarships'
     | '/contact'
@@ -434,6 +457,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/admin/analytics'
     | '/admin/data'
+    | '/admin/insights'
     | '/careers/$slug'
     | '/programme/$slug'
     | '/programmes/$slug'
@@ -453,6 +477,7 @@ export interface RootRouteChildren {
   AdmissionMatchRoute: typeof AdmissionMatchRoute
   ApplicationsRoute: typeof ApplicationsRoute
   AuthRoute: typeof AuthRoute
+  CommunityRoute: typeof CommunityRoute
   CompareRoute: typeof CompareRoute
   CompareScholarshipsRoute: typeof CompareScholarshipsRoute
   ContactRoute: typeof ContactRoute
@@ -472,6 +497,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   AdminAnalyticsRoute: typeof AdminAnalyticsRoute
   AdminDataRoute: typeof AdminDataRoute
+  AdminInsightsRoute: typeof AdminInsightsRoute
   CareersSlugRoute: typeof CareersSlugRoute
   ProgrammeSlugRoute: typeof ProgrammeSlugRoute
   ProgrammesSlugRoute: typeof ProgrammesSlugRoute
@@ -520,6 +546,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/community': {
+      id: '/community'
+      path: '/community'
+      fullPath: '/community'
+      preLoaderRoute: typeof CommunityRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/compare': {
@@ -655,6 +688,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDataRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/insights': {
+      id: '/admin/insights'
+      path: '/admin/insights'
+      fullPath: '/admin/insights'
+      preLoaderRoute: typeof AdminInsightsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/careers/': {
       id: '/careers/'
       path: '/careers'
@@ -741,6 +781,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdmissionMatchRoute: AdmissionMatchRoute,
   ApplicationsRoute: ApplicationsRoute,
   AuthRoute: AuthRoute,
+  CommunityRoute: CommunityRoute,
   CompareRoute: CompareRoute,
   CompareScholarshipsRoute: CompareScholarshipsRoute,
   ContactRoute: ContactRoute,
@@ -760,6 +801,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   AdminAnalyticsRoute: AdminAnalyticsRoute,
   AdminDataRoute: AdminDataRoute,
+  AdminInsightsRoute: AdminInsightsRoute,
   CareersSlugRoute: CareersSlugRoute,
   ProgrammeSlugRoute: ProgrammeSlugRoute,
   ProgrammesSlugRoute: ProgrammesSlugRoute,

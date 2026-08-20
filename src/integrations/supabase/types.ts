@@ -273,6 +273,47 @@ export type Database = {
           },
         ]
       }
+      insight_reports: {
+        Row: {
+          created_at: string
+          details: string | null
+          id: string
+          insight_id: string
+          reason: string
+          reporter_id: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          details?: string | null
+          id?: string
+          insight_id: string
+          reason: string
+          reporter_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          details?: string | null
+          id?: string
+          insight_id?: string
+          reason?: string
+          reporter_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "insight_reports_insight_id_fkey"
+            columns: ["insight_id"]
+            isOneToOne: false
+            referencedRelation: "student_insights"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       match_preferences: {
         Row: {
           created_at: string
@@ -1133,6 +1174,68 @@ export type Database = {
           website_url?: string | null
         }
         Relationships: []
+      }
+      student_insights: {
+        Row: {
+          advice: string | null
+          body: string
+          category: string
+          created_at: string
+          helpful_count: number
+          id: string
+          programme: string | null
+          rating: number | null
+          status: string
+          student_status: string
+          university_id: string
+          updated_at: string
+          user_id: string
+          wish_i_knew: string | null
+          year_of_study: string | null
+        }
+        Insert: {
+          advice?: string | null
+          body: string
+          category?: string
+          created_at?: string
+          helpful_count?: number
+          id?: string
+          programme?: string | null
+          rating?: number | null
+          status?: string
+          student_status?: string
+          university_id: string
+          updated_at?: string
+          user_id: string
+          wish_i_knew?: string | null
+          year_of_study?: string | null
+        }
+        Update: {
+          advice?: string | null
+          body?: string
+          category?: string
+          created_at?: string
+          helpful_count?: number
+          id?: string
+          programme?: string | null
+          rating?: number | null
+          status?: string
+          student_status?: string
+          university_id?: string
+          updated_at?: string
+          user_id?: string
+          wish_i_knew?: string | null
+          year_of_study?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_insights_university_id_fkey"
+            columns: ["university_id"]
+            isOneToOne: false
+            referencedRelation: "universities"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       universities: {
         Row: {

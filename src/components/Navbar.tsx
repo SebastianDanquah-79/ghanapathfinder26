@@ -7,19 +7,21 @@ import ThemeToggle from "@/components/ThemeToggle";
 
 const primary = [
   { label: "Home", href: "/" },
+  { label: "Universities", href: "/search?kind=university" },
   { label: "Programmes", href: "/programmes" },
-  { label: "Match", href: "/admission-match" },
-  { label: "Funding", href: "/scholarships" },
-  { label: "Profile", href: "/dashboard" },
+  { label: "Careers", href: "/careers" },
+  { label: "Scholarships", href: "/scholarships" },
+  { label: "Community", href: "/community" },
+  { label: "My Path", href: "/dashboard" },
 ];
 
 const more = [
-  { label: "Universities", href: "/#universities" },
-  { label: "Saved items", href: "/saved" },
-  { label: "Compare", href: "/compare" },
+  { label: "Explore & search", href: "/search" },
+  { label: "Admission match", href: "/admission-match" },
   { label: "Scholarship matcher", href: "/matcher" },
+  { label: "Compare", href: "/compare" },
+  { label: "Saved items", href: "/saved" },
   { label: "Applications", href: "/applications" },
-  { label: "Careers", href: "/careers" },
   { label: "Inspiration", href: "/inspiration" },
   { label: "Parents", href: "/parent" },
   { label: "About", href: "/about" },
@@ -135,11 +137,11 @@ const Navbar = () => {
           </Link>
           <button
             onClick={() => setOpen(!open)}
-            className="grid place-items-center h-12 w-12 -mr-1 rounded-lg border border-border bg-secondary text-foreground hover:text-primary active:text-primary transition-colors"
+            className="grid place-items-center h-14 w-14 -mr-1 rounded-xl border border-border bg-secondary text-foreground shadow-sm hover:text-primary active:text-primary transition-colors"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
           >
-            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {open ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
           </button>
         </div>
       </div>
