@@ -261,6 +261,8 @@ const UniversityProfile = () => {
                   ))}
                 </div>
               </section>
+
+              <StudentInsights universityId={uni.id} universityName={uni.name} />
             </>
           )}
         </div>
