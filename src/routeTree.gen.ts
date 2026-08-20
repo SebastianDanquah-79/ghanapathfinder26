@@ -43,6 +43,7 @@ import { Route as ProgrammesSlugRouteImport } from './routes/programmes/$slug'
 import { Route as ScholarshipsIndexRouteImport } from './routes/scholarships/index'
 import { Route as ScholarshipsSlugRouteImport } from './routes/scholarships/$slug'
 import { Route as SkillsIndexRouteImport } from './routes/skills/index'
+import { Route as SkillsSlugRouteImport } from './routes/skills/$slug'
 import { Route as UniversitiesSlugRouteImport } from './routes/universities/$slug'
 import { Route as UniversitySlugRouteImport } from './routes/university/$slug'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
@@ -218,6 +219,11 @@ const SkillsIndexRoute = SkillsIndexRouteImport.update({
   path: '/skills/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SkillsSlugRoute = SkillsSlugRouteImport.update({
+  id: '/skills/$slug',
+  path: '/skills/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const UniversitiesSlugRoute = UniversitiesSlugRouteImport.update({
   id: '/universities/$slug',
   path: '/universities/$slug',
@@ -270,6 +276,7 @@ export interface FileRoutesByFullPath {
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/programmes/$slug': typeof ProgrammesSlugRoute
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
+  '/skills/$slug': typeof SkillsSlugRoute
   '/universities/$slug': typeof UniversitiesSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
   '/careers/': typeof CareersIndexRoute
@@ -310,6 +317,7 @@ export interface FileRoutesByTo {
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/programmes/$slug': typeof ProgrammesSlugRoute
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
+  '/skills/$slug': typeof SkillsSlugRoute
   '/universities/$slug': typeof UniversitiesSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
   '/careers': typeof CareersIndexRoute
@@ -351,6 +359,7 @@ export interface FileRoutesById {
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/programmes/$slug': typeof ProgrammesSlugRoute
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
+  '/skills/$slug': typeof SkillsSlugRoute
   '/universities/$slug': typeof UniversitiesSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
   '/careers/': typeof CareersIndexRoute
@@ -393,6 +402,7 @@ export interface FileRouteTypes {
     | '/programme/$slug'
     | '/programmes/$slug'
     | '/scholarships/$slug'
+    | '/skills/$slug'
     | '/universities/$slug'
     | '/university/$slug'
     | '/careers/'
@@ -433,6 +443,7 @@ export interface FileRouteTypes {
     | '/programme/$slug'
     | '/programmes/$slug'
     | '/scholarships/$slug'
+    | '/skills/$slug'
     | '/universities/$slug'
     | '/university/$slug'
     | '/careers'
@@ -473,6 +484,7 @@ export interface FileRouteTypes {
     | '/programme/$slug'
     | '/programmes/$slug'
     | '/scholarships/$slug'
+    | '/skills/$slug'
     | '/universities/$slug'
     | '/university/$slug'
     | '/careers/'
@@ -514,6 +526,7 @@ export interface RootRouteChildren {
   ProgrammeSlugRoute: typeof ProgrammeSlugRoute
   ProgrammesSlugRoute: typeof ProgrammesSlugRoute
   ScholarshipsSlugRoute: typeof ScholarshipsSlugRoute
+  SkillsSlugRoute: typeof SkillsSlugRoute
   UniversitiesSlugRoute: typeof UniversitiesSlugRoute
   UniversitySlugRoute: typeof UniversitySlugRoute
   CareersIndexRoute: typeof CareersIndexRoute
@@ -764,6 +777,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SkillsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/skills/$slug': {
+      id: '/skills/$slug'
+      path: '/skills/$slug'
+      fullPath: '/skills/$slug'
+      preLoaderRoute: typeof SkillsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/universities/$slug': {
       id: '/universities/$slug'
       path: '/universities/$slug'
@@ -826,6 +846,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProgrammeSlugRoute: ProgrammeSlugRoute,
   ProgrammesSlugRoute: ProgrammesSlugRoute,
   ScholarshipsSlugRoute: ScholarshipsSlugRoute,
+  SkillsSlugRoute: SkillsSlugRoute,
   UniversitiesSlugRoute: UniversitiesSlugRoute,
   UniversitySlugRoute: UniversitySlugRoute,
   CareersIndexRoute: CareersIndexRoute,
