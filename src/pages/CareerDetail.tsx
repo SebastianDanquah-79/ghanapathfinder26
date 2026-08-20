@@ -241,6 +241,9 @@ const CareerDetail = () => {
 
               <SkillsMap major={career.major} />
 
+              <InternshipMatches major={career.major} />
+
+
             </>
           )}
 
