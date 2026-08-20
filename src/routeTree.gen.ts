@@ -39,6 +39,7 @@ import { Route as AdminDataRouteImport } from './routes/admin/data'
 import { Route as AdminInsightsRouteImport } from './routes/admin/insights'
 import { Route as CareersIndexRouteImport } from './routes/careers/index'
 import { Route as CareersSlugRouteImport } from './routes/careers/$slug'
+import { Route as CompaniesIndexRouteImport } from './routes/companies/index'
 import { Route as ProgrammeSlugRouteImport } from './routes/programme/$slug'
 import { Route as ProgrammesIndexRouteImport } from './routes/programmes/index'
 import { Route as ProgrammesSlugRouteImport } from './routes/programmes/$slug'
@@ -201,6 +202,11 @@ const CareersSlugRoute = CareersSlugRouteImport.update({
   path: '/careers/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CompaniesIndexRoute = CompaniesIndexRouteImport.update({
+  id: '/companies/',
+  path: '/companies/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProgrammeSlugRoute = ProgrammeSlugRouteImport.update({
   id: '/programme/$slug',
   path: '/programme/$slug',
@@ -294,6 +300,7 @@ export interface FileRoutesByFullPath {
   '/universities/$slug': typeof UniversitiesSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
   '/careers/': typeof CareersIndexRoute
+  '/companies/': typeof CompaniesIndexRoute
   '/programmes/': typeof ProgrammesIndexRoute
   '/scholarships/': typeof ScholarshipsIndexRoute
   '/skills/': typeof SkillsIndexRoute
@@ -337,6 +344,7 @@ export interface FileRoutesByTo {
   '/universities/$slug': typeof UniversitiesSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
   '/careers': typeof CareersIndexRoute
+  '/companies': typeof CompaniesIndexRoute
   '/programmes': typeof ProgrammesIndexRoute
   '/scholarships': typeof ScholarshipsIndexRoute
   '/skills': typeof SkillsIndexRoute
@@ -381,6 +389,7 @@ export interface FileRoutesById {
   '/universities/$slug': typeof UniversitiesSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
   '/careers/': typeof CareersIndexRoute
+  '/companies/': typeof CompaniesIndexRoute
   '/programmes/': typeof ProgrammesIndexRoute
   '/scholarships/': typeof ScholarshipsIndexRoute
   '/skills/': typeof SkillsIndexRoute
@@ -426,6 +435,7 @@ export interface FileRouteTypes {
     | '/universities/$slug'
     | '/university/$slug'
     | '/careers/'
+    | '/companies/'
     | '/programmes/'
     | '/scholarships/'
     | '/skills/'
@@ -469,6 +479,7 @@ export interface FileRouteTypes {
     | '/universities/$slug'
     | '/university/$slug'
     | '/careers'
+    | '/companies'
     | '/programmes'
     | '/scholarships'
     | '/skills'
@@ -512,6 +523,7 @@ export interface FileRouteTypes {
     | '/universities/$slug'
     | '/university/$slug'
     | '/careers/'
+    | '/companies/'
     | '/programmes/'
     | '/scholarships/'
     | '/skills/'
@@ -556,6 +568,7 @@ export interface RootRouteChildren {
   UniversitiesSlugRoute: typeof UniversitiesSlugRoute
   UniversitySlugRoute: typeof UniversitySlugRoute
   CareersIndexRoute: typeof CareersIndexRoute
+  CompaniesIndexRoute: typeof CompaniesIndexRoute
   ProgrammesIndexRoute: typeof ProgrammesIndexRoute
   ScholarshipsIndexRoute: typeof ScholarshipsIndexRoute
   SkillsIndexRoute: typeof SkillsIndexRoute
@@ -775,6 +788,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CareersSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/companies/': {
+      id: '/companies/'
+      path: '/companies'
+      fullPath: '/companies/'
+      preLoaderRoute: typeof CompaniesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/programme/$slug': {
       id: '/programme/$slug'
       path: '/programme/$slug'
@@ -892,6 +912,7 @@ const rootRouteChildren: RootRouteChildren = {
   UniversitiesSlugRoute: UniversitiesSlugRoute,
   UniversitySlugRoute: UniversitySlugRoute,
   CareersIndexRoute: CareersIndexRoute,
+  CompaniesIndexRoute: CompaniesIndexRoute,
   ProgrammesIndexRoute: ProgrammesIndexRoute,
   ScholarshipsIndexRoute: ScholarshipsIndexRoute,
   SkillsIndexRoute: SkillsIndexRoute,
