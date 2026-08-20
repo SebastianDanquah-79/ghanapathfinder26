@@ -14,6 +14,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdmissionMatchRouteImport } from './routes/admission-match'
 import { Route as ApplicationsRouteImport } from './routes/applications'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as CommunityRouteImport } from './routes/community'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as CompareScholarshipsRouteImport } from './routes/compare-scholarships'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -68,6 +69,11 @@ const ApplicationsRoute = ApplicationsRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommunityRoute = CommunityRouteImport.update({
+  id: '/community',
+  path: '/community',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CompareRoute = CompareRouteImport.update({
@@ -227,6 +233,7 @@ export interface FileRoutesByFullPath {
   '/admission-match': typeof AdmissionMatchRoute
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
+  '/community': typeof CommunityRoute
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
   '/contact': typeof ContactRoute
@@ -264,6 +271,7 @@ export interface FileRoutesByTo {
   '/admission-match': typeof AdmissionMatchRoute
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
+  '/community': typeof CommunityRoute
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
   '/contact': typeof ContactRoute
@@ -302,6 +310,7 @@ export interface FileRoutesById {
   '/admission-match': typeof AdmissionMatchRoute
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
+  '/community': typeof CommunityRoute
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
   '/contact': typeof ContactRoute
@@ -341,6 +350,7 @@ export interface FileRouteTypes {
     | '/admission-match'
     | '/applications'
     | '/auth'
+    | '/community'
     | '/compare'
     | '/compare-scholarships'
     | '/contact'
@@ -378,6 +388,7 @@ export interface FileRouteTypes {
     | '/admission-match'
     | '/applications'
     | '/auth'
+    | '/community'
     | '/compare'
     | '/compare-scholarships'
     | '/contact'
@@ -415,6 +426,7 @@ export interface FileRouteTypes {
     | '/admission-match'
     | '/applications'
     | '/auth'
+    | '/community'
     | '/compare'
     | '/compare-scholarships'
     | '/contact'
@@ -453,6 +465,7 @@ export interface RootRouteChildren {
   AdmissionMatchRoute: typeof AdmissionMatchRoute
   ApplicationsRoute: typeof ApplicationsRoute
   AuthRoute: typeof AuthRoute
+  CommunityRoute: typeof CommunityRoute
   CompareRoute: typeof CompareRoute
   CompareScholarshipsRoute: typeof CompareScholarshipsRoute
   ContactRoute: typeof ContactRoute
@@ -520,6 +533,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/community': {
+      id: '/community'
+      path: '/community'
+      fullPath: '/community'
+      preLoaderRoute: typeof CommunityRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/compare': {
@@ -741,6 +761,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdmissionMatchRoute: AdmissionMatchRoute,
   ApplicationsRoute: ApplicationsRoute,
   AuthRoute: AuthRoute,
+  CommunityRoute: CommunityRoute,
   CompareRoute: CompareRoute,
   CompareScholarshipsRoute: CompareScholarshipsRoute,
   ContactRoute: ContactRoute,
