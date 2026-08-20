@@ -18,6 +18,7 @@ import { Route as CommunityRouteImport } from './routes/community'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as CompareScholarshipsRouteImport } from './routes/compare-scholarships'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CreditsRouteImport } from './routes/credits'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as InspirationRouteImport } from './routes/inspiration'
@@ -92,6 +93,11 @@ const CompareScholarshipsRoute = CompareScholarshipsRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreditsRoute = CreditsRouteImport.update({
+  id: '/credits',
+  path: '/credits',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -255,6 +261,7 @@ export interface FileRoutesByFullPath {
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
   '/contact': typeof ContactRoute
+  '/credits': typeof CreditsRoute
   '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/inspiration': typeof InspirationRoute
@@ -296,6 +303,7 @@ export interface FileRoutesByTo {
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
   '/contact': typeof ContactRoute
+  '/credits': typeof CreditsRoute
   '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/inspiration': typeof InspirationRoute
@@ -338,6 +346,7 @@ export interface FileRoutesById {
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
   '/contact': typeof ContactRoute
+  '/credits': typeof CreditsRoute
   '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/inspiration': typeof InspirationRoute
@@ -381,6 +390,7 @@ export interface FileRouteTypes {
     | '/compare'
     | '/compare-scholarships'
     | '/contact'
+    | '/credits'
     | '/dashboard'
     | '/disclaimer'
     | '/inspiration'
@@ -422,6 +432,7 @@ export interface FileRouteTypes {
     | '/compare'
     | '/compare-scholarships'
     | '/contact'
+    | '/credits'
     | '/dashboard'
     | '/disclaimer'
     | '/inspiration'
@@ -463,6 +474,7 @@ export interface FileRouteTypes {
     | '/compare'
     | '/compare-scholarships'
     | '/contact'
+    | '/credits'
     | '/dashboard'
     | '/disclaimer'
     | '/inspiration'
@@ -505,6 +517,7 @@ export interface RootRouteChildren {
   CompareRoute: typeof CompareRoute
   CompareScholarshipsRoute: typeof CompareScholarshipsRoute
   ContactRoute: typeof ContactRoute
+  CreditsRoute: typeof CreditsRoute
   DashboardRoute: typeof DashboardRoute
   DisclaimerRoute: typeof DisclaimerRoute
   InspirationRoute: typeof InspirationRoute
@@ -600,6 +613,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/credits': {
+      id: '/credits'
+      path: '/credits'
+      fullPath: '/credits'
+      preLoaderRoute: typeof CreditsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -825,6 +845,7 @@ const rootRouteChildren: RootRouteChildren = {
   CompareRoute: CompareRoute,
   CompareScholarshipsRoute: CompareScholarshipsRoute,
   ContactRoute: ContactRoute,
+  CreditsRoute: CreditsRoute,
   DashboardRoute: DashboardRoute,
   DisclaimerRoute: DisclaimerRoute,
   InspirationRoute: InspirationRoute,
