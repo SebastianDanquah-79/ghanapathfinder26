@@ -6,6 +6,8 @@ import Seo, { breadcrumbLd } from "@/components/Seo";
 import SaveButton from "@/components/SaveButton";
 import CareerPathway, { type PathwayStep } from "@/components/CareerPathway";
 import SkillsMap from "@/components/SkillsMap";
+import InternshipMatches from "@/components/InternshipMatches";
+
 
 import { careerBySlug, careerSlug } from "@/data/careers";
 import { careerPathByMajor } from "@/data/careerPaths";
