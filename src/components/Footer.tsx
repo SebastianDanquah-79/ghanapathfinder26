@@ -3,14 +3,16 @@ import { Link } from "@/lib/router-compat";
 
 const links = [
   { label: "About GhanaPathFinder", to: "/about" },
+  { label: "Skills Hub", to: "/skills" },
   { label: "Disclaimer", to: "/disclaimer" },
   { label: "References & Acknowledgements", to: "/references" },
+  { label: "Credits & Sources", to: "/credits" },
   { label: "Professional Councils", to: "/professional-councils" },
   { label: "Privacy Policy", to: "/privacy" },
   { label: "Terms of Use", to: "/terms" },
   { label: "Contact", to: "/contact" },
-  { label: "Official Sources", to: "/references" },
 ];
+
 
 const Footer = () => (
   <footer className="py-8 px-4 border-t border-border/50">
