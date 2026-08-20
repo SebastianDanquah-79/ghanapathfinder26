@@ -5,6 +5,8 @@ import Footer from "@/components/Footer";
 import Seo, { breadcrumbLd } from "@/components/Seo";
 import SaveButton from "@/components/SaveButton";
 import CareerPathway, { type PathwayStep } from "@/components/CareerPathway";
+import SkillsMap from "@/components/SkillsMap";
+
 import { careerBySlug, careerSlug } from "@/data/careers";
 import { careerPathByMajor } from "@/data/careerPaths";
 import { useCareerProgrammes } from "@/hooks/useCareerProgrammes";
