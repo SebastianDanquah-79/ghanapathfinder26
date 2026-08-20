@@ -46,6 +46,7 @@ const Index = () => (
       <HeroSection />
     </div>
 
+    <ExploreGrid />
     <CollegeRecommender />
     <UniversityDirectory />
     <ScholarshipSection />
