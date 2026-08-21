@@ -13,7 +13,7 @@ import { useTrackView } from "@/hooks/useTracking";
 const UniversityProfile = () => {
   const { slug } = useParams<{ slug: string }>();
   const { data: uni, isLoading, isError, refetch } = useUniversity(slug);
-  useTrackView("university_view", "university", slug, { title: uni?.name, href: `/university/${slug}` });
+  useTrackView("university_view", "university", slug);
   const { data: programmes, isLoading: loadingProgrammes } = useProgrammes(uni?.id);
 
   return (

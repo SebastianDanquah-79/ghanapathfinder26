@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useRouterState } from "@tanstack/react-router";
 import { track, type AnalyticsEvent } from "@/lib/analytics";
-import { recordRecentlyViewed } from "@/lib/recentlyViewed";
 
 /**
  * Records one anonymous page view per navigation. The live counter updates
@@ -15,17 +14,9 @@ export const usePageViews = () => {
 };
 
 /** Records a single view event for a programme, university or scholarship. */
-export const useTrackView = (
-  event: AnalyticsEvent,
-  refType: string,
-  refId?: string,
-  meta?: { title?: string | null; href?: string },
-) => {
-  const title = meta?.title ?? undefined;
-  const href = meta?.href;
+export const useTrackView = (event: AnalyticsEvent, refType: string, refId?: string) => {
   useEffect(() => {
     if (!refId) return;
     void track(event, { refType, refId });
-    if (title && href) recordRecentlyViewed({ type: refType, id: refId, title, href });
-  }, [event, refType, refId, title, href]);
+  }, [event, refType, refId]);
 };

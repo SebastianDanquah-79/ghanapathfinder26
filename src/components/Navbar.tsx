@@ -17,11 +17,7 @@ const primary = [
 
 const more = [
   { label: "Explore & search", href: "/search" },
-  { label: "Skills & learning", href: "/skills" },
-  { label: "Internships", href: "/internships" },
-  { label: "Employers", href: "/companies" },
   { label: "Admission match", href: "/admission-match" },
-
   { label: "Scholarship matcher", href: "/matcher" },
   { label: "Compare", href: "/compare" },
   { label: "Saved items", href: "/saved" },

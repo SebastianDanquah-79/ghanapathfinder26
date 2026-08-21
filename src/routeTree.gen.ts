@@ -22,7 +22,6 @@ import { Route as CreditsRouteImport } from './routes/credits'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as InspirationRouteImport } from './routes/inspiration'
-import { Route as InternshipsRouteImport } from './routes/internships'
 import { Route as MatcherRouteImport } from './routes/matcher'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as ParentRouteImport } from './routes/parent'
@@ -39,8 +38,6 @@ import { Route as AdminDataRouteImport } from './routes/admin/data'
 import { Route as AdminInsightsRouteImport } from './routes/admin/insights'
 import { Route as CareersIndexRouteImport } from './routes/careers/index'
 import { Route as CareersSlugRouteImport } from './routes/careers/$slug'
-import { Route as CompaniesIndexRouteImport } from './routes/companies/index'
-import { Route as CompaniesSlugRouteImport } from './routes/companies/$slug'
 import { Route as ProgrammeSlugRouteImport } from './routes/programme/$slug'
 import { Route as ProgrammesIndexRouteImport } from './routes/programmes/index'
 import { Route as ProgrammesSlugRouteImport } from './routes/programmes/$slug'
@@ -116,11 +113,6 @@ const DisclaimerRoute = DisclaimerRouteImport.update({
 const InspirationRoute = InspirationRouteImport.update({
   id: '/inspiration',
   path: '/inspiration',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InternshipsRoute = InternshipsRouteImport.update({
-  id: '/internships',
-  path: '/internships',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MatcherRoute = MatcherRouteImport.update({
@@ -203,16 +195,6 @@ const CareersSlugRoute = CareersSlugRouteImport.update({
   path: '/careers/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CompaniesIndexRoute = CompaniesIndexRouteImport.update({
-  id: '/companies/',
-  path: '/companies/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CompaniesSlugRoute = CompaniesSlugRouteImport.update({
-  id: '/companies/$slug',
-  path: '/companies/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ProgrammeSlugRoute = ProgrammeSlugRouteImport.update({
   id: '/programme/$slug',
   path: '/programme/$slug',
@@ -283,7 +265,6 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/inspiration': typeof InspirationRoute
-  '/internships': typeof InternshipsRoute
   '/matcher': typeof MatcherRoute
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
@@ -299,7 +280,6 @@ export interface FileRoutesByFullPath {
   '/admin/data': typeof AdminDataRoute
   '/admin/insights': typeof AdminInsightsRoute
   '/careers/$slug': typeof CareersSlugRoute
-  '/companies/$slug': typeof CompaniesSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/programmes/$slug': typeof ProgrammesSlugRoute
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
@@ -307,7 +287,6 @@ export interface FileRoutesByFullPath {
   '/universities/$slug': typeof UniversitiesSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
   '/careers/': typeof CareersIndexRoute
-  '/companies/': typeof CompaniesIndexRoute
   '/programmes/': typeof ProgrammesIndexRoute
   '/scholarships/': typeof ScholarshipsIndexRoute
   '/skills/': typeof SkillsIndexRoute
@@ -328,7 +307,6 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/inspiration': typeof InspirationRoute
-  '/internships': typeof InternshipsRoute
   '/matcher': typeof MatcherRoute
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
@@ -344,7 +322,6 @@ export interface FileRoutesByTo {
   '/admin/data': typeof AdminDataRoute
   '/admin/insights': typeof AdminInsightsRoute
   '/careers/$slug': typeof CareersSlugRoute
-  '/companies/$slug': typeof CompaniesSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/programmes/$slug': typeof ProgrammesSlugRoute
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
@@ -352,7 +329,6 @@ export interface FileRoutesByTo {
   '/universities/$slug': typeof UniversitiesSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
   '/careers': typeof CareersIndexRoute
-  '/companies': typeof CompaniesIndexRoute
   '/programmes': typeof ProgrammesIndexRoute
   '/scholarships': typeof ScholarshipsIndexRoute
   '/skills': typeof SkillsIndexRoute
@@ -374,7 +350,6 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/inspiration': typeof InspirationRoute
-  '/internships': typeof InternshipsRoute
   '/matcher': typeof MatcherRoute
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
@@ -390,7 +365,6 @@ export interface FileRoutesById {
   '/admin/data': typeof AdminDataRoute
   '/admin/insights': typeof AdminInsightsRoute
   '/careers/$slug': typeof CareersSlugRoute
-  '/companies/$slug': typeof CompaniesSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/programmes/$slug': typeof ProgrammesSlugRoute
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
@@ -398,7 +372,6 @@ export interface FileRoutesById {
   '/universities/$slug': typeof UniversitiesSlugRoute
   '/university/$slug': typeof UniversitySlugRoute
   '/careers/': typeof CareersIndexRoute
-  '/companies/': typeof CompaniesIndexRoute
   '/programmes/': typeof ProgrammesIndexRoute
   '/scholarships/': typeof ScholarshipsIndexRoute
   '/skills/': typeof SkillsIndexRoute
@@ -421,7 +394,6 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/disclaimer'
     | '/inspiration'
-    | '/internships'
     | '/matcher'
     | '/onboarding'
     | '/parent'
@@ -437,7 +409,6 @@ export interface FileRouteTypes {
     | '/admin/data'
     | '/admin/insights'
     | '/careers/$slug'
-    | '/companies/$slug'
     | '/programme/$slug'
     | '/programmes/$slug'
     | '/scholarships/$slug'
@@ -445,7 +416,6 @@ export interface FileRouteTypes {
     | '/universities/$slug'
     | '/university/$slug'
     | '/careers/'
-    | '/companies/'
     | '/programmes/'
     | '/scholarships/'
     | '/skills/'
@@ -466,7 +436,6 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/disclaimer'
     | '/inspiration'
-    | '/internships'
     | '/matcher'
     | '/onboarding'
     | '/parent'
@@ -482,7 +451,6 @@ export interface FileRouteTypes {
     | '/admin/data'
     | '/admin/insights'
     | '/careers/$slug'
-    | '/companies/$slug'
     | '/programme/$slug'
     | '/programmes/$slug'
     | '/scholarships/$slug'
@@ -490,7 +458,6 @@ export interface FileRouteTypes {
     | '/universities/$slug'
     | '/university/$slug'
     | '/careers'
-    | '/companies'
     | '/programmes'
     | '/scholarships'
     | '/skills'
@@ -511,7 +478,6 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/disclaimer'
     | '/inspiration'
-    | '/internships'
     | '/matcher'
     | '/onboarding'
     | '/parent'
@@ -527,7 +493,6 @@ export interface FileRouteTypes {
     | '/admin/data'
     | '/admin/insights'
     | '/careers/$slug'
-    | '/companies/$slug'
     | '/programme/$slug'
     | '/programmes/$slug'
     | '/scholarships/$slug'
@@ -535,7 +500,6 @@ export interface FileRouteTypes {
     | '/universities/$slug'
     | '/university/$slug'
     | '/careers/'
-    | '/companies/'
     | '/programmes/'
     | '/scholarships/'
     | '/skills/'
@@ -557,7 +521,6 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   DisclaimerRoute: typeof DisclaimerRoute
   InspirationRoute: typeof InspirationRoute
-  InternshipsRoute: typeof InternshipsRoute
   MatcherRoute: typeof MatcherRoute
   OnboardingRoute: typeof OnboardingRoute
   ParentRoute: typeof ParentRoute
@@ -573,7 +536,6 @@ export interface RootRouteChildren {
   AdminDataRoute: typeof AdminDataRoute
   AdminInsightsRoute: typeof AdminInsightsRoute
   CareersSlugRoute: typeof CareersSlugRoute
-  CompaniesSlugRoute: typeof CompaniesSlugRoute
   ProgrammeSlugRoute: typeof ProgrammeSlugRoute
   ProgrammesSlugRoute: typeof ProgrammesSlugRoute
   ScholarshipsSlugRoute: typeof ScholarshipsSlugRoute
@@ -581,7 +543,6 @@ export interface RootRouteChildren {
   UniversitiesSlugRoute: typeof UniversitiesSlugRoute
   UniversitySlugRoute: typeof UniversitySlugRoute
   CareersIndexRoute: typeof CareersIndexRoute
-  CompaniesIndexRoute: typeof CompaniesIndexRoute
   ProgrammesIndexRoute: typeof ProgrammesIndexRoute
   ScholarshipsIndexRoute: typeof ScholarshipsIndexRoute
   SkillsIndexRoute: typeof SkillsIndexRoute
@@ -680,13 +641,6 @@ declare module '@tanstack/react-router' {
       path: '/inspiration'
       fullPath: '/inspiration'
       preLoaderRoute: typeof InspirationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/internships': {
-      id: '/internships'
-      path: '/internships'
-      fullPath: '/internships'
-      preLoaderRoute: typeof InternshipsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/matcher': {
@@ -801,20 +755,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CareersSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/companies/': {
-      id: '/companies/'
-      path: '/companies'
-      fullPath: '/companies/'
-      preLoaderRoute: typeof CompaniesIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/companies/$slug': {
-      id: '/companies/$slug'
-      path: '/companies/$slug'
-      fullPath: '/companies/$slug'
-      preLoaderRoute: typeof CompaniesSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/programme/$slug': {
       id: '/programme/$slug'
       path: '/programme/$slug'
@@ -909,7 +849,6 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   DisclaimerRoute: DisclaimerRoute,
   InspirationRoute: InspirationRoute,
-  InternshipsRoute: InternshipsRoute,
   MatcherRoute: MatcherRoute,
   OnboardingRoute: OnboardingRoute,
   ParentRoute: ParentRoute,
@@ -925,7 +864,6 @@ const rootRouteChildren: RootRouteChildren = {
   AdminDataRoute: AdminDataRoute,
   AdminInsightsRoute: AdminInsightsRoute,
   CareersSlugRoute: CareersSlugRoute,
-  CompaniesSlugRoute: CompaniesSlugRoute,
   ProgrammeSlugRoute: ProgrammeSlugRoute,
   ProgrammesSlugRoute: ProgrammesSlugRoute,
   ScholarshipsSlugRoute: ScholarshipsSlugRoute,
@@ -933,7 +871,6 @@ const rootRouteChildren: RootRouteChildren = {
   UniversitiesSlugRoute: UniversitiesSlugRoute,
   UniversitySlugRoute: UniversitySlugRoute,
   CareersIndexRoute: CareersIndexRoute,
-  CompaniesIndexRoute: CompaniesIndexRoute,
   ProgrammesIndexRoute: ProgrammesIndexRoute,
   ScholarshipsIndexRoute: ScholarshipsIndexRoute,
   SkillsIndexRoute: SkillsIndexRoute,
