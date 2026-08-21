@@ -68,7 +68,7 @@ const ProgrammePage = () => {
   const { slug } = useParams<{ slug: string }>();
   const { data, isLoading, isError, refetch } = useProgrammeDetail(slug);
   const match = useProgrammeMatch(data?.cutoffs);
-  useTrackView("programme_view", "programme", slug);
+  useTrackView("programme_view", "programme", slug, { title: data?.programme?.name, href: `/programme/${slug}` });
 
   const p = data?.programme;
   const uni = data?.university;

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useRouterState } from "@tanstack/react-router";
 import { track, type AnalyticsEvent } from "@/lib/analytics";
+import { recordRecentlyViewed } from "@/lib/recentlyViewed";
 
 /**
  * Records one anonymous page view per navigation. The live counter updates
