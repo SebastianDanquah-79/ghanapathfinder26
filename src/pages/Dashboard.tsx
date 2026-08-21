@@ -176,7 +176,7 @@ const Dashboard = () => {
   const upcoming = deadlines.filter((d) => daysLeft(d.due_date) >= 0).slice(0, 4);
 
   const nextSteps = [
-    { title: primaryStep.title, hint: primaryStep.description, to: primaryStep.href, cta: primaryStep.cta },
+    { title: primaryStep.title, hint: primaryStep.body, to: primaryStep.href, cta: primaryStep.cta },
     ...milestones.filter((m) => !m.done).slice(0, 3).map((m) => ({
       title: m.label,
       hint: m.hint,
