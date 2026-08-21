@@ -14,9 +14,17 @@ export const usePageViews = () => {
 };
 
 /** Records a single view event for a programme, university or scholarship. */
-export const useTrackView = (event: AnalyticsEvent, refType: string, refId?: string) => {
+export const useTrackView = (
+  event: AnalyticsEvent,
+  refType: string,
+  refId?: string,
+  meta?: { title?: string | null; href?: string },
+) => {
+  const title = meta?.title ?? undefined;
+  const href = meta?.href;
   useEffect(() => {
     if (!refId) return;
     void track(event, { refType, refId });
-  }, [event, refType, refId]);
+    if (title && href) recordRecentlyViewed({ type: refType, id: refId, title, href });
+  }, [event, refType, refId, title, href]);
 };
