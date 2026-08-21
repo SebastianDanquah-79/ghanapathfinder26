@@ -5,7 +5,6 @@ import {
   ArrowRight,
   Bookmark,
   CalendarClock,
-  Clock,
   LogOut,
   Plus,
   Sparkles,
@@ -484,7 +483,7 @@ const Dashboard = () => {
             </Card>
 
             {/* Recently viewed */}
-            <Card title="Recently viewed" icon={<Clock className="h-4 w-4 text-primary" aria-hidden="true" />}>
+            <Card title="Recently viewed">
               {recent.length ? (
                 <ul className="grid gap-2">
                   {recent.slice(0, 5).map((r) => (
