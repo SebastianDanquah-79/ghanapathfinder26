@@ -1,29 +1,107 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "@/lib/router-compat";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Bookmark, CalendarClock, GraduationCap, LogOut, Plus, Sparkles, Trash2, Users } from "@/lib/icons";
+import {
+  ArrowRight,
+  Bookmark,
+  CalendarClock,
+  Clock,
+  LogOut,
+  Plus,
+  Sparkles,
+  Trash2,
+} from "@/lib/icons";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useAdmissionMatches } from "@/hooks/useAdmissionMatch";
-import MotivationPanel from "@/components/MotivationPanel";
-import ParentAccessCard from "@/components/ParentAccessCard";
-import type { JourneyInput } from "@/lib/motivation";
+import { buildMilestones, getNextStep, type JourneyInput } from "@/lib/motivation";
+import { listRecentlyViewed, type RecentItem } from "@/lib/recentlyViewed";
 import Navbar from "@/components/Navbar";
-import SwipeRow from "@/components/SwipeRow";
 
+const ParentAccessCard = lazy(() => import("@/components/ParentAccessCard"));
 
+/* ---------------- shared presentational bits ---------------- */
+
+const Card = ({
+  title,
+  icon,
+  action,
+  children,
+}: {
+  title: string;
+  icon?: React.ReactNode;
+  action?: { to: string; label: string };
+  children: React.ReactNode;
+}) => (
+  <section className="bg-glass rounded-2xl p-4 sm:p-5 min-w-0">
+    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 mb-3">
+      <h2 className="flex min-w-0 items-center gap-2 font-display text-base font-semibold text-foreground">
+        {icon}
+        <span className="truncate">{title}</span>
+      </h2>
+      {action && (
+        <Link
+          to={action.to}
+          className="shrink-0 text-xs font-medium text-primary hover:underline"
+        >
+          {action.label}
+        </Link>
+      )}
+    </div>
+    {children}
+  </section>
+);
+
+const Empty = ({ text, to, cta }: { text: string; to: string; cta: string }) => (
+  <div className="rounded-xl border border-dashed border-border px-4 py-5 text-center">
+    <p className="text-sm text-muted-foreground">{text}</p>
+    <Link
+      to={to}
+      className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-primary min-h-[40px]"
+    >
+      {cta} <ArrowRight className="h-3.5 w-3.5" />
+    </Link>
+  </div>
+);
+
+/* ---------------- deadline date logic ---------------- */
+
+const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+
+const daysLeft = (iso: string) =>
+  Math.round((startOfDay(new Date(iso)) - startOfDay(new Date())) / 86_400_000);
+
+const deadlineStatus = (iso: string) => {
+  const days = daysLeft(iso);
+  if (days < 0) return { label: "Deadline passed", tone: "text-muted-foreground", days };
+  if (days === 0) return { label: "Due today", tone: "text-destructive", days };
+  if (days <= 14) return { label: `${days} days left`, tone: "text-destructive", days };
+  return { label: `${days} days left`, tone: "text-foreground", days };
+};
+
+const formatDate = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+
+/* ---------------- page ---------------- */
 
 const Dashboard = () => {
   const { user, loading, signOut } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
+
   const [deadlineTitle, setDeadlineTitle] = useState("");
   const [deadlineDate, setDeadlineDate] = useState("");
+  const [addingDeadline, setAddingDeadline] = useState(false);
+  const [recent, setRecent] = useState<RecentItem[]>([]);
 
   useEffect(() => {
     if (!loading && !user) navigate("/auth", { replace: true });
   }, [loading, user, navigate]);
+
+  useEffect(() => {
+    setRecent(listRecentlyViewed());
+  }, []);
 
   const { data: profile } = useQuery({
     queryKey: ["profile", user?.id],
@@ -49,14 +127,14 @@ const Dashboard = () => {
     queryKey: ["saved_items", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await supabase.from("saved_items").select("*").order("created_at", { ascending: false });
+      const { data, error } = await supabase
+        .from("saved_items")
+        .select("*")
+        .order("created_at", { ascending: false });
       if (error) throw error;
       return data ?? [];
     },
   });
-
-
-
 
   const { data: deadlines = [] } = useQuery({
     queryKey: ["deadlines", user?.id],
@@ -70,11 +148,10 @@ const Dashboard = () => {
 
   const { matches, breakdown } = useAdmissionMatches();
   const aggregate = breakdown.aggregate;
+
   const topMatches = matches
     .filter((m) => m.confidence != null && m.category !== "Not Eligible")
-    .slice(0, 5);
-
-  const savedBy = (type: string) => saved.filter((s) => s.item_type === type);
+    .slice(0, 3);
 
   const journey: JourneyInput = {
     fullName: profile?.full_name ?? null,
@@ -91,6 +168,27 @@ const Dashboard = () => {
     deadlines: deadlines.length,
   };
 
+  const milestones = useMemo(() => buildMilestones(journey), [journey]);
+  const doneCount = milestones.filter((m) => m.done).length;
+  const percent = Math.round((doneCount / milestones.length) * 100);
+  const primaryStep = useMemo(() => getNextStep(journey, milestones), [journey, milestones]);
+
+  const upcoming = deadlines.filter((d) => daysLeft(d.due_date) >= 0).slice(0, 4);
+
+  const nextSteps = [
+    { title: primaryStep.title, hint: primaryStep.description, to: primaryStep.href, cta: primaryStep.cta },
+    ...milestones.filter((m) => !m.done).slice(0, 3).map((m) => ({
+      title: m.label,
+      hint: m.hint,
+      to: m.href,
+      cta: "Continue",
+    })),
+  ]
+    .filter((s, i, arr) => arr.findIndex((x) => x.title === s.title) === i)
+    .slice(0, 3);
+
+  const savedPreview = saved.slice(0, 4);
+
   const addDeadline = async () => {
     if (!deadlineTitle.trim() || !deadlineDate || !user) return;
     const { error } = await supabase
@@ -102,6 +200,7 @@ const Dashboard = () => {
     }
     setDeadlineTitle("");
     setDeadlineDate("");
+    setAddingDeadline(false);
     qc.invalidateQueries({ queryKey: ["deadlines"] });
   };
 
@@ -110,33 +209,32 @@ const Dashboard = () => {
     qc.invalidateQueries({ queryKey: ["saved_items"] });
   };
 
-  const daysLeft = (d: string) =>
-    Math.ceil((new Date(d).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-
-  const card = "bg-glass rounded-xl p-5 lg:p-5 min-w-0 max-w-full";
   const input =
-    "w-full px-3 py-2 rounded-lg bg-secondary border border-border text-foreground text-sm focus:outline-hidden focus:ring-2 focus:ring-primary/50";
+    "w-full min-h-[44px] px-3 rounded-lg bg-secondary border border-border text-foreground text-sm focus:outline-hidden focus:ring-2 focus:ring-primary/50";
 
-  const quickActions = [
-    { to: "/admission-match", label: "Recommendations", icon: Sparkles },
-    { to: "/search?kind=university", label: "Universities", icon: GraduationCap },
-    { to: "/scholarships", label: "Scholarships", icon: GraduationCap },
-    { to: "/saved", label: "Saved", icon: Bookmark },
-    { to: "/onboarding", label: "My profile", icon: Users },
-    { to: "/applications", label: "Applications", icon: CalendarClock },
-  ];
+  const savedHref = (s: { item_type: string; ref_id: string | null }) => {
+    if (!s.ref_id) return "/saved";
+    if (s.item_type === "university") return `/university/${s.ref_id}`;
+    if (s.item_type === "programme") return `/programme/${s.ref_id}`;
+    if (s.item_type === "scholarship") return `/scholarships/${s.ref_id}`;
+    if (s.item_type === "career") return `/careers/${s.ref_id}`;
+    return "/saved";
+  };
 
   return (
-    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-20 pb-12">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       <Navbar />
-      <div className="max-w-7xl mx-auto">
-        <header className="flex flex-wrap items-end justify-between gap-4 mb-6">
-          <div>
-            <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">
-              Welcome back{profile?.full_name ? `, ${profile.full_name.split(" ")[0]}` : ""} 
+      <main className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 pt-20 pb-28 md:pb-16">
+        {/* Header + greeting */}
+        <header className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3 mb-5">
+          <div className="min-w-0">
+            <h1 className="font-display text-xl sm:text-2xl lg:text-3xl font-bold text-foreground truncate">
+              Hi{profile?.full_name ? `, ${profile.full_name.split(" ")[0]}` : " there"}
             </h1>
-            <p className="text-sm lg:text-base text-muted-foreground mt-2 max-w-2xl">
-              Your WASSCE profile, matches, saved schools and deadlines.
+            <p className="mt-1 text-sm text-muted-foreground">
+              {aggregate != null
+                ? `WASSCE aggregate ${aggregate} · ${results.length} subjects`
+                : "Add your WASSCE results to unlock matches"}
             </p>
           </div>
           <button
@@ -144,281 +242,279 @@ const Dashboard = () => {
               await signOut();
               navigate("/");
             }}
-            className="inline-flex items-center gap-1.5 min-h-[44px] px-3 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors"
+            className="shrink-0 inline-flex items-center gap-1.5 min-h-[44px] px-3 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-secondary/60"
           >
-            <LogOut className="h-4 w-4" /> Sign out
+            <LogOut className="h-4 w-4" aria-hidden="true" />
+            <span className="hidden sm:inline">Sign out</span>
+            <span className="sr-only sm:hidden">Sign out</span>
           </button>
         </header>
 
-        <section className="bg-glass rounded-xl p-4 sm:p-5 mb-6">
-          <h2 className="font-display text-base sm:text-lg font-semibold text-foreground">
-            Welcome to GhanaPathFinder
-          </h2>
-          <p className="text-sm text-muted-foreground mt-1 max-w-3xl">
-            Your AI-powered education and career companion built to help you discover universities,
-            programmes, scholarships, careers and opportunities that fit your path.
-          </p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {[
-              { label: "Find universities", to: "/search?kind=university" },
-              { label: "Explore programmes", to: "/programmes" },
-              { label: "Discover careers", to: "/careers" },
-              { label: "Find scholarships", to: "/scholarships" },
-              { label: "Compare universities", to: "/compare" },
-              { label: "Track deadlines", to: "/applications" },
-              { label: "Student experiences", to: "/community" },
-              { label: "Saved opportunities", to: "/saved" },
-            ].map((a) => (
-              <Link
-                key={a.to}
-                to={a.to}
-                className="px-3 py-2 rounded-lg bg-secondary text-xs font-medium text-muted-foreground hover:text-foreground"
-              >
-                {a.label}
-              </Link>
-            ))}
-          </div>
-        </section>
-
-
-        {/* WASSCE snapshot , the number students care about most */}
-        <div className="bg-glass rounded-xl p-5 lg:p-5 mb-5 lg:mb-6">
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <p className="text-xs uppercase tracking-wide text-muted-foreground">WASSCE aggregate</p>
-              <p className="font-display text-3xl lg:text-5xl font-bold text-foreground leading-tight">
-                {aggregate ?? ","}
-              </p>
-              <p className="text-xs text-muted-foreground mt-1">
-                {results.length ? `${results.length} subjects recorded` : "Add your results to unlock matches"}
-              </p>
-            </div>
-            <Link
-              to="/onboarding"
-              className="shrink-0 inline-flex items-center min-h-[48px] px-4 rounded-xl bg-primary text-primary-foreground text-sm font-semibold"
-            >
-              {results.length ? "Edit results" : "Add results"}
-            </Link>
-          </div>
-        </div>
-
-        {/* Primary actions, thumb-reachable on mobile , swipeable row on phones */}
-        <div className="hscroll hscroll-bleed sm:overflow-visible sm:mx-0 sm:px-0 mb-2 sm:mb-6 lg:mb-6">
-          <div className="flex gap-3 [&>*]:shrink-0 sm:grid sm:grid-cols-3 lg:grid-cols-6 sm:gap-3 lg:gap-4">
-            {quickActions.map(({ to, label, icon: Icon }) => (
-              <Link
-                key={label}
-                to={to}
-                className="w-[8.5rem] sm:w-auto bg-glass bg-glass-hover card-hover rounded-xl p-3 lg:p-4 min-h-[76px] lg:min-h-[92px] flex flex-col justify-center gap-1.5 lg:gap-2 active:opacity-80"
-              >
-                <Icon className="h-4 w-4 lg:h-5 lg:w-5 text-primary" />
-                <span className="text-xs lg:text-sm font-medium text-foreground leading-tight">{label}</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-        <p className="text-xs text-muted-foreground mb-4 sm:hidden">Swipe for more</p>
-
-        {/* Saved shortcuts */}
-        <div className="hscroll hscroll-bleed sm:overflow-visible sm:mx-0 sm:px-0 mb-6">
-          <div className="flex gap-2 [&>*]:shrink-0 sm:flex-wrap">
-            {[
-              { type: "university", label: "Universities" },
-              { type: "programme", label: "Programmes" },
-              { type: "scholarship", label: "Scholarships" },
-            ].map(({ type, label }) => (
-              <Link
-                key={type}
-                to="/saved"
-                className="inline-flex items-center gap-2 min-h-[44px] px-3.5 rounded-xl bg-glass bg-glass-hover text-sm text-foreground"
-              >
-                <Bookmark className="h-4 w-4 text-primary" />
-                {label}
-                <span className="text-xs text-muted-foreground">{savedBy(type).length}</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-
-
-        <div className="grid gap-5 lg:gap-4 md:grid-cols-2 xl:grid-cols-3">
-          <div className={card}>
-            <h2 className="font-display font-semibold text-foreground mb-3 flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-primary" /> Top matches
-            </h2>
-            {topMatches.length ? (
-              <SwipeRow count={topMatches.length}>
-                {topMatches.map((m) => (
+        <div className="grid gap-4 lg:grid-cols-3 lg:items-start">
+          <div className="grid gap-4 min-w-0 lg:col-span-2">
+            {/* Your next steps */}
+            <Card title="Your next steps" icon={<Sparkles className="h-4 w-4 text-primary" aria-hidden="true" />}>
+              <ul className="grid gap-2">
+                {nextSteps.map((s) => (
                   <li
-                    key={m.cutoff.id}
-                    className="rounded-lg border border-border/60 bg-secondary/40 p-3 text-sm md:border-0 md:bg-transparent md:p-0"
+                    key={s.title}
+                    className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-border/60 bg-secondary/40 p-3"
                   >
-                    <p className="text-foreground font-medium break-words">{m.cutoff.programme_name}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5 break-words">
-                      {m.cutoff.universities?.short_name} · cut-off {m.cutoff.cut_off_aggregate}
-                    </p>
-                    <p className="text-xs text-primary mt-1">{m.category}</p>
-                  </li>
-                ))}
-              </SwipeRow>
-            ) : (
-              <p className="text-sm text-muted-foreground">
-                Add your WASSCE results to see the programmes your aggregate actually reaches.
-              </p>
-            )}
-
-            <Link to="/admission-match" className="mt-4 inline-block text-sm text-primary font-medium min-h-[44px]">
-              See all matches and cut-offs
-            </Link>
-          </div>
-
-          {(["university", "scholarship"] as const).map((type) => (
-            <div key={type} className={card}>
-              <h2 className="font-display font-semibold text-foreground mb-3 capitalize">Saved {type}s</h2>
-              {savedBy(type).length ? (
-                <SwipeRow count={savedBy(type).length}>
-                  {savedBy(type).slice(0, 5).map((s) => (
-                    <li
-                      key={s.id}
-                      className="flex items-start justify-between gap-2 rounded-lg border border-border/60 bg-secondary/40 p-3 text-sm md:border-0 md:bg-transparent md:p-0"
-                    >
-                      <div className="min-w-0">
-                        <p className="text-foreground break-words">{s.title}</p>
-                        {s.subtitle && <p className="text-xs text-muted-foreground break-words">{s.subtitle}</p>}
-                      </div>
-                      <button
-                        onClick={() => removeSaved(s.id)}
-                        className="shrink-0 min-h-[44px] min-w-[44px] grid place-items-center text-muted-foreground hover:text-destructive"
-                        aria-label="Remove"
-                      >
-                        <Trash2 className="h-3.5 w-3.5" />
-                      </button>
-                    </li>
-                  ))}
-                </SwipeRow>
-              ) : (
-                <p className="text-sm text-muted-foreground">Nothing saved yet.</p>
-              )}
-
-              <Link to="/saved" className="mt-3 inline-block text-sm text-primary font-medium">
-                View all saved
-              </Link>
-            </div>
-          ))}
-
-          <div className={card}>
-            <h2 className="font-display font-semibold text-foreground mb-3 flex items-center gap-2">
-              <CalendarClock className="h-4 w-4 text-primary" /> Deadlines
-            </h2>
-            <div className="mb-3">
-              {deadlines.length ? (
-                <SwipeRow count={deadlines.length}>
-                  {deadlines.map((d) => (
-                    <li
-                      key={d.id}
-                      className="flex justify-between gap-2 rounded-lg border border-border/60 bg-secondary/40 p-3 text-sm md:border-0 md:bg-transparent md:p-0"
-                    >
-                      <span className="text-foreground break-words">{d.title}</span>
-                      <span className={daysLeft(d.due_date) < 14 ? "text-destructive text-xs shrink-0" : "text-muted-foreground text-xs shrink-0"}>
-                        {daysLeft(d.due_date)} days
-                      </span>
-                    </li>
-                  ))}
-                </SwipeRow>
-              ) : (
-                <p className="text-sm text-muted-foreground">No deadlines yet.</p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <input className={input} placeholder="Deadline title" maxLength={120} value={deadlineTitle} onChange={(e) => setDeadlineTitle(e.target.value)} />
-              <div className="hscroll flex gap-2">
-                <input type="date" className={`${input} min-w-[9rem]`} value={deadlineDate} onChange={(e) => setDeadlineDate(e.target.value)} />
-                <button onClick={addDeadline} className="shrink-0 px-4 min-h-[48px] rounded-xl bg-primary text-primary-foreground" aria-label="Add deadline">
-                  <Plus className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
-
-          </div>
-
-          <div className="md:col-span-2 xl:col-span-3">
-            <MotivationPanel data={journey} />
-          </div>
-
-          <div className={card}>
-            <h2 className="font-display font-semibold text-foreground mb-3">Your profile</h2>
-            <dl className="text-sm space-y-2 text-muted-foreground">
-              <div className="flex justify-between gap-3"><dt>Target career</dt><dd className="text-foreground text-right">{profile?.target_career ?? ","}</dd></div>
-              <div className="flex justify-between gap-3"><dt>School</dt><dd className="text-foreground text-right">{profile?.school ?? ","}</dd></div>
-              <div className="flex justify-between gap-3"><dt>Region</dt><dd className="text-foreground text-right">{profile?.region ?? ","}</dd></div>
-            </dl>
-            <Link to="/onboarding" className="mt-4 inline-block text-sm text-primary font-medium">
-              Update my details
-            </Link>
-          </div>
-
-          <div className={card}>
-            <h2 className="font-display font-semibold text-foreground mb-3 capitalize">Saved careers</h2>
-            {savedBy("career").length ? (
-              <SwipeRow count={savedBy("career").length}>
-                {savedBy("career").map((s) => (
-                  <li
-                    key={s.id}
-                    className="flex items-start justify-between gap-2 rounded-lg border border-border/60 bg-secondary/40 p-3 text-sm md:border-0 md:bg-transparent md:p-0"
-                  >
-                    <p className="text-foreground break-words">{s.title}</p>
-                    <button
-                      onClick={() => removeSaved(s.id)}
-                      className="shrink-0 min-h-[44px] min-w-[44px] grid place-items-center text-muted-foreground hover:text-destructive"
-                      aria-label="Remove"
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </button>
-                  </li>
-                ))}
-              </SwipeRow>
-            ) : (
-              <p className="text-sm text-muted-foreground">Nothing saved yet.</p>
-            )}
-
-          </div>
-
-
-
-
-          <div className={card}>
-            <h2 className="font-display font-semibold text-foreground mb-3 flex items-center gap-2">
-              <Users className="h-4 w-4 text-primary" /> Next steps
-            </h2>
-            <div className="hscroll hscroll-bleed md:overflow-visible md:mx-0 md:px-0 mt-1">
-              <ul className="flex gap-2 [&>*]:shrink-0 md:flex-col md:gap-2">
-                {[
-                  { to: "/preferences", label: "Customise my match preferences" },
-                  { to: "/matcher", label: "Run the scholarship matcher" },
-                  { to: "/compare", label: "Compare universities side by side" },
-                  { to: "/search", label: "Browse and save more schools" },
-                ].map((s) => (
-                  <li key={s.to} className="md:w-full">
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-foreground break-words">{s.title}</p>
+                      {s.hint && (
+                        <p className="text-xs text-muted-foreground line-clamp-2 break-words">{s.hint}</p>
+                      )}
+                    </div>
                     <Link
                       to={s.to}
-                      className="block rounded-lg border border-border/60 bg-secondary/40 px-3 py-2 text-sm text-primary md:border-0 md:bg-transparent md:px-0 md:py-0"
+                      className="shrink-0 inline-flex items-center min-h-[40px] px-3 rounded-lg bg-primary text-primary-foreground text-xs font-semibold"
                     >
-                      {s.label}
+                      {s.cta ?? "Continue"}
                     </Link>
                   </li>
                 ))}
               </ul>
-            </div>
-            <p className="mt-2 text-xs text-muted-foreground md:hidden">Swipe for more</p>
+            </Card>
 
+            {/* Deadlines */}
+            <Card
+              title="Upcoming deadlines"
+              icon={<CalendarClock className="h-4 w-4 text-primary" aria-hidden="true" />}
+              action={{ to: "/applications", label: "Track all" }}
+            >
+              {upcoming.length ? (
+                <ul className="grid gap-2">
+                  {upcoming.map((d) => {
+                    const status = deadlineStatus(d.due_date);
+                    return (
+                      <li
+                        key={d.id}
+                        className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-border/60 bg-secondary/40 p-3"
+                      >
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium text-foreground break-words">{d.title}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {formatDate(d.due_date)} ·{" "}
+                            <span className={status.tone}>{status.label}</span>
+                          </p>
+                        </div>
+                        <Link
+                          to="/applications"
+                          className="shrink-0 inline-flex items-center min-h-[40px] px-3 rounded-lg border border-border text-xs font-medium text-foreground"
+                        >
+                          View
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : (
+                <p className="rounded-xl border border-dashed border-border px-4 py-5 text-center text-sm text-muted-foreground">
+                  No upcoming deadlines
+                </p>
+              )}
+
+              {addingDeadline ? (
+                <div className="mt-3 grid gap-2">
+                  <label className="sr-only" htmlFor="dl-title">
+                    Deadline name
+                  </label>
+                  <input
+                    id="dl-title"
+                    className={input}
+                    placeholder="e.g. KNUST application closes"
+                    maxLength={120}
+                    value={deadlineTitle}
+                    onChange={(e) => setDeadlineTitle(e.target.value)}
+                  />
+                  <label className="sr-only" htmlFor="dl-date">
+                    Deadline date
+                  </label>
+                  <input
+                    id="dl-date"
+                    type="date"
+                    className={input}
+                    value={deadlineDate}
+                    onChange={(e) => setDeadlineDate(e.target.value)}
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      onClick={addDeadline}
+                      disabled={!deadlineTitle.trim() || !deadlineDate}
+                      className="flex-1 min-h-[44px] rounded-lg bg-primary text-primary-foreground text-sm font-semibold disabled:opacity-50"
+                    >
+                      Save deadline
+                    </button>
+                    <button
+                      onClick={() => setAddingDeadline(false)}
+                      className="min-h-[44px] px-3 rounded-lg border border-border text-sm text-muted-foreground"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setAddingDeadline(true)}
+                  className="mt-3 inline-flex items-center gap-1.5 min-h-[44px] text-sm font-medium text-primary"
+                >
+                  <Plus className="h-4 w-4" aria-hidden="true" /> Add a deadline
+                </button>
+              )}
+            </Card>
+
+            {/* Saved opportunities */}
+            <Card
+              title="Saved opportunities"
+              icon={<Bookmark className="h-4 w-4 text-primary" aria-hidden="true" />}
+              action={saved.length ? { to: "/saved", label: "View all saved" } : undefined}
+            >
+              {savedPreview.length ? (
+                <ul className="grid gap-2 sm:grid-cols-2">
+                  {savedPreview.map((s) => (
+                    <li
+                      key={s.id}
+                      className="rounded-xl border border-border/60 bg-secondary/40 p-3 min-w-0"
+                    >
+                      <p className="text-xs uppercase tracking-wide text-muted-foreground">{s.item_type}</p>
+                      <p className="mt-0.5 text-sm font-medium text-foreground break-words line-clamp-2">
+                        {s.title}
+                      </p>
+                      {s.subtitle && (
+                        <p className="text-xs text-muted-foreground break-words line-clamp-1">{s.subtitle}</p>
+                      )}
+                      <div className="mt-2 flex items-center gap-2">
+                        <Link
+                          to={savedHref(s)}
+                          className="inline-flex items-center min-h-[36px] px-3 rounded-lg border border-border text-xs font-medium text-foreground"
+                        >
+                          View
+                        </Link>
+                        <button
+                          onClick={() => removeSaved(s.id)}
+                          className="inline-flex items-center gap-1 min-h-[36px] px-3 rounded-lg text-xs text-muted-foreground hover:text-destructive"
+                          aria-label={`Remove ${s.title} from saved`}
+                        >
+                          <Trash2 className="h-3.5 w-3.5" aria-hidden="true" /> Remove
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <Empty
+                  text="Nothing saved yet."
+                  to="/scholarships"
+                  cta="Explore scholarships"
+                />
+              )}
+            </Card>
+
+            {/* Recommended for you */}
+            <Card
+              title="Recommended for you"
+              icon={<Sparkles className="h-4 w-4 text-primary" aria-hidden="true" />}
+              action={{ to: "/admission-match", label: "See all" }}
+            >
+              {topMatches.length ? (
+                <ul className="grid gap-2">
+                  {topMatches.map((m) => (
+                    <li
+                      key={m.cutoff.id}
+                      className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-border/60 bg-secondary/40 p-3"
+                    >
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-foreground break-words line-clamp-2">
+                          {m.cutoff.programme_name}
+                        </p>
+                        <p className="text-xs text-muted-foreground break-words">
+                          {m.cutoff.universities?.short_name ?? "Ghana"} · cut-off {m.cutoff.cut_off_aggregate} ·{" "}
+                          <span className="text-primary">{m.category}</span>
+                        </p>
+                      </div>
+                      <Link
+                        to="/admission-match"
+                        className="shrink-0 inline-flex items-center min-h-[40px] px-3 rounded-lg border border-border text-xs font-medium text-foreground"
+                      >
+                        View
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <Empty
+                  text="Add your WASSCE results to see programmes your aggregate reaches."
+                  to="/onboarding"
+                  cta="Add results"
+                />
+              )}
+            </Card>
           </div>
-          <ParentAccessCard />
+
+          {/* Secondary column */}
+          <div className="grid gap-4 min-w-0">
+            {/* Career-path progress */}
+            <Card title="Career-path progress" action={{ to: "/onboarding", label: "Update" }}>
+              <div className="flex items-center justify-between gap-3 mb-2">
+                <p className="text-sm text-muted-foreground truncate">
+                  {profile?.target_career ?? "No career goal yet"}
+                </p>
+                <p className="text-sm font-semibold text-foreground shrink-0">{percent}%</p>
+              </div>
+              <div
+                className="h-2 w-full rounded-full bg-secondary overflow-hidden"
+                role="progressbar"
+                aria-valuenow={percent}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-label="Career path progress"
+              >
+                <div className="h-full rounded-full bg-primary" style={{ width: `${percent}%` }} />
+              </div>
+              <p className="mt-2 text-xs text-muted-foreground">
+                {doneCount} of {milestones.length} milestones complete
+              </p>
+              <Link
+                to="/careers"
+                className="mt-3 inline-flex items-center gap-1 min-h-[40px] text-sm font-medium text-primary"
+              >
+                Continue your career path <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+              </Link>
+            </Card>
+
+            {/* Recently viewed */}
+            <Card title="Recently viewed" icon={<Clock className="h-4 w-4 text-primary" aria-hidden="true" />}>
+              {recent.length ? (
+                <ul className="grid gap-2">
+                  {recent.slice(0, 5).map((r) => (
+                    <li key={`${r.type}-${r.id}`} className="min-w-0">
+                      <Link
+                        to={r.href}
+                        className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 rounded-xl border border-border/60 bg-secondary/40 p-3 min-h-[44px]"
+                      >
+                        <span className="min-w-0">
+                          <span className="block text-sm text-foreground truncate">{r.title}</span>
+                          <span className="block text-xs text-muted-foreground capitalize">{r.type}</span>
+                        </span>
+                        <ArrowRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <Empty text="Nothing viewed yet." to="/programmes" cta="Browse programmes" />
+              )}
+            </Card>
+
+            <Suspense fallback={null}>
+              <ParentAccessCard />
+            </Suspense>
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };
-
 
 export default Dashboard;
