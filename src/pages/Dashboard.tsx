@@ -211,12 +211,14 @@ const Dashboard = () => {
   const input =
     "w-full min-h-[44px] px-3 rounded-lg bg-secondary border border-border text-foreground text-sm focus:outline-hidden focus:ring-2 focus:ring-primary/50";
 
-  const savedHref = (s: { item_type: string; ref_id: string | null }) => {
-    if (!s.ref_id) return "/saved";
-    if (s.item_type === "university") return `/university/${s.ref_id}`;
-    if (s.item_type === "programme") return `/programme/${s.ref_id}`;
-    if (s.item_type === "scholarship") return `/scholarships/${s.ref_id}`;
-    if (s.item_type === "career") return `/careers/${s.ref_id}`;
+  const savedHref = (s: { item_type: string; item_key: string | null }) => {
+    const key = s.item_key;
+    if (!key) return "/saved";
+    if (s.item_type === "university") return `/university/${key}`;
+    if (s.item_type === "programme") return `/programme/${key}`;
+    if (s.item_type === "scholarship") return `/scholarships/${key}`;
+    if (s.item_type === "career") return `/careers/${key}`;
+    if (s.item_type === "skill") return `/skills/${key}`;
     return "/saved";
   };
 
