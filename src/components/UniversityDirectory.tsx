@@ -1,3 +1,4 @@
+import BrandLogo from "@/components/BrandLogo";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "@/lib/router-compat";
