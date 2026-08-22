@@ -333,6 +333,35 @@ export type Database = {
           },
         ]
       }
+      insight_helpful: {
+        Row: {
+          created_at: string
+          id: string
+          insight_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          insight_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          insight_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "insight_helpful_insight_id_fkey"
+            columns: ["insight_id"]
+            isOneToOne: false
+            referencedRelation: "student_insights"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       insight_reports: {
         Row: {
           created_at: string
@@ -1674,6 +1703,7 @@ export type Database = {
       }
       show_limit: { Args: never; Returns: number }
       show_trgm: { Args: { "": string }; Returns: string[] }
+      toggle_insight_helpful: { Args: { _insight_id: string }; Returns: Json }
     }
     Enums: {
       app_role: "student" | "parent" | "admin"
