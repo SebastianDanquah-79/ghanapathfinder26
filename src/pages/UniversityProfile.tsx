@@ -6,14 +6,17 @@ import Footer from "@/components/Footer";
 import SaveButton from "@/components/SaveButton";
 import OfficialLink from "@/components/OfficialLink";
 import VerificationBadge from "@/components/VerificationBadge";
-import StudentInsights from "@/components/StudentInsights";
 import { formatVerified, useProgrammes, useUniversity } from "@/hooks/useCatalogue";
 import { useTrackView } from "@/hooks/useTracking";
+import { useRecordRecent } from "@/hooks/useRecentlyViewed";
 
 const UniversityProfile = () => {
   const { slug } = useParams<{ slug: string }>();
   const { data: uni, isLoading, isError, refetch } = useUniversity(slug);
   useTrackView("university_view", "university", slug);
+  useRecordRecent(
+    uni ? { kind: "university" as const, title: uni.name, subtitle: uni.location ?? undefined, path: `/university/${uni.slug}` } : null,
+  );
   const { data: programmes, isLoading: loadingProgrammes } = useProgrammes(uni?.id);
 
   return (
