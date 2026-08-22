@@ -22,6 +22,7 @@ import { Route as CreditsRouteImport } from './routes/credits'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as InspirationRouteImport } from './routes/inspiration'
+import { Route as InternshipsRouteImport } from './routes/internships'
 import { Route as MatcherRouteImport } from './routes/matcher'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as ParentRouteImport } from './routes/parent'
@@ -113,6 +114,11 @@ const DisclaimerRoute = DisclaimerRouteImport.update({
 const InspirationRoute = InspirationRouteImport.update({
   id: '/inspiration',
   path: '/inspiration',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InternshipsRoute = InternshipsRouteImport.update({
+  id: '/internships',
+  path: '/internships',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MatcherRoute = MatcherRouteImport.update({
@@ -265,6 +271,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/inspiration': typeof InspirationRoute
+  '/internships': typeof InternshipsRoute
   '/matcher': typeof MatcherRoute
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
@@ -307,6 +314,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/inspiration': typeof InspirationRoute
+  '/internships': typeof InternshipsRoute
   '/matcher': typeof MatcherRoute
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
@@ -350,6 +358,7 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/inspiration': typeof InspirationRoute
+  '/internships': typeof InternshipsRoute
   '/matcher': typeof MatcherRoute
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
@@ -394,6 +403,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/disclaimer'
     | '/inspiration'
+    | '/internships'
     | '/matcher'
     | '/onboarding'
     | '/parent'
@@ -436,6 +446,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/disclaimer'
     | '/inspiration'
+    | '/internships'
     | '/matcher'
     | '/onboarding'
     | '/parent'
@@ -478,6 +489,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/disclaimer'
     | '/inspiration'
+    | '/internships'
     | '/matcher'
     | '/onboarding'
     | '/parent'
@@ -521,6 +533,7 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   DisclaimerRoute: typeof DisclaimerRoute
   InspirationRoute: typeof InspirationRoute
+  InternshipsRoute: typeof InternshipsRoute
   MatcherRoute: typeof MatcherRoute
   OnboardingRoute: typeof OnboardingRoute
   ParentRoute: typeof ParentRoute
@@ -641,6 +654,13 @@ declare module '@tanstack/react-router' {
       path: '/inspiration'
       fullPath: '/inspiration'
       preLoaderRoute: typeof InspirationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/internships': {
+      id: '/internships'
+      path: '/internships'
+      fullPath: '/internships'
+      preLoaderRoute: typeof InternshipsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/matcher': {
@@ -849,6 +869,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   DisclaimerRoute: DisclaimerRoute,
   InspirationRoute: InspirationRoute,
+  InternshipsRoute: InternshipsRoute,
   MatcherRoute: MatcherRoute,
   OnboardingRoute: OnboardingRoute,
   ParentRoute: ParentRoute,

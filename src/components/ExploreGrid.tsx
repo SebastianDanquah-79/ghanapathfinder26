@@ -32,6 +32,11 @@ const items = [
     desc: "Free courses and videos for the skills each career needs.",
   },
   {
+    to: "/internships",
+    title: "Internships",
+    desc: "Employers in Ghana that take interns and graduate trainees.",
+  },
+  {
     to: "/community",
     title: "Community",
     desc: "Honest, anonymous experiences from students already there.",
