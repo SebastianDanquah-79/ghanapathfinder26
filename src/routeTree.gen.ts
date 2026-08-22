@@ -22,7 +22,6 @@ import { Route as CreditsRouteImport } from './routes/credits'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as InspirationRouteImport } from './routes/inspiration'
-import { Route as InternshipsRouteImport } from './routes/internships'
 import { Route as MatcherRouteImport } from './routes/matcher'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as ParentRouteImport } from './routes/parent'
@@ -118,11 +117,6 @@ const InspirationRoute = InspirationRouteImport.update({
   path: '/inspiration',
   getParentRoute: () => rootRouteImport,
 } as any)
-const InternshipsRoute = InternshipsRouteImport.update({
-  id: '/internships',
-  path: '/internships',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const MatcherRoute = MatcherRouteImport.update({
   id: '/matcher',
   path: '/matcher',
@@ -204,14 +198,14 @@ const CareersSlugRoute = CareersSlugRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const InternshipsIndexRoute = InternshipsIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => InternshipsRoute,
+  id: '/internships/',
+  path: '/internships/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const InternshipsIdRoute = InternshipsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => InternshipsRoute,
+  id: '/internships/$id',
+  path: '/internships/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ProgrammeSlugRoute = ProgrammeSlugRouteImport.update({
   id: '/programme/$slug',
@@ -283,7 +277,6 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/inspiration': typeof InspirationRoute
-  '/internships': typeof InternshipsRouteWithChildren
   '/matcher': typeof MatcherRoute
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
@@ -373,7 +366,6 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/inspiration': typeof InspirationRoute
-  '/internships': typeof InternshipsRouteWithChildren
   '/matcher': typeof MatcherRoute
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
@@ -420,7 +412,6 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/disclaimer'
     | '/inspiration'
-    | '/internships'
     | '/matcher'
     | '/onboarding'
     | '/parent'
@@ -509,7 +500,6 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/disclaimer'
     | '/inspiration'
-    | '/internships'
     | '/matcher'
     | '/onboarding'
     | '/parent'
@@ -555,7 +545,6 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   DisclaimerRoute: typeof DisclaimerRoute
   InspirationRoute: typeof InspirationRoute
-  InternshipsRoute: typeof InternshipsRouteWithChildren
   MatcherRoute: typeof MatcherRoute
   OnboardingRoute: typeof OnboardingRoute
   ParentRoute: typeof ParentRoute
@@ -571,6 +560,7 @@ export interface RootRouteChildren {
   AdminDataRoute: typeof AdminDataRoute
   AdminInsightsRoute: typeof AdminInsightsRoute
   CareersSlugRoute: typeof CareersSlugRoute
+  InternshipsIdRoute: typeof InternshipsIdRoute
   ProgrammeSlugRoute: typeof ProgrammeSlugRoute
   ProgrammesSlugRoute: typeof ProgrammesSlugRoute
   ScholarshipsSlugRoute: typeof ScholarshipsSlugRoute
@@ -578,6 +568,7 @@ export interface RootRouteChildren {
   UniversitiesSlugRoute: typeof UniversitiesSlugRoute
   UniversitySlugRoute: typeof UniversitySlugRoute
   CareersIndexRoute: typeof CareersIndexRoute
+  InternshipsIndexRoute: typeof InternshipsIndexRoute
   ProgrammesIndexRoute: typeof ProgrammesIndexRoute
   ScholarshipsIndexRoute: typeof ScholarshipsIndexRoute
   SkillsIndexRoute: typeof SkillsIndexRoute
@@ -676,13 +667,6 @@ declare module '@tanstack/react-router' {
       path: '/inspiration'
       fullPath: '/inspiration'
       preLoaderRoute: typeof InspirationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/internships': {
-      id: '/internships'
-      path: '/internships'
-      fullPath: '/internships'
-      preLoaderRoute: typeof InternshipsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/matcher': {
@@ -799,17 +783,17 @@ declare module '@tanstack/react-router' {
     }
     '/internships/': {
       id: '/internships/'
-      path: '/'
+      path: '/internships'
       fullPath: '/internships/'
       preLoaderRoute: typeof InternshipsIndexRouteImport
-      parentRoute: typeof InternshipsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/internships/$id': {
       id: '/internships/$id'
-      path: '/$id'
+      path: '/internships/$id'
       fullPath: '/internships/$id'
       preLoaderRoute: typeof InternshipsIdRouteImport
-      parentRoute: typeof InternshipsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/programme/$slug': {
       id: '/programme/$slug'
@@ -891,20 +875,6 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface InternshipsRouteChildren {
-  InternshipsIdRoute: typeof InternshipsIdRoute
-  InternshipsIndexRoute: typeof InternshipsIndexRoute
-}
-
-const InternshipsRouteChildren: InternshipsRouteChildren = {
-  InternshipsIdRoute: InternshipsIdRoute,
-  InternshipsIndexRoute: InternshipsIndexRoute,
-}
-
-const InternshipsRouteWithChildren = InternshipsRoute._addFileChildren(
-  InternshipsRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -919,7 +889,6 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   DisclaimerRoute: DisclaimerRoute,
   InspirationRoute: InspirationRoute,
-  InternshipsRoute: InternshipsRouteWithChildren,
   MatcherRoute: MatcherRoute,
   OnboardingRoute: OnboardingRoute,
   ParentRoute: ParentRoute,
@@ -935,6 +904,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminDataRoute: AdminDataRoute,
   AdminInsightsRoute: AdminInsightsRoute,
   CareersSlugRoute: CareersSlugRoute,
+  InternshipsIdRoute: InternshipsIdRoute,
   ProgrammeSlugRoute: ProgrammeSlugRoute,
   ProgrammesSlugRoute: ProgrammesSlugRoute,
   ScholarshipsSlugRoute: ScholarshipsSlugRoute,
@@ -942,6 +912,7 @@ const rootRouteChildren: RootRouteChildren = {
   UniversitiesSlugRoute: UniversitiesSlugRoute,
   UniversitySlugRoute: UniversitySlugRoute,
   CareersIndexRoute: CareersIndexRoute,
+  InternshipsIndexRoute: InternshipsIndexRoute,
   ProgrammesIndexRoute: ProgrammesIndexRoute,
   ScholarshipsIndexRoute: ScholarshipsIndexRoute,
   SkillsIndexRoute: SkillsIndexRoute,
