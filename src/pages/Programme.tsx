@@ -19,6 +19,7 @@ import OfficialLink from "@/components/OfficialLink";
 import VerificationBadge from "@/components/VerificationBadge";
 import { useProgrammeDetail, useProgrammeMatch } from "@/hooks/useProgrammeDetail";
 import { useTrackView } from "@/hooks/useTracking";
+import { useRecordRecent } from "@/hooks/useRecentlyViewed";
 import { CATEGORY_STYLES, formatVerifiedDate } from "@/lib/admissionEngine";
 
 const Chips = ({ items }: { items: string[] }) => (
@@ -69,6 +70,16 @@ const ProgrammePage = () => {
   const { data, isLoading, isError, refetch } = useProgrammeDetail(slug);
   const match = useProgrammeMatch(data?.cutoffs);
   useTrackView("programme_view", "programme", slug);
+  useRecordRecent(
+    data?.programme
+      ? {
+          kind: "programme" as const,
+          title: data.programme.name,
+          subtitle: data.university?.short_name ?? data.university?.name ?? undefined,
+          path: `/programmes/${data.programme.slug}`,
+        }
+      : null,
+  );
 
   const p = data?.programme;
   const uni = data?.university;
