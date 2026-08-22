@@ -166,6 +166,35 @@ export type Database = {
           },
         ]
       }
+      comment_likes: {
+        Row: {
+          comment_id: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          comment_id: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          comment_id?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comment_likes_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "insight_comments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       companies: {
         Row: {
           careers_url: string | null
@@ -329,6 +358,60 @@ export type Database = {
             columns: ["institution_id"]
             isOneToOne: false
             referencedRelation: "universities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      insight_comments: {
+        Row: {
+          author_label: string
+          body: string
+          created_at: string
+          id: string
+          insight_id: string
+          like_count: number
+          parent_id: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          author_label?: string
+          body: string
+          created_at?: string
+          id?: string
+          insight_id: string
+          like_count?: number
+          parent_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          author_label?: string
+          body?: string
+          created_at?: string
+          id?: string
+          insight_id?: string
+          like_count?: number
+          parent_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "insight_comments_insight_id_fkey"
+            columns: ["insight_id"]
+            isOneToOne: false
+            referencedRelation: "student_insights"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "insight_comments_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "insight_comments"
             referencedColumns: ["id"]
           },
         ]
@@ -1703,6 +1786,7 @@ export type Database = {
       }
       show_limit: { Args: never; Returns: number }
       show_trgm: { Args: { "": string }; Returns: string[] }
+      toggle_comment_like: { Args: { _comment_id: string }; Returns: Json }
       toggle_insight_helpful: { Args: { _insight_id: string }; Returns: Json }
     }
     Enums: {

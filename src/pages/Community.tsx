@@ -2,7 +2,10 @@ import { useMemo, useState } from "react";
 import { Link } from "@/lib/router-compat";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import BrandLogo from "@/components/BrandLogo";
+import CommentThread from "@/components/CommentThread";
 import { toast } from "sonner";
+import { useCommentCounts } from "@/hooks/useComments";
 import {
   INSIGHT_CATEGORIES,
   useCommunityInsights,
@@ -16,9 +19,22 @@ const Community = () => {
   const [category, setCategory] = useState("All");
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<"recent" | "helpful">("recent");
+  const [openThreads, setOpenThreads] = useState<Set<string>>(new Set());
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const { data: myVotes } = useMyHelpfulVotes();
   const toggleHelpful = useToggleHelpful();
   const report = useReportInsight();
+  const { data: counts } = useCommentCounts((data ?? []).map((i) => i.id));
+
+  const toggleSet = (set: Set<string>, id: string) => {
+    const next = new Set(set);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    return next;
+  };
+  const toggleThread = (id: string) => setOpenThreads((s) => toggleSet(s, id));
+  const toggleExpanded = (id: string) => setExpanded((s) => toggleSet(s, id));
+
 
   const insights = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -113,57 +129,86 @@ const Community = () => {
             </div>
           )}
 
-          <div className="space-y-3">
+          <div className="space-y-4">
             {insights.map((i) => (
-              <article key={i.id} className="bg-glass rounded-xl p-4 space-y-2">
-                <div className="flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
-                  <span className="px-2 py-0.5 rounded-full bg-secondary">Student Insight</span>
-                  <span>Anonymous — {i.student_status}</span>
-                  <span className="ml-auto">{new Date(i.created_at).toLocaleDateString()}</span>
-                </div>
-                {i.universities && (
-                  <Link
-                    to={`/university/${i.universities.slug}`}
-                    className="block text-sm font-medium text-foreground hover:text-primary"
-                  >
-                    {i.universities.name}
-                  </Link>
-                )}
-                <p className="text-xs text-primary">{i.category}</p>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {i.body.length > 300 ? `${i.body.slice(0, 300)}…` : i.body}
+              <article key={i.id} className="bg-glass rounded-2xl p-4">
+                <header className="flex items-start gap-3">
+                  <BrandLogo
+                    name={i.universities?.name ?? "Student"}
+                    websiteUrl={i.universities?.website_url ?? null}
+                    logoUrl={i.universities?.logo_url ?? null}
+                    size={44}
+                    className="rounded-full"
+                  />
+                  <div className="min-w-0 flex-1">
+                    {i.universities ? (
+                      <Link
+                        to={`/university/${i.universities.slug}`}
+                        className="block text-sm font-semibold text-foreground hover:text-primary truncate"
+                      >
+                        {i.universities.name}
+                      </Link>
+                    ) : (
+                      <p className="text-sm font-semibold text-foreground">Student insight</p>
+                    )}
+                    <p className="text-[11px] text-muted-foreground">
+                      Anonymous — {i.student_status} · {i.category} ·{" "}
+                      {new Date(i.created_at).toLocaleDateString()}
+                    </p>
+                  </div>
+                </header>
+
+                <p className="mt-3 text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
+                  {expanded.has(i.id) || i.body.length <= 300
+                    ? i.body
+                    : `${i.body.slice(0, 300)}…`}
+                  {i.body.length > 300 && (
+                    <button
+                      onClick={() => toggleExpanded(i.id)}
+                      className="ml-1 text-xs font-medium text-primary hover:underline"
+                    >
+                      {expanded.has(i.id) ? "See less" : "See more"}
+                    </button>
+                  )}
                 </p>
-                <div className="flex flex-wrap items-center gap-3 pt-1">
+
+                <div className="mt-3 flex items-center justify-between border-t border-border pt-2 text-[11px] text-muted-foreground">
+                  <span>{i.helpful_count ?? 0} found this helpful</span>
+                  <span>{counts?.get(i.id) ?? 0} comments</span>
+                </div>
+
+                <div className="mt-1 grid grid-cols-3 gap-1 border-t border-border pt-1">
                   <button
                     onClick={() => onHelpful(i.id)}
                     disabled={toggleHelpful.isPending}
                     aria-pressed={myVotes?.has(i.id) ?? false}
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                    className={`rounded-lg py-2 text-xs font-medium transition-colors ${
                       myVotes?.has(i.id)
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-secondary text-muted-foreground hover:text-foreground"
+                        ? "text-primary bg-primary/10"
+                        : "text-muted-foreground hover:bg-secondary"
                     }`}
                   >
-                    Helpful · {i.helpful_count ?? 0}
+                    Helpful
+                  </button>
+                  <button
+                    onClick={() => toggleThread(i.id)}
+                    className="rounded-lg py-2 text-xs font-medium text-muted-foreground hover:bg-secondary"
+                  >
+                    Comment
                   </button>
                   <button
                     onClick={() => onReport(i.id)}
-                    className="text-xs text-muted-foreground hover:text-destructive"
+                    className="rounded-lg py-2 text-xs font-medium text-muted-foreground hover:bg-secondary hover:text-destructive"
                   >
                     Report
                   </button>
-                  {i.universities && (
-                    <Link
-                      to={`/university/${i.universities.slug}`}
-                      className="ml-auto text-xs text-primary hover:underline"
-                    >
-                      Read more on the university profile
-                    </Link>
-                  )}
                 </div>
+
+                <CommentThread insightId={i.id} open={openThreads.has(i.id)} />
               </article>
             ))}
           </div>
+
         </div>
       </main>
       <Footer />

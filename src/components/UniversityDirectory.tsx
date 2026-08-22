@@ -1,3 +1,4 @@
+import BrandLogo from "@/components/BrandLogo";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "@/lib/router-compat";
@@ -174,14 +175,18 @@ const UniversityDirectory = () => {
               className="bg-glass rounded-xl p-4 card-hover flex flex-col"
             >
               <div className="flex items-start justify-between gap-2 mb-2">
-                <div className="min-w-0">
-                  <h3 className="font-display font-semibold text-lg text-foreground">
-                    <Link to={`/university/${u.slug}`} className="hover:text-primary transition-colors">
-                      {u.short_name ?? u.name}
-                    </Link>
-                  </h3>
-                  <p className="text-xs text-muted-foreground break-words">{u.name}</p>
+                <div className="flex min-w-0 items-start gap-2">
+                  <BrandLogo name={u.name} websiteUrl={u.website_url} size={36} />
+                  <div className="min-w-0">
+                    <h3 className="font-display font-semibold text-lg text-foreground">
+                      <Link to={`/university/${u.slug}`} className="hover:text-primary transition-colors">
+                        {u.short_name ?? u.name}
+                      </Link>
+                    </h3>
+                    <p className="text-xs text-muted-foreground break-words">{u.name}</p>
+                  </div>
                 </div>
+
                 <span
                   className={`shrink-0 px-2 py-1 rounded text-xs font-medium ${
                     u.type === "Public"
