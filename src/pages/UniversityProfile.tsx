@@ -263,7 +263,20 @@ const UniversityProfile = () => {
                 </div>
               </section>
 
-              <StudentInsights universityId={uni.id} universityName={uni.name} />
+              {/* Student experiences live in the Community, not on official profiles. */}
+              <section className="bg-glass rounded-xl p-4">
+                <h2 className="font-display text-base font-semibold text-foreground">Student experiences</h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Read and share what students say about {uni.name} in the Community. Community posts are
+                  student experiences, not official university information.
+                </p>
+                <Link
+                  to="/community"
+                  className="mt-3 inline-flex items-center min-h-[44px] px-4 rounded-lg bg-secondary text-sm font-medium text-foreground"
+                >
+                  Open Community
+                </Link>
+              </section>
             </>
           )}
         </div>
