@@ -1,10 +1,12 @@
 import { useMemo, useState } from "react";
+import { Link } from "@/lib/router-compat";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo, { breadcrumbLd } from "@/components/Seo";
 import SectionHeader from "@/components/SectionHeader";
 import OfficialLink from "@/components/OfficialLink";
 import SaveButton from "@/components/SaveButton";
+import GhanaRegionMap from "@/components/GhanaRegionMap";
 import { Search } from "@/lib/icons";
 import {
   EMPLOYERS,
@@ -24,13 +26,17 @@ const Internships = () => {
   const [type, setType] = useState<OpportunityType | "All">("All");
   const [region, setRegion] = useState("All");
   const [major, setMajor] = useState("All");
+  const [view, setView] = useState<"list" | "map">("list");
+
+  const matchesRegion = (locations: string[], r: string) =>
+    r === "All" || locations.includes(r) || locations.includes("Nationwide");
 
   const rows = useMemo(() => {
     const term = q.trim().toLowerCase();
     return EMPLOYERS.filter((e) => {
       if (sector !== "All" && e.sector !== sector) return false;
       if (type !== "All" && !e.opportunities.includes(type)) return false;
-      if (region !== "All" && !e.locations.includes(region)) return false;
+      if (!matchesRegion(e.locations, region)) return false;
       if (major !== "All" && !e.majors.includes(major)) return false;
       if (!term) return true;
       return (
@@ -41,6 +47,23 @@ const Internships = () => {
       );
     });
   }, [q, sector, type, region, major]);
+
+  /** Region counts respect the sector / opportunity-type quick filters. */
+  const regionCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const e of EMPLOYERS) {
+      if (sector !== "All" && e.sector !== sector) continue;
+      if (type !== "All" && !e.opportunities.includes(type)) continue;
+      for (const loc of e.locations) counts[loc] = (counts[loc] ?? 0) + 1;
+    }
+    const nationwide = counts["Nationwide"] ?? 0;
+    if (nationwide) {
+      for (const r of REGIONS) {
+        if (r !== "Nationwide") counts[r] = (counts[r] ?? 0) + nationwide;
+      }
+    }
+    return counts;
+  }, [sector, type]);
 
   const selectClass =
     "px-3 py-2 rounded-lg bg-secondary border border-border text-xs text-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50";
@@ -80,7 +103,7 @@ const Internships = () => {
             />
           </div>
 
-          <div className="flex flex-wrap gap-2 justify-center mb-5">
+          <div className="flex flex-wrap gap-2 justify-center mb-4">
             <select
               aria-label="Filter by opportunity type"
               className={selectClass}
@@ -135,14 +158,42 @@ const Internships = () => {
             </select>
           </div>
 
-          <p className="text-xs text-muted-foreground mb-3">
-            {rows.length} {rows.length === 1 ? "employer" : "employers"}
-          </p>
+          <div className="flex items-center justify-between gap-3 mb-4">
+            <p className="text-xs text-muted-foreground">
+              {rows.length} {rows.length === 1 ? "employer" : "employers"}
+              {region !== "All" ? ` in ${region}` : ""}
+            </p>
+            <div className="inline-flex rounded-lg bg-secondary p-0.5">
+              {(["list", "map"] as const).map((v) => (
+                <button
+                  key={v}
+                  type="button"
+                  onClick={() => setView(v)}
+                  className={`px-3 py-1.5 rounded-md text-xs font-medium capitalize ${
+                    view === v ? "bg-primary text-primary-foreground" : "text-muted-foreground"
+                  }`}
+                >
+                  {v === "map" ? "Map view" : "List"}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {view === "map" && (
+            <div className="bg-glass rounded-xl p-4 mb-5">
+              <GhanaRegionMap counts={regionCounts} selected={region} onSelect={setRegion} />
+            </div>
+          )}
 
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
             {rows.map((e) => (
               <article key={e.id} className="bg-glass rounded-xl p-4 flex flex-col">
-                <h2 className="font-display font-semibold text-foreground text-sm">{e.name}</h2>
+                <Link
+                  to={`/internships/${e.id}`}
+                  className="font-display font-semibold text-foreground text-sm hover:text-primary"
+                >
+                  {e.name}
+                </Link>
                 <p className="text-[11px] text-muted-foreground mb-2">
                   {e.sector} · {e.locations.join(", ")}
                 </p>
@@ -162,7 +213,13 @@ const Internships = () => {
                 <p className="text-[11px] text-muted-foreground mb-3">{e.timing}</p>
 
                 <div className="mt-auto flex flex-wrap items-center gap-2">
-                  <OfficialLink href={e.url} label="Official page" />
+                  <Link
+                    to={`/internships/${e.id}`}
+                    className="inline-flex items-center rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground"
+                  >
+                    Details & checklist
+                  </Link>
+                  <OfficialLink href={e.url} label="Official page" variant="ghost" />
                   <SaveButton
                     item={{
                       item_type: "career",

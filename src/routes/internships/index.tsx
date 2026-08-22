@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import Internships from "@/pages/Internships";
 
-export const Route = createFileRoute("/internships")({
+export const Route = createFileRoute("/internships/")({
   head: () => ({
     meta: [
       { title: "Internships, Attachments & Graduate Programmes in Ghana | GhanaPathFinder" },
