@@ -14,9 +14,9 @@ import {
   type OpportunityType,
   type Sector,
 } from "@/data/employers";
-import { CAREER_PATHS } from "@/data/careerPaths";
+import { careerPaths } from "@/data/careerPaths";
 
-const MAJORS = CAREER_PATHS.map((c) => c.major).sort();
+const MAJORS = careerPaths.map((c) => c.major).sort();
 
 const Internships = () => {
   const [q, setQ] = useState("");
