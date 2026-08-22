@@ -1,3 +1,4 @@
+import BrandLogo from "@/components/BrandLogo";
 import { useMemo, useState } from "react";
 import { Link } from "@/lib/router-compat";
 import Navbar from "@/components/Navbar";
