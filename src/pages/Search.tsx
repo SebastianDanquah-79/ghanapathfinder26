@@ -22,6 +22,8 @@ import {
   type SearchResult,
 } from "@/hooks/useCatalogue";
 import { searchGuide, type GuideResult } from "@/lib/guideSearch";
+import AskPanel from "@/components/AskPanel";
+import type { AskContextItem } from "@/lib/askContext";
 
 type Kind = "all" | "university" | "programme" | "scholarship" | "career" | "skill" | "employer";
 
@@ -269,6 +271,7 @@ const SearchPage = () => {
   const [kind, setKind] = useState<Kind>((params.get("kind") as Kind) ?? "all");
   const [page, setPage] = useState(0);
   const [showFilters, setShowFilters] = useState(false);
+  const [showAsk, setShowAsk] = useState(false);
   const [uniType, setUniType] = useState<(typeof UNI_TYPES)[number]>("All");
   const [region, setRegion] = useState<string>("");
   const [category, setCategory] = useState<string>("");
@@ -354,6 +357,29 @@ const SearchPage = () => {
     if (isGuideTab) return [];
     return catalogue.data ?? [];
   }, [useUniQuery, useSchQuery, isGuideTab, unis.data, schs.data, catalogue.data]);
+
+  // Context handed to the Ask assistant: exactly what the student can see.
+  const askItems: AskContextItem[] = useMemo(() => {
+    const fromResults: AskContextItem[] = results.slice(0, 16).map((r) => ({
+      kind: r.kind,
+      title: r.title,
+      subtitle: r.subtitle,
+      to:
+        r.kind === "university"
+          ? `/university/${r.slug}`
+          : r.kind === "programme"
+            ? `/programme/${r.slug}`
+            : "/scholarships",
+    }));
+    const fromGuide: AskContextItem[] = guideResults.slice(0, 8).map((r) => ({
+      kind: r.kind,
+      title: r.title,
+      subtitle: r.subtitle,
+      blurb: r.blurb,
+      to: r.to,
+    }));
+    return [...fromResults, ...fromGuide];
+  }, [results, guideResults]);
 
   const isLoading = isGuideTab ? false : active.isLoading;
   const isError = isGuideTab ? false : active.isError;
@@ -519,6 +545,28 @@ const SearchPage = () => {
                   ))}
                 </div>
               </div>
+            )}
+          </div>
+
+          <div className="mt-3">
+            {showAsk ? (
+              <AskPanel
+                query={debounced}
+                items={askItems}
+                suggestions={[
+                  "Summarise these results for me",
+                  "Which of these fits my WASSCE aggregate?",
+                  "What should I do next?",
+                ]}
+              />
+            ) : (
+              <button
+                type="button"
+                onClick={() => setShowAsk(true)}
+                className="w-full min-h-[48px] rounded-xl border border-border bg-glass px-4 text-sm text-muted-foreground text-left hover:text-foreground hover:border-primary/50"
+              >
+                Ask GhanaPathFinder about these results →
+              </button>
             )}
           </div>
 
