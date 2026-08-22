@@ -6,6 +6,7 @@
 import { careerPaths } from "@/data/careerPaths";
 import { SKILLS } from "@/data/skillsMap";
 import { EMPLOYERS } from "@/data/employers";
+import { careerSlug } from "@/data/careers";
 
 export type GuideKind = "career" | "skill" | "employer";
 
@@ -18,12 +19,6 @@ export interface GuideResult {
   to: string;
   tags: string[];
 }
-
-const slugify = (s: string) =>
-  s
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
 
 const hit = (q: string, ...fields: (string | string[] | undefined)[]) => {
   if (!q) return true;
@@ -50,7 +45,7 @@ export const searchGuide = (rawQuery: string, kinds?: GuideKind[]): GuideResult[
           title: c.career_name,
           subtitle: `Career path · ${c.major}`,
           blurb: c.description,
-          to: `/careers/${slugify(c.major)}`,
+          to: `/careers/${careerSlug(c.major)}`,
           tags: c.industries.slice(0, 3),
         });
       }
@@ -59,15 +54,15 @@ export const searchGuide = (rawQuery: string, kinds?: GuideKind[]): GuideResult[
 
   if (want("skill")) {
     for (const s of SKILLS) {
-      if (hit(q, s.name, s.description, s.category)) {
+      if (hit(q, s.name, s.summary, s.why)) {
         out.push({
           kind: "skill",
           id: s.id,
           title: s.name,
           subtitle: "Skill · learning resources",
-          blurb: s.description,
+          blurb: s.summary,
           to: `/skills/${s.id}`,
-          tags: [s.category],
+          tags: [],
         });
       }
     }
