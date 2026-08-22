@@ -166,6 +166,66 @@ export type Database = {
           },
         ]
       }
+      companies: {
+        Row: {
+          careers_url: string | null
+          created_at: string
+          description: string | null
+          employer_type: string
+          id: string
+          last_verified_at: string | null
+          location: string | null
+          logo_url: string | null
+          name: string
+          region: string | null
+          sector: string
+          size: string | null
+          slug: string
+          source_url: string | null
+          updated_at: string
+          verified: boolean
+          website_url: string | null
+        }
+        Insert: {
+          careers_url?: string | null
+          created_at?: string
+          description?: string | null
+          employer_type?: string
+          id?: string
+          last_verified_at?: string | null
+          location?: string | null
+          logo_url?: string | null
+          name: string
+          region?: string | null
+          sector?: string
+          size?: string | null
+          slug: string
+          source_url?: string | null
+          updated_at?: string
+          verified?: boolean
+          website_url?: string | null
+        }
+        Update: {
+          careers_url?: string | null
+          created_at?: string
+          description?: string | null
+          employer_type?: string
+          id?: string
+          last_verified_at?: string | null
+          location?: string | null
+          logo_url?: string | null
+          name?: string
+          region?: string | null
+          sector?: string
+          size?: string | null
+          slug?: string
+          source_url?: string | null
+          updated_at?: string
+          verified?: boolean
+          website_url?: string | null
+        }
+        Relationships: []
+      }
       data_sources: {
         Row: {
           created_at: string
@@ -310,6 +370,92 @@ export type Database = {
             columns: ["insight_id"]
             isOneToOne: false
             referencedRelation: "student_insights"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      internships: {
+        Row: {
+          application_url: string | null
+          careers: string[]
+          company_id: string | null
+          created_at: string
+          deadline_date: string | null
+          deadline_text: string | null
+          description: string | null
+          duration: string | null
+          eligibility: string | null
+          fields: string[]
+          id: string
+          last_verified_at: string | null
+          location: string | null
+          opportunity_type: string
+          paid: boolean | null
+          region: string | null
+          slug: string
+          source_url: string | null
+          stipend_text: string | null
+          title: string
+          updated_at: string
+          verified: boolean
+          work_mode: string
+        }
+        Insert: {
+          application_url?: string | null
+          careers?: string[]
+          company_id?: string | null
+          created_at?: string
+          deadline_date?: string | null
+          deadline_text?: string | null
+          description?: string | null
+          duration?: string | null
+          eligibility?: string | null
+          fields?: string[]
+          id?: string
+          last_verified_at?: string | null
+          location?: string | null
+          opportunity_type?: string
+          paid?: boolean | null
+          region?: string | null
+          slug: string
+          source_url?: string | null
+          stipend_text?: string | null
+          title: string
+          updated_at?: string
+          verified?: boolean
+          work_mode?: string
+        }
+        Update: {
+          application_url?: string | null
+          careers?: string[]
+          company_id?: string | null
+          created_at?: string
+          deadline_date?: string | null
+          deadline_text?: string | null
+          description?: string | null
+          duration?: string | null
+          eligibility?: string | null
+          fields?: string[]
+          id?: string
+          last_verified_at?: string | null
+          location?: string | null
+          opportunity_type?: string
+          paid?: boolean | null
+          region?: string | null
+          slug?: string
+          source_url?: string | null
+          stipend_text?: string | null
+          title?: string
+          updated_at?: string
+          verified?: boolean
+          work_mode?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "internships_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
             referencedColumns: ["id"]
           },
         ]
