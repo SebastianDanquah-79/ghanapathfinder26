@@ -291,7 +291,8 @@ const SearchPage = () => {
   const useUniQuery = kind === "university";
   const useSchQuery = kind === "scholarship" && schType !== "All";
 
-  const catalogue = useCatalogueSearch(debounced, kind, page);
+  const dbKind = (GUIDE_KINDS.includes(kind) ? "all" : kind) as "all" | "university" | "programme" | "scholarship";
+  const catalogue = useCatalogueSearch(debounced, dbKind, page);
   const unis = useUniversities({
     search: debounced,
     type: uniType,
