@@ -21,15 +21,21 @@ import {
   useScholarshipRecords,
   type SearchResult,
 } from "@/hooks/useCatalogue";
+import { searchGuide, type GuideResult } from "@/lib/guideSearch";
 
-type Kind = "all" | "university" | "programme" | "scholarship";
+type Kind = "all" | "university" | "programme" | "scholarship" | "career" | "skill" | "employer";
 
 const tabs: { key: Kind; label: string }[] = [
   { key: "all", label: "All" },
   { key: "university", label: "Universities" },
   { key: "programme", label: "Programmes" },
   { key: "scholarship", label: "Scholarships" },
+  { key: "career", label: "Careers" },
+  { key: "skill", label: "Skills" },
+  { key: "employer", label: "Employers" },
 ];
+
+const GUIDE_KINDS: Kind[] = ["career", "skill", "employer"];
 
 const REGIONS = [
   "Greater Accra",
@@ -87,7 +93,40 @@ const emptyCopy: Record<Kind, string> = {
   university: "No universities found.",
   programme: "No programmes found.",
   scholarship: "No scholarships found.",
+  career: "No career paths found.",
+  skill: "No skills found.",
+  employer: "No employers found.",
 };
+
+const GuideCard = ({ r }: { r: GuideResult }) => (
+  <div className="bg-glass rounded-xl p-4 flex flex-col gap-2">
+    <div className="min-w-0">
+      <span className="text-[10px] uppercase tracking-wide text-primary font-semibold">{r.kind}</span>
+      <h2 className="font-display font-semibold text-base text-foreground break-words">
+        <Link to={r.to} className="hover:text-primary transition-colors">
+          {r.title}
+        </Link>
+      </h2>
+      <p className="text-xs text-muted-foreground mt-0.5 break-words">{r.subtitle}</p>
+    </div>
+    <p className="text-xs text-muted-foreground line-clamp-3">{r.blurb}</p>
+    {r.tags.length > 0 && (
+      <div className="flex flex-wrap gap-1.5">
+        {r.tags.map((t) => (
+          <span key={t} className="px-2 py-0.5 rounded-full bg-secondary text-[11px] text-muted-foreground">
+            {t}
+          </span>
+        ))}
+      </div>
+    )}
+    <Link
+      to={r.to}
+      className="mt-auto inline-flex items-center gap-1.5 px-3 py-2 min-h-[40px] rounded-lg text-xs font-medium bg-secondary text-muted-foreground hover:text-foreground w-fit"
+    >
+      Open
+    </Link>
+  </div>
+);
 
 const ResultCard = ({ r }: { r: SearchResult }) => {
   const meta = r.meta ?? {};
@@ -252,7 +291,8 @@ const SearchPage = () => {
   const useUniQuery = kind === "university";
   const useSchQuery = kind === "scholarship" && schType !== "All";
 
-  const catalogue = useCatalogueSearch(debounced, kind, page);
+  const dbKind = (GUIDE_KINDS.includes(kind) ? "all" : kind) as "all" | "university" | "programme" | "scholarship";
+  const catalogue = useCatalogueSearch(debounced, dbKind, page);
   const unis = useUniversities({
     search: debounced,
     type: uniType,
@@ -262,6 +302,16 @@ const SearchPage = () => {
     pageSize: PAGE_SIZE,
   });
   const schs = useScholarshipRecords(debounced, schType);
+
+  const isGuideTab = GUIDE_KINDS.includes(kind);
+  const guideResults = useMemo(
+    () =>
+      searchGuide(
+        debounced,
+        isGuideTab ? [kind as GuideResult["kind"]] : ["career", "skill", "employer"],
+      ),
+    [debounced, isGuideTab, kind],
+  );
 
   const active = useUniQuery ? unis : useSchQuery ? schs : catalogue;
 
@@ -301,13 +351,14 @@ const SearchPage = () => {
         score: null,
       }));
     }
+    if (isGuideTab) return [];
     return catalogue.data ?? [];
-  }, [useUniQuery, useSchQuery, unis.data, schs.data, catalogue.data]);
+  }, [useUniQuery, useSchQuery, isGuideTab, unis.data, schs.data, catalogue.data]);
 
-  const isLoading = active.isLoading;
-  const isError = active.isError;
+  const isLoading = isGuideTab ? false : active.isLoading;
+  const isError = isGuideTab ? false : active.isError;
   const isFetching = active.isFetching;
-  const paginated = !useSchQuery;
+  const paginated = !useSchQuery && !isGuideTab;
 
   const clearFilters = () => {
     setUniType("All");
@@ -336,7 +387,7 @@ const SearchPage = () => {
             Search GhanaPathFinder
           </h1>
           <p className="text-xs sm:text-sm text-muted-foreground mb-4">
-            Universities, programmes and scholarships.
+            Universities, programmes, scholarships, careers, skills and employers.
           </p>
 
           <div className="sticky top-16 z-30 -mx-4 px-4 py-2 bg-background/95 backdrop-blur-sm">
@@ -491,7 +542,15 @@ const SearchPage = () => {
             </div>
           )}
 
-          {!isLoading && !isError && results.length === 0 && (
+          {isGuideTab && guideResults.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 mt-3">
+              {guideResults.map((r) => (
+                <GuideCard key={`${r.kind}-${r.id}`} r={r} />
+              ))}
+            </div>
+          )}
+
+          {!isLoading && !isError && results.length === 0 && (isGuideTab ? guideResults.length === 0 : true) && (
             <div className="text-center py-14">
               <p className="text-foreground font-medium mb-2">{emptyCopy[kind]}</p>
               <p className="text-sm text-muted-foreground mb-4">Try one of these searches instead:</p>
@@ -541,6 +600,21 @@ const SearchPage = () => {
                 </div>
               )}
             </>
+          )}
+          {kind === "all" && guideResults.length > 0 && (
+            <section className="mt-8">
+              <h2 className="font-display text-base sm:text-lg font-semibold text-foreground mb-1">
+                Careers, skills and employers
+              </h2>
+              <p className="text-xs text-muted-foreground mb-3">
+                Guidance content matching your search.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4">
+                {guideResults.slice(0, 8).map((r) => (
+                  <GuideCard key={`${r.kind}-${r.id}`} r={r} />
+                ))}
+              </div>
+            </section>
           )}
         </div>
       </main>

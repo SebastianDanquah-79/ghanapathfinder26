@@ -179,3 +179,43 @@ export const useDeleteInsight = () => {
     },
   });
 };
+
+/* ---------------- Helpful votes ---------------- */
+
+/** Insight ids the signed-in student has already marked helpful. */
+export const useMyHelpfulVotes = () => {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: ["insight_helpful", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("insight_helpful")
+        .select("insight_id")
+        .eq("user_id", user!.id);
+      if (error) throw error;
+      return new Set((data ?? []).map((r) => r.insight_id));
+    },
+    staleTime: 30_000,
+  });
+};
+
+export const useToggleHelpful = () => {
+  const { user } = useAuth();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (insightId: string) => {
+      if (!user) throw new Error("Please sign in to mark an insight as helpful.");
+      const { data, error } = await supabase.rpc("toggle_insight_helpful", {
+        _insight_id: insightId,
+      });
+      if (error) throw error;
+      return data as { voted: boolean; helpful_count: number };
+    },
+    onSuccess: () => {
+      void qc.invalidateQueries({ queryKey: ["insight_helpful"] });
+      void qc.invalidateQueries({ queryKey: ["community_insights"] });
+      void qc.invalidateQueries({ queryKey: ["student_insights"] });
+    },
+  });
+};

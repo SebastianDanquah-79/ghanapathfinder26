@@ -2,23 +2,55 @@ import { useMemo, useState } from "react";
 import { Link } from "@/lib/router-compat";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { INSIGHT_CATEGORIES, useCommunityInsights } from "@/hooks/useInsights";
+import { toast } from "sonner";
+import {
+  INSIGHT_CATEGORIES,
+  useCommunityInsights,
+  useMyHelpfulVotes,
+  useReportInsight,
+  useToggleHelpful,
+} from "@/hooks/useInsights";
 
 const Community = () => {
   const { data, isLoading } = useCommunityInsights(60);
   const [category, setCategory] = useState("All");
   const [query, setQuery] = useState("");
+  const [sort, setSort] = useState<"recent" | "helpful">("recent");
+  const { data: myVotes } = useMyHelpfulVotes();
+  const toggleHelpful = useToggleHelpful();
+  const report = useReportInsight();
 
   const insights = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return (data ?? []).filter(
+    const rows = (data ?? []).filter(
       (i) =>
         (category === "All" || i.category === category) &&
         (!q ||
           i.body.toLowerCase().includes(q) ||
           (i.universities?.name ?? "").toLowerCase().includes(q)),
     );
-  }, [data, category, query]);
+    return sort === "helpful"
+      ? [...rows].sort((a, b) => (b.helpful_count ?? 0) - (a.helpful_count ?? 0))
+      : rows;
+  }, [data, category, query, sort]);
+
+  const onHelpful = (id: string) =>
+    toggleHelpful.mutate(id, {
+      onError: (e: unknown) => toast.error(e instanceof Error ? e.message : "Could not save your vote."),
+    });
+
+  const onReport = (id: string) => {
+    const reason = window.prompt("Why are you reporting this insight? (e.g. abusive, false, spam)");
+    if (!reason) return;
+    report.mutate(
+      { insight_id: id, reason },
+      {
+        onSuccess: () => toast.success("Thanks — our moderators will review it."),
+        onError: (e: unknown) =>
+          toast.error(e instanceof Error ? e.message : "Could not send your report."),
+      },
+    );
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -41,6 +73,15 @@ const Community = () => {
               placeholder="Search insights or a university…"
               className="flex-1 rounded-lg bg-secondary border border-border px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40"
             />
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value as "recent" | "helpful")}
+              className="rounded-lg bg-secondary border border-border px-3 py-2.5 text-sm text-foreground"
+              aria-label="Sort insights"
+            >
+              <option value="recent">Most recent</option>
+              <option value="helpful">Most helpful</option>
+            </select>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
@@ -92,14 +133,34 @@ const Community = () => {
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   {i.body.length > 300 ? `${i.body.slice(0, 300)}…` : i.body}
                 </p>
-                {i.universities && (
-                  <Link
-                    to={`/university/${i.universities.slug}`}
-                    className="inline-block text-xs text-primary hover:underline"
+                <div className="flex flex-wrap items-center gap-3 pt-1">
+                  <button
+                    onClick={() => onHelpful(i.id)}
+                    disabled={toggleHelpful.isPending}
+                    aria-pressed={myVotes?.has(i.id) ?? false}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                      myVotes?.has(i.id)
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-secondary text-muted-foreground hover:text-foreground"
+                    }`}
                   >
-                    Read more on the university profile
-                  </Link>
-                )}
+                    Helpful · {i.helpful_count ?? 0}
+                  </button>
+                  <button
+                    onClick={() => onReport(i.id)}
+                    className="text-xs text-muted-foreground hover:text-destructive"
+                  >
+                    Report
+                  </button>
+                  {i.universities && (
+                    <Link
+                      to={`/university/${i.universities.slug}`}
+                      className="ml-auto text-xs text-primary hover:underline"
+                    >
+                      Read more on the university profile
+                    </Link>
+                  )}
+                </div>
               </article>
             ))}
           </div>

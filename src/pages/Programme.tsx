@@ -16,6 +16,7 @@ import Seo, { breadcrumbLd } from "@/components/Seo";
 import Footer from "@/components/Footer";
 import SaveButton from "@/components/SaveButton";
 import OfficialLink from "@/components/OfficialLink";
+import ProgrammeEcosystem from "@/components/ProgrammeEcosystem";
 import VerificationBadge from "@/components/VerificationBadge";
 import { useProgrammeDetail, useProgrammeMatch } from "@/hooks/useProgrammeDetail";
 import { useTrackView } from "@/hooks/useTracking";
@@ -356,6 +357,8 @@ const ProgrammePage = () => {
                   )}
                 </div>
               </Section>
+
+              <ProgrammeEcosystem programmeName={p.name} field={p.field} />
 
               <section className="bg-glass rounded-xl p-4">
                 <h2 className="font-display text-sm font-semibold text-foreground flex items-center gap-1.5 mb-2">
