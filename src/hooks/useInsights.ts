@@ -64,14 +64,22 @@ export const useCommunityInsights = (limit = 30) =>
       const { data, error } = await supabase
         .from("student_insights")
         .select(
-          "id, university_id, status, student_status, programme, year_of_study, category, rating, body, wish_i_knew, advice, helpful_count, created_at, updated_at, universities(name, slug, location)",
+          "id, university_id, status, student_status, programme, year_of_study, category, rating, body, wish_i_knew, advice, helpful_count, created_at, updated_at, universities(name, slug, location, website_url, logo_url)",
         )
         .eq("status", "approved")
         .order("created_at", { ascending: false })
         .limit(limit);
       if (error) throw error;
       return (data ?? []) as Array<
-        StudentInsight & { universities: { name: string; slug: string; location: string | null } | null }
+        StudentInsight & {
+          universities: {
+            name: string;
+            slug: string;
+            location: string | null;
+            website_url: string | null;
+            logo_url: string | null;
+          } | null;
+        }
       >;
     },
     staleTime: 30_000,
