@@ -2,7 +2,10 @@ import { useMemo, useState } from "react";
 import { Link } from "@/lib/router-compat";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import BrandLogo from "@/components/BrandLogo";
+import CommentThread from "@/components/CommentThread";
 import { toast } from "sonner";
+import { useCommentCounts } from "@/hooks/useComments";
 import {
   INSIGHT_CATEGORIES,
   useCommunityInsights,
@@ -16,9 +19,22 @@ const Community = () => {
   const [category, setCategory] = useState("All");
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<"recent" | "helpful">("recent");
+  const [openThreads, setOpenThreads] = useState<Set<string>>(new Set());
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const { data: myVotes } = useMyHelpfulVotes();
   const toggleHelpful = useToggleHelpful();
   const report = useReportInsight();
+  const { data: counts } = useCommentCounts((data ?? []).map((i) => i.id));
+
+  const toggleSet = (set: Set<string>, id: string) => {
+    const next = new Set(set);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    return next;
+  };
+  const toggleThread = (id: string) => setOpenThreads((s) => toggleSet(s, id));
+  const toggleExpanded = (id: string) => setExpanded((s) => toggleSet(s, id));
+
 
   const insights = useMemo(() => {
     const q = query.trim().toLowerCase();
