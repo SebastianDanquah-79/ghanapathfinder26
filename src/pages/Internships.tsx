@@ -188,15 +188,21 @@ const Internships = () => {
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
             {rows.map((e) => (
               <article key={e.id} className="bg-glass rounded-xl p-4 flex flex-col">
-                <Link
-                  to={`/internships/${e.id}`}
-                  className="font-display font-semibold text-foreground text-sm hover:text-primary"
-                >
-                  {e.name}
-                </Link>
-                <p className="text-[11px] text-muted-foreground mb-2">
-                  {e.sector} · {e.locations.join(", ")}
-                </p>
+                <div className="flex items-start gap-2 mb-2">
+                  <BrandLogo name={e.name} websiteUrl={e.url} size={36} />
+                  <div className="min-w-0">
+                    <Link
+                      to={`/internships/${e.id}`}
+                      className="font-display font-semibold text-foreground text-sm hover:text-primary"
+                    >
+                      {e.name}
+                    </Link>
+                    <p className="text-[11px] text-muted-foreground">
+                      {e.sector} · {e.locations.join(", ")}
+                    </p>
+                  </div>
+                </div>
+
                 <p className="text-xs text-muted-foreground mb-3">{e.about}</p>
 
                 <ul className="flex flex-wrap gap-1.5 mb-2">
