@@ -36,6 +36,7 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin/analytics'
 import { Route as AdminDataRouteImport } from './routes/admin/data'
 import { Route as AdminInsightsRouteImport } from './routes/admin/insights'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as CareersIndexRouteImport } from './routes/careers/index'
 import { Route as CareersSlugRouteImport } from './routes/careers/$slug'
 import { Route as InternshipsIndexRouteImport } from './routes/internships/index'
@@ -187,6 +188,11 @@ const AdminInsightsRoute = AdminInsightsRouteImport.update({
   path: '/admin/insights',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CareersIndexRoute = CareersIndexRouteImport.update({
   id: '/careers/',
   path: '/careers/',
@@ -291,6 +297,7 @@ export interface FileRoutesByFullPath {
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
   '/admin/insights': typeof AdminInsightsRoute
+  '/api/chat': typeof ApiChatRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/internships/$id': typeof InternshipsIdRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
@@ -335,6 +342,7 @@ export interface FileRoutesByTo {
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
   '/admin/insights': typeof AdminInsightsRoute
+  '/api/chat': typeof ApiChatRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/internships/$id': typeof InternshipsIdRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
@@ -380,6 +388,7 @@ export interface FileRoutesById {
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
   '/admin/insights': typeof AdminInsightsRoute
+  '/api/chat': typeof ApiChatRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/internships/$id': typeof InternshipsIdRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
@@ -426,6 +435,7 @@ export interface FileRouteTypes {
     | '/admin/analytics'
     | '/admin/data'
     | '/admin/insights'
+    | '/api/chat'
     | '/careers/$slug'
     | '/internships/$id'
     | '/programme/$slug'
@@ -470,6 +480,7 @@ export interface FileRouteTypes {
     | '/admin/analytics'
     | '/admin/data'
     | '/admin/insights'
+    | '/api/chat'
     | '/careers/$slug'
     | '/internships/$id'
     | '/programme/$slug'
@@ -514,6 +525,7 @@ export interface FileRouteTypes {
     | '/admin/analytics'
     | '/admin/data'
     | '/admin/insights'
+    | '/api/chat'
     | '/careers/$slug'
     | '/internships/$id'
     | '/programme/$slug'
@@ -559,6 +571,7 @@ export interface RootRouteChildren {
   AdminAnalyticsRoute: typeof AdminAnalyticsRoute
   AdminDataRoute: typeof AdminDataRoute
   AdminInsightsRoute: typeof AdminInsightsRoute
+  ApiChatRoute: typeof ApiChatRoute
   CareersSlugRoute: typeof CareersSlugRoute
   InternshipsIdRoute: typeof InternshipsIdRoute
   ProgrammeSlugRoute: typeof ProgrammeSlugRoute
@@ -767,6 +780,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminInsightsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/careers/': {
       id: '/careers/'
       path: '/careers'
@@ -903,6 +923,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminAnalyticsRoute: AdminAnalyticsRoute,
   AdminDataRoute: AdminDataRoute,
   AdminInsightsRoute: AdminInsightsRoute,
+  ApiChatRoute: ApiChatRoute,
   CareersSlugRoute: CareersSlugRoute,
   InternshipsIdRoute: InternshipsIdRoute,
   ProgrammeSlugRoute: ProgrammeSlugRoute,
