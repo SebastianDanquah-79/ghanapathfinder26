@@ -19,6 +19,8 @@ const REPORT_REASONS = [
   { value: "other", label: "Something else" },
 ];
 
+import { useSignedCommunityImages } from "@/hooks/useCommunityImages";
+
 const field =
   "w-full rounded-lg bg-secondary border border-border px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40";
 
@@ -28,6 +30,7 @@ const InsightCard = ({ insight }: { insight: StudentInsight }) => {
   const [reporting, setReporting] = useState(false);
   const [reason, setReason] = useState("misinformation");
   const [expanded, setExpanded] = useState(false);
+  const { data: imageUrls } = useSignedCommunityImages(insight.image_paths ?? []);
   const long = insight.body.length > 260;
 
   return (
@@ -58,6 +61,36 @@ const InsightCard = ({ insight }: { insight: StudentInsight }) => {
           {expanded ? "Show less" : "Read more"}
         </button>
       )}
+
+      {(insight.image_paths ?? []).length > 0 && (
+        <div
+          className={`grid gap-2 ${
+            (insight.image_paths ?? []).length === 1 ? "grid-cols-1" : "grid-cols-2"
+          }`}
+        >
+          {(insight.image_paths ?? []).map((path) => {
+            const url = imageUrls?.get(path);
+            if (!url) return null;
+            return (
+              <a
+                key={path}
+                href={url}
+                target="_blank"
+                rel="noreferrer"
+                className="block overflow-hidden rounded-xl bg-secondary"
+              >
+                <img
+                  src={url}
+                  alt="Photo shared by a student"
+                  loading="lazy"
+                  className="w-full max-h-72 object-cover"
+                />
+              </a>
+            );
+          })}
+        </div>
+      )}
+
 
       {insight.wish_i_knew && (
         <div className="rounded-lg bg-secondary/60 p-3">

@@ -4,14 +4,18 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BrandLogo from "@/components/BrandLogo";
 import CommentThread from "@/components/CommentThread";
-import PostInsightDialog from "@/components/PostInsightDialog";
+import PostInsightDialog, { type EditableInsight } from "@/components/PostInsightDialog";
+import { useSignedCommunityImages } from "@/hooks/useCommunityImages";
+import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { useCommentCounts } from "@/hooks/useComments";
 import {
   INSIGHT_CATEGORIES,
   useCommunityInsights,
   useMyHelpfulVotes,
+  useDeleteMyInsight,
   useReportInsight,
+  useRequestLogo,
   useToggleHelpful,
 } from "@/hooks/useInsights";
 
@@ -21,12 +25,19 @@ const Community = () => {
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<"recent" | "helpful">("recent");
   const [composerOpen, setComposerOpen] = useState(false);
+  const [editing, setEditing] = useState<EditableInsight | null>(null);
+  const { user } = useAuth();
   const [openThreads, setOpenThreads] = useState<Set<string>>(new Set());
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const { data: myVotes } = useMyHelpfulVotes();
   const toggleHelpful = useToggleHelpful();
   const report = useReportInsight();
+  const removeInsight = useDeleteMyInsight();
+  const requestLogo = useRequestLogo();
   const { data: counts } = useCommentCounts((data ?? []).map((i) => i.id));
+  const { data: imageUrls } = useSignedCommunityImages(
+    (data ?? []).flatMap((i) => i.image_paths ?? []),
+  );
 
   const toggleSet = (set: Set<string>, id: string) => {
     const next = new Set(set);
@@ -70,6 +81,56 @@ const Community = () => {
     );
   };
 
+  const onEdit = (i: (typeof insights)[number]) => {
+    setEditing({
+      id: i.id,
+      university_id: i.university_id,
+      student_status: i.student_status,
+      category: i.category,
+      programme: i.programme,
+      body: i.body,
+      image_paths: i.image_paths ?? [],
+    });
+    setComposerOpen(true);
+  };
+
+  const onDelete = (i: (typeof insights)[number]) => {
+    if (!window.confirm("Delete this post permanently? This cannot be undone.")) return;
+    removeInsight.mutate(
+      { id: i.id, imagePaths: i.image_paths ?? [] },
+      {
+        onSuccess: () => toast.success("Your post was deleted."),
+        onError: (e: unknown) =>
+          toast.error(e instanceof Error ? e.message : "Could not delete your post."),
+      },
+    );
+  };
+
+  const onRequestLogo = (uni: { id: string; name: string }) => {
+    if (!user) {
+      toast.error("Sign in to request a logo.");
+      return;
+    }
+    const suggested = window.prompt(
+      `Know the official website for ${uni.name}? Paste it so we can add their logo (optional).`,
+      "",
+    );
+    if (suggested === null) return;
+    requestLogo.mutate(
+      { university_id: uni.id, organisation_name: uni.name, suggested_url: suggested.trim() || null },
+      {
+        onSuccess: () => toast.success("Thanks — we'll add this logo soon."),
+        onError: (e: unknown) =>
+          toast.error(e instanceof Error ? e.message : "Could not send your request."),
+      },
+    );
+  };
+
+  const closeComposer = () => {
+    setComposerOpen(false);
+    setEditing(null);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -85,7 +146,10 @@ const Community = () => {
           </p>
 
           <button
-            onClick={() => setComposerOpen(true)}
+            onClick={() => {
+              setEditing(null);
+              setComposerOpen(true);
+            }}
             className="w-full mb-4 flex items-center gap-3 rounded-2xl bg-glass px-4 py-3 text-left hover:bg-secondary transition-colors"
           >
             <span className="h-9 w-9 shrink-0 rounded-full bg-primary text-primary-foreground grid place-items-center text-lg font-bold leading-none">
@@ -166,8 +230,36 @@ const Community = () => {
                     <p className="text-[11px] text-muted-foreground">
                       Anonymous — {i.student_status} · {i.category} ·{" "}
                       {new Date(i.created_at).toLocaleDateString()}
+                      {i.updated_at && i.updated_at !== i.created_at ? " · edited" : ""}
                     </p>
+                    {i.universities && !i.universities.logo_url && !i.universities.website_url && (
+                      <button
+                        onClick={() =>
+                          onRequestLogo({ id: i.universities!.id, name: i.universities!.name })
+                        }
+                        className="mt-1 text-[11px] font-medium text-primary hover:underline"
+                      >
+                        Logo missing — request it
+                      </button>
+                    )}
                   </div>
+                  {user && i.user_id === user.id && (
+                    <div className="flex shrink-0 items-center gap-1">
+                      <button
+                        onClick={() => onEdit(i)}
+                        className="rounded-lg px-2 py-1 text-[11px] font-medium text-muted-foreground hover:bg-secondary"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => onDelete(i)}
+                        disabled={removeInsight.isPending}
+                        className="rounded-lg px-2 py-1 text-[11px] font-medium text-muted-foreground hover:bg-secondary hover:text-destructive disabled:opacity-50"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}
                 </header>
 
                 <p className="mt-3 text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap">
@@ -183,6 +275,35 @@ const Community = () => {
                     </button>
                   )}
                 </p>
+
+                {(i.image_paths ?? []).length > 0 && (
+                  <div
+                    className={`mt-3 grid gap-2 ${
+                      (i.image_paths ?? []).length === 1 ? "grid-cols-1" : "grid-cols-2"
+                    }`}
+                  >
+                    {(i.image_paths ?? []).map((path) => {
+                      const url = imageUrls?.get(path);
+                      if (!url) return null;
+                      return (
+                        <a
+                          key={path}
+                          href={url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="block overflow-hidden rounded-xl bg-secondary"
+                        >
+                          <img
+                            src={url}
+                            alt="Student photo shared with this experience"
+                            loading="lazy"
+                            className="w-full max-h-80 object-cover"
+                          />
+                        </a>
+                      );
+                    })}
+                  </div>
+                )}
 
                 <div className="mt-3 flex items-center justify-between border-t border-border pt-2 text-[11px] text-muted-foreground">
                   <span>{i.helpful_count ?? 0} found this helpful</span>
@@ -225,14 +346,17 @@ const Community = () => {
       </main>
 
       <button
-        onClick={() => setComposerOpen(true)}
+        onClick={() => {
+          setEditing(null);
+          setComposerOpen(true);
+        }}
         aria-label="Add a post"
         className="fixed bottom-20 right-4 sm:bottom-8 sm:right-8 z-50 h-14 w-14 rounded-full bg-primary text-primary-foreground text-3xl font-bold leading-none shadow-lg hover:scale-105 transition-transform"
       >
         +
       </button>
 
-      <PostInsightDialog open={composerOpen} onClose={() => setComposerOpen(false)} />
+      <PostInsightDialog open={composerOpen} onClose={closeComposer} editing={editing} />
 
       <Footer />
     </div>

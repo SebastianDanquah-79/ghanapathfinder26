@@ -572,6 +572,47 @@ export type Database = {
           },
         ]
       }
+      logo_requests: {
+        Row: {
+          created_at: string
+          id: string
+          note: string | null
+          organisation_name: string
+          requested_by: string | null
+          status: string
+          suggested_url: string | null
+          university_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          note?: string | null
+          organisation_name: string
+          requested_by?: string | null
+          status?: string
+          suggested_url?: string | null
+          university_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          note?: string | null
+          organisation_name?: string
+          requested_by?: string | null
+          status?: string
+          suggested_url?: string | null
+          university_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "logo_requests_university_id_fkey"
+            columns: ["university_id"]
+            isOneToOne: false
+            referencedRelation: "universities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       match_preferences: {
         Row: {
           created_at: string
@@ -1441,6 +1482,7 @@ export type Database = {
           created_at: string
           helpful_count: number
           id: string
+          image_paths: string[]
           programme: string | null
           rating: number | null
           status: string
@@ -1458,6 +1500,7 @@ export type Database = {
           created_at?: string
           helpful_count?: number
           id?: string
+          image_paths?: string[]
           programme?: string | null
           rating?: number | null
           status?: string
@@ -1475,6 +1518,7 @@ export type Database = {
           created_at?: string
           helpful_count?: number
           id?: string
+          image_paths?: string[]
           programme?: string | null
           rating?: number | null
           status?: string
