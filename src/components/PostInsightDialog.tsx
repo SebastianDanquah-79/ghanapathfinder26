@@ -73,7 +73,7 @@ const PostInsightDialog = ({ open, onClose, universityId }: Props) => {
   const submit = () => {
     if (!user) {
       toast.error("Sign in to share your experience.");
-      navigate({ to: "/auth" });
+      navigate("/auth");
       return;
     }
     if (!canPost) {
