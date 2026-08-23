@@ -59,6 +59,36 @@ const InsightCard = ({ insight }: { insight: StudentInsight }) => {
         </button>
       )}
 
+      {(insight.image_paths ?? []).length > 0 && (
+        <div
+          className={`grid gap-2 ${
+            (insight.image_paths ?? []).length === 1 ? "grid-cols-1" : "grid-cols-2"
+          }`}
+        >
+          {(insight.image_paths ?? []).map((path) => {
+            const url = imageUrls?.get(path);
+            if (!url) return null;
+            return (
+              <a
+                key={path}
+                href={url}
+                target="_blank"
+                rel="noreferrer"
+                className="block overflow-hidden rounded-xl bg-secondary"
+              >
+                <img
+                  src={url}
+                  alt="Photo shared by a student"
+                  loading="lazy"
+                  className="w-full max-h-72 object-cover"
+                />
+              </a>
+            );
+          })}
+        </div>
+      )}
+
+
       {insight.wish_i_knew && (
         <div className="rounded-lg bg-secondary/60 p-3">
           <p className="text-xs font-medium text-foreground mb-1">What I wish I knew before coming here</p>
