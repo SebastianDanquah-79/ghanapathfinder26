@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BrandLogo from "@/components/BrandLogo";
 import CommentThread from "@/components/CommentThread";
+import PostInsightDialog from "@/components/PostInsightDialog";
 import { toast } from "sonner";
 import { useCommentCounts } from "@/hooks/useComments";
 import {
@@ -19,6 +20,7 @@ const Community = () => {
   const [category, setCategory] = useState("All");
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<"recent" | "helpful">("recent");
+  const [composerOpen, setComposerOpen] = useState(false);
   const [openThreads, setOpenThreads] = useState<Set<string>>(new Set());
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const { data: myVotes } = useMyHelpfulVotes();
@@ -81,6 +83,16 @@ const Community = () => {
             transport, workload, cost of living, campus culture and practical tips. These are student
             perspectives, not official university information.
           </p>
+
+          <button
+            onClick={() => setComposerOpen(true)}
+            className="w-full mb-4 flex items-center gap-3 rounded-2xl bg-glass px-4 py-3 text-left hover:bg-secondary transition-colors"
+          >
+            <span className="h-9 w-9 shrink-0 rounded-full bg-primary text-primary-foreground grid place-items-center text-lg font-bold leading-none">
+              +
+            </span>
+            <span className="text-sm text-muted-foreground">Share an experience with other students…</span>
+          </button>
 
           <div className="flex flex-col sm:flex-row gap-2 mb-5">
             <input
@@ -211,6 +223,17 @@ const Community = () => {
 
         </div>
       </main>
+
+      <button
+        onClick={() => setComposerOpen(true)}
+        aria-label="Add a post"
+        className="fixed bottom-20 right-4 sm:bottom-8 sm:right-8 z-50 h-14 w-14 rounded-full bg-primary text-primary-foreground text-3xl font-bold leading-none shadow-lg hover:scale-105 transition-transform"
+      >
+        +
+      </button>
+
+      <PostInsightDialog open={composerOpen} onClose={() => setComposerOpen(false)} />
+
       <Footer />
     </div>
   );
