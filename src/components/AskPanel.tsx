@@ -79,7 +79,7 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
   );
 
   return (
-    <div className="rounded-xl border border-border bg-glass overflow-hidden">
+    <div className="rounded-xl border border-border bg-glass overflow-hidden flex flex-col">
       <div className="flex items-center justify-between gap-2 px-3 py-2 border-b border-border">
         <div className="min-w-0">
           <p className="text-sm font-semibold text-foreground">Ask GhanaPathFinder</p>
@@ -98,7 +98,7 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
         )}
       </div>
 
-      <Conversation className="max-h-[52vh] min-h-[180px]">
+      <Conversation className="flex-1 min-h-[180px] max-h-[52vh]">
         <ConversationContent className="gap-4 p-3">
           {messages.length === 0 ? (
             <ConversationEmptyState
