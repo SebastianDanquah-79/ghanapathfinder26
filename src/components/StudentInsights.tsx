@@ -19,6 +19,8 @@ const REPORT_REASONS = [
   { value: "other", label: "Something else" },
 ];
 
+import { useSignedCommunityImages } from "@/hooks/useCommunityImages";
+
 const field =
   "w-full rounded-lg bg-secondary border border-border px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40";
 
@@ -28,6 +30,7 @@ const InsightCard = ({ insight }: { insight: StudentInsight }) => {
   const [reporting, setReporting] = useState(false);
   const [reason, setReason] = useState("misinformation");
   const [expanded, setExpanded] = useState(false);
+  const { data: imageUrls } = useSignedCommunityImages(insight.image_paths ?? []);
   const long = insight.body.length > 260;
 
   return (
