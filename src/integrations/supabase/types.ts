@@ -1474,6 +1474,33 @@ export type Database = {
         }
         Relationships: []
       }
+      site_ratings: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          rating: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          rating: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          rating?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       student_insights: {
         Row: {
           advice: string | null
@@ -1830,6 +1857,7 @@ export type Database = {
       }
       show_limit: { Args: never; Returns: number }
       show_trgm: { Args: { "": string }; Returns: string[] }
+      site_rating_summary: { Args: never; Returns: Json }
       toggle_comment_like: { Args: { _comment_id: string }; Returns: Json }
       toggle_insight_helpful: { Args: { _insight_id: string }; Returns: Json }
     }
