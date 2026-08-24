@@ -23,5 +23,5 @@ export const Route = createFileRoute("/")({
       context.queryClient.ensureQueryData(scholarshipRecordsQueryOptions("", "All")),
     ]);
   },
-  component: Index,
+  component: Home,
 });
