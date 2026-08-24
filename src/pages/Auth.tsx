@@ -14,12 +14,12 @@ type Mode = "signin" | "signup";
 const safeNext = (value: string | null) =>
   value && value.startsWith("/") && !value.startsWith("//") ? value : null;
 
-const Auth = () => {
+const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [params] = useSearchParams();
   const next = safeNext(params.get("next"));
-  const [mode, setMode] = useState<Mode>("signin");
+  const [mode, setMode] = useState<Mode>(defaultMode);
   const [accountType, setAccountType] = useState<"student" | "parent">("student");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");

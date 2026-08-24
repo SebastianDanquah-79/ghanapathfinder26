@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import Index from "@/pages/Index";
+import Home from "@/pages/Home";
 import {
   scholarshipRecordsQueryOptions,
   universitiesQueryOptions,
@@ -23,5 +23,5 @@ export const Route = createFileRoute("/")({
       context.queryClient.ensureQueryData(scholarshipRecordsQueryOptions("", "All")),
     ]);
   },
-  component: Index,
+  component: Home,
 });
