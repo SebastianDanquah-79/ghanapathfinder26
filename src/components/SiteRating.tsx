@@ -2,9 +2,13 @@ import { useEffect, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { useSiteRatingSummary } from "@/hooks/useSiteRating";
 import { Link } from "@/lib/router-compat";
 import { toast } from "sonner";
+
+interface Summary {
+  average: number;
+  count: number;
+}
 
 const Star = ({ filled }: { filled: boolean }) => (
   <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">

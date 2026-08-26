@@ -655,42 +655,6 @@ export type Database = {
         }
         Relationships: []
       }
-      notifications: {
-        Row: {
-          body: string | null
-          category: string
-          created_at: string
-          id: string
-          link: string | null
-          read_at: string | null
-          title: string
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          body?: string | null
-          category?: string
-          created_at?: string
-          id?: string
-          link?: string | null
-          read_at?: string | null
-          title: string
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          body?: string | null
-          category?: string
-          created_at?: string
-          id?: string
-          link?: string | null
-          read_at?: string | null
-          title?: string
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
       occupation_salaries: {
         Row: {
           created_at: string
