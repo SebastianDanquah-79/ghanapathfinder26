@@ -1,3 +1,4 @@
+import SiteRating from "@/components/SiteRating";
 import { BrandLogoIcon } from "@/lib/icons";
 import { Link } from "@/lib/router-compat";
 
@@ -58,6 +59,7 @@ const Footer = () => (
         Information on GhanaPathFinder is guidance only. Match confidence and estimated cut-off points
         are not guarantees of admission , always verify with the institution.
       </p>
+      <SiteRating />
       <p className="text-xs text-muted-foreground mt-3">© 2026 GhanaPathFinder. All rights reserved.</p>
     </div>
   </footer>

@@ -461,11 +461,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ghanapathfinder.com/university/bluecrest-college</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://ghanapathfinder.com/university/botho-university-ghana-campus</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -717,11 +712,6 @@
   </url>
   <url>
     <loc>https://ghanapathfinder.com/university/damongo-agricultural-college</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://ghanapathfinder.com/university/data-link-institute-of-business-and-technology</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2336,6 +2326,26 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://ghanapathfinder.com/programme/atu-btech-accounting-finance-analytics</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-btech-applied-statistics</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-btech-automotive-engineering</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-btech-biomedical-equipment-technology</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ghanapathfinder.com/programme/atu-btech-building-technology</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -2351,7 +2361,22 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://ghanapathfinder.com/programme/atu-btech-construction-engineering-management</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-btech-cyber-security</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ghanapathfinder.com/programme/atu-btech-electrical-and-electronic-engineering</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-btech-facilities-management</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -2366,7 +2391,22 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://ghanapathfinder.com/programme/atu-btech-informatics</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ghanapathfinder.com/programme/atu-btech-information-and-communication-technology</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-btech-interior-design-technology</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-btech-logistics-transport-management</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -2381,7 +2421,77 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://ghanapathfinder.com/programme/atu-btech-medical-imaging-technology</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-btech-medical-laboratory-science</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-btech-multimedia-communication</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ghanapathfinder.com/programme/atu-btech-procurement-and-supply-chain-management</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-btech-public-relations-digital-communication</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-btech-science-laboratory-technology</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-btech-secretaryship-administrative-practice</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-btech-water-sanitation-engineering</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-diploma-banking-technology-accounting</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-diploma-business-administration</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-diploma-computerized-accounting</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-diploma-information-technology</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-diploma-interior-design-technology</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-diploma-marketing</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-diploma-public-relations</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -2391,7 +2501,27 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://ghanapathfinder.com/programme/atu-hnd-automobile-engineering</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-hnd-bilingual-secretaryship-management-studies</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-hnd-building-technology</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ghanapathfinder.com/programme/atu-hnd-civil-engineering</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-hnd-computer-science</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -2401,7 +2531,22 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://ghanapathfinder.com/programme/atu-hnd-fashion-design-textiles</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-hnd-furniture-design-production</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ghanapathfinder.com/programme/atu-hnd-hotel-catering-and-institutional-management</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-hnd-interior-design-technology</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -2416,7 +2561,67 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://ghanapathfinder.com/programme/atu-hnd-purchasing-supply</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-hnd-science-laboratory-technology</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-hnd-secretaryship-management-studies</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/atu-hnd-statistics</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ba-in-advertising-public-relations</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ba-in-film-and-digital-technologies</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ba-in-journalism-mass-communication</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ghanapathfinder.com/programme/bagabaga-college-of-education-bachelor-of-education-basic-education</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/bba-in-accounting</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/bba-in-banking-finance</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/bba-in-entrepreneurship</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/bba-in-human-resource-management</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/bba-in-marketing</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -2457,6 +2662,61 @@
   </url>
   <url>
     <loc>https://ghanapathfinder.com/programme/bluecrest-bsc-software-engineering</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/bsc-electrical-electronic-engineering</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/bsc-in-artificial-intelligence</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/bsc-in-biomedical-engineering</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/bsc-in-computer-engineering</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/bsc-in-computer-science</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/bsc-in-data-science-artificial-intelligence</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/bsc-in-electric-vehicle-engineering</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/bsc-in-electrical-electronics-engineering</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/bsc-in-electronics-communication-engineering</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/bsc-in-information-technology</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/bsc-in-unmanned-aerial-systems-uas-engineering</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -3126,6 +3386,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://ghanapathfinder.com/programme/gimpa-bsc-accounting</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ghanapathfinder.com/programme/gimpa-bsc-accounting-and-finance</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -3146,6 +3411,16 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://ghanapathfinder.com/programme/gimpa-bsc-finance</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/gimpa-bsc-ict</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ghanapathfinder.com/programme/gimpa-bsc-information-technology-management</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -3156,7 +3431,22 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://ghanapathfinder.com/programme/gimpa-bsc-procurement-logistics-scm</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ghanapathfinder.com/programme/gimpa-bsc-public-administration</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/gimpa-diploma-applied-computer-science</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/gimpa-diploma-management-studies</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -3781,7 +4071,42 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-bsc-public-administration</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ghanapathfinder.com/programme/ktu-btech-accountancy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-accounting-finance</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-actuarial-science</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-ai-robotics</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-automotive-engineering</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-biomedical-engineering</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-building-services-technology</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -3791,7 +4116,17 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-commercial-practice-qs</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ghanapathfinder.com/programme/ktu-btech-computer-science</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-construction-technology-management</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -3801,7 +4136,47 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-environmental-management-technology</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-fashion-design-textiles</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-food-safety-toxicology</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-food-technology</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-graphic-design</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ghanapathfinder.com/programme/ktu-btech-hospitality-and-tourism-management</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-ict</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-integrated-development-planning</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-marketing</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -3811,7 +4186,72 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-mechanical-engineering-plant</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-mechanical-engineering-production</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-mechatronics-engineering</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-medical-laboratory-sciences</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-post-harvest-technology</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ghanapathfinder.com/programme/ktu-btech-procurement-and-supply-chain-management</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-real-estate-management</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-rehabilitation-engineering</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-renewable-energy-systems-engineering</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-secretaryship-management-studies</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-statistics</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-sustainable-water-sanitation-management</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-telecommunication-engineering</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-btech-welding-fabrication-engineering</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -3821,7 +4261,27 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-hnd-automotive-engineering</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-hnd-biomedical-engineering-technology</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-hnd-building-technology</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ghanapathfinder.com/programme/ktu-hnd-civil-engineering</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-hnd-computer-network-management</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -3836,12 +4296,52 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-hnd-environmental-management-technology</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-hnd-fashion-design-textiles</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-hnd-food-technology</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-hnd-hospitality-management</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ghanapathfinder.com/programme/ktu-hnd-marketing</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://ghanapathfinder.com/programme/ktu-hnd-mechanical-engineering</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-hnd-postharvest-technology</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-hnd-purchasing-supply</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-hnd-renewable-energy-systems-engineering</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/ktu-hnd-secretaryship-management-studies</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -3882,6 +4382,11 @@
   </url>
   <url>
     <loc>https://ghanapathfinder.com/programme/lancaster-ghana-llb-law</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/llb-law-with-public-policy</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

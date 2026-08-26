@@ -7,6 +7,7 @@ import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/useAuth";
 import { TERMS_VERSION } from "@/lib/legal";
 import { useEffect } from "react";
+import SiteRating from "@/components/SiteRating";
 
 type Mode = "signin" | "signup";
 
@@ -269,6 +270,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
           </>
         )}
       </div>
+      <SiteRating />
     </div>
   );
 };
