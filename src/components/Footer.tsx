@@ -1,3 +1,4 @@
+import SiteRating from "@/components/SiteRating";
 import { BrandLogoIcon } from "@/lib/icons";
 import { Link } from "@/lib/router-compat";
 
