@@ -270,6 +270,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
           </>
         )}
       </div>
+      <SiteRating />
     </div>
   );
 };
