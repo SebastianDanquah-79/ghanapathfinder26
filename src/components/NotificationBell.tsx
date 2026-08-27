@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Bell } from "@/lib/icons";
 import { Link } from "@/lib/router-compat";
 import { scholarships } from "@/data/scholarships";
+import { estimateDeadlineDate } from "@/lib/scholarshipDates";
 import { toast } from "sonner";
 
 interface Notice {
@@ -12,25 +13,24 @@ interface Notice {
   href: string;
 }
 
-const daysUntil = (date: string) => {
-  const diff = new Date(date).getTime() - Date.now();
-  return Math.ceil(diff / 86_400_000);
-};
+const daysUntil = (date: Date) => Math.ceil((date.getTime() - Date.now()) / 86_400_000);
 
 const buildNotices = (): Notice[] =>
   scholarships
-    .filter((s) => {
-      const d = daysUntil(s.deadline);
+    .map((s) => ({ s, date: estimateDeadlineDate(s.deadline) }))
+    .filter((x): x is { s: (typeof scholarships)[number]; date: Date } => {
+      if (!x.date) return false;
+      const d = daysUntil(x.date);
       return d >= 0 && d <= 60;
     })
-    .sort((a, b) => daysUntil(a.deadline) - daysUntil(b.deadline))
+    .sort((a, b) => daysUntil(a.date) - daysUntil(b.date))
     .slice(0, 6)
-    .map((s) => {
-      const d = daysUntil(s.deadline);
+    .map(({ s, date }) => {
+      const d = daysUntil(date);
       return {
         id: s.name,
         title: s.name,
-        body: d === 0 ? "Deadline is today" : `Deadline in ${d} day${d === 1 ? "" : "s"}`,
+        body: d === 0 ? "Deadline is today" : `Deadline in about ${d} day${d === 1 ? "" : "s"}`,
         href: "/scholarships",
       };
     });
