@@ -4,6 +4,7 @@ import { Menu, X, ChevronDown, Search, BrandLogoIcon } from "@/lib/icons";
 import { Link, useLocation } from "@/lib/router-compat";
 import { useAuth } from "@/hooks/useAuth";
 import ThemeToggle from "@/components/ThemeToggle";
+import NotificationBell from "@/components/NotificationBell";
 
 const primary = [
   { label: "Home", href: "/" },
@@ -110,7 +111,7 @@ const Navbar = () => {
           </Link>
 
           <ThemeToggle className="h-9 w-9" />
-
+          <NotificationBell />
 
           <Link
             to={user ? "/dashboard" : "/auth"}
@@ -129,6 +130,7 @@ const Navbar = () => {
             <Search className="h-5 w-5" />
           </Link>
           <ThemeToggle className="h-11 w-11" />
+          <NotificationBell />
           <Link
             to={user ? "/dashboard" : "/auth"}
             className="inline-flex items-center whitespace-nowrap px-3 min-h-[40px] text-xs font-medium rounded-lg bg-primary text-primary-foreground"
