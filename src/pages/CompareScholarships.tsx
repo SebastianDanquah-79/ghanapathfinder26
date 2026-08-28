@@ -23,7 +23,7 @@ const CompareScholarships = () => {
   const [picked, setPicked] = useState<string[]>([]);
 
   useEffect(() => {
-    if (!loading && !user) navigate("/auth", { replace: true });
+    if (!loading && !user) navigate(`/auth?next=${encodeURIComponent(window.location.pathname + window.location.search)}`, { replace: true });
   }, [loading, user, navigate]);
 
   const { data: saved = [] } = useQuery({

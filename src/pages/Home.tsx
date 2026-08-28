@@ -1,24 +1,9 @@
-import { useAuth } from "@/hooks/useAuth";
 import Index from "@/pages/Index";
-import Auth from "@/pages/Auth";
 
 /**
- * Landing gate: visitors must create an account (or sign in) before they can
- * reach any of the GhanaPathFinder resources, so "/" renders the signup form
- * until a session exists.
+ * Public landing page: anyone can browse GhanaPathFinder's content without an
+ * account. Personalized tools prompt for sign-up/login only when opened.
  */
-const Home = () => {
-  const { user, loading } = useAuth();
-
-  if (loading) {
-    return <div className="min-h-screen bg-background" aria-busy="true" />;
-  }
-
-  if (!user) {
-    return <Auth defaultMode="signup" />;
-  }
-
-  return <Index />;
-};
+const Home = () => <Index />;
 
 export default Home;
