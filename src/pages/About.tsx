@@ -56,16 +56,15 @@ const founders: Founder[] = [
   },
   {
     name: "Som Emmanuel Egyir",
-    role: "Co-Founder, GhanaPathFinder. Aspiring AI Engineer",
+    role: "Co-Founder | Aspiring Electrical Engineer",
     location: "Accra, Ghana",
     photo: cofounderPhoto.url,
     initials: "SE",
-    bio: "Som Emmanuel Egyir is an aspiring AI Engineer and Co-Founder of GhanaPathFinder, with interests in Artificial Intelligence, Generative AI, software development, healthcare technology, education technology, and entrepreneurship. A General Science graduate of Adisadel College, he has demonstrated leadership as an Organizer of the Adisadel College Cybersecurity Club, Dispensary Prefect, and SRC Welfare Officer. He also gained practical healthcare experience through an internship at Health Net Airport Medical Centre. As a Co-Founder of GhanaPathFinder, Som focuses on research, marketing, promotion, and reviewing the platform to improve its value to users. His vision is to use technology to help people make informed educational and career decisions and discover the right path for their future.",
+    bio: "Som Emmanuel Egyir is an aspiring Electrical Engineer and Co-Founder of GhanaPathFinder, with interests in Electrical Engineering, Artificial Intelligence, Generative AI, software development, healthcare technology, education technology, and entrepreneurship. A General Science graduate of Adisadel College, he has demonstrated leadership as an Organizer of the Adisadel College Cybersecurity Club, Dispensary Prefect, and SRC Welfare Officer. He also gained practical healthcare experience through an internship at Health Net Airport Medical Centre.\n\nAs a Co-Founder of GhanaPathFinder, Som focuses on research, marketing, promotion, and reviewing the platform to improve its value to users. His vision is to use technology and engineering to help people make informed educational and career decisions and discover the right path for their future.",
     responsibilities: ["Research and content quality", "Marketing and promotion", "Platform review"],
     emails: ["somemmanuel354@gmail.com"],
     phone: "0533286832",
-    linkedin:
-      "https://www.linkedin.com/in/som-emmanuel-egyir-b6a09a41b?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+    linkedin: "https://www.linkedin.com/in/som-emmanuel-egyir-b6a09a41b?utm_source=share_via&utm_content=profile&utm_medium=member_android",
     quote: "The right path can change a future; my goal is to use technology to help people discover theirs.",
   },
 ];
