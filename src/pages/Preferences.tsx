@@ -33,7 +33,7 @@ const Preferences = () => {
   const [prefs, setPrefs] = useState<MatchPreferences>(DEFAULT_PREFERENCES);
 
   useEffect(() => {
-    if (!loading && !user) navigate("/auth", { replace: true });
+    if (!loading && !user) navigate(`/auth?next=${encodeURIComponent(window.location.pathname + window.location.search)}`, { replace: true });
   }, [loading, user, navigate]);
 
   useEffect(() => {

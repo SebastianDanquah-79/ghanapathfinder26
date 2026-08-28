@@ -24,7 +24,7 @@ const SaveButton = ({ item, label = "Save" }: Props) => {
       type="button"
       onClick={() => {
         if (!user) {
-          navigate("/auth");
+          navigate(`/auth?next=${encodeURIComponent(window.location.pathname + window.location.search)}`);
           return;
         }
         toggle.mutate(

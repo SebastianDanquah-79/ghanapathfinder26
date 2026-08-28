@@ -34,7 +34,7 @@ const ApplicationTracker = () => {
   const [filter, setFilter] = useState<"all" | ApplicationStatus>("all");
 
   if (!loading && !user) {
-    navigate("/auth", { replace: true });
+    navigate(`/auth?next=${encodeURIComponent(window.location.pathname + window.location.search)}`, { replace: true });
   }
 
   const visible = useMemo(

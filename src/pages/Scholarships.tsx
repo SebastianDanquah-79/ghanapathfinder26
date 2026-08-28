@@ -46,7 +46,7 @@ const Scholarships = () => {
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
-    if (!loading && !user) navigate("/auth", { replace: true });
+    if (!loading && !user) navigate(`/auth?next=${encodeURIComponent(window.location.pathname + window.location.search)}`, { replace: true });
   }, [loading, user, navigate]);
 
   const { data: profile } = useQuery({
