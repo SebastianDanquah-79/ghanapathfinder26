@@ -2,7 +2,6 @@ import { Suspense, lazy } from "react";
 import Navbar from "@/components/Navbar";
 import Seo from "@/components/Seo";
 import HeroSection from "@/components/HeroSection";
-import CollegeRecommender from "@/components/CollegeRecommender";
 import UniversityDirectory from "@/components/UniversityDirectory";
 import ScholarshipSection from "@/components/ScholarshipSection";
 import ExploreGrid from "@/components/ExploreGrid";
@@ -47,7 +46,6 @@ const Index = () => (
     </div>
 
     <ExploreGrid />
-    <CollegeRecommender />
     <UniversityDirectory />
     <ScholarshipSection />
     <Suspense fallback={<div className="h-24" />}>
