@@ -36,7 +36,7 @@ type Founder = {
   bio: string;
   responsibilities: string[];
   emails: string[];
-  phone: string;
+  phone?: string;
   linkedin: string;
   quote?: string;
 };
@@ -66,6 +66,16 @@ const founders: Founder[] = [
     phone: "0533286832",
     linkedin: "https://www.linkedin.com/in/som-emmanuel-egyir-b6a09a41b?utm_source=share_via&utm_content=profile&utm_medium=member_android",
     quote: "The right path can change a future; my goal is to use technology to help people discover theirs.",
+  },
+  {
+    name: "Seraphine Enam Kattah",
+    role: "Chief Communications & Research Officer (CCRO)",
+    location: "Accra, Ghana",
+    initials: "SK",
+    bio: "I am Seraphine Enam Kattah, an entrepreneur, youth advocate, and Chief Communications & Research Officer at GhanaPathFinder. I am committed to expanding opportunities for Africa's next generation through technology and innovation, with a particular focus on the girl child. At GhanaPathFinder, I lead the organisation's communications strategy and user research, ensuring every decision is grounded in evidence and every message serves the students we exist for. A proud alumna of Wesley Girls' High School, I believe every young African deserves the tools and guidance to build a meaningful future.",
+    responsibilities: ["Communications strategy", "User research", "Youth advocacy & partnerships"],
+    emails: ["enamseraphinekattah92@gmail.com"],
+    linkedin: "https://www.linkedin.com/in/seraphine-enam-kattah-b997a22bb?utm_source=share_via&utm_content=profile&utm_medium=member_android",
   },
 ];
 
@@ -134,10 +144,12 @@ const FounderCard = ({ f }: { f: Founder }) => {
             <span className="truncate">{e}</span>
           </a>
         ))}
-        <a href={`tel:${f.phone}`} className="flex items-center gap-2 text-muted-foreground hover:text-primary">
-          <Phone className="h-4 w-4 shrink-0" aria-hidden="true" />
-          {f.phone}
-        </a>
+        {f.phone && (
+          <a href={`tel:${f.phone}`} className="flex items-center gap-2 text-muted-foreground hover:text-primary">
+            <Phone className="h-4 w-4 shrink-0" aria-hidden="true" />
+            {f.phone}
+          </a>
+        )}
         <a
           href={f.linkedin}
           target="_blank"
@@ -221,7 +233,7 @@ const About = () => (
 
         <section aria-labelledby="founders" className="space-y-3">
           <h2 id="founders" className="font-display text-lg font-semibold text-foreground">
-            Our founders
+            Our team
           </h2>
           <div className="grid gap-4 md:grid-cols-2 items-stretch">
             {founders.map((f) => (
