@@ -6,6 +6,7 @@ import Seo, { breadcrumbLd } from "@/components/Seo";
 import { Link } from "@/lib/router-compat";
 import founderPhoto from "@/assets/founder-sebastian-2.png.asset.json";
 import cofounderPhoto from "@/assets/founder-som.jpg.asset.json";
+import seraphinePhoto from "@/assets/seraphine-kattah.jpg.asset.json";
 
 const expectations = [
   "Personalised university recommendations",
