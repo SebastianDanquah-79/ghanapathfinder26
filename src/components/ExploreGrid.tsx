@@ -1,48 +1,5 @@
 import { Link } from "@/lib/router-compat";
-
-const items = [
-  {
-    to: "/search?kind=university",
-    title: "Universities",
-    desc: "Every accredited institution in Ghana, with verified sources.",
-  },
-  {
-    to: "/programmes",
-    title: "Programmes",
-    desc: "What you study, career paths and entry requirements.",
-  },
-  {
-    to: "/admission-match",
-    title: "Admission match",
-    desc: "Use your WASSCE aggregate to see where you qualify.",
-  },
-  {
-    to: "/scholarships",
-    title: "Scholarships",
-    desc: "Local, private and international funding you can apply for.",
-  },
-  {
-    to: "/careers",
-    title: "Careers",
-    desc: "Where each path leads, and what the work really looks like.",
-  },
-  {
-    to: "/skills",
-    title: "Skills",
-    desc: "Free courses and videos for the skills each career needs.",
-  },
-  {
-    to: "/internships",
-    title: "Internships",
-    desc: "Employers in Ghana that take interns and graduate trainees.",
-  },
-  {
-    to: "/community",
-    title: "Community",
-    desc: "Honest, anonymous experiences from students already there.",
-  },
-];
-
+import { navSections } from "@/lib/nav-config";
 
 const ExploreGrid = () => (
   <section aria-labelledby="explore" className="border-t border-border bg-card/30">
@@ -53,20 +10,31 @@ const ExploreGrid = () => (
       <p className="mt-1 text-sm text-muted-foreground">
         Discover, match, compare and plan — one step at a time.
       </p>
-      <div className="mt-4 grid grid-cols-2 lg:grid-cols-3 gap-2.5">
-        {items.map((i) => (
-          <Link
-            key={i.to}
-            to={i.to}
-            className="group rounded-xl border border-border bg-background p-3 md:p-4 transition-colors hover:border-primary/50 hover:bg-primary/5"
-          >
-            <span className="block text-sm md:text-base font-semibold text-foreground group-hover:text-primary">
-              {i.title}
-            </span>
-            <span className="mt-1 block text-xs md:text-sm text-muted-foreground leading-snug">
-              {i.desc}
-            </span>
-          </Link>
+      <div className="mt-4 space-y-5">
+        {navSections.map(({ id, label, icon: Icon, items }) => (
+          <div key={id}>
+            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              <Icon className="h-4 w-4" /> {label}
+            </div>
+            <div className="mt-2 grid grid-cols-2 lg:grid-cols-4 gap-2.5">
+              {items.map((i) => (
+                <Link
+                  key={i.href}
+                  to={i.href}
+                  className="group rounded-xl border border-border bg-background p-3 md:p-4 transition-colors hover:border-primary/50 hover:bg-primary/5"
+                >
+                  <span className="block text-sm md:text-base font-semibold text-foreground group-hover:text-primary">
+                    {i.label}
+                  </span>
+                  {i.desc && (
+                    <span className="mt-1 block text-xs md:text-sm text-muted-foreground leading-snug">
+                      {i.desc}
+                    </span>
+                  )}
+                </Link>
+              ))}
+            </div>
+          </div>
         ))}
       </div>
     </div>
