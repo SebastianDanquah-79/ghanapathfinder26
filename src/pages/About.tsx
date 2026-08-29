@@ -36,7 +36,7 @@ type Founder = {
   bio: string;
   responsibilities: string[];
   emails: string[];
-  phone: string;
+  phone?: string;
   linkedin: string;
   quote?: string;
 };
