@@ -144,10 +144,12 @@ const FounderCard = ({ f }: { f: Founder }) => {
             <span className="truncate">{e}</span>
           </a>
         ))}
-        <a href={`tel:${f.phone}`} className="flex items-center gap-2 text-muted-foreground hover:text-primary">
-          <Phone className="h-4 w-4 shrink-0" aria-hidden="true" />
-          {f.phone}
-        </a>
+        {f.phone && (
+          <a href={`tel:${f.phone}`} className="flex items-center gap-2 text-muted-foreground hover:text-primary">
+            <Phone className="h-4 w-4 shrink-0" aria-hidden="true" />
+            {f.phone}
+          </a>
+        )}
         <a
           href={f.linkedin}
           target="_blank"
@@ -231,7 +233,7 @@ const About = () => (
 
         <section aria-labelledby="founders" className="space-y-3">
           <h2 id="founders" className="font-display text-lg font-semibold text-foreground">
-            Our founders
+            Our team
           </h2>
           <div className="grid gap-4 md:grid-cols-2 items-stretch">
             {founders.map((f) => (
