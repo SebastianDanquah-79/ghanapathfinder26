@@ -6,6 +6,7 @@ import Seo, { breadcrumbLd } from "@/components/Seo";
 import { Link } from "@/lib/router-compat";
 import founderPhoto from "@/assets/founder-sebastian-2.png.asset.json";
 import cofounderPhoto from "@/assets/founder-som.jpg.asset.json";
+import seraphinePhoto from "@/assets/seraphine-kattah.jpg.asset.json";
 
 const expectations = [
   "Personalised university recommendations",
@@ -71,6 +72,7 @@ const founders: Founder[] = [
     name: "Seraphine Enam Kattah",
     role: "Chief Communications & Research Officer (CCRO)",
     location: "Accra, Ghana",
+    photo: seraphinePhoto.url,
     initials: "SK",
     bio: "I am Seraphine Enam Kattah, an entrepreneur, youth advocate, and Chief Communications & Research Officer at GhanaPathFinder. I am committed to expanding opportunities for Africa's next generation through technology and innovation, with a particular focus on the girl child. At GhanaPathFinder, I lead the organisation's communications strategy and user research, ensuring every decision is grounded in evidence and every message serves the students we exist for. A proud alumna of Wesley Girls' High School, I believe every young African deserves the tools and guidance to build a meaningful future.",
     responsibilities: ["Communications strategy", "User research", "Youth advocacy & partnerships"],
