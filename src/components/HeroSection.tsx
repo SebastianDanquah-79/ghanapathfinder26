@@ -62,17 +62,17 @@ const HeroSection = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="#universities"
+              href="#recommender"
               className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-base hover:opacity-90 transition-opacity glow-gold"
             >
-              Explore Universities
+              Get Recommendations
               <Sparkles className="h-4 w-4" />
             </a>
             <a
-              href="#scholarships"
+              href="#universities"
               className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-glass bg-glass-hover font-semibold text-sm text-foreground"
             >
-              Browse Scholarships
+              Explore Universities
             </a>
           </div>
         </motion.div>
