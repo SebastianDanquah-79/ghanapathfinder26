@@ -1,8 +1,4 @@
-// Import from @tanstack/start-client-core directly instead of the
-// @tanstack/react-start barrel: the barrel's `export *` facade can be a
-// partial module during cold serverless starts (Vite SSR re-export race),
-// leaving `createCsrfMiddleware` undefined at runtime.
-import { createStart, createCsrfMiddleware, createMiddleware } from "@tanstack/start-client-core";
+import { createStart, createCsrfMiddleware, createMiddleware } from "@tanstack/react-start";
 
 import { renderErrorPage } from "./lib/error-page";
 
