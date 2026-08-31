@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle } from "@/lib/icons";
+import { CheckCircle2 } from "@/lib/icons";
 
 const highlights = [
   "Match your WASSCE results to real university admission thresholds.",
