@@ -6,6 +6,7 @@ import CollegeRecommender from "@/components/CollegeRecommender";
 import UniversityDirectory from "@/components/UniversityDirectory";
 import ScholarshipSection from "@/components/ScholarshipSection";
 import ExploreGrid from "@/components/ExploreGrid";
+import WhyGhanaPathFinder from "@/components/WhyGhanaPathFinder";
 
 const ImpactSection = lazy(() => import("@/components/ImpactSection"));
 const CareerSection = lazy(() => import("@/components/CareerSection"));
