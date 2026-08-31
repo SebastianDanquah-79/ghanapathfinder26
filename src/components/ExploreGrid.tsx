@@ -12,17 +12,17 @@ const ExploreGrid = () => (
         Discover, match, compare and plan — one step at a time.
       </p>
 
-      <div className="mt-4 flex flex-col sm:flex-row gap-3">
+      <div className="mt-4 flex flex-col sm:flex-row gap-4 justify-start">
         <a
           href="#recommender"
-          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:opacity-90 transition-opacity glow-gold"
+          className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-semibold text-base hover:opacity-90 transition-opacity glow-gold"
         >
           Get Recommendations
           <Sparkles className="h-4 w-4" />
         </a>
         <a
           href="#universities"
-          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-glass bg-glass-hover font-semibold text-sm text-foreground"
+          className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-glass bg-glass-hover font-semibold text-sm text-foreground"
         >
           Explore Universities
         </a>
