@@ -48,6 +48,7 @@ const Index = () => (
     </div>
 
     <ExploreGrid />
+    <WhyGhanaPathFinder />
     <CollegeRecommender />
     <UniversityDirectory />
     <ScholarshipSection />
