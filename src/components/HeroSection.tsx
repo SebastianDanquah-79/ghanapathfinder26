@@ -84,7 +84,7 @@ const HeroSection = () => {
           </p>
 
           <div className="flex justify-start mb-6">
-            <UsageCounter />
+            <UsageCounter inverse />
           </div>
         </motion.div>
       </div>
