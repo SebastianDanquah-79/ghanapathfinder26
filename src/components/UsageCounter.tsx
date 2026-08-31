@@ -12,7 +12,7 @@ const UsageCounter = ({ className = "", inverse = false }: { className?: string;
 
   if (isError && !data) {
     return (
-      <p className={`text-xs sm:text-sm text-muted-foreground ${className}`}>
+      <p className={`text-xs sm:text-sm ${inverse ? "text-white/70" : "text-muted-foreground"} ${className}`}>
         Live count unavailable
       </p>
     );
