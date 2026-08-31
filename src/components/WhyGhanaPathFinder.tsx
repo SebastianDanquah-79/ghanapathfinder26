@@ -55,7 +55,7 @@ const WhyGhanaPathFinder = () => {
             <ul className="space-y-3">
               {highlights.map((item) => (
                 <li key={item} className="flex items-start gap-3">
-                  <CheckCircle className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+                  <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                   <span className="text-sm md:text-base text-foreground">{item}</span>
                 </li>
               ))}
