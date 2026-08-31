@@ -7,7 +7,7 @@ import { useLivePresence } from "@/hooks/useLivePresence";
  * 90 seconds, "total" is registered accounts. Aggregate only, so no individual
  * student is ever identifiable, and nothing is ever fabricated or padded.
  */
-const UsageCounter = ({ className = "" }: { className?: string }) => {
+const UsageCounter = ({ className = "", inverse = false }: { className?: string; inverse?: boolean }) => {
   const { data, isError, isLoading } = useLivePresence();
 
   if (isError && !data) {
