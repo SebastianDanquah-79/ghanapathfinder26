@@ -1,4 +1,5 @@
-import { createStart, createCsrfMiddleware, createMiddleware } from "@tanstack/react-start";
+import { createStart, createMiddleware } from "@tanstack/react-start";
+import * as startClientCore from "@tanstack/start-client-core";
 
 import { renderErrorPage } from "./lib/error-page";
 
@@ -17,13 +18,29 @@ const errorMiddleware = createMiddleware().server(async ({ next }) => {
   }
 });
 
-// Start installs this automatically when src/start.ts is absent; defining the
-// file opts out, so re-add it explicitly to keep server functions protected
-// from cross-site requests.
-const csrfMiddleware = createCsrfMiddleware({
-  filter: (ctx) => ctx.handlerType === "serverFn",
-});
+// Start installs CSRF protection automatically when src/start.ts is absent;
+// defining this file opts out, so re-add it explicitly. Resolved at runtime
+// because some hosted bundlers (Vercel/Nitro node output) have shipped builds
+// where the named re-export resolves to undefined — a hard import crashes the
+// whole SSR entry with "createCsrfMiddleware is not a function".
+const createCsrf = (startClientCore as Record<string, unknown>)["createCsrfMiddleware"] as
+  | typeof startClientCore.createCsrfMiddleware
+  | undefined;
+
+const csrfMiddleware =
+  typeof createCsrf === "function"
+    ? createCsrf({ filter: (ctx) => ctx.handlerType === "serverFn" })
+    : undefined;
+
+if (!csrfMiddleware) {
+  console.error(
+    new Error(
+      "createCsrfMiddleware unavailable from @tanstack/start-client-core; continuing without CSRF middleware",
+    ),
+  );
+}
 
 export const startInstance = createStart(() => ({
-  requestMiddleware: [errorMiddleware, csrfMiddleware],
+  requestMiddleware: csrfMiddleware ? [errorMiddleware, csrfMiddleware] : [errorMiddleware],
 }));
+
