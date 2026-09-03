@@ -3,10 +3,10 @@
 // supabase function: mcp
 // Bundled from src/lib/mcp/index.ts by @lovable.dev/mcp-js.
 // src/lib/mcp/index.ts
-import { auth, defineMcp } from "npm:@lovable.dev/mcp-js@0.26.2";
+import { auth, defineMcp } from "npm:@lovable.dev/mcp-js@0.26.3";
 
 // src/lib/mcp/tools/get-profile.ts
-import { defineTool } from "npm:@lovable.dev/mcp-js@0.26.2";
+import { defineTool } from "npm:@lovable.dev/mcp-js@0.26.3";
 
 // src/lib/mcp/supabase.ts
 import { createClient } from "npm:@supabase/supabase-js@^2.110.7";
@@ -89,7 +89,7 @@ var get_profile_default = defineTool({
 });
 
 // src/lib/mcp/tools/list-saved-items.ts
-import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.26.2";
+import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.26.3";
 import { z } from "npm:zod@^3.24.2";
 var list_saved_items_default = defineTool2({
   name: "list_saved_items",
@@ -116,7 +116,7 @@ var list_saved_items_default = defineTool2({
 });
 
 // src/lib/mcp/tools/list-applications.ts
-import { defineTool as defineTool3 } from "npm:@lovable.dev/mcp-js@0.26.2";
+import { defineTool as defineTool3 } from "npm:@lovable.dev/mcp-js@0.26.3";
 import { z as z2 } from "npm:zod@^3.24.2";
 var list_applications_default = defineTool3({
   name: "list_scholarship_applications",
@@ -142,7 +142,7 @@ var list_applications_default = defineTool3({
 });
 
 // src/lib/mcp/tools/track-application.ts
-import { defineTool as defineTool4 } from "npm:@lovable.dev/mcp-js@0.26.2";
+import { defineTool as defineTool4 } from "npm:@lovable.dev/mcp-js@0.26.3";
 import { z as z3 } from "npm:zod@^3.24.2";
 var STATUSES = ["interested", "preparing", "submitted", "interview", "awarded", "rejected"];
 var track_application_default = defineTool4({
@@ -189,7 +189,7 @@ var track_application_default = defineTool4({
 });
 
 // src/lib/mcp/tools/list-deadlines.ts
-import { defineTool as defineTool5 } from "npm:@lovable.dev/mcp-js@0.26.2";
+import { defineTool as defineTool5 } from "npm:@lovable.dev/mcp-js@0.26.3";
 var list_deadlines_default = defineTool5({
   name: "list_deadlines",
   title: "List upcoming deadlines",
@@ -231,5 +231,5 @@ var mcp_default = defineMcp({
 });
 
 // lovable-mcp-supabase-entry.ts
-import { createSupabaseHandler } from "npm:@lovable.dev/mcp-js@0.26.2/stacks/supabase";
+import { createSupabaseHandler } from "npm:@lovable.dev/mcp-js@0.26.3/stacks/supabase";
 Deno.serve(createSupabaseHandler(mcp_default, { functionName: "mcp" }));
