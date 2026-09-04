@@ -193,6 +193,31 @@ const UniversityProfile = () => {
 
               </header>
 
+              {(uni.admission_info || uni.scholarship_info) && (
+                <section className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                  {uni.admission_info && (
+                    <div className="bg-glass rounded-xl p-5">
+                      <h2 className="font-display text-base font-semibold text-foreground mb-2">
+                        Admission requirements
+                      </h2>
+                      <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
+                        {uni.admission_info}
+                      </p>
+                    </div>
+                  )}
+                  {uni.scholarship_info && (
+                    <div className="bg-glass rounded-xl p-5">
+                      <h2 className="font-display text-base font-semibold text-foreground mb-2">
+                        Fees &amp; financial support
+                      </h2>
+                      <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
+                        {uni.scholarship_info}
+                      </p>
+                    </div>
+                  )}
+                </section>
+              )}
+
               <section>
                 <h2 className="font-display text-lg font-semibold text-foreground mb-3">
                   Programmes on GhanaPathFinder
