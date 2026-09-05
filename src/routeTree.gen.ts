@@ -52,6 +52,7 @@ import { Route as UniversitiesSlugRouteImport } from './routes/universities/$slu
 import { Route as UniversitySlugRouteImport } from './routes/university/$slug'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as FunctionsV1McpRouteImport } from './routes/functions/v1/mcp'
+import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -268,6 +269,12 @@ const FunctionsV1McpRoute = FunctionsV1McpRouteImport.update({
   path: '/functions/v1/mcp',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LovableEmailTransactionalPreviewRoute =
+  LovableEmailTransactionalPreviewRouteImport.update({
+    id: '/lovable/email/transactional/preview',
+    path: '/lovable/email/transactional/preview',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -313,6 +320,7 @@ export interface FileRoutesByFullPath {
   '/skills/': typeof SkillsIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/functions/v1/mcp': typeof FunctionsV1McpRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -358,6 +366,7 @@ export interface FileRoutesByTo {
   '/skills': typeof SkillsIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/functions/v1/mcp': typeof FunctionsV1McpRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -404,6 +413,7 @@ export interface FileRoutesById {
   '/skills/': typeof SkillsIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/functions/v1/mcp': typeof FunctionsV1McpRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -451,6 +461,7 @@ export interface FileRouteTypes {
     | '/skills/'
     | '/.lovable/oauth/consent'
     | '/functions/v1/mcp'
+    | '/lovable/email/transactional/preview'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -496,6 +507,7 @@ export interface FileRouteTypes {
     | '/skills'
     | '/.lovable/oauth/consent'
     | '/functions/v1/mcp'
+    | '/lovable/email/transactional/preview'
   id:
     | '__root__'
     | '/'
@@ -541,6 +553,7 @@ export interface FileRouteTypes {
     | '/skills/'
     | '/.lovable/oauth/consent'
     | '/functions/v1/mcp'
+    | '/lovable/email/transactional/preview'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -587,6 +600,7 @@ export interface RootRouteChildren {
   SkillsIndexRoute: typeof SkillsIndexRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   FunctionsV1McpRoute: typeof FunctionsV1McpRoute
+  LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -892,6 +906,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FunctionsV1McpRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lovable/email/transactional/preview': {
+      id: '/lovable/email/transactional/preview'
+      path: '/lovable/email/transactional/preview'
+      fullPath: '/lovable/email/transactional/preview'
+      preLoaderRoute: typeof LovableEmailTransactionalPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -939,6 +960,7 @@ const rootRouteChildren: RootRouteChildren = {
   SkillsIndexRoute: SkillsIndexRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   FunctionsV1McpRoute: FunctionsV1McpRoute,
+  LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
