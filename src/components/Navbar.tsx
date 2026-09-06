@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Search, BrandLogoIcon, LayoutDashboard, LogOut, Info } from "@/lib/icons";
+import { Menu, X, Search, BrandLogoIcon, LogOut, Info } from "@/lib/icons";
 import { Link, useLocation } from "@/lib/router-compat";
 import { useAuth } from "@/hooks/useAuth";
 import ThemeToggle from "@/components/ThemeToggle";
