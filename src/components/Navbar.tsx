@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Search, BrandLogoIcon, LayoutDashboard, LogOut, Info } from "@/lib/icons";
+import { Menu, X, Search, BrandLogoIcon, LogOut, Info } from "@/lib/icons";
 import { Link, useLocation } from "@/lib/router-compat";
 import { useAuth } from "@/hooks/useAuth";
 import ThemeToggle from "@/components/ThemeToggle";
@@ -177,9 +177,9 @@ const Navbar = () => {
             <Link
               to="/auth"
               aria-label="Sign in"
-              className="grid place-items-center h-11 w-11 rounded-full bg-primary text-primary-foreground"
+              className="grid place-items-center h-11 px-3 rounded-full bg-primary text-primary-foreground text-sm font-medium whitespace-nowrap"
             >
-              <LayoutDashboard className="h-[18px] w-[18px]" />
+              Sign in
             </Link>
           )}
           <button
