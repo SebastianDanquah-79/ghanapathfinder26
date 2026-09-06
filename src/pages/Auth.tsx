@@ -8,6 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { TERMS_VERSION } from "@/lib/legal";
 import { useEffect } from "react";
 import SiteRating from "@/components/SiteRating";
+import { isValidPhone } from "@/components/ContactGate";
 
 type Mode = "signin" | "signup";
 
@@ -24,6 +25,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
   const [accountType, setAccountType] = useState<"student" | "parent">("student");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
@@ -53,6 +55,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
     try {
       if (mode === "signup") {
         if (!fullName.trim()) throw new Error("Please enter your name");
+        if (!isValidPhone(phone)) throw new Error("Please enter a valid contact number");
         const { data, error } = await supabase.auth.signUp({
           email: email.trim(),
           password,
@@ -60,7 +63,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
             emailRedirectTo: next
               ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
               : window.location.origin,
-            data: { full_name: fullName.trim(), account_type: accountType },
+            data: { full_name: fullName.trim(), account_type: accountType, phone: phone.trim() },
           },
         });
         if (error) throw error;
@@ -68,7 +71,10 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
           setEmailSent(true);
           return;
         }
-        if (data.user) await recordAcceptance(data.user.id);
+        if (data.user) {
+          await recordAcceptance(data.user.id);
+          await supabase.from("profiles").update({ phone: phone.trim() }).eq("id", data.user.id);
+        }
         if (next) window.location.href = next;
         else navigate("/onboarding", { replace: true });
       } else {
@@ -213,6 +219,15 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     maxLength={100}
+                    className="w-full px-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50"
+                  />
+                  <input
+                    type="tel"
+                    required
+                    placeholder="Contact number (e.g. 024 123 4567)"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    maxLength={20}
                     className="w-full px-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50"
                   />
                 </>
