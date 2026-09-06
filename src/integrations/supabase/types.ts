@@ -1540,6 +1540,36 @@ export type Database = {
         }
         Relationships: []
       }
+      sms_sends: {
+        Row: {
+          campaign: string
+          created_at: string
+          error: string | null
+          id: string
+          phone: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          campaign: string
+          created_at?: string
+          error?: string | null
+          id?: string
+          phone: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          campaign?: string
+          created_at?: string
+          error?: string | null
+          id?: string
+          phone?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       student_insights: {
         Row: {
           advice: string | null
