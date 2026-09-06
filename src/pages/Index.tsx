@@ -6,6 +6,7 @@ import CollegeRecommender from "@/components/CollegeRecommender";
 import UniversityDirectory from "@/components/UniversityDirectory";
 import ScholarshipSection from "@/components/ScholarshipSection";
 import ExploreGrid from "@/components/ExploreGrid";
+import AnnouncementBanner from "@/components/AnnouncementBanner";
 
 const ImpactSection = lazy(() => import("@/components/ImpactSection"));
 const CareerSection = lazy(() => import("@/components/CareerSection"));
@@ -43,6 +44,7 @@ const Index = () => (
     />
     <Navbar />
     <div className="pt-14">
+      <AnnouncementBanner />
       <HeroSection />
     </div>
 
