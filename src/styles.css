@@ -4,21 +4,55 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* GhanaPathFinder design system: former white, navy and gold palette. */
+/*
+ * GhanaPathFinder design system: light default plus deep navy-black dark theme.
+ * Tokens kept as raw HSL triplets (matching the pre-migration theme) so
+ * existing `hsl(var(--token) / alpha)` usages in components keep working.
+ */
 
 @theme {
-  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, sans-serif;
 
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
   --animate-float: float 6s ease-in-out infinite;
   --animate-pulse-glow: pulse-glow 3s ease-in-out infinite;
 
-  @keyframes accordion-down { from { height: 0; } to { height: var(--radix-accordion-content-height); } }
-  @keyframes accordion-up { from { height: var(--radix-accordion-content-height); } to { height: 0; } }
-  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-  @keyframes pulse-glow { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  @keyframes pulse-glow {
+    0%,
+    100% {
+      opacity: 0.4;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
 }
 
 @theme inline {
@@ -29,6 +63,7 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
   --color-card: hsl(var(--card));
@@ -49,6 +84,7 @@
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
   --color-ring-offset-background: hsl(var(--background));
+
   --color-ghana-gold: hsl(var(--ghana-gold));
   --color-ghana-gold-light: hsl(var(--ghana-gold-light));
   --color-ghana-green: hsl(var(--ghana-green));
@@ -56,6 +92,7 @@
   --color-navy-deep: hsl(var(--navy-deep));
   --color-navy-mid: hsl(var(--navy-mid));
   --color-navy-light: hsl(var(--navy-light));
+
   --color-sidebar: hsl(var(--sidebar-background));
   --color-sidebar-foreground: hsl(var(--sidebar-foreground));
   --color-sidebar-primary: hsl(var(--sidebar-primary));
@@ -67,27 +104,35 @@
 }
 
 :root {
-  /* Former GhanaPathFinder palette: white, navy and gold. */
   --background: 0 0% 100%;
   --foreground: 222 47% 12%;
+
   --card: 0 0% 100%;
   --card-foreground: 222 47% 12%;
+
   --popover: 0 0% 100%;
   --popover-foreground: 222 47% 12%;
+
   --primary: 40 92% 46%;
   --primary-foreground: 0 0% 100%;
+
   --secondary: 40 40% 96%;
   --secondary-foreground: 222 47% 12%;
+
   --muted: 220 20% 96%;
   --muted-foreground: 220 12% 40%;
+
   --accent: 40 92% 46%;
   --accent-foreground: 0 0% 100%;
+
   --destructive: 0 72% 48%;
   --destructive-foreground: 0 0% 100%;
+
   --border: 220 16% 88%;
   --input: 220 16% 88%;
   --ring: 40 92% 46%;
   --radius: 0.875rem;
+
   --ghana-gold: 40 92% 46%;
   --ghana-gold-light: 43 96% 62%;
   --ghana-green: 145 55% 34%;
@@ -96,6 +141,7 @@
   --navy-mid: 222 30% 28%;
   --navy-light: 220 16% 82%;
   --glow-gold: 40 92% 46% / 0.08;
+
   --sidebar-background: 0 0% 100%;
   --sidebar-foreground: 222 47% 12%;
   --sidebar-primary: 40 92% 46%;
@@ -106,27 +152,36 @@
   --sidebar-ring: 40 92% 46%;
 }
 
+/* Deep navy-black dark theme */
 .dark {
-  /* Former deep navy-black dark palette. */
   --background: 222 52% 6%;
   --foreground: 210 30% 94%;
+
   --card: 222 45% 9%;
   --card-foreground: 210 30% 94%;
+
   --popover: 222 45% 9%;
   --popover-foreground: 210 30% 94%;
+
   --primary: 43 96% 56%;
   --primary-foreground: 222 52% 8%;
+
   --secondary: 222 38% 14%;
   --secondary-foreground: 210 30% 94%;
+
   --muted: 222 34% 13%;
   --muted-foreground: 215 18% 68%;
+
   --accent: 43 96% 56%;
   --accent-foreground: 222 52% 8%;
+
   --destructive: 0 68% 52%;
   --destructive-foreground: 0 0% 100%;
+
   --border: 220 28% 18%;
   --input: 220 28% 18%;
   --ring: 43 96% 56%;
+
   --ghana-gold: 43 96% 56%;
   --ghana-gold-light: 45 96% 68%;
   --ghana-green: 145 45% 44%;
@@ -135,6 +190,7 @@
   --navy-mid: 222 34% 20%;
   --navy-light: 220 20% 40%;
   --glow-gold: 43 96% 56% / 0.12;
+
   --sidebar-background: 222 45% 9%;
   --sidebar-foreground: 210 30% 94%;
   --sidebar-primary: 43 96% 56%;
@@ -145,8 +201,11 @@
   --sidebar-ring: 43 96% 56%;
 }
 
-.dark { color-scheme: dark; }
+.dark {
+  color-scheme: dark;
+}
 
+/* Container behaviour ported from the Tailwind v3 config (centered, 2rem padding, 1400px cap) */
 @utility container {
   width: 100%;
   margin-inline: auto;
@@ -164,19 +223,28 @@
 @utility bg-glass {
   background-color: hsl(var(--card));
   border: 1px solid hsl(var(--border));
-  box-shadow: 0 1px 2px hsl(222 47% 12% / 0.04), 0 8px 24px -16px hsl(222 47% 12% / 0.12);
+  box-shadow:
+    0 1px 2px hsl(222 47% 12% / 0.04),
+    0 8px 24px -16px hsl(222 47% 12% / 0.12);
 }
 
 @utility bg-glass-hover {
   transition: all 200ms;
   &:hover {
     border-color: hsl(var(--primary) / 0.4);
-    box-shadow: 0 2px 6px hsl(222 47% 12% / 0.06), 0 12px 28px -18px hsl(222 47% 12% / 0.18);
+    box-shadow:
+      0 2px 6px hsl(222 47% 12% / 0.06),
+      0 12px 28px -18px hsl(222 47% 12% / 0.18);
   }
 }
 
-@utility glow-gold { box-shadow: 0 8px 30px -18px hsl(var(--ghana-gold) / 0.5); }
-@utility glow-gold-sm { box-shadow: 0 4px 14px -10px hsl(var(--ghana-gold) / 0.45); }
+@utility glow-gold {
+  box-shadow: 0 8px 30px -18px hsl(var(--ghana-gold) / 0.5);
+}
+
+@utility glow-gold-sm {
+  box-shadow: 0 4px 14px -10px hsl(var(--ghana-gold) / 0.45);
+}
 
 @utility card-hover {
   transition: all 200ms;
@@ -190,9 +258,16 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
-  &::-webkit-scrollbar { display: none; }
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
+/*
+ * Touch-friendly horizontal scroll container for sections that genuinely need
+ * more width than a phone screen (filter rows, comparison tables, wide cards).
+ * Keeps the scroll contained so the page itself never scrolls sideways.
+ */
 @utility hscroll {
   overflow-x: auto;
   overflow-y: hidden;
@@ -201,9 +276,13 @@
   touch-action: pan-x pan-y;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  &::-webkit-scrollbar { height: 0; display: none; }
+  &::-webkit-scrollbar {
+    height: 0;
+    display: none;
+  }
 }
 
+/* Lets a scroll row bleed into the page gutter without overflowing the page. */
 @utility hscroll-bleed {
   margin-inline: -1rem;
   padding-inline: 1rem;
@@ -211,10 +290,29 @@
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
-  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-  html, body { overflow-x: clip; max-width: 100%; }
-  .desktop-shell { width: 100%; max-width: 100%; overflow-x: clip; }
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+  html,
+  body {
+    overflow-x: clip;
+    max-width: 100%;
+  }
+
+  /*
+   * One responsive app: phones get the mobile layout, laptops the full desktop
+   * layout. Only wide sections (.hscroll) scroll sideways, never the page.
+   */
+  .desktop-shell {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
@@ -223,26 +321,63 @@
     -moz-osx-font-smoothing: grayscale;
     -webkit-tap-highlight-color: transparent;
   }
-  h1, h2, h3, h4, h5, h6 { font-family: var(--font-display); overflow-wrap: break-word; }
-  img, svg, video, canvas { max-width: 100%; }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    overflow-wrap: break-word;
+  }
+  img,
+  svg,
+  video,
+  canvas {
+    max-width: 100%;
+  }
+  /* Prevent iOS zoom-on-focus for form controls on small screens */
   @media (max-width: 767px) {
-    input, select, textarea { font-size: 16px; }
-    button, a[role="button"] { touch-action: manipulation; }
+    input,
+    select,
+    textarea {
+      font-size: 16px;
+    }
+    button,
+    a[role="button"] {
+      touch-action: manipulation;
+    }
   }
 }
 
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: hsl(var(--muted)); }
-::-webkit-scrollbar-thumb { background: hsl(var(--navy-light)); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: hsl(var(--primary) / 0.5); }
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--navy-light));
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.5);
+}
 
+/* Typewriter cursor */
 .typewriter-cursor::after {
   content: "▊";
   animation: blink 1s step-end infinite;
   color: hsl(var(--primary));
 }
-@keyframes blink { 50% { opacity: 0; } }
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
 
+/* Particle canvas */
 .particles-canvas {
   position: absolute;
   inset: 0;

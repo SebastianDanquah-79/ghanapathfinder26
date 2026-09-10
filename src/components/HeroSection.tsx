@@ -1,92 +1,75 @@
-import { useState } from "react";
-import { Link, useNavigate } from "@tanstack/react-router";
-import { Search } from "@/lib/icons";
 import UsageCounter from "@/components/UsageCounter";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowDown, Sparkles } from "@/lib/icons";
+import ParticleBackground from "./ParticleBackground";
 
-const suggestions = ["Nursing", "University of Ghana", "Computer Science", "Scholarships"];
+const phrases = [
+  "Find Your University",
+  "Build Your Career",
+  "Start Your Company",
+  "Own Your Future",
+];
 
 const HeroSection = () => {
-  const navigate = useNavigate();
-  const [term, setTerm] = useState("");
+  const [idx, setIdx] = useState(0);
 
-  const submit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const q = term.trim();
-    void navigate({ to: "/search", search: q ? { q } : {} });
-  };
+  useEffect(() => {
+    const interval = setInterval(() => setIdx((i) => (i + 1) % phrases.length), 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <section className="border-b border-border bg-card">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-          Higher education in Ghana
-        </p>
+    <section className="relative min-h-[68svh] flex items-center justify-center overflow-hidden py-12">
+      <ParticleBackground />
+      <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background" />
 
-        <h1 className="mt-3 font-display font-semibold text-3xl sm:text-4xl lg:text-5xl leading-[1.1] text-foreground max-w-3xl">
-          Find the university, programme or scholarship that fits your results.
-        </h1>
-
-        <p className="mt-4 text-base sm:text-lg text-muted-foreground max-w-2xl">
-          Search verified institutions across Ghana, compare entry requirements and fees, and see
-          what your WASSCE aggregate qualifies you for.
-        </p>
-
-        <form onSubmit={submit} className="mt-7 max-w-2xl">
-          <label htmlFor="hero-search" className="sr-only">
-            Search universities, programmes and scholarships
-          </label>
-          <div className="flex items-stretch border border-border bg-background rounded-md overflow-hidden focus-within:border-primary">
-            <span className="grid place-items-center pl-3 text-muted-foreground">
-              <Search className="h-[18px] w-[18px]" />
-            </span>
-            <input
-              id="hero-search"
-              value={term}
-              onChange={(e) => setTerm(e.target.value)}
-              placeholder="Search a university, programme or scholarship"
-              className="flex-1 min-w-0 bg-transparent px-3 py-3 text-sm sm:text-base text-foreground placeholder:text-muted-foreground outline-none"
-            />
-            <button
-              type="submit"
-              className="px-4 sm:px-6 bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity"
-            >
-              Search
-            </button>
+      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-glass mb-5">
+            <Sparkles className="h-4 w-4 text-primary" />
+            <span className="text-sm text-muted-foreground">AI guidance for Ghana</span>
           </div>
-          <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
-            <span className="text-muted-foreground">Popular:</span>
-            {suggestions.map((s) => (
-              <Link
-                key={s}
-                to="/search"
-                search={{ q: s }}
-                className="text-foreground underline underline-offset-4 decoration-border hover:decoration-primary"
+
+          <h1 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl mb-6 leading-tight">
+            <span className="text-foreground">Ready to</span>
+            <br />
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5 }}
+                className="text-gradient-gold inline-block"
               >
-                {s}
-              </Link>
-            ))}
+                {phrases[idx]}
+              </motion.span>
+            </AnimatePresence>
+          </h1>
+
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
+            Universities, scholarships and careers matched to your WASSCE results.
+          </p>
+
+          <div className="flex justify-center mb-6">
+            <UsageCounter />
           </div>
-        </form>
+        </motion.div>
 
-        <div className="mt-8 flex flex-wrap items-center gap-3">
-          <Link
-            to="/admission-match"
-            className="px-5 py-2.5 rounded-md bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity"
-          >
-            Check my WASSCE match
-          </Link>
-          <Link
-            to="/programmes"
-            className="px-5 py-2.5 rounded-md border border-border text-sm font-semibold text-foreground hover:border-primary transition-colors"
-          >
-            Browse programmes
-          </Link>
-        </div>
-
-        <div className="mt-8 pt-6 border-t border-border">
-          <UsageCounter />
-        </div>
       </div>
+
+      <motion.div
+          className="absolute bottom-24 md:bottom-10 left-1/2 -translate-x-1/2 z-10"
+          animate={{ y: [0, 8, 0] }}
+          transition={{ repeat: Infinity, duration: 2 }}
+        >
+          <ArrowDown className="h-5 w-5 text-muted-foreground" />
+      </motion.div>
     </section>
   );
 };
