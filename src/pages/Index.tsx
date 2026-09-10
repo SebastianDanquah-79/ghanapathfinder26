@@ -7,6 +7,7 @@ import UniversityDirectory from "@/components/UniversityDirectory";
 import ScholarshipSection from "@/components/ScholarshipSection";
 import ExploreGrid from "@/components/ExploreGrid";
 import AnnouncementBanner from "@/components/AnnouncementBanner";
+import WhyGhanaPathFinder from "@/components/WhyGhanaPathFinder";
 
 const ImpactSection = lazy(() => import("@/components/ImpactSection"));
 const CareerSection = lazy(() => import("@/components/CareerSection"));
@@ -18,8 +19,8 @@ const Footer = lazy(() => import("@/components/Footer"));
 const Index = () => (
   <div className="min-h-screen bg-background">
     <Seo
-      title="GhanaPathFinder: Ghana Universities & Scholarships Guide"
-      description="GhanaPathFinder is an education and career platform helping Ghanaian students discover universities, programmes, scholarships, career paths and opportunities."
+      title="GhanaPathFinder: A Ghanaian Life Decision Platform"
+      description="GhanaPathFinder helps Ghanaians make better decisions about university, careers, skills, work, scholarships and entrepreneurship using Ghana-specific information and realistic pathways."
       path="/"
       jsonLd={[
         {
@@ -48,6 +49,7 @@ const Index = () => (
       <HeroSection />
     </div>
 
+    <WhyGhanaPathFinder />
     <ExploreGrid />
     <CollegeRecommender />
     <UniversityDirectory />
