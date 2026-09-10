@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ExternalLink, Flame, MapPin } from "@/lib/icons";
 import SectionHeader from "./SectionHeader";
+import AdinkraFloatLayer from "./AdinkraFloatLayer";
 
 interface FounderStory {
   founders: string;
@@ -221,6 +222,7 @@ const stories: FounderStory[] = [
 
 const StartupStories = () => (
   <section id="founders" className="py-12 lg:py-24 px-4">
+    <AdinkraFloatLayer />
     <div className="max-w-7xl mx-auto">
       <SectionHeader
         badge="African founders"
