@@ -67,9 +67,9 @@ const CareerPath = () => {
       <main className="pt-20 pb-14 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="max-w-3xl mb-8">
-            <p className="text-sm font-medium text-primary mb-2">Career Path</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary mb-2">Career Intelligence</p>
             <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-3">Turn your dream job into a practical path.</h1>
-            <p className="text-sm sm:text-base text-muted-foreground leading-6">Tell us where you want to go and, if you want, where you are starting from. Your path can adapt to your education, skills, interests, experience, projects and goals.</p>
+            <p className="text-sm sm:text-base text-muted-foreground leading-6">Build a clear route from where you are now to where you want to go, using education, skills, projects, experience and real opportunities.</p>
           </div>
           <section className="border border-border rounded-2xl bg-card p-5 sm:p-7 mb-8">
             <label className="block text-sm font-semibold text-foreground mb-2">What is your dream job?</label>
