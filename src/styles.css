@@ -214,44 +214,36 @@
   max-width: 1400px;
 }
 
+/* Flat, editorial replacements for the previous gradient/glass treatments. */
 @utility text-gradient-gold {
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  background-image: linear-gradient(135deg, hsl(var(--ghana-gold)), hsl(var(--ghana-gold-light)));
+  color: hsl(var(--ghana-gold));
 }
 
 @utility bg-glass {
   background-color: hsl(var(--card));
   border: 1px solid hsl(var(--border));
-  box-shadow:
-    0 1px 2px hsl(222 47% 12% / 0.04),
-    0 8px 24px -16px hsl(222 47% 12% / 0.12);
 }
 
 @utility bg-glass-hover {
-  transition: all 200ms;
+  transition: border-color 150ms ease, background-color 150ms ease;
   &:hover {
-    border-color: hsl(var(--primary) / 0.4);
-    box-shadow:
-      0 2px 6px hsl(222 47% 12% / 0.06),
-      0 12px 28px -18px hsl(222 47% 12% / 0.18);
+    border-color: hsl(var(--primary) / 0.45);
+    background-color: hsl(var(--secondary) / 0.5);
   }
 }
 
 @utility glow-gold {
-  box-shadow: 0 8px 30px -18px hsl(var(--ghana-gold) / 0.5);
+  box-shadow: inset 0 -2px 0 hsl(var(--ghana-gold) / 0.5);
 }
 
 @utility glow-gold-sm {
-  box-shadow: 0 4px 14px -10px hsl(var(--ghana-gold) / 0.45);
+  box-shadow: inset 0 -1px 0 hsl(var(--ghana-gold) / 0.4);
 }
 
 @utility card-hover {
-  transition: all 200ms;
+  transition: border-color 150ms ease, background-color 150ms ease;
   &:hover {
-    transform: translateY(-0.125rem);
-    box-shadow: 0 10px 30px -20px hsl(222 47% 12% / 0.35);
+    border-color: hsl(var(--primary) / 0.35);
   }
 }
 
