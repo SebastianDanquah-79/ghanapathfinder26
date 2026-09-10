@@ -7,16 +7,91 @@ interface UniversityCampusImageProps {
 
 const cache = new Map<string, string[]>();
 
+const commons = (file: string) =>
+  `https://commons.wikimedia.org/wiki/Special:Redirect/file/${encodeURIComponent(file)}`;
+
 const verifiedCampusImages: Array<[RegExp, string[]]> = [
-  [/university of mines and technology|\bumat\b/i, [
-    "https://commons.wikimedia.org/wiki/Special:Redirect/file/UMaT%20Campus%2001.jpg",
-    "https://commons.wikimedia.org/wiki/Special:Redirect/file/UMaT%20Campus%2002.jpg",
-    "https://commons.wikimedia.org/wiki/Special:Redirect/file/UMaT%20Campus%2006.jpg",
-    "https://commons.wikimedia.org/wiki/Special:Redirect/file/UMaT%20Campus%2008.jpg",
-    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Chambers%20of%20Mines%20Hall,%20UMaT.jpg",
+  [/academic city university|academic city/i, [
+    commons("Academic City University Campus Drone Shot.jpg"),
+    commons("Academic City University Hostel Courtyard.png"),
+    commons("Academic City University Receration Center (REC).png"),
+    commons("Academic City University Belltower.png"),
+    commons("Academic City University Basketball Court.png"),
+    commons("Academic City University Campus and Bleachers.png"),
+  ]],
+  [/ashesi university|\bashesi\b/i, [
+    commons("Ashesi's Archer Cornfield Courtyard.jpg"),
+    commons("Founders courtyard Ashesi.jpg"),
+    commons("Radichel Hall View Ashesi.jpg"),
+    commons("Ashesi Todd & Ruth Warren Library.jpg"),
+    commons("Ashesi Honour Code.jpg"),
+  ]],
+  [/koforidua technical university|\bktu\b/i, [
+    commons("Koforidua Technical University Entrance Monument.jpg"),
+    commons("Koforidua Technical University Entrance.jpg"),
+    commons("Business and management block.jpg"),
+    commons("School of engineering block.jpg"),
+    commons("New engineering block.jpg"),
+    commons("School fountain.png"),
   ]],
   [/ghana communication technology university|\bgctu\b/i, [
-    "https://commons.wikimedia.org/wiki/Special:Redirect/file/GCTU%20Main%20Campus.jpg",
+    commons("GCTU Signage 02.jpg"),
+    commons("Hostel Block B (GCTU) 1.jpg"),
+    commons("Student Study Area (GCTU).jpg"),
+    commons("Parking Lot (GCTU).jpg"),
+    commons("Play Ground (GCTU).jpg"),
+    commons("Software System Unit 1 (GCTU).jpg"),
+  ]],
+  [/university of cape coast|\bucc\b/i, [
+    commons("U.C.C GATE.jpg"),
+    commons("UCC Central Administration Block and the Sam Jonah Library.jpg"),
+    commons("University Library complex.JPG"),
+    commons("Faculty of Education Lecture Theatre.JPG"),
+    commons("Large Lecture Theatre.JPG"),
+    commons("U c c beach.jpg"),
+  ]],
+  [/university of ghana|\bug legon\b|\bug\b/i, [
+    commons("Akuafo Hall.JPG"),
+    commons("Akuafo Hall gardens.JPG"),
+    commons("Akuafo Hall chapel.jpg"),
+    commons("Vertebrate Museum @ University of Ghana.jpg"),
+    commons("Viannis Bistro, University of Ghana.jpg"),
+  ]],
+  [/kwame nkrumah university of science and technology|\bknust\b/i, [
+    commons("KNUST Administration block road.jpg"),
+    commons("KNUST CENTRAL LAB BUILDING, KNUST.jpg"),
+    commons("KNUST College of engineering Caesar Building.jpg"),
+    commons("J.K SIAW AGYAPONG BUILDING - KNUST.jpg"),
+    commons("Knust campus- Commercial area.jpg"),
+    commons("A Monument (KNUST).jpg"),
+  ]],
+  [/university of mines and technology|\bumat\b|george grant university of mines/i, [
+    commons("UMaT Campus 08.jpg"),
+    commons("UMaT Campus 09.jpg"),
+    commons("UMaT Campus 10.jpg"),
+    commons("UMaT ED Block.jpg"),
+    commons("UMaT KT Hall.jpg"),
+    commons("University of Mines and Technology (UMaT) Auditorium.jpg"),
+  ]],
+  [/accra technical university|\batu\b/i, [
+    commons("Accra Technical University 01.jpg"),
+    commons("Accra Technical University 2.jpg"),
+    commons("Accra Technical University Ghana.jpg"),
+    commons("View on Accra Technical University.jpg"),
+  ]],
+  [/tamale technical university|\btatu\b|\btatu\b/i, [
+    commons("A front view of TATU administration.jpg"),
+    commons("A side view of administration of Tamale Technical University.jpg"),
+    commons("Administration Block of TaTu.jpg"),
+    commons("ICT block - TaTu.jpg"),
+    commons("TaTU Department of Art and Design Innovation.jpg"),
+  ]],
+  [/ho technical university|\bhtu\b/i, [
+    commons("Ho Technical University gate.jpg"),
+    commons("Ho Technical University.jpg"),
+    commons("G. M Afeti Auditorium of HTU.jpg"),
+    commons("New Agricultural engineering department of HTU.jpg"),
+    commons("Nunya Library HTU.jpg"),
   ]],
 ];
 
@@ -47,11 +122,11 @@ const UniversityCampusImage = ({ name, location }: UniversityCampusImageProps) =
       origin: "*",
       generator: "search",
       gsrsearch: `${key} campus Ghana university`,
-      gsrlimit: "8",
+      gsrlimit: "12",
       gsrnamespace: "6",
       prop: "imageinfo",
       iiprop: "url",
-      iiurlwidth: "1000",
+      iiurlwidth: "1200",
       redirects: "1",
     });
 
@@ -61,7 +136,7 @@ const UniversityCampusImage = ({ name, location }: UniversityCampusImageProps) =
         if (cancelled) return;
         const pages = Object.values(payload?.query?.pages ?? {}) as Array<{ title?: string; imageinfo?: Array<{ thumburl?: string; url?: string }> }>;
         const sources = pages
-          .filter((page) => /ghana|campus|university/i.test(page.title ?? ""))
+          .filter((page) => /ghana|campus|university|college|technical/i.test(page.title ?? ""))
           .map((page) => page.imageinfo?.[0]?.thumburl ?? page.imageinfo?.[0]?.url ?? null)
           .filter((source): source is string => Boolean(source));
         cache.set(key, sources);
@@ -106,9 +181,9 @@ const UniversityCampusImage = ({ name, location }: UniversityCampusImageProps) =
             />
           ))}
           {images.length > 1 && (
-            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 rounded-full bg-black/30 px-2 py-1 backdrop-blur-sm">
-              {images.map((src, index) => (
-                <button key={src} type="button" aria-label={`Show campus image ${index + 1}`} onClick={() => setActive(index)} className={`h-1.5 w-1.5 rounded-full ${index === active ? "bg-white" : "bg-white/45"}`} />
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex max-w-[90%] gap-1 overflow-hidden rounded-full bg-black/30 px-2 py-1 backdrop-blur-sm">
+              {images.slice(0, 8).map((src, index) => (
+                <button key={src} type="button" aria-label={`Show campus image ${index + 1}`} onClick={() => setActive(index)} className={`h-1.5 w-1.5 shrink-0 rounded-full ${index === active ? "bg-white" : "bg-white/45"}`} />
               ))}
             </div>
           )}
