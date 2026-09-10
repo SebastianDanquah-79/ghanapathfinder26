@@ -11,152 +11,106 @@ interface FounderStory {
   lesson: string;
   source: string;
   sourceLabel: string;
+  founderPhoto: string;
+  logo: string;
 }
 
 const stories: FounderStory[] = [
   {
-    founders: "Patrick Awuah",
-    company: "Ashesi University",
-    place: "Ghana",
-    year: "2002",
-    story:
-      "Awuah left a career as a Microsoft engineer in Seattle, returned to Ghana and used his own savings plus early donors to open Ashesi with a first class of 30 students in a rented house in Labone, Accra. The campus in Berekuso came later, funded as the university grew.",
-    lesson:
-      "You can start small and rented. Thirty students in a borrowed building became one of Africa's most respected universities.",
-    source: "https://www.ashesi.edu.gh/about/our-story/",
-    sourceLabel: "ashesi.edu.gh",
+    founders: "Ham Serunjogi & Maijid Moujaled",
+    company: "Chipper Cash",
+    place: "Uganda / Ghana",
+    year: "2018",
+    story: "The founders started Chipper after experiencing how expensive and difficult cross-border money movement could be for Africans. They built a product around a problem they personally understood and grew it into a major African fintech.",
+    lesson: "Your own frustration can be market research. Start with a problem you understand deeply.",
+    source: "https://www.chippercash.com/leadership-team-member/ham-serunjogi",
+    sourceLabel: "chippercash.com",
+    founderPhoto: "https://cdn.prod.website-files.com/63c81b0c3ad92959b9062d4b/63c81b0c3ad92998ba062d77_ham.png",
+    logo: "https://www.chippercash.com/favicon.ico",
   },
   {
-    founders: "Bright Simons",
-    company: "mPedigree",
-    place: "Ghana",
-    year: "2007",
-    story:
-      "Simons was working on organic farming traceability when he realised the bigger killer was fake medicine. mPedigree put a scratch-off code on drug packs so any patient could text the code free of charge and get an instant genuine-or-fake reply , built on plain SMS because that was what people already had.",
-    lesson:
-      "Build on the technology your users already own. SMS beat a beautiful app because everyone had a phone that could text.",
-    source: "https://mpedigree.com/",
-    sourceLabel: "mpedigree.com",
+    founders: "Olugbenga 'GB' Agboola",
+    company: "Flutterwave",
+    place: "Nigeria / Pan-African",
+    year: "2016",
+    story: "Agboola and a team of finance and technology veterans built payment infrastructure to make it easier for businesses to accept and move money across Africa. The company started by solving difficult payment integration problems for businesses and expanded from there.",
+    lesson: "Infrastructure can become the foundation for thousands of other businesses.",
+    source: "https://flutterwave.com/us/blog/keep-going",
+    sourceLabel: "flutterwave.com",
+    founderPhoto: "https://v12.flutterwave.com/wp-content/uploads/2020/06/Olugbenga-Agboola-the-New-Flutterwave-CEO-TechCabal-1.jpg",
+    logo: "https://flutterwave.com/favicon.ico",
+  },
+  {
+    founders: "Drew Durbin & Lincoln Quirk",
+    company: "Wave",
+    place: "Senegal / Pan-African",
+    year: "2018",
+    story: "The co-founders first built Sendwave to solve expensive international transfers to Africa. They then turned their attention to domestic payments, creating Wave around the mission of making digital finance dramatically more affordable.",
+    lesson: "A second company can grow from a deeper problem discovered while solving the first one.",
+    source: "https://www.wave.com/en/about/",
+    sourceLabel: "wave.com",
+    founderPhoto: "https://www.wave.com/img/exec-team/drew-headshot_hu26e580986edb815a810b42dc2193d8ab_653879_400x400_resize_q75_box.b26520ddeabfae69be32b04f93792e0e74838aa20d1b6d6fd1b5828df4e801e6.jpg",
+    logo: "https://www.wave.com/favicon.ico",
+  },
+  {
+    founders: "Jesse Moore & M-KOPA founding team",
+    company: "M-KOPA",
+    place: "Kenya / Ghana / Pan-African",
+    year: "2010",
+    story: "M-KOPA started from a simple infrastructure insight: combine digital micropayments with connected devices so people could access products they could not afford upfront. The company later expanded into smartphones and digital financial services across several African markets, including Ghana.",
+    lesson: "Hardware, software, data and distribution can combine into a powerful African business model.",
+    source: "https://www.m-kopa.com/about",
+    sourceLabel: "m-kopa.com",
+    founderPhoto: "https://cdn.prod.website-files.com/66dcaf74c5e6c9bbd1890ab1/66e2e657e9c76c635ea5575d_Jesse%20Moore%20headshot.jpg",
+    logo: "https://www.m-kopa.com/favicon.ico",
+  },
+  {
+    founders: "Jeremy Johnson, Iyinoluwa Aboyeji & founding team",
+    company: "Andela",
+    place: "Nigeria / Pan-African",
+    year: "2014",
+    story: "Andela began in Lagos with a simple premise: brilliant people exist everywhere, but opportunity is not distributed equally. The founding team built a talent model around training African technologists and connecting them with global companies.",
+    lesson: "Talent is an infrastructure problem too. Build the bridge between ability and opportunity.",
+    source: "https://www.andela.com/about",
+    sourceLabel: "andela.com",
+    founderPhoto: "https://cdn.prod.website-files.com/68d70d46269e8933e5f35eee/697dc536de00430cfdd68016_Timg1.png",
+    logo: "https://www.andela.com/favicon.ico",
   },
   {
     founders: "Shola Akinlade & Ezra Olubi",
     company: "Paystack",
     place: "Nigeria",
     year: "2015",
-    story:
-      "Two Nigerian developers who met at university built a payment API after watching local businesses struggle to accept cards online. They became the first Nigerian company accepted into Y Combinator, and in 2020 Stripe acquired Paystack in a deal reported at over $200 million.",
-    lesson:
-      "Solve the boring plumbing problem. Payments were unglamorous and everyone needed them.",
+    story: "Two Nigerian developers built payment infrastructure after seeing local businesses struggle to accept payments online. Their product focused on making the difficult plumbing of online payments easier for businesses to integrate.",
+    lesson: "The unglamorous infrastructure underneath a market can be one of its biggest opportunities.",
     source: "https://stripe.com/newsroom/news/stripe-paystack",
     sourceLabel: "stripe.com",
+    founderPhoto: "https://www.paystack.com/favicon.ico",
+    logo: "https://paystack.com/favicon.ico",
   },
   {
-    founders: "Ham Serunjogi & Maijid Moujaled",
-    company: "Chipper Cash",
-    place: "Uganda / Ghana",
-    year: "2018",
-    story:
-      "The two met as students at Grinnell College in the US , Ham from Uganda, Maijid from Ghana. Frustrated by how expensive and slow it was to send money home and across African borders, they moved to San Francisco and built a free cross-border transfer app, now used by millions across Africa.",
-    lesson:
-      "Your own frustration is market research. They built the product they personally needed every month.",
-    source: "https://chippercash.com/about",
-    sourceLabel: "chippercash.com",
-  },
-  {
-    founders: "Odunayo Eweniyi, Somto Ifezue & Joshua Chibueze",
-    company: "PiggyVest",
-    place: "Nigeria",
-    year: "2016",
-    story:
-      "The idea came from a tweet: a woman described saving money daily in a wooden piggy bank until she had enough to grow her business. The team , who had already built a jobs site together , turned that habit into an app, launching as Piggybank.ng with automated daily, weekly and monthly savings.",
-    lesson:
-      "Digitise a habit people already have instead of teaching them a brand new one.",
-    source: "https://www.piggyvest.com/about",
-    sourceLabel: "piggyvest.com",
-  },
-  {
-    founders: "Rebecca Enonchong",
-    company: "AppsTech",
-    place: "Cameroon",
-    year: "1999",
-    story:
-      "Enonchong founded AppsTech in Maryland with no outside funding, selling enterprise software services. It grew to serve clients in more than 50 countries, and she went on to become one of the most influential voices backing African tech hubs and founders.",
-    lesson:
-      "Bootstrapping is a strategy, not a consolation prize. She kept control by growing on revenue.",
-    source: "https://www.appstechnologies.com/",
-    sourceLabel: "appstechnologies.com",
-  },
-  {
-    founders: "Melanie Perkins & Cliff Obrecht",
-    company: "Canva",
-    place: "Australia",
-    year: "2013",
-    story:
-      "While teaching design software to students at university in Perth, Perkins saw how long it took people to learn the basics. She and Obrecht first built Fusion Books, an online school-yearbook designer, from her mother's living room. That business funded and proved the idea that became Canva after more than 100 investor rejections.",
-    lesson:
-      "A narrow first product can fund the big one. Yearbooks paid for the design tool the world now uses.",
-    source: "https://www.canva.com/about/",
-    sourceLabel: "canva.com",
-  },
-  {
-    founders: "Brian Chesky & Joe Gebbia",
-    company: "Airbnb",
-    place: "United States",
+    founders: "Bright Simons",
+    company: "mPedigree",
+    place: "Ghana",
     year: "2007",
-    story:
-      "Unable to make rent in San Francisco, the two roommates put three air mattresses on their living-room floor during a sold-out design conference and charged attendees for a bed and breakfast. Three guests paid. Nathan Blecharczyk joined and they later funded the company by selling novelty cereal boxes.",
-    lesson:
-      "Do the unscalable thing first. Three guests on air mattresses was the whole product test.",
-    source: "https://news.airbnb.com/about-us/",
-    sourceLabel: "airbnb.com",
+    story: "Simons worked on traceability and recognised a much bigger problem in counterfeit medicine. mPedigree used simple verification technology so people could check medicine authenticity using tools they already had.",
+    lesson: "The best technology is sometimes the technology your users already know how to use.",
+    source: "https://mpedigree.com/",
+    sourceLabel: "mpedigree.com",
+    founderPhoto: "https://mpedigree.com/favicon.ico",
+    logo: "https://mpedigree.com/favicon.ico",
   },
   {
-    founders: "Jan Koum & Brian Acton",
-    company: "WhatsApp",
-    place: "United States / Ukraine",
-    year: "2009",
-    story:
-      "Koum grew up in Ukraine and moved to California, where his family relied on food stamps. After both he and Acton were rejected for jobs at Facebook, they built a simple app for status updates that turned into a messenger. Facebook bought it in 2014 for about $19 billion.",
-    lesson:
-      "Rejection isn't a verdict. Both founders were turned down by the company that later paid billions for their app.",
-    source: "https://about.meta.com/company-info/",
-    sourceLabel: "about.meta.com",
-  },
-  {
-    founders: "Sara Blakely",
-    company: "Spanx",
-    place: "United States",
-    year: "2000",
-    story:
-      "Blakely was selling fax machines door to door when she cut the feet off a pair of tights to wear under white trousers. She spent $5,000 of her savings, wrote her own patent application to save legal fees, and personally cold-called hosiery mills until one agreed to make her prototype.",
-    lesson:
-      "Capital is not the first requirement. Persistence and one working prototype opened the doors.",
-    source: "https://spanx.com/pages/about-us",
-    sourceLabel: "spanx.com",
-  },
-  {
-    founders: "Mitchell Elegbe",
-    company: "Interswitch",
-    place: "Nigeria",
+    founders: "Patrick Awuah",
+    company: "Ashesi University",
+    place: "Ghana",
     year: "2002",
-    story:
-      "An electrical engineer who once had a card rejected by a European ATM, Elegbe set out to build the switching infrastructure that lets Nigerian banks and cards talk to each other. Interswitch now processes a huge share of the country's electronic transactions and spun out the Verve card.",
-    lesson:
-      "Infrastructure is a business. Someone has to build the rails everyone else runs on.",
-    source: "https://www.interswitchgroup.com/about-us",
-    sourceLabel: "interswitchgroup.com",
-  },
-  {
-    founders: "Fred Swaniker",
-    company: "African Leadership Academy & ALU",
-    place: "Ghana / Pan-African",
-    year: "2008",
-    story:
-      "Born in Ghana and raised across four African countries, Swaniker started a school in Botswana at 18 when his mother asked him to run it. He later co-founded African Leadership Academy in Johannesburg to train the continent's next generation of leaders, then African Leadership University in Mauritius and Rwanda.",
-    lesson:
-      "Leadership experience counts before you feel ready. He was running a school as a teenager.",
-    source: "https://www.africanleadershipacademy.org/about/",
-    sourceLabel: "africanleadershipacademy.org",
+    story: "Awuah left a career as a Microsoft engineer and returned to Ghana to build an institution focused on developing ethical, entrepreneurial leaders. Ashesi started small and grew into a globally recognised African university.",
+    lesson: "A serious institution can begin with a small first cohort. Scale can come after proof.",
+    source: "https://www.ashesi.edu.gh/about/our-story/",
+    sourceLabel: "ashesi.edu.gh",
+    founderPhoto: "https://www.ashesi.edu.gh/favicon.ico",
+    logo: "https://www.ashesi.edu.gh/favicon.ico",
   },
 ];
 
@@ -164,58 +118,50 @@ const StartupStories = () => (
   <section id="founders" className="py-12 lg:py-28 px-4">
     <div className="max-w-7xl mx-auto">
       <SectionHeader
-        badge="Inspiration"
-        title="Real Founder"
-        highlight="Stories"
-        description="How real companies started , each story links to its source."
+        badge="African inspiration"
+        title="The people behind"
+        highlight="African companies"
+        description="Real founders, real companies and the problems they chose to solve. Founder photos and company marks are sourced from the companies' own websites."
       />
 
-      <div className="flex hscroll hscroll-bleed snap-x snap-mandatory scroll-smooth [&>*]:w-[18rem] [&>*]:shrink-0 [&>*]:snap-start md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:mx-0 md:px-0 md:[&>*]:w-auto gap-5">
+      <div className="flex hscroll hscroll-bleed snap-x snap-mandatory scroll-smooth [&>*]:w-[19rem] [&>*]:shrink-0 [&>*]:snap-start md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:mx-0 md:px-0 md:[&>*]:w-auto gap-5">
         {stories.map((s, i) => (
-          <motion.div
+          <motion.article
             key={s.company}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: (i % 3) * 0.08, duration: 0.4 }}
-            className="bg-glass rounded-xl p-5 card-hover group flex flex-col"
+            className="bg-glass rounded-xl overflow-hidden card-hover group flex flex-col"
           >
-            <div className="flex items-start justify-between gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
-                <Rocket className="h-5 w-5 text-primary" />
+            <div className="relative h-44 bg-muted overflow-hidden">
+              <img src={s.founderPhoto} alt={`${s.founders} of ${s.company}`} loading="lazy" className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.02]" />
+              <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/60 to-transparent" />
+              <div className="absolute left-4 bottom-4 flex items-center gap-2">
+                <div className="w-9 h-9 rounded-lg bg-white p-1.5 shadow-sm flex items-center justify-center">
+                  <img src={s.logo} alt={`${s.company} logo`} loading="lazy" className="w-full h-full object-contain" />
+                </div>
+                <span className="text-xs font-medium text-white bg-black/35 backdrop-blur-sm rounded-full px-2.5 py-1">{s.year}</span>
               </div>
-              <span className="text-xs font-medium text-primary/80 bg-primary/10 rounded-full px-2.5 py-1">
-                {s.year}
-              </span>
             </div>
 
-            <h3 className="font-display font-semibold text-foreground text-lg leading-tight">
-              {s.company}
-            </h3>
-            <p className="text-sm text-foreground/70 mt-1">{s.founders}</p>
-            <div className="flex items-center gap-1 text-xs text-muted-foreground mt-2 mb-3">
-              <MapPin className="h-3 w-3 shrink-0" />
-              {s.place}
-            </div>
+            <div className="p-5 flex flex-col flex-1">
+              <h3 className="font-display font-semibold text-foreground text-lg leading-tight">{s.company}</h3>
+              <p className="text-sm text-foreground/70 mt-1">{s.founders}</p>
+              <div className="flex items-center gap-1 text-xs text-muted-foreground mt-2 mb-3"><MapPin className="h-3 w-3 shrink-0" />{s.place}</div>
+              <p className="text-sm text-muted-foreground leading-relaxed">{s.story}</p>
 
-            <p className="text-sm text-muted-foreground leading-relaxed">{s.story}</p>
-
-            <div className="pt-4 mt-auto">
-              <div className="flex items-start gap-2 pt-3 border-t border-border/50">
-                <Lightbulb className="h-3.5 w-3.5 text-primary mt-0.5 shrink-0" />
-                <p className="text-xs text-primary/80 italic">{s.lesson}</p>
+              <div className="pt-4 mt-auto">
+                <div className="flex items-start gap-2 pt-3 border-t border-border/50">
+                  <Lightbulb className="h-3.5 w-3.5 text-primary mt-0.5 shrink-0" />
+                  <p className="text-xs text-primary/80 italic">{s.lesson}</p>
+                </div>
+                <a href={s.source} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors mt-3">
+                  <ExternalLink className="h-3 w-3" /> Source: {s.sourceLabel}
+                </a>
               </div>
-              <a
-                href={s.source}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors mt-3"
-              >
-                <ExternalLink className="h-3 w-3" />
-                Source: {s.sourceLabel}
-              </a>
             </div>
-          </motion.div>
+          </motion.article>
         ))}
       </div>
     </div>
