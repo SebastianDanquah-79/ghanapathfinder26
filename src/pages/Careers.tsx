@@ -37,14 +37,15 @@ const Careers = () => {
       <Navbar />
       <main className="pt-20 pb-12 px-4">
         <div className="max-w-6xl mx-auto">
-          <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-2">
-            Career paths for Ghanaian students
-          </h1>
-          <p className="text-sm text-muted-foreground mb-7 max-w-2xl">
-            Each path shows the route from SHS to the profession: WASSCE subjects, programmes,
-            institutions offering them, skills, projects, internships and progression , plus
-            alternative routes, because no single programme is the only way in.
-          </p>
+          <div className="max-w-3xl mb-7">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary mb-2">Career Intelligence</p>
+            <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-2">
+              Career paths for Ghanaian students
+            </h1>
+            <p className="text-sm text-muted-foreground leading-6">
+              See where a career can take you, what to study, which skills matter, and how to move from school into real work.
+            </p>
+          </div>
 
           {user && suggestions.length > 0 && (
             <section className="mb-8">
