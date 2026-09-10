@@ -64,9 +64,10 @@ export const navSections: NavSection[] = [
     icon: Briefcase,
     href: "/careers",
     items: [
-      { label: "Careers", href: "/careers", desc: "Where each path leads" },
-      { label: "Skills", href: "/skills", desc: "Free courses and training" },
-      { label: "Internships", href: "/internships", desc: "Employers taking interns" },
+      { label: "Careers", href: "/careers", desc: "Explore careers and progression" },
+      { label: "Career Path", href: "/career-path", desc: "Build a path to your dream job" },
+      { label: "Skills", href: "/skills", desc: "Build skills for your future" },
+      { label: "Internships", href: "/internships", desc: "Gain practical experience" },
       { label: "Professional councils", href: "/professional-councils", desc: "Licensing bodies" },
     ],
   },
