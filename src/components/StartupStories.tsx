@@ -1,20 +1,8 @@
 import { motion } from "framer-motion";
-import { Lightbulb, ExternalLink, MapPin, TrendingUp } from "@/lib/icons";
+import { Lightbulb, ExternalLink, MapPin, Flame } from "@/lib/icons";
 import SectionHeader from "./SectionHeader";
 
-interface FounderStory {
-  founders: string;
-  company: string;
-  place: string;
-  year: string;
-  tag?: string;
-  story: string;
-  lesson: string;
-  source?: string;
-  sourceLabel?: string;
-  founderPhoto?: string;
-  logo?: string;
-}
+interface FounderStory { founders: string; company: string; place: string; year: string; tag?: string; story: string; lesson: string; source?: string; sourceLabel?: string; founderPhoto?: string; logo?: string; }
 
 const stories: FounderStory[] = [
   { founders: "Ham Serunjogi & Maijid Moujaled", company: "Chipper Cash", place: "Uganda / Pan-African", year: "2018", story: "The founders started Chipper after experiencing how expensive and difficult cross-border money movement could be for Africans. They built around a problem they understood deeply and grew it into a major fintech.", lesson: "Your own frustration can be market research. Start with a problem you understand deeply.", source: "https://www.chippercash.com/leadership-team-member/ham-serunjogi", sourceLabel: "chippercash.com", founderPhoto: "https://cdn.prod.website-files.com/63c81b0c3ad92959b9062d4b/63c81b0c3ad92998ba062d77_ham.png", logo: "https://www.chippercash.com/favicon.ico" },
@@ -34,11 +22,11 @@ const StartupStories = () => (
   <section id="founders" className="py-12 lg:py-28 px-4">
     <div className="max-w-7xl mx-auto">
       <SectionHeader badge="African founders" title="See how real companies" highlight="actually get built" description="Stories from African founders, including rising companies to watch in 2024, 2025 and 2026." />
-      <div className="flex items-center gap-2 text-xs text-muted-foreground mb-5"><TrendingUp className="h-3.5 w-3.5 text-primary" /><span>Rising tags reflect current ecosystem coverage, not a promise of future success.</span></div>
+      <div className="flex items-center gap-2 text-xs text-muted-foreground mb-5"><Flame className="h-3.5 w-3.5 text-primary" /><span>Rising tags reflect current ecosystem coverage, not a promise of future success.</span></div>
       <div className="flex hscroll hscroll-bleed snap-x snap-mandatory scroll-smooth [&>*]:w-[19rem] [&>*]:shrink-0 [&>*]:snap-start md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:mx-0 md:px-0 md:[&>*]:w-auto gap-5">
         {stories.map((s, i) => (
           <motion.article key={s.company} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: (i % 3) * 0.06, duration: 0.35 }} className="bg-glass rounded-xl overflow-hidden card-hover group flex flex-col">
-            {s.founderPhoto ? <div className="relative h-44 bg-muted overflow-hidden"><img src={s.founderPhoto} alt={`${s.founders} of ${s.company}`} loading="lazy" className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.02]" /><div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/60 to-transparent" /><div className="absolute left-4 bottom-4 flex items-center gap-2">{s.logo && <div className="w-9 h-9 rounded-lg bg-white p-1.5 shadow-sm flex items-center justify-center"><img src={s.logo} alt={`${s.company} logo`} loading="lazy" className="w-full h-full object-contain" /></div>}<span className="text-xs font-medium text-white bg-black/35 backdrop-blur-sm rounded-full px-2.5 py-1">{s.year}</span></div></div> : <div className="h-44 bg-gradient-to-br from-primary/15 via-background to-secondary flex items-end p-5"><span className="text-sm font-semibold text-foreground">2026 rising company</span></div>}
+            {s.founderPhoto ? <div className="relative h-44 bg-muted overflow-hidden"><img src={s.founderPhoto} alt={`${s.founders} of ${s.company}`} loading="lazy" className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.02]" /><div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/60 to-transparent" /><div className="absolute left-4 bottom-4 flex items-center gap-2">{s.logo && <div className="w-9 h-9 rounded-lg bg-white p-1.5 shadow-sm flex items-center justify-center"><img src={s.logo} alt={`${s.company} logo`} loading="lazy" className="w-full h-full object-contain" /></div>}<span className="text-xs font-medium text-white bg-black/35 backdrop-blur-sm rounded-full px-2.5 py-1">{s.year}</span></div></div> : <div className="h-44 bg-gradient-to-br from-primary/15 via-background to-secondary flex items-end p-5"><span className="text-sm font-semibold text-foreground">{s.year}</span></div>}
             <div className="p-5 flex flex-col flex-1"><div className="flex items-center justify-between gap-2"><h3 className="font-display font-semibold text-foreground text-lg leading-tight">{s.company}</h3>{s.tag && <span className="text-[10px] uppercase tracking-wider font-semibold text-primary">{s.tag}</span>}</div><p className="text-sm text-foreground/70 mt-1">{s.founders}</p><div className="flex items-center gap-1 text-xs text-muted-foreground mt-2 mb-3"><MapPin className="h-3 w-3 shrink-0" />{s.place}</div><p className="text-sm text-muted-foreground leading-relaxed">{s.story}</p><div className="pt-4 mt-auto"><div className="flex items-start gap-2 pt-3 border-t border-border/50"><Lightbulb className="h-3.5 w-3.5 text-primary mt-0.5 shrink-0" /><p className="text-xs text-primary/80 italic">{s.lesson}</p></div>{s.source && <a href={s.source} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors mt-3"><ExternalLink className="h-3 w-3" /> Source: {s.sourceLabel}</a>}</div></div>
           </motion.article>
         ))}
