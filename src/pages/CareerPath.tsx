@@ -2,7 +2,7 @@ import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo, { breadcrumbLd } from "@/components/Seo";
-import { ChevronDown, Route as RouteIcon, Target } from "@/lib/icons";
+import { ChevronDown, Target } from "@/lib/icons";
 
 interface Stage {
   name: string;
@@ -62,117 +62,61 @@ const CareerPath = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Seo
-        title="Career Path | GhanaPathFinder"
-        description="Build a practical path from where you are today to the career you want."
-        path="/career-path"
-        jsonLd={[breadcrumbLd([{ name: "Home", path: "/" }, { name: "Career Path", path: "/career-path" }])]}
-      />
+      <Seo title="Career Path | GhanaPathFinder" description="Build a practical path from where you are today to the career you want." path="/career-path" jsonLd={[breadcrumbLd([{ name: "Home", path: "/" }, { name: "Career Path", path: "/career-path" }])]} />
       <Navbar />
       <main className="pt-20 pb-14 px-4">
         <div className="max-w-5xl mx-auto">
           <div className="max-w-3xl mb-8">
             <p className="text-sm font-medium text-primary mb-2">Career Path</p>
-            <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-3">
-              Turn your dream job into a practical path.
-            </h1>
-            <p className="text-sm sm:text-base text-muted-foreground leading-6">
-              Tell us where you want to go and, if you want, where you are starting from. Your path can adapt to your education, skills, interests, experience, projects and goals.
-            </p>
+            <h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-3">Turn your dream job into a practical path.</h1>
+            <p className="text-sm sm:text-base text-muted-foreground leading-6">Tell us where you want to go and, if you want, where you are starting from. Your path can adapt to your education, skills, interests, experience, projects and goals.</p>
           </div>
-
           <section className="border border-border rounded-2xl bg-card p-5 sm:p-7 mb-8">
             <label className="block text-sm font-semibold text-foreground mb-2">What is your dream job?</label>
-            <input
-              value={dreamJob}
-              onChange={(e) => setDreamJob(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && buildPath()}
-              placeholder="e.g. AI engineer, robotics engineer, doctor, product manager"
-              className="w-full h-12 rounded-lg border border-input bg-background px-4 text-sm outline-none focus:ring-2 focus:ring-primary/20"
-            />
-
+            <input value={dreamJob} onChange={(e) => setDreamJob(e.target.value)} onKeyDown={(e) => e.key === "Enter" && buildPath()} placeholder="e.g. AI engineer, robotics engineer, doctor, product manager" className="w-full h-12 rounded-lg border border-input bg-background px-4 text-sm outline-none focus:ring-2 focus:ring-primary/20" />
             <div className="grid sm:grid-cols-2 gap-4 mt-5">
               {fields.map(([key, label, placeholder]) => (
                 <div key={key}>
                   <label className="block text-xs font-medium text-foreground mb-1.5">{label} <span className="text-muted-foreground font-normal">(optional)</span></label>
-                  <textarea
-                    value={profile[key] ?? ""}
-                    onChange={(e) => setProfile((current) => ({ ...current, [key]: e.target.value }))}
-                    placeholder={placeholder}
-                    rows={2}
-                    className="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm resize-none outline-none focus:ring-2 focus:ring-primary/20"
-                  />
+                  <textarea value={profile[key] ?? ""} onChange={(e) => setProfile((current) => ({ ...current, [key]: e.target.value }))} placeholder={placeholder} rows={2} className="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm resize-none outline-none focus:ring-2 focus:ring-primary/20" />
                 </div>
               ))}
             </div>
-
             {error && <p className="text-sm text-destructive mt-4">{error}</p>}
-            <button
-              type="button"
-              disabled={!dreamJob.trim() || loading}
-              onClick={buildPath}
-              className="mt-5 inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground disabled:opacity-50"
-            >
-              <RouteIcon className="h-4 w-4" />
+            <button type="button" disabled={!dreamJob.trim() || loading} onClick={buildPath} className="mt-5 inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground disabled:opacity-50">
               {loading ? "Building your path…" : "Build my path"}
             </button>
           </section>
-
           {plan && (
             <section className="mb-12">
               <div className="border border-border rounded-2xl bg-card p-5 sm:p-7 mb-5">
                 <div className="flex items-start gap-3">
                   <div className="mt-0.5 rounded-lg border border-border p-2"><Target className="h-5 w-5 text-primary" /></div>
-                  <div>
-                    <h2 className="font-display text-xl sm:text-2xl font-bold text-foreground">{plan.title}</h2>
-                    <p className="text-sm text-muted-foreground mt-2 leading-6">{plan.summary}</p>
-                  </div>
+                  <div><h2 className="font-display text-xl sm:text-2xl font-bold text-foreground">{plan.title}</h2><p className="text-sm text-muted-foreground mt-2 leading-6">{plan.summary}</p></div>
                 </div>
-                <div className="mt-5 border-t border-border pt-4">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1">Where you are now</p>
-                  <p className="text-sm text-foreground leading-6">{plan.current_state}</p>
-                </div>
+                <div className="mt-5 border-t border-border pt-4"><p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1">Where you are now</p><p className="text-sm text-foreground leading-6">{plan.current_state}</p></div>
               </div>
-
               <div className="space-y-4">
                 {plan.stages.map((stage, index) => (
                   <article key={`${stage.name}-${index}`} className="border border-border rounded-xl bg-card p-5 sm:p-6">
-                    <div className="flex gap-4">
-                      <div className="shrink-0 flex h-8 w-8 items-center justify-center rounded-full border border-primary/30 text-sm font-semibold text-primary">{index + 1}</div>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex flex-wrap items-baseline justify-between gap-2">
-                          <h3 className="font-display text-lg font-semibold text-foreground">{stage.name}</h3>
-                          <span className="text-xs text-muted-foreground">{stage.timeframe}</span>
-                        </div>
-                        <p className="text-sm text-muted-foreground mt-1 leading-6">{stage.focus}</p>
-                        <div className="grid md:grid-cols-3 gap-5 mt-5">
-                          <List title="Build these skills" items={stage.skills} />
-                          <List title="What to do" items={stage.actions} />
-                          <List title="Milestones" items={stage.milestones} />
-                        </div>
-                      </div>
-                    </div>
+                    <div className="flex gap-4"><div className="shrink-0 flex h-8 w-8 items-center justify-center rounded-full border border-primary/30 text-sm font-semibold text-primary">{index + 1}</div><div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-baseline justify-between gap-2"><h3 className="font-display text-lg font-semibold text-foreground">{stage.name}</h3><span className="text-xs text-muted-foreground">{stage.timeframe}</span></div>
+                      <p className="text-sm text-muted-foreground mt-1 leading-6">{stage.focus}</p>
+                      <div className="grid md:grid-cols-3 gap-5 mt-5"><List title="Build these skills" items={stage.skills} /><List title="What to do" items={stage.actions} /><List title="Milestones" items={stage.milestones} /></div>
+                    </div></div>
                   </article>
                 ))}
               </div>
-
-              <div className="border border-primary/20 rounded-xl bg-primary/5 p-5 mt-5">
-                <p className="text-xs font-semibold uppercase tracking-wide text-primary mb-1">Your next step</p>
-                <p className="text-sm text-foreground leading-6">{plan.next_step}</p>
-              </div>
+              <div className="border border-primary/20 rounded-xl bg-primary/5 p-5 mt-5"><p className="text-xs font-semibold uppercase tracking-wide text-primary mb-1">Your next step</p><p className="text-sm text-foreground leading-6">{plan.next_step}</p></div>
             </section>
           )}
-
           <section>
             <h2 className="font-display text-xl font-bold text-foreground mb-2">Career Path FAQ</h2>
             <p className="text-sm text-muted-foreground mb-4">Common questions about building and using a career path.</p>
             <div className="border border-border rounded-xl divide-y divide-border overflow-hidden">
               {(plan?.faq ?? defaultFaq).map((item, index) => (
                 <button key={item.question} type="button" onClick={() => setOpenFaq(openFaq === index ? null : index)} className="w-full text-left p-4 bg-card hover:bg-muted/40">
-                  <div className="flex items-center justify-between gap-4">
-                    <span className="text-sm font-medium text-foreground">{item.question}</span>
-                    <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openFaq === index ? "rotate-180" : ""}`} />
-                  </div>
+                  <div className="flex items-center justify-between gap-4"><span className="text-sm font-medium text-foreground">{item.question}</span><ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${openFaq === index ? "rotate-180" : ""}`} /></div>
                   {openFaq === index && <p className="text-sm text-muted-foreground leading-6 mt-3 pr-6">{item.answer}</p>}
                 </button>
               ))}
@@ -186,12 +130,7 @@ const CareerPath = () => {
 };
 
 const List = ({ title, items }: { title: string; items: string[] }) => (
-  <div>
-    <h4 className="text-xs font-semibold text-foreground mb-2">{title}</h4>
-    <ul className="space-y-1.5">
-      {items.map((item) => <li key={item} className="text-xs text-muted-foreground leading-5">{item}</li>)}
-    </ul>
-  </div>
+  <div><h4 className="text-xs font-semibold text-foreground mb-2">{title}</h4><ul className="space-y-1.5">{items.map((item) => <li key={item} className="text-xs text-muted-foreground leading-5">{item}</li>)}</ul></div>
 );
 
 const defaultFaq = [
