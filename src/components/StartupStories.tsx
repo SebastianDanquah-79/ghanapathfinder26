@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
 import { ExternalLink, Flame, MapPin } from "@/lib/icons";
 import SectionHeader from "./SectionHeader";
 import AdinkraFloatLayer from "./AdinkraFloatLayer";
@@ -13,6 +14,8 @@ interface FounderStory {
   story: string;
   source?: string;
   founderPhotos: string[];
+  photoLabels?: string[];
+  fallbackPhoto?: string;
   logo: string;
 }
 
@@ -22,6 +25,7 @@ const explicitLogos: Record<string, string> = {
   "interswitchgroup.com": "https://interswitchgroup.com/build-assets/interswitch-logo.B9PxYkQW_29LYiJ.svg",
 };
 const logoFor = (domain: string) => explicitLogos[domain] ?? logo(domain);
+const FARMERLINE_TEAM = "https://assets.lendahand.com/investee/background_image/60000037/w1680h560_Team3.jpg";
 
 const stories: FounderStory[] = [
   { founders: "Patrick Awuah", company: "Ashesi University", place: "Ghana", year: "2002", role: "Founder & President", tag: "Education", story: "Built an institution around ethical, entrepreneurial leadership in Africa.", source: "https://ashesi.edu.gh/about/", founderPhotos: ["https://commons.wikimedia.org/wiki/Special:Redirect/file/Patrick%20Awuah%20(Ashesi).jpg"], logo: logo("ashesi.edu.gh") },
@@ -31,7 +35,7 @@ const stories: FounderStory[] = [
   { founders: "Jesse Moore", company: "M-KOPA", place: "Kenya / Pan-African", year: "2010", role: "Co-founder & CEO", tag: "Clean Energy", story: "Combined connected hardware, digital payments and financing to make useful technology more accessible.", source: "https://www.m-kopa.com/about", founderPhotos: ["https://cdn.prod.website-files.com/66dcaf74c5e6c9bbd1890ab1/66e2e657e9c76c635ea5575d_Jesse%20Moore%20headshot.jpg"], logo: logo("m-kopa.com") },
   { founders: "Jeremy Johnson & founding team", company: "Andela", place: "Nigeria / Pan-African", year: "2014", role: "Co-founder", tag: "Tech Education", story: "Built a bridge between African software talent and global companies.", source: "https://www.andela.com/about", founderPhotos: ["https://weetracker.com/wp-content/uploads/2024/01/Jeremy-Johnson-CEO-and-co-founder-of-Andela.jpg"], logo: logo("andela.com") },
   { founders: "Shola Akinlade & Ezra Olubi", company: "Paystack", place: "Nigeria", year: "2015", role: "Co-founders", tag: "FinTech", story: "Built payment infrastructure that made online payments easier for African businesses.", source: "https://paystack.com/gh/about", founderPhotos: ["https://empowerafrica.com/wp-content/uploads/sites/2/2023/05/9-8.jpg"], logo: logo("paystack.com") },
-  { founders: "Alloysius Attah & Emmanuel O. Addai", company: "Farmerline", place: "Ghana / Pan-African", year: "2013", role: "Co-founders", tag: "AgriTech", story: "Used technology to improve farmers' access to information, inputs, finance and markets.", source: "https://farmerline.co/our-story/", founderPhotos: ["https://assets.weforum.org/author/image/DkFf8VlFk_B1Smu_guE_1VgNvIybhPiO1LoxfTZEqX8.jpg", "https://fellows.echoinggreen.org/wp-content/uploads/2019/11/Profile_Farmerline_2014_VL1_4428-e1580395840642.jpg"], logo: logo("farmerline.co") },
+  { founders: "Alloysius Attah & Emmanuel O. Addai", company: "Farmerline", place: "Ghana / Pan-African", year: "2013", role: "Co-founders", tag: "AgriTech", story: "Used technology to improve farmers' access to information, inputs, finance and markets.", source: "https://farmerline.co/our-story/", founderPhotos: ["https://assets.weforum.org/author/image/DkFf8VlFk_B1Smu_guE_1VgNvIybhPiO1LoxfTZEqX8.jpg", FARMERLINE_TEAM], photoLabels: ["Alloysius Attah", "Farmerline outreach team"], fallbackPhoto: FARMERLINE_TEAM, logo: logo("farmerline.co") },
   { founders: "Alex Bram & founding team", company: "Hubtel", place: "Ghana", year: "2005", role: "Co-founder & CEO", tag: "Connectivity", story: "Started with business messaging and expanded into payments and commerce.", source: "https://news.hubtel.com/smsgh-rebranded-hubtel/", founderPhotos: ["https://img1.wsimg.com/isteam/ip/9861afbc-87cb-4793-b81d-c1efdd5f7ee7/Alex%20-%202020%20-%201%20copy.jpg"], logo: logo("hubtel.com") },
   { founders: "Gregory Rockson, Daniel Shoukimas & James Finucane", company: "mPharma", place: "Ghana / Pan-African", year: "2013", role: "Co-founders", tag: "HealthTech", story: "Built technology and operating systems to improve access to reliable and affordable medicines across Africa.", source: "https://mpharma.com/our-vision/", founderPhotos: ["https://assets.weforum.org/sf_account/image/responsive_small_PUtQWZHXz8D3osdop9TuV4DWjx2buRqF_jcu_SglcwE.jpg"], logo: logo("mpharma.com") },
   { founders: "Desmond Koney & founding team", company: "Complete Farmer", place: "Ghana / West Africa", year: "2017", role: "Co-founder & CEO", tag: "AgriTech", story: "Built a digital agriculture platform connecting growers, buyers and markets.", source: "https://www.completefarmer.com/about", founderPhotos: ["https://images.squarespace-cdn.com/content/v1/561e4503e4b093c102b5fdb5/3165f121-73ff-487f-95e7-99dc0218056e/CompleteFarmer%2B1%2B-%2BDesmond%2BKoney.png"], logo: logo("completefarmer.com") },
@@ -46,6 +50,11 @@ const stories: FounderStory[] = [
   { founders: "Sacha Poignonnec & Jeremy Hodara", company: "Jumia", place: "Pan-African", year: "2012", role: "Co-founders & former CEOs", tag: "E-commerce", story: "Co-founded Jumia to build a large-scale online marketplace and digital commerce platform for African consumers and businesses.", source: "https://group.jumia.com/press/media-kit", founderPhotos: ["https://www.mckinsey.com/~/media/McKinsey/Featured%20Insights/Middle%20East%20and%20Africa/How%20ecommerce%20supports%20African%20business%20growth/How-ecommerce-supports-African-business-1536x1536.jpg", "https://www.consultor.fr/images/articles/3459/Jeremy-Hodara---Co-fondateur-Jumia-002.jpg"], logo: logo("group.jumia.com") },
 ];
 
+const SafeImage = ({ src, fallback, alt }: { src: string; fallback?: string; alt: string }) => {
+  const [current, setCurrent] = useState(src);
+  return <img src={current} alt={alt} className="h-full w-full object-cover" loading="lazy" referrerPolicy="no-referrer" onError={() => fallback && current !== fallback && setCurrent(fallback)} />;
+};
+
 const StartupStories = () => (
   <section id="founders" className="py-12 lg:py-24 px-4">
     <AdinkraFloatLayer />
@@ -55,19 +64,9 @@ const StartupStories = () => (
       <div className="flex hscroll hscroll-bleed snap-x snap-mandatory scroll-smooth gap-4 overflow-x-auto pb-3 md:grid md:grid-cols-2 lg:grid-cols-5 md:overflow-visible md:mx-0 md:px-0 md:pb-0">
         {stories.map((s, i) => (
           <motion.article key={s.company} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: (i % 5) * 0.05, duration: 0.3 }} className="min-w-[16.5rem] md:min-w-0 bg-background border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow snap-start">
-            <div className="p-4 border-b border-border flex items-center justify-between gap-3">
-              <div className="h-10 w-10 rounded-xl border border-border bg-muted/30 flex items-center justify-center overflow-hidden"><img src={s.logo} alt={`${s.company} logo`} className="h-7 w-7 object-contain" loading="lazy" /></div>
-              <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide">{s.year}</span>
-            </div>
-            <div className={`${s.founderPhotos.length > 1 ? "grid grid-cols-2" : ""} aspect-square bg-muted overflow-hidden`}>
-              {s.founderPhotos.slice(0, 2).map((photo, index) => <img key={photo} src={photo} alt={`${s.founders} ${index + 1}`} className="h-full w-full object-cover min-h-0" loading="lazy" />)}
-            </div>
-            <div className="p-4 space-y-3">
-              <div><h3 className="font-semibold text-sm leading-tight">{s.founders}</h3><p className="text-xs text-muted-foreground mt-1">{s.role}</p></div>
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground"><MapPin className="h-3.5 w-3.5 shrink-0" /><span>{s.place}</span></div>
-              <p className="text-xs leading-relaxed text-muted-foreground">{s.story}</p>
-              <div className="flex items-center justify-between gap-2 pt-1">{s.tag && <span className="text-[10px] font-medium px-2 py-1 rounded-full bg-muted text-foreground">{s.tag}</span>}{s.source && <a href={s.source} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-[10px] font-medium text-primary hover:underline">Source <ExternalLink className="h-3 w-3" /></a>}</div>
-            </div>
+            <div className="p-4 border-b border-border flex items-center justify-between gap-3"><div className="h-10 w-10 rounded-xl border border-border bg-muted/30 flex items-center justify-center overflow-hidden"><img src={s.logo} alt={`${s.company} logo`} className="h-7 w-7 object-contain" loading="lazy" referrerPolicy="no-referrer" /></div><span className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide">{s.year}</span></div>
+            <div className={`${s.founderPhotos.length > 1 ? "grid grid-cols-2" : ""} aspect-square bg-muted overflow-hidden`}>{s.founderPhotos.slice(0, 2).map((photo, index) => <div key={`${photo}-${index}`} className="relative min-h-0 overflow-hidden"><SafeImage src={photo} fallback={s.fallbackPhoto} alt={s.photoLabels?.[index] ?? `${s.founders}, ${s.company}`} />{s.photoLabels?.[index] && <span className="absolute left-2 bottom-2 max-w-[calc(100%-1rem)] rounded-md bg-black/55 px-2 py-1 text-[9px] font-medium text-white">{s.photoLabels[index]}</span>}</div>)}</div>
+            <div className="p-4 space-y-3"><div><h3 className="font-semibold text-sm leading-tight">{s.founders}</h3><p className="text-xs text-muted-foreground mt-1">{s.role}</p></div><div className="flex items-center gap-1.5 text-xs text-muted-foreground"><MapPin className="h-3.5 w-3.5 shrink-0" /><span>{s.place}</span></div><p className="text-xs leading-relaxed text-muted-foreground">{s.story}</p><div className="flex items-center justify-between gap-2 pt-1">{s.tag && <span className="text-[10px] font-medium px-2 py-1 rounded-full bg-muted text-foreground">{s.tag}</span>}{s.source && <a href={s.source} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-[10px] text-muted-foreground hover:text-primary"><ExternalLink className="h-3 w-3" /> Source</a>}</div></div>
           </motion.article>
         ))}
       </div>
