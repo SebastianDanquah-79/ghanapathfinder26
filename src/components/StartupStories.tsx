@@ -18,6 +18,11 @@ interface FounderStory {
 }
 
 const logo = (domain: string) => `https://www.google.com/s2/favicons?sz=128&domain=${domain}`;
+const explicitLogos: Record<string, string> = {
+  "telecel.com.gh": "https://telecel.com.gh/favicon.ico",
+  "interswitchgroup.com": "https://interswitchgroup.com/build-assets/interswitch-logo.B9PxYkQW_29LYiJ.svg",
+};
+const logoFor = (domain: string) => explicitLogos[domain] ?? logo(domain);
 
 const stories: FounderStory[] = [
   {
@@ -254,8 +259,21 @@ const stories: FounderStory[] = [
     story: "Leads Telecel Ghana as the company continues the transition from Vodafone Ghana and expands connectivity, digital services and financial inclusion in Ghana.",
     source: "https://telecel.com.gh/explore-telecel/executive-team/",
     sourceLabel: "telecel.com.gh",
-    founderPhotos: ["https://www.newsghana.com.gh/wp-content/uploads/2020/11/madam-patricia-obo-nai-chief-executive-officer--696x605.jpg"],
-    logo: logo("telecel.com.gh"),
+    founderPhotos: ["https://telecel.com.gh/img/execs/squared/patricia.png"],
+    logo: logoFor("telecel.com.gh"),
+  },
+  {
+    founders: "Mitchell Elegbe",
+    company: "Interswitch",
+    place: "Nigeria / Africa",
+    year: "2002",
+    role: "Founder & Group Managing Director / CEO",
+    tag: "FinTech",
+    story: "Founded Interswitch to solve payment infrastructure problems in Nigeria and grew it into one of Africa’s major digital payments and commerce technology companies.",
+    source: "https://interswitchgroup.com/company/leadership/mitchell-elegbe/",
+    sourceLabel: "interswitchgroup.com",
+    founderPhotos: ["https://iswwebsitestg.blob.core.windows.net/switchwebsite/interswitchgroup.com/executives/website-images/Mitchell%20Elegbe.webp"],
+    logo: logoFor("interswitchgroup.com"),
   },
 ];
 
@@ -283,50 +301,41 @@ const StartupStories = () => (
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: (i % 5) * 0.05, duration: 0.3 }}
-            className="min-w-[16.5rem] md:min-w-0 bg-background border border-border/70 rounded-xl p-3.5 shadow-sm hover:shadow-md transition-shadow flex flex-col"
+            className="min-w-[16.5rem] md:min-w-0 bg-background border border-border rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow snap-start"
           >
-            <div className="flex items-center gap-2.5 h-9 mb-3">
-              <div className="w-8 h-8 rounded-md bg-white border border-border/60 p-1.5 flex items-center justify-center shrink-0">
-                <img src={s.logo} alt={`${s.company} logo`} loading="lazy" className="w-full h-full object-contain" referrerPolicy="no-referrer" />
+            <div className="p-4 border-b border-border flex items-center justify-between gap-3">
+              <div className="h-10 w-10 rounded-xl border border-border bg-muted/30 flex items-center justify-center overflow-hidden">
+                <img src={s.logo} alt={`${s.company} logo`} className="h-7 w-7 object-contain" loading="lazy" />
               </div>
-              <span className="font-semibold text-sm text-foreground truncate">{s.company}</span>
+              <span className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide">{s.year}</span>
             </div>
 
-            <div className={`mb-3 grid gap-2 ${s.founderPhotos.length > 1 ? "grid-cols-2" : "grid-cols-1"}`}>
-              {s.founderPhotos.map((photo, photoIndex) => (
-                <div key={`${s.company}-${photoIndex}`} className="aspect-square rounded-lg overflow-hidden bg-muted">
-                  <img
-                    src={photo}
-                    alt={`${s.founders}, ${s.company}${s.founderPhotos.length > 1 ? `, founder photo ${photoIndex + 1}` : ""}`}
-                    loading="lazy"
-                    className="w-full h-full object-cover object-center"
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
-              ))}
+            <div className="aspect-square bg-muted overflow-hidden">
+              <img src={s.founderPhotos[0]} alt={s.founders} className="h-full w-full object-cover" loading="lazy" />
             </div>
 
-            <div className="flex-1">
-              <h3 className="font-display font-semibold text-foreground text-sm leading-tight">{s.founders}</h3>
-              <p className="text-[11px] text-muted-foreground mt-1">{s.role}</p>
-              <div className="flex items-center gap-1 text-[10px] text-muted-foreground mt-2">
-                <MapPin className="h-3 w-3 shrink-0" />
+            <div className="p-4 space-y-3">
+              <div>
+                <h3 className="font-semibold text-sm leading-tight">{s.founders}</h3>
+                <p className="text-xs text-muted-foreground mt-1">{s.role}</p>
+              </div>
+
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <MapPin className="h-3.5 w-3.5 shrink-0" />
                 <span>{s.place}</span>
               </div>
-              <p className="text-xs text-muted-foreground leading-relaxed mt-2.5 line-clamp-3">{s.story}</p>
-            </div>
 
-            <div className="flex items-center justify-between gap-2 mt-3 pt-3 border-t border-border/60">
-              {s.tag ? <span className="inline-flex rounded-full bg-primary/10 text-primary px-2 py-1 text-[9px] font-semibold">{s.tag}</span> : <span />}
-              <span className="text-[10px] text-muted-foreground">{s.year}</span>
-            </div>
+              <p className="text-xs leading-relaxed text-muted-foreground">{s.story}</p>
 
-            {s.source && (
-              <a href={s.source} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-[10px] text-muted-foreground hover:text-primary transition-colors mt-2">
-                <ExternalLink className="h-3 w-3" />
-                {s.sourceLabel}
-              </a>
-            )}
+              <div className="flex items-center justify-between gap-2 pt-1">
+                {s.tag && <span className="text-[10px] font-medium px-2 py-1 rounded-full bg-muted text-foreground">{s.tag}</span>}
+                {s.source && (
+                  <a href={s.source} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-[10px] font-medium text-primary hover:underline">
+                    Source <ExternalLink className="h-3 w-3" />
+                  </a>
+                )}
+              </div>
+            </div>
           </motion.article>
         ))}
       </div>
