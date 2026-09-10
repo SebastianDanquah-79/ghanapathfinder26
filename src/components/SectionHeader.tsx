@@ -22,7 +22,14 @@ const SectionHeader = ({ badge, title, highlight, description }: SectionHeaderPr
       {title}{" "}
       {highlight && <span className="text-gradient-gold">{highlight}</span>}
     </h2>
-    <p className="text-muted-foreground max-w-2xl mx-auto">{description}</p>
+    <div className="mx-auto max-w-2xl">
+      <span className="block text-[10px] font-semibold uppercase tracking-[0.18em] text-primary/70 mb-2">
+        Explore this directory
+      </span>
+      <p className="text-sm sm:text-base leading-relaxed text-muted-foreground">
+        {description}
+      </p>
+    </div>
   </motion.div>
 );
 
