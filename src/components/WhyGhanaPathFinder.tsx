@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
-import { Compass, ShieldCheck, GitBranch, Briefcase } from "@/lib/icons";
+import { Compass, ShieldCheck, Briefcase } from "@/lib/icons";
 import SectionHeader from "./SectionHeader";
 
 const reasons = [
   { icon: Compass, title: "Built for Ghana", text: "Admissions, WASSCE rules, scholarships and career options are organised around the Ghanaian system." },
-  { icon: GitBranch, title: "More than one route", text: "If one door closes, see realistic alternatives instead of being told your future is over." },
+  { icon: Compass, title: "More than one route", text: "If one door closes, see realistic alternatives instead of being told your future is over." },
   { icon: ShieldCheck, title: "Source-first decisions", text: "We point you back to official institutions and requirements before you make a high-stakes choice." },
   { icon: Briefcase, title: "Life after school", text: "Connect education to skills, internships, careers, entrepreneurship and the next decision that follows." },
 ];
