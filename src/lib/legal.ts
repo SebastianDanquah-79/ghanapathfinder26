@@ -1,13 +1,12 @@
 /** Public-facing legal / transparency copy, shared by the homepage teasers and full pages. */
 
-
 /** Current Terms & Conditions version recorded against a user's acceptance. */
-export const TERMS_VERSION = "2026-08-17";
+export const TERMS_VERSION = "2026-09-10";
 
 /** Short 4-line disclaimer shown on the Terms & Conditions page. */
 export const SHORT_DISCLAIMER: string[] = [
   "GhanaPathFinder provides educational guidance and recommendations for informational purposes only.",
-  "Admission requirements, cut-off points, scholarships and programme information may change.",
+  "Admission requirements, cut-off points, scholarships, programmes and fees may change.",
   "Always verify important information with the relevant university or official institution.",
   "GhanaPathFinder does not guarantee admission, scholarships, employment or any specific outcome.",
 ];
@@ -20,6 +19,7 @@ export const DISCLAIMER_PARAGRAPHS: string[] = [
   "The information provided on GhanaPathFinder is for general informational and guidance purposes only. While we make reasonable efforts to provide accurate and up-to-date information, admission requirements, WASSCE cut-off points, programmes, scholarship availability, application deadlines, fees, and other institutional information may change without notice.",
   "Match confidence and recommendations are estimates, not guarantees of admission. A recommendation does not mean that a student will be accepted into a university or programme. Admission decisions are made solely by the relevant institution according to its current admission policies and requirements.",
   "Where official cut-off points or other information are unavailable, GhanaPathFinder may provide estimated information based on available data. Such estimates should not be treated as official institutional requirements.",
+  "Fees are institution- and programme-specific. Ghana does not have a universal GHS 30,000 tuition ceiling: current official examples include public-university undergraduate fees in the low thousands of cedis per academic year and private institutions that can charge substantially more per term. Students should use the official fee schedule for the exact programme and academic year rather than assuming a single national fee.",
   "Students should always verify important information, including admission requirements, deadlines, fees, programme availability, and application procedures, directly with the relevant university, institution, scholarship provider, or official government source before making decisions or submitting applications.",
   "GhanaPathFinder is not affiliated with, endorsed by, or officially representing any university, government institution, scholarship provider, or other organization unless explicitly stated.",
   "By using GhanaPathFinder, you acknowledge that you are responsible for independently verifying information before relying on it for educational or financial decisions.",
