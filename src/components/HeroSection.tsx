@@ -32,7 +32,7 @@ const HeroSection = () => {
           </div>
 
           <h1 className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl mb-6 leading-tight">
-            <span className="text-foreground">Make your next</span>
+            <span className="text-foreground">Ready to</span>
             <br />
             <AnimatePresence mode="wait">
               <motion.span
