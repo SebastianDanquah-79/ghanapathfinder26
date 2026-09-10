@@ -2,9 +2,7 @@ import { useMemo, useState } from "react";
 
 interface BrandLogoProps {
   name: string;
-  /** Official website of the institution or company. */
   websiteUrl?: string | null;
-  /** Explicit logo URL from the database (takes priority). */
   logoUrl?: string | null;
   size?: number;
   className?: string;
@@ -29,27 +27,30 @@ const initialsOf = (name: string) =>
     .map((w) => w[0]?.toUpperCase() ?? "")
     .join("") || name.slice(0, 2).toUpperCase();
 
-/**
- * Institution / employer logo resolved from the organisation's own website
- * domain first, with reliable favicon fallbacks and an initials fallback.
- */
+const knownDomains: Array<[RegExp, string]> = [
+  [/university of mines and technology|\bumat\b/i, "umat.edu.gh"],
+  [/ghana communication technology university|\bgctu\b/i, "gctu.edu.gh"],
+  [/koforidua technical university|\bktu\b/i, "ktu.edu.gh"],
+  [/university of ghana|\bug\b/i, "ug.edu.gh"],
+  [/kwame nkrumah university of science and technology|\bknust\b/i, "knust.edu.gh"],
+  [/university of cape coast|\bucc\b/i, "ucc.edu.gh"],
+];
+
 const BrandLogo = ({ name, websiteUrl, logoUrl, size = 40, className = "" }: BrandLogoProps) => {
-  const domain = domainOf(websiteUrl ?? logoUrl ?? null);
+  const suppliedDomain = domainOf(websiteUrl ?? logoUrl ?? null);
+  const knownDomain = knownDomains.find(([pattern]) => pattern.test(name))?.[1] ?? null;
+  const domain = suppliedDomain ?? knownDomain;
+
   const sources = useMemo(() => {
     const list: string[] = [];
-
-    // Explicit logo URLs from trusted first-party data take priority.
     if (logoUrl && /^https?:\/\//.test(logoUrl)) list.push(logoUrl);
-
-    // Prefer the organisation's own favicon before third-party resolvers.
     if (domain) {
       list.push(`https://${domain}/favicon.ico`);
       list.push(`https://${domain}/favicon.png`);
-      list.push(`https://icons.duckduckgo.com/ip3/${domain}.ico`);
       list.push(`https://www.google.com/s2/favicons?sz=128&domain=${domain}`);
+      list.push(`https://icons.duckduckgo.com/ip3/${domain}.ico`);
     }
-
-    return list;
+    return [...new Set(list)];
   }, [logoUrl, domain]);
 
   const [index, setIndex] = useState(0);
@@ -69,7 +70,7 @@ const BrandLogo = ({ name, websiteUrl, logoUrl, size = 40, className = "" }: Bra
           height={size}
           loading="lazy"
           className="h-full w-full object-contain p-1"
-          onError={() => setIndex((i) => i + 1)}
+          onError={() => setIndex((i) => Math.min(i + 1, sources.length))}
         />
       ) : (
         <span className="text-[11px] font-bold text-muted-foreground">{initialsOf(name)}</span>
