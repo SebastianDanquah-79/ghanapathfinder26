@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Lightbulb, Rocket, ExternalLink, MapPin } from "@/lib/icons";
+import { Lightbulb, ExternalLink, MapPin, TrendingUp } from "@/lib/icons";
 import SectionHeader from "./SectionHeader";
 
 interface FounderStory {
@@ -7,21 +7,22 @@ interface FounderStory {
   company: string;
   place: string;
   year: string;
+  tag?: string;
   story: string;
   lesson: string;
   source: string;
   sourceLabel: string;
-  founderPhoto: string;
-  logo: string;
+  founderPhoto?: string;
+  logo?: string;
 }
 
 const stories: FounderStory[] = [
   {
     founders: "Ham Serunjogi & Maijid Moujaled",
     company: "Chipper Cash",
-    place: "Uganda / Ghana",
+    place: "Uganda / Pan-African",
     year: "2018",
-    story: "The founders started Chipper after experiencing how expensive and difficult cross-border money movement could be for Africans. They built a product around a problem they personally understood and grew it into a major African fintech.",
+    story: "The founders started Chipper after experiencing how expensive and difficult cross-border money movement could be for Africans. They built around a problem they understood deeply and grew it into a major fintech.",
     lesson: "Your own frustration can be market research. Start with a problem you understand deeply.",
     source: "https://www.chippercash.com/leadership-team-member/ham-serunjogi",
     sourceLabel: "chippercash.com",
@@ -33,7 +34,7 @@ const stories: FounderStory[] = [
     company: "Flutterwave",
     place: "Nigeria / Pan-African",
     year: "2016",
-    story: "Agboola and a team of finance and technology veterans built payment infrastructure to make it easier for businesses to accept and move money across Africa. The company started by solving difficult payment integration problems for businesses and expanded from there.",
+    story: "Agboola and a team of finance and technology veterans built payment infrastructure to make it easier for businesses to accept and move money across Africa.",
     lesson: "Infrastructure can become the foundation for thousands of other businesses.",
     source: "https://flutterwave.com/us/blog/keep-going",
     sourceLabel: "flutterwave.com",
@@ -45,7 +46,7 @@ const stories: FounderStory[] = [
     company: "Wave",
     place: "Senegal / Pan-African",
     year: "2018",
-    story: "The co-founders first built Sendwave to solve expensive international transfers to Africa. They then turned their attention to domestic payments, creating Wave around the mission of making digital finance dramatically more affordable.",
+    story: "The co-founders first built Sendwave around expensive international transfers to Africa, then turned to domestic payments and affordability.",
     lesson: "A second company can grow from a deeper problem discovered while solving the first one.",
     source: "https://www.wave.com/en/about/",
     sourceLabel: "wave.com",
@@ -55,9 +56,9 @@ const stories: FounderStory[] = [
   {
     founders: "Jesse Moore & M-KOPA founding team",
     company: "M-KOPA",
-    place: "Kenya / Ghana / Pan-African",
+    place: "Kenya / Pan-African",
     year: "2010",
-    story: "M-KOPA started from a simple infrastructure insight: combine digital micropayments with connected devices so people could access products they could not afford upfront. The company later expanded into smartphones and digital financial services across several African markets, including Ghana.",
+    story: "M-KOPA combined digital micropayments with connected products so customers could access useful hardware without paying the full cost upfront.",
     lesson: "Hardware, software, data and distribution can combine into a powerful African business model.",
     source: "https://www.m-kopa.com/about",
     sourceLabel: "m-kopa.com",
@@ -69,8 +70,8 @@ const stories: FounderStory[] = [
     company: "Andela",
     place: "Nigeria / Pan-African",
     year: "2014",
-    story: "Andela began in Lagos with a simple premise: brilliant people exist everywhere, but opportunity is not distributed equally. The founding team built a talent model around training African technologists and connecting them with global companies.",
-    lesson: "Talent is an infrastructure problem too. Build the bridge between ability and opportunity.",
+    story: "Andela began with a simple premise: brilliant people exist everywhere, but opportunity is not distributed equally. The team built a bridge between African technologists and global companies.",
+    lesson: "Talent is infrastructure too. Build the bridge between ability and opportunity.",
     source: "https://www.andela.com/about",
     sourceLabel: "andela.com",
     founderPhoto: "https://cdn.prod.website-files.com/68d70d46269e8933e5f35eee/697dc536de00430cfdd68016_Timg1.png",
@@ -81,11 +82,10 @@ const stories: FounderStory[] = [
     company: "Paystack",
     place: "Nigeria",
     year: "2015",
-    story: "Two Nigerian developers built payment infrastructure after seeing local businesses struggle to accept payments online. Their product focused on making the difficult plumbing of online payments easier for businesses to integrate.",
+    story: "Two Nigerian developers built payment infrastructure after seeing local businesses struggle to accept payments online. They focused on making the difficult plumbing easier for businesses to integrate.",
     lesson: "The unglamorous infrastructure underneath a market can be one of its biggest opportunities.",
-    source: "https://stripe.com/newsroom/news/stripe-paystack",
-    sourceLabel: "stripe.com",
-    founderPhoto: "https://www.paystack.com/favicon.ico",
+    source: "https://paystack.com/gh/about",
+    sourceLabel: "paystack.com",
     logo: "https://paystack.com/favicon.ico",
   },
   {
@@ -93,11 +93,10 @@ const stories: FounderStory[] = [
     company: "mPedigree",
     place: "Ghana",
     year: "2007",
-    story: "Simons worked on traceability and recognised a much bigger problem in counterfeit medicine. mPedigree used simple verification technology so people could check medicine authenticity using tools they already had.",
-    lesson: "The best technology is sometimes the technology your users already know how to use.",
+    story: "Simons recognised a traceability problem in counterfeit medicine and built verification technology around tools people already knew how to use.",
+    lesson: "The best technology is sometimes the technology your users already know.",
     source: "https://mpedigree.com/",
     sourceLabel: "mpedigree.com",
-    founderPhoto: "https://mpedigree.com/favicon.ico",
     logo: "https://mpedigree.com/favicon.ico",
   },
   {
@@ -105,12 +104,48 @@ const stories: FounderStory[] = [
     company: "Ashesi University",
     place: "Ghana",
     year: "2002",
-    story: "Awuah left a career as a Microsoft engineer and returned to Ghana to build an institution focused on developing ethical, entrepreneurial leaders. Ashesi started small and grew into a globally recognised African university.",
+    story: "Awuah left a career at Microsoft and returned to Ghana to build an institution focused on ethical, entrepreneurial leadership. Ashesi started small and grew through proof and persistence.",
     lesson: "A serious institution can begin with a small first cohort. Scale can come after proof.",
-    source: "https://www.ashesi.edu.gh/about/our-story/",
+    source: "https://ashesi.edu.gh/about/",
     sourceLabel: "ashesi.edu.gh",
-    founderPhoto: "https://www.ashesi.edu.gh/favicon.ico",
-    logo: "https://www.ashesi.edu.gh/favicon.ico",
+    logo: "https://ashesi.edu.gh/favicon.ico",
+  },
+  {
+    founders: "Ladi Delano & Jide Odunsi",
+    company: "Moove",
+    place: "Nigeria / Global",
+    year: "2024 watch",
+    tag: "Rising",
+    story: "Moove was founded in 2020 to tackle vehicle-financing barriers for mobility entrepreneurs. Its model connected financing with driver productivity and expanded beyond its original Lagos market.",
+    lesson: "A strong startup can start with one painful constraint, then build the infrastructure around it.",
+    source: "https://www.moove.io/drive-to-own/about-moove",
+    sourceLabel: "moove.io",
+    founderPhoto: "https://static.africa-press.net/uganda/sites/34/2025/09/sm_1758554328.264634.jpg",
+    logo: "https://www.moove.io/favicon.ico",
+  },
+  {
+    founders: "Jaishree Naidoo, Terence Naidu & Andrei Migatchev",
+    company: "Envisionit Deep AI",
+    place: "South Africa / UK",
+    year: "2025 watch",
+    tag: "Rising",
+    story: "The founding team built AI for medical imaging and then expanded into AI assurance, driven by a practical question: how do you know an AI system is safe and reliable in real-world care?",
+    lesson: "The next opportunity may be in making an existing technology trustworthy, measurable and usable.",
+    source: "https://www.envisionit.ai/about-us/",
+    sourceLabel: "envisionit.ai",
+    founderPhoto: "https://media.licdn.com/dms/image/D4E22AQGmByAyOIF84g/feedshare-shrink_2048_1536/0/1722610343773?e=2147483647&t=6kiOr-VWQoI7P9VXd6-fG0x2r1LULpDvspeciENpCRU&v=beta",
+    logo: "https://www.envisionit.ai/favicon.ico",
+  },
+  {
+    founders: "Nathan Nwachuku & Maxwell Maduka",
+    company: "Terra Industries",
+    place: "Nigeria / Ghana",
+    year: "2026 watch",
+    tag: "Rising",
+    story: "Founded in 2024, Terra became one of the most closely watched African deep-tech companies in 2026. Its story is a reminder that difficult infrastructure problems can attract serious talent, customers and capital when founders stay close to a real need.",
+    lesson: "Ambitious technical companies still need the basics: a painful problem, strong execution, customers and disciplined capital use.",
+    source: "https://www.terraindustries.co/newsroom/funding-52m-london",
+    sourceLabel: "terraindustries.co",
   },
 ];
 
@@ -118,11 +153,16 @@ const StartupStories = () => (
   <section id="founders" className="py-12 lg:py-28 px-4">
     <div className="max-w-7xl mx-auto">
       <SectionHeader
-        badge="African inspiration"
-        title="The people behind"
-        highlight="African companies"
-        description="Real founders, real companies and the problems they chose to solve. Founder photos and company marks are sourced from the companies' own websites."
+        badge="African founders"
+        title="See how real companies"
+        highlight="actually get built"
+        description="Stories from African founders, including rising companies to watch in 2024, 2025 and 2026."
       />
+
+      <div className="flex items-center gap-2 text-xs text-muted-foreground mb-5">
+        <TrendingUp className="h-3.5 w-3.5 text-primary" />
+        <span>Rising tags reflect companies highlighted by current ecosystem coverage, not a promise of future success.</span>
+      </div>
 
       <div className="flex hscroll hscroll-bleed snap-x snap-mandatory scroll-smooth [&>*]:w-[19rem] [&>*]:shrink-0 [&>*]:snap-start md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:mx-0 md:px-0 md:[&>*]:w-auto gap-5">
         {stories.map((s, i) => (
@@ -131,22 +171,29 @@ const StartupStories = () => (
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: (i % 3) * 0.08, duration: 0.4 }}
+            transition={{ delay: (i % 3) * 0.06, duration: 0.35 }}
             className="bg-glass rounded-xl overflow-hidden card-hover group flex flex-col"
           >
-            <div className="relative h-44 bg-muted overflow-hidden">
-              <img src={s.founderPhoto} alt={`${s.founders} of ${s.company}`} loading="lazy" className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.02]" />
-              <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/60 to-transparent" />
-              <div className="absolute left-4 bottom-4 flex items-center gap-2">
-                <div className="w-9 h-9 rounded-lg bg-white p-1.5 shadow-sm flex items-center justify-center">
-                  <img src={s.logo} alt={`${s.company} logo`} loading="lazy" className="w-full h-full object-contain" />
+            {s.founderPhoto ? (
+              <div className="relative h-44 bg-muted overflow-hidden">
+                <img src={s.founderPhoto} alt={`${s.founders} of ${s.company}`} loading="lazy" className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.02]" />
+                <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/60 to-transparent" />
+                <div className="absolute left-4 bottom-4 flex items-center gap-2">
+                  {s.logo && <div className="w-9 h-9 rounded-lg bg-white p-1.5 shadow-sm flex items-center justify-center"><img src={s.logo} alt={`${s.company} logo`} loading="lazy" className="w-full h-full object-contain" /></div>}
+                  <span className="text-xs font-medium text-white bg-black/35 backdrop-blur-sm rounded-full px-2.5 py-1">{s.year}</span>
                 </div>
-                <span className="text-xs font-medium text-white bg-black/35 backdrop-blur-sm rounded-full px-2.5 py-1">{s.year}</span>
               </div>
-            </div>
+            ) : (
+              <div className="h-44 bg-gradient-to-br from-primary/15 via-background to-secondary flex items-end p-5">
+                {s.logo && <div className="w-11 h-11 rounded-lg bg-white p-2 shadow-sm flex items-center justify-center"><img src={s.logo} alt={`${s.company} logo`} loading="lazy" className="w-full h-full object-contain" /></div>}
+              </div>
+            )}
 
             <div className="p-5 flex flex-col flex-1">
-              <h3 className="font-display font-semibold text-foreground text-lg leading-tight">{s.company}</h3>
+              <div className="flex items-center justify-between gap-2">
+                <h3 className="font-display font-semibold text-foreground text-lg leading-tight">{s.company}</h3>
+                {s.tag && <span className="text-[10px] uppercase tracking-wider font-semibold text-primary">{s.tag}</span>}
+              </div>
               <p className="text-sm text-foreground/70 mt-1">{s.founders}</p>
               <div className="flex items-center gap-1 text-xs text-muted-foreground mt-2 mb-3"><MapPin className="h-3 w-3 shrink-0" />{s.place}</div>
               <p className="text-sm text-muted-foreground leading-relaxed">{s.story}</p>
