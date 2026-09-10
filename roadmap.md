@@ -1,8 +1,8 @@
 # GhanaPathFinder UI redesign roadmap
 
-- [ ] Phase 1: Establish the Forest & Gold design system with Sora/Manrope typography.
-- [ ] Phase 2: Redesign navigation and footer.
-- [ ] Phase 3: Redesign the homepage around search and the student path.
+- [x] Phase 1: Establish the Forest & Gold design system with Sora/Manrope typography.
+- [x] Phase 2: (navbar flattened; footer pending) Redesign navigation and footer.
+- [~] Phase 3: (hero rebuilt search-first; lower sections pending) Redesign the homepage around search and the student path.
 - [ ] Phase 4: Redesign global search as a compact results directory.
 - [ ] Phase 5: Redesign university directory and profile pages.
 - [ ] Phase 6: Redesign programme directory and programme detail pages.
