@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const iconButton =
   "grid place-items-center h-10 w-10 rounded-full text-muted-foreground hover:text-primary hover:bg-secondary transition-colors data-[state=open]:text-primary data-[state=open]:bg-secondary";
@@ -37,6 +37,7 @@ const Navbar = () => {
 
   const name =
     (user?.user_metadata?.["full_name"] as string | undefined) ?? user?.email ?? null;
+  const avatarUrl = user?.user_metadata?.["avatar_url"] as string | undefined;
   const initials = initialsFrom(name);
 
   return (
@@ -49,7 +50,6 @@ const Navbar = () => {
           </span>
         </Link>
 
-        {/* Desktop: symbol-first sections */}
         <TooltipProvider delayDuration={120}>
           <div className="hidden md:flex items-center gap-1">
             {navSections.map(({ id, label, icon: Icon, items }) => (
@@ -70,9 +70,7 @@ const Navbar = () => {
                     <DropdownMenuItem key={i.href} asChild>
                       <a href={i.href} className="flex flex-col items-start gap-0.5 cursor-pointer">
                         <span className="text-sm font-medium text-foreground">{i.label}</span>
-                        {i.desc && (
-                          <span className="text-xs text-muted-foreground leading-snug">{i.desc}</span>
-                        )}
+                        {i.desc && <span className="text-xs text-muted-foreground leading-snug">{i.desc}</span>}
                       </a>
                     </DropdownMenuItem>
                   ))}
@@ -117,14 +115,10 @@ const Navbar = () => {
               <DropdownMenu>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <DropdownMenuTrigger
-                      className="ml-1 rounded-full ring-2 ring-transparent hover:ring-primary/40 data-[state=open]:ring-primary/60 transition"
-                      aria-label="Your account and dashboard"
-                    >
+                    <DropdownMenuTrigger className="ml-1 rounded-full ring-2 ring-transparent hover:ring-primary/40 data-[state=open]:ring-primary/60 transition" aria-label="Your account and dashboard">
                       <Avatar className="h-9 w-9">
-                        <AvatarFallback className="bg-primary/15 text-primary text-xs font-semibold">
-                          {initials}
-                        </AvatarFallback>
+                        <AvatarImage src={avatarUrl} alt="" />
+                        <AvatarFallback className="bg-primary/15 text-primary text-xs font-semibold">{initials}</AvatarFallback>
                       </Avatar>
                     </DropdownMenuTrigger>
                   </TooltipTrigger>
@@ -145,49 +139,27 @@ const Navbar = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Link
-                to="/auth"
-                className="ml-2 px-4 py-2 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-opacity whitespace-nowrap"
-              >
-                Sign in
-              </Link>
+              <Link to="/auth" className="ml-2 px-4 py-2 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-opacity whitespace-nowrap">Sign in</Link>
             )}
           </div>
         </TooltipProvider>
 
-        {/* Mobile */}
         <div className="md:hidden flex min-w-0 items-center gap-1">
-          <Link
-            to="/search"
-            aria-label="Search GhanaPathFinder"
-            className="grid place-items-center h-11 w-11 rounded-full text-muted-foreground active:text-primary"
-          >
+          <Link to="/search" aria-label="Search GhanaPathFinder" className="grid place-items-center h-11 w-11 rounded-full text-muted-foreground active:text-primary">
             <Search className="h-5 w-5" />
           </Link>
           <ThemeToggle className="h-11 w-11" />
           {user ? (
             <Link to="/dashboard" aria-label="Your dashboard" className="grid place-items-center h-11 w-11">
               <Avatar className="h-8 w-8">
-                <AvatarFallback className="bg-primary/15 text-primary text-[11px] font-semibold">
-                  {initials}
-                </AvatarFallback>
+                <AvatarImage src={avatarUrl} alt="" />
+                <AvatarFallback className="bg-primary/15 text-primary text-[11px] font-semibold">{initials}</AvatarFallback>
               </Avatar>
             </Link>
           ) : (
-            <Link
-              to="/auth"
-              aria-label="Sign in"
-              className="grid place-items-center h-11 px-3 rounded-full bg-primary text-primary-foreground text-sm font-medium whitespace-nowrap"
-            >
-              Sign in
-            </Link>
+            <Link to="/auth" aria-label="Sign in" className="grid place-items-center h-11 px-3 rounded-full bg-primary text-primary-foreground text-sm font-medium whitespace-nowrap">Sign in</Link>
           )}
-          <button
-            onClick={() => setOpen(!open)}
-            className="grid place-items-center h-11 w-11 rounded-full text-foreground hover:text-primary active:text-primary transition-colors"
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
-          >
+          <button onClick={() => setOpen(!open)} className="grid place-items-center h-11 w-11 rounded-full text-foreground hover:text-primary active:text-primary transition-colors" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open}>
             {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
@@ -195,48 +167,20 @@ const Navbar = () => {
 
       <AnimatePresence>
         {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            className="md:hidden overflow-hidden bg-card border-b border-border max-h-[75vh] overflow-y-auto"
-          >
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="md:hidden overflow-hidden bg-card border-b border-border max-h-[75vh] overflow-y-auto">
             <div className="px-4 py-3 space-y-4">
               {navSections.map(({ id, label, icon: Icon, items }) => (
                 <div key={id}>
-                  <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                    <Icon className="h-4 w-4" /> {label}
-                  </div>
+                  <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground"><Icon className="h-4 w-4" /> {label}</div>
                   <div className="mt-2 grid grid-cols-2 gap-2">
-                    {items.map((i) => (
-                      <a
-                        key={i.href}
-                        href={i.href}
-                        onClick={() => setOpen(false)}
-                        className="block px-3 py-2.5 text-sm text-foreground rounded-lg border border-border bg-secondary/50 active:text-primary"
-                      >
-                        {i.label}
-                      </a>
-                    ))}
+                    {items.map((i) => <a key={i.href} href={i.href} onClick={() => setOpen(false)} className="block px-3 py-2.5 text-sm text-foreground rounded-lg border border-border bg-secondary/50 active:text-primary">{i.label}</a>)}
                   </div>
                 </div>
               ))}
-
               <div>
-                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  <Info className="h-4 w-4" /> About
-                </div>
+                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground"><Info className="h-4 w-4" /> About</div>
                 <div className="mt-2 grid grid-cols-2 gap-2">
-                  {[...(user ? accountItems : []), ...aboutItems].map((i) => (
-                    <a
-                      key={i.href}
-                      href={i.href}
-                      onClick={() => setOpen(false)}
-                      className="block px-3 py-2.5 text-sm text-foreground rounded-lg border border-border bg-secondary/50 active:text-primary"
-                    >
-                      {i.label}
-                    </a>
-                  ))}
+                  {[...(user ? accountItems : []), ...aboutItems].map((i) => <a key={i.href} href={i.href} onClick={() => setOpen(false)} className="block px-3 py-2.5 text-sm text-foreground rounded-lg border border-border bg-secondary/50 active:text-primary">{i.label}</a>)}
                 </div>
               </div>
             </div>
