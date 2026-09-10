@@ -40,7 +40,7 @@ const verifiedCampusImages: Array<[RegExp, string[]]> = [
     commons("Student Study Area (GCTU).jpg"),
     commons("Parking Lot (GCTU).jpg"),
     commons("Play Ground (GCTU).jpg"),
-    commons("Software System Unit 1 (GCTU).jpg"),
+    commons("Software System Unit (GCTU).jpg"),
   ]],
   [/university of cape coast|\bucc\b/i, [
     commons("U.C.C GATE.jpg"),
@@ -79,7 +79,7 @@ const verifiedCampusImages: Array<[RegExp, string[]]> = [
     commons("Accra Technical University Ghana.jpg"),
     commons("View on Accra Technical University.jpg"),
   ]],
-  [/tamale technical university|\btatu\b|\btatu\b/i, [
+  [/tamale technical university|\btatu\b/i, [
     commons("A front view of TATU administration.jpg"),
     commons("A side view of administration of Tamale Technical University.jpg"),
     commons("Administration Block of TaTu.jpg"),
@@ -97,6 +97,12 @@ const verifiedCampusImages: Array<[RegExp, string[]]> = [
 
 const verifiedFor = (name: string) =>
   verifiedCampusImages.find(([pattern]) => pattern.test(name))?.[1] ?? null;
+
+const cleanSources = (pages: Array<{ title?: string; imageinfo?: Array<{ thumburl?: string; url?: string }> }>) =>
+  pages
+    .filter((page) => !/logo|coat of arms|emblem/i.test(page.title ?? ""))
+    .map((page) => page.imageinfo?.[0]?.thumburl ?? page.imageinfo?.[0]?.url ?? null)
+    .filter((source): source is string => Boolean(source));
 
 const UniversityCampusImage = ({ name, location }: UniversityCampusImageProps) => {
   const verified = verifiedFor(name);
@@ -116,40 +122,61 @@ const UniversityCampusImage = ({ name, location }: UniversityCampusImageProps) =
     }
     if (cache.has(key)) return;
 
-    const params = new URLSearchParams({
-      action: "query",
-      format: "json",
-      origin: "*",
-      generator: "search",
-      gsrsearch: `${key} campus Ghana university`,
-      gsrlimit: "12",
-      gsrnamespace: "6",
-      prop: "imageinfo",
-      iiprop: "url",
-      iiurlwidth: "1200",
-      redirects: "1",
-    });
+    const loadImages = async () => {
+      try {
+        const categoryParams = new URLSearchParams({
+          action: "query",
+          format: "json",
+          origin: "*",
+          generator: "categorymembers",
+          gcmtitle: `Category:${key}`,
+          gcmnamespace: "6",
+          gcmlimit: "10",
+          prop: "imageinfo",
+          iiprop: "url",
+          iiurlwidth: "1200",
+          redirects: "1",
+        });
 
-    fetch(`https://commons.wikimedia.org/w/api.php?${params.toString()}`)
-      .then((response) => (response.ok ? response.json() : null))
-      .then((payload) => {
+        const categoryResponse = await fetch(`https://commons.wikimedia.org/w/api.php?${categoryParams.toString()}`);
+        const categoryPayload = categoryResponse.ok ? await categoryResponse.json() : null;
+        const categoryPages = Object.values(categoryPayload?.query?.pages ?? {}) as Array<{ title?: string; imageinfo?: Array<{ thumburl?: string; url?: string }> }>;
+        let sources = cleanSources(categoryPages);
+
+        if (sources.length < 3) {
+          const searchParams = new URLSearchParams({
+            action: "query",
+            format: "json",
+            origin: "*",
+            generator: "search",
+            gsrsearch: `${key} campus Ghana university`,
+            gsrlimit: "12",
+            gsrnamespace: "6",
+            prop: "imageinfo",
+            iiprop: "url",
+            iiurlwidth: "1200",
+            redirects: "1",
+          });
+          const searchResponse = await fetch(`https://commons.wikimedia.org/w/api.php?${searchParams.toString()}`);
+          const searchPayload = searchResponse.ok ? await searchResponse.json() : null;
+          const searchPages = Object.values(searchPayload?.query?.pages ?? {}) as Array<{ title?: string; imageinfo?: Array<{ thumburl?: string; url?: string }> }>;
+          sources = [...sources, ...cleanSources(searchPages)];
+        }
+
+        sources = [...new Set(sources)].slice(0, 8);
         if (cancelled) return;
-        const pages = Object.values(payload?.query?.pages ?? {}) as Array<{ title?: string; imageinfo?: Array<{ thumburl?: string; url?: string }> }>;
-        const sources = pages
-          .filter((page) => /ghana|campus|university|college|technical/i.test(page.title ?? ""))
-          .map((page) => page.imageinfo?.[0]?.thumburl ?? page.imageinfo?.[0]?.url ?? null)
-          .filter((source): source is string => Boolean(source));
         cache.set(key, sources);
         setImages(sources);
         setLoaded(true);
-      })
-      .catch(() => {
+      } catch {
         if (cancelled) return;
         cache.set(key, []);
         setImages([]);
         setLoaded(true);
-      });
+      }
+    };
 
+    loadImages();
     return () => {
       cancelled = true;
     };
