@@ -41,10 +41,10 @@ export const navSections: NavSection[] = [
     icon: Building2,
     href: "/search?kind=university",
     items: [
-      { label: "Universities", href: "/search?kind=university", desc: "Find your campus" },
-      { label: "Programmes", href: "/programmes", desc: "Choose what to study" },
-      { label: "Compare institutions", href: "/compare", desc: "See the difference" },
-      { label: "Explore & search", href: "/search", desc: "Find what fits" },
+      { label: "Universities", href: "/search?kind=university", desc: "Find where you belong" },
+      { label: "Programmes", href: "/programmes", desc: "Choose your direction" },
+      { label: "Compare institutions", href: "/compare", desc: "Compare what matters" },
+      { label: "Explore & search", href: "/search", desc: "Discover your options" },
     ],
   },
   {
@@ -53,9 +53,9 @@ export const navSections: NavSection[] = [
     icon: Award,
     href: "/scholarships",
     items: [
-      { label: "Scholarships", href: "/scholarships", desc: "Find funding" },
-      { label: "Scholarship matcher", href: "/matcher", desc: "Match your profile" },
-      { label: "Compare scholarships", href: "/compare-scholarships", desc: "Choose wisely" },
+      { label: "Scholarships", href: "/scholarships", desc: "Find funding for your future" },
+      { label: "Scholarship matcher", href: "/matcher", desc: "Find your best matches" },
+      { label: "Compare scholarships", href: "/compare-scholarships", desc: "Choose the right opportunity" },
     ],
   },
   {
@@ -64,11 +64,11 @@ export const navSections: NavSection[] = [
     icon: Briefcase,
     href: "/careers",
     items: [
-      { label: "Careers", href: "/careers", desc: "See where it leads" },
-      { label: "Career Path", href: "/career-path", desc: "Map your next moves" },
-      { label: "Skills", href: "/skills", desc: "Build useful skills" },
-      { label: "Internships", href: "/internships", desc: "Get real experience" },
-      { label: "Professional councils", href: "/professional-councils", desc: "Know the rules" },
+      { label: "Careers", href: "/careers", desc: "See where your path leads" },
+      { label: "Career Path", href: "/career-path", desc: "Turn ambition into a plan" },
+      { label: "Skills", href: "/skills", desc: "Build skills that pay off" },
+      { label: "Internships", href: "/internships", desc: "Get experience that counts" },
+      { label: "Professional councils", href: "/professional-councils", desc: "Know the rules before you choose" },
     ],
   },
   {
@@ -77,10 +77,10 @@ export const navSections: NavSection[] = [
     icon: Target,
     href: "/admission-match",
     items: [
-      { label: "Admission match", href: "/admission-match", desc: "See your options" },
-      { label: "Applications & deadlines", href: "/applications", desc: "Stay on track" },
-      { label: "Saved items", href: "/saved", desc: "Keep your shortlist" },
-      { label: "Match preferences", href: "/preferences", desc: "Make matches personal" },
+      { label: "Admission match", href: "/admission-match", desc: "See what fits your results" },
+      { label: "Applications & deadlines", href: "/applications", desc: "Never miss your next step" },
+      { label: "Saved items", href: "/saved", desc: "Keep your best options close" },
+      { label: "Match preferences", href: "/preferences", desc: "Make every match more personal" },
     ],
   },
   {
@@ -89,9 +89,9 @@ export const navSections: NavSection[] = [
     icon: Users,
     href: "/community",
     items: [
-      { label: "Community feed", href: "/community", desc: "Learn from students" },
-      { label: "Inspiration", href: "/inspiration", desc: "Meet people building" },
-      { label: "For parents", href: "/parent", desc: "Follow the journey" },
+      { label: "Community feed", href: "/community", desc: "Learn from people like you" },
+      { label: "Inspiration", href: "/inspiration", desc: "Meet people building big things" },
+      { label: "For parents", href: "/parent", desc: "Support the journey with confidence" },
     ],
   },
 ];
