@@ -10,10 +10,9 @@ const links = [
   { label: "Credits & Sources", to: "/credits" },
   { label: "Professional Councils", to: "/professional-councils" },
   { label: "Privacy Policy", to: "/privacy" },
-  { label: "Terms of Use", to: "/terms" },
+  { label: "Terms & Conditions", to: "/terms" },
   { label: "Contact", to: "/contact" },
 ];
-
 
 const Footer = () => (
   <footer className="py-8 px-4 border-t border-border/50">
@@ -25,7 +24,7 @@ const Footer = () => (
         </span>
       </div>
       <p className="text-sm text-muted-foreground mb-2">
-        AI-powered college and career guidance for Ghanaian SHS students 🇬🇭
+        A Ghanaian life decision platform for education, careers, skills and opportunity.
       </p>
 
       <nav
@@ -56,8 +55,7 @@ const Footer = () => (
       </div>
 
       <p className="text-xs text-muted-foreground mt-4 max-w-3xl mx-auto">
-        Information on GhanaPathFinder is guidance only. Match confidence and estimated cut-off points
-        are not guarantees of admission , always verify with the institution.
+        Information on GhanaPathFinder is guidance only. Match confidence, estimated cut-off points, fees and other estimates are not guarantees or official institutional decisions. Always verify important information with the relevant institution.
       </p>
       <SiteRating />
       <p className="text-xs text-muted-foreground mt-3">© 2026 GhanaPathFinder. All rights reserved.</p>
