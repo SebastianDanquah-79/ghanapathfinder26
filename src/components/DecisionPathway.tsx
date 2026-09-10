@@ -1,8 +1,8 @@
-import { ArrowRight, Target, Route, CheckCircle2, Sparkles } from "@/lib/icons";
+import { ArrowRight, Target, Compass, CheckCircle2, Sparkles } from "@/lib/icons";
 
 const steps = [
   { icon: Target, title: "Start", text: "Share your goal and where you are now." },
-  { icon: Route, title: "Explore", text: "See education, career and opportunity routes." },
+  { icon: Compass, title: "Explore", text: "See education, career and opportunity routes." },
   { icon: Sparkles, title: "Adapt", text: "Compare routes when one path does not fit." },
   { icon: CheckCircle2, title: "Act", text: "Turn the best route into clear next steps." },
 ];
