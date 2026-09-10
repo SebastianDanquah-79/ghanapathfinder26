@@ -1,5 +1,5 @@
-import { motion, useMotionValue, useSpring } from "framer-motion";
-import { useEffect, useMemo, useRef } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useEffect, useState } from "react";
 
 const motifs = [
   ["Gye Nyame", "https://commons.wikimedia.org/wiki/Special:Redirect/file/Gye%20Nyame%20(Adinkra%20Symbol).svg"],
@@ -42,22 +42,16 @@ const AdinkraFloatLayer = () => {
         const size = 30 + ((index * 13) % 32);
         const drift = 10 + (index % 5) * 4;
         const angle = index % 2 === 0 ? 5 : -5;
+        const parallaxX = useTransform(springX, (x) => (x - (window.innerWidth * left) / 100) * -0.012);
+        const parallaxY = useTransform(springY, (y) => (y - (window.innerHeight * top) / 100) * -0.012);
+
         return (
           <motion.div
             key={`${name}-${index}`}
             className="absolute pointer-events-none"
             style={{ left: `${left}%`, top: `${top}%`, width: size, height: size }}
-            animate={{
-              x: [-drift, drift, -drift],
-              y: [drift, -drift, drift],
-              rotate: [-angle, angle, -angle],
-            }}
-            transition={{
-              duration: 12 + (index % 7) * 2,
-              delay: (index % 9) * 0.45,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
+            animate={{ x: [-drift, drift, -drift], y: [drift, -drift, drift], rotate: [-angle, angle, -angle] }}
+            transition={{ duration: 12 + (index % 7) * 2, delay: (index % 9) * 0.45, repeat: Infinity, ease: "easeInOut" }}
           >
             <motion.img
               src={src}
@@ -65,21 +59,20 @@ const AdinkraFloatLayer = () => {
               className="h-full w-full object-contain grayscale opacity-[0.08]"
               loading="lazy"
               referrerPolicy="no-referrer"
-              style={{
-                x: useTransform(springX, (x) => (x - (window.innerWidth * left) / 100) * -0.012),
-                y: useTransform(springY, (y) => (y - (window.innerHeight * top) / 100) * -0.012),
-              }}
+              style={{ x: parallaxX, y: parallaxY }}
             />
           </motion.div>
         );
       })}
-      <motion.div
-        key={burst.key}
-        className="fixed pointer-events-none rounded-full border border-[#c9a227]/25"
-        initial={{ width: 0, height: 0, opacity: 0.35, x: burst.x, y: burst.y }}
-        animate={{ width: 240, height: 240, opacity: 0, x: burst.x - 120, y: burst.y - 120 }}
-        transition={{ duration: 0.65, ease: "easeOut" }}
-      />
+      {burst.key > 0 && (
+        <motion.div
+          key={burst.key}
+          className="fixed pointer-events-none rounded-full border border-[#c9a227]/30"
+          initial={{ width: 0, height: 0, opacity: 0.45, x: burst.x, y: burst.y }}
+          animate={{ width: 260, height: 260, opacity: 0, x: burst.x - 130, y: burst.y - 130 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+        />
+      )}
     </div>
   );
 };
