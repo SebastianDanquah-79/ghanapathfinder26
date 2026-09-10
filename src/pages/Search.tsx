@@ -409,12 +409,15 @@ const SearchPage = () => {
       <Navbar />
       <main className="pt-20 pb-12 px-4 sm:px-8 lg:px-12">
         <div className="max-w-6xl xl:max-w-7xl mx-auto">
-          <h1 className="font-display text-xl sm:text-3xl font-bold text-foreground mb-1">
-            Search GhanaPathFinder
-          </h1>
-          <p className="text-xs sm:text-sm text-muted-foreground mb-4">
-            Universities, programmes, scholarships, careers, skills and employers.
-          </p>
+          <div className="max-w-3xl mb-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary mb-2">University Directory</p>
+            <h1 className="font-display text-xl sm:text-3xl font-bold text-foreground mb-1">
+              Search GhanaPathFinder
+            </h1>
+            <p className="text-xs sm:text-sm text-muted-foreground leading-6">
+              Explore universities, programmes, scholarships and opportunities in one place, then compare the options that fit your next step.
+            </p>
+          </div>
 
           <div className="sticky top-16 z-30 -mx-4 px-4 py-2 bg-background/95 backdrop-blur-sm">
             <div className="relative">
