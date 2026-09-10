@@ -11,8 +11,8 @@
  */
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Space Grotesk", ui-sans-serif, sans-serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
 
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
@@ -104,101 +104,102 @@
 }
 
 :root {
-  --background: 0 0% 100%;
-  --foreground: 222 47% 12%;
+  /* Forest & Gold: warm paper background, deep Ghanaian green, restrained gold */
+  --background: 45 33% 95%;
+  --foreground: 84 7% 14%;
 
-  --card: 0 0% 100%;
-  --card-foreground: 222 47% 12%;
+  --card: 45 40% 99%;
+  --card-foreground: 84 7% 14%;
 
-  --popover: 0 0% 100%;
-  --popover-foreground: 222 47% 12%;
+  --popover: 45 40% 99%;
+  --popover-foreground: 84 7% 14%;
 
-  --primary: 40 92% 46%;
-  --primary-foreground: 0 0% 100%;
+  --primary: 149 46% 17%;
+  --primary-foreground: 45 33% 96%;
 
-  --secondary: 40 40% 96%;
-  --secondary-foreground: 222 47% 12%;
+  --secondary: 45 25% 91%;
+  --secondary-foreground: 84 7% 14%;
 
-  --muted: 220 20% 96%;
-  --muted-foreground: 220 12% 40%;
+  --muted: 45 22% 92%;
+  --muted-foreground: 84 6% 38%;
 
-  --accent: 40 92% 46%;
-  --accent-foreground: 0 0% 100%;
+  --accent: 42 72% 46%;
+  --accent-foreground: 84 12% 12%;
 
-  --destructive: 0 72% 48%;
-  --destructive-foreground: 0 0% 100%;
+  --destructive: 0 62% 42%;
+  --destructive-foreground: 45 33% 96%;
 
-  --border: 220 16% 88%;
-  --input: 220 16% 88%;
-  --ring: 40 92% 46%;
-  --radius: 0.875rem;
+  --border: 45 16% 85%;
+  --input: 45 16% 85%;
+  --ring: 149 46% 17%;
+  --radius: 0.5rem;
 
-  --ghana-gold: 40 92% 46%;
-  --ghana-gold-light: 43 96% 62%;
-  --ghana-green: 145 55% 34%;
-  --ghana-red: 0 68% 46%;
-  --navy-deep: 222 47% 12%;
-  --navy-mid: 222 30% 28%;
-  --navy-light: 220 16% 82%;
-  --glow-gold: 40 92% 46% / 0.08;
+  --ghana-gold: 42 72% 46%;
+  --ghana-gold-light: 42 74% 58%;
+  --ghana-green: 149 46% 17%;
+  --ghana-red: 0 62% 42%;
+  --navy-deep: 149 46% 17%;
+  --navy-mid: 149 20% 32%;
+  --navy-light: 45 14% 78%;
+  --glow-gold: 42 72% 46% / 0.08;
 
-  --sidebar-background: 0 0% 100%;
-  --sidebar-foreground: 222 47% 12%;
-  --sidebar-primary: 40 92% 46%;
-  --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 40 40% 96%;
-  --sidebar-accent-foreground: 222 47% 12%;
-  --sidebar-border: 220 16% 88%;
-  --sidebar-ring: 40 92% 46%;
+  --sidebar-background: 45 40% 99%;
+  --sidebar-foreground: 84 7% 14%;
+  --sidebar-primary: 149 46% 17%;
+  --sidebar-primary-foreground: 45 33% 96%;
+  --sidebar-accent: 45 25% 91%;
+  --sidebar-accent-foreground: 84 7% 14%;
+  --sidebar-border: 45 16% 85%;
+  --sidebar-ring: 149 46% 17%;
 }
 
-/* Deep navy-black dark theme */
+/* Deep forest dark theme */
 .dark {
-  --background: 222 52% 6%;
-  --foreground: 210 30% 94%;
+  --background: 150 22% 7%;
+  --foreground: 45 22% 92%;
 
-  --card: 222 45% 9%;
-  --card-foreground: 210 30% 94%;
+  --card: 150 20% 10%;
+  --card-foreground: 45 22% 92%;
 
-  --popover: 222 45% 9%;
-  --popover-foreground: 210 30% 94%;
+  --popover: 150 20% 10%;
+  --popover-foreground: 45 22% 92%;
 
-  --primary: 43 96% 56%;
-  --primary-foreground: 222 52% 8%;
+  --primary: 145 32% 62%;
+  --primary-foreground: 150 30% 8%;
 
-  --secondary: 222 38% 14%;
-  --secondary-foreground: 210 30% 94%;
+  --secondary: 150 16% 15%;
+  --secondary-foreground: 45 22% 92%;
 
-  --muted: 222 34% 13%;
-  --muted-foreground: 215 18% 68%;
+  --muted: 150 14% 14%;
+  --muted-foreground: 45 10% 68%;
 
-  --accent: 43 96% 56%;
-  --accent-foreground: 222 52% 8%;
+  --accent: 42 74% 58%;
+  --accent-foreground: 150 30% 8%;
 
-  --destructive: 0 68% 52%;
-  --destructive-foreground: 0 0% 100%;
+  --destructive: 0 60% 52%;
+  --destructive-foreground: 45 22% 95%;
 
-  --border: 220 28% 18%;
-  --input: 220 28% 18%;
-  --ring: 43 96% 56%;
+  --border: 150 12% 20%;
+  --input: 150 12% 20%;
+  --ring: 145 32% 62%;
 
-  --ghana-gold: 43 96% 56%;
-  --ghana-gold-light: 45 96% 68%;
-  --ghana-green: 145 45% 44%;
-  --ghana-red: 0 65% 55%;
-  --navy-deep: 222 52% 6%;
-  --navy-mid: 222 34% 20%;
-  --navy-light: 220 20% 40%;
-  --glow-gold: 43 96% 56% / 0.12;
+  --ghana-gold: 42 74% 58%;
+  --ghana-gold-light: 42 80% 68%;
+  --ghana-green: 145 32% 62%;
+  --ghana-red: 0 60% 55%;
+  --navy-deep: 150 22% 7%;
+  --navy-mid: 150 16% 20%;
+  --navy-light: 150 10% 42%;
+  --glow-gold: 42 74% 58% / 0.12;
 
-  --sidebar-background: 222 45% 9%;
-  --sidebar-foreground: 210 30% 94%;
-  --sidebar-primary: 43 96% 56%;
-  --sidebar-primary-foreground: 222 52% 8%;
-  --sidebar-accent: 222 38% 14%;
-  --sidebar-accent-foreground: 210 30% 94%;
-  --sidebar-border: 220 28% 18%;
-  --sidebar-ring: 43 96% 56%;
+  --sidebar-background: 150 20% 10%;
+  --sidebar-foreground: 45 22% 92%;
+  --sidebar-primary: 145 32% 62%;
+  --sidebar-primary-foreground: 150 30% 8%;
+  --sidebar-accent: 150 16% 15%;
+  --sidebar-accent-foreground: 45 22% 92%;
+  --sidebar-border: 150 12% 20%;
+  --sidebar-ring: 145 32% 62%;
 }
 
 .dark {
@@ -213,44 +214,36 @@
   max-width: 1400px;
 }
 
+/* Flat, editorial replacements for the previous gradient/glass treatments. */
 @utility text-gradient-gold {
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  background-image: linear-gradient(135deg, hsl(var(--ghana-gold)), hsl(var(--ghana-gold-light)));
+  color: hsl(var(--ghana-gold));
 }
 
 @utility bg-glass {
   background-color: hsl(var(--card));
   border: 1px solid hsl(var(--border));
-  box-shadow:
-    0 1px 2px hsl(222 47% 12% / 0.04),
-    0 8px 24px -16px hsl(222 47% 12% / 0.12);
 }
 
 @utility bg-glass-hover {
-  transition: all 200ms;
+  transition: border-color 150ms ease, background-color 150ms ease;
   &:hover {
-    border-color: hsl(var(--primary) / 0.4);
-    box-shadow:
-      0 2px 6px hsl(222 47% 12% / 0.06),
-      0 12px 28px -18px hsl(222 47% 12% / 0.18);
+    border-color: hsl(var(--primary) / 0.45);
+    background-color: hsl(var(--secondary) / 0.5);
   }
 }
 
 @utility glow-gold {
-  box-shadow: 0 8px 30px -18px hsl(var(--ghana-gold) / 0.5);
+  box-shadow: inset 0 -2px 0 hsl(var(--ghana-gold) / 0.5);
 }
 
 @utility glow-gold-sm {
-  box-shadow: 0 4px 14px -10px hsl(var(--ghana-gold) / 0.45);
+  box-shadow: inset 0 -1px 0 hsl(var(--ghana-gold) / 0.4);
 }
 
 @utility card-hover {
-  transition: all 200ms;
+  transition: border-color 150ms ease, background-color 150ms ease;
   &:hover {
-    transform: translateY(-0.125rem);
-    box-shadow: 0 10px 30px -20px hsl(222 47% 12% / 0.35);
+    border-color: hsl(var(--primary) / 0.35);
   }
 }
 
