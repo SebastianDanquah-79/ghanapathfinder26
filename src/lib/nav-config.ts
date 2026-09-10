@@ -41,10 +41,10 @@ export const navSections: NavSection[] = [
     icon: Building2,
     href: "/search?kind=university",
     items: [
-      { label: "Universities", href: "/search?kind=university", desc: "Every accredited institution" },
-      { label: "Programmes", href: "/programmes", desc: "What you study and where" },
-      { label: "Compare institutions", href: "/compare", desc: "Side-by-side comparison" },
-      { label: "Explore & search", href: "/search", desc: "Search everything" },
+      { label: "Universities", href: "/search?kind=university", desc: "Find your campus" },
+      { label: "Programmes", href: "/programmes", desc: "Choose what to study" },
+      { label: "Compare institutions", href: "/compare", desc: "See the difference" },
+      { label: "Explore & search", href: "/search", desc: "Find what fits" },
     ],
   },
   {
@@ -53,9 +53,9 @@ export const navSections: NavSection[] = [
     icon: Award,
     href: "/scholarships",
     items: [
-      { label: "Scholarships", href: "/scholarships", desc: "Local and international funding" },
-      { label: "Scholarship matcher", href: "/matcher", desc: "Find funding you qualify for" },
-      { label: "Compare scholarships", href: "/compare-scholarships", desc: "Weigh your options" },
+      { label: "Scholarships", href: "/scholarships", desc: "Find funding" },
+      { label: "Scholarship matcher", href: "/matcher", desc: "Match your profile" },
+      { label: "Compare scholarships", href: "/compare-scholarships", desc: "Choose wisely" },
     ],
   },
   {
@@ -64,11 +64,11 @@ export const navSections: NavSection[] = [
     icon: Briefcase,
     href: "/careers",
     items: [
-      { label: "Careers", href: "/careers", desc: "Explore careers and progression" },
-      { label: "Career Path", href: "/career-path", desc: "Build a path to your dream job" },
-      { label: "Skills", href: "/skills", desc: "Build skills for your future" },
-      { label: "Internships", href: "/internships", desc: "Gain practical experience" },
-      { label: "Professional councils", href: "/professional-councils", desc: "Licensing bodies" },
+      { label: "Careers", href: "/careers", desc: "See where it leads" },
+      { label: "Career Path", href: "/career-path", desc: "Map your next moves" },
+      { label: "Skills", href: "/skills", desc: "Build useful skills" },
+      { label: "Internships", href: "/internships", desc: "Get real experience" },
+      { label: "Professional councils", href: "/professional-councils", desc: "Know the rules" },
     ],
   },
   {
@@ -77,10 +77,10 @@ export const navSections: NavSection[] = [
     icon: Target,
     href: "/admission-match",
     items: [
-      { label: "Admission match", href: "/admission-match", desc: "Check where you qualify" },
-      { label: "Applications & deadlines", href: "/applications", desc: "Track every application" },
-      { label: "Saved items", href: "/saved", desc: "Your shortlist" },
-      { label: "Match preferences", href: "/preferences", desc: "Tune your matches" },
+      { label: "Admission match", href: "/admission-match", desc: "See your options" },
+      { label: "Applications & deadlines", href: "/applications", desc: "Stay on track" },
+      { label: "Saved items", href: "/saved", desc: "Keep your shortlist" },
+      { label: "Match preferences", href: "/preferences", desc: "Make matches personal" },
     ],
   },
   {
@@ -89,9 +89,9 @@ export const navSections: NavSection[] = [
     icon: Users,
     href: "/community",
     items: [
-      { label: "Community feed", href: "/community", desc: "Honest student experiences" },
-      { label: "Inspiration", href: "/inspiration", desc: "Stories that keep you going" },
-      { label: "For parents", href: "/parent", desc: "Follow your child's progress" },
+      { label: "Community feed", href: "/community", desc: "Learn from students" },
+      { label: "Inspiration", href: "/inspiration", desc: "Meet people building" },
+      { label: "For parents", href: "/parent", desc: "Follow the journey" },
     ],
   },
 ];
