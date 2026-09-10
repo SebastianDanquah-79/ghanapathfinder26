@@ -7,23 +7,47 @@ interface UniversityCampusImageProps {
 
 const cache = new Map<string, string[]>();
 
+const verifiedCampusImages: Array<[RegExp, string[]]> = [
+  [/university of mines and technology|\bumat\b/i, [
+    "https://commons.wikimedia.org/wiki/Special:Redirect/file/UMaT%20Campus%2001.jpg",
+    "https://commons.wikimedia.org/wiki/Special:Redirect/file/UMaT%20Campus%2002.jpg",
+    "https://commons.wikimedia.org/wiki/Special:Redirect/file/UMaT%20Campus%2006.jpg",
+    "https://commons.wikimedia.org/wiki/Special:Redirect/file/UMaT%20Campus%2008.jpg",
+    "https://commons.wikimedia.org/wiki/Special:Redirect/file/Chambers%20of%20Mines%20Hall,%20UMaT.jpg",
+  ]],
+  [/ghana communication technology university|\bgctu\b/i, [
+    "https://commons.wikimedia.org/wiki/Special:Redirect/file/GCTU%20Main%20Campus.jpg",
+  ]],
+];
+
+const verifiedFor = (name: string) =>
+  verifiedCampusImages.find(([pattern]) => pattern.test(name))?.[1] ?? null;
+
 const UniversityCampusImage = ({ name, location }: UniversityCampusImageProps) => {
-  const [images, setImages] = useState<string[]>(cache.get(name) ?? []);
-  const [loaded, setLoaded] = useState(cache.has(name));
+  const verified = verifiedFor(name);
+  const [images, setImages] = useState<string[]>(cache.get(name) ?? verified ?? []);
+  const [loaded, setLoaded] = useState(cache.has(name) || Boolean(verified));
   const [active, setActive] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
     const key = name.trim();
-    if (!key || cache.has(key)) return;
+    if (!key) return;
+    if (verified) {
+      cache.set(key, verified);
+      setImages(verified);
+      setLoaded(true);
+      return;
+    }
+    if (cache.has(key)) return;
 
     const params = new URLSearchParams({
       action: "query",
       format: "json",
       origin: "*",
       generator: "search",
-      gsrsearch: `${key} campus university`,
-      gsrlimit: "6",
+      gsrsearch: `${key} campus Ghana university`,
+      gsrlimit: "8",
       gsrnamespace: "6",
       prop: "imageinfo",
       iiprop: "url",
@@ -35,8 +59,9 @@ const UniversityCampusImage = ({ name, location }: UniversityCampusImageProps) =
       .then((response) => (response.ok ? response.json() : null))
       .then((payload) => {
         if (cancelled) return;
-        const pages = Object.values(payload?.query?.pages ?? {}) as Array<{ imageinfo?: Array<{ thumburl?: string; url?: string }> }>;
+        const pages = Object.values(payload?.query?.pages ?? {}) as Array<{ title?: string; imageinfo?: Array<{ thumburl?: string; url?: string }> }>;
         const sources = pages
+          .filter((page) => /ghana|campus|university/i.test(page.title ?? ""))
           .map((page) => page.imageinfo?.[0]?.thumburl ?? page.imageinfo?.[0]?.url ?? null)
           .filter((source): source is string => Boolean(source));
         cache.set(key, sources);
@@ -53,13 +78,17 @@ const UniversityCampusImage = ({ name, location }: UniversityCampusImageProps) =
     return () => {
       cancelled = true;
     };
-  }, [name]);
+  }, [name, verified]);
 
   useEffect(() => {
     if (images.length < 2) return;
     const timer = window.setInterval(() => setActive((current) => (current + 1) % images.length), 4500);
     return () => window.clearInterval(timer);
   }, [images.length]);
+
+  useEffect(() => {
+    if (active >= images.length) setActive(0);
+  }, [active, images.length]);
 
   return (
     <div className="relative mb-4 overflow-hidden rounded-lg bg-secondary aspect-[16/9]">
