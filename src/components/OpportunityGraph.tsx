@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { ArrowRight, Award, Briefcase, CheckCircle2, CircleDollarSign, GraduationCap, Target, Wrench } from "@/lib/icons";
+import { ArrowRight, Award, Briefcase, CheckCircle2, DollarSign, GraduationCap, Target, Code } from "@/lib/icons";
 import { Link } from "@/lib/router-compat";
 
 const STORAGE_KEY = "ghanapathfinder-my-path-v1";
@@ -39,8 +39,8 @@ const OpportunityGraph = () => {
   const graph = useMemo<GraphNode[]>(() => [
     { id: "destination", label: goal, description: "Your destination. Every recommendation should connect back to this outcome.", href: "/career-path", icon: Target, state: state.goal?.trim() ? "active" : "open" },
     { id: "education", label: "Education routes", description: `${routes.join(" or ")} and other routes worth comparing.`, href: "/compare", icon: GraduationCap, state: checked.education ? "ready" : "open" },
-    { id: "skills", label: "Skills + projects", description: "Build evidence that proves you can do the work, not just study it.", href: "/skills", icon: Wrench, state: checked.skills ? "ready" : "open" },
-    { id: "funding", label: "Funding", description: "Scholarships and affordability should be part of the decision, not an afterthought.", href: "/scholarships", icon: CircleDollarSign, state: checked.funding ? "ready" : "open" },
+    { id: "skills", label: "Skills + projects", description: "Build evidence that proves you can do the work, not just study it.", href: "/skills", icon: Code, state: checked.skills ? "ready" : "open" },
+    { id: "funding", label: "Funding", description: "Scholarships and affordability should be part of the decision, not an afterthought.", href: "/scholarships", icon: DollarSign, state: checked.funding ? "ready" : "open" },
     { id: "experience", label: "Experience", description: "Internships, projects and opportunities that turn learning into evidence.", href: "/internships", icon: Briefcase, state: checked.experience ? "ready" : "open" },
     { id: "next", label: "Next opportunity", description: "Choose the highest-value action you can take now.", href: "/applications", icon: Award, state: checked.apply ? "ready" : "active" },
   ], [goal, routes, checked, state.goal]);
