@@ -26,21 +26,52 @@ const verifiedCampusImages: Array<[RegExp, string[]]> = [
 
 const verifiedFor = (name: string) => verifiedCampusImages.find(([pattern]) => pattern.test(name))?.[1] ?? [];
 
-const cleanSources = (pages: Array<{ title?: string; imageinfo?: Array<{ thumburl?: string; url?: string }> }>) =>
-  pages.filter((page) => !/logo|coat of arms|emblem/i.test(page.title ?? ""))
+interface CommonsPage {
+  title?: string;
+  imageinfo?: Array<{ thumburl?: string; url?: string }>;
+}
+
+const isUniversityRelatedTitle = (title: string, name: string) => {
+  const normalizedTitle = title.toLowerCase();
+  const normalizedName = name.toLowerCase();
+  const identityTokens = normalizedName
+    .split(/[^a-z0-9]+/)
+    .filter((token) => token.length >= 3 && !["the", "and", "for", "university", "technical", "college", "school"].includes(token));
+  const hasIdentity = identityTokens.some((token) => normalizedTitle.includes(token));
+  const hasAcronym = normalizedName.split(/[^a-z0-9]+/).some((token) => token.length >= 2 && token === token.toUpperCase() && normalizedTitle.includes(token));
+  const allowedSubject = /campus|hostel|dormitory|dorm|hall|residence|accommodation|library|administration|administrative|block|building|gate|entrance|auditorium|laboratory|laboratory|lab\b|faculty|lecture|courtyard|grounds|quad|sports|court|field|signage|logo|crest|seal|emblem|coat of arms/i.test(title);
+  const obviousNonUniversity = /stock photo|generic|portrait|headshot|wedding|church|mosque|beach|hotel|restaurant|airport|car|football player/i.test(title);
+  return (hasIdentity || hasAcronym) && allowedSubject && !obviousNonUniversity;
+};
+
+const cleanSources = (pages: CommonsPage[], name: string) =>
+  pages
+    .filter((page) => isUniversityRelatedTitle(page.title ?? "", name))
     .map((page) => page.imageinfo?.[0]?.thumburl ?? page.imageinfo?.[0]?.url ?? null)
     .filter((source): source is string => Boolean(source));
 
 const fetchCommonsImages = async (name: string) => {
-  const searchParams = new URLSearchParams({
-    action: "query", format: "json", origin: "*", generator: "search",
-    gsrsearch: `${name} campus Ghana university`, gsrlimit: "15", gsrnamespace: "6",
-    prop: "imageinfo", iiprop: "url", iiurlwidth: "1200", redirects: "1",
-  });
-  const response = await fetch(`https://commons.wikimedia.org/w/api.php?${searchParams.toString()}`);
-  const payload = response.ok ? await response.json() : null;
-  const pages = Object.values(payload?.query?.pages ?? {}) as Array<{ title?: string; imageinfo?: Array<{ thumburl?: string; url?: string }> }>;
-  return [...new Set(cleanSources(pages))].slice(0, 8);
+  const searchTerms = [
+    `${name} university campus`,
+    `${name} university hostel`,
+    `${name} university dormitory`,
+    `${name} university library`,
+    `${name} university logo`,
+  ];
+
+  const results = await Promise.all(searchTerms.map(async (term) => {
+    const searchParams = new URLSearchParams({
+      action: "query", format: "json", origin: "*", generator: "search",
+      gsrsearch: term, gsrlimit: "10", gsrnamespace: "6",
+      prop: "imageinfo", iiprop: "url", iiurlwidth: "1200", redirects: "1",
+    });
+    const response = await fetch(`https://commons.wikimedia.org/w/api.php?${searchParams.toString()}`);
+    if (!response.ok) return [];
+    const payload = await response.json();
+    return cleanSources(Object.values(payload?.query?.pages ?? {}) as CommonsPage[], name);
+  }));
+
+  return [...new Set(results.flat())].slice(0, 8);
 };
 
 const isImageReachable = (src: string) => new Promise<boolean>((resolve) => {
@@ -68,8 +99,6 @@ const UniversityCampusImage = ({ name, location }: UniversityCampusImageProps) =
 
     const loadImages = async () => {
       try {
-        // Validate the curated Wikimedia candidates first. If redirects/files have moved,
-        // automatically fall back to a fresh Wikimedia Commons search instead of showing blanks.
         const preferred = verifiedFor(key);
         const reachable = (await Promise.all(preferred.map(async (src) => (await isImageReachable(src)) ? src : null)))
           .filter((src): src is string => Boolean(src));
@@ -118,14 +147,14 @@ const UniversityCampusImage = ({ name, location }: UniversityCampusImageProps) =
       {images.length > 0 ? (
         <>
           {images.map((src, index) => (
-            <img key={src} src={src} alt={`${name} campus view ${index + 1}`} loading={index === 0 ? "eager" : "lazy"}
+            <img key={src} src={src} alt={`${name} university image ${index + 1}`} loading={index === 0 ? "eager" : "lazy"}
               className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${index === active ? "opacity-100" : "opacity-0"}`}
               referrerPolicy="no-referrer" onError={() => handleImageError(src)} />
           ))}
           {images.length > 1 && (
             <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex max-w-[90%] gap-1 overflow-hidden rounded-full bg-black/30 px-2 py-1 backdrop-blur-sm">
               {images.map((src, index) => (
-                <button key={src} type="button" aria-label={`Show campus image ${index + 1}`} onClick={() => setActive(index)}
+                <button key={src} type="button" aria-label={`Show university image ${index + 1}`} onClick={() => setActive(index)}
                   className={`h-1.5 w-1.5 shrink-0 rounded-full ${index === active ? "bg-white" : "bg-white/45"}`} />
               ))}
             </div>
@@ -135,8 +164,8 @@ const UniversityCampusImage = ({ name, location }: UniversityCampusImageProps) =
         <div className="h-full w-full flex items-center justify-center px-5 text-center">
           <div>
             <div className="text-xs font-medium text-foreground">{name}</div>
-            <div className="mt-1 text-[11px] text-muted-foreground">{loaded ? "Campus images unavailable" : "Loading campus images…"}</div>
-            {location && <div className="mt-1 text-[10px] text-muted-foreground">{location}</div>}
+            <div className="mt-1 text-[11px] text-muted-foreground">{loaded ? "University image unavailable" : "Checking university images…"}</div>
+            {loaded && location && <div className="mt-1 text-[10px] text-muted-foreground">{location}</div>}
           </div>
         </div>
       )}
