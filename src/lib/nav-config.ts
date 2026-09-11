@@ -75,8 +75,9 @@ export const navSections: NavSection[] = [
     id: "plan",
     label: "Plan",
     icon: Target,
-    href: "/admission-match",
+    href: "/my-path",
     items: [
+      { label: "My Path", href: "/my-path", desc: "Turn your goal into a plan" },
       { label: "Admission match", href: "/admission-match", desc: "See what fits your results" },
       { label: "Applications & deadlines", href: "/applications", desc: "Never miss your next step" },
       { label: "Saved items", href: "/saved", desc: "Keep your best options close" },
@@ -98,6 +99,7 @@ export const navSections: NavSection[] = [
 
 export const accountItems: NavItem[] = [
   { label: "Dashboard", href: "/dashboard" },
+  { label: "My Path", href: "/my-path" },
   { label: "Saved items", href: "/saved" },
   { label: "Applications", href: "/applications" },
   { label: "Match preferences", href: "/preferences" },
