@@ -31,16 +31,27 @@ interface CommonsPage {
   imageinfo?: Array<{ thumburl?: string; url?: string }>;
 }
 
+const stopWords = new Set(["the", "and", "for", "university", "technical", "college", "school", "of", "technology", "science"]);
+
+const acronymFor = (name: string) => {
+  const words = name.toUpperCase().match(/[A-Z]{2,}/g) ?? [];
+  return words.find((word) => word.length <= 6) ?? "";
+};
+
 const isUniversityRelatedTitle = (title: string, name: string) => {
   const normalizedTitle = title.toLowerCase();
   const normalizedName = name.toLowerCase();
   const identityTokens = normalizedName
     .split(/[^a-z0-9]+/)
-    .filter((token) => token.length >= 3 && !["the", "and", "for", "university", "technical", "college", "school"].includes(token));
+    .filter((token) => token.length >= 3 && !stopWords.has(token));
   const hasIdentity = identityTokens.some((token) => normalizedTitle.includes(token));
-  const hasAcronym = normalizedName.split(/[^a-z0-9]+/).some((token) => token.length >= 2 && token === token.toUpperCase() && normalizedTitle.includes(token));
-  const allowedSubject = /campus|hostel|dormitory|dorm|hall|residence|accommodation|library|administration|administrative|block|building|gate|entrance|auditorium|laboratory|laboratory|lab\b|faculty|lecture|courtyard|grounds|quad|sports|court|field|signage|logo|crest|seal|emblem|coat of arms/i.test(title);
-  const obviousNonUniversity = /stock photo|generic|portrait|headshot|wedding|church|mosque|beach|hotel|restaurant|airport|car|football player/i.test(title);
+  const acronym = acronymFor(name);
+  const hasAcronym = Boolean(acronym && normalizedTitle.includes(acronym.toLowerCase()));
+
+  // Only accept images whose Wikimedia title clearly describes a university asset.
+  const allowedSubject = /campus|hostel|dormitory|\bdorm\b|hall|residence|accommodation|library|administration|administrative|block|building|gate|entrance|auditorium|laborator(?:y|ies)|\blab\b|faculty|lecture|courtyard|grounds|quad|sports|court|field|signage|logo|crest|seal|emblem|coat of arms/i.test(title);
+  const obviousNonUniversity = /stock photo|generic|portrait|headshot|wedding|church|mosque|beach|hotel|restaurant|airport|car|football player|person/i.test(title);
+
   return (hasIdentity || hasAcronym) && allowedSubject && !obviousNonUniversity;
 };
 
@@ -53,16 +64,18 @@ const cleanSources = (pages: CommonsPage[], name: string) =>
 const fetchCommonsImages = async (name: string) => {
   const searchTerms = [
     `${name} university campus`,
+    `${name} university building`,
     `${name} university hostel`,
     `${name} university dormitory`,
     `${name} university library`,
     `${name} university logo`,
+    `${name} university crest`,
   ];
 
   const results = await Promise.all(searchTerms.map(async (term) => {
     const searchParams = new URLSearchParams({
       action: "query", format: "json", origin: "*", generator: "search",
-      gsrsearch: term, gsrlimit: "10", gsrnamespace: "6",
+      gsrsearch: term, gsrlimit: "12", gsrnamespace: "6",
       prop: "imageinfo", iiprop: "url", iiurlwidth: "1200", redirects: "1",
     });
     const response = await fetch(`https://commons.wikimedia.org/w/api.php?${searchParams.toString()}`);
