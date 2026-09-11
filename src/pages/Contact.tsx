@@ -26,6 +26,9 @@ const Contact = () => (
             <p className="text-xs text-muted-foreground mt-2">
               Questions, partnership requests and feedback about the platform.
             </p>
+            <p className="text-xs text-muted-foreground mt-2">
+              CCRO: <span className="text-foreground">Seraphine Enam Kattah</span>
+            </p>
           </section>
           <section className="bg-glass rounded-xl p-4">
             <Flag className="h-5 w-5 text-primary mb-2" />
