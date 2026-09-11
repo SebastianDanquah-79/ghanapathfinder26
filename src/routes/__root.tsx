@@ -18,7 +18,7 @@ import appCss from "../styles.css?url";
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en-GH" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
@@ -39,12 +39,8 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   useEffect(() => {
-    if (typeof window === "undefined" || !("serviceWorker" in navigator) || !import.meta.env.PROD) {
-      return;
-    }
-    navigator.serviceWorker.register("/sw.js").catch((err) => {
-      console.error("SW registration failed:", err);
-    });
+    if (typeof window === "undefined" || !("serviceWorker" in navigator) || !import.meta.env.PROD) return;
+    navigator.serviceWorker.register("/sw.js").catch((err) => console.error("SW registration failed:", err));
   }, []);
 
   return (
@@ -81,18 +77,8 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         <h1 className="text-xl font-semibold">This page didn't load</h1>
         <p className="text-muted-foreground">Something went wrong on our end. You can try again or head back home.</p>
         <div className="flex items-center justify-center gap-2">
-          <button
-            className="px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm font-medium"
-            onClick={() => {
-              void router.invalidate();
-              reset();
-            }}
-          >
-            Try again
-          </button>
-          <a className="px-4 py-2 rounded-md border border-border text-sm font-medium" href="/">
-            Go home
-          </a>
+          <button className="px-4 py-2 rounded-md bg-primary text-primary-foreground text-sm font-medium" onClick={() => { void router.invalidate(); reset(); }}>Try again</button>
+          <a className="px-4 py-2 rounded-md border border-border text-sm font-medium" href="/">Go home</a>
         </div>
       </div>
     </div>
@@ -104,12 +90,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1.0, viewport-fit=cover" },
-      { title: "GhanaPathFinder: Ghana Universities & Scholarships Guide" },
-      {
-        name: "description",
-        content:
-          "GhanaPathFinder is an education and career platform helping Ghanaian students discover universities, programmes, scholarships, career paths and opportunities.",
-      },
+      { title: "GhanaPathFinder | Your Ghanaian Life Decision Platform" },
+      { name: "description", content: "Explore education, careers, skills, scholarships and opportunities in Ghana, then turn your options into a practical path." },
       { name: "google-site-verification", content: "AX0O529bwE2xFh92n_bKT9tdS7ax1ulGLgrKzrm1kLE" },
       { name: "author", content: "GhanaPathFinder" },
       { name: "theme-color", content: "#0a0f1c" },
@@ -119,81 +101,28 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "apple-mobile-web-app-title", content: "GhanaPathFinder" },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "GhanaPathFinder" },
-      { property: "og:title", content: "GhanaPathFinder: Ghana Universities & Scholarships Guide" },
-      {
-        property: "og:description",
-        content:
-          "GhanaPathFinder is an education and career platform helping Ghanaian students discover universities, programmes, scholarships, career paths and opportunities.",
-      },
+      { property: "og:title", content: "GhanaPathFinder | Your Ghanaian Life Decision Platform" },
+      { property: "og:description", content: "Education. Careers. Skills. Opportunities. One path built around you." },
       { property: "og:url", content: "https://ghanapathfinder.com" },
       { property: "og:image", content: "https://ghanapathfinder.com/app-icon-512.png" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "GhanaPathFinder: Ghana Universities & Scholarships Guide" },
-      {
-        name: "twitter:description",
-        content:
-          "GhanaPathFinder is an education and career platform helping Ghanaian students discover universities, programmes, scholarships, career paths and opportunities.",
-      },
+      { name: "twitter:title", content: "GhanaPathFinder | Your Ghanaian Life Decision Platform" },
+      { name: "twitter:description", content: "Education. Careers. Skills. Opportunities. One path built around you." },
       { name: "twitter:image", content: "https://ghanapathfinder.com/app-icon-512.png" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap",
-        crossOrigin: "anonymous",
-      },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: appCss },
       { rel: "icon", type: "image/png", href: "/favicon.png" },
       { rel: "manifest", href: "/manifest.webmanifest" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
     ],
     scripts: [
-      {
-        children:
-          "try{var t=localStorage.getItem('gpf-theme');if(t==='dark')document.documentElement.classList.add('dark');}catch(e){}",
-      },
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Organization",
-          "@id": "https://ghanapathfinder.com/#organization",
-          name: "GhanaPathFinder",
-          alternateName: ["Ghana Path Finder", "GhanaPath Finder"],
-          url: "https://ghanapathfinder.com",
-          logo: {
-            "@type": "ImageObject",
-            url: "https://ghanapathfinder.com/app-icon-512.png",
-            width: 512,
-            height: 512,
-          },
-          description: "Education and career technology platform for Ghanaian students.",
-          areaServed: "GH",
-        }),
-      },
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "WebSite",
-          "@id": "https://ghanapathfinder.com/#website",
-          name: "GhanaPathFinder",
-          alternateName: "Ghana Path Finder",
-          url: "https://ghanapathfinder.com",
-          inLanguage: "en-GH",
-          publisher: { "@id": "https://ghanapathfinder.com/#organization" },
-          potentialAction: {
-            "@type": "SearchAction",
-            target: {
-              "@type": "EntryPoint",
-              urlTemplate: "https://ghanapathfinder.com/search?q={search_term_string}",
-            },
-            "query-input": "required name=search_term_string",
-          },
-        }),
-      },
+      { children: "try{var t=localStorage.getItem('gpf-theme');if(t==='dark')document.documentElement.classList.add('dark');}catch(e){}" },
+      { type: "application/ld+json", children: JSON.stringify({ "@context": "https://schema.org", "@type": "Organization", "@id": "https://ghanapathfinder.com/#organization", name: "GhanaPathFinder", alternateName: ["Ghana Path Finder", "GhanaPath Finder"], url: "https://ghanapathfinder.com", logo: { "@type": "ImageObject", url: "https://ghanapathfinder.com/app-icon-512.png", width: 512, height: 512 }, description: "A Ghanaian life decision platform covering education, careers, skills and opportunities.", areaServed: "GH" }) },
+      { type: "application/ld+json", children: JSON.stringify({ "@context": "https://schema.org", "@type": "WebSite", "@id": "https://ghanapathfinder.com/#website", name: "GhanaPathFinder", alternateName: "Ghana Path Finder", url: "https://ghanapathfinder.com", inLanguage: "en-GH", publisher: { "@id": "https://ghanapathfinder.com/#organization" }, potentialAction: { "@type": "SearchAction", target: { "@type": "EntryPoint", urlTemplate: "https://ghanapathfinder.com/search?q={search_term_string}" }, "query-input": "required name=search_term_string" } }) },
     ],
   }),
   shellComponent: RootShell,
