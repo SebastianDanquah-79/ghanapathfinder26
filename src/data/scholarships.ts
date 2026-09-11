@@ -6,171 +6,155 @@ export interface Scholarship {
   level: string;
   eligibility: string;
   deadline: string;
+  status: "Open" | "Closed" | "Recurring" | "Check current notice";
   howToApply: string;
   link?: string;
+  lastVerified: string;
 }
 
+/**
+ * Scholarship data reviewed against official provider pages on 11 September 2026.
+ * Closed opportunities are retained so students can plan for the next cycle.
+ */
 export const scholarships: Scholarship[] = [
   {
-    name: "Ghana Scholarships Secretariat Award",
-    provider: "Government of Ghana",
+    name: "Joint Algeria/Ghana Government Scholarship Awards 2026/2027",
+    provider: "Ghana Scholarships Authority",
     type: "Government",
-    coverage: "Full or partial tuition + academic user fees",
-    level: "Undergraduate (local)",
-    eligibility:
-      "Ghanaian students with admission to an accredited public university. Priority to needy-but-brilliant applicants and underserved districts.",
-    deadline: "Usually announced August – October each year",
-    howToApply:
-      "Register on the Scholarships Secretariat online portal, upload admission letter, WASSCE results, Ghana Card and a district endorsement letter.",
-    link: "https://www.scholarshipgh.gov.gh",
+    coverage: "Government scholarship support; award terms depend on the official notice",
+    level: "Undergraduate, vocational/technical and religious studies",
+    eligibility: "Interested and qualified Ghanaian applicants meeting the published Algeria/Ghana award requirements.",
+    deadline: "15 September 2026",
+    status: "Open",
+    howToApply: "Read the official Ghana Scholarships Authority notice and use the application route specified there. Do not rely on third-party application pages.",
+    link: "https://scholarships.gov.gh/opportunities",
+    lastVerified: "11 September 2026",
   },
   {
-    name: "GETFund Scholarship",
-    provider: "Ghana Education Trust Fund",
+    name: "Presidential West African Scholarship Initiative (PWASI) 2026",
+    provider: "Ghana Scholarships Authority",
     type: "Government",
-    coverage: "Tuition and part of accommodation",
-    level: "Undergraduate & Postgraduate",
-    eligibility:
-      "Ghanaian students in accredited institutions, strong academic record and demonstrated financial need.",
-    deadline: "Rolling , advertised in national dailies",
-    howToApply:
-      "Apply through your institution's scholarship/financial aid office with admission letter and proof of need.",
+    coverage: "See the official opportunity notice for the current award package",
+    level: "West African scholarship opportunity",
+    eligibility: "Applicants must meet the eligibility and documentation requirements in the published notice.",
+    deadline: "See official notice",
+    status: "Check current notice",
+    howToApply: "Use the Ghana Scholarships Authority opportunities page and follow the current notice exactly.",
+    link: "https://scholarships.gov.gh/opportunities",
+    lastVerified: "11 September 2026",
   },
   {
-    name: "Ashesi Full Scholarship",
-    provider: "Ashesi University Foundation",
-    type: "University",
-    coverage: "Up to 100% tuition, housing and stipend",
-    level: "Undergraduate",
-    eligibility:
-      "Outstanding WASSCE results (typically aggregate 6–12), demonstrated leadership and verified financial need.",
-    deadline: "Early round November; regular round February",
-    howToApply:
-      "Apply for admission to Ashesi and tick the financial aid option , submit the family financial statement with supporting documents.",
-    link: "https://www.ashesi.edu.gh/admissions/financial-aid",
-  },
-  {
-    name: "MasterCard Foundation Scholars Program",
-    provider: "MasterCard Foundation (KNUST & Ashesi)",
+    name: "Australian Awards Scholarship 2027",
+    provider: "Australian Government / Ghana Scholarships Authority",
     type: "International",
-    coverage: "Full tuition, accommodation, books, laptop, stipend",
-    level: "Undergraduate",
-    eligibility:
-      "Academically talented young Africans from economically disadvantaged backgrounds with a record of giving back.",
-    deadline: "Typically January – March",
-    howToApply:
-      "Apply through the partner university's Scholars Program portal (KNUST or Ashesi) alongside your admission application.",
-    link: "https://mastercardfdn.org/en/what-we-do/our-programs/mastercard-foundation-scholars-program/",
+    coverage: "See the current Australia Awards award package and Ghana-specific guidance",
+    level: "Postgraduate",
+    eligibility: "Ghanaian applicants meeting the current Australia Awards Ghana eligibility criteria.",
+    deadline: "See current official call",
+    status: "Check current notice",
+    howToApply: "Start from the Ghana Scholarships Authority notice and the official Australia Awards application instructions.",
+    link: "https://scholarships.gov.gh/opportunities",
+    lastVerified: "11 September 2026",
   },
   {
-    name: "KNUST Vice-Chancellor's Scholarship",
-    provider: "KNUST",
-    type: "University",
-    coverage: "Tuition waiver, sometimes hall accommodation",
-    level: "Undergraduate",
-    eligibility:
-      "Continuing KNUST students with excellent CWA or first-year students with exceptional WASSCE aggregates.",
-    deadline: "Start of each academic year",
-    howToApply:
-      "Submit an application to the KNUST Students' Financial Services Office with transcripts and a financial-need statement.",
+    name: "2027 Learn Africa Programme",
+    provider: "Learn Africa / Ghana Scholarships Authority",
+    type: "International",
+    coverage: "Programme-specific scholarship support",
+    level: "African women; level varies by call",
+    eligibility: "African women meeting the current programme requirements.",
+    deadline: "See current official call",
+    status: "Check current notice",
+    howToApply: "Follow the current opportunity notice and the official Learn Africa application instructions.",
+    link: "https://scholarships.gov.gh/opportunities",
+    lastVerified: "11 September 2026",
   },
   {
-    name: "University of Ghana Financial Aid",
-    provider: "University of Ghana, Legon",
+    name: "MTN Ghana Foundation Bright Scholarship 2026",
+    provider: "MTN Ghana Foundation",
+    type: "Private",
+    coverage: "Tuition, accommodation, stipend for books and a device for beneficiaries",
+    level: "First-year or continuing undergraduate students at public tertiary institutions; vocational and technical training",
+    eligibility: "Ghanaian, brilliant but needy applicants in good standing. Priority includes ICT, Computer Science, Engineering, Artificial Intelligence and Data Analytics; women and persons with disabilities are especially encouraged.",
+    deadline: "31 May 2026",
+    status: "Closed",
+    howToApply: "Applications were submitted through the official MTN Ghana Foundation scholarship portal. The next cycle should be checked on the official portal rather than assumed to have the same dates.",
+    link: "https://scholarship.mtn.com.gh/",
+    lastVerified: "11 September 2026",
+  },
+  {
+    name: "Chevening Scholarships 2027/2028",
+    provider: "UK Government / Chevening",
+    type: "International",
+    coverage: "Fully funded one-year master's study in the UK, subject to the Chevening award terms",
+    level: "Master's degree",
+    eligibility: "Ghanaian applicants who meet Chevening's current eligibility and work-experience requirements.",
+    deadline: "6 October 2026 at 11:00 UTC",
+    status: "Open",
+    howToApply: "Apply through the official Chevening Ghana page and complete the online application during the current window.",
+    link: "https://www.chevening.org/scholarship/ghana/",
+    lastVerified: "11 September 2026",
+  },
+  {
+    name: "Mastercard Foundation Scholars Program at KNUST",
+    provider: "KNUST / Mastercard Foundation",
+    type: "International",
+    coverage: "Scholar support package is programme-specific; see the KNUST Scholars Program for current terms",
+    level: "Undergraduate and programme-specific opportunities",
+    eligibility: "Academically talented but economically disadvantaged young people who meet the current KNUST programme criteria, with stated priority for females, displaced persons and persons with disabilities.",
+    deadline: "Check current KNUST Scholars Program notice",
+    status: "Check current notice",
+    howToApply: "Use the official KNUST Mastercard Foundation Scholars Program website for the current application route and opening dates.",
+    link: "https://mcf.knust.edu.gh/",
+    lastVerified: "11 September 2026",
+  },
+  {
+    name: "University of Ghana 2026/2027 UG Sponsorship / SRC Yi Bi Boa",
+    provider: "University of Ghana Students Financial Aid Office",
     type: "University",
-    coverage: "Partial tuition, work-study placements, book allowance",
-    level: "Undergraduate",
-    eligibility:
-      "Admitted or continuing UG students with verified financial need and satisfactory academic standing.",
-    deadline: "Within the first weeks of each semester",
-    howToApply:
-      "Complete the UG Students Financial Aid Office (SFAO) form and attach income evidence and a guarantor letter.",
-    link: "https://www.ug.edu.gh",
+    coverage: "Financial support for eligible undergraduate students with demonstrated financial need; award terms vary by scheme",
+    level: "Undergraduate at University of Ghana",
+    eligibility: "Current UG students who meet the relevant financial-need, academic and scheme-specific requirements.",
+    deadline: "2026/2027 call closed; see the SFAO for future or additional calls",
+    status: "Closed",
+    howToApply: "Use the University of Ghana Students Financial Aid Office and its official application route for each announced call.",
+    link: "https://www.ug.edu.gh/financialaid/",
+    lastVerified: "11 September 2026",
   },
   {
     name: "Student Loan Trust Fund (SLTF)",
-    provider: "SLTF Ghana",
+    provider: "Students Loan Trust Fund",
     type: "Government",
-    coverage: "No-guarantor loan disbursed each semester",
-    level: "Tertiary (all accredited institutions)",
-    eligibility:
-      "Ghanaian students with a valid Ghana Card, SSNIT-linked details and admission to an accredited tertiary institution.",
-    deadline: "Opens shortly after admissions each academic year",
-    howToApply:
-      "Apply on the SLTF no-guarantor portal using your Ghana Card and student ID; repayment starts after national service.",
-    link: "https://www.sltf.gov.gh",
+    coverage: "Student financing; loan amount and disbursement depend on the current SLTF scheme",
+    level: "Eligible tertiary students in Ghana",
+    eligibility: "Ghanaian students admitted to an accredited tertiary programme and meeting the current SLTF requirements, including identity and student documentation.",
+    deadline: "Application window varies by academic year; the official portal currently shows the application as closed",
+    status: "Closed",
+    howToApply: "Use the official SLTF application system when the next application window opens. Confirm current requirements before applying.",
+    link: "https://application.sltf.gov.gh/",
+    lastVerified: "11 September 2026",
   },
   {
-    name: "MTN Ghana Foundation Bright Scholarship",
-    provider: "MTN Ghana Foundation",
-    type: "Private",
-    coverage: "Tuition, books and a monthly upkeep allowance",
-    level: "Undergraduate (Levels 100–200)",
-    eligibility:
-      "Brilliant but needy students in public universities, especially STEM and ICT-related programmes.",
-    deadline: "Usually advertised around March – May",
-    howToApply:
-      "Apply online through the MTN Ghana Foundation scholarship portal with transcripts and proof of need.",
-  },
-  {
-    name: "Tullow Group Scholarship Scheme",
-    provider: "Tullow Oil",
-    type: "Private",
-    coverage: "Full postgraduate tuition abroad + travel + living costs",
-    level: "Master's degree",
-    eligibility:
-      "Ghanaian graduates with work experience in engineering, geosciences, law, finance or related fields.",
-    deadline: "Applications typically close in October",
-    howToApply:
-      "Apply on the Tullow Group Scholarship Scheme website with degree certificates, references and a study proposal.",
-  },
-  {
-    name: "Chevening Scholarship",
-    provider: "UK Government (FCDO)",
-    type: "International",
-    coverage: "Full master's tuition in the UK, flights and living stipend",
-    level: "Master's degree",
-    eligibility:
-      "Ghanaian graduates with 2+ years work experience, leadership potential and UK university offers.",
-    deadline: "August – early November each year",
-    howToApply:
-      "Apply on the Chevening portal, submit four essays, two references and unconditional UK offer by the deadline.",
-    link: "https://www.chevening.org",
-  },
-  {
-    name: "DAAD Scholarships for Africa",
-    provider: "German Academic Exchange Service",
-    type: "International",
-    coverage: "Monthly stipend, tuition, travel and health insurance",
-    level: "Master's & PhD",
-    eligibility:
-      "Graduates with strong academic records seeking development-related study in Germany or partner African institutions.",
-    deadline: "Varies by programme, mostly July – October",
-    howToApply:
-      "Apply through the DAAD portal for a listed development-related course with CV, transcripts and motivation letter.",
-    link: "https://www.daad.de",
-  },
-  {
-    name: "Mandela Rhodes Scholarship",
-    provider: "Mandela Rhodes Foundation",
-    type: "International",
-    coverage: "Full postgraduate study in South Africa + leadership programme",
-    level: "Postgraduate",
-    eligibility:
-      "African citizens under 30 with excellent academic results and a demonstrated commitment to leadership and reconciliation.",
-    deadline: "Applications close mid-year (around April)",
-    howToApply:
-      "Complete the online application with academic transcripts, references and essays on leadership and entrepreneurship.",
-    link: "https://www.mandelarhodes.org",
+    name: "Ashesi Financial Aid",
+    provider: "Ashesi University",
+    type: "University",
+    coverage: "Financial aid package determined through Ashesi's current financial-aid process",
+    level: "Undergraduate",
+    eligibility: "Applicants and students who meet Ashesi's current admission and financial-aid criteria.",
+    deadline: "Check the current Ashesi admissions and financial-aid cycle",
+    status: "Check current notice",
+    howToApply: "Apply for admission and follow Ashesi's current financial-aid instructions on the official university website.",
+    link: "https://www.ashesi.edu.gh/admissions/financial-aid",
+    lastVerified: "11 September 2026",
   },
 ];
 
 export const scholarshipTips = [
-  "Start a folder now with your Ghana Card, WASSCE results slip, admission letter and passport photos , most applications ask for the same documents.",
-  "Apply to at least five scholarships. Even full-tuition awards get fewer applicants than you'd expect because students assume they won't win.",
-  "Write one strong personal statement about your goals and adapt it per application instead of starting from scratch each time.",
-  "Ask a teacher for a reference letter early , a rushed reference is the most common reason strong applications get weakened.",
-  "Never pay a 'processing fee' to anyone promising a scholarship. Legitimate schemes in Ghana are free to apply for.",
+  "Keep one verified application folder with your WASSCE results, admission documents and other commonly requested records.",
+  "Check the official provider page immediately before applying. Deadlines and eligibility can change between cycles.",
+  "Never assume a scholarship is open because it appeared on an old list. GhanaPathFinder labels closed and recurring opportunities separately.",
+  "Write a strong core personal statement, then adapt it to each scholarship's actual questions and eligibility criteria.",
+  "Never pay an unofficial person to 'secure' a scholarship. Use the provider's official application route and published contacts.",
 ];
 
 export const scholarshipSlug = (name: string) =>
