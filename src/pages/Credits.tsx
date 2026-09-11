@@ -12,20 +12,22 @@ interface CreditGroup {
 
 const OFFICIAL: CreditGroup = {
   heading: "Official Ghanaian sources",
-  note: "Institutional, regulatory and sector information is taken from these bodies. Facts are summarised in GhanaPathFinder's own words and linked back to the source.",
+  note: "Institutional, regulatory and sector information is summarised from authoritative sources and linked back to the organisation that publishes it. Source links were refreshed for this release on 11 September 2026.",
   items: [
-    { name: "Ghana Tertiary Education Commission (GTEC)", url: "https://gtec.edu.gh/", use: "Accredited institutions and programmes" },
-    { name: "West African Examinations Council (WAEC)", url: "https://www.waecgh.org/", use: "WASSCE grading and results context" },
+    { name: "Ghana Tertiary Education Commission (GTEC)", url: "https://gtec.edu.gh/", use: "Accredited institutions, programmes and tertiary regulation" },
+    { name: "GTEC: Explore Institutions", url: "https://gtec.edu.gh/explore-institutions/", use: "Current institution categories and accreditation reference" },
+    { name: "GTEC: Unrecognised Institutions", url: "https://gtec.edu.gh/unrecognized-institutions-by-gtec/", use: "Current public warning list" },
+    { name: "West African Examinations Council (WAEC Ghana)", url: "https://www.waecgh.org/", use: "WASSCE grading and examination context" },
     { name: "Ghana Education Service", url: "https://ges.gov.gh/", use: "Pre-tertiary education structure" },
-    { name: "Ghana Health Service", url: "https://ghs.gov.gh/", use: "Health system structure and placements" },
+    { name: "Ghana Health Service", url: "https://ghs.gov.gh/", use: "Health system structure" },
     { name: "Bank of Ghana", url: "https://www.bog.gov.gh/", use: "Financial sector regulation" },
     { name: "Ghana Revenue Authority", url: "https://gra.gov.gh/", use: "Taxation and compliance" },
-    { name: "Environmental Protection Agency, Ghana", url: "https://epa.gov.gh/", use: "Environmental assessment rules" },
-    { name: "Food and Drugs Authority, Ghana", url: "https://fdaghana.gov.gh/", use: "Food and medicines safety" },
-    { name: "Scholarships Secretariat", url: "https://www.scholarshipgh.gov.gh/", use: "Government scholarship information" },
-    { name: "Student Loan Trust Fund", url: "https://www.sltf.gov.gh/", use: "Student financing information" },
-    { name: "Public Procurement Authority", url: "https://ppa.gov.gh/", use: "Construction and procurement practice" },
-    { name: "Petroleum Commission Ghana", url: "https://www.petrocom.gov.gh/", use: "Energy sector and local content" },
+    { name: "Environmental Protection Agency, Ghana", url: "https://epa.gov.gh/", use: "Environmental regulation" },
+    { name: "Food and Drugs Authority, Ghana", url: "https://fdaghana.gov.gh/", use: "Food, medicines and health-product regulation" },
+    { name: "Ghana Scholarships Authority", url: "https://scholarships.gov.gh/", use: "Current government scholarship opportunities and notices" },
+    { name: "Students Loan Trust Fund", url: "https://www.sltf.gov.gh/", use: "Student financing information" },
+    { name: "General Legal Council", url: "https://www.glc.gov.gh/", use: "Legal education and professional regulation" },
+    { name: "Pharmacy Council Ghana", url: "https://pcghana.org/", use: "Pharmacy education, licensing and regulation" },
   ],
 };
 
@@ -42,14 +44,9 @@ const Credits = () => {
     <div className="min-h-screen bg-background">
       <Seo
         title="Credits, Sources & Acknowledgements | GhanaPathFinder"
-        description="Every organisation, dataset and learning provider GhanaPathFinder links to or draws on, credited in full — from GTEC and WAEC to freeCodeCamp, Khan Academy and Coursera."
+        description="Official sources, regulators and learning providers used by GhanaPathFinder, with a September 2026 information refresh note."
         path="/credits"
-        jsonLd={[
-          breadcrumbLd([
-            { name: "Home", path: "/" },
-            { name: "Credits", path: "/credits" },
-          ]),
-        ]}
+        jsonLd={[breadcrumbLd([{ name: "Home", path: "/" }, { name: "Credits", path: "/credits" }])]}
       />
       <Navbar />
       <main className="pt-20 pb-12 px-4">
@@ -58,7 +55,7 @@ const Credits = () => {
             badge="Acknowledgements"
             title="Credits &"
             highlight="sources"
-            description="GhanaPathFinder does not copy other people's content. We summarise publicly available information in our own words and link back to the organisation that published it. Every provider below owns its own material and trademarks."
+            description="GhanaPathFinder summarises public information in its own words and links back to the organisation that publishes it. Provider names, logos and trademarks remain the property of their respective owners."
           />
 
           <section className="bg-glass rounded-xl p-4 mb-4">
@@ -67,14 +64,7 @@ const Credits = () => {
             <ul className="grid gap-2 sm:grid-cols-2">
               {OFFICIAL.items.map((i) => (
                 <li key={i.url} className="rounded-lg bg-secondary/60 p-3">
-                  <a
-                    href={i.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm font-medium text-foreground hover:text-primary"
-                  >
-                    {i.name}
-                  </a>
+                  <a href={i.url} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-foreground hover:text-primary">{i.name}</a>
                   <p className="text-xs text-muted-foreground">{i.use}</p>
                 </li>
               ))}
@@ -83,21 +73,11 @@ const Credits = () => {
 
           <section className="bg-glass rounded-xl p-4 mb-4">
             <h2 className="font-display font-semibold text-foreground mb-1">Learning providers</h2>
-            <p className="text-xs text-muted-foreground mb-3">
-              Courses, YouTube channels, documentation and certifications linked from our skills pages.
-              GhanaPathFinder is not affiliated with, endorsed by, or earning commission from any of them.
-            </p>
+            <p className="text-xs text-muted-foreground mb-3">Courses, documentation, videos and certifications linked from our skills pages. GhanaPathFinder is not affiliated with or endorsed by these providers.</p>
             <ul className="grid gap-2 sm:grid-cols-2">
               {learning.map((r) => (
                 <li key={r.provider} className="rounded-lg bg-secondary/60 p-3">
-                  <a
-                    href={r.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm font-medium text-foreground hover:text-primary"
-                  >
-                    {r.provider}
-                  </a>
+                  <a href={r.url} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-foreground hover:text-primary">{r.provider}</a>
                   <p className="text-xs text-muted-foreground">{r.type} • {r.cost}</p>
                 </li>
               ))}
@@ -107,11 +87,12 @@ const Credits = () => {
           <section className="bg-glass rounded-xl p-4">
             <h2 className="font-display font-semibold text-foreground mb-2">How we handle information</h2>
             <ul className="list-disc pl-4 text-sm text-muted-foreground space-y-1">
-              <li>Facts about institutions come from the institution or its regulator, with a source link and a last-checked date.</li>
-              <li>Where something cannot be verified we show “Information unavailable” instead of guessing.</li>
-              <li>Student-contributed content is labelled “Student Insight”, never presented as official.</li>
-              <li>Expired opportunities are labelled “Expired” rather than removed silently.</li>
-              <li>Logos and images belong to their owners; where none can be reliably sourced we show “Logo unavailable” or “Image unavailable”.</li>
+              <li>Institution, programme and regulator facts are linked to authoritative sources whenever available.</li>
+              <li>Dynamic admissions, fees, scholarship deadlines and accreditation status can change; always check the latest official notice before acting.</li>
+              <li>Where something cannot be verified we show “Information unavailable” rather than inventing an answer.</li>
+              <li>Student-contributed content is labelled “Student Insight” and is not presented as official.</li>
+              <li>Expired opportunities are labelled as closed or expired rather than silently presented as current.</li>
+              <li>Logos and images belong to their owners; when a reliable source cannot be established, the UI should say so.</li>
               <li>Spotted something wrong or missing? Tell us on the <a href="/contact" className="text-primary">contact page</a>.</li>
             </ul>
           </section>
