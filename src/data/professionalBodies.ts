@@ -1,17 +1,12 @@
 /**
- * Professional councils and regulators used as reference sources by GhanaPathFinder.
- * Only bodies whose official website was checked and reachable are listed here ,
- * nothing on this list is invented. Where a body's official site could not be
- * reached at verification time, `website` is null and the UI shows
- * "Official information unavailable." instead of a fabricated link.
+ * Professional councils and authoritative education regulators referenced by GhanaPathFinder.
+ * Verification date: 11 September 2026.
+ * These links are reference points; users should still confirm programme-specific rules with the regulator.
  */
 export interface ProfessionalBody {
   name: string;
-  /** Official website, or null when it could not be verified. */
   website: string | null;
-  /** Areas of study / careers this body regulates in Ghana. */
   regulates: string[];
-  /** Month/year the link was last checked. */
   lastVerified: string;
 }
 
@@ -20,68 +15,78 @@ export const PROFESSIONAL_BODIES: ProfessionalBody[] = [
     name: "Ghana Tertiary Education Commission (GTEC)",
     website: "https://gtec.edu.gh/",
     regulates: ["Tertiary institution accreditation", "Programme accreditation"],
-    lastVerified: "August 2026",
+    lastVerified: "11 September 2026",
   },
   {
     name: "Nursing and Midwifery Council of Ghana",
     website: "https://www.nmc.gov.gh/",
     regulates: ["Nursing", "Midwifery", "Nurse assistant training"],
-    lastVerified: "August 2026",
+    lastVerified: "11 September 2026",
   },
   {
     name: "Medical and Dental Council, Ghana",
     website: "https://www.mdcghana.org/",
     regulates: ["Medicine", "Dentistry", "Physician assistantship"],
-    lastVerified: "August 2026",
+    lastVerified: "11 September 2026",
   },
   {
     name: "Allied Health Professions Council, Ghana",
     website: "https://ahpcghana.org/",
     regulates: ["Medical laboratory science", "Physiotherapy", "Radiography", "Other allied health"],
-    lastVerified: "August 2026",
+    lastVerified: "11 September 2026",
   },
   {
     name: "National Teaching Council (NTC)",
     website: "https://ntc.gov.gh/",
-    regulates: ["Teaching", "Colleges of Education programmes"],
-    lastVerified: "August 2026",
+    regulates: ["Teaching", "Teacher licensing", "Professional teacher development"],
+    lastVerified: "11 September 2026",
   },
   {
     name: "Pharmacy Council of Ghana",
-    website: null,
-    regulates: ["Pharmacy", "Pharmacy technician training"],
-    lastVerified: "August 2026",
+    website: "https://pcghana.org/",
+    regulates: ["Pharmacy", "Pharmacy technician training", "Pharmacy facilities"],
+    lastVerified: "11 September 2026",
   },
   {
     name: "General Legal Council of Ghana",
-    website: null,
-    regulates: ["Professional law training"],
-    lastVerified: "August 2026",
+    website: "https://www.glc.gov.gh/",
+    regulates: ["Professional legal education", "Legal profession"],
+    lastVerified: "11 September 2026",
   },
 ];
 
-/** Official funding / scholarship reference sources that were checked directly. */
 export const FUNDING_SOURCES = [
   {
-    name: "Ghana Scholarships Secretariat",
-    website: "https://www.scholarships.gov.gh/",
-    note: "Government-funded scholarships for Ghanaian students",
-    lastVerified: "August 2026",
+    name: "Ghana Scholarships Authority",
+    website: "https://scholarships.gov.gh/",
+    note: "Official government scholarship announcements and application guidance",
+    lastVerified: "11 September 2026",
+  },
+  {
+    name: "Students Loan Trust Fund (SLTF)",
+    website: "https://www.sltf.gov.gh/",
+    note: "Official student financing information and loan application guidance",
+    lastVerified: "11 September 2026",
   },
 ];
 
-/** Accreditation reference links. */
 export const ACCREDITATION_SOURCES = [
   {
     name: "Ghana Tertiary Education Commission (GTEC)",
     website: "https://gtec.edu.gh/",
-    note: "Regulator of tertiary education in Ghana",
-    lastVerified: "August 2026",
+    note: "National tertiary education regulator and accreditation reference",
+    lastVerified: "11 September 2026",
   },
   {
-    name: "GTEC , Explore accredited institutions",
+    name: "GTEC: Explore accredited institutions",
     website: "https://gtec.edu.gh/explore-institutions/",
-    note: "Institution and accreditation verification",
-    lastVerified: "August 2026",
+    note: "Current institution categories and accreditation reference",
+    lastVerified: "11 September 2026",
+  },
+  {
+    name: "GTEC: Unrecognised institutions notice",
+    website: "https://gtec.edu.gh/unrecognized-institutions-by-gtec/",
+    note: "Public warning list; check before relying on an institution or qualification",
+    lastVerified: "11 September 2026",
   },
 ];
