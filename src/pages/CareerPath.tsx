@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo, { breadcrumbLd } from "@/components/Seo";
@@ -13,6 +13,10 @@ const fields = [
 
 const CareerPath = () => {
   const [dreamJob, setDreamJob] = useState(""); const [profile, setProfile] = useState<Record<string, string>>({}); const [plan, setPlan] = useState<CareerPlan | null>(null); const [loading, setLoading] = useState(false); const [error, setError] = useState(""); const [openFaq, setOpenFaq] = useState<number | null>(null);
+  useEffect(() => {
+    const value = new URLSearchParams(window.location.search).get("dreamJob");
+    if (value?.trim()) setDreamJob(value.trim());
+  }, []);
   const buildPath = async () => { if (!dreamJob.trim()) return; setLoading(true); setError(""); try { const response = await fetch("/api/career-path", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ dreamJob, ...profile }) }); if (!response.ok) throw new Error(await response.text()); setPlan(await response.json()); window.scrollTo({ top: 0, behavior: "smooth" }); } catch { setError("We could not build your path right now. Please try again."); } finally { setLoading(false); } };
   return (
     <div className="min-h-screen bg-background"><Seo title="Career Path | GhanaPathFinder" description="Build a practical path from where you are today to the career you want." path="/career-path" jsonLd={[breadcrumbLd([{ name: "Home", path: "/" }, { name: "Career Path", path: "/career-path" }])]} /><Navbar /><main className="pt-20 pb-14 px-4"><div className="max-w-5xl mx-auto">
