@@ -151,7 +151,7 @@ export const programmesQueryOptions = (universityId?: string, search = "") =>
   queryOptions({
     queryKey: ["programmes", universityId, search],
     queryFn: async () => {
-      let q = supabase.from("programmes").select("*").order("name").limit(100);
+      let q = supabase.from("programmes").select("*").order("name").limit(500);
       if (universityId) q = q.eq("university_id", universityId);
       if (search.trim()) {
         const term = `%${search.trim()}%`;
