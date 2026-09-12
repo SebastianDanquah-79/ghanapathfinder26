@@ -11,6 +11,14 @@ import SiteRating from "@/components/SiteRating";
 type Method = "phone" | "email";
 type Mode = "signin" | "signup";
 
+type PendingOAuth = {
+  mode: Mode;
+  fullName: string;
+  accountType: "student" | "parent";
+  acceptedTerms: boolean;
+  next: string | null;
+};
+
 const safeNext = (value: string | null) =>
   value && value.startsWith("/") && !value.startsWith("//") ? value : null;
 
@@ -27,6 +35,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
   const { user } = useAuth();
   const [params] = useSearchParams();
   const next = safeNext(params.get("next"));
+  const isOAuthCallback = params.get("oauth") === "1";
   const [mode, setMode] = useState<Mode>(defaultMode);
   const [method, setMethod] = useState<Method>("phone");
   const [accountType, setAccountType] = useState<"student" | "parent">("student");
@@ -70,11 +79,66 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
   };
 
   useEffect(() => {
-    if (user && !otpSent) {
-      if (next) window.location.href = next;
-      else navigate("/dashboard", { replace: true });
-    }
-  }, [user, navigate, next, otpSent]);
+    let cancelled = false;
+
+    const handleAuthRedirect = async () => {
+      if (!user || otpSent || cancelled) return;
+
+      if (!isOAuthCallback) {
+        if (next) window.location.href = next;
+        else navigate("/dashboard", { replace: true });
+        return;
+      }
+
+      let pending: PendingOAuth | null = null;
+      try {
+        const raw = sessionStorage.getItem("ghanapathfinder_pending_oauth");
+        if (raw) pending = JSON.parse(raw) as PendingOAuth;
+      } catch {
+        pending = null;
+      }
+      sessionStorage.removeItem("ghanapathfinder_pending_oauth");
+
+      const targetNext = safeNext(pending?.next ?? next);
+      const oauthMode = pending?.mode ?? "signin";
+      const oauthName = pending?.fullName?.trim() || user.user_metadata?.full_name || user.user_metadata?.name || "";
+      const oauthAccountType = pending?.accountType ?? "student";
+
+      if (oauthMode === "signup") {
+        const metadata = {
+          full_name: oauthName,
+          account_type: oauthAccountType,
+          ...(user.email ? { email: user.email } : {}),
+        };
+
+        await supabase.auth.updateUser({ data: metadata });
+        await supabase
+          .from("profiles")
+          .update({
+            full_name: oauthName,
+            ...(user.email ? { email: user.email } : {}),
+          })
+          .eq("id", user.id);
+        await recordAcceptance(user.id);
+
+        if (!cancelled) {
+          if (targetNext) window.location.href = targetNext;
+          else navigate("/onboarding", { replace: true });
+        }
+        return;
+      }
+
+      if (!cancelled) {
+        if (targetNext) window.location.href = targetNext;
+        else navigate("/dashboard", { replace: true });
+      }
+    };
+
+    void handleAuthRedirect();
+    return () => {
+      cancelled = true;
+    };
+  }, [user, navigate, next, otpSent, isOAuthCallback]);
 
   const startOAuth = async (provider: "google" | "azure") => {
     if (!acceptedTerms) {
@@ -90,6 +154,16 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
     const redirectUrl = new URL("/auth", window.location.origin);
     redirectUrl.searchParams.set("oauth", "1");
     if (next) redirectUrl.searchParams.set("next", next);
+
+    const pending: PendingOAuth = {
+      mode,
+      fullName: fullName.trim(),
+      accountType,
+      acceptedTerms,
+      next,
+    };
+    sessionStorage.setItem("ghanapathfinder_pending_oauth", JSON.stringify(pending));
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
@@ -98,7 +172,10 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
       },
     });
     setLoading(false);
-    if (error) toast.error(error.message);
+    if (error) {
+      sessionStorage.removeItem("ghanapathfinder_pending_oauth");
+      toast.error(error.message);
+    }
   };
 
   const sendOtp = async (e?: React.FormEvent) => {
