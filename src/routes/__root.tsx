@@ -12,6 +12,7 @@ import ContactGate from "@/components/ContactGate";
 import OfflineBanner from "@/components/OfflineBanner";
 import NotFound from "@/pages/NotFound";
 import { AdinkraFloat } from "@/components/AdinkraFloat";
+import FloatingAskAssistant from "@/components/FloatingAskAssistant";
 import { usePageViews } from "@/hooks/useTracking";
 import { reportLovableError } from "@/lib/lovable-error-reporting";
 import appCss from "../styles.css?url";
@@ -58,6 +59,7 @@ function RootComponent() {
             </div>
             <MobileTabBar />
             <ContactGate />
+            <FloatingAskAssistant />
           </AuthProvider>
         </TooltipProvider>
       </QueryClientProvider>
