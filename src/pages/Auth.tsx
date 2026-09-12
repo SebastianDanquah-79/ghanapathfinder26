@@ -1,50 +1,34 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate, Link, useSearchParams } from "@/lib/router-compat";
-import { Loader2, BrandLogoIcon, Mail } from "@/lib/icons";
+import { Loader2, BrandLogoIcon } from "@/lib/icons";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/useAuth";
 import { TERMS_VERSION } from "@/lib/legal";
-import { isValidPhone } from "@/components/ContactGate";
+import { useEffect } from "react";
 import SiteRating from "@/components/SiteRating";
+import { isValidPhone } from "@/components/ContactGate";
 
-type Method = "phone" | "email";
 type Mode = "signin" | "signup";
 
-type PendingOAuth = {
-  mode: Mode;
-  fullName: string;
-  accountType: "student" | "parent";
-  acceptedTerms: boolean;
-  next: string | null;
-};
-
+// Only allow same-origin relative paths as a post-login redirect.
 const safeNext = (value: string | null) =>
   value && value.startsWith("/") && !value.startsWith("//") ? value : null;
-
-const normalizePhone = (value: string) => {
-  const cleaned = value.replace(/[\s()-]/g, "");
-  if (cleaned.startsWith("+")) return cleaned;
-  if (cleaned.startsWith("233")) return `+${cleaned}`;
-  if (cleaned.startsWith("0")) return `+233${cleaned.slice(1)}`;
-  return `+233${cleaned}`;
-};
 
 const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [params] = useSearchParams();
   const next = safeNext(params.get("next"));
-  const isOAuthCallback = params.get("oauth") === "1";
   const [mode, setMode] = useState<Mode>(defaultMode);
-  const [method, setMethod] = useState<Method>("phone");
   const [accountType, setAccountType] = useState<"student" | "parent">("student");
   const [fullName, setFullName] = useState("");
-  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [otp, setOtp] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [otpSent, setOtpSent] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   const recordAcceptance = async (userId: string) => {
@@ -54,216 +38,96 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
       .eq("id", userId);
   };
 
-  const finishLogin = async (userId: string) => {
-    if (mode === "signup") {
-      await supabase.auth.updateUser({
-        data: {
-          full_name: fullName.trim(),
-          account_type: accountType,
-          ...(method === "phone" ? { phone: normalizePhone(phone) } : { email: email.trim() }),
-        },
-      });
-      await supabase
-        .from("profiles")
-        .update({
-          full_name: fullName.trim(),
-          ...(method === "phone" ? { phone: normalizePhone(phone) } : { email: email.trim() }),
-        })
-        .eq("id", userId);
-    } else if (method === "phone") {
-      await supabase.from("profiles").update({ phone: normalizePhone(phone) }).eq("id", userId);
-    }
-    await recordAcceptance(userId);
-    if (next) window.location.href = next;
-    else navigate(mode === "signup" ? "/onboarding" : "/dashboard", { replace: true });
-  };
-
   useEffect(() => {
-    let cancelled = false;
+    if (user) {
+      if (next) window.location.href = next;
+      else navigate("/dashboard", { replace: true });
+    }
+  }, [user, navigate, next]);
 
-    const handleAuthRedirect = async () => {
-      if (!user || otpSent || cancelled) return;
-
-      if (!isOAuthCallback) {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!acceptedTerms) {
+      toast.error("Please accept the Terms & Conditions to continue.");
+      return;
+    }
+    setLoading(true);
+    try {
+      if (mode === "signup") {
+        if (!fullName.trim()) throw new Error("Please enter your name");
+        if (!isValidPhone(phone)) throw new Error("Please enter a valid contact number");
+        const { data, error } = await supabase.auth.signUp({
+          email: email.trim(),
+          password,
+          options: {
+            emailRedirectTo: next
+              ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
+              : window.location.origin,
+            data: { full_name: fullName.trim(), account_type: accountType, phone: phone.trim() },
+          },
+        });
+        if (error) throw error;
+        if (!data.session) {
+          setEmailSent(true);
+          return;
+        }
+        if (data.user) {
+          await recordAcceptance(data.user.id);
+          await supabase.from("profiles").update({ phone: phone.trim() }).eq("id", data.user.id);
+        }
+        if (next) window.location.href = next;
+        else navigate("/onboarding", { replace: true });
+      } else {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: email.trim(),
+          password,
+        });
+        if (error) throw error;
+        if (data.user) await recordAcceptance(data.user.id);
         if (next) window.location.href = next;
         else navigate("/dashboard", { replace: true });
-        return;
       }
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-      let pending: PendingOAuth | null = null;
-      try {
-        const raw = sessionStorage.getItem("ghanapathfinder_pending_oauth");
-        if (raw) pending = JSON.parse(raw) as PendingOAuth;
-      } catch {
-        pending = null;
-      }
-      sessionStorage.removeItem("ghanapathfinder_pending_oauth");
+  const handleForgotPassword = async () => {
+    if (!email.trim()) {
+      toast.error("Enter your email address first, then tap “Forgot password”.");
+      return;
+    }
+    setLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setLoading(false);
+    if (error) toast.error(error.message);
+    else toast.success("Password reset link sent , check your email.");
+  };
 
-      const targetNext = safeNext(pending?.next ?? next);
-      const oauthMode = pending?.mode ?? "signin";
-      const oauthName = pending?.fullName?.trim() || user.user_metadata?.full_name || user.user_metadata?.name || "";
-      const oauthAccountType = pending?.accountType ?? "student";
-
-      if (oauthMode === "signup") {
-        const metadata = {
-          full_name: oauthName,
-          account_type: oauthAccountType,
-          ...(user.email ? { email: user.email } : {}),
-        };
-
-        await supabase.auth.updateUser({ data: metadata });
-        await supabase
-          .from("profiles")
-          .update({
-            full_name: oauthName,
-            ...(user.email ? { email: user.email } : {}),
-          })
-          .eq("id", user.id);
-        await recordAcceptance(user.id);
-
-        if (!cancelled) {
-          if (targetNext) window.location.href = targetNext;
-          else navigate("/onboarding", { replace: true });
-        }
-        return;
-      }
-
-      if (!cancelled) {
-        if (targetNext) window.location.href = targetNext;
-        else navigate("/dashboard", { replace: true });
-      }
-    };
-
-    void handleAuthRedirect();
-    return () => {
-      cancelled = true;
-    };
-  }, [user, navigate, next, otpSent, isOAuthCallback]);
-
-  const startOAuth = async (provider: "google" | "azure") => {
+  const handleGoogle = async () => {
     if (!acceptedTerms) {
       toast.error("Please accept the Terms & Conditions to continue.");
       return;
     }
-    if (mode === "signup" && !fullName.trim()) {
-      toast.error("Please enter your name first.");
-      return;
-    }
 
     setLoading(true);
-    const redirectUrl = new URL("/auth", window.location.origin);
-    redirectUrl.searchParams.set("oauth", "1");
-    if (next) redirectUrl.searchParams.set("next", next);
-
-    const pending: PendingOAuth = {
-      mode,
-      fullName: fullName.trim(),
-      accountType,
-      acceptedTerms,
-      next,
-    };
-    sessionStorage.setItem("ghanapathfinder_pending_oauth", JSON.stringify(pending));
-
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider,
-      options: {
-        redirectTo: redirectUrl.toString(),
-        queryParams: provider === "google" ? { access_type: "offline", prompt: "select_account" } : undefined,
-      },
+    const result = await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: next
+        ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
+        : window.location.origin,
     });
-    setLoading(false);
-    if (error) {
-      sessionStorage.removeItem("ghanapathfinder_pending_oauth");
-      toast.error(error.message);
-    }
-  };
-
-  const sendOtp = async (e?: React.FormEvent) => {
-    e?.preventDefault();
-    if (!acceptedTerms) {
-      toast.error("Please accept the Terms & Conditions to continue.");
-      return;
-    }
-    if (mode === "signup" && !fullName.trim()) {
-      toast.error("Please enter your name.");
-      return;
-    }
-
-    setLoading(true);
-    if (method === "phone") {
-      if (!isValidPhone(phone)) {
-        setLoading(false);
-        toast.error("Enter a valid Ghana contact number, e.g. 024 123 4567.");
-        return;
-      }
-      const normalized = normalizePhone(phone);
-      const { error } = await supabase.auth.signInWithOtp({
-        phone: normalized,
-        options: {
-          shouldCreateUser: true,
-          data: mode === "signup" ? { full_name: fullName.trim(), account_type: accountType, phone: normalized } : undefined,
-        },
-      });
+    if (result.error) {
+      toast.error("Google sign-in failed. Please try again.");
       setLoading(false);
-      if (error) {
-        toast.error(error.message);
-        return;
-      }
-      setPhone(normalized);
-      setOtpSent(true);
-      toast.success(`Verification code sent to ${normalized}.`);
       return;
     }
-
-    const normalizedEmail = email.trim().toLowerCase();
-    if (!/^\S+@\S+\.\S+$/.test(normalizedEmail)) {
-      setLoading(false);
-      toast.error("Enter a valid email address.");
-      return;
-    }
-    const { error } = await supabase.auth.signInWithOtp({
-      email: normalizedEmail,
-      options: {
-        shouldCreateUser: true,
-        emailRedirectTo: `${window.location.origin}/auth${next ? `?next=${encodeURIComponent(next)}` : ""}`,
-        data: mode === "signup" ? { full_name: fullName.trim(), account_type: accountType, email: normalizedEmail } : undefined,
-      },
-    });
-    setLoading(false);
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
-    setEmail(normalizedEmail);
-    setOtpSent(true);
-    toast.success(`Verification code sent to ${normalizedEmail}.`);
-  };
-
-  const verifyOtp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!/^\d{6}$/.test(otp)) {
-      toast.error("Enter the 6-digit verification code.");
-      return;
-    }
-
-    setLoading(true);
-    const data = method === "phone"
-      ? await supabase.auth.verifyOtp({ phone: normalizePhone(phone), token: otp, type: "sms" })
-      : await supabase.auth.verifyOtp({ email: email.trim().toLowerCase(), token: otp, type: "email" });
-
-    if (data.error) {
-      setLoading(false);
-      toast.error(data.error.message);
-      return;
-    }
-
-    if (data.data.user) await finishLogin(data.data.user.id);
-    setLoading(false);
-  };
-
-  const resetCode = () => {
-    setOtpSent(false);
-    setOtp("");
+    if (result.redirected) return;
+    if (next) window.location.href = next;
+    else navigate("/dashboard", { replace: true });
   };
 
   return (
@@ -276,105 +140,147 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
       </Link>
 
       <div className="w-full max-w-md bg-glass rounded-2xl p-5 sm:p-6">
-        <h1 className="font-display text-2xl font-bold text-foreground mb-1">
-          {mode === "signin" ? "Welcome back" : "Create your account"}
-        </h1>
-        <p className="text-sm text-muted-foreground mb-5">
-          {otpSent
-            ? `Enter the verification code sent to ${method === "phone" ? phone : email}.`
-            : "Choose how you want to access your GhanaPathFinder account."}
-        </p>
-
-        {!otpSent && (
+        {emailSent ? (
+          <div className="text-center space-y-3">
+            <h1 className="font-display text-xl font-bold text-foreground">Check your email</h1>
+            <p className="text-sm text-muted-foreground">
+              We sent a confirmation link to <span className="text-foreground">{email}</span>. Click
+              it to activate your GhanaPathFinder account.
+            </p>
+          </div>
+        ) : (
           <>
+            <h1 className="font-display text-2xl font-bold text-foreground mb-1">
+              {mode === "signin" ? "Welcome back" : "Create your account"}
+            </h1>
+            <p className="text-sm text-muted-foreground mb-6">
+              {mode === "signin"
+                ? "Sign in to your dashboard, saved schools and deadlines."
+                : "Save recommendations, scholarships and deadlines in one place."}
+            </p>
+
             <label className="flex items-start gap-3 mb-4 p-3 rounded-xl border border-border bg-secondary/50 cursor-pointer">
               <input
                 type="checkbox"
                 checked={acceptedTerms}
                 onChange={(e) => setAcceptedTerms(e.target.checked)}
                 className="mt-0.5 h-5 w-5 shrink-0 accent-[hsl(var(--primary))]"
+                aria-describedby="terms-help"
               />
-              <span className="text-sm text-muted-foreground">
+              <span id="terms-help" className="text-sm text-muted-foreground">
                 I agree to the{" "}
-                <Link to="/terms" target="_blank" rel="noopener" className="text-primary underline">Terms &amp; Conditions</Link>{" "}
+                <Link to="/terms" target="_blank" rel="noopener" className="text-primary underline">
+                  Terms &amp; Conditions
+                </Link>{" "}
                 and{" "}
-                <Link to="/privacy" target="_blank" rel="noopener" className="text-primary underline">Privacy Policy</Link>.
+                <Link to="/privacy" target="_blank" rel="noopener" className="text-primary underline">
+                  Privacy Policy
+                </Link>
+                .
               </span>
             </label>
 
-            <div className="grid grid-cols-3 gap-2 mb-4">
-              <button type="button" onClick={() => startOAuth("google")} disabled={loading} className="h-11 rounded-lg border border-border bg-background text-sm font-semibold hover:bg-secondary transition-colors disabled:opacity-50">Google</button>
-              <button type="button" onClick={() => startOAuth("azure")} disabled={loading} className="h-11 rounded-lg border border-border bg-background text-sm font-semibold hover:bg-secondary transition-colors disabled:opacity-50">Microsoft</button>
-              <button type="button" onClick={() => { setMethod("email"); setOtpSent(false); }} disabled={loading} className={`h-11 rounded-lg border text-sm font-semibold transition-colors disabled:opacity-50 ${method === "email" ? "border-primary bg-primary/10 text-primary" : "border-border bg-background hover:bg-secondary"}`}>
-                <Mail className="h-4 w-4 inline mr-1" /> Email
+            <button
+              onClick={handleGoogle}
+              disabled={loading || !acceptedTerms}
+              className="w-full mb-5 px-4 py-3 rounded-lg border border-border bg-secondary text-foreground text-sm font-medium hover:bg-secondary/70 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Continue with Google
+            </button>
+
+            <div className="flex items-center gap-3 mb-5">
+              <div className="h-px flex-1 bg-border" />
+              <span className="text-xs text-muted-foreground">or</span>
+              <div className="h-px flex-1 bg-border" />
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {mode === "signup" && (
+                <>
+                  <div className="grid grid-cols-2 gap-2">
+                    {(["student", "parent"] as const).map((t) => (
+                      <button
+                        key={t}
+                        type="button"
+                        onClick={() => setAccountType(t)}
+                        className={`px-3 py-2 rounded-lg text-sm font-medium capitalize transition-colors ${
+                          accountType === t
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-secondary text-muted-foreground"
+                        }`}
+                      >
+                        I'm a {t}
+                      </button>
+                    ))}
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Full name"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    maxLength={100}
+                    className="w-full px-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50"
+                  />
+                  <input
+                    type="tel"
+                    required
+                    placeholder="Contact number (e.g. 024 123 4567)"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    maxLength={20}
+                    className="w-full px-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50"
+                  />
+                </>
+              )}
+              <input
+                type="email"
+                required
+                placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                maxLength={255}
+                className="w-full px-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50"
+              />
+              <input
+                type="password"
+                required
+                minLength={6}
+                placeholder="Password (min 6 characters)"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50"
+              />
+              <button
+                type="submit"
+                disabled={loading || !acceptedTerms}
+                className="w-full px-4 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {loading && <Loader2 className="h-4 w-4 animate-spin" />}
+                {mode === "signin" ? "Sign in" : "Create account"}
               </button>
-            </div>
+            </form>
 
-            <div className="relative my-5">
-              <div className="border-t border-border" />
-              <span className="absolute left-1/2 -translate-x-1/2 -top-2.5 bg-glass px-3 text-xs text-muted-foreground">or use contact</span>
-            </div>
+            {mode === "signin" && (
+              <p className="text-center text-sm mt-3">
+                <button
+                  onClick={handleForgotPassword}
+                  className="inline-flex items-center justify-center min-h-[44px] px-3 text-muted-foreground hover:text-primary"
+                >
+                  Forgot password?
+                </button>
+              </p>
+            )}
+
+            <p className="text-center text-sm text-muted-foreground mt-3">
+              {mode === "signin" ? "New to GhanaPathFinder?" : "Already have an account?"}{" "}
+              <button
+                onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+                className="inline-flex items-center justify-center min-h-[44px] px-2 text-primary font-medium"
+              >
+                {mode === "signin" ? "Create an account" : "Sign in"}
+              </button>
+            </p>
           </>
-        )}
-
-        {!otpSent ? (
-          <form onSubmit={sendOtp} className="space-y-4">
-            {mode === "signup" && (
-              <>
-                <div className="grid grid-cols-2 gap-2">
-                  {(["student", "parent"] as const).map((t) => (
-                    <button key={t} type="button" onClick={() => setAccountType(t)} className={`px-3 py-2 rounded-lg text-sm font-medium capitalize transition-colors ${accountType === t ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"}`}>
-                      I'm a {t}
-                    </button>
-                  ))}
-                </div>
-                <input type="text" placeholder="Full name" value={fullName} onChange={(e) => setFullName(e.target.value)} maxLength={100} className="w-full px-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50" />
-              </>
-            )}
-
-            {method === "email" ? (
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-1.5">Email address</label>
-                <input type="email" required autoFocus placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50" />
-                <p className="text-xs text-muted-foreground mt-1.5">We'll send a one-time verification code to your email.</p>
-              </div>
-            ) : (
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-1.5">Contact number</label>
-                <input type="tel" required autoFocus placeholder="024 123 4567" value={phone} onChange={(e) => setPhone(e.target.value)} maxLength={20} className="w-full px-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50" />
-                <p className="text-xs text-muted-foreground mt-1.5">We'll send a one-time verification code by SMS.</p>
-              </div>
-            )}
-
-            <button type="submit" disabled={loading || !acceptedTerms} className="w-full px-4 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
-              {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-              Send verification code
-            </button>
-          </form>
-        ) : (
-          <form onSubmit={verifyOtp} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">Verification code</label>
-              <input type="text" inputMode="numeric" autoComplete="one-time-code" autoFocus required maxLength={6} value={otp} onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))} placeholder="000000" className="w-full px-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-center text-xl tracking-[0.35em] placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50" />
-            </div>
-            <button type="submit" disabled={loading || otp.length !== 6} className="w-full px-4 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-semibold flex items-center justify-center gap-2 disabled:opacity-50">
-              {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-              Verify and continue
-            </button>
-            <div className="flex items-center justify-between text-sm">
-              <button type="button" onClick={resetCode} className="text-muted-foreground hover:text-primary">Change {method === "phone" ? "number" : "email"}</button>
-              <button type="button" onClick={sendOtp} disabled={loading} className="text-primary hover:underline disabled:opacity-50">Resend code</button>
-            </div>
-          </form>
-        )}
-
-        {!otpSent && (
-          <p className="text-center text-sm text-muted-foreground mt-5">
-            {mode === "signin" ? "New to GhanaPathFinder?" : "Already have an account?"}{" "}
-            <button onClick={() => { setMode(mode === "signin" ? "signup" : "signin"); setOtpSent(false); }} className="text-primary font-medium hover:underline">
-              {mode === "signin" ? "Create an account" : "Sign in"}
-            </button>
-          </p>
         )}
       </div>
       <SiteRating />
