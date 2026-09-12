@@ -19,7 +19,55 @@ export interface SearchResult {
 
 export const PAGE_SIZE = 12;
 
-/** Unified, database-backed search across universities, programmes and scholarships. */
+// GTEC public notice dated 8 July 2026. These institutions should not be presented
+// as currently accredited unless a newer verified accreditation record supersedes the notice.
+const GTEC_EXPIRED_2026 = new Set([
+  "Abbeam Institute of Technology",
+  "SS Peter and Paul Pastoral and Social Institute",
+  "Community College",
+  "Mumford Institute of Technology",
+  "ILMA Institute of Science and Technology",
+  "River View College",
+  "Synergies Institute",
+  "Institute of Local Government Studies",
+  "Ohawu College of Agriculture",
+  "College of Tropical Agriculture",
+  "Animal Health and Production College",
+  "Kwadaso Agricultural College",
+  "Hopkins Health Training institute",
+  "Manaata School of Midwifery",
+  "Western Hills School of Nursing",
+  "Oak City International College",
+  "Nursing and Midwifery Training College, Asankrangwa",
+  "Holy Spirit College of Education",
+  "Islamic Nursing Training School",
+  "Springs College",
+  "Wintech Professional Institute",
+  "Trans Africa College",
+  "Institute of Business Management and Journalism",
+  "Rural Development College",
+  "University College of Agriculture and Environmental Studies",
+  "School of Anaesthesia",
+  "Unique Citizens College",
+  "Kings and Queens Medical College",
+  "Royal Nursing College",
+  "Zenith University College",
+  "Jayee University College",
+  "Modal College",
+  "Nursing & Midwifery Training College, Cape Coast",
+  "Archbishop Porter Girls’ Polytechnic",
+]);
+
+const normalizeInstitutionName = (value: string) => value.toLowerCase().replace(/[’']/g, "'").replace(/[^a-z0-9]+/g, " ").trim();
+const expiredNames = new Set(Array.from(GTEC_EXPIRED_2026).map(normalizeInstitutionName));
+
+export const isInstitutionGtecExpired2026 = (university: Pick<University, "name" | "accreditation_status">) => {
+  const name = normalizeInstitutionName(university.name);
+  if (expiredNames.has(name)) return true;
+  const status = (university.accreditation_status ?? "").toLowerCase();
+  return status.includes("expired") || status.includes("unaccredited");
+};
+
 export const catalogueSearchQueryOptions = (
   query: string,
   kind: "all" | "university" | "programme" | "scholarship" = "all",
@@ -35,16 +83,16 @@ export const catalogueSearchQueryOptions = (
         _offset: page * PAGE_SIZE,
       });
       if (error) throw error;
-      return (data ?? []) as unknown as SearchResult[];
+      const rows = (data ?? []) as unknown as SearchResult[];
+      return kind === "university" || kind === "all"
+        ? rows.filter((r) => r.kind !== "university" || !Array.from(expiredNames).includes(normalizeInstitutionName(r.title)))
+        : rows;
     },
     staleTime: 60_000,
   });
 
-export const useCatalogueSearch = (
-  query: string,
-  kind: "all" | "university" | "programme" | "scholarship" = "all",
-  page = 0,
-) => useQuery(catalogueSearchQueryOptions(query, kind, page));
+export const useCatalogueSearch = (query: string, kind: "all" | "university" | "programme" | "scholarship" = "all", page = 0) =>
+  useQuery(catalogueSearchQueryOptions(query, kind, page));
 
 export interface UniversityFilters {
   search?: string | undefined;
@@ -57,24 +105,11 @@ export interface UniversityFilters {
 }
 
 export const universitiesQueryOptions = (filters: UniversityFilters = {}) => {
-  const {
-    search = "",
-    type = "All",
-    region,
-    category,
-    group = "All",
-    page = 0,
-    pageSize = 24,
-  } = filters;
+  const { search = "", type = "All", region, category, group = "All", page = 0, pageSize = 24 } = filters;
   return queryOptions({
     queryKey: ["universities", search, type, region, category, group, page, pageSize],
     queryFn: async () => {
-      let q = supabase
-        .from("universities")
-        .select("*", { count: "exact" })
-        .order("name")
-        .range(page * pageSize, page * pageSize + pageSize - 1);
-
+      let q = supabase.from("universities").select("*", { count: "exact" }).order("name").range(page * pageSize, page * pageSize + pageSize - 1);
       if (group !== "All") {
         const gf = groupFilter(group);
         q = q.in("category", gf.categories);
@@ -85,38 +120,32 @@ export const universitiesQueryOptions = (filters: UniversityFilters = {}) => {
       if (category) q = q.eq("category", category);
       if (search.trim()) {
         const term = `%${search.trim()}%`;
-        q = q.or(
-          `name.ilike.${term},short_name.ilike.${term},location.ilike.${term},region.ilike.${term},category.ilike.${term}`,
-        );
+        q = q.or(`name.ilike.${term},short_name.ilike.${term},location.ilike.${term},region.ilike.${term},category.ilike.${term}`);
       }
       const { data, error, count } = await q;
       if (error) throw error;
-      return { rows: (data ?? []) as University[], count: count ?? 0 };
+      const rows = ((data ?? []) as University[]).filter((u) => !isInstitutionGtecExpired2026(u));
+      return { rows, count: Math.max(0, (count ?? 0) - (((data ?? []) as University[]).length - rows.length)) };
     },
     staleTime: 60_000,
   });
 };
 
-export const useUniversities = (filters: UniversityFilters = {}) =>
-  useQuery(universitiesQueryOptions(filters));
+export const useUniversities = (filters: UniversityFilters = {}) => useQuery(universitiesQueryOptions(filters));
 
 export const universityQueryOptions = (slug: string) =>
   queryOptions({
     queryKey: ["university", slug],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("universities")
-        .select("*")
-        .eq("slug", slug)
-        .maybeSingle();
+      const { data, error } = await supabase.from("universities").select("*").eq("slug", slug).maybeSingle();
       if (error) throw error;
-      return data as University | null;
+      const university = data as University | null;
+      return university && !isInstitutionGtecExpired2026(university) ? university : null;
     },
     staleTime: 60_000,
   });
 
-export const useUniversity = (slug?: string) =>
-  useQuery({ ...universityQueryOptions(slug ?? ""), enabled: !!slug });
+export const useUniversity = (slug?: string) => useQuery({ ...universityQueryOptions(slug ?? ""), enabled: !!slug });
 
 export const programmesQueryOptions = (universityId?: string, search = "") =>
   queryOptions({
@@ -135,25 +164,17 @@ export const programmesQueryOptions = (universityId?: string, search = "") =>
     staleTime: 60_000,
   });
 
-export const useProgrammes = (universityId?: string, search = "") =>
-  useQuery({
-    ...programmesQueryOptions(universityId, search),
-    enabled: !!universityId || !!search,
-  });
-
+export const useProgrammes = (universityId?: string, search = "") => useQuery({ ...programmesQueryOptions(universityId, search), enabled: !!universityId || !!search });
 
 export const useProgramme = (slug?: string) =>
   useQuery({
     queryKey: ["programme", slug],
     enabled: !!slug,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("programmes")
-        .select("*, universities(*)")
-        .eq("slug", slug!)
-        .maybeSingle();
+      const { data, error } = await supabase.from("programmes").select("*, universities(*)").eq("slug", slug!).maybeSingle();
       if (error) throw error;
-      return data as (Programme & { universities: University | null }) | null;
+      const value = data as (Programme & { universities: University | null }) | null;
+      return value && value.universities && !isInstitutionGtecExpired2026(value.universities) ? value : null;
     },
   });
 
@@ -165,9 +186,7 @@ export const scholarshipRecordsQueryOptions = (search = "", type: string = "All"
       if (type !== "All") q = q.eq("type", type);
       if (search.trim()) {
         const term = `%${search.trim()}%`;
-        q = q.or(
-          `name.ilike.${term},provider.ilike.${term},eligibility.ilike.${term},study_level.ilike.${term}`,
-        );
+        q = q.or(`name.ilike.${term},provider.ilike.${term},eligibility.ilike.${term},study_level.ilike.${term}`);
       }
       const { data, error } = await q;
       if (error) throw error;
@@ -176,13 +195,6 @@ export const scholarshipRecordsQueryOptions = (search = "", type: string = "All"
     staleTime: 60_000,
   });
 
-export const useScholarshipRecords = (search = "", type: string = "All") =>
-  useQuery(scholarshipRecordsQueryOptions(search, type));
+export const useScholarshipRecords = (search = "", type: string = "All") => useQuery(scholarshipRecordsQueryOptions(search, type));
 
-export const formatVerified = (iso: string | null) =>
-  iso
-    ? `Last verified: ${new Date(iso).toLocaleDateString("en-GB", {
-        month: "long",
-        year: "numeric",
-      })}`
-    : "Not yet verified";
+export const formatVerified = (iso: string | null) => iso ? `Last verified: ${new Date(iso).toLocaleDateString("en-GB", { month: "long", year: "numeric" })}` : "Not yet verified";
