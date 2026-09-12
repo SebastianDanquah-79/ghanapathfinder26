@@ -3,6 +3,7 @@ import MyPath from "@/pages/MyPath";
 import WorldClassPathLayer from "@/components/WorldClassPathLayer";
 import OpportunityGraph from "@/components/OpportunityGraph";
 import PathOS from "@/pages/PathOS";
+import PathIntelligence from "@/components/PathIntelligence";
 
 function MyPathRoute() {
   return (
@@ -12,6 +13,7 @@ function MyPathRoute() {
         <WorldClassPathLayer />
         <OpportunityGraph />
         <PathOS />
+        <PathIntelligence />
       </div>
     </>
   );
