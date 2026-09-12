@@ -1,12 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Sparkles, Loader2, ExternalLink, Info, Lock, ArrowRight } from "@/lib/icons";
+import { Sparkles, Loader2, ExternalLink, Info, ArrowRight } from "@/lib/icons";
 import { Link } from "@/lib/router-compat";
 import SectionHeader from "./SectionHeader";
 import ShareButtons from "./ShareButtons";
 import UsageCounter from "./UsageCounter";
 import { useAggregateRecommendations } from "@/hooks/useAdmissionReference";
-import { useAuth } from "@/hooks/useAuth";
 import { CATEGORY_STYLES, diversify, formatVerifiedDate } from "@/lib/admissionEngine";
 import { buildAlternativePathways, pathwaySignal, type WASSCEGrade } from "@/lib/pathwayEngine";
 import { track } from "@/lib/analytics";
@@ -15,7 +14,6 @@ const preferences = ["No Preference", "Public Only", "Private Only"] as const;
 const grades: Array<WASSCEGrade | ""> = ["", "A1", "B2", "B3", "C4", "C5", "C6", "D7", "E8", "F9"];
 
 const CollegeRecommender = () => {
-  const { user, loading: authLoading } = useAuth();
   const [form, setForm] = useState({
     name: "",
     major: "",
@@ -62,8 +60,21 @@ const CollegeRecommender = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) return;
+    if (!form.major.trim() || !form.aggregate) return;
     setSubmitted({ ...form });
+  };
+
+  const useExample = () => {
+    setForm({
+      name: "Ama",
+      major: "Computer Science",
+      aggregate: "12",
+      preference: "No Preference",
+      english: "C4",
+      mathematics: "B3",
+      science: "B2",
+    });
+    setSubmitted(null);
   };
 
   return (
@@ -87,12 +98,12 @@ const CollegeRecommender = () => {
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">Your name</label>
-              <input required value={form.name} maxLength={80} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Kwame Asante" className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50" />
+              <label className="block text-sm font-medium text-foreground mb-1.5">Your name <span className="text-muted-foreground font-normal">(optional)</span></label>
+              <input value={form.name} maxLength={80} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="Kwame Asante" className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50" />
             </div>
             <div>
               <label className="block text-sm font-medium text-foreground mb-1.5">Destination programme or career</label>
-              <input value={form.major} maxLength={80} onChange={(e) => setForm({ ...form, major: e.target.value })} placeholder="e.g. Computer Science, Nursing, Software Engineer" className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50" />
+              <input required value={form.major} maxLength={80} onChange={(e) => setForm({ ...form, major: e.target.value })} placeholder="e.g. Computer Science, Nursing, Software Engineer" className="w-full px-4 py-3 rounded-lg bg-muted border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50" />
             </div>
             <div>
               <label className="block text-sm font-medium text-foreground mb-1.5">WASSCE aggregate</label>
@@ -112,7 +123,7 @@ const CollegeRecommender = () => {
                 <p className="text-sm font-semibold text-foreground">Optional subject detail</p>
                 <p className="text-xs text-muted-foreground mt-1">Add core grades if you want the engine to identify blocked doors and alternative routes.</p>
               </div>
-              <span className="text-[11px] px-2 py-1 rounded-full bg-primary/10 text-primary">Recommended</span>
+              <button type="button" onClick={useExample} className="text-[11px] font-semibold text-primary hover:underline whitespace-nowrap">Use example</button>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               {([['english', 'English Language'], ['mathematics', 'Core Mathematics'], ['science', 'Integrated Science']] as const).map(([key, label]) => (
@@ -128,17 +139,9 @@ const CollegeRecommender = () => {
 
           <p className="text-xs text-muted-foreground">A D7/E8 can make a specific direct-entry programme unavailable, but it should not be treated as a verdict on the student's destination. Where evidence supports another route, we show the bridge instead of ending the journey.</p>
 
-          {!authLoading && !user ? (
-            <div className="rounded-lg border border-border bg-muted/60 p-4 text-center space-y-3">
-              <p className="text-sm text-foreground font-medium flex items-center justify-center gap-2"><Lock className="h-4 w-4 text-primary" /> Sign in to see your recommendations</p>
-              <p className="text-xs text-muted-foreground">Your matches are saved to your account so you can come back to them on any device.</p>
-              <Link to="/auth" className="inline-flex min-h-[48px] items-center justify-center gap-2 px-6 rounded-lg bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-opacity"><Sparkles className="h-5 w-5" /> Sign in to continue</Link>
-            </div>
-          ) : (
-            <button type="submit" disabled={authLoading || (isLoading && !!submitted)} className="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-lg bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 glow-gold">
-              {isLoading && submitted ? <><Loader2 className="h-5 w-5 animate-spin" /> Searching every accredited institution...</> : <><Sparkles className="h-5 w-5" /> Get My Recommendations</>}
-            </button>
-          )}
+          <button type="submit" disabled={isLoading && !!submitted} className="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-lg bg-primary text-primary-foreground font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 glow-gold">
+            {isLoading && submitted ? <><Loader2 className="h-5 w-5 animate-spin" /> Searching every accredited institution...</> : <><Sparkles className="h-5 w-5" /> Get My Recommendations</>}
+          </button>
         </motion.form>
 
         {submitted && !isLoading && (
@@ -176,14 +179,13 @@ const CollegeRecommender = () => {
             )}
 
             <div className="bg-glass rounded-2xl p-5 sm:p-6">
-              <h3 className="font-display font-semibold text-lg text-foreground mb-1">Direct-entry matches for {submitted.name}</h3>
-              <p className="text-xs text-muted-foreground mb-5">Aggregate {submitted.aggregate} · ranked against published cut-offs and evidence-based estimated ranges.</p>
+              <div className="flex flex-wrap items-end justify-between gap-3 mb-5">
+                <div><h3 className="font-display font-semibold text-lg text-foreground">Direct-entry matches{form.name ? ` for ${form.name}` : ""}</h3><p className="text-xs text-muted-foreground mt-1">Aggregate {submitted.aggregate} · ranked against published cut-offs and evidence-based estimated ranges.</p></div>
+                <Link to={`/career-path?dreamJob=${encodeURIComponent(submitted.major)}`} className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary">Build career path <ArrowRight className="h-3 w-3" /></Link>
+              </div>
 
               {ranked.length === 0 ? (
-                <div className="rounded-xl border border-border bg-background/40 p-4">
-                  <p className="text-sm text-foreground font-medium">No direct-entry match was found for this search.</p>
-                  <p className="text-xs text-muted-foreground mt-1">That does not mean the destination is impossible. Use the alternative routes above and then verify the next entry point.</p>
-                </div>
+                <div className="rounded-xl border border-border bg-background/40 p-4"><p className="text-sm text-foreground font-medium">No direct-entry match was found for this search.</p><p className="text-xs text-muted-foreground mt-1">That does not mean the destination is impossible. Use the alternative routes above and then verify the next entry point.</p></div>
               ) : (
                 <div className="space-y-3">
                   {ranked.map(({ reference: r, category, confidence, why, benchmarkLabel, benchmarkKind, gaps }) => (
@@ -207,7 +209,7 @@ const CollegeRecommender = () => {
               )}
 
               <p className="text-xs text-muted-foreground mt-5">Estimated ranges are not official figures. For programmes with strict subject requirements, the official institution source remains the final authority.</p>
-              {ranked.length > 0 && <div className="mt-6 pt-6 border-t border-border"><ShareButtons studentName={submitted.name} resultRef={resultRef} /></div>}
+              {ranked.length > 0 && <div className="mt-6 pt-6 border-t border-border"><ShareButtons studentName={form.name || "Student"} resultRef={resultRef} /></div>}
             </div>
           </motion.div>
         )}
