@@ -89,13 +89,6 @@ const Navbar = () => {
               <TooltipContent>Search</TooltipContent>
             </Tooltip>
 
-            <Link
-              to="/contact"
-              className="ml-1 px-3 py-2 text-sm font-medium rounded-lg border border-border text-foreground hover:border-primary/50 hover:text-primary transition-colors whitespace-nowrap"
-            >
-              Contact
-            </Link>
-
             <DropdownMenu>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -146,7 +139,7 @@ const Navbar = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Link to="/auth" className="ml-2 px-4 py-2 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-opacity whitespace-nowrap">Sign in / Sign up</Link>
+              <Link to="/auth" className="ml-2 px-4 py-2 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-opacity whitespace-nowrap">Sign in</Link>
             )}
           </div>
         </TooltipProvider>
@@ -154,9 +147,6 @@ const Navbar = () => {
         <div className="md:hidden flex min-w-0 items-center gap-1">
           <Link to="/search" aria-label="Search GhanaPathFinder" className="grid place-items-center h-11 w-11 rounded-full text-muted-foreground active:text-primary">
             <Search className="h-5 w-5" />
-          </Link>
-          <Link to="/contact" aria-label="Contact GhanaPathFinder" className="grid place-items-center h-11 px-2.5 rounded-full border border-border text-xs font-medium text-foreground active:text-primary">
-            Contact
           </Link>
           <ThemeToggle className="h-11 w-11" />
           {user ? (
@@ -167,7 +157,7 @@ const Navbar = () => {
               </Avatar>
             </Link>
           ) : (
-            <Link to="/auth" aria-label="Sign in or sign up" className="grid place-items-center h-11 px-3 rounded-full bg-primary text-primary-foreground text-sm font-medium whitespace-nowrap">Sign in / Sign up</Link>
+            <Link to="/auth" aria-label="Sign in" className="grid place-items-center h-11 px-3 rounded-full bg-primary text-primary-foreground text-sm font-medium whitespace-nowrap">Sign in</Link>
           )}
           <button onClick={() => setOpen(!open)} className="grid place-items-center h-11 w-11 rounded-full text-foreground hover:text-primary active:text-primary transition-colors" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open}>
             {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
