@@ -1,9 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import AskPanel from "@/components/AskPanel";
 
 const FloatingAskAssistant = () => {
   const [open, setOpen] = useState(false);
+  const [showPrompt, setShowPrompt] = useState(true);
+
+  useEffect(() => {
+    if (open) return;
+
+    const interval = window.setInterval(() => {
+      setShowPrompt(true);
+      window.setTimeout(() => setShowPrompt(false), 4200);
+    }, 7600);
+
+    const firstHide = window.setTimeout(() => setShowPrompt(false), 4200);
+    return () => {
+      window.clearInterval(interval);
+      window.clearTimeout(firstHide);
+    };
+  }, [open]);
+
+  const openChat = () => {
+    setShowPrompt(false);
+    setOpen(true);
+  };
 
   return (
     <>
@@ -43,10 +64,10 @@ const FloatingAskAssistant = () => {
         <div className="fixed bottom-20 right-4 z-[79] md:bottom-6 md:right-6">
           <button
             type="button"
-            onClick={() => setOpen(true)}
+            onClick={openChat}
             aria-label="Open Ask GhanaPathFinder chat"
-            title="Ask GhanaPathFinder"
-            className="group relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-full bg-[#F4C430] text-black shadow-lg ring-1 ring-black/10 transition-transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-[#F4C430]/30"
+            title="Speak to GhanaPathFinder"
+            className="group relative flex h-14 w-14 items-center justify-center overflow-visible rounded-full bg-[#F4C430] text-black shadow-lg ring-1 ring-black/10 transition-transform hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-[#F4C430]/30"
           >
             <img
               src="/app-icon-512.png"
@@ -54,9 +75,13 @@ const FloatingAskAssistant = () => {
               className="h-9 w-9 object-contain"
               aria-hidden="true"
             />
-            <span className="pointer-events-none absolute right-16 whitespace-nowrap rounded-md bg-foreground px-2.5 py-1.5 text-xs font-medium text-background opacity-0 shadow-sm transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
-              Ask GhanaPathFinder
-            </span>
+
+            {showPrompt && (
+              <span className="pointer-events-none absolute bottom-1/2 right-[calc(100%+12px)] w-max max-w-[230px] translate-y-1/2 animate-in fade-in slide-in-from-right-2 rounded-xl border border-border bg-background px-3 py-2 text-left text-xs font-medium leading-5 text-foreground shadow-lg duration-300">
+                <span className="block">I&apos;m an AI agent.</span>
+                <span className="block font-semibold">Speak to GhanaPathFinder.</span>
+              </span>
+            )}
           </button>
         </div>
       )}
