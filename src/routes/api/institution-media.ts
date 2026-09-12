@@ -1,11 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-const BLOCKED_HOSTS = new Set([
-  "localhost",
-  "127.0.0.1",
-  "0.0.0.0",
-  "::1",
-];
+const BLOCKED_HOSTS = new Set(["localhost", "127.0.0.1", "0.0.0.0", "::1"]);
 
 const isSafeUrl = (value: string) => {
   try {
@@ -51,7 +46,7 @@ const firstIcon = (html: string, base: string) => {
     const url = absolute(match[1], base);
     if (url) return url;
   }
-  return null;
+  return absolute("/favicon.ico", base);
 };
 
 const firstUsefulImage = (html: string, base: string) => {
@@ -61,6 +56,27 @@ const firstUsefulImage = (html: string, base: string) => {
     if (!/(campus|university|college|school|main|building|facility|logo|crest)/.test(tag)) continue;
     const url = absolute(match[1], base);
     if (url && !/\.svg(?:$|\?)/i.test(url)) return url;
+  }
+  return null;
+};
+
+const firstJsonLdImage = (html: string, base: string) => {
+  const scripts = html.matchAll(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi);
+  for (const script of scripts) {
+    try {
+      const parsed = JSON.parse(script[1]) as Record<string, unknown> | Array<Record<string, unknown>>;
+      const nodes = Array.isArray(parsed) ? parsed : [parsed];
+      for (const node of nodes) {
+        const image = node.image;
+        const value = typeof image === "string" ? image : Array.isArray(image) ? image[0] : null;
+        if (typeof value === "string") {
+          const url = absolute(value, base);
+          if (url) return url;
+        }
+      }
+    } catch {
+      // Some sites embed invalid JSON-LD. Continue to the next source.
+    }
   }
   return null;
 };
@@ -97,11 +113,11 @@ export const Route = createFileRoute("/api/institution-media")({
           const html = (await response.text()).slice(0, 1_500_000);
           const base = new URL(target).toString();
           const logo = absolute(
-            firstMeta(html, "og:logo") ?? firstMeta(html, "twitter:image") ?? firstIcon(html, base) ?? "",
+            firstMeta(html, "og:logo") ?? firstIcon(html, base) ?? "",
             base,
           );
           const campusImage = absolute(
-            firstMeta(html, "og:image") ?? firstMeta(html, "twitter:image") ?? firstUsefulImage(html, base) ?? "",
+            firstMeta(html, "og:image") ?? firstMeta(html, "twitter:image") ?? firstJsonLdImage(html, base) ?? firstUsefulImage(html, base) ?? "",
             base,
           );
 
