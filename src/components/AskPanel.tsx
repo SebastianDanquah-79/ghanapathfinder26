@@ -20,6 +20,17 @@ import { buildAskContext, type AskContextItem } from "@/lib/askContext";
 const STORAGE_KEY = "gpf.ask.history.v1";
 const MAX_STORED = 40;
 
+const DEFAULT_GREETING: UIMessage = {
+  id: "gpf-welcome",
+  role: "assistant",
+  parts: [
+    {
+      type: "text",
+      text: "Hi, I'm your Ghana Pathfinder assistant. How can I help you find your path today?",
+    },
+  ],
+};
+
 const textOf = (m: UIMessage) =>
   m.parts.map((p) => (p.type === "text" ? p.text : "")).join("");
 
@@ -27,11 +38,14 @@ const loadHistory = (): UIMessage[] => {
   if (typeof window === "undefined") return [];
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
+    if (!raw) return [DEFAULT_GREETING];
     const parsed = JSON.parse(raw) as UIMessage[];
-    return Array.isArray(parsed) ? parsed.filter((m) => m && Array.isArray(m.parts)) : [];
+    if (!Array.isArray(parsed)) return [DEFAULT_GREETING];
+    return parsed.filter((m) => m && Array.isArray(m.parts)).length > 0
+      ? parsed.filter((m) => m && Array.isArray(m.parts))
+      : [DEFAULT_GREETING];
   } catch {
-    return [];
+    return [DEFAULT_GREETING];
   }
 };
 
@@ -57,7 +71,6 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
 
   const isLoading = status === "submitted" || status === "streaming";
 
-  // Keep a clean, capped conversation history on the device.
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
@@ -185,7 +198,6 @@ const AskPanel = ({ query, items, suggestions }: AskPanelProps) => {
   const [session, setSession] = useState(0);
   const [initialMessages, setInitialMessages] = useState<UIMessage[] | null>(null);
 
-  // Load persisted history after hydration so SSR and client markup match.
   useEffect(() => {
     setInitialMessages(loadHistory());
   }, []);
@@ -203,7 +215,7 @@ const AskPanel = ({ query, items, suggestions }: AskPanelProps) => {
   return (
     <AskChat
       key={session}
-      initialMessages={session === 0 ? initialMessages : []}
+      initialMessages={session === 0 ? initialMessages : [DEFAULT_GREETING]}
       contextText={contextText}
       suggestions={suggestions ?? DEFAULT_SUGGESTIONS}
       onClear={() => {
