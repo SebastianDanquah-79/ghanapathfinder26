@@ -51,13 +51,16 @@ const firstIcon = (html: string, base: string) => {
 
 const firstUsefulImage = (html: string, base: string) => {
   const matches = html.matchAll(/<img[^>]+(?:src|data-src)=["']([^"']+)["'][^>]*>/gi);
+  const candidates: string[] = [];
   for (const match of matches) {
     const tag = match[0].toLowerCase();
-    if (!/(campus|university|college|school|main|building|facility|logo|crest)/.test(tag)) continue;
     const url = absolute(match[1], base);
-    if (url && !/\.svg(?:$|\?)/i.test(url)) return url;
+    if (!url || /\.svg(?:$|\?)/i.test(url)) continue;
+    if (/(logo|icon|avatar|favicon)/.test(tag)) continue;
+    if (/(campus|university|college|school|main|building|facility|library|hostel|lecture|administration|student)/.test(tag)) return url;
+    candidates.push(url);
   }
-  return null;
+  return candidates[0] ?? null;
 };
 
 const firstJsonLdImage = (html: string, base: string) => {
@@ -75,8 +78,30 @@ const firstJsonLdImage = (html: string, base: string) => {
         }
       }
     } catch {
-      // Some sites embed invalid JSON-LD. Continue to the next source.
+      // Continue when a site embeds invalid JSON-LD.
     }
+  }
+  return null;
+};
+
+const firstWikimediaImage = async (name: string) => {
+  try {
+    const query = encodeURIComponent(`${name} Ghana campus`);
+    const response = await fetch(
+      `https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=${query}&gsrnamespace=6&gsrlimit=5&prop=imageinfo&iiprop=url&iiurlwidth=1200&format=json`,
+      { headers: { Accept: "application/json", "User-Agent": "GhanaPathFinder/1.0" } },
+    );
+    if (!response.ok) return null;
+    const json = (await response.json()) as {
+      query?: { pages?: Record<string, { imageinfo?: Array<{ thumburl?: string; url?: string }> }> };
+    };
+    const pages = Object.values(json.query?.pages ?? {});
+    for (const page of pages) {
+      const image = page.imageinfo?.[0]?.thumburl ?? page.imageinfo?.[0]?.url;
+      if (image && !/\.svg(?:$|\?)/i.test(image)) return image;
+    }
+  } catch {
+    return null;
   }
   return null;
 };
@@ -87,12 +112,13 @@ export const Route = createFileRoute("/api/institution-media")({
       GET: async ({ request }) => {
         const requestUrl = new URL(request.url);
         const target = requestUrl.searchParams.get("url");
+        const name = requestUrl.searchParams.get("name") ?? "Ghana university";
         if (!target || !isSafeUrl(target)) {
           return Response.json({ error: "A valid HTTPS institutional website is required." }, { status: 400 });
         }
 
         const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(), 7000);
+        const timer = setTimeout(() => controller.abort(), 8000);
         try {
           const response = await fetch(target, {
             signal: controller.signal,
@@ -102,7 +128,8 @@ export const Route = createFileRoute("/api/institution-media")({
             },
           });
           if (!response.ok) {
-            return Response.json({ error: "Institution website could not be read." }, { status: 502 });
+            const wiki = await firstWikimediaImage(name);
+            return Response.json({ source: target, logo: null, campusImage: wiki, fetchedAt: new Date().toISOString() });
           }
 
           const contentType = response.headers.get("content-type") ?? "";
@@ -110,32 +137,26 @@ export const Route = createFileRoute("/api/institution-media")({
             return Response.json({ error: "Institution website did not return HTML." }, { status: 502 });
           }
 
-          const html = (await response.text()).slice(0, 1_500_000);
+          const html = (await response.text()).slice(0, 2_000_000);
           const base = new URL(target).toString();
-          const logo = absolute(
-            firstMeta(html, "og:logo") ?? firstIcon(html, base) ?? "",
-            base,
-          );
-          const campusImage = absolute(
-            firstMeta(html, "og:image") ?? firstMeta(html, "twitter:image") ?? firstJsonLdImage(html, base) ?? firstUsefulImage(html, base) ?? "",
-            base,
-          );
+          const logo = absolute(firstMeta(html, "og:logo") ?? firstIcon(html, base) ?? "", base);
+          const campusImage =
+            absolute(
+              firstMeta(html, "og:image") ??
+                firstMeta(html, "twitter:image") ??
+                firstJsonLdImage(html, base) ??
+                firstUsefulImage(html, base) ??
+                "",
+              base,
+            ) ?? (await firstWikimediaImage(name));
 
           return Response.json(
-            {
-              source: target,
-              logo: logo || null,
-              campusImage: campusImage || null,
-              fetchedAt: new Date().toISOString(),
-            },
-            {
-              headers: {
-                "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800",
-              },
-            },
+            { source: target, logo: logo || null, campusImage: campusImage || null, fetchedAt: new Date().toISOString() },
+            { headers: { "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800" } },
           );
         } catch {
-          return Response.json({ error: "Institution website could not be reached." }, { status: 502 });
+          const wiki = await firstWikimediaImage(name);
+          return Response.json({ source: target, logo: null, campusImage: wiki, fetchedAt: new Date().toISOString() });
         } finally {
           clearTimeout(timer);
         }
