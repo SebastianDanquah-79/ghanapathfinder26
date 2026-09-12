@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import SaveButton from "@/components/SaveButton";
 import OfficialLink from "@/components/OfficialLink";
 import VerificationBadge from "@/components/VerificationBadge";
+import InstitutionMedia from "@/components/InstitutionMedia";
 import { formatVerified, useProgrammes, useUniversity } from "@/hooks/useCatalogue";
 import { useTrackView } from "@/hooks/useTracking";
 import { useRecordRecent } from "@/hooks/useRecentlyViewed";
@@ -88,7 +89,9 @@ const UniversityProfile = () => {
 
           {uni && (
             <>
-              <header className="bg-glass rounded-xl p-5 mb-6">
+              <InstitutionMedia websiteUrl={uni.website_url} name={uni.name} variant="hero" />
+
+              <header className="bg-glass rounded-xl p-5 mb-6 mt-4">
                 <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
                   <div className="min-w-0">
                     <h1 className="font-display text-xl sm:text-2xl font-bold text-foreground break-words">
@@ -291,7 +294,6 @@ const UniversityProfile = () => {
                 </div>
               </section>
 
-              {/* Student experiences live in the Community, not on official profiles. */}
               <section className="bg-glass rounded-xl p-4">
                 <h2 className="font-display text-base font-semibold text-foreground">Student experiences</h2>
                 <p className="text-sm text-muted-foreground mt-1">
