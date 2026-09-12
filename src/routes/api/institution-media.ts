@@ -27,21 +27,23 @@ const absolute = (value: string, base: string) => {
   }
 };
 
-const firstMeta = (html: string, key: string) => {
-  const escaped = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const patterns = [
-    new RegExp(`<meta[^>]+(?:property|name)=["']${escaped}["'][^>]+content=["']([^"']+)["'][^>]*>`, "i"),
-    new RegExp(`<meta[^>]+content=["']([^"']+)["'][^>]+(?:property|name)=["']${escaped}["'][^>]*>`, "i"),
-  ];
-  for (const pattern of patterns) {
-    const match = html.match(pattern);
-    if (match?.[1]) return match[1].trim();
+const firstMeta = (html: string, keys: string[]) => {
+  for (const key of keys) {
+    const escaped = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const patterns = [
+      new RegExp(`<meta[^>]+(?:property|name)=[\"']${escaped}[\"'][^>]+content=[\"']([^\"']+)[\"'][^>]*>`, "i"),
+      new RegExp(`<meta[^>]+content=[\"']([^\"']+)[\"'][^>]+(?:property|name)=[\"']${escaped}[\"'][^>]*>`, "i"),
+    ];
+    for (const pattern of patterns) {
+      const match = html.match(pattern);
+      if (match?.[1]) return match[1].trim();
+    }
   }
   return null;
 };
 
 const firstIcon = (html: string, base: string) => {
-  const matches = html.matchAll(/<link[^>]+(?:rel=["'][^"']*(?:icon|apple-touch-icon)[^"']*)[^>]+href=["']([^"']+)["'][^>]*>/gi);
+  const matches = html.matchAll(/<link[^>]+(?:rel=[\"'][^\"']*(?:icon|apple-touch-icon)[^\"']*)[^>]+href=[\"']([^\"']+)[\"'][^>]*>/gi);
   for (const match of matches) {
     const url = absolute(match[1], base);
     if (url) return url;
@@ -49,59 +51,89 @@ const firstIcon = (html: string, base: string) => {
   return absolute("/favicon.ico", base);
 };
 
-const firstUsefulImage = (html: string, base: string) => {
-  const matches = html.matchAll(/<img[^>]+(?:src|data-src)=["']([^"']+)["'][^>]*>/gi);
-  const candidates: string[] = [];
-  for (const match of matches) {
-    const tag = match[0].toLowerCase();
-    const url = absolute(match[1], base);
-    if (!url || /\.svg(?:$|\?)/i.test(url)) continue;
-    if (/(logo|icon|avatar|favicon)/.test(tag)) continue;
-    if (/(campus|university|college|school|main|building|facility|library|hostel|lecture|administration|student)/.test(tag)) return url;
-    candidates.push(url);
-  }
-  return candidates[0] ?? null;
+const scoreImage = (tag: string, url: string, name: string) => {
+  const haystack = `${tag} ${url}`.toLowerCase();
+  const tokens = name.toLowerCase().split(/[^a-z0-9]+/).filter((token) => token.length > 3);
+  let score = 0;
+  if (/(campus|university|college|school|building|facility|library|hostel|lecture|administration|student|academic)/.test(haystack)) score += 5;
+  if (/(logo|icon|avatar|favicon|sprite)/.test(haystack)) score -= 8;
+  for (const token of tokens) if (haystack.includes(token)) score += 2;
+  if (/\.(svg|gif)(?:$|\?)/i.test(url)) score -= 3;
+  return score;
 };
 
-const firstJsonLdImage = (html: string, base: string) => {
-  const scripts = html.matchAll(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi);
+const findImage = (html: string, base: string, name: string) => {
+  const matches = html.matchAll(/<img[^>]+(?:src|data-src|data-lazy-src|data-original)=[\"']([^\"']+)[\"'][^>]*>/gi);
+  let best: { url: string; score: number } | null = null;
+  for (const match of matches) {
+    const url = absolute(match[1], base);
+    if (!url || /\.(svg|gif)(?:$|\?)/i.test(url)) continue;
+    const score = scoreImage(match[0], url, name);
+    if (!best || score > best.score) best = { url, score };
+  }
+  return best?.url ?? null;
+};
+
+const jsonLdImages = (html: string, base: string) => {
+  const results: string[] = [];
+  const scripts = html.matchAll(/<script[^>]+type=[\"']application\/ld\+json[\"'][^>]*>([\s\S]*?)<\/script>/gi);
   for (const script of scripts) {
     try {
-      const parsed = JSON.parse(script[1]) as Record<string, unknown> | Array<Record<string, unknown>>;
+      const parsed = JSON.parse(script[1]) as unknown;
       const nodes = Array.isArray(parsed) ? parsed : [parsed];
       for (const node of nodes) {
-        const image = node.image;
-        const value = typeof image === "string" ? image : Array.isArray(image) ? image[0] : null;
-        if (typeof value === "string") {
+        if (!node || typeof node !== "object") continue;
+        const image = (node as Record<string, unknown>).image;
+        const values = typeof image === "string" ? [image] : Array.isArray(image) ? image : [];
+        for (const value of values) {
+          if (typeof value !== "string") continue;
           const url = absolute(value, base);
-          if (url) return url;
+          if (url) results.push(url);
         }
       }
     } catch {
-      // Continue when a site embeds invalid JSON-LD.
+      // Ignore invalid JSON-LD and continue.
     }
   }
-  return null;
+  return results;
 };
 
-const firstWikimediaImage = async (name: string) => {
+const firstWikimedia = async (name: string, kind: "campus" | "logo") => {
   try {
-    const query = encodeURIComponent(`${name} Ghana campus`);
-    const response = await fetch(
-      `https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=${query}&gsrnamespace=6&gsrlimit=5&prop=imageinfo&iiprop=url&iiurlwidth=1200&format=json`,
-      { headers: { Accept: "application/json", "User-Agent": "GhanaPathFinder/1.0" } },
-    );
-    if (!response.ok) return null;
-    const json = (await response.json()) as {
-      query?: { pages?: Record<string, { imageinfo?: Array<{ thumburl?: string; url?: string }> }> };
-    };
-    const pages = Object.values(json.query?.pages ?? {});
-    for (const page of pages) {
-      const image = page.imageinfo?.[0]?.thumburl ?? page.imageinfo?.[0]?.url;
-      if (image && !/\.svg(?:$|\?)/i.test(image)) return image;
+    const queries = kind === "logo"
+      ? [`${name} logo`, `\"${name}\" logo`]
+      : [`${name} campus Ghana`, `\"${name}\" Ghana campus`, `${name} university Ghana`];
+
+    for (const queryText of queries) {
+      const query = encodeURIComponent(queryText);
+      const response = await fetch(
+        `https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=${query}&gsrnamespace=6&gsrlimit=10&prop=imageinfo&iiprop=url|mime&iiurlwidth=1400&format=json`,
+        { headers: { Accept: "application/json", "User-Agent": "GhanaPathFinder/1.0 institutional-media" } },
+      );
+      if (!response.ok) continue;
+      const json = (await response.json()) as {
+        query?: { pages?: Record<string, { title?: string; imageinfo?: Array<{ thumburl?: string; url?: string; mime?: string }> }> };
+      };
+      const pages = Object.values(json.query?.pages ?? {});
+      const nameTokens = name.toLowerCase().split(/[^a-z0-9]+/).filter((token) => token.length > 3);
+      const ranked = pages
+        .map((page) => {
+          const title = (page.title ?? "").toLowerCase();
+          const image = page.imageinfo?.[0];
+          const url = image?.thumburl ?? image?.url;
+          if (!url || image?.mime?.startsWith("image/svg")) return null;
+          let score = kind === "logo" ? 0 : -2;
+          if (title.includes("campus")) score += 5;
+          if (title.includes("logo") || title.includes("crest") || title.includes("coat of arms")) score += kind === "logo" ? 7 : -4;
+          for (const token of nameTokens) if (title.includes(token)) score += 3;
+          return { url, score };
+        })
+        .filter(Boolean) as Array<{ url: string; score: number }>;
+      ranked.sort((a, b) => b.score - a.score);
+      if (ranked[0] && ranked[0].score >= (kind === "logo" ? 4 : 3)) return ranked[0].url;
     }
   } catch {
-    return null;
+    // Public fallback only. Never make the institution page fail because media search failed.
   }
   return null;
 };
@@ -112,7 +144,7 @@ export const Route = createFileRoute("/api/institution-media")({
       GET: async ({ request }) => {
         const requestUrl = new URL(request.url);
         const target = requestUrl.searchParams.get("url");
-        const name = requestUrl.searchParams.get("name") ?? "Ghana university";
+        const name = requestUrl.searchParams.get("name") ?? "Ghanaian tertiary institution";
         if (!target || !isSafeUrl(target)) {
           return Response.json({ error: "A valid HTTPS institutional website is required." }, { status: 400 });
         }
@@ -127,9 +159,14 @@ export const Route = createFileRoute("/api/institution-media")({
               "User-Agent": "GhanaPathFinder/1.0 institutional-media-fetcher",
             },
           });
+
           if (!response.ok) {
-            const wiki = await firstWikimediaImage(name);
-            return Response.json({ source: target, logo: null, campusImage: wiki, fetchedAt: new Date().toISOString() });
+            return Response.json({
+              source: target,
+              logo: await firstWikimedia(name, "logo"),
+              campusImage: await firstWikimedia(name, "campus"),
+              fetchedAt: new Date().toISOString(),
+            });
           }
 
           const contentType = response.headers.get("content-type") ?? "";
@@ -137,26 +174,39 @@ export const Route = createFileRoute("/api/institution-media")({
             return Response.json({ error: "Institution website did not return HTML." }, { status: 502 });
           }
 
-          const html = (await response.text()).slice(0, 2_000_000);
+          const html = (await response.text()).slice(0, 2_500_000);
           const base = new URL(target).toString();
-          const logo = absolute(firstMeta(html, "og:logo") ?? firstIcon(html, base) ?? "", base);
-          const campusImage =
-            absolute(
-              firstMeta(html, "og:image") ??
-                firstMeta(html, "twitter:image") ??
-                firstJsonLdImage(html, base) ??
-                firstUsefulImage(html, base) ??
-                "",
-              base,
-            ) ?? (await firstWikimediaImage(name));
+
+          const logo = absolute(firstMeta(html, ["og:logo", "twitter:creator"] ) ?? firstIcon(html, base) ?? "", base);
+          const jsonImages = jsonLdImages(html, base);
+          const campusImage = absolute(
+            firstMeta(html, ["og:image", "twitter:image", "twitter:image:src"]) ?? jsonImages[0] ?? findImage(html, base, name) ?? "",
+            base,
+          );
+
+          const resolvedLogo = logo || (await firstWikimedia(name, "logo"));
+          const resolvedCampus = campusImage || (await firstWikimedia(name, "campus"));
 
           return Response.json(
-            { source: target, logo: logo || null, campusImage: campusImage || null, fetchedAt: new Date().toISOString() },
-            { headers: { "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800" } },
+            {
+              source: target,
+              logo: resolvedLogo || null,
+              campusImage: resolvedCampus || null,
+              fetchedAt: new Date().toISOString(),
+            },
+            {
+              headers: {
+                "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800",
+              },
+            },
           );
         } catch {
-          const wiki = await firstWikimediaImage(name);
-          return Response.json({ source: target, logo: null, campusImage: wiki, fetchedAt: new Date().toISOString() });
+          return Response.json({
+            source: target,
+            logo: await firstWikimedia(name, "logo"),
+            campusImage: await firstWikimedia(name, "campus"),
+            fetchedAt: new Date().toISOString(),
+          });
         } finally {
           clearTimeout(timer);
         }
