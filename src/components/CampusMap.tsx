@@ -7,7 +7,11 @@ interface CampusMapProps {
 
 const placeCache = new Map<string, string | null>();
 
-const browserKey = import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY"] as string | undefined;
+// Prefer the user-owned key because the managed key is restricted to preview domains.
+const browserKey = (
+  import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY_2"]
+  ?? import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY"]
+) as string | undefined;
 
 const CampusMap = ({ name, location }: CampusMapProps) => {
   const key = `${name}|${location ?? ""}`;

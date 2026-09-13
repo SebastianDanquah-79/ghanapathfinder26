@@ -28,7 +28,9 @@ export const Route = createFileRoute("/api/campus-photos")({
           return Response.json({ error: "An institution name is required." }, { status: 400 });
         }
 
-        const apiKey = process.env["GOOGLE_MAPS_API_KEY"];
+        // A user-owned custom-domain connection is linked alongside the managed
+        // preview connection and receives the _2 suffix. Prefer it in production.
+        const apiKey = process.env["GOOGLE_MAPS_API_KEY_2"] ?? process.env["GOOGLE_MAPS_API_KEY"];
         const lovableKey = process.env["LOVABLE_API_KEY"];
         if (!apiKey || !lovableKey) {
           return Response.json({ placeId: null, photos: [] as Photo[] });
