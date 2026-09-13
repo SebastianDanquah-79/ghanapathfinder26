@@ -228,7 +228,10 @@ const UniversityCampusImage = ({ name, location }: UniversityCampusImageProps) =
         const preferred = verifiedFor(key);
         const reachable = (await Promise.all(preferred.map(async (src) => (await isImageReachable(src)) ? src : null)))
           .filter((src): src is string => Boolean(src));
-        let media: CampusMedia[] = reachable.map((src) => ({ src, sourceUrl: src, title: key, credit: "GhanaPathFinder verified campus source", license: "Source verified", kind: "photo" as const }));
+        let media: CampusMedia[] = [
+          ...placePhotos,
+          ...reachable.map((src) => ({ src, sourceUrl: src, title: key, credit: "GhanaPathFinder verified campus source", license: "Source verified", kind: "photo" as const })),
+        ];
         if (media.length < 3) media = [...media, ...(await fetchCommonsImages(key))];
         const unique = new Map<string, CampusMedia>();
         for (const item of media) if (!unique.has(item.src)) unique.set(item.src, item);
