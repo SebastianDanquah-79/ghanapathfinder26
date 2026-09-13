@@ -172,7 +172,7 @@ const AdminReview = () => {
   const { user, loading } = useAuth();
   const { data: isAdmin, isLoading: roleLoading } = useIsAdmin();
   const enabled = !!isAdmin;
-  const [table, setTable] = useState<ReviewTable>("universities");
+  const [table, setTable] = useState<ReviewTable>("institutions");
   const counts = useReviewCounts(enabled);
   const queue = useReviewQueue(table, enabled);
   const corrections = useCorrections(enabled);
