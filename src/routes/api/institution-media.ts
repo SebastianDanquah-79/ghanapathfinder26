@@ -208,7 +208,10 @@ export const Route = createFileRoute("/api/institution-media")({
           const html = (await response.text()).slice(0, 2_500_000);
           const base = new URL(target).toString();
 
-          const logo = absolute(firstMeta(html, ["og:logo", "twitter:creator"] ) ?? firstIcon(html, base) ?? "", base);
+          const logo = absolute(
+            firstMeta(html, ["og:logo"]) ?? findLogoImage(html, base) ?? firstIcon(html, base) ?? "",
+            base,
+          );
           const jsonImages = jsonLdImages(html, base);
           const campusImage = absolute(
             firstMeta(html, ["og:image", "twitter:image", "twitter:image:src"]) ?? jsonImages[0] ?? findImage(html, base, name) ?? "",
