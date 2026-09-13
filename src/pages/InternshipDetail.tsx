@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import Seo, { breadcrumbLd } from "@/components/Seo";
 import SaveButton from "@/components/SaveButton";
 import OfficialLink from "@/components/OfficialLink";
+import EmployerPhoto from "@/components/EmployerPhoto";
 import { ArrowLeft, Building, Briefcase, GraduationCap } from "@/lib/icons";
 import { employerById, qualificationsFor, applyStepsFor, checklistFor, downloadIcs } from "@/lib/internships";
 
@@ -109,6 +110,8 @@ const InternshipDetail = () => {
             {employer.sector} · {employer.locations.join(", ")}
           </p>
           <p className="text-sm text-muted-foreground mb-4 max-w-3xl">{employer.about}</p>
+
+          <EmployerPhoto name={employer.name} location={employer.locations[0] ?? "Ghana"} />
 
           <ul className="flex flex-wrap gap-1.5 mb-4">
             {employer.opportunities.map((o) => (
