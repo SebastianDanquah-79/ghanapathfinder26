@@ -27,17 +27,23 @@ const initialsOf = (name: string) =>
     .map((w) => w[0]?.toUpperCase() ?? "")
     .join("") || name.slice(0, 2).toUpperCase();
 
+// Only full official names are matched here: short forms such as "UG" or "KTU"
+// appear inside unrelated institution names and produced the wrong crest.
 const knownDomains: Array<[RegExp, string]> = [
-  [/university of mines and technology|\bumat\b/i, "umat.edu.gh"],
-  [/ghana communication technology university|\bgctu\b/i, "gctu.edu.gh"],
-  [/koforidua technical university|\bktu\b/i, "ktu.edu.gh"],
-  [/university of ghana|\bug\b/i, "ug.edu.gh"],
-  [/kwame nkrumah university of science and technology|\bknust\b/i, "knust.edu.gh"],
-  [/university of cape coast|\bucc\b/i, "ucc.edu.gh"],
+  [/^university of mines and technology\b/i, "umat.edu.gh"],
+  [/^ghana communication technology university\b/i, "gctu.edu.gh"],
+  [/^koforidua technical university\b/i, "ktu.edu.gh"],
+  [/^university of ghana\b/i, "ug.edu.gh"],
+  [/^kwame nkrumah university of science and technology\b/i, "knust.edu.gh"],
+  [/^university of cape coast\b/i, "ucc.edu.gh"],
 ];
 
+/**
+ * Icons that are never the institution's own mark: icon services, bare
+ * favicons and the regulator's own site (many records had borrowed it).
+ */
 const isGenericIcon = (url: string) =>
-  /s2\/favicons|icons\.duckduckgo\.com|favicon\.(ico|png)/i.test(url);
+  /s2\/favicons|icons\.duckduckgo\.com|favicon\.(ico|png)|gtec\.edu\.gh|placeholder/i.test(url);
 
 const logoCacheKey = (domain: string) => `ghanapathfinder:brand-logo:v1:${domain}`;
 
