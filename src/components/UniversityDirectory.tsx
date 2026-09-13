@@ -84,7 +84,7 @@ const UniversityDirectory = () => {
 
               <div className="flex items-start justify-between gap-2 mb-2">
                 <div className="flex min-w-0 items-start gap-2">
-                  <BrandLogo name={u.name} websiteUrl={u.website_url} size={36} />
+                  <BrandLogo name={u.name} websiteUrl={u.website_url} logoUrl={u.logo_source_url ?? u.logo_url} size={36} />
                   <div className="min-w-0">
                     <h3 className="font-display font-semibold text-lg text-foreground"><Link to={`/university/${u.slug}`} className="hover:text-primary transition-colors">{u.short_name ?? u.name}</Link></h3>
                     <p className="text-xs text-muted-foreground break-words">{u.name}</p>

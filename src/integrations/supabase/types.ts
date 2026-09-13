@@ -534,6 +534,8 @@ export type Database = {
           institution_type: string
           last_verified_at: string | null
           logo_source_url: string | null
+          logo_verification_status: string
+          logo_verified_at: string | null
           needs_review: boolean
           official_name: string
           region: string | null
@@ -553,6 +555,8 @@ export type Database = {
           institution_type: string
           last_verified_at?: string | null
           logo_source_url?: string | null
+          logo_verification_status?: string
+          logo_verified_at?: string | null
           needs_review?: boolean
           official_name: string
           region?: string | null
@@ -572,6 +576,8 @@ export type Database = {
           institution_type?: string
           last_verified_at?: string | null
           logo_source_url?: string | null
+          logo_verification_status?: string
+          logo_verified_at?: string | null
           needs_review?: boolean
           official_name?: string
           region?: string | null
@@ -1887,6 +1893,8 @@ export type Database = {
           location: string | null
           logo_source_url: string | null
           logo_url: string | null
+          logo_verification_status: string
+          logo_verified_at: string | null
           name: string
           needs_review: boolean
           ownership: string | null
@@ -1931,6 +1939,8 @@ export type Database = {
           location?: string | null
           logo_source_url?: string | null
           logo_url?: string | null
+          logo_verification_status?: string
+          logo_verified_at?: string | null
           name: string
           needs_review?: boolean
           ownership?: string | null
@@ -1975,6 +1985,8 @@ export type Database = {
           location?: string | null
           logo_source_url?: string | null
           logo_url?: string | null
+          logo_verification_status?: string
+          logo_verified_at?: string | null
           name?: string
           needs_review?: boolean
           ownership?: string | null

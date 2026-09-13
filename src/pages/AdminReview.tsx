@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import BrandLogo from "@/components/BrandLogo";
 import { Loader2, ShieldCheck } from "@/lib/icons";
 import { useAuth } from "@/hooks/useAuth";
 import { useIsAdmin } from "@/hooks/useAdminData";
@@ -63,7 +64,17 @@ const ReviewCard = ({ table, row }: { table: ReviewTable; row: ReviewRow }) => {
   return (
     <article className="rounded-xl border border-border bg-card p-4 space-y-3">
       <header className="flex flex-wrap items-baseline justify-between gap-2">
-        <h3 className="font-display text-base font-semibold text-foreground">{label}</h3>
+        <div className="flex min-w-0 items-center gap-3">
+          {(table === "universities" || table === "institutions") && (
+            <BrandLogo
+              name={label}
+              websiteUrl={row["website_url"] as string | null}
+              logoUrl={row["logo_source_url"] as string | null}
+              size={48}
+            />
+          )}
+          <h3 className="font-display text-base font-semibold text-foreground">{label}</h3>
+        </div>
         <span className="text-[11px] uppercase tracking-wide text-muted-foreground">
           {row["institution_type"] ?? row["sector"] ?? row["skill_area"] ?? row["universities"]?.name ?? "—"}
         </span>
@@ -113,6 +124,10 @@ const ReviewCard = ({ table, row }: { table: ReviewTable; row: ReviewRow }) => {
             </li>
           ))}
         </ul>
+      )}
+
+      {table === "programmes" && !row["programme_url"] && !row["source_url"] && sources.length === 0 && (
+        <p className="text-xs font-medium text-destructive">No official programme source is recorded. Verify before approval.</p>
       )}
 
       <div className="flex flex-wrap gap-2">

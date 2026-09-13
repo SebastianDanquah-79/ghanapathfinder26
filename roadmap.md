@@ -12,4 +12,4 @@
 - [ ] Phase 10: Polish intentional mobile layouts and eliminate overflow.
 - [x] FAQ page (/faq), dream-job path builder, directory subheadings, real logo and campus photos.
 - [ ] Phase 11: Verify accessibility, performance, metadata, and production build.
-- [ ] Extend the verified review workflow to official programmes and institution logos in sourced batches.
+- [x] Extend the verified review workflow to official programmes and institution logos in sourced batches (279 sourced programmes retained; 609 unsupported records queued; first 8 official logos approved).
