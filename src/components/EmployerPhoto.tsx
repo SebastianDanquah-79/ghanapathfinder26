@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 interface EmployerPhotoProps {
   name: string;
   location?: string | null | undefined;
+  /** How many Google Places photos to show. Listings use one, detail pages three. */
+  limit?: number;
 }
 
 type Photo = { url: string; attribution: string; attributionUrl: string | null };
