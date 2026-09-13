@@ -36,25 +36,64 @@ const knownDomains: Array<[RegExp, string]> = [
   [/university of cape coast|\bucc\b/i, "ucc.edu.gh"],
 ];
 
+const isGenericIcon = (url: string) =>
+  /s2\/favicons|icons\.duckduckgo\.com|favicon\.(ico|png)/i.test(url);
+
+const logoCacheKey = (domain: string) => `ghanapathfinder:brand-logo:v1:${domain}`;
+
 const BrandLogo = ({ name, websiteUrl, logoUrl, size = 40, className = "" }: BrandLogoProps) => {
   const suppliedDomain = domainOf(websiteUrl ?? logoUrl ?? null);
   const knownDomain = knownDomains.find(([pattern]) => pattern.test(name))?.[1] ?? null;
   const domain = suppliedDomain ?? knownDomain;
 
+  // Resolve the institution's real mark from its own site, falling back to icon services.
+  const [resolved, setResolved] = useState<string | null>(() => {
+    if (typeof window === "undefined" || !domain) return null;
+    try {
+      return window.localStorage.getItem(logoCacheKey(domain));
+    } catch {
+      return null;
+    }
+  });
+
+  useEffect(() => {
+    if (!domain || resolved) return;
+    let cancelled = false;
+    const site = `https://${domain}`;
+    fetch(`/api/institution-media?url=${encodeURIComponent(site)}&name=${encodeURIComponent(name)}`)
+      .then((response) => (response.ok ? response.json() : null))
+      .then((value: { logo?: string | null } | null) => {
+        const logo = value?.logo;
+        if (cancelled || !logo || isGenericIcon(logo)) return;
+        setResolved(logo);
+        try {
+          window.localStorage.setItem(logoCacheKey(domain), logo);
+        } catch {}
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [domain, name, resolved]);
+
   const sources = useMemo(() => {
     const list: string[] = [];
-    if (logoUrl && /^https?:\/\//.test(logoUrl)) list.push(logoUrl);
+    if (resolved) list.push(resolved);
+    if (logoUrl && /^https?:\/\//.test(logoUrl) && !isGenericIcon(logoUrl)) list.push(logoUrl);
     if (domain) {
       list.push(`https://${domain}/favicon.ico`);
       list.push(`https://${domain}/favicon.png`);
       list.push(`https://www.google.com/s2/favicons?sz=128&domain=${domain}`);
       list.push(`https://icons.duckduckgo.com/ip3/${domain}.ico`);
     }
+    if (logoUrl && /^https?:\/\//.test(logoUrl)) list.push(logoUrl);
     return [...new Set(list)];
-  }, [logoUrl, domain]);
+  }, [resolved, logoUrl, domain]);
 
   const [index, setIndex] = useState(0);
+  useEffect(() => setIndex(0), [sources[0]]);
   const src = sources[index];
+
 
   return (
     <span
