@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import Seo, { breadcrumbLd } from "@/components/Seo";
 import SaveButton from "@/components/SaveButton";
 import OfficialLink from "@/components/OfficialLink";
+import EmployerPhoto from "@/components/EmployerPhoto";
 import { ArrowLeft, Building, Briefcase, GraduationCap } from "@/lib/icons";
 import { employerById, qualificationsFor, applyStepsFor, checklistFor, downloadIcs } from "@/lib/internships";
 
