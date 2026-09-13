@@ -255,6 +255,45 @@ export type Database = {
         }
         Relationships: []
       }
+      corrections: {
+        Row: {
+          created_at: string
+          id: string
+          note: string
+          resolved: boolean
+          row_id: string | null
+          row_label: string | null
+          submitted_at: string
+          submitted_by: string | null
+          table_name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          note: string
+          resolved?: boolean
+          row_id?: string | null
+          row_label?: string | null
+          submitted_at?: string
+          submitted_by?: string | null
+          table_name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          note?: string
+          resolved?: boolean
+          row_id?: string | null
+          row_label?: string | null
+          submitted_at?: string
+          submitted_by?: string | null
+          table_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       data_sources: {
         Row: {
           created_at: string
@@ -485,6 +524,128 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      institutions: {
+        Row: {
+          created_at: string
+          google_place_id: string | null
+          gtec_accreditation_status: string | null
+          id: string
+          institution_type: string
+          last_verified_at: string | null
+          logo_source_url: string | null
+          needs_review: boolean
+          official_name: string
+          region: string | null
+          short_description: string | null
+          social_links: Json
+          source_urls: string[]
+          town: string | null
+          university_id: string | null
+          updated_at: string
+          website_url: string | null
+        }
+        Insert: {
+          created_at?: string
+          google_place_id?: string | null
+          gtec_accreditation_status?: string | null
+          id?: string
+          institution_type: string
+          last_verified_at?: string | null
+          logo_source_url?: string | null
+          needs_review?: boolean
+          official_name: string
+          region?: string | null
+          short_description?: string | null
+          social_links?: Json
+          source_urls?: string[]
+          town?: string | null
+          university_id?: string | null
+          updated_at?: string
+          website_url?: string | null
+        }
+        Update: {
+          created_at?: string
+          google_place_id?: string | null
+          gtec_accreditation_status?: string | null
+          id?: string
+          institution_type?: string
+          last_verified_at?: string | null
+          logo_source_url?: string | null
+          needs_review?: boolean
+          official_name?: string
+          region?: string | null
+          short_description?: string | null
+          social_links?: Json
+          source_urls?: string[]
+          town?: string | null
+          university_id?: string | null
+          updated_at?: string
+          website_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "institutions_university_id_fkey"
+            columns: ["university_id"]
+            isOneToOne: false
+            referencedRelation: "universities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      internship_providers: {
+        Row: {
+          application_url: string | null
+          created_at: string
+          id: string
+          last_verified_at: string | null
+          logo_source_url: string | null
+          name: string
+          needs_review: boolean
+          paid: boolean | null
+          programme_summary: string | null
+          provider_type: string | null
+          sector: string | null
+          social_links: Json
+          source_urls: string[]
+          updated_at: string
+          website_url: string | null
+        }
+        Insert: {
+          application_url?: string | null
+          created_at?: string
+          id?: string
+          last_verified_at?: string | null
+          logo_source_url?: string | null
+          name: string
+          needs_review?: boolean
+          paid?: boolean | null
+          programme_summary?: string | null
+          provider_type?: string | null
+          sector?: string | null
+          social_links?: Json
+          source_urls?: string[]
+          updated_at?: string
+          website_url?: string | null
+        }
+        Update: {
+          application_url?: string | null
+          created_at?: string
+          id?: string
+          last_verified_at?: string | null
+          logo_source_url?: string | null
+          name?: string
+          needs_review?: boolean
+          paid?: boolean | null
+          programme_summary?: string | null
+          provider_type?: string | null
+          sector?: string | null
+          social_links?: Json
+          source_urls?: string[]
+          updated_at?: string
+          website_url?: string | null
+        }
+        Relationships: []
       }
       internships: {
         Row: {
@@ -1267,10 +1428,12 @@ export type Database = {
       programmes: {
         Row: {
           academic_year: string | null
+          admission_summary: string | null
           application_url: string | null
           career_opportunities: string[]
           created_at: string
           degree_type: string
+          department: string | null
           description: string | null
           duration: string | null
           entry_requirements: string | null
@@ -1278,12 +1441,15 @@ export type Database = {
           field: string | null
           id: string
           last_verified_at: string | null
+          mode: string | null
           name: string
+          needs_review: boolean
           programme_url: string | null
           qualification: string | null
           relevant_subjects: string[]
           slug: string
           source_url: string | null
+          source_urls: string[]
           university_id: string
           updated_at: string
           verification_status: string
@@ -1292,10 +1458,12 @@ export type Database = {
         }
         Insert: {
           academic_year?: string | null
+          admission_summary?: string | null
           application_url?: string | null
           career_opportunities?: string[]
           created_at?: string
           degree_type?: string
+          department?: string | null
           description?: string | null
           duration?: string | null
           entry_requirements?: string | null
@@ -1303,12 +1471,15 @@ export type Database = {
           field?: string | null
           id?: string
           last_verified_at?: string | null
+          mode?: string | null
           name: string
+          needs_review?: boolean
           programme_url?: string | null
           qualification?: string | null
           relevant_subjects?: string[]
           slug: string
           source_url?: string | null
+          source_urls?: string[]
           university_id: string
           updated_at?: string
           verification_status?: string
@@ -1317,10 +1488,12 @@ export type Database = {
         }
         Update: {
           academic_year?: string | null
+          admission_summary?: string | null
           application_url?: string | null
           career_opportunities?: string[]
           created_at?: string
           degree_type?: string
+          department?: string | null
           description?: string | null
           duration?: string | null
           entry_requirements?: string | null
@@ -1328,12 +1501,15 @@ export type Database = {
           field?: string | null
           id?: string
           last_verified_at?: string | null
+          mode?: string | null
           name?: string
+          needs_review?: boolean
           programme_url?: string | null
           qualification?: string | null
           relevant_subjects?: string[]
           slug?: string
           source_url?: string | null
+          source_urls?: string[]
           university_id?: string
           updated_at?: string
           verification_status?: string
@@ -1540,6 +1716,57 @@ export type Database = {
         }
         Relationships: []
       }
+      skill_providers: {
+        Row: {
+          application_url: string | null
+          certification_issued_by: string | null
+          cost: string | null
+          course_name: string | null
+          created_at: string
+          duration: string | null
+          format: string | null
+          id: string
+          last_verified_at: string | null
+          needs_review: boolean
+          provider_name: string
+          skill_area: string | null
+          source_urls: string[]
+          updated_at: string
+        }
+        Insert: {
+          application_url?: string | null
+          certification_issued_by?: string | null
+          cost?: string | null
+          course_name?: string | null
+          created_at?: string
+          duration?: string | null
+          format?: string | null
+          id?: string
+          last_verified_at?: string | null
+          needs_review?: boolean
+          provider_name: string
+          skill_area?: string | null
+          source_urls?: string[]
+          updated_at?: string
+        }
+        Update: {
+          application_url?: string | null
+          certification_issued_by?: string | null
+          cost?: string | null
+          course_name?: string | null
+          created_at?: string
+          duration?: string | null
+          format?: string | null
+          id?: string
+          last_verified_at?: string | null
+          needs_review?: boolean
+          provider_name?: string
+          skill_area?: string | null
+          source_urls?: string[]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       sms_sends: {
         Row: {
           campaign: string
@@ -1651,19 +1878,27 @@ export type Database = {
           delivery_mode: string
           description: string | null
           financial_aid_url: string | null
+          google_place_id: string | null
+          gtec_accreditation_status: string | null
           gtec_category: string | null
           id: string
+          institution_type: string | null
           last_verified_at: string | null
           location: string | null
+          logo_source_url: string | null
           logo_url: string | null
           name: string
+          needs_review: boolean
           ownership: string | null
           region: string | null
           scholarship_info: string | null
+          short_description: string | null
           short_name: string | null
           slug: string
+          social_links: Json
           source_type: string
           source_url: string | null
+          source_urls: string[]
           top_programmes: string[]
           tuition_range: string | null
           type: string
@@ -1687,19 +1922,27 @@ export type Database = {
           delivery_mode?: string
           description?: string | null
           financial_aid_url?: string | null
+          google_place_id?: string | null
+          gtec_accreditation_status?: string | null
           gtec_category?: string | null
           id?: string
+          institution_type?: string | null
           last_verified_at?: string | null
           location?: string | null
+          logo_source_url?: string | null
           logo_url?: string | null
           name: string
+          needs_review?: boolean
           ownership?: string | null
           region?: string | null
           scholarship_info?: string | null
+          short_description?: string | null
           short_name?: string | null
           slug: string
+          social_links?: Json
           source_type?: string
           source_url?: string | null
+          source_urls?: string[]
           top_programmes?: string[]
           tuition_range?: string | null
           type?: string
@@ -1723,19 +1966,27 @@ export type Database = {
           delivery_mode?: string
           description?: string | null
           financial_aid_url?: string | null
+          google_place_id?: string | null
+          gtec_accreditation_status?: string | null
           gtec_category?: string | null
           id?: string
+          institution_type?: string | null
           last_verified_at?: string | null
           location?: string | null
+          logo_source_url?: string | null
           logo_url?: string | null
           name?: string
+          needs_review?: boolean
           ownership?: string | null
           region?: string | null
           scholarship_info?: string | null
+          short_description?: string | null
           short_name?: string | null
           slug?: string
+          social_links?: Json
           source_type?: string
           source_url?: string | null
+          source_urls?: string[]
           top_programmes?: string[]
           tuition_range?: string | null
           type?: string
