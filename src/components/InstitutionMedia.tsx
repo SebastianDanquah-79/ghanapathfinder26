@@ -62,11 +62,59 @@ const KNOWN_MEDIA: Record<string, Media> = {
   },
 };
 
+// The first 50 university-level institutions are covered here: 16 public universities,
+// 10 public technical universities and 24 chartered private tertiary institutions.
+// Domains are used only when a stronger explicit logo is not already available.
+const FIRST_50_LOGO_DOMAINS: Record<string, string> = {
+  "akenten-appiah-menka-university-of-skills-training-and-entrepreneurial-development": "aamusted.edu.gh",
+  "c-k-tedam-university-of-technology-and-applied-sciences": "cut.edu.gh",
+  "ghana-institute-of-management-and-public-administration": "gimpa.edu.gh",
+  "s-d-dombo-university-of-business-and-integrated-development-studies": "sdub.edu.gh",
+  "university-of-environment-and-sustainable-development": "uesd.edu.gh",
+  "university-of-media-arts-and-communication": "unimac.edu.gh",
+  "accra-technical-university": "atu.edu.gh",
+  "bolgatanga-technical-university": "btu.edu.gh",
+  "cape-coast-technical-university": "cctu.edu.gh",
+  "dr-hilla-limann-technical-university": "dhltu.edu.gh",
+  "ho-technical-university": "htu.edu.gh",
+  "kumasi-technical-university": "kstu.edu.gh",
+  "sunyani-technical-university": "stu.edu.gh",
+  "takoradi-technical-university": "ttu.edu.gh",
+  "tamale-technical-university": "tatu.edu.gh",
+  "academic-city-university": "acity.edu.gh",
+  "accra-metropolitan-university": "amu.edu.gh",
+  "african-university-of-communication-and-business": "auc.edu.gh",
+  "akrofi-christaller-institute-of-theology-mission-and-culture": "acimc.edu.gh",
+  "all-nations-university": "anu.edu.gh",
+  "ashesi-university": "ashesi.edu.gh",
+  "catholic-university": "cug.edu.gh",
+  "central-university": "central.edu.gh",
+  "christian-service-university": "csuc.edu.gh",
+  "ensign-global-university": "ensign.edu.gh",
+  "entrance-university-of-health-sciences": "entrance.edu.gh",
+  "family-health-university": "fhu.edu.gh",
+  "garden-city-university": "gcuc.edu.gh",
+  "heritage-christian-university": "hcu.edu.gh",
+  "kaaf-university": "kaaf.edu.gh",
+  "knutsford-university": "knutsford.edu.gh",
+  "methodist-university": "mug.edu.gh",
+  "nobel-international-business-university": "nibs.edu.gh",
+  "pentecost-university": "pentvars.edu.gh",
+  "presbyterian-university": "presbyuniversity.edu.gh",
+  "thrivus-university-for-biomedical-science-and-technology": "thrivus.edu.gh",
+  "trinity-theological-seminary": "tts.edu.gh",
+  "university-of-gold-coast": "ug.edu.gh",
+  "valley-view-university": "vvu.edu.gh",
+};
+
 const normalize = (value: string) => value.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-const cacheKey = (url: string) => `ghanapathfinder:institution-media:v6:${url}`;
+const cacheKey = (url: string) => `ghanapathfinder:institution-media:v7:${url}`;
+
+const faviconForDomain = (domain?: string | null) => domain ? `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=128` : null;
 
 export default function InstitutionMedia({ websiteUrl, name, variant = "card" }: { websiteUrl?: string | null; name: string; variant?: "card" | "hero" }) {
-  const known = KNOWN_MEDIA[normalize(name)];
+  const normalizedName = normalize(name);
+  const known = KNOWN_MEDIA[normalizedName];
   const [media, setMedia] = useState<Media>(known ?? { logo: null, campusImage: null });
   const [imageFailed, setImageFailed] = useState(false);
   const [logoFailed, setLogoFailed] = useState(false);
@@ -111,7 +159,7 @@ export default function InstitutionMedia({ websiteUrl, name, variant = "card" }:
 
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${name} Ghana`)}`;
   const image = imageFailed ? null : media.campusImage;
-  const logo = logoFailed ? null : media.logo;
+  const logo = logoFailed ? null : (media.logo ?? faviconForDomain(FIRST_50_LOGO_DOMAINS[normalizedName]));
 
   const initials = name.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join("").toUpperCase() || "GH";
   const fallback = (
