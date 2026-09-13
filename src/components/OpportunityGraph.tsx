@@ -4,7 +4,7 @@ import { Link } from "@/lib/router-compat";
 
 const STORAGE_KEY = "ghanapathfinder-my-path-v1";
 
-type GraphNode = { id: string; label: string; description: string; href: string; icon: (props: { className?: string }) => JSX.Element; state: "active" | "ready" | "open" };
+type GraphNode = { id: string; label: string; description: string; href: string; icon: (props: { className?: string }) => React.ReactElement; state: "active" | "ready" | "open" };
 
 const getRoutes = (goal: string) => {
   const g = goal.toLowerCase();
