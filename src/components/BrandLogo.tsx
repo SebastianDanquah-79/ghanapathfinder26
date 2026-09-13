@@ -92,7 +92,7 @@ const BrandLogo = ({ name, websiteUrl, logoUrl, size = 40, className = "" }: Bra
       list.push(`https://www.google.com/s2/favicons?sz=128&domain=${domain}`);
       list.push(`https://icons.duckduckgo.com/ip3/${domain}.ico`);
     }
-    if (logoUrl && /^https?:\/\//.test(logoUrl)) list.push(logoUrl);
+    
     return [...new Set(list)];
   }, [resolved, logoUrl, domain]);
 
