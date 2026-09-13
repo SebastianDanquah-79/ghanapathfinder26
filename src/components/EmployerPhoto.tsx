@@ -12,7 +12,7 @@ type Photo = { url: string; attribution: string; attributionUrl: string | null }
 const cache = new Map<string, Photo[]>();
 
 /** Office / campus imagery for an employer, sourced live from Google Places. */
-const EmployerPhoto = ({ name, location }: EmployerPhotoProps) => {
+const EmployerPhoto = ({ name, location, limit = 3 }: EmployerPhotoProps) => {
   const key = `${name}|${location ?? ""}`;
   const [photos, setPhotos] = useState<Photo[]>(cache.get(key) ?? []);
 
