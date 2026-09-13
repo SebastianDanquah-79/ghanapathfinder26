@@ -143,7 +143,10 @@ const ReviewCard = ({ table, row }: { table: ReviewTable; row: ReviewRow }) => {
           />
           <button
             onClick={async () => {
-              if (reason.trim().length < 4) return toast.error("Add a short reason");
+              if (reason.trim().length < 4) {
+                toast.error("Add a short reason");
+                return;
+              }
               await reject.mutateAsync({ table, id: row["id"], label, note: reason.trim() });
               setRejecting(false);
               setReason("");
