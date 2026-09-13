@@ -92,9 +92,11 @@ export const useReviewQueue = (table: ReviewTable, enabled: boolean) =>
     queryFn: async (): Promise<ReviewRow[]> => {
       const select =
         table === "universities"
-          ? "id, name, institution_type, gtec_accreditation_status, region, location, website_url, logo_source_url, google_place_id, short_description, source_urls, last_verified_at, needs_review"
+          ? "id, name, institution_type, gtec_accreditation_status, region, location, website_url, logo_url, logo_source_url, logo_verification_status, google_place_id, short_description, source_urls, last_verified_at, needs_review"
+          : table === "institutions"
+            ? "id, official_name, institution_type, gtec_accreditation_status, region, town, website_url, logo_source_url, logo_verification_status, google_place_id, short_description, source_urls, last_verified_at, needs_review"
           : table === "programmes"
-            ? "id, name, qualification, department, duration, mode, admission_summary, programme_url, source_urls, last_verified_at, needs_review, universities(name)"
+            ? "id, name, qualification, department, duration, mode, admission_summary, programme_url, source_url, source_urls, verification_status, last_verified_at, needs_review, universities(name)"
             : "*";
       const { data, error } = await supabase
         .from(table as any)
@@ -156,7 +158,10 @@ export const useReviewAction = () => {
       if (approve) {
         body["needs_review"] = false;
         body["last_verified_at"] = new Date().toISOString();
-        if (table === "universities") body["verified"] = true;
+        if (table === "universities" || table === "programmes") {
+          body["verified"] = true;
+          body["verification_status"] = "verified";
+        }
       }
       const { error } = await supabase.from(table as any).update(body).eq("id", id);
       if (error) throw error;

@@ -112,7 +112,7 @@ const cacheKey = (url: string) => `ghanapathfinder:institution-media:v7:${url}`;
 
 const faviconForDomain = (domain?: string | null) => domain ? `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=128` : null;
 
-export default function InstitutionMedia({ websiteUrl, name, variant = "card" }: { websiteUrl?: string | null; name: string; variant?: "card" | "hero" }) {
+export default function InstitutionMedia({ websiteUrl, name, logoSourceUrl, variant = "card" }: { websiteUrl?: string | null; name: string; logoSourceUrl?: string | null; variant?: "card" | "hero" }) {
   const normalizedName = normalize(name);
   const known = KNOWN_MEDIA[normalizedName];
   const [media, setMedia] = useState<Media>(known ?? { logo: null, campusImage: null });
@@ -159,7 +159,7 @@ export default function InstitutionMedia({ websiteUrl, name, variant = "card" }:
 
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${name} Ghana`)}`;
   const image = imageFailed ? null : media.campusImage;
-  const logo = logoFailed ? null : (media.logo ?? faviconForDomain(FIRST_50_LOGO_DOMAINS[normalizedName]));
+  const logo = logoFailed ? null : (logoSourceUrl ?? media.logo ?? faviconForDomain(FIRST_50_LOGO_DOMAINS[normalizedName]));
 
   const initials = name.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join("").toUpperCase() || "GH";
   const fallback = (
