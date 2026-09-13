@@ -19,7 +19,13 @@ import {
   type ReviewTable,
 } from "@/hooks/useReviewQueue";
 
-const TABLES: ReviewTable[] = ["universities", "programmes", "internship_providers", "skill_providers"];
+const TABLES: ReviewTable[] = [
+  "institutions",
+  "universities",
+  "programmes",
+  "internship_providers",
+  "skill_providers",
+];
 
 const ReviewCard = ({ table, row }: { table: ReviewTable; row: ReviewRow }) => {
   const [draft, setDraft] = useState<Record<string, any>>({});

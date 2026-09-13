@@ -116,7 +116,13 @@ export const useReviewCounts = (enabled: boolean) =>
     queryKey: ["review_counts"],
     enabled,
     queryFn: async () => {
-      const tables: ReviewTable[] = ["universities", "programmes", "internship_providers", "skill_providers"];
+      const tables: ReviewTable[] = [
+        "institutions",
+        "universities",
+        "programmes",
+        "internship_providers",
+        "skill_providers",
+      ];
       const entries = await Promise.all(
         tables.map(async (t) => {
           const { count, error } = await supabase
