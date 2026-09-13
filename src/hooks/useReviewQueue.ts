@@ -1,7 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
-export type ReviewTable = "universities" | "programmes" | "internship_providers" | "skill_providers";
+export type ReviewTable =
+  | "institutions"
+  | "universities"
+  | "programmes"
+  | "internship_providers"
+  | "skill_providers";
 
 export interface ReviewFieldSpec {
   key: string;
