@@ -2160,6 +2160,10 @@ export type Database = {
         Returns: boolean
       }
       live_presence: { Args: never; Returns: Json }
+      paths_owned_by: {
+        Args: { _paths: string[]; _user_id: string }
+        Returns: boolean
+      }
       public_usage_stats: { Args: never; Returns: Json }
       refresh_admission_estimates: { Args: never; Returns: number }
       refresh_usage_counters: { Args: never; Returns: undefined }
