@@ -70,7 +70,8 @@ export const REVIEW_FIELDS: Record<ReviewTable, ReviewFieldSpec[]> = {
 };
 
 export const TABLE_LABELS: Record<ReviewTable, string> = {
-  universities: "Institutions",
+  institutions: "New institutions",
+  universities: "Directory institutions",
   programmes: "Programmes",
   internship_providers: "Internship providers",
   skill_providers: "Skills & course providers",
