@@ -16,6 +16,17 @@ export interface ReviewFieldSpec {
 
 /** Fields an admin can edit inline for each reviewable table. */
 export const REVIEW_FIELDS: Record<ReviewTable, ReviewFieldSpec[]> = {
+  institutions: [
+    { key: "official_name", label: "Official name" },
+    { key: "institution_type", label: "Institution type" },
+    { key: "gtec_accreditation_status", label: "GTEC status" },
+    { key: "region", label: "Region" },
+    { key: "town", label: "Town" },
+    { key: "website_url", label: "Website", type: "url" },
+    { key: "logo_source_url", label: "Logo source", type: "url" },
+    { key: "google_place_id", label: "Google place ID" },
+    { key: "short_description", label: "Short description", type: "textarea" },
+  ],
   universities: [
     { key: "name", label: "Official name" },
     { key: "institution_type", label: "Institution type" },
