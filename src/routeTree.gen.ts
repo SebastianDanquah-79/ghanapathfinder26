@@ -40,6 +40,7 @@ import { Route as AdminAnalyticsRouteImport } from './routes/admin/analytics'
 import { Route as AdminDataRouteImport } from './routes/admin/data'
 import { Route as AdminInsightsRouteImport } from './routes/admin/insights'
 import { Route as AdminReviewRouteImport } from './routes/admin/review'
+import { Route as ApiCampusPhotosRouteImport } from './routes/api/campus-photos'
 import { Route as ApiCareerPathRouteImport } from './routes/api/career-path'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as ApiInstitutionMediaRouteImport } from './routes/api/institution-media'
@@ -216,6 +217,11 @@ const AdminReviewRoute = AdminReviewRouteImport.update({
   path: '/admin/review',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiCampusPhotosRoute = ApiCampusPhotosRouteImport.update({
+  id: '/api/campus-photos',
+  path: '/api/campus-photos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiCareerPathRoute = ApiCareerPathRouteImport.update({
   id: '/api/career-path',
   path: '/api/career-path',
@@ -351,6 +357,7 @@ export interface FileRoutesByFullPath {
   '/admin/data': typeof AdminDataRoute
   '/admin/insights': typeof AdminInsightsRoute
   '/admin/review': typeof AdminReviewRoute
+  '/api/campus-photos': typeof ApiCampusPhotosRoute
   '/api/career-path': typeof ApiCareerPathRoute
   '/api/chat': typeof ApiChatRoute
   '/api/institution-media': typeof ApiInstitutionMediaRoute
@@ -404,6 +411,7 @@ export interface FileRoutesByTo {
   '/admin/data': typeof AdminDataRoute
   '/admin/insights': typeof AdminInsightsRoute
   '/admin/review': typeof AdminReviewRoute
+  '/api/campus-photos': typeof ApiCampusPhotosRoute
   '/api/career-path': typeof ApiCareerPathRoute
   '/api/chat': typeof ApiChatRoute
   '/api/institution-media': typeof ApiInstitutionMediaRoute
@@ -458,6 +466,7 @@ export interface FileRoutesById {
   '/admin/data': typeof AdminDataRoute
   '/admin/insights': typeof AdminInsightsRoute
   '/admin/review': typeof AdminReviewRoute
+  '/api/campus-photos': typeof ApiCampusPhotosRoute
   '/api/career-path': typeof ApiCareerPathRoute
   '/api/chat': typeof ApiChatRoute
   '/api/institution-media': typeof ApiInstitutionMediaRoute
@@ -513,6 +522,7 @@ export interface FileRouteTypes {
     | '/admin/data'
     | '/admin/insights'
     | '/admin/review'
+    | '/api/campus-photos'
     | '/api/career-path'
     | '/api/chat'
     | '/api/institution-media'
@@ -566,6 +576,7 @@ export interface FileRouteTypes {
     | '/admin/data'
     | '/admin/insights'
     | '/admin/review'
+    | '/api/campus-photos'
     | '/api/career-path'
     | '/api/chat'
     | '/api/institution-media'
@@ -619,6 +630,7 @@ export interface FileRouteTypes {
     | '/admin/data'
     | '/admin/insights'
     | '/admin/review'
+    | '/api/campus-photos'
     | '/api/career-path'
     | '/api/chat'
     | '/api/institution-media'
@@ -673,6 +685,7 @@ export interface RootRouteChildren {
   AdminDataRoute: typeof AdminDataRoute
   AdminInsightsRoute: typeof AdminInsightsRoute
   AdminReviewRoute: typeof AdminReviewRoute
+  ApiCampusPhotosRoute: typeof ApiCampusPhotosRoute
   ApiCareerPathRoute: typeof ApiCareerPathRoute
   ApiChatRoute: typeof ApiChatRoute
   ApiInstitutionMediaRoute: typeof ApiInstitutionMediaRoute
@@ -914,6 +927,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminReviewRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/campus-photos': {
+      id: '/api/campus-photos'
+      path: '/api/campus-photos'
+      fullPath: '/api/campus-photos'
+      preLoaderRoute: typeof ApiCampusPhotosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/career-path': {
       id: '/api/career-path'
       path: '/api/career-path'
@@ -1089,6 +1109,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminDataRoute: AdminDataRoute,
   AdminInsightsRoute: AdminInsightsRoute,
   AdminReviewRoute: AdminReviewRoute,
+  ApiCampusPhotosRoute: ApiCampusPhotosRoute,
   ApiCareerPathRoute: ApiCareerPathRoute,
   ApiChatRoute: ApiChatRoute,
   ApiInstitutionMediaRoute: ApiInstitutionMediaRoute,
