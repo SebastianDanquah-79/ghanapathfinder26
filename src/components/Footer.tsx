@@ -1,9 +1,10 @@
 import SiteRating from "@/components/SiteRating";
-import { BrandLogoIcon } from "@/lib/icons";
+import BrandMark from "@/components/BrandMark";
 import { Link } from "@/lib/router-compat";
 
 const links = [
   { label: "About GhanaPathFinder", to: "/about" },
+  { label: "FAQ", to: "/faq" },
   { label: "Skills Hub", to: "/skills" },
   { label: "Disclaimer", to: "/disclaimer" },
   { label: "References & Acknowledgements", to: "/references" },
@@ -18,7 +19,7 @@ const Footer = () => (
   <footer className="py-8 px-4 border-t border-border/50">
     <div className="max-w-7xl mx-auto text-center">
       <div className="flex items-center justify-center gap-2 mb-4">
-        <BrandLogoIcon className="h-6 w-6 text-primary" />
+        <BrandMark className="h-7 w-7" />
         <span className="font-display font-bold text-lg text-foreground">
           Ghana<span className="text-primary">PathFinder</span>
         </span>
