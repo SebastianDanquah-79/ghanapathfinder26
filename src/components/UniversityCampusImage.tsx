@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 interface UniversityCampusImageProps {
   name: string;
   location?: string | null | undefined;
+  placeId?: string | null | undefined;
 }
 
 type CampusMedia = {
@@ -143,10 +144,11 @@ const fetchCommonsImages = async (name: string): Promise<CampusMedia[]> => {
     .slice(0, 8);
 };
 
-const fetchPlacePhotos = async (name: string, location?: string | null): Promise<CampusMedia[]> => {
+const fetchPlacePhotos = async (name: string, location?: string | null, placeId?: string | null): Promise<CampusMedia[]> => {
   try {
     const params = new URLSearchParams({ name });
     if (location) params.set("location", location);
+    if (placeId) params.set("placeId", placeId);
     const response = await fetch(`/api/campus-photos?${params.toString()}`);
     if (!response.ok) return [];
     const payload = (await response.json()) as {
@@ -230,7 +232,7 @@ const CampusIllustration = ({ name, location }: UniversityCampusImageProps) => {
   );
 };
 
-const UniversityCampusImage = ({ name, location }: UniversityCampusImageProps) => {
+const UniversityCampusImage = ({ name, location, placeId }: UniversityCampusImageProps) => {
   const key = name.trim();
   const [images, setImages] = useState<CampusMedia[]>(cache.get(key) ?? []);
   const [loaded, setLoaded] = useState(cache.has(key));
@@ -248,7 +250,7 @@ const UniversityCampusImage = ({ name, location }: UniversityCampusImageProps) =
 
     const loadImages = async () => {
       try {
-        const placePhotos = await fetchPlacePhotos(key, location);
+        const placePhotos = await fetchPlacePhotos(key, location, placeId);
         const preferred = verifiedFor(key);
         const reachable = (await Promise.all(preferred.map(async (src) => (await isImageReachable(src)) ? src : null)))
           .filter((src): src is string => Boolean(src));
@@ -274,7 +276,7 @@ const UniversityCampusImage = ({ name, location }: UniversityCampusImageProps) =
     };
     loadImages();
     return () => { cancelled = true; };
-  }, [key]);
+  }, [key, location, placeId]);
 
   useEffect(() => {
     if (images.length < 2) return;
