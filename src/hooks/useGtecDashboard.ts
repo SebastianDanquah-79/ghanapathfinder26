@@ -92,7 +92,7 @@ export const useGtecDecision = () => {
       name: string;
       note?: string;
     }) => {
-      const patch: Record<string, unknown> =
+      const patch =
         decision === "approve"
           ? {
               gtec_accreditation_status: "Accredited",
@@ -110,7 +110,8 @@ export const useGtecDecision = () => {
               verified: false,
               needs_review: true,
             };
-      const { error } = await supabase.from("universities").update(patch).eq("id", id);
+
+      const { error } = await supabase.from("universities").update(patch as never).eq("id", id);
       if (error) throw error;
       if (decision === "reject") {
         await supabase.from("corrections").insert({
