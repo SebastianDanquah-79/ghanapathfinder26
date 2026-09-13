@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 
 interface UniversityCampusImageProps {
   name: string;
-  location?: string | null;
+  location?: string | null | undefined;
 }
 
 type CampusMedia = {
@@ -97,7 +97,7 @@ const toMedia = (page: CommonsPage, name: string): CampusMedia | null => {
   const info = page.imageinfo?.[0];
   if (!info) return null;
   const meta = info.extmetadata ?? {};
-  const license = stripHtml(meta.LicenseShortName?.value ?? meta.UsageTerms?.value ?? "");
+  const license = stripHtml(meta["LicenseShortName"]?.value ?? meta["UsageTerms"]?.value ?? "");
   if (!isPermissiveLicense(license)) return null;
   const src = info.thumburl ?? info.url;
   if (!src) return null;
@@ -105,7 +105,7 @@ const toMedia = (page: CommonsPage, name: string): CampusMedia | null => {
     src,
     sourceUrl: info.descriptionurl ?? `https://commons.wikimedia.org/wiki/${encodeURIComponent(title.replace(/ /g, "_"))}`,
     title: title.replace(/^File:/i, ""),
-    credit: stripHtml(meta.Artist?.value ?? meta.Credit?.value ?? "Wikimedia Commons contributor"),
+    credit: stripHtml(meta["Artist"]?.value ?? meta["Credit"]?.value ?? "Wikimedia Commons contributor"),
     license,
     kind: isLogoTitle(title) ? "logo" : "photo",
   };
@@ -159,7 +159,7 @@ const hash = (value: string) => {
 
 const initialsFor = (name: string) => {
   const words = normalize(name).split(/\s+/).filter((word) => word.length >= 2 && !stopWords.has(word));
-  return (words.length >= 2 ? `${words[0][0]}${words[1][0]}` : words[0]?.slice(0, 2) ?? "GP").toUpperCase();
+  return (words.length >= 2 ? `${words[0]![0]}${words[1]![0]}` : words[0]?.slice(0, 2) ?? "GP").toUpperCase();
 };
 
 const CampusIllustration = ({ name, location }: UniversityCampusImageProps) => {
@@ -227,7 +227,7 @@ const UniversityCampusImage = ({ name, location }: UniversityCampusImageProps) =
         const preferred = verifiedFor(key);
         const reachable = (await Promise.all(preferred.map(async (src) => (await isImageReachable(src)) ? src : null)))
           .filter((src): src is string => Boolean(src));
-        let media = reachable.map((src) => ({ src, sourceUrl: src, title: key, credit: "GhanaPathFinder verified campus source", license: "Source verified", kind: "photo" as const }));
+        let media: CampusMedia[] = reachable.map((src) => ({ src, sourceUrl: src, title: key, credit: "GhanaPathFinder verified campus source", license: "Source verified", kind: "photo" as const }));
         if (media.length < 3) media = [...media, ...(await fetchCommonsImages(key))];
         const unique = new Map<string, CampusMedia>();
         for (const item of media) if (!unique.has(item.src)) unique.set(item.src, item);

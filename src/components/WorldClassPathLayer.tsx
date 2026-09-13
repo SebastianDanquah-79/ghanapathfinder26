@@ -26,7 +26,7 @@ export default function WorldClassPathLayer() {
     goal: state.goal || "your target career",
     stage: state.stage || "WASSCE graduate",
     priority: state.priority || "Career outcomes",
-    budget,
+    ...(typeof budget === "number" ? { budget } : {}),
   };
 
   return (
