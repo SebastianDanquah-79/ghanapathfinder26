@@ -224,6 +224,7 @@ const UniversityCampusImage = ({ name, location }: UniversityCampusImageProps) =
 
     const loadImages = async () => {
       try {
+        const placePhotos = await fetchPlacePhotos(key, location);
         const preferred = verifiedFor(key);
         const reachable = (await Promise.all(preferred.map(async (src) => (await isImageReachable(src)) ? src : null)))
           .filter((src): src is string => Boolean(src));
