@@ -110,6 +110,8 @@ const InternshipDetail = () => {
           </p>
           <p className="text-sm text-muted-foreground mb-4 max-w-3xl">{employer.about}</p>
 
+          <EmployerPhoto name={employer.name} location={employer.locations[0] ?? "Ghana"} />
+
           <ul className="flex flex-wrap gap-1.5 mb-4">
             {employer.opportunities.map((o) => (
               <li key={o} className="rounded-full bg-primary/10 text-primary px-2.5 py-1 text-[11px]">
