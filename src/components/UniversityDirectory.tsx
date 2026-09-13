@@ -47,7 +47,7 @@ const UniversityDirectory = () => {
   return (
     <section id="universities" className="py-12 lg:py-28 px-4">
       <div className="max-w-7xl mx-auto">
-        <SectionHeader badge="Directory" title="Ghana University" highlight="Directory" description="Search by name, region or type." />
+        <SectionHeader badge="Directory" title="Ghana University" highlight="Directory" description="Every accredited university, technical university, college of education and nursing or health training institution recorded in Ghana. Each listing shows the institution itself: its location, ownership, indicative fees, admission aggregate range and flagship programmes, with a link to its official admissions page." />
 
         <div className="flex flex-col sm:flex-row gap-3 mb-3 max-w-3xl mx-auto">
           <div className="relative flex-1">

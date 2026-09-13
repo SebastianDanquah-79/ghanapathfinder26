@@ -225,7 +225,9 @@ const Scholarships = () => {
               <Award className="h-6 w-6 text-primary" /> My Scholarship Hub
             </h1>
             <p className="text-sm text-muted-foreground mt-1">
-              Personalised matches, deadline alerts, eligibility rechecks and your exportable plan.
+              Each listing is one funding award &mdash; who may apply, what it covers, the deadline
+              and the official application page &mdash; with matches, deadline alerts, eligibility
+              rechecks and your exportable plan.
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
