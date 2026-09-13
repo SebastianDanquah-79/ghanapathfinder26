@@ -309,6 +309,8 @@ const UniversityProfile = () => {
                 </Link>
               </section>
 
+              <CampusMap name={uni.name} location={uni.location} />
+
               <div className="pt-2">
                 <FlagListingButton table="universities" rowId={uni.id} label={uni.name} />
               </div>
