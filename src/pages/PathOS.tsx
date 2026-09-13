@@ -80,7 +80,7 @@ export default function PathOS() {
             <label className="block mt-4 text-sm font-medium">Financial priority
               <select value={budget} onChange={e => setBudget(e.target.value as FinancialPriority)} className="mt-2 w-full rounded-lg border border-border bg-background px-3 py-2.5"><option value="low">Minimize cost</option><option value="medium">Balance cost and fit</option><option value="high">Prioritize fit</option></select>
             </label>
-            <div className="mt-5 rounded-lg bg-muted/40 p-4"><p className="text-xs text-muted-foreground">Highest current skill gap</p><p className="font-semibold mt-1">{nextSkill.name}</p><p className="text-sm text-muted-foreground mt-1">{nextSkill.reason}. Build it, then prove it with a project.</p></div>
+            <div className="mt-5 rounded-lg bg-muted/40 p-4"><p className="text-xs text-muted-foreground">Highest current skill gap</p><p className="font-semibold mt-1">{nextSkill?.name}</p><p className="text-sm text-muted-foreground mt-1">{nextSkill?.reason}. Build it, then prove it with a project.</p></div>
           </div>
           <div className="rounded-xl border border-border p-5"><p className="text-xs uppercase tracking-wide text-muted-foreground">Route</p><ol className="mt-4 space-y-3">{["Define target", "Compare programmes", "Secure funding", "Build skills", "Build evidence", "Get experience"].map((item, i) => <li key={item} className="flex gap-3 text-sm"><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-border text-xs">{i + 1}</span><span className={i === 0 ? "font-medium" : "text-muted-foreground"}>{item}</span></li>)}</ol></div>
         </div>

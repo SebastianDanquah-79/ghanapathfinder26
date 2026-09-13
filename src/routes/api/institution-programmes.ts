@@ -34,9 +34,9 @@ export const Route = createFileRoute("/api/institution-programmes")({
       };
 
       for (const match of html.matchAll(/<(?:h[1-6]|li|p|a)[^>]*>([\s\S]*?)<\/(?:h[1-6]|li|p|a)>/gi)) {
-        const text = clean(match[1].replace(/<[^>]+>/g, " "));
+        const text = clean((match[1] ?? "").replace(/<[^>]+>/g, " "));
         const hrefMatch = match[0].match(/href=["']([^"']+)["']/i);
-        add(text, hrefMatch ? abs(hrefMatch[1], base) : null);
+        add(text, hrefMatch ? abs(hrefMatch[1] ?? "", base) : null);
         if (results.size >= 80) break;
       }
 

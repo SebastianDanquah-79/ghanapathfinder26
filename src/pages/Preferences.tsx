@@ -53,7 +53,7 @@ const Preferences = () => {
   }, [saved]);
 
   useEffect(() => {
-    if (user) setAvatarUrl((user.user_metadata?.avatar_url as string | undefined) ?? null);
+    if (user) setAvatarUrl((user.user_metadata?.["avatar_url"] as string | undefined) ?? null);
   }, [user]);
 
   const set = <K extends keyof MatchPreferences>(k: K, v: MatchPreferences[K]) =>
