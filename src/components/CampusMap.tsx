@@ -3,18 +3,23 @@ import { useEffect, useState } from "react";
 interface CampusMapProps {
   name: string;
   location?: string | null | undefined;
+  placeId?: string | null | undefined;
 }
 
 const placeCache = new Map<string, string | null>();
 
-const browserKey = import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY"] as string | undefined;
+// Prefer the user-owned key because the managed key is restricted to preview domains.
+const browserKey = (
+  import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY_2"]
+  ?? import.meta.env["VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY"]
+) as string | undefined;
 
-const CampusMap = ({ name, location }: CampusMapProps) => {
-  const key = `${name}|${location ?? ""}`;
-  const [placeId, setPlaceId] = useState<string | null>(placeCache.get(key) ?? null);
+const CampusMap = ({ name, location, placeId: verifiedPlaceId }: CampusMapProps) => {
+  const key = `${verifiedPlaceId ?? ""}|${name}|${location ?? ""}`;
+  const [placeId, setPlaceId] = useState<string | null>(verifiedPlaceId ?? placeCache.get(key) ?? null);
 
   useEffect(() => {
-    if (!browserKey || placeCache.has(key)) return;
+    if (!browserKey || verifiedPlaceId || placeCache.has(key)) return;
     let cancelled = false;
     const load = async () => {
       try {
@@ -31,7 +36,7 @@ const CampusMap = ({ name, location }: CampusMapProps) => {
     };
     load();
     return () => { cancelled = true; };
-  }, [key, name, location]);
+  }, [key, name, location, verifiedPlaceId]);
 
   if (!browserKey || !placeId) return null;
 

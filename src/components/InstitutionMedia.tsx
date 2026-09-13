@@ -112,7 +112,7 @@ const cacheKey = (url: string) => `ghanapathfinder:institution-media:v7:${url}`;
 
 const faviconForDomain = (domain?: string | null) => domain ? `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=128` : null;
 
-export default function InstitutionMedia({ websiteUrl, name, logoSourceUrl, variant = "card" }: { websiteUrl?: string | null; name: string; logoSourceUrl?: string | null; variant?: "card" | "hero" }) {
+export default function InstitutionMedia({ websiteUrl, name, logoSourceUrl, googlePlaceId, variant = "card" }: { websiteUrl?: string | null; name: string; logoSourceUrl?: string | null; googlePlaceId?: string | null; variant?: "card" | "hero" }) {
   const normalizedName = normalize(name);
   const known = KNOWN_MEDIA[normalizedName];
   const [media, setMedia] = useState<Media>(known ?? { logo: null, campusImage: null });
@@ -156,6 +156,20 @@ export default function InstitutionMedia({ websiteUrl, name, logoSourceUrl, vari
       .catch(() => {});
     return () => { cancelled = true; };
   }, [endpoint, websiteUrl]);
+
+  useEffect(() => {
+    if (!googlePlaceId) return;
+    let cancelled = false;
+    const params = new URLSearchParams({ name, placeId: googlePlaceId });
+    fetch(`/api/campus-photos?${params.toString()}`)
+      .then((response) => (response.ok ? response.json() : null))
+      .then((value: { photos?: Array<{ url?: string }> } | null) => {
+        const campusImage = value?.photos?.find((photo) => photo.url)?.url;
+        if (!cancelled && campusImage) setMedia((current) => ({ ...current, campusImage }));
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [googlePlaceId, name]);
 
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${name} Ghana`)}`;
   const image = imageFailed ? null : media.campusImage;

@@ -91,7 +91,7 @@ const UniversityProfile = () => {
 
           {uni && (
             <>
-              <InstitutionMedia websiteUrl={uni.website_url} name={uni.name} logoSourceUrl={uni.logo_source_url} variant="hero" />
+              <InstitutionMedia websiteUrl={uni.website_url} name={uni.name} logoSourceUrl={uni.logo_source_url} googlePlaceId={uni.google_place_id} variant="hero" />
 
               <header className="bg-glass rounded-xl p-5 mb-6 mt-4">
                 <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
@@ -310,7 +310,7 @@ const UniversityProfile = () => {
                 </Link>
               </section>
 
-              <CampusMap name={uni.name} location={uni.location} />
+              <CampusMap name={uni.name} location={uni.location} placeId={uni.google_place_id} />
 
               <div className="pt-2">
                 <FlagListingButton table="universities" rowId={uni.id} label={uni.name} />

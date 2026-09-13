@@ -24,17 +24,20 @@ export const Route = createFileRoute("/api/campus-photos")({
         const url = new URL(request.url);
         const name = (url.searchParams.get("name") ?? "").trim().slice(0, 120);
         const location = (url.searchParams.get("location") ?? "").trim().slice(0, 80);
+        const requestedPlaceId = (url.searchParams.get("placeId") ?? "").trim().slice(0, 180);
         if (name.length < 3) {
           return Response.json({ error: "An institution name is required." }, { status: 400 });
         }
 
-        const apiKey = process.env["GOOGLE_MAPS_API_KEY"];
+        // A user-owned custom-domain connection is linked alongside the managed
+        // preview connection and receives the _2 suffix. Prefer it in production.
+        const apiKey = process.env["GOOGLE_MAPS_API_KEY_2"] ?? process.env["GOOGLE_MAPS_API_KEY"];
         const lovableKey = process.env["LOVABLE_API_KEY"];
         if (!apiKey || !lovableKey) {
           return Response.json({ placeId: null, photos: [] as Photo[] });
         }
 
-        const key = `${name}|${location}`.toLowerCase();
+        const key = `${requestedPlaceId}|${name}|${location}`.toLowerCase();
         const hit = cache.get(key);
         if (hit && hit.expires > Date.now()) {
           return Response.json(
@@ -51,15 +54,19 @@ export const Route = createFileRoute("/api/campus-photos")({
         };
 
         try {
-          const search = await fetch(`${GATEWAY}/places/v1/places:searchText`, {
-            method: "POST",
-            headers: headers(apiKey, lovableKey, "places.id,places.displayName,places.photos"),
-            body: JSON.stringify({
-              textQuery: location ? `${name}, ${location}, Ghana` : `${name}, Ghana`,
-              pageSize: 1,
-              regionCode: "GH",
-            }),
-          });
+          const search = requestedPlaceId
+            ? await fetch(`${GATEWAY}/places/v1/places/${encodeURIComponent(requestedPlaceId)}`, {
+                headers: headers(apiKey, lovableKey, "id,displayName,photos"),
+              })
+            : await fetch(`${GATEWAY}/places/v1/places:searchText`, {
+                method: "POST",
+                headers: headers(apiKey, lovableKey, "places.id,places.displayName,places.photos"),
+                body: JSON.stringify({
+                  textQuery: location ? `${name}, ${location}, Ghana` : `${name}, Ghana`,
+                  pageSize: 1,
+                  regionCode: "GH",
+                }),
+              });
 
           if (!search.ok) {
             console.error(`Places search failed [${search.status}]: ${await search.text()}`);
@@ -67,12 +74,14 @@ export const Route = createFileRoute("/api/campus-photos")({
           }
 
           const found = (await search.json()) as {
+            id?: string;
+            photos?: Array<{ name?: string; authorAttributions?: Array<{ displayName?: string; uri?: string }> }>;
             places?: Array<{
               id?: string;
               photos?: Array<{ name?: string; authorAttributions?: Array<{ displayName?: string; uri?: string }> }>;
             }>;
           };
-          const place = found.places?.[0];
+          const place = requestedPlaceId ? found : found.places?.[0];
           if (!place?.photos?.length) return store({ placeId: place?.id ?? null, photos: [] });
 
           const photos: Photo[] = [];
