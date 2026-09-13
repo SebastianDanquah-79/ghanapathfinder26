@@ -230,6 +230,9 @@ const AdminReview = () => {
               Nothing here is shown to students until it is approved. Check each record against its official source
               before publishing.
             </p>
+            <a href="/admin/gtec" className="mt-2 inline-block text-xs text-primary underline underline-offset-2">
+              Open the accreditation dashboard
+            </a>
           </header>
 
           <div className="flex flex-wrap gap-2">

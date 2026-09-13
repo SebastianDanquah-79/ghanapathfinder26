@@ -38,6 +38,7 @@ import { Route as SearchRouteImport } from './routes/search'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin/analytics'
 import { Route as AdminDataRouteImport } from './routes/admin/data'
+import { Route as AdminGtecRouteImport } from './routes/admin/gtec'
 import { Route as AdminInsightsRouteImport } from './routes/admin/insights'
 import { Route as AdminReviewRouteImport } from './routes/admin/review'
 import { Route as ApiCampusPhotosRouteImport } from './routes/api/campus-photos'
@@ -207,6 +208,11 @@ const AdminDataRoute = AdminDataRouteImport.update({
   path: '/admin/data',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminGtecRoute = AdminGtecRouteImport.update({
+  id: '/admin/gtec',
+  path: '/admin/gtec',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminInsightsRoute = AdminInsightsRouteImport.update({
   id: '/admin/insights',
   path: '/admin/insights',
@@ -355,6 +361,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
+  '/admin/gtec': typeof AdminGtecRoute
   '/admin/insights': typeof AdminInsightsRoute
   '/admin/review': typeof AdminReviewRoute
   '/api/campus-photos': typeof ApiCampusPhotosRoute
@@ -409,6 +416,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
+  '/admin/gtec': typeof AdminGtecRoute
   '/admin/insights': typeof AdminInsightsRoute
   '/admin/review': typeof AdminReviewRoute
   '/api/campus-photos': typeof ApiCampusPhotosRoute
@@ -464,6 +472,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
+  '/admin/gtec': typeof AdminGtecRoute
   '/admin/insights': typeof AdminInsightsRoute
   '/admin/review': typeof AdminReviewRoute
   '/api/campus-photos': typeof ApiCampusPhotosRoute
@@ -520,6 +529,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/admin/analytics'
     | '/admin/data'
+    | '/admin/gtec'
     | '/admin/insights'
     | '/admin/review'
     | '/api/campus-photos'
@@ -574,6 +584,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/admin/analytics'
     | '/admin/data'
+    | '/admin/gtec'
     | '/admin/insights'
     | '/admin/review'
     | '/api/campus-photos'
@@ -628,6 +639,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/admin/analytics'
     | '/admin/data'
+    | '/admin/gtec'
     | '/admin/insights'
     | '/admin/review'
     | '/api/campus-photos'
@@ -683,6 +695,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   AdminAnalyticsRoute: typeof AdminAnalyticsRoute
   AdminDataRoute: typeof AdminDataRoute
+  AdminGtecRoute: typeof AdminGtecRoute
   AdminInsightsRoute: typeof AdminInsightsRoute
   AdminReviewRoute: typeof AdminReviewRoute
   ApiCampusPhotosRoute: typeof ApiCampusPhotosRoute
@@ -913,6 +926,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminDataRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/gtec': {
+      id: '/admin/gtec'
+      path: '/admin/gtec'
+      fullPath: '/admin/gtec'
+      preLoaderRoute: typeof AdminGtecRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/insights': {
       id: '/admin/insights'
       path: '/admin/insights'
@@ -1107,6 +1127,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   AdminAnalyticsRoute: AdminAnalyticsRoute,
   AdminDataRoute: AdminDataRoute,
+  AdminGtecRoute: AdminGtecRoute,
   AdminInsightsRoute: AdminInsightsRoute,
   AdminReviewRoute: AdminReviewRoute,
   ApiCampusPhotosRoute: ApiCampusPhotosRoute,
