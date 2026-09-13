@@ -143,6 +143,30 @@ const fetchCommonsImages = async (name: string): Promise<CampusMedia[]> => {
     .slice(0, 8);
 };
 
+const fetchPlacePhotos = async (name: string, location?: string | null): Promise<CampusMedia[]> => {
+  try {
+    const params = new URLSearchParams({ name });
+    if (location) params.set("location", location);
+    const response = await fetch(`/api/campus-photos?${params.toString()}`);
+    if (!response.ok) return [];
+    const payload = (await response.json()) as {
+      photos?: Array<{ url?: string; attribution?: string; attributionUrl?: string | null }>;
+    };
+    return (payload.photos ?? [])
+      .filter((photo): photo is { url: string; attribution?: string; attributionUrl?: string | null } => Boolean(photo.url))
+      .map((photo) => ({
+        src: photo.url,
+        sourceUrl: photo.attributionUrl ?? photo.url,
+        title: `${name} campus`,
+        credit: photo.attribution ?? "Photo via Google",
+        license: "Google Maps",
+        kind: "photo" as const,
+      }));
+  } catch {
+    return [];
+  }
+};
+
 const isImageReachable = (src: string) => new Promise<boolean>((resolve) => {
   const image = new Image();
   const timeout = window.setTimeout(() => { image.onload = null; image.onerror = null; resolve(false); }, 8000);
