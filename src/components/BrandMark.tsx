@@ -1,16 +1,13 @@
-import logo from "@/assets/ghanapathfinder-logo.png";
+import { BrandLogoIcon } from "@/lib/icons";
 
 /**
- * The GhanaPathFinder logo mark: a graduation cap over a gold path.
+ * The GhanaPathFinder logo mark: graduation cap.
  */
 const BrandMark = ({ className = "h-7 w-7", priority = false }: { className?: string; priority?: boolean }) => (
-  <img
-    src={logo}
-    alt="GhanaPathFinder logo"
-    width={816}
-    height={816}
-    {...(priority ? {} : { loading: "lazy" as const })}
-    className={`${className} object-contain`}
+  <BrandLogoIcon
+    aria-label="GhanaPathFinder logo"
+    className={className}
+    {...(priority ? {} : { "aria-hidden": "true" })}
   />
 );
 
