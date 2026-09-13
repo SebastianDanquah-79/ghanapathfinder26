@@ -7,6 +7,7 @@ import SaveButton from "@/components/SaveButton";
 import OfficialLink from "@/components/OfficialLink";
 import VerificationBadge from "@/components/VerificationBadge";
 import InstitutionMedia from "@/components/InstitutionMedia";
+import FlagListingButton from "@/components/FlagListingButton";
 import { formatVerified, useProgrammes, useUniversity } from "@/hooks/useCatalogue";
 import { useTrackView } from "@/hooks/useTracking";
 import { useRecordRecent } from "@/hooks/useRecentlyViewed";
@@ -307,6 +308,10 @@ const UniversityProfile = () => {
                   Open Community
                 </Link>
               </section>
+
+              <div className="pt-2">
+                <FlagListingButton table="universities" rowId={uni.id} label={uni.name} />
+              </div>
             </>
           )}
         </div>
