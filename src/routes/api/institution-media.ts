@@ -43,13 +43,44 @@ const firstMeta = (html: string, keys: string[]) => {
 };
 
 const firstIcon = (html: string, base: string) => {
-  const matches = html.matchAll(/<link[^>]+(?:rel=[\"'][^\"']*(?:icon|apple-touch-icon)[^\"']*)[^>]+href=[\"']([^\"']+)[\"'][^>]*>/gi);
+  const matches = html.matchAll(/<link[^>]+(?:rel=["'][^"']*(?:icon|apple-touch-icon)[^"']*)[^>]+href=["']([^"']+)["'][^>]*>/gi);
+  let best: { url: string; score: number } | null = null;
   for (const match of matches) {
+    const tag = (match[0] ?? "").toLowerCase();
     const url = absolute(match[1] ?? "", base);
-    if (url) return url;
+    if (!url) continue;
+    // Prefer the largest declared icon: apple-touch icons are usually the real mark, not a 16px favicon.
+    let score = 0;
+    if (tag.includes("apple-touch-icon")) score += 6;
+    const sizes = tag.match(/sizes=["'](\d+)x\d+["']/);
+    if (sizes?.[1]) score += Math.min(Number(sizes[1]) / 32, 8);
+    if (/\.png(?:$|\?)/i.test(url)) score += 2;
+    if (/favicon\.ico(?:$|\?)/i.test(url)) score -= 3;
+    if (!best || score > best.score) best = { url, score };
   }
-  return absolute("/favicon.ico", base);
+  return best?.url ?? absolute("/favicon.ico", base);
 };
+
+/** Site header logos are almost always an <img> whose markup mentions "logo". */
+const findLogoImage = (html: string, base: string) => {
+  const matches = html.matchAll(/<img[^>]+(?:src|data-src|data-lazy-src|data-original)=["']([^"']+)["'][^>]*>/gi);
+  let best: { url: string; score: number } | null = null;
+  for (const match of matches) {
+    const tag = (match[0] ?? "").toLowerCase();
+    const url = absolute(match[1] ?? "", base);
+    if (!url) continue;
+    const haystack = `${tag} ${url.toLowerCase()}`;
+    if (!/logo|crest|emblem|brand/.test(haystack)) continue;
+    let score = 5;
+    if (/header|site-?logo|navbar|brand/.test(haystack)) score += 3;
+    if (/footer/.test(haystack)) score -= 2;
+    if (/placeholder|dummy|sprite|spinner|loader/.test(haystack)) continue;
+    if (/\.svg(?:$|\?)/i.test(url)) score += 1;
+    if (!best || score > best.score) best = { url, score };
+  }
+  return best?.url ?? null;
+};
+
 
 const scoreImage = (tag: string, url: string, name: string) => {
   const haystack = `${tag} ${url}`.toLowerCase();
@@ -177,7 +208,10 @@ export const Route = createFileRoute("/api/institution-media")({
           const html = (await response.text()).slice(0, 2_500_000);
           const base = new URL(target).toString();
 
-          const logo = absolute(firstMeta(html, ["og:logo", "twitter:creator"] ) ?? firstIcon(html, base) ?? "", base);
+          const logo = absolute(
+            firstMeta(html, ["og:logo"]) ?? findLogoImage(html, base) ?? firstIcon(html, base) ?? "",
+            base,
+          );
           const jsonImages = jsonLdImages(html, base);
           const campusImage = absolute(
             firstMeta(html, ["og:image", "twitter:image", "twitter:image:src"]) ?? jsonImages[0] ?? findImage(html, base, name) ?? "",
