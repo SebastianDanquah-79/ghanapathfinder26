@@ -8,9 +8,53 @@ const KNOWN_MEDIA: Record<string, Media> = {
     logo: "https://ug75.ug.edu.gh/file/logo-mainjpg",
     campusImage: "https://www.adomonline.com/wp-content/uploads/2019/11/Balme_Library_of_University_of_Ghana_Accra_Ghana.jpg",
   },
+  "kwame-nkrumah-university-of-science-and-technology": {
+    logo: null,
+    campusImage: "https://www.knust.edu.gh/sites/default/files/2024-12/KNUST%20Receives%20QAA%20International%20Institutional%20Accreditation.jpg",
+  },
+  "university-of-cape-coast": {
+    logo: "https://ucc.edu.gh/img/ucc-logos/vertical-logo/blue-vertical-logo/ucclogo_vertical_blue.png",
+    campusImage: "https://kuulchat.com/universities/slides/f92d6569ac374f5f1b67da02d9fcd813.jpg",
+  },
+  "ghana-communication-technology-university": {
+    logo: null,
+    campusImage: "https://laptopfriendly.co/images/places/accra/ghana-communication-technology-university/ghana-communication-technology-university--accra.jpg",
+  },
+  "university-of-mines-and-technology": {
+    logo: null,
+    campusImage: "https://umat.edu.gh/images/AboutUs/umat-administration2.jpg",
+  },
+  "university-of-energy-and-natural-resources": {
+    logo: null,
+    campusImage: "https://i0.wp.com/galexgh.com/wp-content/uploads/2021/09/EoD7M0VW8AAHCIr.jpg",
+  },
+  "koforidua-technical-university": {
+    logo: null,
+    campusImage: "https://www.ghanabusinessnews.com/wp-content/uploads/2023/06/Koforidua-Technical-University.jpg",
+  },
   "university-of-professional-studies-accra": {
     logo: "https://e4impact.org/wp-content/uploads/2022/04/upsa.jpg",
     campusImage: "https://pbs.twimg.com/media/GBC_CPYX0AIgFra.jpg",
+  },
+  "university-of-education-winneba": {
+    logo: null,
+    campusImage: "https://uew.edu.gh/sites/default/files/2022-09/winneba-campus.jpg",
+  },
+  "university-for-development-studies": {
+    logo: null,
+    campusImage: "https://uds.edu.gh/logmein/uploads/posts/95ce143da2b86545d1fae475785a34d7.jpg",
+  },
+  "university-of-health-and-allied-sciences": {
+    logo: null,
+    campusImage: "https://www.primenewsghana.com/images/2019/jan/12/University-of-Health-and-Allied-Sciences-.jpg",
+  },
+  "central-university": {
+    logo: null,
+    campusImage: "https://pbs.twimg.com/media/FNi6UxfVEAoiAFk.jpg",
+  },
+  "academic-city-university": {
+    logo: null,
+    campusImage: "https://craydel-test-cms.blr1.digitaloceanspaces.com/IQBVYMH3SWD0HGZFXULY.webp",
   },
   "delexes-university-college": {
     logo: "https://admission.delexesuniversity.edu.gh/assets/logo.png",
@@ -19,7 +63,7 @@ const KNOWN_MEDIA: Record<string, Media> = {
 };
 
 const normalize = (value: string) => value.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-const cacheKey = (url: string) => `ghanapathfinder:institution-media:v5:${url}`;
+const cacheKey = (url: string) => `ghanapathfinder:institution-media:v6:${url}`;
 
 export default function InstitutionMedia({ websiteUrl, name, variant = "card" }: { websiteUrl?: string | null; name: string; variant?: "card" | "hero" }) {
   const known = KNOWN_MEDIA[normalize(name)];
@@ -71,11 +115,11 @@ export default function InstitutionMedia({ websiteUrl, name, variant = "card" }:
 
   const initials = name.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join("").toUpperCase() || "GH";
   const fallback = (
-    <div className="flex h-full w-full items-center justify-center bg-secondary px-6 text-center">
+    <div className="flex h-full w-full items-center justify-center bg-[#E77917] px-6 text-center">
       <div className="max-w-xl">
-        {logo ? <img src={logo} alt={`${name} logo`} className="mx-auto mb-3 h-16 w-16 object-contain" referrerPolicy="no-referrer" onError={() => setLogoFailed(true)} /> : <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-xl border border-border bg-background text-xl font-bold text-primary">{initials}</div>}
-        <p className="font-semibold text-foreground">{name}</p>
-        <p className="mt-1 text-xs text-muted-foreground">Institutional media is being resolved from verified public sources.</p>
+        {logo ? <img src={logo} alt={`${name} logo`} className="mx-auto mb-3 h-16 w-16 object-contain" referrerPolicy="no-referrer" onError={() => setLogoFailed(true)} /> : <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-xl border border-white/40 bg-white/15 text-xl font-bold text-white">{initials}</div>}
+        <p className="font-semibold text-white">{name}</p>
+        <p className="mt-1 text-xs text-white/85">Institutional media is being resolved from verified public sources.</p>
       </div>
     </div>
   );
