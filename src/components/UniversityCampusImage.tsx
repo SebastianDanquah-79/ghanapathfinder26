@@ -30,6 +30,15 @@ const verifiedCampusImages: Array<[RegExp, string[]]> = [
   [/university of mines and technology|\bumat\b|george grant university of mines/i, [commons("UMaT Campus 08.jpg"), commons("UMaT Campus 09.jpg"), commons("UMaT Campus 10.jpg"), commons("UMaT ED Block.jpg")]],
   [/accra technical university|\batu\b/i, [commons("Accra Technical University 01.jpg"), commons("Accra Technical University 2.jpg"), commons("Accra Technical University Ghana.jpg"), commons("View on Accra Technical University.jpg")]],
   [/tamale technical university|\btatu\b/i, [commons("A front view of TATU administration.jpg"), commons("A side view of administration of Tamale Technical University.jpg"), commons("Administration Block of TaTu.jpg"), commons("ICT block - TaTu.jpg")]],
+  [/university of education.*winneba|\buew\b/i, [commons("Monument at University Of Education, Winneba. Ajumako Campus.jpg"), commons("Lecture Block at North Campus of University of Education Winneba.jpg"), commons("Student centre at the University of Education Winneba, North Campus.jpg"), commons("Statue of University of Education Winneba's crest at North Campus.jpg")]],
+  [/university for development studies|\buds\b/i, [commons("UDS Campus.jpg"), commons("UDS Nyankpala campus.jpg"), commons("University for Development Studies City campus.jpg"), commons("Campus (UDS).jpg")]],
+  [/university of professional studies|\bupsa\b/i, [commons("UPSA Campus.jpg"), commons("Campus (UPSA) 1.jpg"), commons("Campus (UPSA) 2.jpg")]],
+  [/ghana institute of management and public administration|\bgimpa\b/i, [commons("John Evans Atta Mills Statue (GIMPA).jpg")]],
+  [/sunyani technical university|\bstu\b/i, [commons("Sunyani technical university main Campus.jpg")]],
+  [/university of energy and natural resources|\buenr\b/i, [commons("UENR 1.jpg"), commons("UENR 4.jpg"), commons("UENR 6.jpg"), commons("UENR 7.jpg")]],
+  [/simon diedong dombo|\bubids\b/i, [commons("UBIDS Campus.jpg"), commons("LIBRARY IN CONSTRUCTION AT SIMON DIEDONG UNIVERSITY OF BBUSINESS AND INTEGRATED DEVELOPMENT STUDIES.jpg")]],
+  [/c\.? ?k\.? tedam|\bckt-?utas\b/i, [commons("CK Tedam University of Technology and Applied Sciences Navrongo.jpg")]],
+  [/ghana institute of journalism|\bgij\b/i, [commons("Ghana Institute of Journalism.jpg"), commons("Ghana Institute of Journalism 1.jpg"), commons("Ghana Institute of Journalism 2.jpg"), commons("Ghana Institute of Journalism 3.jpg")]],
   [/ho technical university|\bhtu\b/i, [commons("Ho Technical University gate.jpg"), commons("Ho Technical University.jpg"), commons("G. M Afeti Auditorium of HTU.jpg"), commons("New Agricultural engineering department of HTU.jpg")]],
 ];
 
@@ -190,7 +199,7 @@ const CampusIllustration = ({ name, location }: UniversityCampusImageProps) => {
       <div className="absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/55 to-transparent px-4 pb-3 pt-12">
         <div className="min-w-0">
           <div className="truncate text-xs font-semibold text-white">{name}</div>
-          <div className="text-[10px] text-white/80">Campus illustration · no AI image</div>
+          <div className="text-[10px] text-white/80">Campus outline · photo not yet available</div>
         </div>
       </div>
     </div>
