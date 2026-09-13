@@ -8,14 +8,14 @@ const motifs = [
   ["Adinkrahene", "https://commons.wikimedia.org/wiki/Special:Redirect/file/Adinkrahene%20dua%20(Adinkra%20card).svg"],
 ];
 
-const positions = [
+const positions: Array<[number, number]> = [
   [4, 15], [15, 32], [29, 11], [45, 18], [62, 8], [78, 17], [91, 12],
   [8, 57], [21, 76], [36, 63], [52, 78], [68, 57], [83, 76], [94, 61],
   [12, 88], [30, 92], [57, 91], [76, 88], [89, 94],
 ];
 
 const Motif = ({ left, top, index }: { left: number; top: number; index: number }) => {
-  const [, src] = motifs[index % motifs.length];
+  const [, src] = motifs[index % motifs.length]!;
   const size = 30 + ((index * 13) % 32);
   const duration = 12 + (index % 7) * 2;
   const delay = -((index * 2.7) % duration);
