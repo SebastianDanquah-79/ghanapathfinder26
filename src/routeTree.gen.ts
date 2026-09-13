@@ -39,6 +39,7 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin/analytics'
 import { Route as AdminDataRouteImport } from './routes/admin/data'
 import { Route as AdminInsightsRouteImport } from './routes/admin/insights'
+import { Route as AdminReviewRouteImport } from './routes/admin/review'
 import { Route as ApiCareerPathRouteImport } from './routes/api/career-path'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as ApiInstitutionMediaRouteImport } from './routes/api/institution-media'
@@ -210,6 +211,11 @@ const AdminInsightsRoute = AdminInsightsRouteImport.update({
   path: '/admin/insights',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminReviewRoute = AdminReviewRouteImport.update({
+  id: '/admin/review',
+  path: '/admin/review',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiCareerPathRoute = ApiCareerPathRouteImport.update({
   id: '/api/career-path',
   path: '/api/career-path',
@@ -344,6 +350,7 @@ export interface FileRoutesByFullPath {
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
   '/admin/insights': typeof AdminInsightsRoute
+  '/admin/review': typeof AdminReviewRoute
   '/api/career-path': typeof ApiCareerPathRoute
   '/api/chat': typeof ApiChatRoute
   '/api/institution-media': typeof ApiInstitutionMediaRoute
@@ -396,6 +403,7 @@ export interface FileRoutesByTo {
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
   '/admin/insights': typeof AdminInsightsRoute
+  '/admin/review': typeof AdminReviewRoute
   '/api/career-path': typeof ApiCareerPathRoute
   '/api/chat': typeof ApiChatRoute
   '/api/institution-media': typeof ApiInstitutionMediaRoute
@@ -449,6 +457,7 @@ export interface FileRoutesById {
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
   '/admin/insights': typeof AdminInsightsRoute
+  '/admin/review': typeof AdminReviewRoute
   '/api/career-path': typeof ApiCareerPathRoute
   '/api/chat': typeof ApiChatRoute
   '/api/institution-media': typeof ApiInstitutionMediaRoute
@@ -503,6 +512,7 @@ export interface FileRouteTypes {
     | '/admin/analytics'
     | '/admin/data'
     | '/admin/insights'
+    | '/admin/review'
     | '/api/career-path'
     | '/api/chat'
     | '/api/institution-media'
@@ -555,6 +565,7 @@ export interface FileRouteTypes {
     | '/admin/analytics'
     | '/admin/data'
     | '/admin/insights'
+    | '/admin/review'
     | '/api/career-path'
     | '/api/chat'
     | '/api/institution-media'
@@ -607,6 +618,7 @@ export interface FileRouteTypes {
     | '/admin/analytics'
     | '/admin/data'
     | '/admin/insights'
+    | '/admin/review'
     | '/api/career-path'
     | '/api/chat'
     | '/api/institution-media'
@@ -660,6 +672,7 @@ export interface RootRouteChildren {
   AdminAnalyticsRoute: typeof AdminAnalyticsRoute
   AdminDataRoute: typeof AdminDataRoute
   AdminInsightsRoute: typeof AdminInsightsRoute
+  AdminReviewRoute: typeof AdminReviewRoute
   ApiCareerPathRoute: typeof ApiCareerPathRoute
   ApiChatRoute: typeof ApiChatRoute
   ApiInstitutionMediaRoute: typeof ApiInstitutionMediaRoute
@@ -894,6 +907,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminInsightsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/review': {
+      id: '/admin/review'
+      path: '/admin/review'
+      fullPath: '/admin/review'
+      preLoaderRoute: typeof AdminReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/career-path': {
       id: '/api/career-path'
       path: '/api/career-path'
@@ -1068,6 +1088,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminAnalyticsRoute: AdminAnalyticsRoute,
   AdminDataRoute: AdminDataRoute,
   AdminInsightsRoute: AdminInsightsRoute,
+  AdminReviewRoute: AdminReviewRoute,
   ApiCareerPathRoute: ApiCareerPathRoute,
   ApiChatRoute: ApiChatRoute,
   ApiInstitutionMediaRoute: ApiInstitutionMediaRoute,
