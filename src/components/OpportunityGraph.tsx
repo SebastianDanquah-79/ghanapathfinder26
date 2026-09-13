@@ -4,7 +4,7 @@ import { Link } from "@/lib/router-compat";
 
 const STORAGE_KEY = "ghanapathfinder-my-path-v1";
 
-type GraphNode = { id: string; label: string; description: string; href: string; icon: typeof Target; state: "active" | "ready" | "open" };
+type GraphNode = { id: string; label: string; description: string; href: string; icon: React.ComponentType<{ className?: string }>; state: "active" | "ready" | "open" };
 
 const getRoutes = (goal: string) => {
   const g = goal.toLowerCase();
@@ -30,20 +30,20 @@ const OpportunityGraph = () => {
     }
   }, []);
 
-  const goal = state.goal?.trim() || "your target career";
+  const goal = state["goal"]?.trim() || "your target career";
   const routes = useMemo(() => getRoutes(goal), [goal]);
-  const checked = state.checked ?? {};
-  const readyCount = [checked.goal, checked.education, checked.funding, checked.skills, checked.experience, checked.apply].filter(Boolean).length;
+  const checked = state["checked"] ?? {};
+  const readyCount = [checked["goal"], checked["education"], checked["funding"], checked["skills"], checked["experience"], checked["apply"]].filter(Boolean).length;
   const score = Math.round((readyCount / 6) * 100);
 
   const graph = useMemo<GraphNode[]>(() => [
-    { id: "destination", label: goal, description: "Your destination. Every recommendation should connect back to this outcome.", href: "/career-path", icon: Target, state: state.goal?.trim() ? "active" : "open" },
-    { id: "education", label: "Education routes", description: `${routes.join(" or ")} and other routes worth comparing.`, href: "/compare", icon: GraduationCap, state: checked.education ? "ready" : "open" },
-    { id: "skills", label: "Skills + projects", description: "Build evidence that proves you can do the work, not just study it.", href: "/skills", icon: Code, state: checked.skills ? "ready" : "open" },
-    { id: "funding", label: "Funding", description: "Scholarships and affordability should be part of the decision, not an afterthought.", href: "/scholarships", icon: DollarSign, state: checked.funding ? "ready" : "open" },
-    { id: "experience", label: "Experience", description: "Internships, projects and opportunities that turn learning into evidence.", href: "/internships", icon: Briefcase, state: checked.experience ? "ready" : "open" },
-    { id: "next", label: "Next opportunity", description: "Choose the highest-value action you can take now.", href: "/applications", icon: Award, state: checked.apply ? "ready" : "active" },
-  ], [goal, routes, checked, state.goal]);
+    { id: "destination", label: goal, description: "Your destination. Every recommendation should connect back to this outcome.", href: "/career-path", icon: Target, state: state["goal"]?.trim() ? "active" : "open" },
+    { id: "education", label: "Education routes", description: `${routes.join(" or ")} and other routes worth comparing.`, href: "/compare", icon: GraduationCap, state: checked["education"] ? "ready" : "open" },
+    { id: "skills", label: "Skills + projects", description: "Build evidence that proves you can do the work, not just study it.", href: "/skills", icon: Code, state: checked["skills"] ? "ready" : "open" },
+    { id: "funding", label: "Funding", description: "Scholarships and affordability should be part of the decision, not an afterthought.", href: "/scholarships", icon: DollarSign, state: checked["funding"] ? "ready" : "open" },
+    { id: "experience", label: "Experience", description: "Internships, projects and opportunities that turn learning into evidence.", href: "/internships", icon: Briefcase, state: checked["experience"] ? "ready" : "open" },
+    { id: "next", label: "Next opportunity", description: "Choose the highest-value action you can take now.", href: "/applications", icon: Award, state: checked["apply"] ? "ready" : "active" },
+  ], [goal, routes, checked, state]);
 
   return (
     <section className="rounded-2xl border border-border bg-glass p-5 sm:p-6">

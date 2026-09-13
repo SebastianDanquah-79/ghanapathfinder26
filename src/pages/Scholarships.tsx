@@ -143,9 +143,9 @@ const Scholarships = () => {
         },
       });
       setAi(data);
-      toast.success("AI matches ready");
+      toast.success("Matches ready");
     } catch (e) {
-      toast.error((e as Error).message || "Could not generate AI matches");
+      toast.error((e as Error).message || "Could not generate matches");
     } finally {
       setBusy(false);
     }
@@ -225,7 +225,9 @@ const Scholarships = () => {
               <Award className="h-6 w-6 text-primary" /> My Scholarship Hub
             </h1>
             <p className="text-sm text-muted-foreground mt-1">
-              AI matches, deadline alerts, eligibility rechecks and your exportable plan.
+              Each listing is one funding award &mdash; who may apply, what it covers, the deadline
+              and the official application page &mdash; with matches, deadline alerts, eligibility
+              rechecks and your exportable plan.
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -257,18 +259,18 @@ const Scholarships = () => {
         </div>
 
         <div className="grid gap-5 lg:grid-cols-2">
-          {/* AI matches */}
+          {/* Personalised matches */}
           <div className={`${card} lg:col-span-2`}>
             <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
               <h2 className="font-display font-semibold text-foreground flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-primary" /> AI scholarship matches
+                <Sparkles className="h-4 w-4 text-primary" /> Scholarship matches for you
               </h2>
               <button
                 onClick={runAi}
                 disabled={busy}
                 className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium disabled:opacity-60"
               >
-                <Sparkles className="h-4 w-4" /> {busy ? "Thinking..." : "Generate AI matches"}
+                <Sparkles className="h-4 w-4" /> {busy ? "Thinking..." : "Generate my matches"}
               </button>
             </div>
 

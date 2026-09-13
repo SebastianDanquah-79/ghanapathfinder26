@@ -54,7 +54,7 @@ export function normalizeCareer(input: string) {
 }
 
 export function getSkillPlan(career: string): SkillPlan[] {
-  const selected = careerSkills[normalizeCareer(career)] ?? careerSkills["AI Engineer"];
+  const selected = (careerSkills[normalizeCareer(career)] ?? careerSkills["AI Engineer"]) ?? [];
   return selected.map((name, index) => {
     const current = baselineSkills[name] ?? 0;
     const target = index < 2 ? 80 : 70;

@@ -27,7 +27,7 @@ export default function PathIntelligence({ targetCareer }: { targetCareer?: stri
   }, []);
 
   const career = normalizeCareer(targetCareer ?? storedCareer);
-  const config = careerSearch[career] ?? careerSearch["AI Engineer"];
+  const config = (careerSearch[career] ?? careerSearch["AI Engineer"])!;
   const programmes = useProgrammes(undefined, config.programme);
   const universities = useUniversities({ search: config.programme, pageSize: 8 });
   const scholarships = useScholarshipRecords(config.scholarship);
@@ -67,7 +67,7 @@ export default function PathIntelligence({ targetCareer }: { targetCareer?: stri
               <div key={university.id} className="rounded-lg border border-border p-3"><p className="text-sm font-medium">{university.name}</p><p className="mt-1 text-xs text-muted-foreground">{university.region ?? university.location ?? "Ghana"}</p></div>
             )) : <p className="text-sm text-muted-foreground">No catalogue matches loaded yet.</p>}
           </div>
-          <Link to="/universities" className="mt-4 inline-flex items-center gap-1 text-sm font-semibold">Compare institutions <ArrowRight className="h-4 w-4" /></Link>
+          <Link to="/" hash="universities" className="mt-4 inline-flex items-center gap-1 text-sm font-semibold">Compare institutions <ArrowRight className="h-4 w-4" /></Link>
         </article>
 
         <article className="rounded-xl border border-border p-4">

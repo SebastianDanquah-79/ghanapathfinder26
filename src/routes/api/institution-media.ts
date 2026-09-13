@@ -45,7 +45,7 @@ const firstMeta = (html: string, keys: string[]) => {
 const firstIcon = (html: string, base: string) => {
   const matches = html.matchAll(/<link[^>]+(?:rel=[\"'][^\"']*(?:icon|apple-touch-icon)[^\"']*)[^>]+href=[\"']([^\"']+)[\"'][^>]*>/gi);
   for (const match of matches) {
-    const url = absolute(match[1], base);
+    const url = absolute(match[1] ?? "", base);
     if (url) return url;
   }
   return absolute("/favicon.ico", base);
@@ -66,7 +66,7 @@ const findImage = (html: string, base: string, name: string) => {
   const matches = html.matchAll(/<img[^>]+(?:src|data-src|data-lazy-src|data-original)=[\"']([^\"']+)[\"'][^>]*>/gi);
   let best: { url: string; score: number } | null = null;
   for (const match of matches) {
-    const url = absolute(match[1], base);
+    const url = absolute(match[1] ?? "", base);
     if (!url || /\.(svg|gif)(?:$|\?)/i.test(url)) continue;
     const score = scoreImage(match[0], url, name);
     if (!best || score > best.score) best = { url, score };
@@ -79,11 +79,11 @@ const jsonLdImages = (html: string, base: string) => {
   const scripts = html.matchAll(/<script[^>]+type=[\"']application\/ld\+json[\"'][^>]*>([\s\S]*?)<\/script>/gi);
   for (const script of scripts) {
     try {
-      const parsed = JSON.parse(script[1]) as unknown;
+      const parsed = JSON.parse(script[1] ?? "null") as unknown;
       const nodes = Array.isArray(parsed) ? parsed : [parsed];
       for (const node of nodes) {
         if (!node || typeof node !== "object") continue;
-        const image = (node as Record<string, unknown>).image;
+        const image = (node as Record<string, unknown>)["image"];
         const values = typeof image === "string" ? [image] : Array.isArray(image) ? image : [];
         for (const value of values) {
           if (typeof value !== "string") continue;

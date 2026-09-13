@@ -182,8 +182,10 @@ const Programmes = () => {
               <GraduationCap className="h-6 w-6 lg:h-8 lg:w-8 text-primary" /> Programme Directory
             </h1>
             <p className="text-sm text-muted-foreground mt-1">
-              Every programme recorded in GhanaPathFinder: search by subject, institution, region or
-              qualification. {total.toLocaleString()} programmes match your view.
+              Each listing is a single course of study offered by one institution &mdash; its
+              qualification, duration, entry subjects and cut-off guidance &mdash; not the institution
+              as a whole. Search by subject, institution, region or qualification.{" "}
+              {total.toLocaleString()} programmes match your view.
             </p>
           </header>
 

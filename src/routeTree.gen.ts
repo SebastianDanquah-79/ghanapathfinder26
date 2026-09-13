@@ -22,6 +22,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CreditsRouteImport } from './routes/credits'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
+import { Route as FaqRouteImport } from './routes/faq'
 import { Route as InspirationRouteImport } from './routes/inspiration'
 import { Route as MatcherRouteImport } from './routes/matcher'
 import { Route as MyPathRouteImport } from './routes/my-path'
@@ -122,6 +123,11 @@ const DashboardRoute = DashboardRouteImport.update({
 const DisclaimerRoute = DisclaimerRouteImport.update({
   id: '/disclaimer',
   path: '/disclaimer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InspirationRoute = InspirationRouteImport.update({
@@ -321,6 +327,7 @@ export interface FileRoutesByFullPath {
   '/credits': typeof CreditsRoute
   '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
+  '/faq': typeof FaqRoute
   '/inspiration': typeof InspirationRoute
   '/matcher': typeof MatcherRoute
   '/my-path': typeof MyPathRoute
@@ -372,6 +379,7 @@ export interface FileRoutesByTo {
   '/credits': typeof CreditsRoute
   '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
+  '/faq': typeof FaqRoute
   '/inspiration': typeof InspirationRoute
   '/matcher': typeof MatcherRoute
   '/my-path': typeof MyPathRoute
@@ -424,6 +432,7 @@ export interface FileRoutesById {
   '/credits': typeof CreditsRoute
   '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
+  '/faq': typeof FaqRoute
   '/inspiration': typeof InspirationRoute
   '/matcher': typeof MatcherRoute
   '/my-path': typeof MyPathRoute
@@ -477,6 +486,7 @@ export interface FileRouteTypes {
     | '/credits'
     | '/dashboard'
     | '/disclaimer'
+    | '/faq'
     | '/inspiration'
     | '/matcher'
     | '/my-path'
@@ -528,6 +538,7 @@ export interface FileRouteTypes {
     | '/credits'
     | '/dashboard'
     | '/disclaimer'
+    | '/faq'
     | '/inspiration'
     | '/matcher'
     | '/my-path'
@@ -579,6 +590,7 @@ export interface FileRouteTypes {
     | '/credits'
     | '/dashboard'
     | '/disclaimer'
+    | '/faq'
     | '/inspiration'
     | '/matcher'
     | '/my-path'
@@ -631,6 +643,7 @@ export interface RootRouteChildren {
   CreditsRoute: typeof CreditsRoute
   DashboardRoute: typeof DashboardRoute
   DisclaimerRoute: typeof DisclaimerRoute
+  FaqRoute: typeof FaqRoute
   InspirationRoute: typeof InspirationRoute
   MatcherRoute: typeof MatcherRoute
   MyPathRoute: typeof MyPathRoute
@@ -760,6 +773,13 @@ declare module '@tanstack/react-router' {
       path: '/disclaimer'
       fullPath: '/disclaimer'
       preLoaderRoute: typeof DisclaimerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/inspiration': {
@@ -1031,6 +1051,7 @@ const rootRouteChildren: RootRouteChildren = {
   CreditsRoute: CreditsRoute,
   DashboardRoute: DashboardRoute,
   DisclaimerRoute: DisclaimerRoute,
+  FaqRoute: FaqRoute,
   InspirationRoute: InspirationRoute,
   MatcherRoute: MatcherRoute,
   MyPathRoute: MyPathRoute,

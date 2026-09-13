@@ -48,7 +48,7 @@ const priorityBonus = (priority: string, optionIndex: number) => {
 };
 
 export function buildDecision(profile: DecisionProfile): PathOption[] {
-  const routes = findRoutes(profile.goal);
+  const routes = findRoutes(profile.goal) ?? [];
   const base = profile.aggregate && profile.aggregate <= 24 ? 78 : profile.aggregate && profile.aggregate <= 30 ? 68 : 58;
   const readiness = Math.min(12, (profile.savedUniversities ?? 0) * 2 + (profile.savedScholarships ?? 0) * 2 + (profile.savedInternships ?? 0) * 2 + (profile.skillsStarted ?? 0) * 2);
 
@@ -70,7 +70,7 @@ export function buildDecision(profile: DecisionProfile): PathOption[] {
       reason: index === 0 ? `Best starting route for ${profile.goal || "your goal"}, based on your stated priority and current profile.` : `Worth comparing before you commit, especially if the first route has a constraint.`,
       strengths,
       watchouts,
-      nextAction: index === 0 ? `Compare ${name} programmes and current entry requirements.` : `Compare this route against ${routes[0]}.`,
+      nextAction: index === 0 ? `Compare ${name} programmes and current entry requirements.` : `Compare this route against ${routes[0] ?? name}.`,
     };
   });
 }

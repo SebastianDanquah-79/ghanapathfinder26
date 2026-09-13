@@ -43,7 +43,9 @@ const Careers = () => {
               Career paths for Ghanaian students
             </h1>
             <p className="text-sm text-muted-foreground leading-6">
-              See where a career can take you, what to study, which skills matter, and how to move from school into real work.
+              Each listing is an occupation, not a course: what the work involves, the study and
+              training routes into it, the skills and licences it needs, and where it can lead over
+              time. Open one to see its full path, or build a route to any job you name.
             </p>
           </div>
 

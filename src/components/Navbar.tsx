@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Search, BrandLogoIcon, LogOut, Info } from "@/lib/icons";
+import { Menu, X, Search, LogOut, Info } from "@/lib/icons";
+import BrandMark from "@/components/BrandMark";
 import { Link, useLocation } from "@/lib/router-compat";
 import { useAuth } from "@/hooks/useAuth";
 import ThemeToggle from "@/components/ThemeToggle";
@@ -44,7 +45,7 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-xl border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-14 gap-3">
         <Link to="/" className="flex items-center gap-2 shrink-0" aria-label="GhanaPathFinder home">
-          <BrandLogoIcon className="h-6 w-6 text-primary" />
+          <BrandMark className="h-7 w-7" priority />
           <span className="font-display font-bold text-lg sm:text-xl text-foreground">
             Ghana<span className="text-primary">PathFinder</span>
           </span>

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 
 interface UniversityCampusImageProps {
   name: string;
-  location?: string | null;
+  location?: string | null | undefined;
 }
 
 type CampusMedia = {
@@ -30,6 +30,15 @@ const verifiedCampusImages: Array<[RegExp, string[]]> = [
   [/university of mines and technology|\bumat\b|george grant university of mines/i, [commons("UMaT Campus 08.jpg"), commons("UMaT Campus 09.jpg"), commons("UMaT Campus 10.jpg"), commons("UMaT ED Block.jpg")]],
   [/accra technical university|\batu\b/i, [commons("Accra Technical University 01.jpg"), commons("Accra Technical University 2.jpg"), commons("Accra Technical University Ghana.jpg"), commons("View on Accra Technical University.jpg")]],
   [/tamale technical university|\btatu\b/i, [commons("A front view of TATU administration.jpg"), commons("A side view of administration of Tamale Technical University.jpg"), commons("Administration Block of TaTu.jpg"), commons("ICT block - TaTu.jpg")]],
+  [/university of education.*winneba|\buew\b/i, [commons("Monument at University Of Education, Winneba. Ajumako Campus.jpg"), commons("Lecture Block at North Campus of University of Education Winneba.jpg"), commons("Student centre at the University of Education Winneba, North Campus.jpg"), commons("Statue of University of Education Winneba's crest at North Campus.jpg")]],
+  [/university for development studies|\buds\b/i, [commons("UDS Campus.jpg"), commons("UDS Nyankpala campus.jpg"), commons("University for Development Studies City campus.jpg"), commons("Campus (UDS).jpg")]],
+  [/university of professional studies|\bupsa\b/i, [commons("UPSA Campus.jpg"), commons("Campus (UPSA) 1.jpg"), commons("Campus (UPSA) 2.jpg")]],
+  [/ghana institute of management and public administration|\bgimpa\b/i, [commons("John Evans Atta Mills Statue (GIMPA).jpg")]],
+  [/sunyani technical university|\bstu\b/i, [commons("Sunyani technical university main Campus.jpg")]],
+  [/university of energy and natural resources|\buenr\b/i, [commons("UENR 1.jpg"), commons("UENR 4.jpg"), commons("UENR 6.jpg"), commons("UENR 7.jpg")]],
+  [/simon diedong dombo|\bubids\b/i, [commons("UBIDS Campus.jpg"), commons("LIBRARY IN CONSTRUCTION AT SIMON DIEDONG UNIVERSITY OF BBUSINESS AND INTEGRATED DEVELOPMENT STUDIES.jpg")]],
+  [/c\.? ?k\.? tedam|\bckt-?utas\b/i, [commons("CK Tedam University of Technology and Applied Sciences Navrongo.jpg")]],
+  [/ghana institute of journalism|\bgij\b/i, [commons("Ghana Institute of Journalism.jpg"), commons("Ghana Institute of Journalism 1.jpg"), commons("Ghana Institute of Journalism 2.jpg"), commons("Ghana Institute of Journalism 3.jpg")]],
   [/ho technical university|\bhtu\b/i, [commons("Ho Technical University gate.jpg"), commons("Ho Technical University.jpg"), commons("G. M Afeti Auditorium of HTU.jpg"), commons("New Agricultural engineering department of HTU.jpg")]],
 ];
 
@@ -88,7 +97,7 @@ const toMedia = (page: CommonsPage, name: string): CampusMedia | null => {
   const info = page.imageinfo?.[0];
   if (!info) return null;
   const meta = info.extmetadata ?? {};
-  const license = stripHtml(meta.LicenseShortName?.value ?? meta.UsageTerms?.value ?? "");
+  const license = stripHtml(meta["LicenseShortName"]?.value ?? meta["UsageTerms"]?.value ?? "");
   if (!isPermissiveLicense(license)) return null;
   const src = info.thumburl ?? info.url;
   if (!src) return null;
@@ -96,7 +105,7 @@ const toMedia = (page: CommonsPage, name: string): CampusMedia | null => {
     src,
     sourceUrl: info.descriptionurl ?? `https://commons.wikimedia.org/wiki/${encodeURIComponent(title.replace(/ /g, "_"))}`,
     title: title.replace(/^File:/i, ""),
-    credit: stripHtml(meta.Artist?.value ?? meta.Credit?.value ?? "Wikimedia Commons contributor"),
+    credit: stripHtml(meta["Artist"]?.value ?? meta["Credit"]?.value ?? "Wikimedia Commons contributor"),
     license,
     kind: isLogoTitle(title) ? "logo" : "photo",
   };
@@ -150,7 +159,7 @@ const hash = (value: string) => {
 
 const initialsFor = (name: string) => {
   const words = normalize(name).split(/\s+/).filter((word) => word.length >= 2 && !stopWords.has(word));
-  return (words.length >= 2 ? `${words[0][0]}${words[1][0]}` : words[0]?.slice(0, 2) ?? "GP").toUpperCase();
+  return (words.length >= 2 ? `${words[0]![0]}${words[1]![0]}` : words[0]?.slice(0, 2) ?? "GP").toUpperCase();
 };
 
 const CampusIllustration = ({ name, location }: UniversityCampusImageProps) => {
@@ -190,7 +199,7 @@ const CampusIllustration = ({ name, location }: UniversityCampusImageProps) => {
       <div className="absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/55 to-transparent px-4 pb-3 pt-12">
         <div className="min-w-0">
           <div className="truncate text-xs font-semibold text-white">{name}</div>
-          <div className="text-[10px] text-white/80">Campus illustration · no AI image</div>
+          <div className="text-[10px] text-white/80">Campus outline · photo not yet available</div>
         </div>
       </div>
     </div>
@@ -218,7 +227,7 @@ const UniversityCampusImage = ({ name, location }: UniversityCampusImageProps) =
         const preferred = verifiedFor(key);
         const reachable = (await Promise.all(preferred.map(async (src) => (await isImageReachable(src)) ? src : null)))
           .filter((src): src is string => Boolean(src));
-        let media = reachable.map((src) => ({ src, sourceUrl: src, title: key, credit: "GhanaPathFinder verified campus source", license: "Source verified", kind: "photo" as const }));
+        let media: CampusMedia[] = reachable.map((src) => ({ src, sourceUrl: src, title: key, credit: "GhanaPathFinder verified campus source", license: "Source verified", kind: "photo" as const }));
         if (media.length < 3) media = [...media, ...(await fetchCommonsImages(key))];
         const unique = new Map<string, CampusMedia>();
         for (const item of media) if (!unique.has(item.src)) unique.set(item.src, item);
