@@ -166,7 +166,7 @@ const MyPath = () => {
           <div className="rounded-2xl border border-border bg-glass p-5">
             <p className="text-xs uppercase tracking-wide text-muted-foreground">Your strongest current matches</p>
             <div className="space-y-3 mt-3">
-              {topMatches.length ? topMatches.map((m, mi) => <div key={`${m.university}-${mi}`} className="rounded-xl border border-border/70 p-3"><div className="flex items-start justify-between gap-3"><p className="text-sm font-semibold text-foreground">{m.university}</p><span className="text-xs font-semibold text-primary">{m.confidence}%</span></div><p className="text-xs text-muted-foreground mt-1">{m.category || "Potential match"}</p></div>) : <p className="text-sm text-muted-foreground">Add your WASSCE results to see personalised admission matches.</p>}
+              {topMatches.length ? topMatches.map((m, mi) => <div key={`${m.cutoff.id}-${mi}`} className="rounded-xl border border-border/70 p-3"><div className="flex items-start justify-between gap-3"><p className="text-sm font-semibold text-foreground">{m.cutoff.universities?.name ?? m.cutoff.programme_name}</p><span className="text-xs font-semibold text-primary">{m.confidence}%</span></div><p className="text-xs text-muted-foreground mt-1">{m.category || "Potential match"}</p></div>) : <p className="text-sm text-muted-foreground">Add your WASSCE results to see personalised admission matches.</p>}
             </div>
             <Link to="/admission-match" className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary mt-4">See all matches <ArrowRight className="h-4 w-4" /></Link>
           </div>
