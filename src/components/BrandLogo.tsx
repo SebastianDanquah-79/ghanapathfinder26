@@ -27,8 +27,6 @@ const initialsOf = (name: string) =>
     .map((w) => w[0]?.toUpperCase() ?? "")
     .join("") || name.slice(0, 2).toUpperCase();
 
-// Only full official names are matched here: short forms such as "UG" or "KTU"
-// appear inside unrelated institution names and produced the wrong crest.
 const knownDomains: Array<[RegExp, string]> = [
   [/^university of mines and technology\b/i, "umat.edu.gh"],
   [/^ghana communication technology university\b/i, "gctu.edu.gh"],
@@ -38,21 +36,19 @@ const knownDomains: Array<[RegExp, string]> = [
   [/^university of cape coast\b/i, "ucc.edu.gh"],
 ];
 
-/**
- * Icons that are never the institution's own mark: icon services, bare
- * favicons and the regulator's own site (many records had borrowed it).
- */
+// Reject generic icon providers and regulator/placeholder images, but allow
+// legitimate logo files hosted directly by an institution's own domain.
 const isGenericIcon = (url: string) =>
-  /s2\/favicons|icons\.duckduckgo\.com|favicon\.(ico|png)|gtec\.edu\.gh|placeholder/i.test(url);
+  /s2\/favicons|icons\.duckduckgo\.com|gtec\.edu\.gh|placeholder/i.test(url);
 
-const logoCacheKey = (domain: string) => `ghanapathfinder:brand-logo:v1:${domain}`;
+const logoCacheKey = (domain: string) => `ghanapathfinder:brand-logo:v2:${domain}`;
 
 const BrandLogo = ({ name, websiteUrl, logoUrl, size = 40, className = "" }: BrandLogoProps) => {
-  const suppliedDomain = domainOf(websiteUrl ?? logoUrl ?? null);
+  const suppliedWebsiteDomain = domainOf(websiteUrl);
+  const suppliedLogoDomain = domainOf(logoUrl);
   const knownDomain = knownDomains.find(([pattern]) => pattern.test(name))?.[1] ?? null;
-  const domain = suppliedDomain ?? knownDomain;
+  const domain = knownDomain ?? suppliedWebsiteDomain ?? suppliedLogoDomain;
 
-  // Resolve the institution's real mark from its own site, falling back to icon services.
   const [resolved, setResolved] = useState<string | null>(() => {
     if (typeof window === "undefined" || !domain) return null;
     try {
@@ -66,6 +62,7 @@ const BrandLogo = ({ name, websiteUrl, logoUrl, size = 40, className = "" }: Bra
     if (!domain || resolved) return;
     let cancelled = false;
     const site = `https://${domain}`;
+
     fetch(`/api/institution-media?url=${encodeURIComponent(site)}&name=${encodeURIComponent(name)}`)
       .then((response) => (response.ok ? response.json() : null))
       .then((value: { logo?: string | null } | null) => {
@@ -77,6 +74,7 @@ const BrandLogo = ({ name, websiteUrl, logoUrl, size = 40, className = "" }: Bra
         } catch {}
       })
       .catch(() => {});
+
     return () => {
       cancelled = true;
     };
@@ -84,22 +82,43 @@ const BrandLogo = ({ name, websiteUrl, logoUrl, size = 40, className = "" }: Bra
 
   const sources = useMemo(() => {
     const list: string[] = [];
-    if (resolved) list.push(resolved);
-    if (logoUrl && /^https?:\/\//.test(logoUrl) && !isGenericIcon(logoUrl)) list.push(logoUrl);
+
+    if (resolved && !isGenericIcon(resolved)) list.push(resolved);
+
+    // A supplied logo is useful when it is hosted on the institution's own
+    // domain. Never let a third-party icon service become the institution logo.
+    if (
+      logoUrl &&
+      /^https?:\/\//.test(logoUrl) &&
+      !isGenericIcon(logoUrl) &&
+      (!suppliedLogoDomain || suppliedLogoDomain === domain)
+    ) {
+      list.push(logoUrl);
+    }
+
     if (domain) {
+      // Direct institution-hosted assets are preferred over third-party services.
       list.push(`https://${domain}/favicon.ico`);
       list.push(`https://${domain}/favicon.png`);
+      list.push(`https://${domain}/favicon.svg`);
+      list.push(`https://${domain}/logo.png`);
+      list.push(`https://${domain}/logo.svg`);
+    }
+
+    // Last-resort generic services. These are intentionally not cached as the
+    // institution's resolved logo.
+    if (domain) {
       list.push(`https://www.google.com/s2/favicons?sz=128&domain=${domain}`);
       list.push(`https://icons.duckduckgo.com/ip3/${domain}.ico`);
     }
-    
+
     return [...new Set(list)];
-  }, [resolved, logoUrl, domain]);
+  }, [resolved, logoUrl, suppliedLogoDomain, domain]);
 
   const [index, setIndex] = useState(0);
-  useEffect(() => setIndex(0), [sources[0]]);
-  const src = sources[index];
+  useEffect(() => setIndex(0), [sources.join("|")]);
 
+  const src = sources[index];
 
   return (
     <span
