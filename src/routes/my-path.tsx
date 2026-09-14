@@ -5,7 +5,6 @@ import WorldClassPathLayer from "@/components/WorldClassPathLayer";
 import OpportunityGraph from "@/components/OpportunityGraph";
 import PathOS from "@/pages/PathOS";
 import PathIntelligence from "@/components/PathIntelligence";
-import LifeSimulator from "@/pages/LifeSimulator";
 
 function MyPathRoute() {
   return (
@@ -17,7 +16,6 @@ function MyPathRoute() {
       </div>
       <MyPath />
       <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5 pb-24 md:pb-12">
-        <LifeSimulator />
         <WorldClassPathLayer />
         <OpportunityGraph />
         <PathOS />
