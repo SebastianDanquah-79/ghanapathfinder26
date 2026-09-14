@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import MyPath from "@/pages/MyPath";
+import PathCommandCenter from "@/components/PathCommandCenter";
 import WorldClassPathLayer from "@/components/WorldClassPathLayer";
 import OpportunityGraph from "@/components/OpportunityGraph";
 import PathOS from "@/pages/PathOS";
@@ -8,6 +9,11 @@ import PathIntelligence from "@/components/PathIntelligence";
 function MyPathRoute() {
   return (
     <>
+      <div className="pt-20 pb-5 md:pb-6">
+        <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <PathCommandCenter />
+        </div>
+      </div>
       <MyPath />
       <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5 pb-24 md:pb-12">
         <WorldClassPathLayer />
