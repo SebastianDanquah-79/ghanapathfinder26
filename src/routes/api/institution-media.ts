@@ -49,19 +49,17 @@ const firstIcon = (html: string, base: string) => {
     const tag = (match[0] ?? "").toLowerCase();
     const url = absolute(match[1] ?? "", base);
     if (!url) continue;
-    // Prefer the largest declared icon: apple-touch icons are usually the real mark, not a 16px favicon.
     let score = 0;
-    if (tag.includes("apple-touch-icon")) score += 6;
+    if (tag.includes("apple-touch-icon")) score += 10;
     const sizes = tag.match(/sizes=["'](\d+)x\d+["']/);
-    if (sizes?.[1]) score += Math.min(Number(sizes[1]) / 32, 8);
-    if (/\.png(?:$|\?)/i.test(url)) score += 2;
-    if (/favicon\.ico(?:$|\?)/i.test(url)) score -= 3;
+    if (sizes?.[1]) score += Math.min(Number(sizes[1]) / 24, 10);
+    if (/\.png(?:$|\?)/i.test(url)) score += 3;
+    if (/favicon\.ico(?:$|\?)/i.test(url)) score -= 5;
     if (!best || score > best.score) best = { url, score };
   }
   return best?.url ?? absolute("/favicon.ico", base);
 };
 
-/** Site header logos are almost always an <img> whose markup mentions "logo". */
 const findLogoImage = (html: string, base: string) => {
   const matches = html.matchAll(/<img[^>]+(?:src|data-src|data-lazy-src|data-original)=["']([^"']+)["'][^>]*>/gi);
   let best: { url: string; score: number } | null = null;
@@ -70,36 +68,14 @@ const findLogoImage = (html: string, base: string) => {
     const url = absolute(match[1] ?? "", base);
     if (!url) continue;
     const haystack = `${tag} ${url.toLowerCase()}`;
-    if (!/logo|crest|emblem|brand/.test(haystack)) continue;
-    let score = 5;
-    if (/header|site-?logo|navbar|brand/.test(haystack)) score += 3;
-    if (/footer/.test(haystack)) score -= 2;
+    if (!/logo|crest|emblem|brand|coat[- ]?of[- ]?arms/.test(haystack)) continue;
+    let score = 10;
+    if (/header|site-?logo|navbar|brand/.test(haystack)) score += 6;
+    if (/footer/.test(haystack)) score -= 3;
     if (/placeholder|dummy|sprite|spinner|loader/.test(haystack)) continue;
-    if (/\.svg(?:$|\?)/i.test(url)) score += 1;
-    if (!best || score > best.score) best = { url, score };
-  }
-  return best?.url ?? null;
-};
-
-
-const scoreImage = (tag: string, url: string, name: string) => {
-  const haystack = `${tag} ${url}`.toLowerCase();
-  const tokens = name.toLowerCase().split(/[^a-z0-9]+/).filter((token) => token.length > 3);
-  let score = 0;
-  if (/(campus|university|college|school|building|facility|library|hostel|lecture|administration|student|academic)/.test(haystack)) score += 5;
-  if (/(logo|icon|avatar|favicon|sprite)/.test(haystack)) score -= 8;
-  for (const token of tokens) if (haystack.includes(token)) score += 2;
-  if (/\.(svg|gif)(?:$|\?)/i.test(url)) score -= 3;
-  return score;
-};
-
-const findImage = (html: string, base: string, name: string) => {
-  const matches = html.matchAll(/<img[^>]+(?:src|data-src|data-lazy-src|data-original)=[\"']([^\"']+)[\"'][^>]*>/gi);
-  let best: { url: string; score: number } | null = null;
-  for (const match of matches) {
-    const url = absolute(match[1] ?? "", base);
-    if (!url || /\.(svg|gif)(?:$|\?)/i.test(url)) continue;
-    const score = scoreImage(match[0], url, name);
+    if (/\.svg(?:$|\?)/i.test(url)) score += 3;
+    if (/\.png(?:$|\?)/i.test(url)) score += 2;
+    if (/favicon/i.test(url)) score -= 5;
     if (!best || score > best.score) best = { url, score };
   }
   return best?.url ?? null;
@@ -129,12 +105,9 @@ const jsonLdImages = (html: string, base: string) => {
   return results;
 };
 
-const firstWikimedia = async (name: string, kind: "campus" | "logo") => {
+const firstWikimedia = async (name: string) => {
   try {
-    const queries = kind === "logo"
-      ? [`${name} logo`, `\"${name}\" logo`]
-      : [`${name} campus Ghana`, `\"${name}\" Ghana campus`, `${name} university Ghana`];
-
+    const queries = [`${name} logo`, `"${name}" logo`, `${name} crest`];
     for (const queryText of queries) {
       const query = encodeURIComponent(queryText);
       const response = await fetch(
@@ -146,25 +119,25 @@ const firstWikimedia = async (name: string, kind: "campus" | "logo") => {
         query?: { pages?: Record<string, { title?: string; imageinfo?: Array<{ thumburl?: string; url?: string; mime?: string }> }> };
       };
       const pages = Object.values(json.query?.pages ?? {});
-      const nameTokens = name.toLowerCase().split(/[^a-z0-9]+/).filter((token) => token.length > 3);
+      const tokens = name.toLowerCase().split(/[^a-z0-9]+/).filter((token) => token.length > 3);
       const ranked = pages
         .map((page) => {
           const title = (page.title ?? "").toLowerCase();
           const image = page.imageinfo?.[0];
           const url = image?.thumburl ?? image?.url;
-          if (!url || image?.mime?.startsWith("image/svg")) return null;
-          let score = kind === "logo" ? 0 : -2;
-          if (title.includes("campus")) score += 5;
-          if (title.includes("logo") || title.includes("crest") || title.includes("coat of arms")) score += kind === "logo" ? 7 : -4;
-          for (const token of nameTokens) if (title.includes(token)) score += 3;
+          if (!url) return null;
+          let score = 0;
+          if (/logo|crest|coat of arms|emblem/.test(title)) score += 10;
+          for (const token of tokens) if (title.includes(token)) score += 3;
+          if (image?.mime?.startsWith("image/svg")) score += 2;
           return { url, score };
         })
         .filter(Boolean) as Array<{ url: string; score: number }>;
       ranked.sort((a, b) => b.score - a.score);
-      if (ranked[0] && ranked[0].score >= (kind === "logo" ? 4 : 3)) return ranked[0].url;
+      if (ranked[0] && ranked[0].score >= 8) return ranked[0].url;
     }
   } catch {
-    // Public fallback only. Never make the institution page fail because media search failed.
+    // Media discovery is a fallback and must never break the institution page.
   }
   return null;
 };
@@ -194,8 +167,7 @@ export const Route = createFileRoute("/api/institution-media")({
           if (!response.ok) {
             return Response.json({
               source: target,
-              logo: await firstWikimedia(name, "logo"),
-              campusImage: await firstWikimedia(name, "campus"),
+              logo: await firstWikimedia(name),
               fetchedAt: new Date().toISOString(),
             });
           }
@@ -208,24 +180,25 @@ export const Route = createFileRoute("/api/institution-media")({
           const html = (await response.text()).slice(0, 2_500_000);
           const base = new URL(target).toString();
 
-          const logo = absolute(
-            firstMeta(html, ["og:logo"]) ?? findLogoImage(html, base) ?? firstIcon(html, base) ?? "",
-            base,
-          );
+          // Priority: explicit official logo metadata, actual logo/crest image,
+          // Wikimedia Commons, then the institution's largest icon. This prevents
+          // a tiny favicon from winning when a proper university logo exists.
+          let resolvedLogo = absolute(firstMeta(html, ["og:logo"]) ?? "", base);
+          if (!resolvedLogo) resolvedLogo = findLogoImage(html, base);
+          if (!resolvedLogo) resolvedLogo = await firstWikimedia(name);
+          if (!resolvedLogo) resolvedLogo = firstIcon(html, base);
+
           const jsonImages = jsonLdImages(html, base);
           const campusImage = absolute(
-            firstMeta(html, ["og:image", "twitter:image", "twitter:image:src"]) ?? jsonImages[0] ?? findImage(html, base, name) ?? "",
+            firstMeta(html, ["og:image", "twitter:image", "twitter:image:src"]) ?? jsonImages[0] ?? "",
             base,
           );
-
-          const resolvedLogo = logo || (await firstWikimedia(name, "logo"));
-          const resolvedCampus = campusImage || (await firstWikimedia(name, "campus"));
 
           return Response.json(
             {
               source: target,
               logo: resolvedLogo || null,
-              campusImage: resolvedCampus || null,
+              campusImage: campusImage || null,
               fetchedAt: new Date().toISOString(),
             },
             {
@@ -237,8 +210,7 @@ export const Route = createFileRoute("/api/institution-media")({
         } catch {
           return Response.json({
             source: target,
-            logo: await firstWikimedia(name, "logo"),
-            campusImage: await firstWikimedia(name, "campus"),
+            logo: await firstWikimedia(name),
             fetchedAt: new Date().toISOString(),
           });
         } finally {
