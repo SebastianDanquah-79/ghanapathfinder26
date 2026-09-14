@@ -8,7 +8,6 @@ import SectionHeader from "@/components/SectionHeader";
 import OfficialLink from "@/components/OfficialLink";
 import SaveButton from "@/components/SaveButton";
 import GhanaRegionMap from "@/components/GhanaRegionMap";
-import VerifiedEmployers from "@/components/VerifiedEmployers";
 import { Search } from "@/lib/icons";
 import {
   EMPLOYERS,
@@ -247,8 +246,6 @@ const Internships = () => {
               No employers match those filters yet. Try widening the sector or location.
             </p>
           )}
-
-          <VerifiedEmployers />
 
           <p className="mt-8 text-[11px] text-muted-foreground">
             Opportunity dates change every year. GhanaPathFinder does not recruit for any
