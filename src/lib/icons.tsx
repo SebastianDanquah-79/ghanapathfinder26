@@ -117,7 +117,6 @@ const glyphs = {
   ChevronRight: "\u203A",
   ChevronUp: "\u25B4",
   Circle: "\u25CB",
-  CircleDollarSign: "\u20B5",
   ClipboardList: "\u2263",
   Code: "\u2039\u203A",
   Compass: "\u25C8",
@@ -171,7 +170,6 @@ const glyphs = {
   Wallet: "\u25AC",
   WifiOff: "\u2298",
   X: "\u2715",
-  Zap: "\u26A1",
 } as const;
 
 export const ArrowDown = makeIcon(glyphs.ArrowDown, "ArrowDown");
@@ -184,7 +182,6 @@ export const BookMarked = makeIcon(glyphs.BookMarked, "BookMarked");
 export const Building = makeIcon(glyphs.Building, "Building");
 
 export const Circle = makeIcon(glyphs.Circle, "Circle");
-export const CircleDollarSign = makeIcon(glyphs.CircleDollarSign, "CircleDollarSign");
 export const ClipboardList = makeIcon(glyphs.ClipboardList, "ClipboardList");
 export const Code = makeIcon(glyphs.Code, "Code");
 export const Compass = makeIcon(glyphs.Compass, "Compass");
@@ -213,11 +210,6 @@ export const UserCheck = makeIcon(glyphs.UserCheck, "UserCheck");
 
 export const Wallet = makeIcon(glyphs.Wallet, "Wallet");
 export const WifiOff = makeIcon(glyphs.WifiOff, "WifiOff");
-export const Zap = makeIcon(glyphs.Zap, "Zap");
-
-// Compatibility aliases used by the reference university profile.
-export const ArrowUpRight = ExternalLink;
-export const Landmark = Building2;
 
 // Meaningful UI icons keep their original vector rendering.
 export {

@@ -27,8 +27,9 @@ const initialsOf = (name: string) =>
     .map((w) => w[0]?.toUpperCase() ?? "")
     .join("") || name.slice(0, 2).toUpperCase();
 
+// Only full official names are matched here: short forms such as "UG" or "KTU"
+// appear inside unrelated institution names and produced the wrong crest.
 const knownDomains: Array<[RegExp, string]> = [
-  [/^academic city(?: university(?: college)?)?\b/i, "acity.edu.gh"],
   [/^university of mines and technology\b/i, "umat.edu.gh"],
   [/^ghana communication technology university\b/i, "gctu.edu.gh"],
   [/^koforidua technical university\b/i, "ktu.edu.gh"],
@@ -37,17 +38,21 @@ const knownDomains: Array<[RegExp, string]> = [
   [/^university of cape coast\b/i, "ucc.edu.gh"],
 ];
 
+/**
+ * Icons that are never the institution's own mark: icon services, bare
+ * favicons and the regulator's own site (many records had borrowed it).
+ */
 const isGenericIcon = (url: string) =>
-  /s2\/favicons|icons\.duckduckgo\.com|gtec\.edu\.gh|placeholder/i.test(url);
+  /s2\/favicons|icons\.duckduckgo\.com|favicon\.(ico|png)|gtec\.edu\.gh|placeholder/i.test(url);
 
-const logoCacheKey = (domain: string) => `ghanapathfinder:brand-logo:v4:${domain}`;
+const logoCacheKey = (domain: string) => `ghanapathfinder:brand-logo:v1:${domain}`;
 
-const BrandLogo = ({ name, websiteUrl, logoUrl, size = 64, className = "" }: BrandLogoProps) => {
-  const suppliedWebsiteDomain = domainOf(websiteUrl);
-  const suppliedLogoDomain = domainOf(logoUrl);
+const BrandLogo = ({ name, websiteUrl, logoUrl, size = 40, className = "" }: BrandLogoProps) => {
+  const suppliedDomain = domainOf(websiteUrl ?? logoUrl ?? null);
   const knownDomain = knownDomains.find(([pattern]) => pattern.test(name))?.[1] ?? null;
-  const domain = knownDomain ?? suppliedWebsiteDomain ?? suppliedLogoDomain;
+  const domain = suppliedDomain ?? knownDomain;
 
+  // Resolve the institution's real mark from its own site, falling back to icon services.
   const [resolved, setResolved] = useState<string | null>(() => {
     if (typeof window === "undefined" || !domain) return null;
     try {
@@ -60,8 +65,8 @@ const BrandLogo = ({ name, websiteUrl, logoUrl, size = 64, className = "" }: Bra
   useEffect(() => {
     if (!domain || resolved) return;
     let cancelled = false;
-
-    fetch(`/api/institution-media?url=${encodeURIComponent(`https://${domain}`)}&name=${encodeURIComponent(name)}`)
+    const site = `https://${domain}`;
+    fetch(`/api/institution-media?url=${encodeURIComponent(site)}&name=${encodeURIComponent(name)}`)
       .then((response) => (response.ok ? response.json() : null))
       .then((value: { logo?: string | null } | null) => {
         const logo = value?.logo;
@@ -72,7 +77,6 @@ const BrandLogo = ({ name, websiteUrl, logoUrl, size = 64, className = "" }: Bra
         } catch {}
       })
       .catch(() => {});
-
     return () => {
       cancelled = true;
     };
@@ -80,44 +84,26 @@ const BrandLogo = ({ name, websiteUrl, logoUrl, size = 64, className = "" }: Bra
 
   const sources = useMemo(() => {
     const list: string[] = [];
-
-    if (resolved && !isGenericIcon(resolved)) list.push(resolved);
-
-    if (
-      logoUrl &&
-      /^https?:\/\//.test(logoUrl) &&
-      !isGenericIcon(logoUrl) &&
-      (!suppliedLogoDomain || suppliedLogoDomain === domain)
-    ) {
-      list.push(logoUrl);
-    }
-
+    if (resolved) list.push(resolved);
+    if (logoUrl && /^https?:\/\//.test(logoUrl) && !isGenericIcon(logoUrl)) list.push(logoUrl);
     if (domain) {
-      list.push(`https://${domain}/logo.svg`);
-      list.push(`https://${domain}/logo.png`);
-      list.push(`https://${domain}/images/logo.svg`);
-      list.push(`https://${domain}/images/logo.png`);
-      list.push(`https://${domain}/assets/logo.svg`);
-      list.push(`https://${domain}/assets/logo.png`);
-      list.push(`https://${domain}/apple-touch-icon.png`);
-      list.push(`https://${domain}/favicon.svg`);
-      list.push(`https://${domain}/favicon.png`);
       list.push(`https://${domain}/favicon.ico`);
-      list.push(`https://www.google.com/s2/favicons?sz=256&domain=${domain}`);
+      list.push(`https://${domain}/favicon.png`);
+      list.push(`https://www.google.com/s2/favicons?sz=128&domain=${domain}`);
       list.push(`https://icons.duckduckgo.com/ip3/${domain}.ico`);
     }
-
+    
     return [...new Set(list)];
-  }, [resolved, logoUrl, suppliedLogoDomain, domain]);
+  }, [resolved, logoUrl, domain]);
 
   const [index, setIndex] = useState(0);
-  useEffect(() => setIndex(0), [sources.join("|")]);
-
+  useEffect(() => setIndex(0), [sources[0]]);
   const src = sources[index];
+
 
   return (
     <span
-      className={`inline-flex shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border bg-white dark:bg-white ${className}`}
+      className={`inline-flex shrink-0 items-center justify-center overflow-hidden rounded-lg bg-secondary border border-border ${className}`}
       style={{ width: size, height: size }}
       aria-hidden={!src}
     >
@@ -128,12 +114,11 @@ const BrandLogo = ({ name, websiteUrl, logoUrl, size = 64, className = "" }: Bra
           width={size}
           height={size}
           loading="lazy"
-          decoding="async"
-          className="h-[88%] w-[88%] object-contain"
+          className="h-full w-full object-contain p-1"
           onError={() => setIndex((i) => Math.min(i + 1, sources.length))}
         />
       ) : (
-        <span className="text-sm font-bold text-muted-foreground">{initialsOf(name)}</span>
+        <span className="text-[11px] font-bold text-muted-foreground">{initialsOf(name)}</span>
       )}
     </span>
   );

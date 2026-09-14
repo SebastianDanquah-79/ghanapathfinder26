@@ -78,7 +78,6 @@ export const navSections: NavSection[] = [
     href: "/my-path",
     items: [
       { label: "My Path", href: "/my-path", desc: "Turn your goal into a plan" },
-      { label: "Life Simulator", href: "/life-simulator", desc: "Explore decisions and trade-offs safely" },
       { label: "Admission match", href: "/admission-match", desc: "See what fits your results" },
       { label: "Applications & deadlines", href: "/applications", desc: "Never miss your next step" },
       { label: "Saved items", href: "/saved", desc: "Keep your best options close" },
@@ -93,7 +92,6 @@ export const navSections: NavSection[] = [
     items: [
       { label: "Community feed", href: "/community", desc: "Learn from people like you" },
       { label: "Inspiration", href: "/inspiration", desc: "Meet people building big things" },
-      { label: "PathFinder Lab", href: "/pathfinder-lab", desc: "Missions, challenges and career-building progress" },
       { label: "For parents", href: "/parent", desc: "Support the journey with confidence" },
     ],
   },
@@ -102,8 +100,6 @@ export const navSections: NavSection[] = [
 export const accountItems: NavItem[] = [
   { label: "Dashboard", href: "/dashboard" },
   { label: "My Path", href: "/my-path" },
-  { label: "Life Simulator", href: "/life-simulator" },
-  { label: "PathFinder Lab", href: "/pathfinder-lab" },
   { label: "Saved items", href: "/saved" },
   { label: "Applications", href: "/applications" },
   { label: "Match preferences", href: "/preferences" },
