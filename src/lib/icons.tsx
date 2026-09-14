@@ -215,6 +215,10 @@ export const Wallet = makeIcon(glyphs.Wallet, "Wallet");
 export const WifiOff = makeIcon(glyphs.WifiOff, "WifiOff");
 export const Zap = makeIcon(glyphs.Zap, "Zap");
 
+// Compatibility aliases used by the reference university profile.
+export const ArrowUpRight = ExternalLink;
+export const Landmark = Building2;
+
 // Meaningful UI icons keep their original vector rendering.
 export {
   Lock,
