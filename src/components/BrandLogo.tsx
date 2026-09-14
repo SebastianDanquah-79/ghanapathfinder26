@@ -28,6 +28,7 @@ const initialsOf = (name: string) =>
     .join("") || name.slice(0, 2).toUpperCase();
 
 const knownDomains: Array<[RegExp, string]> = [
+  [/^academic city(?: university(?: college)?)?\b/i, "acity.edu.gh"],
   [/^university of mines and technology\b/i, "umat.edu.gh"],
   [/^ghana communication technology university\b/i, "gctu.edu.gh"],
   [/^koforidua technical university\b/i, "ktu.edu.gh"],
@@ -36,14 +37,12 @@ const knownDomains: Array<[RegExp, string]> = [
   [/^university of cape coast\b/i, "ucc.edu.gh"],
 ];
 
-// Reject generic icon providers and regulator/placeholder images, but allow
-// legitimate logo files hosted directly by an institution's own domain.
 const isGenericIcon = (url: string) =>
   /s2\/favicons|icons\.duckduckgo\.com|gtec\.edu\.gh|placeholder/i.test(url);
 
-const logoCacheKey = (domain: string) => `ghanapathfinder:brand-logo:v3:${domain}`;
+const logoCacheKey = (domain: string) => `ghanapathfinder:brand-logo:v4:${domain}`;
 
-const BrandLogo = ({ name, websiteUrl, logoUrl, size = 56, className = "" }: BrandLogoProps) => {
+const BrandLogo = ({ name, websiteUrl, logoUrl, size = 64, className = "" }: BrandLogoProps) => {
   const suppliedWebsiteDomain = domainOf(websiteUrl);
   const suppliedLogoDomain = domainOf(logoUrl);
   const knownDomain = knownDomains.find(([pattern]) => pattern.test(name))?.[1] ?? null;
@@ -84,7 +83,6 @@ const BrandLogo = ({ name, websiteUrl, logoUrl, size = 56, className = "" }: Bra
 
     if (resolved && !isGenericIcon(resolved)) list.push(resolved);
 
-    // Prefer a supplied official logo when it is hosted by the institution.
     if (
       logoUrl &&
       /^https?:\/\//.test(logoUrl) &&
@@ -95,16 +93,16 @@ const BrandLogo = ({ name, websiteUrl, logoUrl, size = 56, className = "" }: Bra
     }
 
     if (domain) {
-      // Direct institutional assets. These are preferred over generic icon APIs.
       list.push(`https://${domain}/logo.svg`);
       list.push(`https://${domain}/logo.png`);
+      list.push(`https://${domain}/images/logo.svg`);
+      list.push(`https://${domain}/images/logo.png`);
+      list.push(`https://${domain}/assets/logo.svg`);
+      list.push(`https://${domain}/assets/logo.png`);
       list.push(`https://${domain}/apple-touch-icon.png`);
       list.push(`https://${domain}/favicon.svg`);
       list.push(`https://${domain}/favicon.png`);
       list.push(`https://${domain}/favicon.ico`);
-
-      // Google and DuckDuckGo are last-resort discovery fallbacks only.
-      // The API route also searches the official site and Wikimedia Commons first.
       list.push(`https://www.google.com/s2/favicons?sz=256&domain=${domain}`);
       list.push(`https://icons.duckduckgo.com/ip3/${domain}.ico`);
     }
@@ -119,7 +117,7 @@ const BrandLogo = ({ name, websiteUrl, logoUrl, size = 56, className = "" }: Bra
 
   return (
     <span
-      className={`inline-flex shrink-0 items-center justify-center overflow-hidden rounded-lg border border-border bg-white dark:bg-white ${className}`}
+      className={`inline-flex shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border bg-white dark:bg-white ${className}`}
       style={{ width: size, height: size }}
       aria-hidden={!src}
     >
@@ -131,11 +129,11 @@ const BrandLogo = ({ name, websiteUrl, logoUrl, size = 56, className = "" }: Bra
           height={size}
           loading="lazy"
           decoding="async"
-          className="h-full w-full object-contain p-0 scale-[1.22]"
+          className="h-[88%] w-[88%] object-contain"
           onError={() => setIndex((i) => Math.min(i + 1, sources.length))}
         />
       ) : (
-        <span className="text-xs font-bold text-muted-foreground">{initialsOf(name)}</span>
+        <span className="text-sm font-bold text-muted-foreground">{initialsOf(name)}</span>
       )}
     </span>
   );
