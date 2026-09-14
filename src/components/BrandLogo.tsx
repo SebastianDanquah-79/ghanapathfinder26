@@ -41,9 +41,9 @@ const knownDomains: Array<[RegExp, string]> = [
 const isGenericIcon = (url: string) =>
   /s2\/favicons|icons\.duckduckgo\.com|gtec\.edu\.gh|placeholder/i.test(url);
 
-const logoCacheKey = (domain: string) => `ghanapathfinder:brand-logo:v2:${domain}`;
+const logoCacheKey = (domain: string) => `ghanapathfinder:brand-logo:v3:${domain}`;
 
-const BrandLogo = ({ name, websiteUrl, logoUrl, size = 40, className = "" }: BrandLogoProps) => {
+const BrandLogo = ({ name, websiteUrl, logoUrl, size = 56, className = "" }: BrandLogoProps) => {
   const suppliedWebsiteDomain = domainOf(websiteUrl);
   const suppliedLogoDomain = domainOf(logoUrl);
   const knownDomain = knownDomains.find(([pattern]) => pattern.test(name))?.[1] ?? null;
@@ -61,9 +61,8 @@ const BrandLogo = ({ name, websiteUrl, logoUrl, size = 40, className = "" }: Bra
   useEffect(() => {
     if (!domain || resolved) return;
     let cancelled = false;
-    const site = `https://${domain}`;
 
-    fetch(`/api/institution-media?url=${encodeURIComponent(site)}&name=${encodeURIComponent(name)}`)
+    fetch(`/api/institution-media?url=${encodeURIComponent(`https://${domain}`)}&name=${encodeURIComponent(name)}`)
       .then((response) => (response.ok ? response.json() : null))
       .then((value: { logo?: string | null } | null) => {
         const logo = value?.logo;
@@ -85,8 +84,7 @@ const BrandLogo = ({ name, websiteUrl, logoUrl, size = 40, className = "" }: Bra
 
     if (resolved && !isGenericIcon(resolved)) list.push(resolved);
 
-    // A supplied logo is useful when it is hosted on the institution's own
-    // domain. Never let a third-party icon service become the institution logo.
+    // Prefer a supplied official logo when it is hosted by the institution.
     if (
       logoUrl &&
       /^https?:\/\//.test(logoUrl) &&
@@ -97,18 +95,17 @@ const BrandLogo = ({ name, websiteUrl, logoUrl, size = 40, className = "" }: Bra
     }
 
     if (domain) {
-      // Direct institution-hosted assets are preferred over third-party services.
-      list.push(`https://${domain}/favicon.ico`);
-      list.push(`https://${domain}/favicon.png`);
-      list.push(`https://${domain}/favicon.svg`);
-      list.push(`https://${domain}/logo.png`);
+      // Direct institutional assets. These are preferred over generic icon APIs.
       list.push(`https://${domain}/logo.svg`);
-    }
+      list.push(`https://${domain}/logo.png`);
+      list.push(`https://${domain}/apple-touch-icon.png`);
+      list.push(`https://${domain}/favicon.svg`);
+      list.push(`https://${domain}/favicon.png`);
+      list.push(`https://${domain}/favicon.ico`);
 
-    // Last-resort generic services. These are intentionally not cached as the
-    // institution's resolved logo.
-    if (domain) {
-      list.push(`https://www.google.com/s2/favicons?sz=128&domain=${domain}`);
+      // Google and DuckDuckGo are last-resort discovery fallbacks only.
+      // The API route also searches the official site and Wikimedia Commons first.
+      list.push(`https://www.google.com/s2/favicons?sz=256&domain=${domain}`);
       list.push(`https://icons.duckduckgo.com/ip3/${domain}.ico`);
     }
 
@@ -122,7 +119,7 @@ const BrandLogo = ({ name, websiteUrl, logoUrl, size = 40, className = "" }: Bra
 
   return (
     <span
-      className={`inline-flex shrink-0 items-center justify-center overflow-hidden rounded-lg bg-secondary border border-border ${className}`}
+      className={`inline-flex shrink-0 items-center justify-center overflow-hidden rounded-lg border border-border bg-white dark:bg-white ${className}`}
       style={{ width: size, height: size }}
       aria-hidden={!src}
     >
@@ -133,11 +130,12 @@ const BrandLogo = ({ name, websiteUrl, logoUrl, size = 40, className = "" }: Bra
           width={size}
           height={size}
           loading="lazy"
-          className="h-full w-full object-contain p-1"
+          decoding="async"
+          className="h-full w-full object-contain p-0 scale-[1.22]"
           onError={() => setIndex((i) => Math.min(i + 1, sources.length))}
         />
       ) : (
-        <span className="text-[11px] font-bold text-muted-foreground">{initialsOf(name)}</span>
+        <span className="text-xs font-bold text-muted-foreground">{initialsOf(name)}</span>
       )}
     </span>
   );
