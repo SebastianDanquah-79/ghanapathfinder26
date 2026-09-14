@@ -92,12 +92,12 @@ export const useReviewQueue = (table: ReviewTable, enabled: boolean) =>
     queryFn: async (): Promise<ReviewRow[]> => {
       const select =
         table === "universities"
-          ? "id, name, institution_type, gtec_accreditation_status, region, location, website_url, logo_url, logo_source_url, logo_verification_status, google_place_id, short_description, source_urls, last_verified_at, needs_review"
+          ? "id, name, institution_type, gtec_accreditation_status, region, location, website_url, logo_url, logo_source_url, logo_verification_status, google_place_id, short_description, source_urls, last_verified_at, needs_review, verification_notes, verified_by, verification_method"
           : table === "institutions"
-            ? "id, official_name, institution_type, gtec_accreditation_status, region, town, website_url, logo_source_url, logo_verification_status, google_place_id, short_description, source_urls, last_verified_at, needs_review"
-          : table === "programmes"
-            ? "id, name, qualification, department, duration, mode, admission_summary, programme_url, source_url, source_urls, verification_status, last_verified_at, needs_review, universities(name)"
-            : "*";
+            ? "id, official_name, institution_type, gtec_accreditation_status, region, town, website_url, logo_source_url, logo_verification_status, google_place_id, short_description, source_urls, last_verified_at, needs_review, verification_notes, verified_by, verification_method"
+            : table === "programmes"
+              ? "id, name, qualification, department, duration, mode, admission_summary, programme_url, source_url, source_urls, verification_status, last_verified_at, needs_review, verification_notes, verified_by, verification_method, universities(name)"
+              : "*";
       const { data, error } = await supabase
         .from(table as any)
         .select(select)
@@ -156,8 +156,11 @@ export const useReviewAction = () => {
     }) => {
       const body: Record<string, any> = { ...(patch ?? {}) };
       if (approve) {
+        const { data: auth } = await supabase.auth.getUser();
         body["needs_review"] = false;
         body["last_verified_at"] = new Date().toISOString();
+        body["verification_method"] = "manual_review";
+        body["verified_by"] = auth.user?.id ?? null;
         if (table === "universities" || table === "programmes") {
           body["verified"] = true;
           body["verification_status"] = "verified";
