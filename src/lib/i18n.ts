@@ -40,10 +40,12 @@ export function getLanguage(): AppLanguage {
 
 export function setLanguage(language: AppLanguage) {
   if (typeof window !== "undefined") {
+    const previous = getLanguage();
     window.localStorage.setItem("gp-language", language);
     document.documentElement.lang = language;
     document.documentElement.dir = LANGUAGES.find((x) => x.code === language)?.rtl ? "rtl" : "ltr";
     window.dispatchEvent(new Event("gp-language-change"));
+    if (language === "en" && previous !== "en") window.location.reload();
   }
 }
 
