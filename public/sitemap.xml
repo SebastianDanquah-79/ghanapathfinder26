@@ -3271,6 +3271,31 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://ghanapathfinder.com/programme/family-health-bsc-midwifery</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/family-health-bsc-nursing</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/family-health-graduate-entry-medicine</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/family-health-nurse-assistant-clinical</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/family-health-undergraduate-medicine</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://ghanapathfinder.com/programme/foso-college-of-education-bachelor-of-education-basic-education</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -6507,6 +6532,61 @@
   </url>
   <url>
     <loc>https://ghanapathfinder.com/programme/withrow-college-of-health-diploma-in-registered-general-nursing</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/zenith-abe</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/zenith-acca</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/zenith-bba</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/zenith-bbis</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/zenith-cilt</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/zenith-cim</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/zenith-cth</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/zenith-dba</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/zenith-diploma-law</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/zenith-ghana-llb</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://ghanapathfinder.com/programme/zenith-london-llb</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

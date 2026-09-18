@@ -140,7 +140,7 @@ Make every student who lands on this feel like their future in Ghana just became
 
 This project was built with [Lovable](https://lovable.dev).
 
-**Live app**: https://ghanapathfinder26.lovable.app
+**Live app**: https://ghanapathfinder.com
 
 ## Build with Lovable
 
