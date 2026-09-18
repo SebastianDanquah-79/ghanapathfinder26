@@ -111,10 +111,7 @@ async function translateText(text: string, source: AppLanguage, target: AppLangu
 }
 
 async function translateDocument(target: AppLanguage) {
-  if (target === "en") {
-    window.location.reload();
-    return;
-  }
+  if (target === "en") return;
 
   const nodes = getTextNodes(document.body);
   const unique = new Map<string, Text[]>();
