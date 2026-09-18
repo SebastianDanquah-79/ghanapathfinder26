@@ -4,6 +4,7 @@ import { Loader2, Plus, Trash2 } from "@/lib/icons";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { LANGUAGES, getLanguage, setLanguage, t, type AppLanguage } from "@/lib/i18n";
 
 const REGIONS = [
   "Greater Accra", "Ashanti", "Central", "Eastern", "Western", "Volta",
@@ -48,16 +49,13 @@ const QUALIFICATIONS: Qualification[] = [
 ];
 
 const COUNTRY_OPTIONS = [
-  ["GH", "Ghana"], ["TD", "Chad"], ["CI", "Côte d'Ivoire"], ["SN", "Senegal"],
-  ["BJ", "Benin"], ["TG", "Togo"], ["CM", "Cameroon"], ["GN", "Guinea"],
-  ["BF", "Burkina Faso"], ["ML", "Mali"], ["NG", "Nigeria"], ["KE", "Kenya"],
-  ["ZA", "South Africa"], ["US", "United States"], ["GB", "United Kingdom"], ["OTHER", "Other"],
+  ["DZ","Algeria"],["AO","Angola"],["BJ","Benin"],["BW","Botswana"],["BF","Burkina Faso"],["BI","Burundi"],["CV","Cabo Verde"],["CM","Cameroon"],["CF","Central African Republic"],["TD","Chad"],["KM","Comoros"],["CG","Congo"],["CD","Democratic Republic of the Congo"],["CI","Côte d'Ivoire"],["DJ","Djibouti"],["EG","Egypt"],["GQ","Equatorial Guinea"],["ER","Eritrea"],["SZ","Eswatini"],["ET","Ethiopia"],["GA","Gabon"],["GM","Gambia"],["GH","Ghana"],["GN","Guinea"],["GW","Guinea-Bissau"],["KE","Kenya"],["LS","Lesotho"],["LR","Liberia"],["LY","Libya"],["MG","Madagascar"],["MW","Malawi"],["ML","Mali"],["MR","Mauritania"],["MU","Mauritius"],["MA","Morocco"],["MZ","Mozambique"],["NA","Namibia"],["NE","Niger"],["NG","Nigeria"],["RW","Rwanda"],["ST","São Tomé and Príncipe"],["SN","Senegal"],["SC","Seychelles"],["SL","Sierra Leone"],["SO","Somalia"],["ZA","South Africa"],["SS","South Sudan"],["SD","Sudan"],["TZ","Tanzania"],["TG","Togo"],["TN","Tunisia"],["UG","Uganda"],["ZM","Zambia"],["ZW","Zimbabwe"],["EH","Sahrawi Republic"],["OTHER","Other"],
 ];
 
 const Onboarding = () => {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
-  const [saving, setSaving] = useState(false);
+  const [saving, setSaving] = useState(false);\n  const [language, setCurrentLanguage] = useState<AppLanguage>("en");
   const [fullName, setFullName] = useState("");
   const [school, setSchool] = useState("");
   const [region, setRegion] = useState("");
@@ -66,7 +64,7 @@ const Onboarding = () => {
   const [interests, setInterests] = useState<string[]>([]);
   const [qualificationCode, setQualificationCode] = useState("WASSCE");
   const [overallScore, setOverallScore] = useState("");
-  const [results, setResults] = useState([{ subject: "", grade: "", level: "" }]);
+  const [results, setResults] = useState([{ subject: "", grade: "", level: "" }]);\n\n  useEffect(() => {\n    const sync = () => setCurrentLanguage(getLanguage());\n    sync();\n    window.addEventListener("gp-language-change", sync);\n    return () => window.removeEventListener("gp-language-change", sync);\n  }, []);
 
   const qualification = useMemo(
     () => QUALIFICATIONS.find((q) => q.code === qualificationCode) ?? QUALIFICATIONS[0],
@@ -163,18 +161,18 @@ const Onboarding = () => {
 
   return (
     <div className="min-h-screen bg-background px-4 py-8">
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl mx-auto">\n        <div className="flex justify-end mb-4">\n          <label className="flex items-center gap-2 text-xs text-muted-foreground">\n            {t("language", language)}\n            <select value={language} onChange={(e) => setLanguage(e.target.value as AppLanguage)} className="px-3 py-2 rounded-lg bg-secondary border border-border text-foreground">\n              {LANGUAGES.map((item) => <option key={item.code} value={item.code}>{item.nativeName}</option>)}\n            </select>\n          </label>\n        </div>
         <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-2">Let's set up your path</h1>
         <p className="text-sm text-muted-foreground mb-6">
-          Tell GhanaPathFinder where you study and which qualification you use. Your academic profile powers future international recommendations.
+          Tell GhanaPathFinder where you study and which qualification you use. Your academic profile powers Ghana-focused international recommendations.
         </p>
 
         <div className="space-y-4">
           <div className="bg-glass rounded-xl p-5 space-y-3">
             <h2 className="font-display font-semibold text-foreground">About you</h2>
-            <input className={inputClass} placeholder="Full name" value={fullName} maxLength={100} onChange={(e) => setFullName(e.target.value)} />
+            <input className={inputClass} placeholder={language === "fr" ? "Nom complet" : "Full name"} value={fullName} maxLength={100} onChange={(e) => setFullName(e.target.value)} />
             <select className={inputClass} value={country} onChange={(e) => setCountry(e.target.value)}>
-              <option value="">Select your country</option>
+              <option value="">{language === "fr" ? "Sélectionnez votre pays" : "Select your country"}</option>
               {COUNTRY_OPTIONS.map(([code, name]) => <option key={code} value={code}>{name}</option>)}
             </select>
             {country === "GH" && (
