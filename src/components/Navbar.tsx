@@ -5,6 +5,7 @@ import BrandMark from "@/components/BrandMark";
 import { Link, useLocation } from "@/lib/router-compat";
 import { useAuth } from "@/hooks/useAuth";
 import ThemeToggle from "@/components/ThemeToggle";
+import TranslationTool from "@/components/TranslationTool";
 import { LANGUAGES, getLanguage, setLanguage, t, type AppLanguage } from "@/lib/i18n";
 import { navSections, accountItems, aboutItems } from "@/lib/nav-config";
 import {
@@ -123,6 +124,8 @@ const Navbar = () => {
               {LANGUAGES.map((item) => <option key={item.code} value={item.code}>{item.nativeName}</option>)}
             </select>
 
+            <TranslationTool />
+
             <ThemeToggle className="h-10 w-10" />
 
             {user ? (
@@ -165,6 +168,7 @@ const Navbar = () => {
           <select value={language} onChange={(e) => setLanguage(e.target.value as AppLanguage)} aria-label={t("language", language)} className="h-10 max-w-[112px] rounded-lg border border-border bg-background px-2 text-xs text-foreground">
             {LANGUAGES.map((item) => <option key={item.code} value={item.code}>{item.nativeName}</option>)}
           </select>
+          <TranslationTool />
           <ThemeToggle className="h-11 w-11" />
           {user ? (
             <Link to="/dashboard" aria-label="Your dashboard" className="grid place-items-center h-11 w-11">
