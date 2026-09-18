@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
-import { Globe, Loader2, ArrowRightLeft, Copy, Check } from "@/lib/icons";
-import { LANGUAGES, getLanguage, setLanguage, t, type AppLanguage } from "@/lib/i18n";
+import { Globe, Loader2, ArrowRight, Copy, Check } from "@/lib/icons";
+import { LANGUAGES, getLanguage, t, type AppLanguage } from "@/lib/i18n";
 import {
   Dialog,
   DialogContent,
@@ -84,7 +84,7 @@ const TranslationTool = () => {
                 <SelectContent>{LANGUAGES.map((item) => <SelectItem key={item.code} value={item.code}>{item.nativeName}</SelectItem>)}</SelectContent>
               </Select>
             </div>
-            <Button type="button" variant="outline" size="icon" onClick={swap} aria-label="Swap languages"><ArrowRightLeft className="h-4 w-4" /></Button>
+            <Button type="button" variant="outline" size="icon" onClick={swap} aria-label="Swap languages"><ArrowRight className="h-4 w-4" /></Button>
             <div className="space-y-1.5">
               <label className="text-xs font-medium text-muted-foreground">To</label>
               <Select value={target} onValueChange={(v) => setTarget(v as AppLanguage)}>
