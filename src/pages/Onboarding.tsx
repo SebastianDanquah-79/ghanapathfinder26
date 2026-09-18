@@ -55,7 +55,8 @@ const COUNTRY_OPTIONS = [
 const Onboarding = () => {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
-  const [saving, setSaving] = useState(false);\n  const [language, setCurrentLanguage] = useState<AppLanguage>("en");
+  const [saving, setSaving] = useState(false);
+  const [language, setCurrentLanguage] = useState<AppLanguage>("en");
   const [fullName, setFullName] = useState("");
   const [school, setSchool] = useState("");
   const [region, setRegion] = useState("");
@@ -64,7 +65,14 @@ const Onboarding = () => {
   const [interests, setInterests] = useState<string[]>([]);
   const [qualificationCode, setQualificationCode] = useState("WASSCE");
   const [overallScore, setOverallScore] = useState("");
-  const [results, setResults] = useState([{ subject: "", grade: "", level: "" }]);\n\n  useEffect(() => {\n    const sync = () => setCurrentLanguage(getLanguage());\n    sync();\n    window.addEventListener("gp-language-change", sync);\n    return () => window.removeEventListener("gp-language-change", sync);\n  }, []);
+  const [results, setResults] = useState([{ subject: "", grade: "", level: "" }]);
+
+  useEffect(() => {
+    const sync = () => setCurrentLanguage(getLanguage());
+    sync();
+    window.addEventListener("gp-language-change", sync);
+    return () => window.removeEventListener("gp-language-change", sync);
+  }, []);
 
   const qualification = useMemo(
     () => QUALIFICATIONS.find((q) => q.code === qualificationCode) ?? QUALIFICATIONS[0],
@@ -161,7 +169,15 @@ const Onboarding = () => {
 
   return (
     <div className="min-h-screen bg-background px-4 py-8">
-      <div className="max-w-2xl mx-auto">\n        <div className="flex justify-end mb-4">\n          <label className="flex items-center gap-2 text-xs text-muted-foreground">\n            {t("language", language)}\n            <select value={language} onChange={(e) => setLanguage(e.target.value as AppLanguage)} className="px-3 py-2 rounded-lg bg-secondary border border-border text-foreground">\n              {LANGUAGES.map((item) => <option key={item.code} value={item.code}>{item.nativeName}</option>)}\n            </select>\n          </label>\n        </div>
+      <div className="max-w-2xl mx-auto">
+        <div className="flex justify-end mb-4">
+          <label className="flex items-center gap-2 text-xs text-muted-foreground">
+            {t("language", language)}
+            <select value={language} onChange={(e) => setLanguage(e.target.value as AppLanguage)} className="px-3 py-2 rounded-lg bg-secondary border border-border text-foreground">
+              {LANGUAGES.map((item) => <option key={item.code} value={item.code}>{item.nativeName}</option>)}
+            </select>
+          </label>
+        </div>
         <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-2">Let's set up your path</h1>
         <p className="text-sm text-muted-foreground mb-6">
           Tell GhanaPathFinder where you study and which qualification you use. Your academic profile powers Ghana-focused international recommendations.
