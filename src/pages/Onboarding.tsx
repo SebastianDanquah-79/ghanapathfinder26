@@ -209,7 +209,7 @@ const Onboarding = () => {
 
             <div className="space-y-2 mt-4">
               {results.map((r, idx) => (
-                <div key={idx} className="grid grid-cols-[1fr_auto_auto] gap-2">
+                <div key={idx} className="grid grid-cols-[minmax(0,1fr)_auto_auto_auto] gap-2">
                   <input className={inputClass} placeholder={qualification.placeholder ?? "Subject"} value={r.subject} maxLength={80}
                     onChange={(e) => setResults((prev) => prev.map((x, i) => i === idx ? { ...x, subject: e.target.value } : x))} />
                   {hasGradeScale ? (
