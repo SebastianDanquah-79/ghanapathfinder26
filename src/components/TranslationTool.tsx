@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Languages, Loader2, ArrowRightLeft, Copy, Check } from "@/lib/icons";
+import { Globe, Loader2, ArrowRightLeft, Copy, Check } from "@/lib/icons";
 import { LANGUAGES, getLanguage, setLanguage, t, type AppLanguage } from "@/lib/i18n";
 import {
   Dialog,
@@ -67,7 +67,7 @@ const TranslationTool = () => {
     <Dialog>
       <DialogTrigger asChild>
         <button type="button" className="inline-flex h-10 items-center gap-2 rounded-lg border border-border bg-background px-3 text-sm font-medium text-foreground hover:bg-secondary transition-colors" aria-label="Open translation tool">
-          <Languages className="h-4 w-4" />
+          <Globe className="h-4 w-4" />
           <span className="hidden lg:inline">Translate</span>
         </button>
       </DialogTrigger>
