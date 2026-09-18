@@ -25,10 +25,35 @@ type Qualification = {
   grades: string[];
   levels?: string[];
   placeholder?: string;
+  countries?: string[];
 };
 
 const QUALIFICATIONS: Qualification[] = [
-  { code: "WASSCE", name: "WASSCE", country: "Ghana", scale: "A1–F9", grades: ["A1","B2","B3","C4","C5","C6","D7","E8","F9"], placeholder: "e.g. Core Mathematics" },
+  { code: "WASSCE", name: "WASSCE", country: "Ghana / West Africa", scale: "A1–F9", grades: ["A1","B2","B3","C4","C5","C6","D7","E8","F9"], placeholder: "e.g. Core Mathematics", countries: ["GH","GM","LR","SL"] },
+  { code: "WAEC_NIGERIA", name: "WAEC / NECO", country: "Nigeria", scale: "A1–F9", grades: ["A1","B2","B3","C4","C5","C6","D7","E8","F9"], placeholder: "e.g. Mathematics", countries: ["NG"] },
+  { code: "KCSE", name: "KCSE", country: "Kenya", scale: "A–E", grades: ["A","A-","B+","B","B-","C+","C","C-","D+","D","D-","E"], placeholder: "e.g. Mathematics", countries: ["KE"] },
+  { code: "UCE", name: "Uganda Certificate of Education (UCE)", country: "Uganda", scale: "Grades 1–9", grades: ["1","2","3","4","5","6","7","8","9"], placeholder: "e.g. Mathematics", countries: ["UG"] },
+  { code: "UACE", name: "Uganda Advanced Certificate of Education (UACE)", country: "Uganda", scale: "A–E / O–F", grades: ["A","B","C","D","E","O","F"], placeholder: "e.g. Mathematics", countries: ["UG"] },
+  { code: "CSEE", name: "Certificate of Secondary Education Examination (CSEE)", country: "Tanzania", scale: "A–F", grades: ["A","B+","B","C","D","E","F"], placeholder: "e.g. Mathematics", countries: ["TZ"] },
+  { code: "ACSEE", name: "Advanced Certificate of Secondary Education Examination (ACSEE)", country: "Tanzania", scale: "A–F", grades: ["A","B+","B","C","D","E","F"], placeholder: "e.g. Mathematics", countries: ["TZ"] },
+  { code: "RW_AL", name: "Rwanda Advanced Level", country: "Rwanda", scale: "A–F / S / U", grades: ["A","B","C","D","E","F","S","U"], placeholder: "e.g. Mathematics", countries: ["RW"] },
+  { code: "NSC", name: "National Senior Certificate (NSC)", country: "South Africa", scale: "Level 1–7", grades: ["7","6","5","4","3","2","1"], placeholder: "e.g. Mathematics", countries: ["ZA"] },
+  { code: "CAM_GCE", name: "Cameroon GCE", country: "Cameroon", scale: "A–E / U", grades: ["A","B","C","D","E","U"], placeholder: "e.g. Mathematics", countries: ["CM"] },
+  { code: "FRENCH_BAC", name: "French Baccalauréat", country: "Francophone Africa", scale: "0–20", grades: [], placeholder: "e.g. Mathematics", countries: ["BF","BJ","CD","CG","CI","GA","GN","ML","MR","NE","SN","TD","TG"] },
+  { code: "BGCSE", name: "Botswana General Certificate of Secondary Education (BGCSE)", country: "Botswana", scale: "A*–G", grades: ["A*","A","B","C","D","E","F","G"], placeholder: "e.g. Mathematics", countries: ["BW"] },
+  { code: "NSSC", name: "Namibian Senior Secondary Certificate (NSSC)", country: "Namibia", scale: "A*–U", grades: ["A*","A","B","C","D","E","F","G","H","U"], placeholder: "e.g. Mathematics", countries: ["NA"] },
+  { code: "MSCE", name: "Malawi School Certificate of Education (MSCE)", country: "Malawi", scale: "1–9", grades: ["1","2","3","4","5","6","7","8","9"], placeholder: "e.g. Mathematics", countries: ["MW"] },
+  { code: "ZAMBIA_SCHOOL_CERT", name: "Zambia School Certificate", country: "Zambia", scale: "1–9", grades: ["1","2","3","4","5","6","7","8","9"], placeholder: "e.g. Mathematics", countries: ["ZM"] },
+  { code: "ZIMSEC", name: "ZIMSEC Advanced Level", country: "Zimbabwe", scale: "A–E / U", grades: ["A","B","C","D","E","U"], placeholder: "e.g. Mathematics", countries: ["ZW"] },
+  { code: "LGCSE", name: "Lesotho General Certificate of Secondary Education (LGCSE)", country: "Lesotho", scale: "A*–G", grades: ["A*","A","B","C","D","E","F","G"], placeholder: "e.g. Mathematics", countries: ["LS"] },
+  { code: "EGCSE", name: "Eswatini General Certificate of Secondary Education (EGCSE)", country: "Eswatini", scale: "A*–G", grades: ["A*","A","B","C","D","E","F","G"], placeholder: "e.g. Mathematics", countries: ["SZ"] },
+  { code: "MOZ_HSC", name: "Mozambique Secondary School Certificate", country: "Mozambique", scale: "0–20", grades: [], placeholder: "e.g. Mathematics", countries: ["MZ"] },
+  { code: "ANG_SEC", name: "Angola Secondary School Diploma", country: "Angola", scale: "0–20", grades: [], placeholder: "e.g. Mathematics", countries: ["AO"] },
+  { code: "EGYPT_THANAWIYA", name: "Egyptian General Secondary Education Certificate", country: "Egypt", scale: "0–100", grades: [], placeholder: "e.g. Mathematics", countries: ["EG"] },
+  { code: "MOROCCO_BAC", name: "Moroccan Baccalaureate", country: "Morocco", scale: "0–20", grades: [], placeholder: "e.g. Mathematics", countries: ["MA"] },
+  { code: "ALGERIA_BAC", name: "Algerian Baccalaureate", country: "Algeria", scale: "0–20", grades: [], placeholder: "e.g. Mathematics", countries: ["DZ"] },
+  { code: "TUNISIA_BAC", name: "Tunisian Baccalaureate", country: "Tunisia", scale: "0–20", grades: [], placeholder: "e.g. Mathematics", countries: ["TN"] },
+  { code: "ETHIOPIA_SECONDARY", name: "Ethiopian Secondary School Leaving Examination", country: "Ethiopia", scale: "0–100", grades: [], placeholder: "e.g. Mathematics", countries: ["ET"] },
   { code: "IB_DP", name: "IB Diploma Programme", country: "International", scale: "1–7", grades: ["7","6","5","4","3","2","1"], levels: ["Higher Level","Standard Level"], placeholder: "e.g. Mathematics AA" },
   { code: "IGCSE", name: "Cambridge IGCSE", country: "International", scale: "A*–G", grades: ["A*","A","B","C","D","E","F","G"], placeholder: "e.g. Mathematics" },
   { code: "O_LEVEL", name: "Cambridge O Level", country: "International", scale: "A*–E", grades: ["A*","A","B","C","D","E"], placeholder: "e.g. Mathematics" },
@@ -36,15 +61,10 @@ const QUALIFICATIONS: Qualification[] = [
   { code: "A_LEVEL", name: "Cambridge International A Level", country: "International", scale: "A*–E", grades: ["A*","A","B","C","D","E"], placeholder: "e.g. Mathematics" },
   { code: "EDEXCEL_IGCSE", name: "Pearson Edexcel International GCSE", country: "International", scale: "9–1 / A*–G", grades: ["9","8","7","6","5","4","3","2","1"], placeholder: "e.g. Mathematics" },
   { code: "EDEXCEL_A_LEVEL", name: "Pearson Edexcel International A Level", country: "International", scale: "A*–E", grades: ["A*","A","B","C","D","E"], placeholder: "e.g. Mathematics" },
-  { code: "AP", name: "Advanced Placement (AP)", country: "United States", scale: "1–5", grades: ["5","4","3","2","1"], placeholder: "e.g. Calculus BC" },
+  { code: "AP", name: "Advanced Placement (AP)", country: "International", scale: "1–5", grades: ["5","4","3","2","1"], placeholder: "e.g. Calculus BC" },
   { code: "SAT", name: "SAT", country: "International", scale: "400–1600", grades: [], placeholder: "Section or subject (optional)" },
   { code: "ACT", name: "ACT", country: "International", scale: "1–36", grades: [], placeholder: "Section or subject (optional)" },
-  { code: "FRENCH_BAC", name: "French Baccalauréat", country: "Francophone", scale: "0–20", grades: [], placeholder: "e.g. Mathematics" },
-  { code: "GERMAN_ABITUR", name: "German Abitur", country: "Germany", scale: "1.0–6.0", grades: [], placeholder: "e.g. Mathematics" },
-  { code: "EUROPEAN_BAC", name: "European Baccalaureate", country: "Europe", scale: "0–100", grades: [], placeholder: "e.g. Mathematics" },
-  { code: "KCSE", name: "KCSE", country: "Kenya", scale: "A–E", grades: ["A","A-","B+","B","B-","C+","C","C-","D+","D","D-","E"], placeholder: "e.g. Mathematics" },
-  { code: "NSC", name: "South African National Senior Certificate", country: "South Africa", scale: "Level 1–7", grades: ["7","6","5","4","3","2","1"], placeholder: "e.g. Mathematics" },
-  { code: "WAEC_NIGERIA", name: "WAEC / NECO", country: "Nigeria", scale: "A1–F9", grades: ["A1","B2","B3","C4","C5","C6","D7","E8","F9"], placeholder: "e.g. Mathematics" },
+  { code: "FRENCH_BAC_INT", name: "French Baccalauréat", country: "International", scale: "0–20", grades: [], placeholder: "e.g. Mathematics" },
   { code: "CAMBRIDGE_GCE", name: "Cambridge GCE", country: "International", scale: "A*–E", grades: ["A*","A","B","C","D","E"], placeholder: "e.g. Mathematics" },
 ];
 
@@ -93,6 +113,14 @@ const Onboarding = () => {
 
   const toggleInterest = (interest: string) =>
     setInterests((prev) => prev.includes(interest) ? prev.filter((x) => x !== interest) : [...prev, interest]);
+
+  useEffect(() => {
+    if (!availableQualifications.some((q) => q.code === qualificationCode)) {
+      setQualificationCode(availableQualifications[0]?.code ?? "WASSCE");
+      setOverallScore("");
+      setResults([{ subject: "", grade: "", level: "" }]);
+    }
+  }, [availableQualifications, qualificationCode]);
 
   const changeQualification = (code: string) => {
     setQualificationCode(code);
@@ -203,9 +231,9 @@ const Onboarding = () => {
 
           <div className="bg-glass rounded-xl p-5">
             <h2 className="font-display font-semibold text-foreground mb-1">Academic qualification</h2>
-            <p className="text-xs text-muted-foreground mb-3">WASSCE remains fully supported. International students can now select IB, IGCSE, O Level, A Level, AP, SAT, ACT and other national qualifications.</p>
+            <p className="text-xs text-muted-foreground mb-3">Choose the qualification you actually completed. GhanaPathFinder supports WASSCE, IB, Cambridge pathways and national secondary qualifications from across Africa. Where University of Ghana has not published a direct equivalence for a qualification, the profile is marked for university review rather than treated as automatically eligible.</p>
             <select className={inputClass} value={qualificationCode} onChange={(e) => changeQualification(e.target.value)}>
-              {QUALIFICATIONS.map((q) => <option key={q.code} value={q.code}>{q.name} · {q.country}</option>)}
+              {availableQualifications.map((q) => <option key={q.code} value={q.code}>{q.name} · {q.country}</option>)}
             </select>
 
             <div className="grid grid-cols-2 gap-3 mt-3">
