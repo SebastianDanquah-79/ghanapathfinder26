@@ -5,6 +5,7 @@ import BrandMark from "@/components/BrandMark";
 import { Link, useLocation } from "@/lib/router-compat";
 import { useAuth } from "@/hooks/useAuth";
 import ThemeToggle from "@/components/ThemeToggle";
+import { LANGUAGES, getLanguage, setLanguage, t, type AppLanguage } from "@/lib/i18n";
 import { navSections, accountItems, aboutItems } from "@/lib/nav-config";
 import {
   DropdownMenu,
@@ -29,7 +30,15 @@ const initialsFrom = (value?: string | null) => {
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [language, setCurrentLanguage] = useState<AppLanguage>("en");
   const { user, signOut } = useAuth();
+
+  useEffect(() => {
+    const syncLanguage = () => setCurrentLanguage(getLanguage());
+    syncLanguage();
+    window.addEventListener("gp-language-change", syncLanguage);
+    return () => window.removeEventListener("gp-language-change", syncLanguage);
+  }, []);
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -83,24 +92,24 @@ const Navbar = () => {
 
             <Tooltip>
               <TooltipTrigger asChild>
-                <Link to="/search" aria-label="Search" className={iconButton}>
+                <Link to="/search" aria-label={t("search", language)} className={iconButton}>
                   <Search className="h-[18px] w-[18px]" />
                 </Link>
               </TooltipTrigger>
-              <TooltipContent>Search</TooltipContent>
+              <TooltipContent>{t("search", language)}</TooltipContent>
             </Tooltip>
 
             <DropdownMenu>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <DropdownMenuTrigger className={iconButton} aria-label="About GhanaPathFinder">
+                  <DropdownMenuTrigger className={iconButton} aria-label={t("about", language)}>
                     <Info className="h-[18px] w-[18px]" />
                   </DropdownMenuTrigger>
                 </TooltipTrigger>
-                <TooltipContent>About</TooltipContent>
+                <TooltipContent>{t("about", language)}</TooltipContent>
               </Tooltip>
               <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel>About</DropdownMenuLabel>
+                <DropdownMenuLabel>{t("about", language)}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {aboutItems.map((i) => (
                   <DropdownMenuItem key={i.href} asChild>
@@ -109,6 +118,10 @@ const Navbar = () => {
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
+
+            <select value={language} onChange={(e) => setLanguage(e.target.value as AppLanguage)} aria-label={t("language", language)} className="h-9 max-w-[120px] rounded-lg border border-border bg-background px-2 text-xs text-foreground">
+              {LANGUAGES.map((item) => <option key={item.code} value={item.code}>{item.nativeName}</option>)}
+            </select>
 
             <ThemeToggle className="h-10 w-10" />
 
@@ -140,7 +153,7 @@ const Navbar = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Link to="/auth" className="ml-2 px-4 py-2 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-opacity whitespace-nowrap">Sign in</Link>
+              <Link to="/auth" className="ml-2 px-4 py-2 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-opacity whitespace-nowrap">{t("sign_in", language)}</Link>
             )}
           </div>
         </TooltipProvider>
@@ -149,6 +162,9 @@ const Navbar = () => {
           <Link to="/search" aria-label="Search GhanaPathFinder" className="grid place-items-center h-11 w-11 rounded-full text-muted-foreground active:text-primary">
             <Search className="h-5 w-5" />
           </Link>
+          <select value={language} onChange={(e) => setLanguage(e.target.value as AppLanguage)} aria-label={t("language", language)} className="h-10 max-w-[112px] rounded-lg border border-border bg-background px-2 text-xs text-foreground">
+            {LANGUAGES.map((item) => <option key={item.code} value={item.code}>{item.nativeName}</option>)}
+          </select>
           <ThemeToggle className="h-11 w-11" />
           {user ? (
             <Link to="/dashboard" aria-label="Your dashboard" className="grid place-items-center h-11 w-11">
