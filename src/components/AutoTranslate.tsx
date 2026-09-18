@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { getLanguage, type AppLanguage } from "@/lib/i18n";
+import { resolveBackend } from "@/lib/backend-routing";
 
 const ENDPOINT = "https://api.mymemory.translated.net/get";
 const CACHE_KEY = "gpf-translation-cache-v1";
@@ -111,6 +112,7 @@ async function translateText(text: string, source: AppLanguage, target: AppLangu
 }
 
 async function translateDocument(target: AppLanguage) {
+  await resolveBackend(target).catch(() => null);
   if (target === "en") return;
 
   const nodes = getTextNodes(document.body);
