@@ -87,6 +87,11 @@ const Onboarding = () => {
   const [overallScore, setOverallScore] = useState("");
   const [results, setResults] = useState([{ subject: "", grade: "", level: "" }]);
 
+  const availableQualifications = useMemo(
+    () => QUALIFICATIONS.filter((q) => !q.countries || q.countries.includes(country)),
+    [country],
+  );
+
   useEffect(() => {
     const sync = () => setCurrentLanguage(getLanguage());
     sync();
