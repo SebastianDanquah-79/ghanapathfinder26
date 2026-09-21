@@ -35,11 +35,6 @@ export interface NavSection {
 }
 
 export const navSections: NavSection[] = [
-  { id:"opportunities", label:"Opportunities", icon: Briefcase, href:"/opportunities", items:[
-    {label:"Jobs & internships",href:"/opportunities",desc:"Find active opportunities"},
-    {label:"Startups",href:"/startups",desc:"Explore African startup opportunities"},
-    {label:"Employers",href:"/employers",desc:"Explore organisations"},
-  ]},
   {
     id: "study",
     label: "Study",
