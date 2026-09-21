@@ -18,6 +18,10 @@ import {
   Globe,
   MessageCircle,
   GraduationCap,
+  Newspaper,
+  Rocket,
+  Code2,
+  BookMarked,
 } from "@/lib/icons";
 
 export interface NavItem {
@@ -33,6 +37,90 @@ export interface NavSection {
   href: string;
   items: NavItem[];
 }
+
+export const globalNavSections: NavSection[] = [
+  {
+    id: "discover",
+    label: "Discover",
+    icon: Globe,
+    href: "/search",
+    items: [
+      { label: "Universities", href: "/search?kind=university", desc: "Explore institutions across Africa and beyond" },
+      { label: "Scholarships", href: "/scholarships", desc: "Find education funding" },
+      { label: "Careers", href: "/careers", desc: "Explore career pathways" },
+      { label: "Skills", href: "/skills", desc: "Build relevant skills" },
+      { label: "Courses & Research", href: "/skills", desc: "Keep learning and researching" },
+    ],
+  },
+  {
+    id: "opportunities",
+    label: "Opportunities",
+    icon: Briefcase,
+    href: "/opportunities",
+    items: [
+      { label: "Jobs", href: "/opportunities?type=job", desc: "Corporate and professional opportunities" },
+      { label: "Internships", href: "/internships", desc: "Find practical experience" },
+      { label: "Fellowships", href: "/opportunities?type=fellowship", desc: "Programs and fellowships" },
+      { label: "Competitions", href: "/opportunities?type=competition", desc: "Challenges and competitions" },
+      { label: "Startup opportunities", href: "/opportunities?type=startup", desc: "Accelerators, grants and startup roles" },
+    ],
+  },
+  {
+    id: "feed",
+    label: "Feed",
+    icon: Newspaper,
+    href: "/feed",
+    items: [
+      { label: "Jobs", href: "/opportunities?type=job" },
+      { label: "Education", href: "/feed?category=education" },
+      { label: "African Innovation", href: "/feed?category=innovation" },
+      { label: "African Startup News", href: "/feed?category=startups" },
+      { label: "Technology", href: "/feed?category=technology" },
+      { label: "Research", href: "/feed?category=research" },
+    ],
+  },
+  {
+    id: "africa",
+    label: "Africa",
+    icon: Globe,
+    href: "/africa",
+    items: [
+      { label: "Countries", href: "/africa" },
+      { label: "Leaders & Government", href: "/africa/leaders" },
+      { label: "Universities", href: "/search?kind=university" },
+      { label: "Startups", href: "/startup" },
+      { label: "Innovation", href: "/feed?category=innovation" },
+      { label: "History & Ideas", href: "/africa/history" },
+      { label: "Books & Ideas", href: "/books" },
+    ],
+  },
+  {
+    id: "career-global",
+    label: "Career",
+    icon: Briefcase,
+    href: "/career",
+    items: [
+      { label: "My Profile", href: "/dashboard" },
+      { label: "CV Builder", href: "/cv" },
+      { label: "My Applications", href: "/applications" },
+      { label: "Saved Opportunities", href: "/saved" },
+      { label: "Career Recommendations", href: "/recommendations" },
+    ],
+  },
+  {
+    id: "startup",
+    label: "Startup",
+    icon: Rocket,
+    href: "/startup",
+    items: [
+      { label: "Startup Directory", href: "/startup" },
+      { label: "Startup Jobs", href: "/opportunities?type=startup-job" },
+      { label: "Funding", href: "/startup/funding" },
+      { label: "Accelerators", href: "/startup/accelerators" },
+      { label: "African Startup News", href: "/feed?category=startups" },
+    ],
+  },
+];
 
 export const navSections: NavSection[] = [
   {
