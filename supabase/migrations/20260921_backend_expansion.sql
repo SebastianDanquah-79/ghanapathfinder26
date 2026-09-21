@@ -170,3 +170,10 @@ $$;
 
 revoke all on function public.get_user_backend_snapshot() from public;
 grant execute on function public.get_user_backend_snapshot() to authenticated;
+
+-- Security hardening for existing profile persistence functions.
+alter function public.save_profile_bundle(text,text,text,text,text,text,text[],text[],text,text,text,text,jsonb,jsonb,jsonb) security invoker;
+alter function public.save_profile_bundle(text,text,text,text,text,text,text[],text[],text,text,text,text,jsonb,jsonb,jsonb,text,text) security invoker;
+
+drop policy if exists admin_audit_log_owner_select on public.admin_audit_log;
+create policy admin_audit_log_owner_select on public.admin_audit_log for select to authenticated using ((select auth.uid()) = actor_id);
