@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AfricaRouteImport } from './routes/africa'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdmissionMatchRouteImport } from './routes/admission-match'
 import { Route as ApplicationsRouteImport } from './routes/applications'
@@ -45,6 +46,10 @@ import { Route as ApiCareerPathRouteImport } from './routes/api/career-path'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as ApiInstitutionMediaRouteImport } from './routes/api/institution-media'
 import { Route as ApiInstitutionProgrammesRouteImport } from './routes/api/institution-programmes'
+import { Route as OpportunitiesRouteImport } from './routes/opportunities'
+import { Route as FeedRouteImport } from './routes/feed'
+import { Route as CVRouteImport } from './routes/cv'
+import { Route as StartupRouteImport } from './routes/startup'
 import { Route as CareersIndexRouteImport } from './routes/careers/index'
 import { Route as CareersSlugRouteImport } from './routes/careers/$slug'
 import { Route as InternshipsIndexRouteImport } from './routes/internships/index'
@@ -67,6 +72,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AfricaRoute = AfricaRouteImport.update({ id: '/africa', path: '/africa', getParentRoute: () => rootRouteImport, } as any)
+const OpportunitiesRoute = OpportunitiesRouteImport.update({ id: '/opportunities', path: '/opportunities', getParentRoute: () => rootRouteImport, } as any)
+const FeedRoute = FeedRouteImport.update({ id: '/feed', path: '/feed', getParentRoute: () => rootRouteImport, } as any)
+const CVRoute = CVRouteImport.update({ id: '/cv', path: '/cv', getParentRoute: () => rootRouteImport, } as any)
+const StartupRoute = StartupRouteImport.update({ id: '/startup', path: '/startup', getParentRoute: () => rootRouteImport, } as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
