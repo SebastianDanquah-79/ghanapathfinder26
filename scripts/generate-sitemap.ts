@@ -1,6 +1,6 @@
 // Runs before `vite dev` and `vite build` (predev/prebuild hooks); writes public/sitemap.xml.
 
-import { mkdirSync, writeFileSync } from "fs";
+import { writeFileSync } from "fs";
 import { resolve } from "path";
 import { mockCareerData, careerSlug } from "../src/data/careers";
 import { scholarships, scholarshipSlug } from "../src/data/scholarships";
@@ -34,10 +34,6 @@ const staticEntries: SitemapEntry[] = [
 
 async function fetchRows(table: string): Promise<{ slug: string }[]> {
   const out: { slug: string }[] = [];
-  if (!SUPABASE_URL || !SUPABASE_KEY) {
-    console.warn("sitemap: Supabase build variables are unavailable; skipping dynamic rows");
-    return out;
-  }
   const pageSize = 1000;
   for (let from = 0; ; from += pageSize) {
     const res = await fetch(
@@ -110,7 +106,5 @@ const entries: SitemapEntry[] = [
   })),
 ];
 
-const publicDir = resolve("public");
-mkdirSync(publicDir, { recursive: true });
-writeFileSync(resolve(publicDir, "sitemap.xml"), generateSitemap(entries));
+writeFileSync(resolve("public/sitemap.xml"), generateSitemap(entries));
 console.log(`sitemap.xml written (${entries.length} entries)`);

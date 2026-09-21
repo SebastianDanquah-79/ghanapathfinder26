@@ -1,16 +1,70 @@
+import { Suspense, lazy } from "react";
 import Navbar from "@/components/Navbar";
 import Seo from "@/components/Seo";
-import { Link } from "@tanstack/react-router";
-import { ArrowRight, Briefcase, GraduationCap, Rocket, Search } from "@/lib/icons";
-const paths = [
-  { title: "Education", text: "Universities, programmes, scholarships, courses, research and academic opportunities.", to: "/onboarding", icon: GraduationCap },
-  { title: "Corporate work", text: "Jobs, internships, graduate programmes and employer opportunities across Africa and globally.", to: "/opportunities", icon: Briefcase },
-  { title: "Startups", text: "Discover African startups, innovation, entrepreneurship resources and funding pathways.", to: "/careers", icon: Rocket },
-];
-const areas = [["Universities","/universities"],["Programmes","/programmes"],["Scholarships","/scholarships"],["Jobs and internships","/opportunities"],["Careers","/careers"],["Skills","/skills"],["Saved opportunities","/saved"],["Your path","/my-path"]];
-export default function Index(){return <div className="min-h-screen bg-background text-foreground"><Seo title="GhanaPathFinder | Africa-first education, careers and opportunities" description="Find education, careers, jobs, internships, scholarships, skills and opportunities across Africa and the world." path="/" /><Navbar/><main className="pt-16">
-<section className="border-b border-border"><div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24"><div className="max-w-4xl"><p className="text-sm font-semibold uppercase tracking-[0.16em] text-primary">Global by design. Africa at the center.</p><h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-6xl">Your next opportunity starts here.</h1><p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground">GhanaPathFinder brings education, careers, work, skills, entrepreneurship and opportunities into one profile built around you.</p><div className="mt-8 flex flex-col gap-3 sm:flex-row"><Link to="/onboarding" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-primary px-6 font-semibold text-primary-foreground">Get personalised recommendations <ArrowRight className="h-4 w-4"/></Link><Link to="/opportunities" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border border-border px-6 font-semibold"><Search className="h-4 w-4"/> Explore opportunities</Link></div><p className="mt-4 text-sm text-muted-foreground">Choose Education, Corporate Work or Startups. Your recommendations can span Ghana, Africa and the wider world.</p></div></div></section>
-<section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8"><h2 className="text-2xl font-bold">Choose your starting path</h2><p className="mt-1 text-sm text-muted-foreground">One platform, different goals.</p><div className="mt-6 grid gap-4 md:grid-cols-3">{paths.map(function(p){return <Link key={p.title} to={p.to} className="group rounded-xl border border-border bg-card p-6 transition hover:border-primary/50"><p.icon className="h-6 w-6 text-primary"/><h3 className="mt-5 text-lg font-semibold">{p.title}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{p.text}</p><span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary">Get started <ArrowRight className="h-4 w-4"/></span></Link>})}</div></section>
-<section className="border-y border-border bg-secondary/30"><div className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 lg:px-8"><div className="rounded-xl border border-primary/20 bg-primary/5 p-5"><p className="font-semibold">Now built for more than WASSCE</p><p className="mt-1 text-sm text-muted-foreground">GhanaPathFinder supports multiple African and international qualification types, countries, education systems, careers, startups and work opportunities.</p></div></div><div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8"><h2 className="text-2xl font-bold">Explore Ghana, Africa and the world</h2><div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">{areas.map(function(a){return <Link key={a[0]} to={a[1]} className="rounded-lg border border-border bg-background px-4 py-4 text-sm font-medium hover:border-primary/50">{a[0]}</Link>})}</div></div></section>
-<section className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8"><div className="rounded-2xl border border-border bg-card p-7 sm:p-10"><h2 className="text-2xl font-bold">Recommendations start with your profile</h2><p className="mt-2 max-w-2xl text-muted-foreground">Tell us your country, qualification, interests, skills and goals. Your profile can then power more relevant education and opportunity matches.</p><Link to="/onboarding" className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-5 font-semibold text-primary-foreground">Complete profile <ArrowRight className="h-4 w-4"/></Link></div></section>
-</main></div>}
+import HeroSection from "@/components/HeroSection";
+import CollegeRecommender from "@/components/CollegeRecommender";
+import UniversityDirectory from "@/components/UniversityDirectory";
+import ScholarshipSection from "@/components/ScholarshipSection";
+import ExploreGrid from "@/components/ExploreGrid";
+import AnnouncementBanner from "@/components/AnnouncementBanner";
+import WhyGhanaPathFinder from "@/components/WhyGhanaPathFinder";
+import PathfinderDecisionHub from "@/components/PathfinderDecisionHub";
+
+const ImpactSection = lazy(() => import("@/components/ImpactSection"));
+const CareerSection = lazy(() => import("@/components/CareerSection"));
+const CityGuide = lazy(() => import("@/components/CityGuide"));
+const StartupStories = lazy(() => import("@/components/StartupStories"));
+const StartupRoadmap = lazy(() => import("@/components/StartupRoadmap"));
+const Footer = lazy(() => import("@/components/Footer"));
+
+const Index = () => (
+  <div className="min-h-screen bg-background">
+    <Seo
+      title="GhanaPathFinder: A Ghanaian Life Decision Platform"
+      description="GhanaPathFinder helps Ghanaians make better decisions about university, careers, skills, work, scholarships and entrepreneurship using Ghana-specific information and realistic pathways."
+      path="/"
+      jsonLd={[
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "@id": "https://ghanapathfinder.com/#website",
+          name: "GhanaPathFinder",
+          alternateName: "Ghana Path Finder",
+          url: "https://ghanapathfinder.com",
+          inLanguage: "en-GH",
+          publisher: { "@id": "https://ghanapathfinder.com/#organization" },
+          potentialAction: {
+            "@type": "SearchAction",
+            target: {
+              "@type": "EntryPoint",
+              urlTemplate: "https://ghanapathfinder.com/search?q={search_term_string}",
+            },
+            "query-input": "required name=search_term_string",
+          },
+        },
+      ]}
+    />
+    <Navbar />
+    <div className="pt-14">
+      <AnnouncementBanner />
+      <HeroSection />
+    </div>
+
+    <WhyGhanaPathFinder />
+    <PathfinderDecisionHub />
+    <ExploreGrid />
+    <CollegeRecommender />
+    <UniversityDirectory />
+    <ScholarshipSection />
+    <Suspense fallback={<div className="h-24" />}>
+      <ImpactSection />
+      <CareerSection />
+      <CityGuide />
+      <StartupStories />
+      <StartupRoadmap />
+      <Footer />
+    </Suspense>
+  </div>
+);
+
+export default Index;

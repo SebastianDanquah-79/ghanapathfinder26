@@ -11,10 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as HomeRouteImport } from './routes/home'
-import { Route as StudentRouteImport } from './routes/student'
-import { Route as EmployerRouteImport } from './routes/employer'
-import { Route as EmployeeRouteImport } from './routes/employee'
 import { Route as AdmissionMatchRouteImport } from './routes/admission-match'
 import { Route as ApplicationsRouteImport } from './routes/applications'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -31,7 +27,6 @@ import { Route as InspirationRouteImport } from './routes/inspiration'
 import { Route as MatcherRouteImport } from './routes/matcher'
 import { Route as MyPathRouteImport } from './routes/my-path'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
-import { Route as OpportunitiesRouteImport } from './routes/opportunities'
 import { Route as ParentRouteImport } from './routes/parent'
 import { Route as PreferencesRouteImport } from './routes/preferences'
 import { Route as PrivacyRouteImport } from './routes/privacy'
@@ -70,26 +65,6 @@ import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/l
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HomeRoute = HomeRouteImport.update({
-  id: '/home',
-  path: '/home',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const StudentRoute = StudentRouteImport.update({
-  id: '/student',
-  path: '/student',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EmployerRoute = EmployerRouteImport.update({
-  id: '/employer',
-  path: '/employer',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EmployeeRoute = EmployeeRouteImport.update({
-  id: '/employee',
-  path: '/employee',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -175,11 +150,6 @@ const MyPathRoute = MyPathRouteImport.update({
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OpportunitiesRoute = OpportunitiesRouteImport.update({
-  id: '/opportunities',
-  path: '/opportunities',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ParentRoute = ParentRouteImport.update({
@@ -685,10 +655,6 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  HomeRoute: typeof HomeRoute
-  StudentRoute: typeof StudentRoute
-  EmployerRoute: typeof EmployerRoute
-  EmployeeRoute: typeof EmployeeRoute
   AboutRoute: typeof AboutRoute
   AdmissionMatchRoute: typeof AdmissionMatchRoute
   ApplicationsRoute: typeof ApplicationsRoute
@@ -706,7 +672,6 @@ export interface RootRouteChildren {
   MatcherRoute: typeof MatcherRoute
   MyPathRoute: typeof MyPathRoute
   OnboardingRoute: typeof OnboardingRoute
-  OpportunitiesRoute: typeof OpportunitiesRoute
   ParentRoute: typeof ParentRoute
   PreferencesRoute: typeof PreferencesRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -750,34 +715,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/home': {
-      id: '/home'
-      path: '/home'
-      fullPath: '/home'
-      preLoaderRoute: typeof HomeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/student': {
-      id: '/student'
-      path: '/student'
-      fullPath: '/student'
-      preLoaderRoute: typeof StudentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/employer': {
-      id: '/employer'
-      path: '/employer'
-      fullPath: '/employer'
-      preLoaderRoute: typeof EmployerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/employee': {
-      id: '/employee'
-      path: '/employee'
-      fullPath: '/employee'
-      preLoaderRoute: typeof EmployeeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -1142,10 +1079,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  HomeRoute: HomeRoute,
-  StudentRoute: StudentRoute,
-  EmployerRoute: EmployerRoute,
-  EmployeeRoute: EmployeeRoute,
   AboutRoute: AboutRoute,
   AdmissionMatchRoute: AdmissionMatchRoute,
   ApplicationsRoute: ApplicationsRoute,
@@ -1163,7 +1096,6 @@ const rootRouteChildren: RootRouteChildren = {
   MatcherRoute: MatcherRoute,
   MyPathRoute: MyPathRoute,
   OnboardingRoute: OnboardingRoute,
-  OpportunitiesRoute: OpportunitiesRoute,
   ParentRoute: ParentRoute,
   PreferencesRoute: PreferencesRoute,
   PrivacyRoute: PrivacyRoute,

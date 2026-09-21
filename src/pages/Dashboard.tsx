@@ -175,9 +175,9 @@ const Dashboard = () => {
     if (!results.length)
       steps.push({
         to: "/onboarding",
-        label: "Add your academic qualification",
-        hint: "Unlocks education matching and qualification-aware recommendations.",
-        cta: "Add qualification",
+        label: "Add your WASSCE results",
+        hint: "Unlocks programme matching and realistic cut-off comparisons.",
+        cta: "Add results",
       });
     if (!profile?.target_career)
       steps.push({
@@ -258,8 +258,8 @@ const Dashboard = () => {
             </h1>
             <p className="text-sm text-muted-foreground mt-1">
               {aggregate != null
-                ? `Academic profile ${aggregate} · ${results.length} subjects recorded`
-                : "Complete your profile to unlock personalised education, career, startup and opportunity matches."}
+                ? `WASSCE aggregate ${aggregate} · ${results.length} subjects recorded`
+                : "Add your results to unlock personalised matches."}
             </p>
           </div>
           <button
@@ -305,7 +305,7 @@ const Dashboard = () => {
             <div className="min-w-0">
               <p className="text-xs uppercase tracking-wide text-muted-foreground">WASSCE aggregate</p>
               <p className="font-display text-4xl font-bold text-foreground leading-tight">
-                {profile?.country_code ? profile.country_code : "—"}
+                {aggregate ?? "—"}
               </p>
             </div>
             <Link

@@ -169,9 +169,6 @@ const glyphs = {
   Users: "\u25CD",
   Wallet: "\u25AC",
   WifiOff: "\u2298",
-  ImagePlus: "+",
-  Save: "↓",
-  Newspaper: "▤",
   X: "\u2715",
 } as const;
 
@@ -213,9 +210,6 @@ export const UserCheck = makeIcon(glyphs.UserCheck, "UserCheck");
 
 export const Wallet = makeIcon(glyphs.Wallet, "Wallet");
 export const WifiOff = makeIcon(glyphs.WifiOff, "WifiOff");
-export const ImagePlus = makeIcon(glyphs.ImagePlus, "ImagePlus");
-export const Save = makeIcon(glyphs.Save, "Save");
-export const Newspaper = makeIcon(glyphs.Newspaper, "Newspaper");
 
 // Meaningful UI icons keep their original vector rendering.
 export {

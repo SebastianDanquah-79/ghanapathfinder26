@@ -24,12 +24,14 @@ const Footer = () => (
           Ghana<span className="text-primary">PathFinder</span>
         </span>
       </div>
-
       <p className="text-sm text-muted-foreground mb-2">
-        An Africa-first education, career and opportunity platform, with Ghana as the starting point.
+        A Ghanaian life decision platform for education, careers, skills and opportunity.
       </p>
 
-      <nav aria-label="Footer" className="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-sm">
+      <nav
+        aria-label="Footer"
+        className="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-1 text-sm"
+      >
         {links.map((l) => (
           <Link
             key={l.label}
@@ -41,12 +43,21 @@ const Footer = () => (
         ))}
       </nav>
 
-      <p className="text-xs text-muted-foreground mt-4 max-w-3xl mx-auto">
-        Information on GhanaPathFinder is guidance only. Match confidence, estimated cut-off points,
-        fees and other estimates are not guarantees or official institutional decisions. Always verify
-        important information with the relevant institution or opportunity provider.
-      </p>
+      <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 text-sm">
+        <p className="text-foreground">
+          <span className="text-primary font-medium">Twi:</span> Yɛda wo ase sɛ wode GhanaPathFinder adi dwuma
+        </p>
+        <p className="text-foreground">
+          <span className="text-primary font-medium">Ewe:</span> Akpe na wò be nèzã GhanaPathFinder
+        </p>
+        <p className="text-foreground">
+          <span className="text-primary font-medium">Ga:</span> Oyiwaladɔŋŋ akɛ okɛ GhanaPathFinder tsu nii
+        </p>
+      </div>
 
+      <p className="text-xs text-muted-foreground mt-4 max-w-3xl mx-auto">
+        Information on GhanaPathFinder is guidance only. Match confidence, estimated cut-off points, fees and other estimates are not guarantees or official institutional decisions. Always verify important information with the relevant institution.
+      </p>
       <SiteRating />
       <p className="text-xs text-muted-foreground mt-3">© 2026 GhanaPathFinder. All rights reserved.</p>
     </div>

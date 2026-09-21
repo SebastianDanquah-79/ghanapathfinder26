@@ -151,29 +151,24 @@ const CollegeRecommender = () => {
             )}
 
             {pathways.length > 0 && (
-              <div className="min-w-0 bg-glass rounded-2xl p-5 sm:p-6">
+              <div className="bg-glass rounded-2xl p-5 sm:p-6">
                 <div className="mb-5">
                   <p className="text-xs uppercase tracking-[0.14em] text-primary font-semibold">Alternative routes</p>
                   <h3 className="font-display font-semibold text-xl text-foreground mt-1">If the first door is closed, here are the other doors</h3>
                   <p className="text-sm text-muted-foreground mt-2">These are evidence-based pathway patterns, not promises of admission. Each route should be checked against the current institution's official requirements.</p>
                 </div>
-                <div className="grid min-w-0 gap-4 md:grid-cols-2">
+                <div className="grid gap-4 md:grid-cols-2">
                   {pathways.map((p) => (
-                    <article key={p.title} className="min-w-0 w-full overflow-hidden rounded-xl border border-border bg-background/40 p-4">
-                      <div className="flex min-w-0 flex-col items-start gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
-                        <h4 className="min-w-0 flex-1 break-words [overflow-wrap:anywhere] font-semibold text-foreground">{p.title}</h4>
-                        <span className="max-w-full break-words whitespace-normal rounded-full bg-primary/10 px-2 py-1 text-[11px] leading-4 text-primary sm:shrink-0 sm:text-right">{p.duration}</span>
+                    <article key={p.title} className="rounded-xl border border-border bg-background/40 p-4">
+                      <div className="flex items-start justify-between gap-3">
+                        <h4 className="font-semibold text-foreground">{p.title}</h4>
+                        <span className="text-[11px] whitespace-nowrap rounded-full bg-primary/10 text-primary px-2 py-1">{p.duration}</span>
                       </div>
-                      <ol className="mt-3 min-w-0 space-y-2">
-                        {p.route.map((step, index) => (
-                          <li key={step} className="flex min-w-0 gap-2 text-xs leading-5 text-muted-foreground">
-                            <span className="shrink-0 font-semibold text-primary">{index + 1}</span>
-                            <span className="min-w-0 break-words [overflow-wrap:anywhere]">{step}</span>
-                          </li>
-                        ))}
+                      <ol className="mt-3 space-y-2">
+                        {p.route.map((step, index) => <li key={step} className="flex gap-2 text-xs text-muted-foreground"><span className="text-primary font-semibold">{index + 1}</span><span>{step}</span></li>)}
                       </ol>
-                      <p className="mt-4 min-w-0 break-words text-xs leading-5 text-foreground/80 [overflow-wrap:anywhere]"><strong>Why this can work:</strong> {p.whyItWorks}</p>
-                      <p className="mt-2 min-w-0 break-words text-[11px] leading-5 text-muted-foreground [overflow-wrap:anywhere]"><strong>Check:</strong> {p.caution}</p>
+                      <p className="text-xs text-foreground/80 mt-4"><strong>Why this can work:</strong> {p.whyItWorks}</p>
+                      <p className="text-[11px] text-muted-foreground mt-2"><strong>Check:</strong> {p.caution}</p>
                     </article>
                   ))}
                 </div>

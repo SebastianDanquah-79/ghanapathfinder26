@@ -15,4 +15,3 @@
 - [x] Extend the verified review workflow to official programmes and institution logos in sourced batches (279 sourced programmes retained; 609 unsupported records queued; first 8 official logos approved).
 - [~] Add the next GTEC institution batch and verified campus media (9 exact matches approved; custom-domain Google Maps key still needs connection).
 - [x] Review the next official programme batch (16 Zenith and Family Health programmes approved with live official sources and verified campus media links).
-- [ ] Safe English-only product copy audit and confirmed production bug-fix pass (no backend/data changes).

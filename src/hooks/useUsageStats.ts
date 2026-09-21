@@ -19,7 +19,26 @@ export const PUBLIC_METRICS: Array<{ key: string; label: string; field: keyof Pu
 
 export const USAGE_STATS_KEY = ["public_usage_stats"] as const;
 
+interface UsageCounterRow extends PublicUsageStats {
+  id: string;
+  updated_at: string;
+}
+
+const toStats = (row: Partial<UsageCounterRow> | null | undefined): PublicUsageStats => ({
+  metric: row?.metric ?? "students",
+  students: Number(row?.students ?? 0),
+  active_students: Number(row?.active_students ?? 0),
+  website_visits: Number(row?.website_visits ?? 0),
+  recommendation_runs: Number(row?.recommendation_runs ?? 0),
+});
+
 type Listener = (stats: PublicUsageStats) => void;
+
+/**
+ * One shared realtime channel for the whole app, ref-counted across every
+ * mounted counter. Supabase rejects a second `.on()` on an already-subscribed
+ * channel, so the channel must never be created per component.
+ */
 const listeners = new Set<Listener>();
 let channel: ReturnType<typeof supabase.channel> | null = null;
 
@@ -31,17 +50,11 @@ const subscribeUsageCounters = (listener: Listener): (() => void) => {
       .channel("usage_counters_live")
       .on(
         "postgres_changes",
-        { event: "*", schema: "public", table: "usage_counters", filter: "counter_key=eq.global" },
+        { event: "*", schema: "public", table: "usage_counters", filter: "id=eq.global" },
         (payload) => {
-          const row = payload.new as Partial<PublicUsageStats> | null;
+          const row = payload.new as Partial<UsageCounterRow> | null;
           if (!row || Object.keys(row).length === 0) return;
-          const stats: PublicUsageStats = {
-            metric: String(row.metric ?? "students"),
-            students: Number(row.students ?? 0),
-            active_students: Number(row.active_students ?? 0),
-            website_visits: Number(row.website_visits ?? 0),
-            recommendation_runs: Number(row.recommendation_runs ?? 0),
-          };
+          const stats = toStats(row);
           listeners.forEach((fn) => fn(stats));
         },
       )
@@ -58,36 +71,43 @@ const subscribeUsageCounters = (listener: Listener): (() => void) => {
   };
 };
 
+/**
+ * Live usage counter.
+ *
+ * The snapshot row `usage_counters.global` is recomputed by database triggers
+ * whenever a visit, event or account is recorded, and streamed to every open
+ * browser over the realtime WebSocket, so the number updates instantly for all
+ * users without polling.
+ */
 export const useUsageStats = () => {
   const qc = useQueryClient();
 
   const query = useQuery({
     queryKey: USAGE_STATS_KEY,
     queryFn: async () => {
-      const { data, error } = await supabase.rpc("get_public_usage_stats");
+      const { data, error } = await supabase
+        .from("usage_counters" as never)
+        .select("*")
+        .eq("id" as never, "global" as never)
+        .maybeSingle();
       if (error) throw error;
-      return (data ?? {
-        metric: "students",
-        students: 0,
-        active_students: 0,
-        website_visits: 0,
-        recommendation_runs: 0,
-      }) as PublicUsageStats;
+      return toStats(data as unknown as UsageCounterRow | null);
     },
-    staleTime: 15_000,
+    staleTime: 0,
     refetchOnMount: "always",
     refetchOnWindowFocus: true,
     refetchOnReconnect: true,
-    retry: 2,
+    retry: 1,
   });
 
-  useEffect(
-    () => subscribeUsageCounters((stats) => qc.setQueryData(USAGE_STATS_KEY, stats)),
-    [qc],
-  );
+  useEffect(() => subscribeUsageCounters((stats) => qc.setQueryData(USAGE_STATS_KEY, stats)), [qc]);
+
 
   return query;
 };
+
+
+
 
 export interface PeriodMetrics {
   registered_users: number;
@@ -110,7 +130,7 @@ export const useAdminAnalytics = (enabled: boolean) =>
     queryKey: ["admin_analytics"],
     enabled,
     queryFn: async () => {
-      const { data, error } = await supabase.rpc("admin_analytics");
+      const { data, error } = await supabase.rpc("admin_analytics" as never);
       if (error) throw error;
       return data as unknown as AdminAnalytics;
     },
@@ -122,16 +142,11 @@ export const useSetPublicMetric = () => {
     mutationFn: async (metric: string) => {
       const { error } = await supabase
         .from("app_settings" as never)
-        .upsert(
-          { key: "public_counter_metric", value: metric } as never,
-          { onConflict: "key" } as never,
-        );
+        .upsert({ key: "public_counter_metric", value: metric } as never, { onConflict: "key" } as never);
       if (error) throw error;
-      const { error: refreshError } = await supabase.rpc("refresh_public_usage_counters");
-      if (refreshError) throw refreshError;
     },
     onSuccess: () => {
-      void qc.invalidateQueries({ queryKey: USAGE_STATS_KEY });
+      void qc.invalidateQueries({ queryKey: ["public_usage_stats"] });
     },
   });
 };

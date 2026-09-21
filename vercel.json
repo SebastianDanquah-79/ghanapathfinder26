@@ -1,8 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
-  "installCommand": "npm install",
-  "buildCommand": "npm run build",
+  "installCommand": "bun install --frozen-lockfile",
+  "buildCommand": "bun run build",
   "build": {
     "env": {
       "NITRO_PRESET": "vercel"
@@ -11,20 +11,9 @@
   "redirects": [
     {
       "source": "/(.*)",
-      "has": [
-        {
-          "type": "host",
-          "value": "www.ghanapathfinder.com"
-        }
-      ],
+      "has": [{ "type": "host", "value": "www.ghanapathfinder.com" }],
       "destination": "https://ghanapathfinder.com/$1",
       "permanent": true
-    }
-  ],
-  "crons": [
-    {
-      "path": "/api/news-refresh",
-      "schedule": "0 0 * * *"
     }
   ]
 }

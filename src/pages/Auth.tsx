@@ -3,6 +3,7 @@ import { useNavigate, Link, useSearchParams } from "@/lib/router-compat";
 import { Loader2, BrandLogoIcon } from "@/lib/icons";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/useAuth";
 import { TERMS_VERSION } from "@/lib/legal";
 import { useEffect } from "react";
@@ -21,7 +22,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
   const [params] = useSearchParams();
   const next = safeNext(params.get("next"));
   const [mode, setMode] = useState<Mode>(defaultMode);
-  const [accountType, setAccountType] = useState<"startup" | "corporate" | "education">("education");
+  const [accountType, setAccountType] = useState<"student" | "parent">("student");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -46,8 +47,8 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (mode === "signup" && !acceptedTerms) {
-      toast.error("Please accept the Terms & Conditions to create an account.");
+    if (!acceptedTerms) {
+      toast.error("Please accept the Terms & Conditions to continue.");
       return;
     }
     setLoading(true);
@@ -61,8 +62,8 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
           options: {
             emailRedirectTo: next
               ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
-              : `${window.location.origin}/auth`,
-            data: { full_name: fullName.trim(), account_type: accountType, pathway: accountType, phone: phone.trim() },
+              : window.location.origin,
+            data: { full_name: fullName.trim(), account_type: accountType, phone: phone.trim() },
           },
         });
         if (error) throw error;
@@ -82,24 +83,12 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
           password,
         });
         if (error) throw error;
-        if (!data.session || !data.user) {
-          throw new Error("Sign-in completed without an active session. Please try again.");
-        }
+        if (data.user) await recordAcceptance(data.user.id);
         if (next) window.location.href = next;
         else navigate("/dashboard", { replace: true });
       }
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Something went wrong";
-      const normalized = message.toLowerCase();
-      if (normalized.includes("email not confirmed")) {
-        toast.error("Please confirm your email address from the verification email before signing in.");
-      } else if (normalized.includes("invalid login credentials")) {
-        toast.error("The email or password is incorrect. Check both and try again.");
-      } else if (normalized.includes("rate limit")) {
-        toast.error("Too many attempts. Please wait a moment and try again.");
-      } else {
-        toast.error(message);
-      }
+      toast.error(err instanceof Error ? err.message : "Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -120,20 +109,25 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
   };
 
   const handleGoogle = async () => {
-    setLoading(true);
-    try {
-      const redirectTo = next
-        ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
-        : `${window.location.origin}/auth`;
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: { redirectTo },
-      });
-      if (error) throw error;
-    } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Google sign-in failed. Please try again.");
-      setLoading(false);
+    if (!acceptedTerms) {
+      toast.error("Please accept the Terms & Conditions to continue.");
+      return;
     }
+
+    setLoading(true);
+    const result = await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: next
+        ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
+        : window.location.origin,
+    });
+    if (result.error) {
+      toast.error("Google sign-in failed. Please try again.");
+      setLoading(false);
+      return;
+    }
+    if (result.redirected) return;
+    if (next) window.location.href = next;
+    else navigate("/dashboard", { replace: true });
   };
 
   return (
@@ -165,7 +159,6 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
                 : "Save recommendations, scholarships and deadlines in one place."}
             </p>
 
-            {mode === "signup" && (
             <label className="flex items-start gap-3 mb-4 p-3 rounded-xl border border-border bg-secondary/50 cursor-pointer">
               <input
                 type="checkbox"
@@ -186,11 +179,10 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
                 .
               </span>
             </label>
-            )}
 
             <button
               onClick={handleGoogle}
-              disabled={loading || (mode === "signup" && !acceptedTerms)}
+              disabled={loading || !acceptedTerms}
               className="w-full mb-5 px-4 py-3 rounded-lg border border-border bg-secondary text-foreground text-sm font-medium hover:bg-secondary/70 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Continue with Google
@@ -205,8 +197,8 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
             <form onSubmit={handleSubmit} className="space-y-4">
               {mode === "signup" && (
                 <>
-                  <div className="grid grid-cols-3 gap-2">
-                    {(["startup", "corporate", "education"] as const).map((t) => (
+                  <div className="grid grid-cols-2 gap-2">
+                    {(["student", "parent"] as const).map((t) => (
                       <button
                         key={t}
                         type="button"
@@ -217,7 +209,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
                             : "bg-secondary text-muted-foreground"
                         }`}
                       >
-                        {t === "startup" ? "Startup" : t === "corporate" ? "Corporate Work" : "Education"}
+                        I'm a {t}
                       </button>
                     ))}
                   </div>
@@ -260,7 +252,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
               />
               <button
                 type="submit"
-                disabled={loading}
+                disabled={loading || !acceptedTerms}
                 className="w-full px-4 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading && <Loader2 className="h-4 w-4 animate-spin" />}
