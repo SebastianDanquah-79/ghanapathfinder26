@@ -4,7 +4,7 @@ import { Loader2, Plus, Trash2 } from "@/lib/icons";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { LANGUAGES, getLanguage, setLanguage, t, type AppLanguage } from "@/lib/i18n";
+
 
 const REGIONS = [
   "Greater Accra", "Ashanti", "Central", "Eastern", "Western", "Volta",
@@ -76,7 +76,6 @@ const Onboarding = () => {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
   const [saving, setSaving] = useState(false);
-  const [language, setCurrentLanguage] = useState<AppLanguage>("en");
   const [fullName, setFullName] = useState("");
   const [school, setSchool] = useState("");
   const [region, setRegion] = useState("");
@@ -86,13 +85,6 @@ const Onboarding = () => {
   const [qualificationCode, setQualificationCode] = useState("WASSCE");
   const [overallScore, setOverallScore] = useState("");
   const [results, setResults] = useState([{ subject: "", grade: "", level: "" }]);
-
-  useEffect(() => {
-    const sync = () => setCurrentLanguage(getLanguage());
-    sync();
-    window.addEventListener("gp-language-change", sync);
-    return () => window.removeEventListener("gp-language-change", sync);
-  }, []);
 
   const qualification = useMemo(
     () => QUALIFICATIONS.find((q) => q.code === qualificationCode) ?? QUALIFICATIONS[0],
@@ -129,57 +121,49 @@ const Onboarding = () => {
   };
 
   const handleSave = async () => {
-    if (!user) return;
+    if (!user || saving) return;
     setSaving(true);
+
     try {
-      const profilePayload = {
-        id: user.id,
-        email: user.email ?? null,
-        full_name: fullName.trim() || null,
-        school: school.trim() || null,
-        region: region || null,
-        target_career: career.trim() || null,
-        interests,
-        onboarded: true,
-      };
-      const { error } = await supabase.from("profiles").upsert(profilePayload, { onConflict: "id" });
-      if (error) throw error;
+      const wassceRows = isWassce
+        ? results
+            .filter((r) => r.subject.trim() && r.grade)
+            .map((r) => ({ subject: r.subject.trim(), grade: r.grade }))
+        : [];
 
-      if (isWassce) {
-        const rows = results.filter((r) => r.subject.trim() && r.grade)
-          .map((r) => ({ user_id: user.id, subject: r.subject.trim(), grade: r.grade }));
-        const { error: dErr } = await supabase.from("wassce_results").delete().eq("user_id", user.id);
-        if (dErr) throw dErr;
-        if (rows.length) {
-          const { error: rErr } = await supabase.from("wassce_results").insert(rows);
-          if (rErr) throw rErr;
-        }
-      }
-
-      // Generic qualification storage keeps international exams separate from the legacy WASSCE engine.
-      const db = supabase as any;
-      const { data: q, error: qErr } = await db.from("student_qualifications").upsert({
-        user_id: user.id,
-        country_code: country,
-        qualification_code: qualification.code,
-        qualification_name: qualification.name,
-        grading_scale: qualification.scale,
-        overall_score: overallScore.trim() || null,
-        metadata: { country_name: COUNTRY_OPTIONS.find(([code]) => code === country)?.[1] ?? "Other" },
-      }, { onConflict: "user_id" }).select("id").single();
-      if (qErr) throw qErr;
-
-      await db.from("student_qualification_results").delete().eq("qualification_id", q.id);
-      const genericRows = results.filter((r) => r.subject.trim() && (r.grade || !hasGradeScale))
+      const qualificationRows = results
+        .filter((r) => r.subject.trim() && (r.grade || !hasGradeScale))
         .map((r) => ({
-          qualification_id: q.id,
           subject: r.subject.trim(),
           grade: r.grade || overallScore.trim() || "Entered",
           level: r.level || null,
         }));
-      if (genericRows.length) {
-        const { error: resultErr } = await db.from("student_qualification_results").insert(genericRows);
-        if (resultErr) throw resultErr;
+
+      const db = supabase as any;
+      const { data, error } = await db.rpc("save_profile_bundle", {
+        p_full_name: fullName.trim() || null,
+        p_email: user.email ?? null,
+        p_school: school.trim() || null,
+        p_region: region || null,
+        p_country_code: country || "GH",
+        p_target_career: career.trim() || null,
+        p_interests: interests,
+        p_pathways: [],
+        p_qualification_code: qualification.code,
+        p_qualification_name: qualification.name,
+        p_grading_scale: qualification.scale,
+        p_overall_score: overallScore.trim() || null,
+        p_qualification_metadata: {
+          country_name:
+            COUNTRY_OPTIONS.find(([code]) => code === country)?.[1] ?? "Other",
+        },
+        p_wassce_results: wassceRows,
+        p_qualification_results: qualificationRows,
+      });
+
+      if (error) throw error;
+      if (!data?.saved || data.user_id !== user.id) {
+        throw new Error("Profile save could not be confirmed");
       }
 
       toast.success("Academic profile saved");
@@ -187,7 +171,9 @@ const Onboarding = () => {
     } catch (err) {
       const message = err instanceof Error ? err.message : "Could not save profile";
       console.error("Profile save failed", err);
-      toast.error(`Could not save profile: ${message}`);
+      toast.error(message === "Profile save could not be confirmed"
+        ? "Your profile could not be confirmed. Please try again."
+        : `Could not save profile: ${message}`);
     } finally {
       setSaving(false);
     }
@@ -199,12 +185,6 @@ const Onboarding = () => {
     <div className="min-h-screen bg-background px-4 py-8">
       <div className="max-w-2xl mx-auto">
         <div className="flex justify-end mb-4">
-          <label className="flex items-center gap-2 text-xs text-muted-foreground">
-            {t("language", language)}
-            <select value={language} onChange={(e) => setLanguage(e.target.value as AppLanguage)} className="px-3 py-2 rounded-lg bg-secondary border border-border text-foreground">
-              {LANGUAGES.map((item) => <option key={item.code} value={item.code}>{item.nativeName}</option>)}
-            </select>
-          </label>
         </div>
         <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-2">Let's set up your path</h1>
         <p className="text-sm text-muted-foreground mb-6">
@@ -214,9 +194,9 @@ const Onboarding = () => {
         <div className="space-y-4">
           <div className="bg-glass rounded-xl p-5 space-y-3">
             <h2 className="font-display font-semibold text-foreground">About you</h2>
-            <input className={inputClass} placeholder={language === "fr" ? "Nom complet" : "Full name"} value={fullName} maxLength={100} onChange={(e) => setFullName(e.target.value)} />
+            <input className={inputClass} placeholder="Full name" value={fullName} maxLength={100} onChange={(e) => setFullName(e.target.value)} />
             <select className={inputClass} value={country} onChange={(e) => setCountry(e.target.value)}>
-              <option value="">{language === "fr" ? "Sélectionnez votre pays" : "Select your country"}</option>
+              <option value="">Select your country</option>
               {COUNTRY_OPTIONS.map(([code, name]) => <option key={code} value={code}>{name}</option>)}
             </select>
             {country === "GH" && (
