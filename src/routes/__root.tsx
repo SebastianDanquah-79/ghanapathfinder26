@@ -12,7 +12,7 @@ import ContactGate from "@/components/ContactGate";
 import OfflineBanner from "@/components/OfflineBanner";
 import NotFound from "@/pages/NotFound";
 import { AdinkraFloat } from "@/components/AdinkraFloat";
-import FloatingAskAssistant from "@/components/FloatingAskAssistant";
+import FloatingAskAssistant from "@/components/FloatingAskAssistant";\nimport ProfileCareerTools from "@/components/ProfileCareerTools";
 import { usePageViews } from "@/hooks/useTracking";
 import { reportLovableError } from "@/lib/lovable-error-reporting";
 import appCss from "../styles.css?url";
@@ -49,7 +49,7 @@ function RootComponent() {
             <AnalyticsTracker />
             <OfflineBanner />
             <AdinkraFloat />
-            <div className="desktop-shell relative z-[2] pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0"><Outlet /></div>
+            <div className="desktop-shell relative z-[2] pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0"><Outlet /><ProfileCareerTools /></div>
             <MobileTabBar />
             <ContactGate />
             <FloatingAskAssistant />
