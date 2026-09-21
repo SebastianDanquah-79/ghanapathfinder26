@@ -85,6 +85,14 @@ const Onboarding = () => {
   const [qualificationCode, setQualificationCode] = useState("WASSCE");
   const [overallScore, setOverallScore] = useState("");
   const [results, setResults] = useState([{ subject: "", grade: "", level: "" }]);
+  const [accountRole, setAccountRole] = useState<"student" | "employee" | "employer" | "startup_founder">("student");
+
+  useEffect(() => {
+    const stored = typeof window !== "undefined" ? window.localStorage.getItem("selectedRole") : null;
+    if (stored === "student" || stored === "employee" || stored === "employer" || stored === "startup_founder") {
+      setAccountRole(stored);
+    }
+  }, []);
 
   const availableQualifications = useMemo(() => {
     const countryMatches = QUALIFICATIONS.filter(
@@ -168,7 +176,7 @@ const Onboarding = () => {
         },
         p_wassce_results: wassceRows,
         p_qualification_results: qualificationRows,
-        p_account_role: "student",
+        p_account_role: accountRole,
         p_whatsapp_number: null,
         p_linkedin_url: null,
       });
@@ -181,7 +189,7 @@ const Onboarding = () => {
         throw new Error("Profile save could not be confirmed");
       }
 
-      toast.success("Academic profile saved");
+      if (typeof window !== "undefined") window.localStorage.removeItem("selectedRole");\n      toast.success("Profile saved");
       navigate("/dashboard", { replace: true });
     } catch (err) {
       const message = err instanceof Error ? err.message : "Could not save profile";
