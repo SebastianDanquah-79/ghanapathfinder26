@@ -138,8 +138,27 @@ const Onboarding = () => {
         interests,
         onboarded: true,
       };
-      const { error } = await supabase.from("profiles").upsert(profilePayload, { onConflict: "id" });
-      if (error) throw error;
+      // Save the core profile first. Using an explicit update/insert path avoids
+      // relying on PostgREST upsert conflict handling while preserving the existing RLS model.
+      const { data: existingProfile, error: profileLookupError } = await supabase
+        .from("profiles")
+        .select("id")
+        .eq("id", user.id)
+        .maybeSingle();
+      if (profileLookupError) throw new Error(`Profile lookup failed: ${profileLookupError.message}`);
+
+      if (existingProfile) {
+        const { error: profileUpdateError } = await supabase
+          .from("profiles")
+          .update(profilePayload)
+          .eq("id", user.id);
+        if (profileUpdateError) throw new Error(`Profile update failed: ${profileUpdateError.message}`);
+      } else {
+        const { error: profileInsertError } = await supabase
+          .from("profiles")
+          .insert(profilePayload);
+        if (profileInsertError) throw new Error(`Profile insert failed: ${profileInsertError.message}`);
+      }
 
       if (isWassce) {
         const rows = results.filter((r) => r.subject.trim() && r.grade)
@@ -181,9 +200,9 @@ const Onboarding = () => {
       toast.success("Academic profile saved");
       navigate("/dashboard", { replace: true });
     } catch (err) {
-      const message = err instanceof Error ? err.message : "Could not save profile";
-      console.error("Profile save failed", err);
-      toast.error(`Could not save profile: ${message}`);
+      const message = err instanceof Error ? err.message : "Could not save your onboarding details";
+      console.error("Onboarding save failed", err);
+      toast.error(message.startsWith("Profile ") ? message : `Could not save your onboarding details: ${message}`);
     } finally {
       setSaving(false);
     }
