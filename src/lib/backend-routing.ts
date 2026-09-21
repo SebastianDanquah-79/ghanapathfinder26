@@ -36,6 +36,12 @@ export async function resolveBackend(language: AppLanguage = getLanguage()): Pro
   }) as BackendRoute;
 }
 
+export async function getBackendSnapshot() {
+  const { data, error } = await supabase.rpc("get_user_backend_snapshot");
+  if (error) throw error;
+  return data ?? null;
+}
+
 export async function getBackendContent(
   language: AppLanguage = getLanguage(),
   keys: string[] = [],
