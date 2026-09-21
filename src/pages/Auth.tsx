@@ -3,7 +3,6 @@ import { useNavigate, Link, useSearchParams } from "@/lib/router-compat";
 import { Loader2, BrandLogoIcon } from "@/lib/icons";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/useAuth";
 import { TERMS_VERSION } from "@/lib/legal";
 import { useEffect } from "react";
@@ -109,25 +108,20 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
   };
 
   const handleGoogle = async () => {
-    if (!acceptedTerms) {
-      toast.error("Please accept the Terms & Conditions to continue.");
-      return;
-    }
-
     setLoading(true);
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: next
+    try {
+      const redirectTo = next
         ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
-        : window.location.origin,
-    });
-    if (result.error) {
-      toast.error("Google sign-in failed. Please try again.");
+        : `${window.location.origin}/dashboard`;
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo },
+      });
+      if (error) throw error;
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Google sign-in failed. Please try again.");
       setLoading(false);
-      return;
     }
-    if (result.redirected) return;
-    if (next) window.location.href = next;
-    else navigate("/dashboard", { replace: true });
   };
 
   return (
@@ -182,7 +176,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
 
             <button
               onClick={handleGoogle}
-              disabled={loading || !acceptedTerms}
+              disabled={loading || (mode === "signup" && !acceptedTerms)}
               className="w-full mb-5 px-4 py-3 rounded-lg border border-border bg-secondary text-foreground text-sm font-medium hover:bg-secondary/70 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Continue with Google
