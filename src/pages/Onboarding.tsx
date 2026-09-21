@@ -81,6 +81,7 @@ const Onboarding = () => {
   const [country, setCountry] = useState("GH");
   const [career, setCareer] = useState("");
   const [interests, setInterests] = useState<string[]>([]);
+  const [pathways, setPathways] = useState<string[]>([]);
   const [qualificationCode, setQualificationCode] = useState("WASSCE");
   const [overallScore, setOverallScore] = useState("");
   const [results, setResults] = useState([{ subject: "", grade: "", level: "" }]);
@@ -103,8 +104,19 @@ const Onboarding = () => {
 
   useEffect(() => {
     if (!user) return;
-    supabase.from("profiles").select("full_name").eq("id", user.id).maybeSingle()
-      .then(({ data }) => setFullName((prev) => prev || data?.full_name || ""));
+    const db = supabase as any;
+    db.from("profiles").select("full_name, country_code, pathways, school, region, target_career, interests").eq("id", user.id).maybeSingle()
+      .then(({ data, error }: any) => {
+        if (error) { console.error("Profile load failed", error); return; }
+        if (!data) return;
+        setFullName((prev) => prev || data.full_name || "");
+        setCountry(data.country_code || "GH");
+        setPathways(Array.isArray(data.pathways) ? data.pathways : []);
+        setSchool(data.school || "");
+        setRegion(data.region || "");
+        setCareer(data.target_career || "");
+        setInterests(Array.isArray(data.interests) ? data.interests : []);
+      });
   }, [user]);
 
   const toggleInterest = (interest: string) =>
@@ -128,18 +140,25 @@ const Onboarding = () => {
     if (!user) return;
     setSaving(true);
     try {
+      if (!fullName.trim()) { toast.error("Please enter your name."); return; }
+      if (!pathways.length) { toast.error("Choose at least one path so we can personalise your experience."); return; }
+      const db = supabase as any;
       const profilePayload = {
         id: user.id,
         email: user.email ?? null,
-        full_name: fullName.trim() || null,
+        full_name: fullName.trim(),
         school: school.trim() || null,
         region: region || null,
+        country_code: country || null,
         target_career: career.trim() || null,
         interests,
+        pathways,
         onboarded: true,
       };
-      const { error } = await supabase.from("profiles").upsert(profilePayload, { onConflict: "id" });
-      if (error) throw error;
+      const { error } = await db.from("profiles").upsert(profilePayload, { onConflict: "id" });
+      if (error) throw new Error("Profile: " + error.message);
+      const { data: savedProfile, error: verifyError } = await db.from("profiles").select("id, full_name, country_code, pathways, onboarded").eq("id", user.id).single();
+      if (verifyError || !savedProfile) throw new Error("Profile verification: " + (verifyError?.message || "profile was not persisted"));
 
       if (isWassce) {
         const rows = results.filter((r) => r.subject.trim() && r.grade)
@@ -153,7 +172,6 @@ const Onboarding = () => {
       }
 
       // Generic qualification storage keeps international exams separate from the legacy WASSCE engine.
-      const db = supabase as any;
       const { data: q, error: qErr } = await db.from("student_qualifications").upsert({
         user_id: user.id,
         country_code: country,
@@ -163,9 +181,10 @@ const Onboarding = () => {
         overall_score: overallScore.trim() || null,
         metadata: { country_name: COUNTRY_OPTIONS.find(([code]) => code === country)?.[1] ?? "Other" },
       }, { onConflict: "user_id" }).select("id").single();
-      if (qErr) throw qErr;
+      if (qErr) throw new Error("Qualification: " + qErr.message);
 
-      await db.from("student_qualification_results").delete().eq("qualification_id", q.id);
+      const { error: clearResultsError } = await db.from("student_qualification_results").delete().eq("qualification_id", q.id);
+      if (clearResultsError) throw new Error("Qualification results: " + clearResultsError.message);
       const genericRows = results.filter((r) => r.subject.trim() && (r.grade || !hasGradeScale))
         .map((r) => ({
           qualification_id: q.id,
@@ -196,12 +215,17 @@ const Onboarding = () => {
       <div className="max-w-2xl mx-auto">
         <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-2">Let's set up your path</h1>
         <p className="text-sm text-muted-foreground mb-6">
-          Tell GhanaPathFinder where you study and which qualification you use. Your academic profile powers Ghana-focused international recommendations.
+          Start with what you want to achieve. Ghana is the starting point, Africa is the core market, and the world is the opportunity layer.
         </p>
 
         <div className="space-y-4">
           <div className="bg-glass rounded-xl p-5 space-y-3">
-            <h2 className="font-display font-semibold text-foreground">About you</h2>
+            <h2 className="font-display font-semibold text-foreground">What are you looking for?</h2>
+            <p className="text-xs text-muted-foreground">Choose one or more paths. Your selection shapes your dashboard, recommendations and opportunity feed.</p>
+            <div className="grid gap-2 sm:grid-cols-3">
+              {[["startup","Startup","Founders, startup jobs, funding, accelerators and innovation"],["corporate","Corporate Work","Internships, jobs, employers, CVs and career development"],["education","Education","Universities, scholarships, courses, research and learning"]].map(([value,label,description]) => { const selected = pathways.includes(value); return <button type="button" key={value} onClick={() => setPathways((prev) => selected ? prev.filter((x) => x !== value) : [...prev, value])} className={`text-left rounded-lg border p-3 transition-colors ${selected ? "border-primary bg-primary/10" : "border-border bg-secondary/40 hover:border-primary/40"}`}><span className="block text-sm font-semibold text-foreground">{label}</span><span className="mt-1 block text-xs text-muted-foreground">{description}</span></button>; })}
+            </div>
+            <h2 className="font-display font-semibold text-foreground pt-2">About you</h2>
             <input className={inputClass} placeholder="Full name" value={fullName} maxLength={100} onChange={(e) => setFullName(e.target.value)} />
             <select className={inputClass} value={country} onChange={(e) => setCountry(e.target.value)}>
               <option value="">Select your country</option>
