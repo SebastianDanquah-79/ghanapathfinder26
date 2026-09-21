@@ -5,13 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "bun scripts/generate-sitemap.ts && vite build",
+    "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "predev": "bun scripts/generate-sitemap.ts",
+    "predev": "vite dev",
     "format": "prettier --write ."
   },
   "dependencies": {
