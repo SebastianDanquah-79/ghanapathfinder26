@@ -4,7 +4,7 @@ import { Loader2, Plus, Trash2 } from "@/lib/icons";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { LANGUAGES, getLanguage, setLanguage, t, type AppLanguage } from "@/lib/i18n";
+
 
 const REGIONS = [
   "Greater Accra", "Ashanti", "Central", "Eastern", "Western", "Volta",
@@ -76,7 +76,6 @@ const Onboarding = () => {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
   const [saving, setSaving] = useState(false);
-  const [language, setCurrentLanguage] = useState<AppLanguage>("en");
   const [fullName, setFullName] = useState("");
   const [school, setSchool] = useState("");
   const [region, setRegion] = useState("");
@@ -86,13 +85,6 @@ const Onboarding = () => {
   const [qualificationCode, setQualificationCode] = useState("WASSCE");
   const [overallScore, setOverallScore] = useState("");
   const [results, setResults] = useState([{ subject: "", grade: "", level: "" }]);
-
-  useEffect(() => {
-    const sync = () => setCurrentLanguage(getLanguage());
-    sync();
-    window.addEventListener("gp-language-change", sync);
-    return () => window.removeEventListener("gp-language-change", sync);
-  }, []);
 
   const qualification = useMemo(
     () => QUALIFICATIONS.find((q) => q.code === qualificationCode) ?? QUALIFICATIONS[0],
@@ -142,8 +134,15 @@ const Onboarding = () => {
         interests,
         onboarded: true,
       };
-      const { error } = await supabase.from("profiles").upsert(profilePayload, { onConflict: "id" });
+      const { data: savedProfile, error } = await supabase
+        .from("profiles")
+        .upsert(profilePayload, { onConflict: "id" })
+        .select("id, onboarded")
+        .single();
       if (error) throw error;
+      if (!savedProfile?.id || !savedProfile.onboarded) {
+        throw new Error("Profile was not confirmed after saving");
+      }
 
       if (isWassce) {
         const rows = results.filter((r) => r.subject.trim() && r.grade)
@@ -199,12 +198,6 @@ const Onboarding = () => {
     <div className="min-h-screen bg-background px-4 py-8">
       <div className="max-w-2xl mx-auto">
         <div className="flex justify-end mb-4">
-          <label className="flex items-center gap-2 text-xs text-muted-foreground">
-            {t("language", language)}
-            <select value={language} onChange={(e) => setLanguage(e.target.value as AppLanguage)} className="px-3 py-2 rounded-lg bg-secondary border border-border text-foreground">
-              {LANGUAGES.map((item) => <option key={item.code} value={item.code}>{item.nativeName}</option>)}
-            </select>
-          </label>
         </div>
         <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-2">Let's set up your path</h1>
         <p className="text-sm text-muted-foreground mb-6">
@@ -214,9 +207,9 @@ const Onboarding = () => {
         <div className="space-y-4">
           <div className="bg-glass rounded-xl p-5 space-y-3">
             <h2 className="font-display font-semibold text-foreground">About you</h2>
-            <input className={inputClass} placeholder={language === "fr" ? "Nom complet" : "Full name"} value={fullName} maxLength={100} onChange={(e) => setFullName(e.target.value)} />
+            <input className={inputClass} placeholder="Full name" value={fullName} maxLength={100} onChange={(e) => setFullName(e.target.value)} />
             <select className={inputClass} value={country} onChange={(e) => setCountry(e.target.value)}>
-              <option value="">{language === "fr" ? "Sélectionnez votre pays" : "Select your country"}</option>
+              <option value="">Select your country</option>
               {COUNTRY_OPTIONS.map(([code, name]) => <option key={code} value={code}>{name}</option>)}
             </select>
             {country === "GH" && (
