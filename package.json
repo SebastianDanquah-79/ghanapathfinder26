@@ -11,8 +11,9 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "predev": "vite dev",
-    "format": "prettier --write ."
+    "predev": "tsx scripts/generate-sitemap.ts",
+    "format": "prettier --write .",
+    "prebuild": "tsx scripts/generate-sitemap.ts"
   },
   "dependencies": {
     "@ai-sdk/openai-compatible": "^3.0.34",
