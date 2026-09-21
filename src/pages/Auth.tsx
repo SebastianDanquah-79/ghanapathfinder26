@@ -61,7 +61,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
           options: {
             emailRedirectTo: next
               ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
-              : window.location.origin,
+              : `${window.location.origin}/auth`,
             data: { full_name: fullName.trim(), account_type: accountType, pathway: accountType, phone: phone.trim() },
           },
         });
@@ -82,12 +82,24 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
           password,
         });
         if (error) throw error;
-        if (data.user) await recordAcceptance(data.user.id);
+        if (!data.session || !data.user) {
+          throw new Error("Sign-in completed without an active session. Please try again.");
+        }
         if (next) window.location.href = next;
         else navigate("/dashboard", { replace: true });
       }
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Something went wrong");
+      const message = err instanceof Error ? err.message : "Something went wrong";
+      const normalized = message.toLowerCase();
+      if (normalized.includes("email not confirmed")) {
+        toast.error("Please confirm your email address from the verification email before signing in.");
+      } else if (normalized.includes("invalid login credentials")) {
+        toast.error("The email or password is incorrect. Check both and try again.");
+      } else if (normalized.includes("rate limit")) {
+        toast.error("Too many attempts. Please wait a moment and try again.");
+      } else {
+        toast.error(message);
+      }
     } finally {
       setLoading(false);
     }
@@ -153,6 +165,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
                 : "Save recommendations, scholarships and deadlines in one place."}
             </p>
 
+            {mode === "signup" && (
             <label className="flex items-start gap-3 mb-4 p-3 rounded-xl border border-border bg-secondary/50 cursor-pointer">
               <input
                 type="checkbox"
@@ -173,6 +186,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
                 .
               </span>
             </label>
+            )}
 
             <button
               onClick={handleGoogle}
