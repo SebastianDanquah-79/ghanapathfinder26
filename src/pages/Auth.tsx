@@ -47,8 +47,8 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!acceptedTerms) {
-      toast.error("Please accept the Terms & Conditions to continue.");
+    if (mode === "signup" && !acceptedTerms) {
+      toast.error("Please accept the Terms & Conditions to create an account.");
       return;
     }
     setLoading(true);
@@ -252,7 +252,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
               />
               <button
                 type="submit"
-                disabled={loading || !acceptedTerms}
+                disabled={loading}
                 className="w-full px-4 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading && <Loader2 className="h-4 w-4 animate-spin" />}
