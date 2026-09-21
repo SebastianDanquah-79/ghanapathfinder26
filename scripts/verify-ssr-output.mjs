@@ -27,7 +27,8 @@ if (jsFiles.length === 0) {
 
 const exportAllUsers = [];
 for (const file of jsFiles) {
-  const source = await Bun.file(file).text();
+  const { readFile } = await import("node:fs/promises");
+  const source = await readFile(file, "utf8");
   if (source.includes("__exportAll")) exportAllUsers.push(file);
 }
 
