@@ -68,7 +68,8 @@ export const navSections: NavSection[] = [
       { label: "Career Path", href: "/career-path", desc: "Turn ambition into a plan" },
       { label: "Skills", href: "/skills", desc: "Build skills that pay off" },
       { label: "Internships", href: "/internships", desc: "Get experience that counts" },
-      { label: "Professional councils", href: "/professional-councils", desc: "Know the rules before you choose" },\n      { label: "Africa leadership reference", href: "/africa-leadership", desc: "Continental civic reference" },
+      { label: "Professional councils", href: "/professional-councils", desc: "Know the rules before you choose" },
+      { label: "Africa leadership reference", href: "/africa-leadership", desc: "Continental civic reference" },
     ],
   },
   {
