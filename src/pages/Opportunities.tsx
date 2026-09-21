@@ -1,0 +1,20 @@
+import { useState } from "react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
+import SectionHeader from "@/components/SectionHeader";
+import { Search, Briefcase, ExternalLink } from "@/lib/icons";
+import { supabase } from "@/integrations/supabase/client";
+import { useQuery } from "@tanstack/react-query";
+
+export default function Opportunities(){
+ const [q,setQ]=useState(""); const [type,setType]=useState("all"); const [country,setCountry]=useState("");
+ const query=useQuery({queryKey:["opportunities",q,type,country],queryFn:async()=>{
+  let req=(supabase as any).from("opportunities").select("*").eq("status","active").order("posted_at",{ascending:false}).limit(60);
+  if(q.trim()) req=req.or("title.ilike.%"+q.trim()+"%,description.ilike.%"+q.trim()+"%");
+  if(type!=="all") req=req.eq("opportunity_type",type);
+  if(country) req=req.eq("country_code",country);
+  const {data,error}=await req; if(error) throw error; return data??[];
+ }});
+ return <div className="min-h-screen bg-background"><Seo title="Global Opportunities | GhanaPathFinder" description="Source-attributed opportunities for Africa and the world." path="/opportunities"/><Navbar/><main className="pt-20 pb-12 px-4"><div className="max-w-6xl mx-auto"><SectionHeader badge="Opportunities" title="Find your next" highlight="opportunity" description="Jobs, internships, fellowships, competitions and startup opportunities. Only source-attributed records are shown."/><div className="flex flex-wrap gap-2 mb-5"><div className="relative flex-1 min-w-[220px]"><Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"/><input value={q} onChange={e=>setQ(e.target.value)} placeholder="Search roles, companies or skills" className="w-full pl-10 pr-4 py-3 rounded-lg bg-secondary border border-border text-sm"/></div><select value={type} onChange={e=>setType(e.target.value)} className="px-3 py-3 rounded-lg bg-secondary border border-border text-sm"><option value="all">All types</option><option value="job">Jobs</option><option value="internship">Internships</option><option value="fellowship">Fellowships</option><option value="competition">Competitions</option><option value="startup">Startup</option></select><input value={country} onChange={e=>setCountry(e.target.value.toUpperCase())} maxLength={2} placeholder="Country" className="w-28 px-3 py-3 rounded-lg bg-secondary border border-border text-sm"/></div>{query.isError?<div className="p-6 rounded-xl border border-border text-sm text-muted-foreground">Opportunity data could not be loaded.</div>:query.data?.length===0?<div className="p-10 rounded-xl border border-border text-center text-sm text-muted-foreground">No verified opportunities are currently available for these filters.</div>:<div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{query.data?.map((o:any)=><article key={o.id} className="bg-glass rounded-xl p-4 border border-border"><span className="text-[10px] uppercase tracking-wide text-primary font-semibold">{o.opportunity_type}</span><h2 className="font-display font-semibold text-foreground mt-1">{o.title}</h2><p className="text-xs text-muted-foreground mt-1">{o.location??o.country_code??"Global"}{o.remote?" · Remote":""}</p><p className="text-xs text-muted-foreground mt-3 line-clamp-3">{o.description??"Source-provided opportunity details."}</p><div className="mt-4 flex items-center justify-between"><span className="text-[11px] text-muted-foreground">Source: {o.source_name??"Verified source"}</span>{o.application_url&&<a href={o.application_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-primary text-primary-foreground text-xs font-medium">Apply <ExternalLink className="h-3.5 w-3.5"/></a>}</div></article>)}</div>}</div></main><Footer/></div>;
+}
