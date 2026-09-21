@@ -15,7 +15,6 @@ import { AdinkraFloat } from "@/components/AdinkraFloat";
 import FloatingAskAssistant from "@/components/FloatingAskAssistant";
 import { usePageViews } from "@/hooks/useTracking";
 import { reportLovableError } from "@/lib/lovable-error-reporting";
-import AutoTranslate from "@/components/AutoTranslate";
 import appCss from "../styles.css?url";
 
 function RootShell({ children }: { children: React.ReactNode }) {
@@ -53,7 +52,6 @@ function RootComponent() {
           <Sonner />
           <AuthProvider>
             <AnalyticsTracker />
-            <AutoTranslate />
             <OfflineBanner />
             <AdinkraFloat />
             <div className="desktop-shell relative z-[2] pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0">
