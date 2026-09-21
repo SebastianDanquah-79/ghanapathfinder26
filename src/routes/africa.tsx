@@ -1,0 +1,1 @@
+import { createFileRoute } from "@tanstack/react-router"; import Africa from "@/pages/Africa"; export const Route=createFileRoute("/africa")({component:Africa});
