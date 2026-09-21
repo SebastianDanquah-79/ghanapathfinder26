@@ -197,7 +197,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
             <form onSubmit={handleSubmit} className="space-y-4">
               {mode === "signup" && (
                 <>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-3 gap-2">
                     {(["startup", "corporate", "education"] as const).map((t) => (
                       <button
                         key={t}
@@ -209,7 +209,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
                             : "bg-secondary text-muted-foreground"
                         }`}
                       >
-                        I'm a {t}
+                        {t === "startup" ? "Startup" : t === "corporate" ? "Corporate Work" : "Education"}
                       </button>
                     ))}
                   </div>
