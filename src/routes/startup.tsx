@@ -1,0 +1,1 @@
+import { createFileRoute } from "@tanstack/react-router"; import Startup from "@/pages/Startup"; export const Route=createFileRoute("/startup")({component:Startup});
