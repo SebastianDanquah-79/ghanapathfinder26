@@ -121,64 +121,49 @@ const Onboarding = () => {
   };
 
   const handleSave = async () => {
-    if (!user) return;
+    if (!user || saving) return;
     setSaving(true);
+
     try {
-      const profilePayload = {
-        id: user.id,
-        email: user.email ?? null,
-        full_name: fullName.trim() || null,
-        school: school.trim() || null,
-        region: region || null,
-        target_career: career.trim() || null,
-        interests,
-        onboarded: true,
-      };
-      const { data: savedProfile, error } = await supabase
-        .from("profiles")
-        .upsert(profilePayload, { onConflict: "id" })
-        .select("id, onboarded")
-        .single();
-      if (error) throw error;
-      if (!savedProfile?.id || !savedProfile.onboarded) {
-        throw new Error("Profile was not confirmed after saving");
-      }
+      const wassceRows = isWassce
+        ? results
+            .filter((r) => r.subject.trim() && r.grade)
+            .map((r) => ({ subject: r.subject.trim(), grade: r.grade }))
+        : [];
 
-      if (isWassce) {
-        const rows = results.filter((r) => r.subject.trim() && r.grade)
-          .map((r) => ({ user_id: user.id, subject: r.subject.trim(), grade: r.grade }));
-        const { error: dErr } = await supabase.from("wassce_results").delete().eq("user_id", user.id);
-        if (dErr) throw dErr;
-        if (rows.length) {
-          const { error: rErr } = await supabase.from("wassce_results").insert(rows);
-          if (rErr) throw rErr;
-        }
-      }
-
-      // Generic qualification storage keeps international exams separate from the legacy WASSCE engine.
-      const db = supabase as any;
-      const { data: q, error: qErr } = await db.from("student_qualifications").upsert({
-        user_id: user.id,
-        country_code: country,
-        qualification_code: qualification.code,
-        qualification_name: qualification.name,
-        grading_scale: qualification.scale,
-        overall_score: overallScore.trim() || null,
-        metadata: { country_name: COUNTRY_OPTIONS.find(([code]) => code === country)?.[1] ?? "Other" },
-      }, { onConflict: "user_id" }).select("id").single();
-      if (qErr) throw qErr;
-
-      await db.from("student_qualification_results").delete().eq("qualification_id", q.id);
-      const genericRows = results.filter((r) => r.subject.trim() && (r.grade || !hasGradeScale))
+      const qualificationRows = results
+        .filter((r) => r.subject.trim() && (r.grade || !hasGradeScale))
         .map((r) => ({
-          qualification_id: q.id,
           subject: r.subject.trim(),
           grade: r.grade || overallScore.trim() || "Entered",
           level: r.level || null,
         }));
-      if (genericRows.length) {
-        const { error: resultErr } = await db.from("student_qualification_results").insert(genericRows);
-        if (resultErr) throw resultErr;
+
+      const db = supabase as any;
+      const { data, error } = await db.rpc("save_profile_bundle", {
+        p_full_name: fullName.trim() || null,
+        p_email: user.email ?? null,
+        p_school: school.trim() || null,
+        p_region: region || null,
+        p_country_code: country || "GH",
+        p_target_career: career.trim() || null,
+        p_interests: interests,
+        p_pathways: [],
+        p_qualification_code: qualification.code,
+        p_qualification_name: qualification.name,
+        p_grading_scale: qualification.scale,
+        p_overall_score: overallScore.trim() || null,
+        p_qualification_metadata: {
+          country_name:
+            COUNTRY_OPTIONS.find(([code]) => code === country)?.[1] ?? "Other",
+        },
+        p_wassce_results: wassceRows,
+        p_qualification_results: qualificationRows,
+      });
+
+      if (error) throw error;
+      if (!data?.saved || data.user_id !== user.id) {
+        throw new Error("Profile save could not be confirmed");
       }
 
       toast.success("Academic profile saved");
@@ -186,7 +171,9 @@ const Onboarding = () => {
     } catch (err) {
       const message = err instanceof Error ? err.message : "Could not save profile";
       console.error("Profile save failed", err);
-      toast.error(`Could not save profile: ${message}`);
+      toast.error(message === "Profile save could not be confirmed"
+        ? "Your profile could not be confirmed. Please try again."
+        : `Could not save profile: ${message}`);
     } finally {
       setSaving(false);
     }
