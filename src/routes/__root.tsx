@@ -20,13 +20,8 @@ import appCss from "../styles.css?url";
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en-GH" suppressHydrationWarning>
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
+      <head><HeadContent /></head>
+      <body>{children}<Scripts /></body>
     </html>
   );
 }
@@ -54,9 +49,7 @@ function RootComponent() {
             <AnalyticsTracker />
             <OfflineBanner />
             <AdinkraFloat />
-            <div className="desktop-shell relative z-[2] pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0">
-              <Outlet />
-            </div>
+            <div className="desktop-shell relative z-[2] pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0"><Outlet /></div>
             <MobileTabBar />
             <ContactGate />
             <FloatingAskAssistant />
@@ -73,6 +66,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   useEffect(() => {
     reportLovableError(error, { boundary: "tanstack_root_error_component" });
   }, [error]);
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-background text-foreground p-6">
       <div className="max-w-md w-full text-center space-y-4">
@@ -92,8 +86,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1.0, viewport-fit=cover" },
-      { title: "GhanaPathFinder | Your Ghanaian Life Decision Platform" },
-      { name: "description", content: "Explore education, careers, skills, scholarships and opportunities in Ghana, then turn your options into a practical path." },
+      { title: "GhanaPathFinder | Africa-first education, careers and opportunities" },
+      { name: "description", content: "Discover education, careers, skills, scholarships, jobs and opportunities across Africa and globally, with Ghana as the starting point." },
       { name: "google-site-verification", content: "AX0O529bwE2xFh92n_bKT9tdS7ax1ulGLgrKzrm1kLE" },
       { name: "author", content: "GhanaPathFinder" },
       { name: "theme-color", content: "#0a0f1c" },
@@ -103,13 +97,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "apple-mobile-web-app-title", content: "GhanaPathFinder" },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "GhanaPathFinder" },
-      { property: "og:title", content: "GhanaPathFinder | Your Ghanaian Life Decision Platform" },
-      { property: "og:description", content: "Education. Careers. Skills. Opportunities. One path built around you." },
+      { property: "og:title", content: "GhanaPathFinder | Africa-first education, careers and opportunities" },
+      { property: "og:description", content: "Education, careers, skills, scholarships, jobs and opportunities across Africa and the world, starting from Ghana." },
       { property: "og:url", content: "https://ghanapathfinder.com" },
       { property: "og:image", content: "https://ghanapathfinder.com/app-icon-512.png" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "GhanaPathFinder | Your Ghanaian Life Decision Platform" },
-      { name: "twitter:description", content: "Education. Careers. Skills. Opportunities. One path built around you." },
+      { name: "twitter:title", content: "GhanaPathFinder | Africa-first education, careers and opportunities" },
+      { name: "twitter:description", content: "Education, careers, skills, scholarships, jobs and opportunities across Africa and the world, starting from Ghana." },
       { name: "twitter:image", content: "https://ghanapathfinder.com/app-icon-512.png" },
     ],
     links: [
@@ -123,7 +117,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     scripts: [
       { children: "try{var t=localStorage.getItem('gpf-theme');if(t==='dark')document.documentElement.classList.add('dark');}catch(e){}" },
-      { type: "application/ld+json", children: JSON.stringify({ "@context": "https://schema.org", "@type": "Organization", "@id": "https://ghanapathfinder.com/#organization", name: "GhanaPathFinder", alternateName: ["Ghana Path Finder", "GhanaPath Finder"], url: "https://ghanapathfinder.com", logo: { "@type": "ImageObject", url: "https://ghanapathfinder.com/app-icon-512.png", width: 512, height: 512 }, description: "A Ghanaian life decision platform covering education, careers, skills and opportunities.", areaServed: "GH" }) },
+      { type: "application/ld+json", children: JSON.stringify({ "@context": "https://schema.org", "@type": "Organization", "@id": "https://ghanapathfinder.com/#organization", name: "GhanaPathFinder", alternateName: ["Ghana Path Finder", "GhanaPath Finder"], url: "https://ghanapathfinder.com", logo: { "@type": "ImageObject", url: "https://ghanapathfinder.com/app-icon-512.png", width: 512, height: 512 }, description: "An Africa-first education, career and opportunity platform, with Ghana as the starting point.", areaServed: "Africa" }) },
       { type: "application/ld+json", children: JSON.stringify({ "@context": "https://schema.org", "@type": "WebSite", "@id": "https://ghanapathfinder.com/#website", name: "GhanaPathFinder", alternateName: "Ghana Path Finder", url: "https://ghanapathfinder.com", inLanguage: "en-GH", publisher: { "@id": "https://ghanapathfinder.com/#organization" }, potentialAction: { "@type": "SearchAction", target: { "@type": "EntryPoint", urlTemplate: "https://ghanapathfinder.com/search?q={search_term_string}" }, "query-input": "required name=search_term_string" } }) },
     ],
   }),
