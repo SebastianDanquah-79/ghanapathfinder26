@@ -11,9 +11,20 @@
   "redirects": [
     {
       "source": "/(.*)",
-      "has": [{ "type": "host", "value": "www.ghanapathfinder.com" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "www.ghanapathfinder.com"
+        }
+      ],
       "destination": "https://ghanapathfinder.com/$1",
       "permanent": true
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/news-refresh",
+      "schedule": "0 * * * *"
     }
   ]
 }
