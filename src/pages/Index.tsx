@@ -1,11 +1,11 @@
 import Navbar from "@/components/Navbar";
 import Seo from "@/components/Seo";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, BriefcaseBusiness, GraduationCap, Handshake, Search } from "@/lib/icons";
+import { ArrowRight, Briefcase, GraduationCap, Rocket, Search } from "@/lib/icons";
 const paths = [
   { title: "Education", text: "Universities, programmes, scholarships, courses, research and academic opportunities.", to: "/onboarding", icon: GraduationCap },
-  { title: "Corporate work", text: "Jobs, internships, graduate programmes and employer opportunities across Africa and globally.", to: "/opportunities", icon: BriefcaseBusiness },
-  { title: "Startups", text: "Discover African startups, innovation, entrepreneurship resources and funding pathways.", to: "/careers", icon: Handshake },
+  { title: "Corporate work", text: "Jobs, internships, graduate programmes and employer opportunities across Africa and globally.", to: "/opportunities", icon: Briefcase },
+  { title: "Startups", text: "Discover African startups, innovation, entrepreneurship resources and funding pathways.", to: "/careers", icon: Rocket },
 ];
 const areas = [["Universities","/universities"],["Programmes","/programmes"],["Scholarships","/scholarships"],["Jobs and internships","/opportunities"],["Careers","/careers"],["Skills","/skills"],["Saved opportunities","/saved"],["Your path","/my-path"]];
 export default function Index(){return <div className="min-h-screen bg-background text-foreground"><Seo title="GhanaPathFinder | Africa-first education, careers and opportunities" description="Find education, careers, jobs, internships, scholarships, skills and opportunities across Africa and the world." path="/" /><Navbar/><main className="pt-16">
