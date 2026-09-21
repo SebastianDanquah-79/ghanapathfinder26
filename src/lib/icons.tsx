@@ -169,6 +169,9 @@ const glyphs = {
   Users: "\u25CD",
   Wallet: "\u25AC",
   WifiOff: "\u2298",
+  ImagePlus: "+",
+  Save: "↓",
+  Newspaper: "▤",
   X: "\u2715",
 } as const;
 
