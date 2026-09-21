@@ -157,6 +157,8 @@ const Onboarding = () => {
       };
       const { error } = await db.from("profiles").upsert(profilePayload, { onConflict: "id" });
       if (error) throw new Error("Profile: " + error.message);
+      const { data: savedProfile, error: verifyError } = await db.from("profiles").select("id, full_name, country_code, pathways, onboarded").eq("id", user.id).single();
+      if (verifyError || !savedProfile) throw new Error("Profile verification: " + (verifyError?.message || "profile was not persisted"));
 
       if (isWassce) {
         const rows = results.filter((r) => r.subject.trim() && r.grade)
