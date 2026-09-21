@@ -1,11 +1,13 @@
-import { useEffect, useMemo, useState } from "react";\nimport { useRouterState } from "@tanstack/react-router";
+import { useEffect, useMemo, useState } from "react";
+import { useRouterState } from "@tanstack/react-router";
 import { ImagePlus, Linkedin, Save, Sparkles } from "@/lib/icons";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 
 export default function ProfileCareerTools() {
-  const { user } = useAuth();\n  const pathname = useRouterState({ select: state => state.location.pathname });\n  if (pathname !== "/dashboard") return null;
+  const { user } = useAuth();
+  const pathname = useRouterState({ select: state => state.location.pathname });
   const [avatar, setAvatar] = useState<string | null>(null);
   const [cvId, setCvId] = useState<string | null>(null);
   const [cvName, setCvName] = useState("My CV");
