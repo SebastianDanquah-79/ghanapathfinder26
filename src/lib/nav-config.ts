@@ -18,8 +18,6 @@ import {
   Globe,
   MessageCircle,
   GraduationCap,
-  Newspaper,
-  Play,
 } from "@/lib/icons";
 
 export interface NavItem {
@@ -87,18 +85,6 @@ export const navSections: NavSection[] = [
     ],
   },
   {
-    id: "platform",
-    label: "Platform",
-    icon: Globe,
-    href: "/news",
-    items: [
-      { label: "Opportunities", href: "/opportunities", desc: "Find jobs, internships and funding" },
-      { label: "News", href: "/news", desc: "Follow African technology and opportunity news" },
-      { label: "Innovation Feed", href: "/feed", desc: "Discover African builders and ideas" },
-      { label: "African Leaders", href: "/leaders", desc: "Explore Africa leadership history" },
-    ],
-  },
-  {
     id: "community",
     label: "Community",
     icon: Users,
@@ -142,6 +128,4 @@ export const navIcons = {
   Globe,
   MessageCircle,
   GraduationCap,
-  Newspaper,
-  Play,
 };
