@@ -22,7 +22,7 @@ const HeroSection = () => {
             >
               <div className="mb-7 inline-flex items-center gap-2 rounded-md border border-primary/25 bg-primary/10 px-3 py-2 text-xs font-medium text-primary">
                 <Compass className="h-4 w-4" />
-                A Ghanaian life decision platform
+                Built for Africa. Connected to the World.
               </div>
 
               <h1 className="font-display text-4xl font-semibold leading-[1.05] tracking-[-0.03em] text-white sm:text-5xl lg:text-6xl">
@@ -30,22 +30,22 @@ const HeroSection = () => {
               </h1>
 
               <p className="mt-6 max-w-lg text-base leading-7 text-white/65 sm:text-lg">
-                From WASSCE to university, skills, work and entrepreneurship, see your options clearly and turn them into a path you can actually follow.
+                Explore education, careers, internships, startups, skills, research and global opportunities through an Africa-first platform. Ghana is where we start. The world is where opportunity connects.
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link
-                  to="/my-path"
+                  to="/onboarding"
                   className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-primary px-5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
                 >
-                  Build My Path
+                  Get Recommendations
                   <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
-                  to="/career-path"
+                  to="/onboarding"
                   className="inline-flex h-11 items-center justify-center rounded-md border border-white/20 px-5 text-sm font-medium text-white transition-colors hover:border-primary/50 hover:text-primary"
                 >
-                  Explore careers
+                  Discover Opportunities
                 </Link>
               </div>
 
