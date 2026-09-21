@@ -168,9 +168,15 @@ const Onboarding = () => {
         },
         p_wassce_results: wassceRows,
         p_qualification_results: qualificationRows,
+        p_account_role: "student",
+        p_whatsapp_number: null,
+        p_linkedin_url: null,
       });
 
-      if (error) throw error;
+      if (error) {
+        const details = [error.message, error.details, error.hint, error.code].filter(Boolean).join(" · ");
+        throw new Error(details || "The database rejected the profile save");
+      }
       if (!data?.saved || data.user_id !== user.id) {
         throw new Error("Profile save could not be confirmed");
       }
