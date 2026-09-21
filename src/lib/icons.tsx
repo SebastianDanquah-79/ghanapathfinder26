@@ -209,7 +209,7 @@ export const Sunrise = makeIcon(glyphs.Sunrise, "Sunrise");
 export const UserCheck = makeIcon(glyphs.UserCheck, "UserCheck");
 
 export const Wallet = makeIcon(glyphs.Wallet, "Wallet");
-export const WifiOff = makeIcon(glyphs.WifiOff, "WifiOff");
+export const WifiOff = makeIcon(glyphs.WifiOff, "WifiOff");\nexport const ImagePlus = makeIcon(glyphs.ImagePlus, "ImagePlus");\nexport const Save = makeIcon(glyphs.Save, "Save");\nexport const Newspaper = makeIcon(glyphs.Newspaper, "Newspaper");
 
 // Meaningful UI icons keep their original vector rendering.
 export {
