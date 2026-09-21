@@ -112,7 +112,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
     try {
       const redirectTo = next
         ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
-        : `${window.location.origin}/dashboard`;
+        : `${window.location.origin}/auth`;
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: { redirectTo },
