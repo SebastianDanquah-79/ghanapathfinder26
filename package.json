@@ -126,7 +126,8 @@
   },
   "pnpm": {
     "overrides": {
-      "entities": "4.5.0"
+      "entities": "4.5.0",
+      "rolldown": "1.1.0"
     }
   },
   "packageManager": "bun@1.2.21"
