@@ -12,6 +12,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "predev": "tsx scripts/generate-sitemap.ts",
+    "prebuild": "tsx scripts/generate-sitemap.ts",
     "format": "prettier --write ."
   },
   "dependencies": {
