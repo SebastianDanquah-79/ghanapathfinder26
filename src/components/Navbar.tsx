@@ -5,7 +5,7 @@ import BrandMark from "@/components/BrandMark";
 import { Link, useLocation } from "@/lib/router-compat";
 import { useAuth } from "@/hooks/useAuth";
 import ThemeToggle from "@/components/ThemeToggle";
-import { navSections, accountItems, aboutItems } from "@/lib/nav-config";
+import { navSections, globalNavSections, accountItems, aboutItems } from "@/lib/nav-config";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -54,7 +54,7 @@ const Navbar = () => {
 
         <TooltipProvider delayDuration={120}>
           <div className="hidden md:flex items-center gap-1">
-            {navSections.map(({ id, label, icon: Icon, items }) => (
+            {[...globalNavSections, ...navSections].map(({ id, label, icon: Icon, items }) => (
               <DropdownMenu key={id}>
                 <Tooltip>
                   <TooltipTrigger asChild>
