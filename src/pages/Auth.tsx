@@ -22,7 +22,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
   const [params] = useSearchParams();
   const next = safeNext(params.get("next"));
   const [mode, setMode] = useState<Mode>(defaultMode);
-  const [accountType, setAccountType] = useState<"student" | "parent">("student");
+  const [accountType, setAccountType] = useState<"startup" | "corporate" | "education">("education");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -63,7 +63,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
             emailRedirectTo: next
               ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
               : window.location.origin,
-            data: { full_name: fullName.trim(), account_type: accountType, phone: phone.trim() },
+            data: { full_name: fullName.trim(), account_type: accountType, pathway: accountType, phone: phone.trim() },
           },
         });
         if (error) throw error;
@@ -198,7 +198,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
               {mode === "signup" && (
                 <>
                   <div className="grid grid-cols-2 gap-2">
-                    {(["student", "parent"] as const).map((t) => (
+                    {(["startup", "corporate", "education"] as const).map((t) => (
                       <button
                         key={t}
                         type="button"
