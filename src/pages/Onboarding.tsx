@@ -86,9 +86,18 @@ const Onboarding = () => {
   const [overallScore, setOverallScore] = useState("");
   const [results, setResults] = useState([{ subject: "", grade: "", level: "" }]);
 
+  const availableQualifications = useMemo(() => {
+    const countryMatches = QUALIFICATIONS.filter(
+      (q) => !q.countries || q.countries.includes(country),
+    );
+    return countryMatches.length > 0
+      ? countryMatches
+      : QUALIFICATIONS.filter((q) => q.country === "International");
+  }, [country]);
+
   const qualification = useMemo(
-    () => QUALIFICATIONS.find((q) => q.code === qualificationCode) ?? QUALIFICATIONS[0],
-    [qualificationCode],
+    () => availableQualifications.find((q) => q.code === qualificationCode) ?? availableQualifications[0] ?? QUALIFICATIONS[0],
+    [availableQualifications, qualificationCode],
   );
   const isWassce = qualification.code === "WASSCE";
   const hasGradeScale = qualification.grades.length > 0;
