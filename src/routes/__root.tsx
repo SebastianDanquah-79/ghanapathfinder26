@@ -11,7 +11,6 @@ import MobileTabBar from "@/components/MobileTabBar";
 import ContactGate from "@/components/ContactGate";
 import OfflineBanner from "@/components/OfflineBanner";
 import NotFound from "@/pages/NotFound";
-import { AdinkraFloat } from "@/components/AdinkraFloat";
 import FloatingAskAssistant from "@/components/FloatingAskAssistant";
 import { usePageViews } from "@/hooks/useTracking";
 import { reportLovableError } from "@/lib/lovable-error-reporting";
@@ -53,7 +52,6 @@ function RootComponent() {
           <AuthProvider>
             <AnalyticsTracker />
             <OfflineBanner />
-            <AdinkraFloat />
             <div className="desktop-shell relative z-[2] pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0">
               <Outlet />
             </div>
