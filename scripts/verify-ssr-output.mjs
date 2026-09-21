@@ -41,7 +41,8 @@ if (exportAllUsers.length) {
 // a chunk importing __exportAll from another chunk.
 const { spawnSync } = await import("node:child_process");
 for (const file of jsFiles) {
-  const result = spawnSync(process.execPath, ["--check", file], { encoding: "utf8" });
+  const nodeBin = process.platform === "win32" ? "node.exe" : "node";
+  const result = spawnSync(nodeBin, ["--check", file], { encoding: "utf8" });
   if (result.status !== 0) {
     console.error(result.stderr || result.stdout);
     throw new Error(`SSR output contains invalid JavaScript: ${file}`);
