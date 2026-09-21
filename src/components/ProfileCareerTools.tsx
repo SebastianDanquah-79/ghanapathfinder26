@@ -63,6 +63,7 @@ export default function ProfileCareerTools() {
     toast.success("CV and employer profile saved.");
   };
 
+  if (pathname !== "/dashboard") return null;
   return <section className="rounded-xl border border-border bg-card p-5 space-y-5">
     <div className="flex items-center justify-between gap-3">
       <div><h2 className="font-semibold">Career workspace</h2><p className="text-xs text-muted-foreground mt-1">Build a discoverable profile for employers and keep your CV current.</p></div>
