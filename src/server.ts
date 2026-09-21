@@ -1,5 +1,11 @@
 import "./lib/error-capture";
 
+// Keep the generated TanStack server bundle compatible with the current Vite/Rolldown runtime.
+// Some generated bundles reference __exportAll during SSR initialization. Define it before the
+// generated server entry is imported so one bad helper cannot take down the entire application.
+const g = globalThis as typeof globalThis & { __exportAll?: (target: Record<string, unknown>, source: Record<string, unknown>) => Record<string, unknown> };
+if (!g.__exportAll) g.__exportAll = (target, source) => { for (const key of Object.keys(source)) if (key !== "default") target[key] = source[key]; return target; };
+
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 
