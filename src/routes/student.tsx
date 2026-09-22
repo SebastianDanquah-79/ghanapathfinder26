@@ -1,1 +1,1 @@
-import { createFileRoute } from "@tanstack/react-router"; import { SectionHub } from "@/pages/Platform"; export const Route=createFileRoute("/student")({component:()=> <SectionHub section="student"/>});
+import { createFileRoute } from "@tanstack/react-router"; import { StudentPortal } from "@/pages/PortalPages"; export const Route=createFileRoute("/student")({component:StudentPortal});
