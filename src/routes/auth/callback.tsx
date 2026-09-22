@@ -19,20 +19,35 @@ function AuthCallback() {
     let active = true;
 
     const finish = async () => {
+      const code = params.get("code");
+      if (code) {
+        const { error } = await supabase.auth.exchangeCodeForSession(code);
+        if (error) {
+          console.error("Supabase OAuth callback exchange failed:", error);
+          if (active) navigate("/auth", { replace: true });
+          return;
+        }
+      }
+
       const { data, error } = await supabase.auth.getSession();
       if (!active) return;
 
       if (error || !data.session?.user) {
+        console.error("Supabase callback session missing:", error);
         navigate("/auth", { replace: true });
         return;
       }
 
       const next = safeNext(params.get("next"));
-      const { data: profile } = await (supabase as any)
+      const { data: profile, error: profileError } = await (supabase as any)
         .from("profiles")
         .select("onboarded, account_role")
         .eq("id", data.session.user.id)
         .maybeSingle();
+
+      if (profileError) {
+        console.error("Profile lookup after authentication failed:", profileError);
+      }
 
       if (next) {
         window.location.replace(next);
@@ -56,7 +71,9 @@ function AuthCallback() {
     <div className="min-h-dvh bg-background flex items-center justify-center px-4">
       <div className="text-center">
         <p className="text-lg font-semibold text-foreground">Signing you in...</p>
-        <p className="mt-2 text-sm text-muted-foreground">Please wait while we finish authentication.</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Please wait while we finish authentication.
+        </p>
       </div>
     </div>
   );
