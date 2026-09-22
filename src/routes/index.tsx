@@ -1,13 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import Home from "@/pages/Home";
-import { scholarshipRecordsQueryOptions, universitiesQueryOptions } from "@/hooks/useCatalogue";
+import { RoleWelcome } from "@/pages/Platform";
 
 export const Route = createFileRoute("/")({
-  loader: async ({ context }) => {
-    await Promise.all([
-      context.queryClient.ensureQueryData(universitiesQueryOptions({ search:"", type:"All", group:"All", region:undefined, page:0, pageSize:12 })),
-      context.queryClient.ensureQueryData(scholarshipRecordsQueryOptions("", "All")),
-    ]);
-  },
-  component: Home,
+  component: RoleWelcome,
 });
