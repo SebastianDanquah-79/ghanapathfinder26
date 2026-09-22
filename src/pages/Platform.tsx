@@ -93,7 +93,9 @@ export function Notifications(){
 }
 
 function RoleDashboard({role,title,description}:{role:"employee"|"employer"|"startup_founder";title:string;description:string}){
-  const {user}=useAuth();
+  const {user,loading}=useAuth();
+  const navigate=useNavigate();
+  useEffect(()=>{if(!loading&&!user){navigate(`/auth?next=${encodeURIComponent(window.location.pathname+window.location.search)}`,{replace:true});}},[loading,user,navigate]);
   const [form,setForm]=useState({title:"",company:"",url:"",type:"job"});
   const [roleForm,setRoleForm]=useState({name:"",secondary:"",stage:"",url:""});
   const [savingRole,setSavingRole]=useState(false);
@@ -139,7 +141,7 @@ export function Profile(){
 const sectionItems = {
   employee: [
     ["Careers", "/careers"], ["Career Path", "/career-path"], ["Skills", "/skills"], ["Internships", "/internships"],
-    ["Opportunities", "/opportunities"], ["CV Builder", "/cv-builder"], ["Applications", "/applications"], ["Saved items", "/saved"],
+    ["Opportunities", "/opportunities"], ["Profile", "/profile"], ["Applications", "/applications"], ["Saved items", "/saved"],
     ["My Path", "/my-path"], ["Match preferences", "/preferences"], ["Search", "/search"], ["Community", "/community"],
     ["Innovation Feed", "/feed"], ["News", "/news"], ["Leaders", "/leaders"], ["Scholarships", "/scholarships"],
     ["Scholarship Matcher", "/matcher"], ["Compare scholarships", "/compare-scholarships"], ["Admission Match", "/admission-match"], ["Professional Councils", "/professional-councils"],
