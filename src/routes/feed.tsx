@@ -1,1 +1,1 @@
-import { createFileRoute } from "@tanstack/react-router"; import { Feed } from "@/pages/Platform"; export const Route=createFileRoute("/feed")({component:Feed});
+import { createFileRoute } from "@tanstack/react-router"; import { Feed } from "@/pages/ContentHubs"; export const Route=createFileRoute("/feed")({component:Feed});
