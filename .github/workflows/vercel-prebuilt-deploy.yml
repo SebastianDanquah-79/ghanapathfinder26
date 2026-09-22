@@ -9,6 +9,8 @@ on:
 permissions:
   contents: read
 
+# Deploy directly from GitHub Actions on every push to main.
+# VERCEL_TOKEN must be configured as a GitHub Actions secret.
 concurrency:
   group: vercel-production
   cancel-in-progress: false
