@@ -302,7 +302,6 @@ const Onboarding = () => {
             <button onClick={handleSave} disabled={saving} className="flex-1 px-4 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-semibold flex items-center justify-center gap-2">
               {saving && <Loader2 className="h-4 w-4 animate-spin" />} Save and continue
             </button>
-            <button onClick={() => navigate("/dashboard")} className="px-4 py-3 rounded-lg bg-secondary text-muted-foreground text-sm font-medium">Skip</button>
           </div>
         </div>
       </div>
