@@ -158,6 +158,20 @@ const sectionItems = {
     ["Saved items", "/saved"], ["CV Builder", "/cv-builder"], ["Internships", "/internships"], ["Career Path", "/career-path"],
     ["Scholarship Matcher", "/matcher"], ["Compare scholarships", "/compare-scholarships"], ["References", "/references"], ["Contact", "/contact"],
   ],
+  player: [
+    ["Player Profile", "/profile"], ["My Path", "/my-path"], ["Careers", "/careers"], ["Career Path", "/career-path"],
+    ["Skills", "/skills"], ["Internships", "/internships"], ["Opportunities", "/opportunities"], ["Applications", "/applications"],
+    ["Saved items", "/saved"], ["CV Builder", "/cv-builder"], ["Scholarships", "/scholarships"], ["Scholarship Matcher", "/matcher"],
+    ["Universities", "/search?kind=university"], ["Programmes", "/programmes"], ["Admission Match", "/admission-match"], ["Community", "/community"],
+    ["Innovation Feed", "/feed"], ["News", "/news"], ["Leaders", "/leaders"], ["Professional Councils", "/professional-councils"],
+  ],
+  assessment: [
+    ["Assessment Home", "/student-assessment"], ["Admission Match", "/admission-match"], ["My Path", "/my-path"], ["Programmes", "/programmes"],
+    ["Universities", "/search?kind=university"], ["Scholarships", "/scholarships"], ["Scholarship Matcher", "/matcher"], ["Compare institutions", "/compare"],
+    ["Careers", "/careers"], ["Career Path", "/career-path"], ["Skills", "/skills"], ["Internships", "/internships"],
+    ["Opportunities", "/opportunities"], ["Applications", "/applications"], ["Saved items", "/saved"], ["Community", "/community"],
+    ["Innovation Feed", "/feed"], ["News", "/news"], ["Leaders", "/leaders"], ["Parent Support", "/parent"],
+  ],
   classification: [
     ["Explore", "/explore"], ["Search", "/search"], ["Universities", "/search?kind=university"], ["Programmes", "/programmes"],
     ["Careers", "/careers"], ["Skills", "/skills"], ["Internships", "/internships"], ["Opportunities", "/opportunities"],
@@ -168,12 +182,14 @@ const sectionItems = {
 } as const;
 
 export function SectionHub({ section }: { section: keyof typeof sectionItems }) {
-  const titles = { employee: "Employee", student: "Student", startup: "Startup", classification: "Classification Center" } as const;
+  const titles = { employee: "Employee", student: "Student", startup: "Startup", classification: "Classification Center", player: "Player", assessment: "Student Assessment" } as const;
   const descriptions = {
     employee: "A single workspace for work, skills, applications and professional growth.",
     student: "A single workspace for education, assessment, funding and your next steps.",
     startup: "A single workspace for startup discovery, funding, talent and African innovation.",
     classification: "Move from broad discovery to a focused education, career or opportunity path.",
+    player: "Your personal space for career, skills, opportunities and progress.",
+    assessment: "Review your student work, admissions fit, academic options and next steps.",
   } as const;
   const items = sectionItems[section];
   return <Layout title={titles[section]}>
