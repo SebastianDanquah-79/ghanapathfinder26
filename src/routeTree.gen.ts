@@ -19,6 +19,7 @@ import { Route as CommunityRouteImport } from './routes/community'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as CompareScholarshipsRouteImport } from './routes/compare-scholarships'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CVBuilderRouteImport } from './routes/cv-builder'
 import { Route as ClassificationCenterRouteImport } from './routes/classification-center'
 import { Route as EmployeeRouteImport } from './routes/employee'
 import { Route as PlayerRouteImport } from './routes/player'
@@ -65,6 +66,7 @@ import { Route as CareersSlugRouteImport } from './routes/careers/$slug'
 import { Route as DashboardEmployeeRouteImport } from './routes/dashboard/employee'
 import { Route as DashboardEmployerRouteImport } from './routes/dashboard/employer'
 import { Route as DashboardFounderRouteImport } from './routes/dashboard/founder'
+import { Route as DashboardStudentRouteImport } from './routes/dashboard/student'
 import { Route as InternshipsIndexRouteImport } from './routes/internships/index'
 import { Route as InternshipsIdRouteImport } from './routes/internships/$id'
 import { Route as ProgrammeSlugRouteImport } from './routes/programme/$slug'
@@ -153,6 +155,11 @@ const StudentRoute = StudentRouteImport.update({
 const StudentAssessmentRoute = StudentAssessmentRouteImport.update({
   id: '/student-assessment',
   path: '/student-assessment',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CVBuilderRoute = CVBuilderRouteImport.update({
+  id: '/cv-builder',
+  path: '/cv-builder',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -361,6 +368,11 @@ const DashboardFounderRoute = DashboardFounderRouteImport.update({
   path: '/founder',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardStudentRoute = DashboardStudentRouteImport.update({
+  id: '/student',
+  path: '/student',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const InternshipsIndexRoute = InternshipsIndexRouteImport.update({
   id: '/internships/',
   path: '/internships/',
@@ -449,6 +461,9 @@ export interface FileRoutesByFullPath {
   '/startup': typeof StartupRoute
   '/student': typeof StudentRoute
   '/student-assessment': typeof StudentAssessmentRoute
+  '/cv-builder': typeof CVBuilderRoute
+  '/cv-builder': typeof CVBuilderRoute
+  '/cv-builder': typeof CVBuilderRoute
   '/contact': typeof ContactRoute
   '/credits': typeof CreditsRoute
   '/dashboard': typeof DashboardRouteWithChildren
@@ -486,6 +501,9 @@ export interface FileRoutesByFullPath {
   '/api/institution-programmes': typeof ApiInstitutionProgrammesRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/dashboard/student': typeof DashboardStudentRoute
+  '/dashboard/student': typeof DashboardStudentRoute
+  '/dashboard/student': typeof DashboardStudentRoute
   '/dashboard/employee': typeof DashboardEmployeeRoute
   '/dashboard/employer': typeof DashboardEmployerRoute
   '/dashboard/founder': typeof DashboardFounderRoute
@@ -661,6 +679,9 @@ export interface FileRouteTypes {
     | '/community'
     | '/compare'
     | '/compare-scholarships'
+    | '/cv-builder'
+    | '/cv-builder'
+    | '/cv-builder'
     | '/contact'
     | '/credits'
     | '/dashboard'
@@ -697,6 +718,9 @@ export interface FileRouteTypes {
     | '/api/institution-programmes'
     | '/auth/callback'
     | '/careers/$slug'
+    | '/dashboard/student'
+    | '/dashboard/student'
+    | '/dashboard/student'
     | '/dashboard/employee'
     | '/dashboard/employer'
     | '/dashboard/founder'
@@ -857,6 +881,7 @@ export interface RootRouteChildren {
   CommunityRoute: typeof CommunityRoute
   CompareRoute: typeof CompareRoute
   CompareScholarshipsRoute: typeof CompareScholarshipsRoute
+  CVBuilderRoute: typeof CVBuilderRoute
   ContactRoute: typeof ContactRoute
   CreditsRoute: typeof CreditsRoute
   DashboardRoute: typeof DashboardRouteWithChildren
@@ -973,6 +998,13 @@ declare module '@tanstack/react-router' {
       path: '/compare-scholarships'
       fullPath: '/compare-scholarships'
       preLoaderRoute: typeof CompareScholarshipsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cv-builder': {
+      id: '/cv-builder'
+      path: '/cv-builder'
+      fullPath: '/cv-builder'
+      preLoaderRoute: typeof CVBuilderRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -1241,6 +1273,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CareersSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/student': {
+      id: '/dashboard/student'
+      path: '/student'
+      fullPath: '/dashboard/student'
+      preLoaderRoute: typeof DashboardStudentRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/dashboard/employee': {
       id: '/dashboard/employee'
       path: '/employee'
@@ -1376,12 +1415,14 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 interface DashboardRouteChildren {
   DashboardEmployeeRoute: typeof DashboardEmployeeRoute
   DashboardEmployerRoute: typeof DashboardEmployerRoute
+  DashboardStudentRoute: typeof DashboardStudentRoute
   DashboardFounderRoute: typeof DashboardFounderRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardEmployeeRoute: DashboardEmployeeRoute,
   DashboardEmployerRoute: DashboardEmployerRoute,
+  DashboardStudentRoute: DashboardStudentRoute,
   DashboardFounderRoute: DashboardFounderRoute,
 }
 
@@ -1405,6 +1446,7 @@ const rootRouteChildren: RootRouteChildren = {
   StartupRoute: StartupRoute,
   StudentRoute: StudentRoute,
   StudentAssessmentRoute: StudentAssessmentRoute,
+  CVBuilderRoute: CVBuilderRoute,
   ContactRoute: ContactRoute,
   CreditsRoute: CreditsRoute,
   DashboardRoute: DashboardRouteWithChildren,
