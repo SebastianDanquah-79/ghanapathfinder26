@@ -808,6 +808,7 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRouteWithChildren
   DisclaimerRoute: typeof DisclaimerRoute
   FaqRoute: typeof FaqRoute
+  ExploreRoute: typeof ExploreRoute
   FeedRoute: typeof FeedRoute
   InspirationRoute: typeof InspirationRoute
   LeadersRoute: typeof LeadersRoute
