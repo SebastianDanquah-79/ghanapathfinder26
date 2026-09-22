@@ -1,1 +1,1 @@
-import { createFileRoute } from "@tanstack/react-router"; import { SectionHub } from "@/pages/Platform"; export const Route=createFileRoute("/employee")({component:()=> <SectionHub section="employee"/>});
+import { createFileRoute } from "@tanstack/react-router"; import { EmployeePortal } from "@/pages/PortalPages"; export const Route=createFileRoute("/employee")({component:EmployeePortal});
