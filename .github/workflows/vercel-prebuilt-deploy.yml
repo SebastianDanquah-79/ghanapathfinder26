@@ -22,7 +22,7 @@ jobs:
     env:
       VERCEL_ORG_ID: team_Kf0gw2PrIXQLy84iAhWcjCA8
       VERCEL_PROJECT_ID: prj_WFJa8kYNpkVT4uSA2OlfbeTzmFzk
-      VERCEL_SCOPE: ghanapathfinder1
+      VERCEL_SCOPE: ghanapathfinder26
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -56,10 +56,10 @@ jobs:
 
       - name: Pull Vercel production environment
         env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_TOKEN: ${{ VERCEL_TOKEN }}
         run: vercel pull --yes --environment=production --token "$VERCEL_TOKEN" --scope "$VERCEL_SCOPE"
 
       - name: Deploy from source to Vercel
         env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_TOKEN: ${{ VERCEL_TOKEN }}
         run: vercel deploy --prod --token "$VERCEL_TOKEN" --scope "$VERCEL_SCOPE" --yes
