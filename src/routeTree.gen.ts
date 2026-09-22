@@ -136,6 +136,21 @@ const ClassificationCenterRoute = ClassificationCenterRouteImport.update({
   path: '/classification-center',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EmployerRoute = EmployerRouteImport.update({
+  id: '/employer',
+  path: '/employer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InnovationRoute = InnovationRouteImport.update({
+  id: '/innovation',
+  path: '/innovation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UniversitiesIndexRoute = UniversitiesIndexRouteImport.update({
+  id: '/universities/',
+  path: '/universities/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EmployeeRoute = EmployeeRouteImport.update({
   id: '/employee',
   path: '/employee',
@@ -482,6 +497,8 @@ export interface FileRoutesByFullPath {
   '/compare-scholarships': typeof CompareScholarshipsRoute
   '/classification-center': typeof ClassificationCenterRoute
   '/employee': typeof EmployeeRoute
+  '/employer': typeof EmployerRoute
+  '/innovation': typeof InnovationRoute
   '/player': typeof PlayerRoute
   '/startup': typeof StartupRoute
   '/student': typeof StudentRoute
@@ -1043,6 +1060,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClassificationCenterRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/employer': {
+      id: '/employer'
+      path: '/employer'
+      fullPath: '/employer'
+      preLoaderRoute: typeof EmployerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/innovation': {
+      id: '/innovation'
+      path: '/innovation'
+      fullPath: '/innovation'
+      preLoaderRoute: typeof InnovationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/employee': {
       id: '/employee'
       path: '/employee'
@@ -1463,6 +1494,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SkillsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/universities/': {
+      id: '/universities/'
+      path: '/universities'
+      fullPath: '/universities/'
+      preLoaderRoute: typeof UniversitiesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/universities/$slug': {
       id: '/universities/$slug'
       path: '/universities/$slug'
@@ -1541,6 +1579,8 @@ const rootRouteChildren: RootRouteChildren = {
   CompareScholarshipsRoute: CompareScholarshipsRoute,
   ClassificationCenterRoute: ClassificationCenterRoute,
   EmployeeRoute: EmployeeRoute,
+  EmployerRoute: EmployerRoute,
+  InnovationRoute: InnovationRoute,
   PlayerRoute: PlayerRoute,
   StartupRoute: StartupRoute,
   StudentRoute: StudentRoute,
@@ -1591,6 +1631,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProgrammesSlugRoute: ProgrammesSlugRoute,
   ScholarshipsSlugRoute: ScholarshipsSlugRoute,
   SkillsSlugRoute: SkillsSlugRoute,
+  UniversitiesIndexRoute: UniversitiesIndexRoute,
   UniversitiesSlugRoute: UniversitiesSlugRoute,
   UniversitySlugRoute: UniversitySlugRoute,
   CareersIndexRoute: CareersIndexRoute,
