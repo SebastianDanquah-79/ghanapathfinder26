@@ -7,7 +7,8 @@ import { useAuth } from "@/hooks/useAuth";
 import Navbar from "@/components/Navbar";
 import MobileTabBar from "@/components/MobileTabBar";
 import Footer from "@/components/Footer";
-import { Briefcase, Building2, GraduationCap, Bell, Search, Rocket, Users, BookOpen, Globe, ArrowRight } from "@/lib/icons";
+import { Briefcase, Building2, GraduationCap, Bell, Search, Rocket, Users, BookOpen, Globe, ArrowRight, Play } from "@/lib/icons";
+import { curatedNews, curatedOpportunities, curatedVideos } from "@/data/curatedContent";
 
 type Row = any;
 const shell = "min-h-dvh bg-background text-foreground";
@@ -40,8 +41,22 @@ function DataList({ table, title, filters }: { table: "opportunities"|"news_arti
     const query = table==="opportunities" ? sb.from("opportunities").select("*").eq("is_active",true).order("created_at",{ascending:false}).limit(50) : sb.from("news_articles").select("*").order("published_at",{ascending:false}).limit(50);
     const {data,error}=await query; if(error) throw error; return (data??[]) as Row[];
   }});
-  const filtered=useMemo(()=>filter==="All"?data:data.filter(r=>String(r.category??r.type??"").toLowerCase()===filter.toLowerCase()),[data,filter]);
-  return <Layout title={title}><div className="flex flex-col gap-5"><div><p className="text-sm font-semibold text-primary">{title==="News"?"KNOWLEDGE":"OPPORTUNITIES"}</p><h1 className="mt-1 text-3xl font-bold">{title}</h1><p className="mt-2 text-muted-foreground">Live platform data with links back to the original source.</p></div>
+  const curated = table === "news_articles" ? curatedNews : curatedOpportunities;
+  const combined = useMemo(() => [
+    ...curated.map((r) => ({
+      id: r.id,
+      title: r.title,
+      description: r.description,
+      excerpt: r.description,
+      category: r.category,
+      source_name: r.source,
+      original_url: r.url,
+      published_at: r.publishedAt,
+    })),
+    ...data,
+  ], [data, table]);
+  const filtered=useMemo(()=>filter==="All"?combined:combined.filter(r=>String(r.category??r.type??"").toLowerCase()===filter.toLowerCase()),[combined,filter]);
+  return <Layout title={title}><div className="flex flex-col gap-5"><div><p className="text-sm font-semibold text-primary">{title==="News"?"KNOWLEDGE":"OPPORTUNITIES"}</p><h1 className="mt-1 text-3xl font-bold">{title}</h1><p className="mt-2 text-muted-foreground">Fresh opportunities and source-linked news, with external links back to the original publisher.</p></div>
     {filters&&<div className="flex gap-2 overflow-x-auto pb-1">{filters.map(f=><button key={f} onClick={()=>setFilter(f)} className={`rounded-full border px-4 py-2 text-sm whitespace-nowrap ${filter===f?"border-primary bg-primary text-primary-foreground":"border-border"}`}>{f}</button>)}</div>}
     {isLoading?<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">{[1,2,3].map(i=><div key={i} className={card+" h-40 animate-pulse"}/>)}</div>:error?<div className={card}>We could not load this data right now. Please refresh.</div>:filtered.length===0?<div className={card}>No {title.toLowerCase()} are available yet.</div>:<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">{filtered.map((r,i)=><article key={String(r.id??i)} className={card}><p className="text-xs font-semibold uppercase text-primary">{String(r.category??r.type??"Opportunity")}</p><h2 className="mt-2 font-semibold">{String(r.title??"Untitled")}</h2><p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{String(r.excerpt??r.description??"")}</p><div className="mt-4 flex items-center justify-between text-xs text-muted-foreground"><span>{String(r.source_name??r.company_name??"GhanaPathFinder")}</span>{(r.original_url||r.apply_url||r.application_url)&&<a className="font-semibold text-primary" href={String(r.original_url??r.apply_url??r.application_url)} target="_blank" rel="noreferrer">Open →</a>}</div></article>)}</div>}</div></Layout>;
 }
@@ -60,7 +75,14 @@ export function Feed(){
   const [category,setCategory]=useState("All");
   const {data=[]}=useQuery({queryKey:["feed_posts",category],queryFn:async()=>{const {data,error}=await sb.from("feed_posts").select("*").eq("is_published",true).order("created_at",{ascending:false}).limit(20);if(error)throw error;return (data??[]) as Row[];}});
   const posts=category==="All"?data:data.filter(r=>String(r.category).toLowerCase()===category.toLowerCase());
-  return <Layout title="Innovation Feed"><div><p className="text-sm font-semibold text-primary">INNOVATION FEED</p><h1 className="mt-1 text-3xl font-bold">Watch what Africa is building.</h1><div className="mt-4 flex gap-2 overflow-x-auto">{["All","Tech","Education","Startup","Science","Culture","Ghana"].map(c=><button key={c} onClick={()=>setCategory(c)} className={`rounded-full border px-4 py-2 text-sm ${category===c?"bg-primary text-primary-foreground":"border-border"}`}>{c}</button>)}</div></div><div className="mt-6 grid gap-5 lg:grid-cols-2">{posts.map((p,i)=><article className={card+" overflow-hidden p-0"} key={String(p.id??i)}>{p.video_url?<video src={String(p.video_url)} controls className="aspect-video w-full bg-black"/>:p.youtube_url?<div className="aspect-video bg-black"><iframe className="h-full w-full" src={String(p.youtube_url)} title={String(p.title??"Innovation video")} allow="autoplay; encrypted-media" allowFullScreen/> </div>:<div className="grid aspect-video place-items-center bg-muted"><ArrowRight/></div>}<div className="p-5"><h2 className="font-semibold">{String(p.title??"Innovation story")}</h2><p className="mt-2 text-sm text-muted-foreground">{String(p.description??"")}</p><div className="mt-3 text-xs text-muted-foreground">Likes {String(p.likes_count??0)} · Views {String(p.views_count??0)}</div></div></article>)}</div>{posts.length===0&&<div className={card+" mt-6"}>No published videos are available yet.</div>}</Layout>;
+  const curated = curatedVideos.map((v) => ({
+    ...v,
+    video_url: v.url,
+    source_name: v.source,
+  }));
+  const allPosts = [...curated, ...data];
+  const posts = category==="All" ? allPosts : allPosts.filter((p) => String(p.category ?? "").toLowerCase() === category.toLowerCase());
+  return <Layout title="Innovation Feed"><div><p className="text-sm font-semibold text-primary">INNOVATION FEED</p><h1 className="mt-1 text-3xl font-bold">Watch what people are building.</h1><p className="mt-2 max-w-2xl text-sm text-muted-foreground">Curated technology, AI and robotics videos from YouTube, TikTok and Facebook, alongside GhanaPathFinder community posts.</p><div className="mt-4 flex gap-2 overflow-x-auto">{["All","AI","Robotics","Innovation","Education","Startup","Science","Culture","Ghana"].map(c=><button key={c} onClick={()=>setCategory(c)} className={`rounded-full border px-4 py-2 text-sm ${category===c?"bg-primary text-primary-foreground":"border-border"}`}>{c}</button>)}</div></div><div className="mt-6 grid gap-5 lg:grid-cols-2">{posts.map((p,i)=><article className={card+" overflow-hidden p-0"} key={String(p.id??i)}>{p.video_url ? <div className="grid aspect-video place-items-center bg-muted"><div className="text-center"><Play className="mx-auto h-8 w-8 text-primary"/><p className="mt-2 text-sm font-semibold">Watch on {String(p.source_name??"the platform")}</p><a href={String(p.video_url)} target="_blank" rel="noreferrer" className="mt-3 inline-flex rounded-lg bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground">Open video →</a></div></div> : <div className="grid aspect-video place-items-center bg-muted"><ArrowRight/></div>}<div className="p-5"><h2 className="font-semibold">{String(p.title??"Innovation story")}</h2><p className="mt-2 text-sm text-muted-foreground">{String(p.description??"")}</p><div className="mt-3 text-xs text-muted-foreground">{String(p.source_name??"GhanaPathFinder")}</div></div></article>)}</div>{posts.length===0&&<div className={card+" mt-6"}>No published videos are available yet.</div>}</Layout>;
 }
 
 export function Notifications(){
