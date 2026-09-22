@@ -5,7 +5,7 @@ const SUPABASE_URL = import.meta.env['VITE_SUPABASE_URL'] || 'https://qcvypvvjzr
 const SUPABASE_PUBLISHABLE_KEY =
   import.meta.env['VITE_SUPABASE_ANON_KEY'] ??
   import.meta.env['VITE_SUPABASE_PUBLISHABLE_KEY'] ??
-  '';
+  'sb_publishable_xAO66S4UghstoT-95nyTsA_qqcZM5Uq';
 
 function isNewSupabaseApiKey(value: string): boolean {
   return value.startsWith('sb_publishable_') || value.startsWith('sb_secret_');
