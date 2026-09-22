@@ -23,14 +23,14 @@ function Layout({ children, title }: { children: React.ReactNode; title: string 
 export function RoleWelcome() {
   const navigate = useNavigate();
   const roles = [
-    { id: "student", title: "Student", text: "Universities, scholarships, careers and learning opportunities.", icon: GraduationCap },
-    { id: "employee", title: "Job Seeker", text: "Find jobs, internships, fellowships and skills to close your gaps.", icon: Briefcase },
-    { id: "employer", title: "Employer", text: "Post opportunities and discover opted-in African talent.", icon: Building2 },
-    { id: "startup_founder", title: "Startup Founder", text: "Funding, accelerators, networks and African startup intelligence.", icon: Rocket },
+    { id: "student", title: "Student", text: "Universities, scholarships, careers and learning opportunities.", icon: GraduationCap, directory: "/student-directory" },
+    { id: "employee", title: "Job Seeker", text: "Find jobs, internships, fellowships and skills to close your gaps.", icon: Briefcase, directory: "/employee-directory" },
+    { id: "employer", title: "Employer", text: "Post opportunities and discover opted-in African talent.", icon: Building2, directory: "/employer-directory" },
+    { id: "startup_founder", title: "Startup Founder", text: "Funding, accelerators, networks and African startup intelligence.", icon: Rocket, directory: "/startup-directory" },
   ];
   return <div className={shell}><main className="mx-auto flex min-h-dvh max-w-5xl flex-col justify-center px-5 py-10">
     <div className="mb-10"><Link to="/" className="text-lg font-bold">Ghana<span className="text-primary">PathFinder</span></Link><p className="mt-8 text-sm font-semibold text-primary">BUILT FOR AFRICA. CONNECTED TO THE WORLD.</p><h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl">Choose the path that fits you.</h1><p className="mt-4 max-w-2xl text-muted-foreground">Your choice personalizes the platform. You can change it later.</p></div>
-    <div className="grid gap-4 sm:grid-cols-2">{roles.map(({id,title,text,icon:Icon})=><button key={id} className={card+" text-left transition hover:border-primary"} onClick={()=>{localStorage.setItem("selectedRole",id);navigate({to:"/auth",search:{role:id}} as never)}}><Icon className="h-7 w-7 text-primary"/><h2 className="mt-5 text-xl font-semibold">{title}</h2><p className="mt-2 text-sm text-muted-foreground">{text}</p><span className="mt-5 inline-block text-sm font-semibold text-primary">{id==="student"?"Continue":"Create account or sign in"} →</span></button>)}</div>
+    <div className="grid gap-4 sm:grid-cols-2">{roles.map(({id,title,text,icon:Icon,directory})=><div key={id} className={card+" text-left transition hover:border-primary"}><button className="w-full text-left" onClick={()=>{localStorage.setItem("selectedRole",id);navigate({to:"/auth",search:{role:id}} as never)}}><Icon className="h-7 w-7 text-primary"/><h2 className="mt-5 text-xl font-semibold">{title}</h2><p className="mt-2 text-sm text-muted-foreground">{text}</p><span className="mt-5 inline-block text-sm font-semibold text-primary">Continue →</span></button><Link to={directory} className="mt-3 inline-block text-sm font-semibold text-foreground underline underline-offset-4">Open {title.toLowerCase()} directory</Link></div>)}</div>
     <p className="mt-8 text-center text-sm text-muted-foreground">Already have an account? <Link className="font-semibold text-primary" to="/auth">Sign in</Link></p>
   </main></div>;
 }
@@ -81,7 +81,7 @@ export function Feed(){
   }));
   const allPosts = [...curated, ...data];
   const posts = category==="All" ? allPosts : allPosts.filter((p) => String(p.category ?? "").toLowerCase() === category.toLowerCase());
-  return <Layout title="Innovation Feed"><div><p className="text-sm font-semibold text-primary">INNOVATION FEED</p><h1 className="mt-1 text-3xl font-bold">Watch what people are building.</h1><p className="mt-2 max-w-2xl text-sm text-muted-foreground">Curated technology, AI and robotics videos from YouTube, TikTok and Facebook, alongside GhanaPathFinder community posts.</p><div className="mt-4 flex gap-2 overflow-x-auto">{["All","AI","Robotics","Innovation","Education","Startup","Science","Culture","Ghana"].map(c=><button key={c} onClick={()=>setCategory(c)} className={`rounded-full border px-4 py-2 text-sm ${category===c?"bg-primary text-primary-foreground":"border-border"}`}>{c}</button>)}</div></div><div className="mt-6 grid gap-5 lg:grid-cols-2">{posts.map((p,i)=><article className={card+" overflow-hidden p-0"} key={String(p.id??i)}>{p.video_url ? <div className="grid aspect-video place-items-center bg-muted"><div className="text-center"><ArrowRight className="mx-auto h-8 w-8 text-primary"/><p className="mt-2 text-sm font-semibold">Watch on {String(p.source_name??"the platform")}</p><a href={String(p.video_url)} target="_blank" rel="noreferrer" className="mt-3 inline-flex rounded-lg bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground">Open video →</a></div></div> : <div className="grid aspect-video place-items-center bg-muted"><ArrowRight/></div>}<div className="p-5"><h2 className="font-semibold">{String(p.title??"Innovation story")}</h2><p className="mt-2 text-sm text-muted-foreground">{String(p.description??"")}</p><div className="mt-3 text-xs text-muted-foreground">{String(p.source_name??"GhanaPathFinder")}</div></div></article>)}</div>{posts.length===0&&<div className={card+" mt-6"}>No published videos are available yet.</div>}</Layout>;
+  return <Layout title="Innovation Feed"><div><p className="text-sm font-semibold text-primary">INNOVATION FEED</p><h1 className="mt-1 text-3xl font-bold">Watch what people are building.</h1><p className="mt-2 max-w-2xl text-sm text-muted-foreground">Curated technology, AI and robotics videos from YouTube, TikTok and Facebook, alongside GhanaPathFinder community posts.</p><div className="mt-4 flex gap-2 overflow-x-auto">{["All","AI","Robotics","Innovation","Education","Startup","Science","Culture","Ghana"].map(c=><button key={c} onClick={()=>setCategory(c)} className={`rounded-full border px-4 py-2 text-sm ${category===c?"bg-primary text-primary-foreground":"border-border"}`}>{c}</button>)}</div></div><div className="mt-6 grid gap-5 lg:grid-cols-2">{posts.map((p,i)=>{const raw=String(p.video_url??p.youtube_url??""); const yt=raw.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{6,})/); return <article className={card+" overflow-hidden p-0"} key={String(p.id??i)}>{raw&&yt?<div className="aspect-video bg-muted"><iframe className="h-full w-full" src={"https://www.youtube.com/embed/"+yt[1]} title={String(p.title??"Video")} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen/></div>:<div className="grid aspect-video place-items-center bg-muted"><a href={raw||"#"} target="_blank" rel="noreferrer" className="text-sm font-semibold text-primary">Open video →</a></div>}<div className="p-5"><h2 className="font-semibold">{String(p.title??"Innovation story")}</h2><p className="mt-2 text-sm text-muted-foreground">{String(p.description??"")}</p><div className="mt-3 flex flex-col gap-1 text-xs text-muted-foreground"><span>{String(p.source_name??"GhanaPathFinder")}</span>{raw&&<a href={raw} target="_blank" rel="noreferrer" className="break-all text-primary underline underline-offset-2">{raw}</a>}</div></div></article>})}</div>{posts.length===0&&<div className={card+" mt-6"}>No published videos are available yet.</div>}</Layout>;
 }
 
 export function Notifications(){
@@ -140,21 +140,21 @@ export function Profile(){
 
 const sectionItems = {
   employee: [
-    ["Careers", "/careers"], ["Career Path", "/career-path"], ["Skills", "/skills"], ["Internships", "/internships"],
+    ["Employee Directory", "/employee-directory"], ["Careers", "/careers"], ["Career Path", "/career-path"], ["Skills", "/skills"], ["Internships", "/internships"],
     ["Opportunities", "/opportunities"], ["Profile", "/profile"], ["Applications", "/applications"], ["Saved items", "/saved"],
     ["My Path", "/my-path"], ["Match preferences", "/preferences"], ["Search", "/search"], ["Community", "/community"],
     ["Innovation Feed", "/feed"], ["News", "/news"], ["Leaders", "/leaders"], ["Scholarships", "/scholarships"],
     ["Scholarship Matcher", "/matcher"], ["Compare scholarships", "/compare-scholarships"], ["Admission Match", "/admission-match"], ["Professional Councils", "/professional-councils"],
   ],
   student: [
-    ["Universities", "/search?kind=university"], ["Programmes", "/programmes"], ["Compare institutions", "/compare"], ["Search", "/search"],
+    ["Student Directory", "/student-directory"], ["Universities", "/search?kind=university"], ["Programmes", "/programmes"], ["Compare institutions", "/compare"], ["Search", "/search"],
     ["Scholarships", "/scholarships"], ["Scholarship Matcher", "/matcher"], ["Compare scholarships", "/compare-scholarships"], ["Admission Match", "/admission-match"],
     ["My Path", "/my-path"], ["Applications", "/applications"], ["Saved items", "/saved"], ["Careers", "/careers"],
     ["Career Path", "/career-path"], ["Skills", "/skills"], ["Internships", "/internships"], ["Community", "/community"],
     ["Innovation Feed", "/feed"], ["News", "/news"], ["Leaders", "/leaders"], ["Parent Support", "/parent"],
   ],
   startup: [
-    ["Startup Dashboard", "/dashboard/founder"], ["Opportunities", "/opportunities"], ["Funding", "/scholarships"], ["Search", "/search"],
+    ["Startup Dashboard", "/dashboard/founder"], ["Startup Directory", "/startup-directory"], ["Opportunities", "/opportunities"], ["Funding", "/scholarships"], ["Search", "/search"],
     ["Careers", "/careers"], ["Skills", "/skills"], ["Community", "/community"], ["Innovation Feed", "/feed"],
     ["News", "/news"], ["Leaders", "/leaders"], ["My Path", "/my-path"], ["Applications", "/applications"],
     ["Saved items", "/saved"], ["CV Builder", "/cv-builder"], ["Internships", "/internships"], ["Career Path", "/career-path"],
