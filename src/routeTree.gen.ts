@@ -64,6 +64,7 @@ import { Route as ApiCareerPathRouteImport } from './routes/api/career-path'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as ApiInstitutionMediaRouteImport } from './routes/api/institution-media'
 import { Route as ApiInstitutionProgrammesRouteImport } from './routes/api/institution-programmes'
+import { Route as ApiNewsFeedRouteImport } from './routes/api/news-feed'
 import { Route as AuthCallbackRouteImport } from './routes/auth/callback'
 import { Route as CareersIndexRouteImport } from './routes/careers/index'
 import { Route as CareersSlugRouteImport } from './routes/careers/$slug'
@@ -373,6 +374,12 @@ const ApiInstitutionMediaRoute = ApiInstitutionMediaRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiInstitutionProgrammesRoute =
+const ApiNewsFeedRoute = ApiNewsFeedRouteImport.update({
+  id: '/api/news-feed',
+  path: '/api/news-feed',
+  getParentRoute: () => rootRouteImport,
+} as any)
+
   ApiInstitutionProgrammesRouteImport.update({
     id: '/api/institution-programmes',
     path: '/api/institution-programmes',
@@ -545,6 +552,7 @@ export interface FileRoutesByFullPath {
   '/api/chat': typeof ApiChatRoute
   '/api/institution-media': typeof ApiInstitutionMediaRoute
   '/api/institution-programmes': typeof ApiInstitutionProgrammesRoute
+  '/api/news-feed': typeof ApiNewsFeedRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/dashboard/student': typeof DashboardStudentRoute
@@ -559,6 +567,7 @@ export interface FileRoutesByFullPath {
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
   '/skills/$slug': typeof SkillsSlugRoute
   '/universities/$slug': typeof UniversitiesSlugRoute
+  '/universities/': typeof UniversitiesIndexRoute
   '/university/$slug': typeof UniversitySlugRoute
   '/careers/': typeof CareersIndexRoute
   '/internships/': typeof InternshipsIndexRoute
@@ -762,6 +771,7 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/api/institution-media'
     | '/api/institution-programmes'
+    | '/api/news-feed'
     | '/auth/callback'
     | '/careers/$slug'
     | '/dashboard/student'
@@ -776,6 +786,7 @@ export interface FileRouteTypes {
     | '/scholarships/$slug'
     | '/skills/$slug'
     | '/universities/$slug'
+    | '/universities/'
     | '/university/$slug'
     | '/careers/'
     | '/internships/'
