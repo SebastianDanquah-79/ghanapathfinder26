@@ -1007,6 +1007,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CVBuilderRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/classification-center': {
+      id: '/classification-center'
+      path: '/classification-center'
+      fullPath: '/classification-center'
+      preLoaderRoute: typeof ClassificationCenterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/employee': {
+      id: '/employee'
+      path: '/employee'
+      fullPath: '/employee'
+      preLoaderRoute: typeof EmployeeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/player': {
+      id: '/player'
+      path: '/player'
+      fullPath: '/player'
+      preLoaderRoute: typeof PlayerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/startup': {
+      id: '/startup'
+      path: '/startup'
+      fullPath: '/startup'
+      preLoaderRoute: typeof StartupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/student': {
+      id: '/student'
+      path: '/student'
+      fullPath: '/student'
+      preLoaderRoute: typeof StudentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/student-assessment': {
+      id: '/student-assessment'
+      path: '/student-assessment'
+      fullPath: '/student-assessment'
+      preLoaderRoute: typeof StudentAssessmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
