@@ -134,3 +134,60 @@ export function Profile(){
   if(!user)return <Layout title="Profile"><div className={card}>Sign in to manage your profile.</div></Layout>;
   return <Layout title="Profile"><div className="max-w-2xl"><h1 className="text-3xl font-bold">Your profile</h1><p className="mt-2 text-muted-foreground">Keep your public professional information current.</p><section className={card+" mt-6"}><label className="text-sm font-medium">Full name</label><input value={name} onChange={e=>setName(e.target.value)} className="mt-2 w-full rounded-lg border border-border bg-background px-3 py-2"/><button disabled={saving} onClick={save} className="mt-4 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">{saving?"Saving...":"Save profile"}</button></section></div></Layout>;
 }
+
+
+const sectionItems = {
+  employee: [
+    ["Careers", "/careers"], ["Career Path", "/career-path"], ["Skills", "/skills"], ["Internships", "/internships"],
+    ["Opportunities", "/opportunities"], ["CV Builder", "/cv-builder"], ["Applications", "/applications"], ["Saved items", "/saved"],
+    ["My Path", "/my-path"], ["Match preferences", "/preferences"], ["Search", "/search"], ["Community", "/community"],
+    ["Innovation Feed", "/feed"], ["News", "/news"], ["Leaders", "/leaders"], ["Scholarships", "/scholarships"],
+    ["Scholarship Matcher", "/matcher"], ["Compare scholarships", "/compare-scholarships"], ["Admission Match", "/admission-match"], ["Professional Councils", "/professional-councils"],
+  ],
+  student: [
+    ["Universities", "/search?kind=university"], ["Programmes", "/programmes"], ["Compare institutions", "/compare"], ["Search", "/search"],
+    ["Scholarships", "/scholarships"], ["Scholarship Matcher", "/matcher"], ["Compare scholarships", "/compare-scholarships"], ["Admission Match", "/admission-match"],
+    ["My Path", "/my-path"], ["Applications", "/applications"], ["Saved items", "/saved"], ["Careers", "/careers"],
+    ["Career Path", "/career-path"], ["Skills", "/skills"], ["Internships", "/internships"], ["Community", "/community"],
+    ["Innovation Feed", "/feed"], ["News", "/news"], ["Leaders", "/leaders"], ["Parent Support", "/parent"],
+  ],
+  startup: [
+    ["Startup Dashboard", "/dashboard/founder"], ["Opportunities", "/opportunities"], ["Funding", "/scholarships"], ["Search", "/search"],
+    ["Careers", "/careers"], ["Skills", "/skills"], ["Community", "/community"], ["Innovation Feed", "/feed"],
+    ["News", "/news"], ["Leaders", "/leaders"], ["My Path", "/my-path"], ["Applications", "/applications"],
+    ["Saved items", "/saved"], ["CV Builder", "/cv-builder"], ["Internships", "/internships"], ["Career Path", "/career-path"],
+    ["Scholarship Matcher", "/matcher"], ["Compare scholarships", "/compare-scholarships"], ["References", "/references"], ["Contact", "/contact"],
+  ],
+  classification: [
+    ["Explore", "/explore"], ["Search", "/search"], ["Universities", "/search?kind=university"], ["Programmes", "/programmes"],
+    ["Careers", "/careers"], ["Skills", "/skills"], ["Internships", "/internships"], ["Opportunities", "/opportunities"],
+    ["Scholarships", "/scholarships"], ["Scholarship Matcher", "/matcher"], ["Admission Match", "/admission-match"], ["Career Path", "/career-path"],
+    ["My Path", "/my-path"], ["Applications", "/applications"], ["Saved items", "/saved"], ["Community", "/community"],
+    ["Innovation Feed", "/feed"], ["News", "/news"], ["Leaders", "/leaders"], ["Professional Councils", "/professional-councils"],
+  ],
+} as const;
+
+export function SectionHub({ section }: { section: keyof typeof sectionItems }) {
+  const titles = { employee: "Employee", student: "Student", startup: "Startup", classification: "Classification Center" } as const;
+  const descriptions = {
+    employee: "A single workspace for work, skills, applications and professional growth.",
+    student: "A single workspace for education, assessment, funding and your next steps.",
+    startup: "A single workspace for startup discovery, funding, talent and African innovation.",
+    classification: "Move from broad discovery to a focused education, career or opportunity path.",
+  } as const;
+  const items = sectionItems[section];
+  return <Layout title={titles[section]}>
+    <div>
+      <p className="text-sm font-semibold text-primary">GHANAPATHFINDER</p>
+      <h1 className="mt-1 text-3xl font-bold">{titles[section]}</h1>
+      <p className="mt-2 max-w-2xl text-muted-foreground">{descriptions[section]}</p>
+    </div>
+    <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {items.map(([label, href], index) => <Link key={href} to={href} className="group rounded-xl border border-border bg-card p-4 hover:border-primary transition-colors">
+        <div className="flex items-start justify-between gap-3"><span className="text-xs font-semibold text-muted-foreground">{String(index + 1).padStart(2, "0")}</span><ArrowRight className="h-4 w-4 text-primary opacity-70 group-hover:translate-x-0.5 transition-transform" /></div>
+        <h2 className="mt-5 font-semibold">{label}</h2>
+        <p className="mt-1 text-xs text-muted-foreground">Open section</p>
+      </Link>)}
+    </div>
+  </Layout>;
+}
