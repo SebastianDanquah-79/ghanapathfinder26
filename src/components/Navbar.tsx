@@ -5,7 +5,7 @@ import BrandMark from "@/components/BrandMark";
 import { Link, useLocation } from "@/lib/router-compat";
 import { useAuth } from "@/hooks/useAuth";
 import ThemeToggle from "@/components/ThemeToggle";
-import { navSections, accountItems, aboutItems } from "@/lib/nav-config";
+import { navSections, platformItems, accountItems, aboutItems } from "@/lib/nav-config";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -81,6 +81,11 @@ const Navbar = () => {
             ))}
 
             <span className="mx-1 h-5 w-px bg-border" aria-hidden="true" />
+            {platformItems.map((item) => (
+              <Link key={item.href} to={item.href} className="px-2 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground">
+                {item.label}
+              </Link>
+            ))}
 
             <Tooltip>
               <TooltipTrigger asChild>
