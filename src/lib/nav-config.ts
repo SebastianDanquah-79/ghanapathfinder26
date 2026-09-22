@@ -102,6 +102,7 @@ export const platformItems: NavItem[] = [
   { label: "Innovation Feed", href: "/feed", desc: "African innovation videos" },
   { label: "News", href: "/news", desc: "Pan-African news and knowledge" },
   { label: "Leaders", href: "/leaders", desc: "Leaders across Africa" },
+  { label: "CV Builder", href: "/cv-builder", desc: "Build and print your CV" },
 ];
 
 export const accountItems: NavItem[] = [
