@@ -189,7 +189,8 @@ const Onboarding = () => {
         throw new Error("Profile save could not be confirmed");
       }
 
-      if (typeof window !== "undefined") window.localStorage.removeItem("selectedRole");\n      toast.success("Profile saved");
+      if (typeof window !== "undefined") window.localStorage.removeItem("selectedRole");
+      toast.success("Profile saved");
       navigate("/dashboard", { replace: true });
     } catch (err) {
       const message = err instanceof Error ? err.message : "Could not save profile";
