@@ -104,7 +104,7 @@ const Onboarding = () => {
   }, [country]);
 
   const qualification = useMemo(
-    () => availableQualifications.find((q) => q.code === qualificationCode) ?? availableQualifications[0] ?? QUALIFICATIONS[0],
+    () => (availableQualifications.find((q) => q.code === qualificationCode) ?? availableQualifications[0] ?? QUALIFICATIONS[0])!,
     [availableQualifications, qualificationCode],
   );
   const isWassce = qualification.code === "WASSCE";
