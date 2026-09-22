@@ -22,7 +22,7 @@ jobs:
     env:
       VERCEL_ORG_ID: team_Kf0gw2PrIXQLy84iAhWcjCA8
       VERCEL_PROJECT_ID: prj_WFJa8kYNpkVT4uSA2OlfbeTzmFzk
-      VERCEL_SCOPE: ghanapathfinder26
+      VERCEL_SCOPE: ghanapathfinder1
     steps:
       - name: Checkout
         uses: actions/checkout@v5
