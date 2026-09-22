@@ -23,6 +23,7 @@ import { Route as CreditsRouteImport } from './routes/credits'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as FeedRouteImport } from './routes/feed'
 import { Route as InspirationRouteImport } from './routes/inspiration'
 import { Route as LeadersRouteImport } from './routes/leaders'
@@ -141,6 +142,11 @@ const DisclaimerRoute = DisclaimerRouteImport.update({
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExploreRoute = ExploreRouteImport.update({
+  id: '/explore',
+  path: '/explore',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FeedRoute = FeedRouteImport.update({
@@ -406,6 +412,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRouteWithChildren
   '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
+  '/explore': typeof ExploreRoute
   '/feed': typeof FeedRoute
   '/inspiration': typeof InspirationRoute
   '/leaders': typeof LeadersRoute
@@ -471,6 +478,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRouteWithChildren
   '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
+  '/explore': typeof ExploreRoute
   '/feed': typeof FeedRoute
   '/inspiration': typeof InspirationRoute
   '/leaders': typeof LeadersRoute
@@ -947,6 +955,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/explore': {
+      id: '/explore'
+      path: '/explore'
+      fullPath: '/explore'
+      preLoaderRoute: typeof ExploreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/feed': {
       id: '/feed'
       path: '/feed'
@@ -1334,6 +1349,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRouteWithChildren,
   DisclaimerRoute: DisclaimerRoute,
   FaqRoute: FaqRoute,
+  ExploreRoute: ExploreRoute,
   FeedRoute: FeedRoute,
   InspirationRoute: InspirationRoute,
   LeadersRoute: LeadersRoute,
