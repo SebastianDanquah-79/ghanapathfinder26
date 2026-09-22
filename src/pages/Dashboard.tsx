@@ -108,11 +108,11 @@ const Dashboard = () => {
       navigate("/onboarding", { replace: true });
       return;
     }
-    if (profile.account_role === "employee") {
+    if ((profile as any).account_role === "employee") {
       navigate("/dashboard/employee", { replace: true });
-    } else if (profile.account_role === "employer") {
+    } else if ((profile as any).account_role === "employer") {
       navigate("/dashboard/employer", { replace: true });
-    } else if (profile.account_role === "startup_founder") {
+    } else if ((profile as any).account_role === "startup_founder") {
       navigate("/dashboard/founder", { replace: true });
     }
   }, [user, profile, navigate]);
