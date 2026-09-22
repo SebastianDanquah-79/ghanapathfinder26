@@ -1,1 +1,0 @@
-import { createFileRoute } from "@tanstack/react-router"; import { SectionHub } from "@/pages/Platform"; export const Route=createFileRoute("/student-assessment")({component:()=> <SectionHub section="assessment"/>});

@@ -1,1 +1,0 @@
-import { createFileRoute } from "@tanstack/react-router"; import { StartupDirectory } from "@/pages/Directories"; export const Route=createFileRoute("/startup-directory")({component:StartupDirectory});

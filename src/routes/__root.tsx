@@ -8,6 +8,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
 import MobileTabBar from "@/components/MobileTabBar";
+import ContactGate from "@/components/ContactGate";
 import OfflineBanner from "@/components/OfflineBanner";
 import NotFound from "@/pages/NotFound";
 import { AdinkraFloat } from "@/components/AdinkraFloat";
@@ -57,6 +58,7 @@ function RootComponent() {
               <Outlet />
             </div>
             <MobileTabBar />
+            <ContactGate />
             <FloatingAskAssistant />
           </AuthProvider>
         </TooltipProvider>

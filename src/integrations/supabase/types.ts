@@ -951,6 +951,7 @@ export type Database = {
           id: string
           interests: string[]
           onboarded: boolean
+          phone: string | null
           region: string | null
           school: string | null
           target_career: string | null
@@ -966,6 +967,7 @@ export type Database = {
           id: string
           interests?: string[]
           onboarded?: boolean
+          phone?: string | null
           region?: string | null
           school?: string | null
           target_career?: string | null
@@ -981,6 +983,7 @@ export type Database = {
           id?: string
           interests?: string[]
           onboarded?: boolean
+          phone?: string | null
           region?: string | null
           school?: string | null
           target_career?: string | null

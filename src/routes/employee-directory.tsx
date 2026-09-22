@@ -1,1 +1,0 @@
-import { createFileRoute } from "@tanstack/react-router"; import { EmployeeDirectory } from "@/pages/Directories"; export const Route=createFileRoute("/employee-directory")({component:EmployeeDirectory});

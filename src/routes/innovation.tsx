@@ -1,1 +1,0 @@
-import { createFileRoute } from "@tanstack/react-router"; import { Innovation } from "@/pages/ContentHubs"; export const Route=createFileRoute("/innovation")({component:Innovation});

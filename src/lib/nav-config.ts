@@ -99,14 +99,9 @@ export const navSections: NavSection[] = [
 
 export const platformItems: NavItem[] = [
   { label: "Opportunities", href: "/opportunities", desc: "Jobs, internships and funding" },
-  { label: "Player", href: "/player", desc: "Your personal opportunity and growth workspace" },
-  { label: "Student Assessment", href: "/student-assessment", desc: "Student work, assessment and next steps" },
-  { label: "Startup", href: "/startup", desc: "Startup resources, funding and innovation" },
-  { label: "Classification Center", href: "/classification-center", desc: "Organise your path and discover relevant options" },
   { label: "Innovation Feed", href: "/feed", desc: "African innovation videos" },
   { label: "News", href: "/news", desc: "Pan-African news and knowledge" },
   { label: "Leaders", href: "/leaders", desc: "Leaders across Africa" },
-  { label: "CV Builder", href: "/cv-builder", desc: "Build and print your CV" },
 ];
 
 export const accountItems: NavItem[] = [
