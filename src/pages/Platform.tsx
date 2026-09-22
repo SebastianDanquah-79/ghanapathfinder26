@@ -141,12 +141,25 @@ export const EmployerDashboard=()=> <RoleDashboard role="employer" title="Employ
 export const FounderDashboard=()=> <RoleDashboard role="startup_founder" title="Startup Founder Dashboard" description="Funding, accelerators, networks and African startup intelligence."/>;
 
 export function Profile(){
-  const {user}=useAuth(); const [saving,setSaving]=useState(false); const [name,setName]=useState("");
+  const {user}=useAuth();
+  const [saving,setSaving]=useState(false);
+  const [name,setName]=useState("");
+  const [linkedin,setLinkedin]=useState("");
+  const [discoverable,setDiscoverable]=useState(false);
+  const [title,setTitle]=useState("");
+  const [skills,setSkills]=useState("");
   const {data}=useQuery({queryKey:["profile-page",user?.id],enabled:!!user,queryFn:async()=>{const {data,error}=await sb.from("profiles").select("*").eq("id",user!.id).maybeSingle();if(error)throw error;return data as Row|null;}});
-  useEffect(()=>{if(data?.full_name)setName(String(data.full_name));},[data]);
-  const save=async()=>{if(!user)return;setSaving(true);const {error}=await sb.from("profiles").upsert({id:user.id,full_name:name,onboarded:true},{onConflict:"id"});setSaving(false);if(!error)location.reload();};
+  useEffect(()=>{if(data){setName(String(data.full_name??""));setLinkedin(String(data.linkedin_url??""));setDiscoverable(Boolean(data.discoverable_to_recruiters));setTitle(String(data.target_career??""));setSkills(Array.isArray(data.interests)?data.interests.join(", "):"");}},[data]);
+  const save=async()=>{if(!user)return;setSaving(true);
+    const interestList=skills.split(",").map((x:string)=>x.trim()).filter(Boolean);
+    const {error}=await sb.from("profiles").upsert({id:user.id,full_name:name,onboarded:true,linkedin_url:linkedin||null,target_career:title||null,interests:interestList,discoverable_to_recruiters:discoverable,profile_visibility:discoverable?"public":"private"},{onConflict:"id"});
+    if(error){setSaving(false);alert(error.message);return;}
+    const {error:talentError}=await sb.from("talent_directory").upsert({user_id:user.id,full_name:name||null,professional_title:title||null,linkedin_url:linkedin||null,skills:interestList,discoverable,updated_at:new Date().toISOString()},{onConflict:"user_id"});
+    setSaving(false);
+    if(talentError)alert(talentError.message);else location.reload();
+  };
   if(!user)return <Layout title="Profile"><div className={card}>Sign in to manage your profile.</div></Layout>;
-  return <Layout title="Profile"><div className="max-w-2xl"><h1 className="text-3xl font-bold">Your profile</h1><p className="mt-2 text-muted-foreground">Keep your public professional information current.</p><section className={card+" mt-6"}><label className="text-sm font-medium">Full name</label><input value={name} onChange={e=>setName(e.target.value)} className="mt-2 w-full rounded-lg border border-border bg-background px-3 py-2"/><button disabled={saving} onClick={save} className="mt-4 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">{saving?"Saving...":"Save profile"}</button></section></div></Layout>;
+  return <Layout title="Profile"><div className="max-w-2xl"><h1 className="text-3xl font-bold">Your professional profile</h1><p className="mt-2 text-muted-foreground">Control what employers can discover and keep your professional links current.</p><section className={card+" mt-6 space-y-4"}><div><label className="text-sm font-medium">Full name</label><input value={name} onChange={e=>setName(e.target.value)} className="mt-2 w-full rounded-lg border border-border bg-background px-3 py-2"/></div><div><label className="text-sm font-medium">Professional title / target career</label><input value={title} onChange={e=>setTitle(e.target.value)} className="mt-2 w-full rounded-lg border border-border bg-background px-3 py-2" placeholder="e.g. Software Engineer"/></div><div><label className="text-sm font-medium">Skills or interests</label><input value={skills} onChange={e=>setSkills(e.target.value)} className="mt-2 w-full rounded-lg border border-border bg-background px-3 py-2" placeholder="Python, React, data analysis"/></div><div><label className="text-sm font-medium">Public LinkedIn URL</label><input value={linkedin} onChange={e=>setLinkedin(e.target.value)} className="mt-2 w-full rounded-lg border border-border bg-background px-3 py-2" placeholder="https://www.linkedin.com/in/..."/></div><label className="flex items-start gap-3 rounded-lg border border-border p-4"><input type="checkbox" checked={discoverable} onChange={e=>setDiscoverable(e.target.checked)} className="mt-1"/><span><span className="block text-sm font-medium">Allow recruiter discovery</span><span className="mt-1 block text-xs text-muted-foreground">Only the public fields above are copied to the recruiter directory. Private account fields remain private.</span></span></label><button disabled={saving} onClick={save} className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">{saving?"Saving...":"Save profile"}</button></section></div></Layout>;
 }
 
 
