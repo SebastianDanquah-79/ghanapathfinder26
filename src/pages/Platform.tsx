@@ -74,7 +74,6 @@ export function Leaders(){
 export function Feed(){
   const [category,setCategory]=useState("All");
   const {data=[]}=useQuery({queryKey:["feed_posts",category],queryFn:async()=>{const {data,error}=await sb.from("feed_posts").select("*").eq("is_published",true).order("created_at",{ascending:false}).limit(20);if(error)throw error;return (data??[]) as Row[];}});
-  const posts=category==="All"?data:data.filter(r=>String(r.category).toLowerCase()===category.toLowerCase());
   const curated = curatedVideos.map((v) => ({
     ...v,
     video_url: v.url,
