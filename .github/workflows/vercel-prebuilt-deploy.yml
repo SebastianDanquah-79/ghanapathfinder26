@@ -1,4 +1,4 @@
-name: Build and Deploy to Vercel
+name: Deploy to Vercel
 
 on:
   push:
@@ -9,8 +9,9 @@ on:
 permissions:
   contents: read
 
-# Deploy directly from GitHub Actions on every push to main.
-# VERCEL_TOKEN must be configured as a GitHub Actions secret.
+# Use Vercel's own build pipeline for production deployments.
+# This avoids uploading a stale local .vercel/output directory and makes
+# Vercel regenerate TanStack Start's route manifest from the current source.
 concurrency:
   group: vercel-production
   cancel-in-progress: false
@@ -21,34 +22,45 @@ jobs:
     env:
       VERCEL_ORG_ID: team_Kf0gw2PrIXQLy84iAhWcjCA8
       VERCEL_PROJECT_ID: prj_WFJa8kYNpkVT4uSA2OlfbeTzmFzk
+      VERCEL_SCOPE: ghanapathfinder1
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
+
       - name: Install dependencies
         run: npm install --no-audit --no-fund
+
+      - name: TypeScript check
+        run: npx tsc --noEmit
+
+      - name: Verify production build locally
+        run: npm run build
+
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
+
       - name: Authenticate with Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: vercel whoami --token "$VERCEL_TOKEN"
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
       - name: Link Vercel project
-        run: vercel link --project "$VERCEL_PROJECT_ID" --scope "ghanapathfinder1" --token "$VERCEL_TOKEN" --non-interactive
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel link --project "$VERCEL_PROJECT_ID" --scope "$VERCEL_SCOPE" --token "$VERCEL_TOKEN" --non-interactive
+
       - name: Pull Vercel production environment
-        run: vercel pull --yes --environment=production --token "$VERCEL_TOKEN" --scope "ghanapathfinder1"
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-      - name: Build Vercel output in GitHub Actions
-        run: vercel build --prod --token "$VERCEL_TOKEN" --scope "ghanapathfinder1"
+        run: vercel pull --yes --environment=production --token "$VERCEL_TOKEN" --scope "$VERCEL_SCOPE"
+
+      - name: Deploy from source to Vercel
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-      - name: Deploy prebuilt output to Vercel
-        run: vercel deploy --prebuilt --prod --token "$VERCEL_TOKEN" --scope "ghanapathfinder1"
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel deploy --prod --token "$VERCEL_TOKEN" --scope "$VERCEL_SCOPE" --yes
