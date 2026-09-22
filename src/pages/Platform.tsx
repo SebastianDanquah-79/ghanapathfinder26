@@ -9,6 +9,7 @@ import MobileTabBar from "@/components/MobileTabBar";
 import Footer from "@/components/Footer";
 import { Briefcase, Building2, GraduationCap, Bell, Search, Rocket, Users, BookOpen, Globe, ArrowRight } from "@/lib/icons";
 import { curatedNews, curatedOpportunities, curatedVideos } from "@/data/curatedContent";
+import { EMPLOYERS } from "@/data/employers";
 
 type Row = any;
 const shell = "min-h-dvh bg-background text-foreground";
@@ -42,7 +43,18 @@ function DataList({ table, title, filters }: { table: "opportunities"|"news_arti
     const {data,error}=await query; if(error) throw error; return (data??[]) as Row[];
   }});
   const curated = table === "news_articles" ? curatedNews : curatedOpportunities;
+  const careerPortals = table === "opportunities" ? EMPLOYERS.slice(0, 60).map((e) => ({
+    id: "career-portal-" + e.id,
+    title: "Career opportunities at " + e.name,
+    description: "Official career and opportunity source for " + e.name + ". Check the organisation's current vacancies, internship, graduate and national-service postings.",
+    excerpt: "Official career and opportunity source. Verify the current vacancy and deadline on the employer's own site.",
+    category: "career-source",
+    source_name: e.name,
+    original_url: e.url,
+    published_at: undefined,
+  })) : [];
   const combined = useMemo(() => [
+    ...careerPortals,
     ...curated.map((r) => ({
       id: r.id,
       title: r.title,
@@ -54,9 +66,9 @@ function DataList({ table, title, filters }: { table: "opportunities"|"news_arti
       published_at: r.publishedAt,
     })),
     ...data,
-  ], [data, table]);
+  ], [data, table, careerPortals]);
   const filtered=useMemo(()=>filter==="All"?combined:combined.filter(r=>String(r.category??r.type??"").toLowerCase()===filter.toLowerCase()),[combined,filter]);
-  return <Layout title={title}><div className="flex flex-col gap-5"><div><p className="text-sm font-semibold text-primary">{title==="News"?"KNOWLEDGE":"OPPORTUNITIES"}</p><h1 className="mt-1 text-3xl font-bold">{title}</h1><p className="mt-2 text-muted-foreground">Fresh opportunities and source-linked news, with external links back to the original publisher.</p></div>
+  return <Layout title={title}><div className="flex flex-col gap-5"><div><p className="text-sm font-semibold text-primary">{title==="News"?"KNOWLEDGE":"OPPORTUNITIES"}</p><h1 className="mt-1 text-3xl font-bold">{title}</h1><p className="mt-2 text-muted-foreground">Fresh source-linked opportunities and news. Career portal entries link directly to the employer source and do not guarantee an active vacancy.</p></div>
     {filters&&<div className="flex gap-2 overflow-x-auto pb-1">{filters.map(f=><button key={f} onClick={()=>setFilter(f)} className={`rounded-full border px-4 py-2 text-sm whitespace-nowrap ${filter===f?"border-primary bg-primary text-primary-foreground":"border-border"}`}>{f}</button>)}</div>}
     {isLoading?<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">{[1,2,3].map(i=><div key={i} className={card+" h-40 animate-pulse"}/>)}</div>:error?<div className={card}>We could not load this data right now. Please refresh.</div>:filtered.length===0?<div className={card}>No {title.toLowerCase()} are available yet.</div>:<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">{filtered.map((r,i)=><article key={String(r.id??i)} className={card}><p className="text-xs font-semibold uppercase text-primary">{String(r.category??r.type??"Opportunity")}</p><h2 className="mt-2 font-semibold">{String(r.title??"Untitled")}</h2><p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{String(r.excerpt??r.description??"")}</p><div className="mt-4 flex items-center justify-between text-xs text-muted-foreground"><span>{String(r.source_name??r.company_name??"GhanaPathFinder")}</span>{(r.original_url||r.apply_url||r.application_url)&&<a className="font-semibold text-primary" href={String(r.original_url??r.apply_url??r.application_url)} target="_blank" rel="noreferrer">Open →</a>}</div></article>)}</div>}</div></Layout>;
 }
