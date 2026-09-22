@@ -373,18 +373,16 @@ const ApiInstitutionMediaRoute = ApiInstitutionMediaRouteImport.update({
   path: '/api/institution-media',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiInstitutionProgrammesRoute =
+const ApiInstitutionProgrammesRoute = ApiInstitutionProgrammesRouteImport.update({
+  id: '/api/institution-programmes',
+  path: '/api/institution-programmes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiNewsFeedRoute = ApiNewsFeedRouteImport.update({
   id: '/api/news-feed',
   path: '/api/news-feed',
   getParentRoute: () => rootRouteImport,
 } as any)
-
-  ApiInstitutionProgrammesRouteImport.update({
-    id: '/api/institution-programmes',
-    path: '/api/institution-programmes',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const AuthCallbackRoute = AuthCallbackRouteImport.update({
   id: '/callback',
   path: '/callback',
