@@ -87,7 +87,9 @@ const Dashboard = () => {
   const [addingDeadline, setAddingDeadline] = useState(false);
 
   useEffect(() => {
-    if (!loading && !user) navigate(`/auth?next=${encodeURIComponent(window.location.pathname + window.location.search)}`, { replace: true });
+    if (!loading && !user) {
+      navigate(`/auth?next=${encodeURIComponent(window.location.pathname + window.location.search)}`, { replace: true });
+    }
   }, [loading, user, navigate]);
 
   const { data: profile } = useQuery({
@@ -99,6 +101,21 @@ const Dashboard = () => {
       return data;
     },
   });
+
+  useEffect(() => {
+    if (!user || !profile) return;
+    if (!profile.onboarded) {
+      navigate("/onboarding", { replace: true });
+      return;
+    }
+    if (profile.account_role === "employee") {
+      navigate("/dashboard/employee", { replace: true });
+    } else if (profile.account_role === "employer") {
+      navigate("/dashboard/employer", { replace: true });
+    } else if (profile.account_role === "startup_founder") {
+      navigate("/dashboard/founder", { replace: true });
+    }
+  }, [user, profile, navigate]);
 
   const { data: results = [] } = useQuery({
     queryKey: ["results", user?.id],
