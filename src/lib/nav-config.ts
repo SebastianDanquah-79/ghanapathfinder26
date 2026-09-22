@@ -97,13 +97,6 @@ export const navSections: NavSection[] = [
   },
 ];
 
-export const platformItems: NavItem[] = [
-  { label: "Opportunities", href: "/opportunities", desc: "Jobs, internships and funding" },
-  { label: "Innovation Feed", href: "/feed", desc: "African innovation videos" },
-  { label: "News", href: "/news", desc: "Pan-African news and knowledge" },
-  { label: "Leaders", href: "/leaders", desc: "Leaders across Africa" },
-];
-
 export const accountItems: NavItem[] = [
   { label: "Dashboard", href: "/dashboard" },
   { label: "My Path", href: "/my-path" },

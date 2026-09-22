@@ -545,9 +545,6 @@ export type Database = {
           town: string | null
           university_id: string | null
           updated_at: string
-          verification_method: string | null
-          verification_notes: string | null
-          verified_by: string | null
           website_url: string | null
         }
         Insert: {
@@ -569,9 +566,6 @@ export type Database = {
           town?: string | null
           university_id?: string | null
           updated_at?: string
-          verification_method?: string | null
-          verification_notes?: string | null
-          verified_by?: string | null
           website_url?: string | null
         }
         Update: {
@@ -593,9 +587,6 @@ export type Database = {
           town?: string | null
           university_id?: string | null
           updated_at?: string
-          verification_method?: string | null
-          verification_notes?: string | null
-          verified_by?: string | null
           website_url?: string | null
         }
         Relationships: [
@@ -624,9 +615,6 @@ export type Database = {
           social_links: Json
           source_urls: string[]
           updated_at: string
-          verification_method: string | null
-          verification_notes: string | null
-          verified_by: string | null
           website_url: string | null
         }
         Insert: {
@@ -644,9 +632,6 @@ export type Database = {
           social_links?: Json
           source_urls?: string[]
           updated_at?: string
-          verification_method?: string | null
-          verification_notes?: string | null
-          verified_by?: string | null
           website_url?: string | null
         }
         Update: {
@@ -664,9 +649,6 @@ export type Database = {
           social_links?: Json
           source_urls?: string[]
           updated_at?: string
-          verification_method?: string | null
-          verification_notes?: string | null
-          verified_by?: string | null
           website_url?: string | null
         }
         Relationships: []
@@ -1476,11 +1458,8 @@ export type Database = {
           source_urls: string[]
           university_id: string
           updated_at: string
-          verification_method: string | null
-          verification_notes: string | null
           verification_status: string
           verified: boolean
-          verified_by: string | null
           wassce_requirements: string | null
         }
         Insert: {
@@ -1509,11 +1488,8 @@ export type Database = {
           source_urls?: string[]
           university_id: string
           updated_at?: string
-          verification_method?: string | null
-          verification_notes?: string | null
           verification_status?: string
           verified?: boolean
-          verified_by?: string | null
           wassce_requirements?: string | null
         }
         Update: {
@@ -1542,11 +1518,8 @@ export type Database = {
           source_urls?: string[]
           university_id?: string
           updated_at?: string
-          verification_method?: string | null
-          verification_notes?: string | null
           verification_status?: string
           verified?: boolean
-          verified_by?: string | null
           wassce_requirements?: string | null
         }
         Relationships: [
@@ -1765,9 +1738,6 @@ export type Database = {
           skill_area: string | null
           source_urls: string[]
           updated_at: string
-          verification_method: string | null
-          verification_notes: string | null
-          verified_by: string | null
         }
         Insert: {
           application_url?: string | null
@@ -1784,9 +1754,6 @@ export type Database = {
           skill_area?: string | null
           source_urls?: string[]
           updated_at?: string
-          verification_method?: string | null
-          verification_notes?: string | null
-          verified_by?: string | null
         }
         Update: {
           application_url?: string | null
@@ -1803,9 +1770,6 @@ export type Database = {
           skill_area?: string | null
           source_urls?: string[]
           updated_at?: string
-          verification_method?: string | null
-          verification_notes?: string | null
-          verified_by?: string | null
         }
         Relationships: []
       }

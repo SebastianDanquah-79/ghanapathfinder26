@@ -1,10 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "@/lib/router-compat";
 import { Loader2, Plus, Trash2 } from "@/lib/icons";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-
 
 const REGIONS = [
   "Greater Accra", "Ashanti", "Central", "Eastern", "Western", "Volta",
@@ -12,64 +11,13 @@ const REGIONS = [
   "North East", "Western North", "Bono East",
 ];
 
+const GRADES = ["A1", "B2", "B3", "C4", "C5", "C6", "D7", "E8", "F9"];
+
+const CORE_SUBJECTS = ["English Language", "Mathematics", "Integrated Science", "Social Studies"];
+
 const INTERESTS = [
   "Technology", "Medicine & Health", "Engineering", "Business", "Law",
   "Education", "Agriculture", "Creative Arts", "Media", "Public Service",
-];
-
-type Qualification = {
-  code: string;
-  name: string;
-  country: string;
-  scale: string;
-  grades: string[];
-  levels?: string[];
-  placeholder?: string;
-  countries?: string[];
-};
-
-const QUALIFICATIONS: Qualification[] = [
-  { code: "WASSCE", name: "WASSCE", country: "Ghana / West Africa", scale: "A1–F9", grades: ["A1","B2","B3","C4","C5","C6","D7","E8","F9"], placeholder: "e.g. Core Mathematics", countries: ["GH","GM","LR","SL"] },
-  { code: "WAEC_NIGERIA", name: "WAEC / NECO", country: "Nigeria", scale: "A1–F9", grades: ["A1","B2","B3","C4","C5","C6","D7","E8","F9"], placeholder: "e.g. Mathematics", countries: ["NG"] },
-  { code: "KCSE", name: "KCSE", country: "Kenya", scale: "A–E", grades: ["A","A-","B+","B","B-","C+","C","C-","D+","D","D-","E"], placeholder: "e.g. Mathematics", countries: ["KE"] },
-  { code: "UCE", name: "Uganda Certificate of Education (UCE)", country: "Uganda", scale: "Grades 1–9", grades: ["1","2","3","4","5","6","7","8","9"], placeholder: "e.g. Mathematics", countries: ["UG"] },
-  { code: "UACE", name: "Uganda Advanced Certificate of Education (UACE)", country: "Uganda", scale: "A–E / O–F", grades: ["A","B","C","D","E","O","F"], placeholder: "e.g. Mathematics", countries: ["UG"] },
-  { code: "CSEE", name: "Certificate of Secondary Education Examination (CSEE)", country: "Tanzania", scale: "A–F", grades: ["A","B+","B","C","D","E","F"], placeholder: "e.g. Mathematics", countries: ["TZ"] },
-  { code: "ACSEE", name: "Advanced Certificate of Secondary Education Examination (ACSEE)", country: "Tanzania", scale: "A–F", grades: ["A","B+","B","C","D","E","F"], placeholder: "e.g. Mathematics", countries: ["TZ"] },
-  { code: "RW_AL", name: "Rwanda Advanced Level", country: "Rwanda", scale: "A–F / S / U", grades: ["A","B","C","D","E","F","S","U"], placeholder: "e.g. Mathematics", countries: ["RW"] },
-  { code: "NSC", name: "National Senior Certificate (NSC)", country: "South Africa", scale: "Level 1–7", grades: ["7","6","5","4","3","2","1"], placeholder: "e.g. Mathematics", countries: ["ZA"] },
-  { code: "CAM_GCE", name: "Cameroon GCE", country: "Cameroon", scale: "A–E / U", grades: ["A","B","C","D","E","U"], placeholder: "e.g. Mathematics", countries: ["CM"] },
-  { code: "FRENCH_BAC", name: "French Baccalauréat", country: "Francophone Africa", scale: "0–20", grades: [], placeholder: "e.g. Mathematics", countries: ["BF","BJ","CD","CG","CI","GA","GN","ML","MR","NE","SN","TD","TG"] },
-  { code: "BGCSE", name: "Botswana General Certificate of Secondary Education (BGCSE)", country: "Botswana", scale: "A*–G", grades: ["A*","A","B","C","D","E","F","G"], placeholder: "e.g. Mathematics", countries: ["BW"] },
-  { code: "NSSC", name: "Namibian Senior Secondary Certificate (NSSC)", country: "Namibia", scale: "A*–U", grades: ["A*","A","B","C","D","E","F","G","H","U"], placeholder: "e.g. Mathematics", countries: ["NA"] },
-  { code: "MSCE", name: "Malawi School Certificate of Education (MSCE)", country: "Malawi", scale: "1–9", grades: ["1","2","3","4","5","6","7","8","9"], placeholder: "e.g. Mathematics", countries: ["MW"] },
-  { code: "ZAMBIA_SCHOOL_CERT", name: "Zambia School Certificate", country: "Zambia", scale: "1–9", grades: ["1","2","3","4","5","6","7","8","9"], placeholder: "e.g. Mathematics", countries: ["ZM"] },
-  { code: "ZIMSEC", name: "ZIMSEC Advanced Level", country: "Zimbabwe", scale: "A–E / U", grades: ["A","B","C","D","E","U"], placeholder: "e.g. Mathematics", countries: ["ZW"] },
-  { code: "LGCSE", name: "Lesotho General Certificate of Secondary Education (LGCSE)", country: "Lesotho", scale: "A*–G", grades: ["A*","A","B","C","D","E","F","G"], placeholder: "e.g. Mathematics", countries: ["LS"] },
-  { code: "EGCSE", name: "Eswatini General Certificate of Secondary Education (EGCSE)", country: "Eswatini", scale: "A*–G", grades: ["A*","A","B","C","D","E","F","G"], placeholder: "e.g. Mathematics", countries: ["SZ"] },
-  { code: "MOZ_HSC", name: "Mozambique Secondary School Certificate", country: "Mozambique", scale: "0–20", grades: [], placeholder: "e.g. Mathematics", countries: ["MZ"] },
-  { code: "ANG_SEC", name: "Angola Secondary School Diploma", country: "Angola", scale: "0–20", grades: [], placeholder: "e.g. Mathematics", countries: ["AO"] },
-  { code: "EGYPT_THANAWIYA", name: "Egyptian General Secondary Education Certificate", country: "Egypt", scale: "0–100", grades: [], placeholder: "e.g. Mathematics", countries: ["EG"] },
-  { code: "MOROCCO_BAC", name: "Moroccan Baccalaureate", country: "Morocco", scale: "0–20", grades: [], placeholder: "e.g. Mathematics", countries: ["MA"] },
-  { code: "ALGERIA_BAC", name: "Algerian Baccalaureate", country: "Algeria", scale: "0–20", grades: [], placeholder: "e.g. Mathematics", countries: ["DZ"] },
-  { code: "TUNISIA_BAC", name: "Tunisian Baccalaureate", country: "Tunisia", scale: "0–20", grades: [], placeholder: "e.g. Mathematics", countries: ["TN"] },
-  { code: "ETHIOPIA_SECONDARY", name: "Ethiopian Secondary School Leaving Examination", country: "Ethiopia", scale: "0–100", grades: [], placeholder: "e.g. Mathematics", countries: ["ET"] },
-  { code: "IB_DP", name: "IB Diploma Programme", country: "International", scale: "1–7", grades: ["7","6","5","4","3","2","1"], levels: ["Higher Level","Standard Level"], placeholder: "e.g. Mathematics AA" },
-  { code: "IGCSE", name: "Cambridge IGCSE", country: "International", scale: "A*–G", grades: ["A*","A","B","C","D","E","F","G"], placeholder: "e.g. Mathematics" },
-  { code: "O_LEVEL", name: "Cambridge O Level", country: "International", scale: "A*–E", grades: ["A*","A","B","C","D","E"], placeholder: "e.g. Mathematics" },
-  { code: "AS_LEVEL", name: "Cambridge International AS Level", country: "International", scale: "A–E", grades: ["A","B","C","D","E"], placeholder: "e.g. Mathematics" },
-  { code: "A_LEVEL", name: "Cambridge International A Level", country: "International", scale: "A*–E", grades: ["A*","A","B","C","D","E"], placeholder: "e.g. Mathematics" },
-  { code: "EDEXCEL_IGCSE", name: "Pearson Edexcel International GCSE", country: "International", scale: "9–1 / A*–G", grades: ["9","8","7","6","5","4","3","2","1"], placeholder: "e.g. Mathematics" },
-  { code: "EDEXCEL_A_LEVEL", name: "Pearson Edexcel International A Level", country: "International", scale: "A*–E", grades: ["A*","A","B","C","D","E"], placeholder: "e.g. Mathematics" },
-  { code: "AP", name: "Advanced Placement (AP)", country: "International", scale: "1–5", grades: ["5","4","3","2","1"], placeholder: "e.g. Calculus BC" },
-  { code: "SAT", name: "SAT", country: "International", scale: "400–1600", grades: [], placeholder: "Section or subject (optional)" },
-  { code: "ACT", name: "ACT", country: "International", scale: "1–36", grades: [], placeholder: "Section or subject (optional)" },
-  { code: "FRENCH_BAC_INT", name: "French Baccalauréat", country: "International", scale: "0–20", grades: [], placeholder: "e.g. Mathematics" },
-  { code: "CAMBRIDGE_GCE", name: "Cambridge GCE", country: "International", scale: "A*–E", grades: ["A*","A","B","C","D","E"], placeholder: "e.g. Mathematics" },
-];
-
-const COUNTRY_OPTIONS = [
-  ["DZ","Algeria"],["AO","Angola"],["BJ","Benin"],["BW","Botswana"],["BF","Burkina Faso"],["BI","Burundi"],["CV","Cabo Verde"],["CM","Cameroon"],["CF","Central African Republic"],["TD","Chad"],["KM","Comoros"],["CG","Congo"],["CD","Democratic Republic of the Congo"],["CI","Côte d'Ivoire"],["DJ","Djibouti"],["EG","Egypt"],["GQ","Equatorial Guinea"],["ER","Eritrea"],["SZ","Eswatini"],["ET","Ethiopia"],["GA","Gabon"],["GM","Gambia"],["GH","Ghana"],["GN","Guinea"],["GW","Guinea-Bissau"],["KE","Kenya"],["LS","Lesotho"],["LR","Liberia"],["LY","Libya"],["MG","Madagascar"],["MW","Malawi"],["ML","Mali"],["MR","Mauritania"],["MU","Mauritius"],["MA","Morocco"],["MZ","Mozambique"],["NA","Namibia"],["NE","Niger"],["NG","Nigeria"],["RW","Rwanda"],["ST","São Tomé and Príncipe"],["SN","Senegal"],["SC","Seychelles"],["SL","Sierra Leone"],["SO","Somalia"],["ZA","South Africa"],["SS","South Sudan"],["SD","Sudan"],["TZ","Tanzania"],["TG","Togo"],["TN","Tunisia"],["UG","Uganda"],["ZM","Zambia"],["ZW","Zimbabwe"],["EH","Sahrawi Republic"],["OTHER","Other"],
 ];
 
 const Onboarding = () => {
@@ -79,36 +27,11 @@ const Onboarding = () => {
   const [fullName, setFullName] = useState("");
   const [school, setSchool] = useState("");
   const [region, setRegion] = useState("");
-  const [country, setCountry] = useState("GH");
   const [career, setCareer] = useState("");
   const [interests, setInterests] = useState<string[]>([]);
-  const [qualificationCode, setQualificationCode] = useState("WASSCE");
-  const [overallScore, setOverallScore] = useState("");
-  const [results, setResults] = useState([{ subject: "", grade: "", level: "" }]);
-  const [accountRole, setAccountRole] = useState<"student" | "employee" | "employer" | "startup_founder">("student");
-
-  useEffect(() => {
-    const stored = typeof window !== "undefined" ? window.localStorage.getItem("selectedRole") : null;
-    if (stored === "student" || stored === "employee" || stored === "employer" || stored === "startup_founder") {
-      setAccountRole(stored);
-    }
-  }, []);
-
-  const availableQualifications = useMemo(() => {
-    const countryMatches = QUALIFICATIONS.filter(
-      (q) => !q.countries || q.countries.includes(country),
-    );
-    return countryMatches.length > 0
-      ? countryMatches
-      : QUALIFICATIONS.filter((q) => q.country === "International");
-  }, [country]);
-
-  const qualification = useMemo(
-    () => (availableQualifications.find((q) => q.code === qualificationCode) ?? availableQualifications[0] ?? QUALIFICATIONS[0])!,
-    [availableQualifications, qualificationCode],
+  const [results, setResults] = useState(
+    CORE_SUBJECTS.map((subject) => ({ subject, grade: "" })),
   );
-  const isWassce = qualification.code === "WASSCE";
-  const hasGradeScale = qualification.grades.length > 0;
 
   useEffect(() => {
     if (!loading && !user) navigate(`/auth?next=${encodeURIComponent(window.location.pathname + window.location.search)}`, { replace: true });
@@ -116,193 +39,162 @@ const Onboarding = () => {
 
   useEffect(() => {
     if (!user) return;
-    supabase.from("profiles").select("full_name").eq("id", user.id).maybeSingle()
+    supabase
+      .from("profiles")
+      .select("full_name")
+      .eq("id", user.id)
+      .maybeSingle()
       .then(({ data }) => setFullName((prev) => prev || data?.full_name || ""));
   }, [user]);
 
-  const toggleInterest = (interest: string) =>
-    setInterests((prev) => prev.includes(interest) ? prev.filter((x) => x !== interest) : [...prev, interest]);
-
-  useEffect(() => {
-    if (!availableQualifications.some((q) => q.code === qualificationCode)) {
-      setQualificationCode(availableQualifications[0]?.code ?? "WASSCE");
-      setOverallScore("");
-      setResults([{ subject: "", grade: "", level: "" }]);
-    }
-  }, [availableQualifications, qualificationCode]);
-
-  const changeQualification = (code: string) => {
-    setQualificationCode(code);
-    setOverallScore("");
-    setResults([{ subject: "", grade: "", level: "" }]);
-  };
+  const toggleInterest = (i: string) =>
+    setInterests((prev) => (prev.includes(i) ? prev.filter((x) => x !== i) : [...prev, i]));
 
   const handleSave = async () => {
-    if (!user || saving) return;
+    if (!user) return;
     setSaving(true);
-
     try {
-      const wassceRows = isWassce
-        ? results
-            .filter((r) => r.subject.trim() && r.grade)
-            .map((r) => ({ subject: r.subject.trim(), grade: r.grade }))
-        : [];
-
-      const qualificationRows = results
-        .filter((r) => r.subject.trim() && (r.grade || !hasGradeScale))
-        .map((r) => ({
-          subject: r.subject.trim(),
-          grade: r.grade || overallScore.trim() || "Entered",
-          level: r.level || null,
-        }));
-
-      const db = supabase as any;
-      const { data, error } = await db.rpc("save_profile_bundle", {
-        p_full_name: fullName.trim() || null,
-        p_email: user.email ?? null,
-        p_school: school.trim() || null,
-        p_region: region || null,
-        p_country_code: country || "GH",
-        p_target_career: career.trim() || null,
-        p_interests: interests,
-        p_pathways: [],
-        p_qualification_code: qualification.code,
-        p_qualification_name: qualification.name,
-        p_grading_scale: qualification.scale,
-        p_overall_score: overallScore.trim() || null,
-        p_qualification_metadata: {
-          country_name:
-            COUNTRY_OPTIONS.find(([code]) => code === country)?.[1] ?? "Other",
+      const { error } = await supabase.from("profiles").upsert(
+        {
+          id: user.id,
+          email: user.email ?? null,
+          full_name: fullName.trim() || null,
+          school: school.trim() || null,
+          region: region || null,
+          target_career: career.trim() || null,
+          interests,
+          onboarded: true,
         },
-        p_wassce_results: wassceRows,
-        p_qualification_results: qualificationRows,
-        p_account_role: accountRole,
-        p_whatsapp_number: null,
-        p_linkedin_url: null,
-      });
+        { onConflict: "id" },
+      );
+      if (error) throw error;
 
-      if (error) {
-        const details = [error.message, error.details, error.hint, error.code].filter(Boolean).join(" · ");
-        throw new Error(details || "The database rejected the profile save");
-      }
-      if (!data?.saved || data.user_id !== user.id) {
-        throw new Error("Profile save could not be confirmed");
+      const rows = results
+        .filter((r) => r.subject.trim() && r.grade)
+        .map((r) => ({ user_id: user.id, subject: r.subject.trim(), grade: r.grade }));
+
+      const { error: dErr } = await supabase.from("wassce_results").delete().eq("user_id", user.id);
+      if (dErr) throw dErr;
+      if (rows.length) {
+        const { error: rErr } = await supabase.from("wassce_results").insert(rows);
+        if (rErr) throw rErr;
       }
 
-      if (typeof window !== "undefined") window.localStorage.removeItem("selectedRole");
       toast.success("Profile saved");
       navigate("/dashboard", { replace: true });
     } catch (err) {
       const message = err instanceof Error ? err.message : "Could not save profile";
       console.error("Profile save failed", err);
-      toast.error(message === "Profile save could not be confirmed"
-        ? "Your profile could not be confirmed. Please try again."
-        : `Could not save profile: ${message}`);
+      toast.error(`Could not save profile: ${message}`);
     } finally {
       setSaving(false);
     }
   };
 
-  const inputClass = "w-full px-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50";
+
+  const inputClass =
+    "w-full px-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50";
 
   return (
     <div className="min-h-screen bg-background px-4 py-8">
       <div className="max-w-2xl mx-auto">
-        <div className="flex justify-end mb-4">
-        </div>
-        <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-2">Let's set up your path</h1>
+        <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-2">
+          Let's set up your path
+        </h1>
         <p className="text-sm text-muted-foreground mb-6">
-          Tell GhanaPathFinder where you study and which qualification you use. Your academic profile powers Ghana-focused international recommendations.
+          This powers your matched programmes, scholarship matches and dashboard.
         </p>
 
         <div className="space-y-4">
           <div className="bg-glass rounded-xl p-5 space-y-3">
             <h2 className="font-display font-semibold text-foreground">About you</h2>
             <input className={inputClass} placeholder="Full name" value={fullName} maxLength={100} onChange={(e) => setFullName(e.target.value)} />
-            <select className={inputClass} value={country} onChange={(e) => setCountry(e.target.value)}>
-              <option value="">Select your country</option>
-              {COUNTRY_OPTIONS.map(([code, name]) => <option key={code} value={code}>{name}</option>)}
+            <input className={inputClass} placeholder="Senior High School" value={school} maxLength={120} onChange={(e) => setSchool(e.target.value)} />
+            <select className={inputClass} value={region} onChange={(e) => setRegion(e.target.value)}>
+              <option value="">Select your region</option>
+              {REGIONS.map((r) => <option key={r} value={r}>{r}</option>)}
             </select>
-            {country === "GH" && (
-              <select className={inputClass} value={region} onChange={(e) => setRegion(e.target.value)}>
-                <option value="">Select your region</option>
-                {REGIONS.map((r) => <option key={r} value={r}>{r}</option>)}
-              </select>
-            )}
-            <input className={inputClass} placeholder="School / institution" value={school} maxLength={120} onChange={(e) => setSchool(e.target.value)} />
             <input className={inputClass} placeholder="Target career (e.g. Software Engineer)" value={career} maxLength={100} onChange={(e) => setCareer(e.target.value)} />
-          </div>
-
-          <div className="bg-glass rounded-xl p-5">
-            <h2 className="font-display font-semibold text-foreground mb-1">Academic qualification</h2>
-            <p className="text-xs text-muted-foreground mb-3">Choose the qualification you actually completed. GhanaPathFinder supports WASSCE, IB, Cambridge pathways and national secondary qualifications from across Africa. Where University of Ghana has not published a direct equivalence for a qualification, the profile is marked for university review rather than treated as automatically eligible.</p>
-            <select className={inputClass} value={qualificationCode} onChange={(e) => changeQualification(e.target.value)}>
-              {availableQualifications.map((q) => <option key={q.code} value={q.code}>{q.name} · {q.country}</option>)}
-            </select>
-
-            <div className="grid grid-cols-2 gap-3 mt-3">
-              <div>
-                <label className="text-xs text-muted-foreground">Grading scale</label>
-                <p className="text-sm text-foreground mt-1">{qualification.scale}</p>
-              </div>
-              <div>
-                <label className="text-xs text-muted-foreground">{isWassce ? "Qualification" : "Overall score (optional)"}</label>
-                {isWassce ? <p className="text-sm text-foreground mt-1">WASSCE</p> : (
-                  <input className={inputClass + " mt-1"} placeholder={qualification.scale} value={overallScore} maxLength={30} onChange={(e) => setOverallScore(e.target.value)} />
-                )}
-              </div>
-            </div>
-
-            <div className="space-y-2 mt-4">
-              {results.map((r, idx) => (
-                <div key={idx} className="grid grid-cols-[minmax(0,1fr)_auto_auto_auto] gap-2">
-                  <input className={inputClass} placeholder={qualification.placeholder ?? "Subject"} value={r.subject} maxLength={80}
-                    onChange={(e) => setResults((prev) => prev.map((x, i) => i === idx ? { ...x, subject: e.target.value } : x))} />
-                  {hasGradeScale ? (
-                    <select className="px-3 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm w-28" value={r.grade}
-                      onChange={(e) => setResults((prev) => prev.map((x, i) => i === idx ? { ...x, grade: e.target.value } : x))}>
-                      <option value="">Grade</option>
-                      {qualification.grades.map((g) => <option key={g} value={g}>{g}</option>)}
-                    </select>
-                  ) : (
-                    <input className="px-3 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm w-28" placeholder="Result" value={r.grade}
-                      maxLength={20} onChange={(e) => setResults((prev) => prev.map((x, i) => i === idx ? { ...x, grade: e.target.value } : x))} />
-                  )}
-                  {qualification.levels ? (
-                    <select className="px-3 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm w-32" value={r.level}
-                      onChange={(e) => setResults((prev) => prev.map((x, i) => i === idx ? { ...x, level: e.target.value } : x))}>
-                      <option value="">Level</option>
-                      {qualification.levels.map((level) => <option key={level} value={level}>{level}</option>)}
-                    </select>
-                  ) : <span className="w-8" />}
-                  <button onClick={() => setResults((prev) => prev.filter((_, i) => i !== idx))} className="p-3 text-muted-foreground hover:text-destructive" aria-label="Remove subject">
-                    <Trash2 className="h-4 w-4" />
-                  </button>
-                </div>
-              ))}
-            </div>
-            <button onClick={() => setResults((prev) => [...prev, { subject: "", grade: "", level: "" }])} className="mt-3 inline-flex items-center gap-1.5 text-sm text-primary font-medium">
-              <Plus className="h-4 w-4" /> Add subject
-            </button>
           </div>
 
           <div className="bg-glass rounded-xl p-5">
             <h2 className="font-display font-semibold text-foreground mb-3">Interests</h2>
             <div className="flex flex-wrap gap-2">
               {INTERESTS.map((i) => (
-                <button key={i} onClick={() => toggleInterest(i)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${interests.includes(i) ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"}`}>
+                <button
+                  key={i}
+                  onClick={() => toggleInterest(i)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                    interests.includes(i)
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-secondary text-muted-foreground"
+                  }`}
+                >
                   {i}
                 </button>
               ))}
             </div>
           </div>
 
+          <div className="bg-glass rounded-xl p-5">
+            <h2 className="font-display font-semibold text-foreground mb-1">WASSCE results</h2>
+            <p className="text-xs text-muted-foreground mb-4">
+              Add your best six subjects , we use them to calculate your aggregate.
+            </p>
+            <div className="space-y-2">
+              {results.map((r, idx) => (
+                <div key={idx} className="flex gap-2">
+                  <input
+                    className={inputClass}
+                    placeholder="Subject"
+                    value={r.subject}
+                    maxLength={60}
+                    onChange={(e) =>
+                      setResults((prev) => prev.map((x, i) => (i === idx ? { ...x, subject: e.target.value } : x)))
+                    }
+                  />
+                  <select
+                    className="px-3 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm w-28"
+                    value={r.grade}
+                    onChange={(e) =>
+                      setResults((prev) => prev.map((x, i) => (i === idx ? { ...x, grade: e.target.value } : x)))
+                    }
+                  >
+                    <option value="">Grade</option>
+                    {GRADES.map((g) => <option key={g} value={g}>{g}</option>)}
+                  </select>
+                  <button
+                    onClick={() => setResults((prev) => prev.filter((_, i) => i !== idx))}
+                    className="p-3 text-muted-foreground hover:text-destructive"
+                    aria-label="Remove subject"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+            <button
+              onClick={() => setResults((prev) => [...prev, { subject: "", grade: "" }])}
+              className="mt-3 inline-flex items-center gap-1.5 text-sm text-primary font-medium"
+            >
+              <Plus className="h-4 w-4" /> Add subject
+            </button>
+          </div>
+
           <div className="flex gap-3">
-            <button onClick={handleSave} disabled={saving} className="flex-1 px-4 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-semibold flex items-center justify-center gap-2">
+            <button
+              onClick={handleSave}
+              disabled={saving}
+              className="flex-1 px-4 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-semibold flex items-center justify-center gap-2"
+            >
               {saving && <Loader2 className="h-4 w-4 animate-spin" />} Save and continue
             </button>
-            <button onClick={() => navigate("/dashboard")} className="px-4 py-3 rounded-lg bg-secondary text-muted-foreground text-sm font-medium">Skip</button>
+            <button
+              onClick={() => navigate("/dashboard")}
+              className="px-4 py-3 rounded-lg bg-secondary text-muted-foreground text-sm font-medium"
+            >
+              Skip
+            </button>
           </div>
         </div>
       </div>

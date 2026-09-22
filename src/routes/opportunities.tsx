@@ -1,1 +1,0 @@
-import { createFileRoute } from "@tanstack/react-router"; import { Opportunities } from "@/pages/Platform"; export const Route=createFileRoute("/opportunities")({component:Opportunities});

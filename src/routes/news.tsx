@@ -1,1 +1,0 @@
-import { createFileRoute } from "@tanstack/react-router"; import { News } from "@/pages/Platform"; export const Route=createFileRoute("/news")({component:News});

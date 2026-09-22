@@ -1,13 +1,11 @@
 {
-  "$schema":"https://openapi.vercel.sh/vercel.json",
-  "redirects":[
-    {"source":"/(.*)","has":[{"type":"host","value":"www.ghanapathfinder.com"}],"destination":"https://ghanapathfinder.com/$1","permanent":true}
-  ],
-  "headers":[
-    {"source":"/(.*)","headers":[
-      {"key":"X-Content-Type-Options","value":"nosniff"},
-      {"key":"X-Frame-Options","value":"SAMEORIGIN"},
-      {"key":"Referrer-Policy","value":"strict-origin-when-cross-origin"}
-    ]}
-  ]
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "npm run build",
+  "installCommand": "bun install --frozen-lockfile",
+  "build": {
+    "env": {
+      "NITRO_PRESET": "vercel"
+    }
+  }
 }

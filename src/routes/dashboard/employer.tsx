@@ -1,1 +1,0 @@
-import { createFileRoute } from "@tanstack/react-router"; import { EmployerDashboard } from "@/pages/Platform"; export const Route=createFileRoute("/dashboard/employer")({component:EmployerDashboard});

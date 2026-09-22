@@ -1,1 +1,0 @@
-import { createFileRoute } from "@tanstack/react-router"; import { RoleWelcome } from "@/pages/Platform"; export const Route=createFileRoute("/welcome")({component:RoleWelcome});
