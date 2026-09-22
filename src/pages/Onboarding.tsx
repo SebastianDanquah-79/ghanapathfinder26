@@ -177,7 +177,6 @@ const Onboarding = () => {
         p_wassce_results: wassceRows,
         p_qualification_results: qualificationRows,
         p_account_role: accountRole,
-        p_whatsapp_number: null,
         p_linkedin_url: null,
       });
 
