@@ -15,7 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 const TranslationTool = () => {
   const current = getLanguage();
   const [source, setSource] = useState<AppLanguage>(current);
-  const [target, setTarget] = useState<AppLanguage>(current === "en" ? "fr" : "en");
+  const [target, setTarget] = useState<AppLanguage>(current);
   const [textValue, setTextValue] = useState("");
   const [translated, setTranslated] = useState("");
   const [loading, setLoading] = useState(false);

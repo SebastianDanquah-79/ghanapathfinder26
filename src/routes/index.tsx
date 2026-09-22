@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { EntryGate } from "@/pages/Platform";
+import Home from "@/pages/Home";
 import { scholarshipRecordsQueryOptions, universitiesQueryOptions } from "@/hooks/useCatalogue";
 
 export const Route = createFileRoute("/")({
@@ -9,5 +9,5 @@ export const Route = createFileRoute("/")({
       context.queryClient.ensureQueryData(scholarshipRecordsQueryOptions("", "All")),
     ]);
   },
-  component: EntryGate,
+  component: Home,
 });

@@ -28,7 +28,7 @@ function AuthCallback() {
       }
 
       const next = safeNext(params.get("next"));
-      const { data: profile } = await supabase
+      const { data: profile } = await (supabase as any)
         .from("profiles")
         .select("onboarded, account_role")
         .eq("id", data.session.user.id)

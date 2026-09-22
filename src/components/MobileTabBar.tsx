@@ -3,7 +3,7 @@ import { Home, ArrowRight, Briefcase, BookOpen, Globe } from "@/lib/icons";
 import { useAuth } from "@/hooks/useAuth";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
-const tabs = [
+const tabs: { to: string; label: string; icon: typeof Home; match?: string }[] = [
   { to: "/", label: "Home", icon: Home },
   { to: "/feed", label: "Feed", icon: ArrowRight },
   { to: "/opportunities", label: "Opportunities", icon: Briefcase },

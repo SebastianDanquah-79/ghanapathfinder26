@@ -22,7 +22,7 @@ export function getSelectedCountry(): string | null {
 
 export async function resolveBackend(language: AppLanguage = getLanguage()): Promise<BackendRoute> {
   const country = getSelectedCountry();
-  const { data, error } = await supabase.rpc("resolve_gpf_backend", {
+  const { data, error } = await (supabase as any).rpc("resolve_gpf_backend", {
     p_language: language,
     p_country_code: country,
   });
@@ -32,7 +32,7 @@ export async function resolveBackend(language: AppLanguage = getLanguage()): Pro
     country_code: country,
     language_code: language,
     locale: language,
-    direction: language === "ar" ? "rtl" : "ltr",
+    direction: (language as string) === "ar" ? "rtl" : "ltr",
   }) as BackendRoute;
 }
 
@@ -40,7 +40,7 @@ export async function getBackendContent(
   language: AppLanguage = getLanguage(),
   keys: string[] = [],
 ) {
-  const { data, error } = await supabase.rpc("get_backend_content", {
+  const { data, error } = await (supabase as any).rpc("get_backend_content", {
     p_language: language,
     p_keys: keys,
   });
