@@ -31,7 +31,8 @@ jobs:
         run: npm install --global vercel@latest
 
       - name: Link Vercel project
-        run: vercel link --yes --project "$VERCEL_PROJECT_ID" --scope "$VERCEL_ORG_ID" --token "$VERCEL_TOKEN"
+        run: vercel whoami --token "$VERCEL_TOKEN"
+          vercel link --yes --project "$VERCEL_PROJECT_ID" --scope "ghanapathfinder1" --token "$VERCEL_TOKEN"
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
