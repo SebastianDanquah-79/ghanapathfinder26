@@ -51,6 +51,10 @@ import { Route as SavedRouteImport } from './routes/saved'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as WelcomeRouteImport } from './routes/welcome'
+import { Route as StudentDirectoryRouteImport } from './routes/student-directory'
+import { Route as EmployerDirectoryRouteImport } from './routes/employer-directory'
+import { Route as StartupDirectoryRouteImport } from './routes/startup-directory'
+import { Route as EmployeeDirectoryRouteImport } from './routes/employee-directory'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin/analytics'
 import { Route as AdminDataRouteImport } from './routes/admin/data'
 import { Route as AdminInsightsRouteImport } from './routes/admin/insights'
@@ -292,6 +296,27 @@ const WelcomeRoute = WelcomeRouteImport.update({
   path: '/welcome',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StudentDirectoryRoute = StudentDirectoryRouteImport.update({
+  id: '/student-directory',
+  path: '/student-directory',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmployerDirectoryRoute = EmployerDirectoryRouteImport.update({
+  id: '/employer-directory',
+  path: '/employer-directory',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StartupDirectoryRoute = StartupDirectoryRouteImport.update({
+  id: '/startup-directory',
+  path: '/startup-directory',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmployeeDirectoryRoute = EmployeeDirectoryRouteImport.update({
+  id: '/employee-directory',
+  path: '/employee-directory',
+  getParentRoute: () => rootRouteImport,
+} as any)
+
 const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
   id: '/admin/analytics',
   path: '/admin/analytics',
@@ -490,6 +515,10 @@ export interface FileRoutesByFullPath {
   '/search': typeof SearchRoute
   '/terms': typeof TermsRoute
   '/welcome': typeof WelcomeRoute
+  '/student-directory': typeof StudentDirectoryRoute
+  '/employer-directory': typeof EmployerDirectoryRoute
+  '/startup-directory': typeof StartupDirectoryRoute
+  '/employee-directory': typeof EmployeeDirectoryRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
   '/admin/insights': typeof AdminInsightsRoute
@@ -1224,6 +1253,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/student-directory': {
+      id: '/student-directory'
+      path: '/student-directory'
+      fullPath: '/student-directory'
+      preLoaderRoute: typeof StudentDirectoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/employer-directory': {
+      id: '/employer-directory'
+      path: '/employer-directory'
+      fullPath: '/employer-directory'
+      preLoaderRoute: typeof EmployerDirectoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/startup-directory': {
+      id: '/startup-directory'
+      path: '/startup-directory'
+      fullPath: '/startup-directory'
+      preLoaderRoute: typeof StartupDirectoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/employee-directory': {
+      id: '/employee-directory'
+      path: '/employee-directory'
+      fullPath: '/employee-directory'
+      preLoaderRoute: typeof EmployeeDirectoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/welcome': {
       id: '/welcome'
       path: '/welcome'
@@ -1515,6 +1572,10 @@ const rootRouteChildren: RootRouteChildren = {
   SearchRoute: SearchRoute,
   TermsRoute: TermsRoute,
   WelcomeRoute: WelcomeRoute,
+  StudentDirectoryRoute: StudentDirectoryRoute,
+  EmployerDirectoryRoute: EmployerDirectoryRoute,
+  StartupDirectoryRoute: StartupDirectoryRoute,
+  EmployeeDirectoryRoute: EmployeeDirectoryRoute,
   AdminAnalyticsRoute: AdminAnalyticsRoute,
   AdminDataRoute: AdminDataRoute,
   AdminInsightsRoute: AdminInsightsRoute,
