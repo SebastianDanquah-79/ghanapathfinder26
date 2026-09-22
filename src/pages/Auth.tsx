@@ -59,9 +59,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
           email: email.trim(),
           password,
           options: {
-            emailRedirectTo: next
-              ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
-              : window.location.origin,
+            emailRedirectTo: `${window.location.origin}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ""}`,
             data: { full_name: fullName.trim(), account_type: accountType, phone: phone.trim() },
           },
         });
