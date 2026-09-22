@@ -1384,6 +1384,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiInstitutionMediaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/news-feed': {
+      id: '/api/news-feed'
+      path: '/api/news-feed'
+      fullPath: '/api/news-feed'
+      preLoaderRoute: typeof ApiNewsFeedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/institution-programmes': {
       id: '/api/institution-programmes'
       path: '/api/institution-programmes'
