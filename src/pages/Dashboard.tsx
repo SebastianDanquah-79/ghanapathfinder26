@@ -507,27 +507,23 @@ const Dashboard = () => {
           </div>
 
           <div className="min-w-0">
-            <Card title="Quick links">
-              <div className="flex flex-wrap gap-2">
-                {[
-                  { to: "/admission-match", label: "Matches", icon: Sparkles },
-                  { to: "/scholarships", label: "Scholarships", icon: Bookmark },
-                  { to: "/applications", label: "Applications", icon: CalendarClock },
-                  { to: "/community", label: "Community", icon: Bookmark },
-                  { to: "/programmes", label: "Programmes", icon: Sparkles },
-                  { to: "/internships", label: "Internships", icon: CalendarClock },
-                ].map(({ to, label, icon: Icon }) => (
-                  <Link
-                    key={to}
-                    to={to}
-                    className="inline-flex items-center gap-2 min-h-[44px] px-3 rounded-lg bg-secondary text-sm text-foreground"
-                  >
-                    <Icon className="h-4 w-4 text-primary" />
-                    {label}
-                  </Link>
-                ))}
-              </div>
-            </Card>
+            <Card title="Explore sections">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {[
+                { to: "/employee", label: "Employee", hint: "Jobs, skills, CV and professional growth" },
+                { to: "/student", label: "Student", hint: "Education, assessment and study planning" },
+                { to: "/startup", label: "Startup", hint: "Founders, funding and startup resources" },
+                { to: "/classification-center", label: "Classification Center", hint: "Organise your path and discover relevant options" },
+                { to: "/opportunities", label: "Opportunities", hint: "Browse jobs, internships, fellowships and grants" },
+                { to: "/feed", label: "Feed", hint: "Follow innovation, technology and community content" },
+              ].map(({ to, label, hint }) => (
+                <Link key={to} to={to} className="rounded-lg border border-border/60 bg-secondary/40 p-3 hover:border-primary/50 transition-colors">
+                  <p className="text-sm font-semibold text-foreground">{label}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">{hint}</p>
+                </Link>
+              ))}
+            </div>
+          </Card>
           </div>
 
           <div className="min-w-0">
