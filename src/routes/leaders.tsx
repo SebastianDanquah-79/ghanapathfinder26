@@ -1,0 +1,1 @@
+import { createFileRoute } from "@tanstack/react-router"; import { Leaders } from "@/pages/Platform"; export const Route=createFileRoute("/leaders")({component:Leaders});
