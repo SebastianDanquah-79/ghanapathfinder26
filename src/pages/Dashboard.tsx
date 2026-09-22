@@ -108,7 +108,9 @@ const Dashboard = () => {
       navigate("/onboarding", { replace: true });
       return;
     }
-    if ((profile as any).account_role === "student") {\n      navigate("/dashboard/student", { replace: true });\n    } else if ((profile as any).account_role === "employee") {
+    if ((profile as any).account_role === "student") {
+      navigate("/dashboard/student", { replace: true });
+    } else if ((profile as any).account_role === "employee") {
       navigate("/dashboard/employee", { replace: true });
     } else if ((profile as any).account_role === "employer") {
       navigate("/dashboard/employer", { replace: true });
