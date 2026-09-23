@@ -12,8 +12,7 @@ export const STATIC_ROUTES = [
   "/parent", "/preferences", "/privacy", "/professional-councils", "/programmes", "/references",
   "/reset-password", "/saved", "/scholarships", "/search", "/skills", "/terms",
   // Expansion
-  "/opportunities", "/students", "/students/profile", "/insights", "/life-path", "/pipeline",
-  "/education/ghana", "/education/africa", "/education/international",
+  "/opportunities", "/students", "/insights", "/life-path", "/pipeline", "/international-universities",
 ] as const;
 
 export const DYNAMIC_ROUTES = OPPORTUNITY_CATEGORIES.map((c) => `/opportunities/${c.slug}`);
