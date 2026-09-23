@@ -32,8 +32,8 @@ export default function MobileTabBar() {
           );
         })}
         <li>
-          <a href={user ? "/profile" : "/auth"} aria-label={user ? "Profile" : "Sign in"} aria-current={pathname === "/profile" ? "page" : undefined} className={"flex min-h-[58px] flex-col items-center justify-center gap-0.5 text-[10px] font-medium " + (pathname === "/profile" ? "text-primary" : "text-muted-foreground")}>
-            <span className={"grid h-7 w-11 place-items-center rounded-full " + (pathname === "/profile" ? "bg-primary/15" : "")}><span className="grid h-6 w-6 place-items-center rounded-full bg-primary/15 text-[9px] font-bold text-primary">{user ? "Me" : "Go"}</span></span>
+          <a href={user ? "/profile" : "/auth"} aria-label={user ? "Profile" : "Sign in"} className={"flex min-h-[58px] flex-col items-center justify-center gap-0.5 text-[10px] font-medium " + (pathname === "/profile" ? "text-primary" : "text-muted-foreground")}>
+            <span className="grid h-7 w-11 place-items-center"><span className="grid h-6 w-6 place-items-center rounded-full bg-primary/15 text-[9px] font-bold text-primary">{user ? "Me" : "Go"}</span></span>
             {user ? "Profile" : "Sign in"}
           </a>
         </li>
