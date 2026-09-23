@@ -65,7 +65,7 @@ const Stat = ({ label, value, icon: Icon }: { label: string; value: number; icon
 const SectionTitle = ({ icon: Icon, eyebrow, title, description, to }: { icon: typeof BarChart3; eyebrow: string; title: string; description: string; to?: string }) => (
   <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
     <div><div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground"><Icon className="h-4 w-4" />{eyebrow}</div><h2 className="mt-2 text-2xl font-semibold tracking-tight">{title}</h2><p className="mt-1 max-w-2xl text-sm text-muted-foreground">{description}</p></div>
-    {to ? <Button variant="outline" asChild><Link to={to}>{title}<ArrowRight className="ml-2 h-4 w-4" /></Link></Button> : null}
+    {to ? <Button variant="outline" asChild><a href={to}>{title}<ArrowRight className="ml-2 h-4 w-4" /></a></Button> : null}
   </div>
 );
 
@@ -89,7 +89,7 @@ export default function OpportunityIntelligence() {
           <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Education, skills, work and opportunity in one place</h2>
           <p className="mt-3 text-base leading-7 text-muted-foreground">Ghana remains the starting point, while the platform connects African and international universities, skills, jobs, internships, scholarships, companies, startups, news, innovation and opt-in professional discovery.</p>
           <div className="mt-5 flex flex-wrap gap-2">
-            {[["/search","Discover"],["/programmes","Learn"],["/careers","Work"],["/skills","Build skills"],["/scholarships","Fund"],["/community","Community"],["/my-path","My Path"]].map(([to,label]) => <Button key={to} size="sm" variant="outline" asChild><Link to={to}>{label}</Link></Button>)}
+            {[["/search","Discover"],["/programmes","Learn"],["/careers","Work"],["/skills","Build skills"],["/scholarships","Fund"],["/community","Community"],["/my-path","My Path"]].map(([to,label]) => <Button key={to} size="sm" variant="outline" asChild><a href={to}>{label}</a></Button>)}
           </div>
         </div>
 
@@ -174,7 +174,7 @@ export default function OpportunityIntelligence() {
 
         <div className="grid gap-4 md:grid-cols-3">
           {[{icon:BriefcaseBusiness,title:"Work",text:"Jobs, internships, apprenticeships, remote work, applications and employer discovery.",to:"/careers"},{icon:Lightbulb,title:"Skills",text:"Skills, learning resources, projects and career pathways that continue after admission season.",to:"/skills"},{icon:Rocket,title:"Build",text:"Startups, innovation, competitions, funding and communities for African builders.",to:"/community"}].map(({icon:Icon,title,text,to})=>(
-            <Card key={title} className="border-border shadow-none"><CardContent className="p-5"><Icon className="h-5 w-5" /><h3 className="mt-3 font-semibold">{title}</h3><p className="mt-1 text-sm text-muted-foreground">{text}</p><Button className="mt-4" variant="outline" asChild><Link to={to}>Explore<ArrowRight className="ml-2 h-4 w-4" /></Link></Button></CardContent></Card>
+            <Card key={title} className="border-border shadow-none"><CardContent className="p-5"><Icon className="h-5 w-5" /><h3 className="mt-3 font-semibold">{title}</h3><p className="mt-1 text-sm text-muted-foreground">{text}</p><Button className="mt-4" variant="outline" asChild><a href={to}>Explore<ArrowRight className="ml-2 h-4 w-4" /></a></Button></CardContent></Card>
           ))}
         </div>
       </div>
