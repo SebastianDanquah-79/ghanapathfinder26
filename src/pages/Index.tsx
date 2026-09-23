@@ -56,7 +56,6 @@ const Index = () => (
     <GlobalPlatformAnalytics />
     <PathfinderDecisionHub />
     <PlatformOverview />
-    <GlobalPlatformAnalytics />
     <ExploreGrid />
     <CollegeRecommender />
     <UniversityDirectory />
