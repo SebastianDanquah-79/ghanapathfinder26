@@ -18,7 +18,7 @@ function News() {
     queryKey:["news",category,ghanaOnly],
     initialPageParam:0,
     queryFn:async({pageParam})=>{
-      let request=supabase.from("news_articles").select("id,title,excerpt,original_url,image_url,category,country_code,published_at,source_id").order("published_at",{ascending:false}).range(pageParam,pageParam+19);
+      let request=supabase.from("news_articles").select("id,title,excerpt,original_url,image_url,category,country_code,published_at,source_id").gte("published_at",new Date(Date.UTC(new Date().getUTCFullYear(),new Date().getUTCMonth(),1)).toISOString()).order("published_at",{ascending:false}).range(pageParam,pageParam+19);
       if(category!=="all") request=request.eq("category",category);
       if(ghanaOnly) request=request.eq("country_code","GH");
       const {data,error}=await request;
@@ -42,7 +42,7 @@ function News() {
   };
 
   return <div className="min-h-dvh bg-background"><Navbar/><main className="px-4 pb-14 pt-20 sm:px-8"><div className="mx-auto max-w-7xl">
-    <p className="text-xs font-semibold uppercase tracking-[.18em] text-primary">Pan-African news</p><h1 className="mt-2 text-3xl font-bold sm:text-4xl">What is happening across Africa</h1><p className="mt-2 max-w-2xl text-sm text-muted-foreground">Every article remains linked to its original publisher. GhanaPathFinder does not claim ownership of third-party reporting.</p>
+    <p className="text-xs font-semibold uppercase tracking-[.18em] text-primary">Global news · September 2026</p><h1 className="mt-2 text-3xl font-bold sm:text-4xl">News happening around the world this month</h1><p className="mt-2 max-w-2xl text-sm text-muted-foreground">Every article remains linked to its original publisher. GhanaPathFinder links to the original publisher and does not republish third-party reporting.</p>
     <div className="mt-6 flex gap-2 overflow-x-auto pb-1">{categories.map(c=><button key={c} onClick={()=>setCategory(c)} className={"shrink-0 rounded-full border px-3 py-2 text-xs font-medium capitalize "+(category===c?"border-primary bg-primary/10 text-primary":"border-border text-muted-foreground")}>{c}</button>)}</div>
     <label className="mt-4 inline-flex items-center gap-2 text-sm"><input type="checkbox" checked={ghanaOnly} onChange={e=>setGhanaOnly(e.target.checked)}/> Ghana Focus</label>
     {newCount>0&&<button onClick={()=>{setNewCount(0);void query.refetch()}} className="ml-4 mt-4 rounded-full bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground">{newCount} new article{newCount===1?"":"s"} · refresh</button>}
