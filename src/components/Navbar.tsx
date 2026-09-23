@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Search, LogOut, Info } from "@/lib/icons";
+import { Menu, X, Search, LogOut, Info, Bell } from "@/lib/icons";
 import BrandMark from "@/components/BrandMark";
 import { Link, useLocation } from "@/lib/router-compat";
 import { useAuth } from "@/hooks/useAuth";
+import { useNotifications } from "@/hooks/useNotifications";
 import ThemeToggle from "@/components/ThemeToggle";
 import { navSections, accountItems, aboutItems } from "@/lib/nav-config";
 import {
@@ -30,6 +31,7 @@ const initialsFrom = (value?: string | null) => {
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { user, signOut } = useAuth();
+  const { unread } = useNotifications();
   const { pathname } = useLocation();
 
   useEffect(() => {
@@ -110,6 +112,15 @@ const Navbar = () => {
               </DropdownMenuContent>
             </DropdownMenu>
 
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link to="/notifications" aria-label="Notifications" className={iconButton}>
+                  <span className="relative"><Bell className="h-[18px] w-[18px]" />{user && unread > 0 && <span className="absolute -right-2 -top-2 min-w-4 rounded-full bg-destructive px-1 text-center text-[9px] font-bold leading-4 text-white">{unread > 99 ? "99+" : unread}</span>}</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent>Notifications</TooltipContent>
+            </Tooltip>
+
             <ThemeToggle className="h-10 w-10" />
 
             {user ? (
@@ -149,6 +160,7 @@ const Navbar = () => {
           <Link to="/search" aria-label="Search GhanaPathFinder" className="grid place-items-center h-11 w-11 rounded-full text-muted-foreground active:text-primary">
             <Search className="h-5 w-5" />
           </Link>
+          {user && <Link to="/notifications" aria-label="Notifications" className="relative grid place-items-center h-11 w-11 rounded-full text-muted-foreground active:text-primary"><Bell className="h-5 w-5" />{unread > 0 && <span className="absolute right-0 top-0 min-w-4 rounded-full bg-destructive px-1 text-center text-[9px] font-bold leading-4 text-white">{unread > 99 ? "99+" : unread}</span>}</Link>}
           <ThemeToggle className="h-11 w-11" />
           {user ? (
             <Link to="/dashboard" aria-label="Your dashboard" className="grid place-items-center h-11 w-11">
