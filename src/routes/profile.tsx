@@ -1,0 +1,1 @@
+import { createFileRoute } from "@tanstack/react-router"; import { Profile } from "@/pages/Platform"; export const Route=createFileRoute("/profile")({component:Profile});
