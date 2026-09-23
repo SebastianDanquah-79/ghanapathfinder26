@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS public.opportunity_pipeline (
 );
 ALTER TABLE public.opportunity_pipeline ENABLE ROW LEVEL SECURITY;
 GRANT SELECT, INSERT, UPDATE, DELETE ON public.opportunity_pipeline TO authenticated;
+DROP POLICY IF EXISTS "Own opportunity pipeline" ON public.opportunity_pipeline;
 CREATE POLICY "Own opportunity pipeline" ON public.opportunity_pipeline FOR ALL TO authenticated USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
 
 CREATE TABLE IF NOT EXISTS public.directory_profiles (
@@ -44,10 +45,15 @@ CREATE TABLE IF NOT EXISTS public.directory_profiles (
 ALTER TABLE public.directory_profiles ENABLE ROW LEVEL SECURITY;
 GRANT SELECT ON public.directory_profiles TO anon, authenticated;
 GRANT INSERT, UPDATE, DELETE ON public.directory_profiles TO authenticated;
+DROP POLICY IF EXISTS "Public directory profiles" ON public.directory_profiles;
 CREATE POLICY "Public directory profiles" ON public.directory_profiles FOR SELECT TO anon USING (visibility = 'public');
+DROP POLICY IF EXISTS "Members directory profiles" ON public.directory_profiles;
 CREATE POLICY "Members directory profiles" ON public.directory_profiles FOR SELECT TO authenticated USING (visibility IN ('public','members') OR auth.uid() = user_id);
+DROP POLICY IF EXISTS "Own directory profile insert" ON public.directory_profiles;
 CREATE POLICY "Own directory profile insert" ON public.directory_profiles FOR INSERT TO authenticated WITH CHECK (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Own directory profile update" ON public.directory_profiles;
 CREATE POLICY "Own directory profile update" ON public.directory_profiles FOR UPDATE TO authenticated USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+DROP POLICY IF EXISTS "Own directory profile delete" ON public.directory_profiles;
 CREATE POLICY "Own directory profile delete" ON public.directory_profiles FOR DELETE TO authenticated USING (auth.uid() = user_id);
 
 CREATE TABLE IF NOT EXISTS public.directory_reports (
@@ -59,7 +65,9 @@ CREATE TABLE IF NOT EXISTS public.directory_reports (
 );
 ALTER TABLE public.directory_reports ENABLE ROW LEVEL SECURITY;
 GRANT INSERT, SELECT ON public.directory_reports TO authenticated;
+DROP POLICY IF EXISTS "Own directory reports" ON public.directory_reports;
 CREATE POLICY "Own directory reports" ON public.directory_reports FOR INSERT TO authenticated WITH CHECK (auth.uid() = reporter_id);
+DROP POLICY IF EXISTS "Read own directory reports" ON public.directory_reports;
 CREATE POLICY "Read own directory reports" ON public.directory_reports FOR SELECT TO authenticated USING (auth.uid() = reporter_id OR public.has_role(auth.uid(),'admin'));
 
 CREATE TABLE IF NOT EXISTS public.directory_blocks (
@@ -70,6 +78,7 @@ CREATE TABLE IF NOT EXISTS public.directory_blocks (
 );
 ALTER TABLE public.directory_blocks ENABLE ROW LEVEL SECURITY;
 GRANT SELECT, INSERT, DELETE ON public.directory_blocks TO authenticated;
+DROP POLICY IF EXISTS "Own directory blocks" ON public.directory_blocks;
 CREATE POLICY "Own directory blocks" ON public.directory_blocks FOR ALL TO authenticated USING (auth.uid() = blocker_id) WITH CHECK (auth.uid() = blocker_id);
 
 CREATE TABLE IF NOT EXISTS public.life_path_items (
@@ -85,6 +94,7 @@ CREATE TABLE IF NOT EXISTS public.life_path_items (
 );
 ALTER TABLE public.life_path_items ENABLE ROW LEVEL SECURITY;
 GRANT SELECT, INSERT, UPDATE, DELETE ON public.life_path_items TO authenticated;
+DROP POLICY IF EXISTS "Own life path items" ON public.life_path_items;
 CREATE POLICY "Own life path items" ON public.life_path_items FOR ALL TO authenticated USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
 
 CREATE OR REPLACE FUNCTION public.platform_stats()
