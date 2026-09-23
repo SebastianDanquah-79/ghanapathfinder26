@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { BarChart3, Globe, Users, Target, Eye, Sparkles } from "@/lib/icons";
 import { supabase } from "@/integrations/supabase/client";
 
+type CountryMetric = { country: string; users: number };
 type Analytics = {
   total_users?: number;
   active_users?: number;
@@ -9,6 +10,7 @@ type Analytics = {
   recommendation_runs?: number;
   countries?: number;
   countries_list?: string[];
+  user_country_counts?: CountryMetric[];
   university_count?: number;
   programme_count?: number;
   scholarship_count?: number;
@@ -28,7 +30,7 @@ export default function GlobalPlatformAnalytics() {
       if (error) throw error;
       return (data ?? {}) as Analytics;
     },
-    staleTime: 60_000,
+    staleTime: 30_000,
     refetchInterval: 60_000,
   });
 
@@ -50,15 +52,14 @@ export default function GlobalPlatformAnalytics() {
             </p>
             <h2 className="mt-1 font-display text-2xl font-bold">GhanaPathFinder at a glance</h2>
             <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-              Aggregate usage and catalogue measurements from the platform database. No fabricated counters.
+              Live measurements from GhanaPathFinder's database. User totals and country distribution are derived from actual platform records.
             </p>
           </div>
-          {stats?.countries_list?.length ? (
-            <p className="flex items-center gap-2 text-xs text-muted-foreground">
-              <Globe className="h-4 w-4" />
-              {number(stats.countries)} countries represented
-            </p>
-          ) : null}
+          <div className="flex flex-wrap gap-2 text-xs">
+            <a href="/news" className="border border-border px-3 py-2 hover:border-primary hover:text-primary">Global news</a>
+            <a href="/international-students" className="border border-border px-3 py-2 hover:border-primary hover:text-primary">International students</a>
+            <a href="/international-universities" className="border border-border px-3 py-2 hover:border-primary hover:text-primary">International universities</a>
+          </div>
         </div>
 
         <div className="mt-6 grid grid-cols-2 gap-2 md:grid-cols-4">
@@ -93,26 +94,27 @@ export default function GlobalPlatformAnalytics() {
           </div>
 
           <div className="border border-border bg-background p-4">
-            <h3 className="flex items-center gap-2 font-semibold"><Globe className="h-4 w-4" /> Countries represented</h3>
-            {stats?.countries_list?.length ? (
-              <div className="mt-4 flex flex-wrap gap-2">
-                {stats.countries_list.map((country) => (
-                  <span key={country} className="border border-border px-2.5 py-1.5 text-xs">{country}</span>
+            <h3 className="flex items-center gap-2 font-semibold"><Globe className="h-4 w-4" /> User countries</h3>
+            {stats?.user_country_counts?.length ? (
+              <div className="mt-4 space-y-2">
+                {stats.user_country_counts.slice(0, 12).map((item) => (
+                  <div key={item.country} className="flex items-center justify-between border-b border-border py-2 text-sm">
+                    <span>{item.country}</span><span className="font-semibold">{number(item.users)}</span>
+                  </div>
                 ))}
               </div>
             ) : (
-              <p className="mt-4 text-sm text-muted-foreground">No country records are currently available.</p>
+              <p className="mt-4 text-sm text-muted-foreground">No country information has been supplied by users yet.</p>
             )}
-            <p className="mt-4 text-xs text-muted-foreground">
-              Country coverage is derived from existing university records and opted-in profile data.
-            </p>
+            <p className="mt-4 text-xs text-muted-foreground">{number(stats?.countries)} user countries represented</p>
           </div>
         </div>
 
         {query.isError && (
-          <p className="mt-4 text-xs text-muted-foreground">
-            Live analytics are temporarily unavailable. The rest of GhanaPathFinder remains usable.
-          </p>
+          <div className="mt-4 border border-destructive/30 bg-destructive/5 p-4">
+            <p className="text-sm font-medium">Live analytics could not be loaded.</p>
+            <p className="mt-1 text-xs text-muted-foreground">The analytics endpoint is protected and the rest of the platform remains available.</p>
+          </div>
         )}
       </div>
     </section>
