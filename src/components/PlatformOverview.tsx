@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@/lib/router-compat";
-import { BarChart3, Globe2, GraduationCap, Users } from "@/lib/icons";
+import { BarChart3, GraduationCap } from "@/lib/icons";
 import { supabase } from "@/integrations/supabase/client";
 
 const Overview = () => {
@@ -25,8 +25,8 @@ const Overview = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">{(universities.data ?? []).map((u)=><Link key={u.id} to="/university/$slug" params={{slug:u.slug}} className="border border-border bg-background overflow-hidden"><div className="aspect-[16/9] bg-secondary flex items-center justify-center">{u.logo_url?<img src={u.logo_url} alt="" loading="lazy" className="h-full w-full object-contain p-5"/>:<GraduationCap className="h-8 w-8 text-muted-foreground"/>}</div><div className="p-3"><p className="text-sm font-semibold line-clamp-2">{u.name}</p><p className="text-[11px] text-muted-foreground mt-1">{u.country || "Ghana"}{u.verified?" · Verified":""}</p></div></Link>)}</div>
         </div>
         <div className="space-y-3"><div className="border border-border bg-background p-4"><BarChart3 className="h-5 w-5 text-primary"/><h3 className="font-semibold mt-2">Data analytics</h3><p className="text-xs text-muted-foreground mt-1">Live catalogue counts and university coverage, using existing records only.</p><Link to="/insights" className="inline-block mt-3 text-xs font-semibold text-primary">Open insights</Link></div>
-          <div className="border border-border bg-background p-4"><Users className="h-5 w-5 text-primary"/><h3 className="font-semibold mt-2">International students</h3><p className="text-xs text-muted-foreground mt-1">{students.data?.length ?? 0} public profiles currently visible in the preview.</p><Link to="/students" className="inline-block mt-3 text-xs font-semibold text-primary">Open directory</Link></div>
-          <div className="border border-border bg-background p-4"><Globe2 className="h-5 w-5 text-primary"/><h3 className="font-semibold mt-2">Global education</h3><p className="text-xs text-muted-foreground mt-1">Ghana, Africa and international university discovery without removing the existing Ghana catalogue.</p><Link to="/international-universities" className="inline-block mt-3 text-xs font-semibold text-primary">Explore universities</Link></div>
+          <div className="border border-border bg-background p-4"><span className="h-5 w-5 text-primary flex items-center justify-center">•</span><h3 className="font-semibold mt-2">International students</h3><p className="text-xs text-muted-foreground mt-1">{students.data?.length ?? 0} public profiles currently visible in the preview.</p><Link to="/students" className="inline-block mt-3 text-xs font-semibold text-primary">Open directory</Link></div>
+          <div className="border border-border bg-background p-4"><span className="h-5 w-5 text-primary flex items-center justify-center">•</span><h3 className="font-semibold mt-2">Global education</h3><p className="text-xs text-muted-foreground mt-1">Ghana, Africa and international university discovery without removing the existing Ghana catalogue.</p><Link to="/international-universities" className="inline-block mt-3 text-xs font-semibold text-primary">Explore universities</Link></div>
         </div>
       </div>
     </div>
