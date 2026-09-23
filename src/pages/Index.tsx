@@ -10,6 +10,7 @@ import AnnouncementBanner from "@/components/AnnouncementBanner";
 import WhyGhanaPathFinder from "@/components/WhyGhanaPathFinder";
 import PathfinderDecisionHub from "@/components/PathfinderDecisionHub";
 import PlatformOverview from "@/components/PlatformOverview";
+import GlobalPlatformAnalytics from "@/components/GlobalPlatformAnalytics";
 
 const ImpactSection = lazy(() => import("@/components/ImpactSection"));
 const CareerSection = lazy(() => import("@/components/CareerSection"));
@@ -54,6 +55,7 @@ const Index = () => (
     <WhyGhanaPathFinder />
     <PathfinderDecisionHub />
     <PlatformOverview />
+    <GlobalPlatformAnalytics />
     <ExploreGrid />
     <CollegeRecommender />
     <UniversityDirectory />
