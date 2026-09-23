@@ -45,13 +45,6 @@ import { Route as ApiCareerPathRouteImport } from './routes/api/career-path'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as ApiInstitutionMediaRouteImport } from './routes/api/institution-media'
 import { Route as ApiInstitutionProgrammesRouteImport } from './routes/api/institution-programmes'
-import { Route as OpportunitiesRouteImport } from './routes/opportunities'
-import { Route as OpportunitiesSlugRouteImport } from './routes/opportunities/$slug'
-import { Route as StudentsRouteImport } from './routes/students'
-import { Route as InsightsRouteImport } from './routes/insights'
-import { Route as LifePathRouteImport } from './routes/life-path'
-import { Route as PipelineRouteImport } from './routes/pipeline'
-import { Route as InternationalUniversitiesRouteImport } from './routes/international-universities'
 import { Route as CareersIndexRouteImport } from './routes/careers/index'
 import { Route as CareersSlugRouteImport } from './routes/careers/$slug'
 import { Route as InternshipsIndexRouteImport } from './routes/internships/index'
@@ -250,41 +243,6 @@ const ApiInstitutionProgrammesRoute =
     path: '/api/institution-programmes',
     getParentRoute: () => rootRouteImport,
   } as any)
-const OpportunitiesRoute = OpportunitiesRouteImport.update({
-  id: '/opportunities',
-  path: '/opportunities',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OpportunitiesSlugRoute = OpportunitiesSlugRouteImport.update({
-  id: '/opportunities/$slug',
-  path: '/opportunities/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const StudentsRoute = StudentsRouteImport.update({
-  id: '/students',
-  path: '/students',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InsightsRoute = InsightsRouteImport.update({
-  id: '/insights',
-  path: '/insights',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LifePathRoute = LifePathRouteImport.update({
-  id: '/life-path',
-  path: '/life-path',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PipelineRoute = PipelineRouteImport.update({
-  id: '/pipeline',
-  path: '/pipeline',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InternationalUniversitiesRoute = InternationalUniversitiesRouteImport.update({
-  id: '/international-universities',
-  path: '/international-universities',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const CareersIndexRoute = CareersIndexRouteImport.update({
   id: '/careers/',
   path: '/careers/',
@@ -404,27 +362,6 @@ export interface FileRoutesByFullPath {
   '/api/chat': typeof ApiChatRoute
   '/api/institution-media': typeof ApiInstitutionMediaRoute
   '/api/institution-programmes': typeof ApiInstitutionProgrammesRoute
-  '/opportunities': typeof OpportunitiesRoute
-  '/opportunities/$slug': typeof OpportunitiesSlugRoute
-  '/students': typeof StudentsRoute
-  '/insights': typeof InsightsRoute
-  '/life-path': typeof LifePathRoute
-  '/pipeline': typeof PipelineRoute
-  '/international-universities': typeof InternationalUniversitiesRoute
-  '/opportunities': typeof OpportunitiesRoute
-  '/opportunities/$slug': typeof OpportunitiesSlugRoute
-  '/students': typeof StudentsRoute
-  '/insights': typeof InsightsRoute
-  '/life-path': typeof LifePathRoute
-  '/pipeline': typeof PipelineRoute
-  '/international-universities': typeof InternationalUniversitiesRoute
-  '/opportunities': typeof OpportunitiesRoute
-  '/opportunities/$slug': typeof OpportunitiesSlugRoute
-  '/students': typeof StudentsRoute
-  '/insights': typeof InsightsRoute
-  '/life-path': typeof LifePathRoute
-  '/pipeline': typeof PipelineRoute
-  '/international-universities': typeof InternationalUniversitiesRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/internships/$id': typeof InternshipsIdRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
@@ -590,13 +527,6 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/api/institution-media'
     | '/api/institution-programmes'
-    | '/opportunities'
-    | '/opportunities/$slug'
-    | '/students'
-    | '/insights'
-    | '/life-path'
-    | '/pipeline'
-    | '/international-universities'
     | '/careers/$slug'
     | '/internships/$id'
     | '/programme/$slug'
@@ -760,13 +690,6 @@ export interface RootRouteChildren {
   ApiChatRoute: typeof ApiChatRoute
   ApiInstitutionMediaRoute: typeof ApiInstitutionMediaRoute
   ApiInstitutionProgrammesRoute: typeof ApiInstitutionProgrammesRoute
-  OpportunitiesRoute: typeof OpportunitiesRoute
-  OpportunitiesSlugRoute: typeof OpportunitiesSlugRoute
-  StudentsRoute: typeof StudentsRoute
-  InsightsRoute: typeof InsightsRoute
-  LifePathRoute: typeof LifePathRoute
-  PipelineRoute: typeof PipelineRoute
-  InternationalUniversitiesRoute: typeof InternationalUniversitiesRoute
   CareersSlugRoute: typeof CareersSlugRoute
   InternshipsIdRoute: typeof InternshipsIdRoute
   ProgrammeSlugRoute: typeof ProgrammeSlugRoute
@@ -1046,55 +969,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CareersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/opportunities': {
-      id: '/opportunities'
-      path: '/opportunities'
-      fullPath: '/opportunities'
-      preLoaderRoute: typeof OpportunitiesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/opportunities/$slug': {
-      id: '/opportunities/$slug'
-      path: '/opportunities/$slug'
-      fullPath: '/opportunities/$slug'
-      preLoaderRoute: typeof OpportunitiesSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/students': {
-      id: '/students'
-      path: '/students'
-      fullPath: '/students'
-      preLoaderRoute: typeof StudentsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/insights': {
-      id: '/insights'
-      path: '/insights'
-      fullPath: '/insights'
-      preLoaderRoute: typeof InsightsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/life-path': {
-      id: '/life-path'
-      path: '/life-path'
-      fullPath: '/life-path'
-      preLoaderRoute: typeof LifePathRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/pipeline': {
-      id: '/pipeline'
-      path: '/pipeline'
-      fullPath: '/pipeline'
-      preLoaderRoute: typeof PipelineRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/international-universities': {
-      id: '/international-universities'
-      path: '/international-universities'
-      fullPath: '/international-universities'
-      preLoaderRoute: typeof InternationalUniversitiesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/careers/$slug': {
       id: '/careers/$slug'
       path: '/careers/$slug'
@@ -1240,13 +1114,6 @@ const rootRouteChildren: RootRouteChildren = {
   ApiChatRoute: ApiChatRoute,
   ApiInstitutionMediaRoute: ApiInstitutionMediaRoute,
   ApiInstitutionProgrammesRoute: ApiInstitutionProgrammesRoute,
-  OpportunitiesRoute: OpportunitiesRoute,
-  OpportunitiesSlugRoute: OpportunitiesSlugRoute,
-  StudentsRoute: StudentsRoute,
-  InsightsRoute: InsightsRoute,
-  LifePathRoute: LifePathRoute,
-  PipelineRoute: PipelineRoute,
-  InternationalUniversitiesRoute: InternationalUniversitiesRoute,
   CareersSlugRoute: CareersSlugRoute,
   InternshipsIdRoute: InternshipsIdRoute,
   ProgrammeSlugRoute: ProgrammeSlugRoute,
