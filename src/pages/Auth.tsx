@@ -3,7 +3,6 @@ import { useNavigate, Link, useSearchParams } from "@/lib/router-compat";
 import { Loader2, BrandLogoIcon } from "@/lib/icons";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/useAuth";
 import { TERMS_VERSION } from "@/lib/legal";
 import { useEffect } from "react";
@@ -23,6 +22,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
   const next = safeNext(params.get("next"));
   const [mode, setMode] = useState<Mode>(defaultMode);
   const [accountType, setAccountType] = useState<"student" | "parent">("student");
+  const [selectedRole, setSelectedRole] = useState<"student" | "employee" | "employer" | "startup_founder">("student");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -30,6 +30,11 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
   const [loading, setLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+
+  useEffect(() => {
+    const role = params.get("role") ?? localStorage.getItem("selectedRole");
+    if (role === "student" || role === "employee" || role === "employer" || role === "startup_founder") setSelectedRole(role);
+  }, [params]);
 
   const recordAcceptance = async (userId: string) => {
     await supabase
@@ -60,10 +65,8 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
           email: email.trim(),
           password,
           options: {
-            emailRedirectTo: next
-              ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
-              : window.location.origin,
-            data: { full_name: fullName.trim(), account_type: accountType, phone: phone.trim() },
+            emailRedirectTo: `${window.location.origin}/auth/callback`,
+            data: { full_name: fullName.trim(), account_type: accountType, role: selectedRole, phone: phone.trim() },
           },
         });
         if (error) throw error;
@@ -75,8 +78,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
           await recordAcceptance(data.user.id);
           await supabase.from("profiles").update({ phone: phone.trim() }).eq("id", data.user.id);
         }
-        if (next) window.location.href = next;
-        else navigate("/onboarding", { replace: true });
+        navigate("/auth/callback", { replace: true });
       } else {
         const { data, error } = await supabase.auth.signInWithPassword({
           email: email.trim(),
@@ -84,8 +86,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
         });
         if (error) throw error;
         if (data.user) await recordAcceptance(data.user.id);
-        if (next) window.location.href = next;
-        else navigate("/dashboard", { replace: true });
+        navigate("/auth/callback", { replace: true });
       }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Something went wrong");
@@ -108,26 +109,25 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
     else toast.success("Password reset link sent , check your email.");
   };
 
-  const handleGoogle = async () => {
+  const handleOAuth = async (provider: "google" | "linkedin_oidc") => {
     if (!acceptedTerms) {
       toast.error("Please accept the Terms & Conditions to continue.");
       return;
     }
-
     setLoading(true);
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: next
-        ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
-        : window.location.origin,
+    localStorage.setItem("selectedRole", selectedRole);
+    const redirectTo = window.location.origin + "/auth/callback";
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo,
+        scopes: provider === "linkedin_oidc" ? "openid profile email" : undefined,
+      },
     });
-    if (result.error) {
-      toast.error("Google sign-in failed. Please try again.");
+    if (error) {
+      toast.error(error.message);
       setLoading(false);
-      return;
     }
-    if (result.redirected) return;
-    if (next) window.location.href = next;
-    else navigate("/dashboard", { replace: true });
   };
 
   return (
@@ -181,11 +181,19 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
             </label>
 
             <button
-              onClick={handleGoogle}
+              onClick={() => handleOAuth("google")}
               disabled={loading || !acceptedTerms}
               className="w-full mb-5 px-4 py-3 rounded-lg border border-border bg-secondary text-foreground text-sm font-medium hover:bg-secondary/70 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Continue with Google
+            </button>
+
+            <button
+              onClick={() => handleOAuth("linkedin_oidc")}
+              disabled={loading || !acceptedTerms}
+              className="w-full mb-5 px-4 py-3 rounded-lg border border-border bg-secondary text-foreground text-sm font-medium hover:bg-secondary/70 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Continue with LinkedIn
             </button>
 
             <div className="flex items-center gap-3 mb-5">
