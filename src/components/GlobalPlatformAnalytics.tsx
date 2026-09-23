@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { BarChart3, Globe2, Users, Activity, Eye, Sparkles } from "@/lib/icons";
+import { BarChart3, Globe, Users, Target, Eye, Sparkles } from "@/lib/icons";
 import { supabase } from "@/integrations/supabase/client";
 
 type Analytics = {
@@ -35,7 +35,7 @@ export default function GlobalPlatformAnalytics() {
   const stats = query.data;
   const cards = [
     ["Total users", stats?.total_users, Users],
-    ["Active users", stats?.active_users, Activity],
+    ["Active users", stats?.active_users, Target],
     ["Website visits", stats?.website_visits, Eye],
     ["AI recommendation runs", stats?.recommendation_runs, Sparkles],
   ] as const;
@@ -55,7 +55,7 @@ export default function GlobalPlatformAnalytics() {
           </div>
           {stats?.countries_list?.length ? (
             <p className="flex items-center gap-2 text-xs text-muted-foreground">
-              <Globe2 className="h-4 w-4" />
+              <Globe className="h-4 w-4" />
               {number(stats.countries)} countries represented
             </p>
           ) : null}
@@ -93,7 +93,7 @@ export default function GlobalPlatformAnalytics() {
           </div>
 
           <div className="border border-border bg-background p-4">
-            <h3 className="flex items-center gap-2 font-semibold"><Globe2 className="h-4 w-4" /> Countries represented</h3>
+            <h3 className="flex items-center gap-2 font-semibold"><Globe className="h-4 w-4" /> Countries represented</h3>
             {stats?.countries_list?.length ? (
               <div className="mt-4 flex flex-wrap gap-2">
                 {stats.countries_list.map((country) => (
