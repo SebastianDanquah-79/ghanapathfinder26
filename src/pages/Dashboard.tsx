@@ -100,6 +100,19 @@ const Dashboard = () => {
     },
   });
 
+  useEffect(() => {
+    if (!profile) return;
+    const destination =
+      profile.account_role === "employer"
+        ? "/dashboard/employer"
+        : profile.account_role === "employee"
+          ? "/dashboard/employee"
+          : profile.account_role === "startup_founder"
+            ? "/dashboard/founder"
+            : null;
+    if (destination) navigate(destination, { replace: true });
+  }, [profile, navigate]);
+
   const { data: results = [] } = useQuery({
     queryKey: ["results", user?.id],
     enabled: !!user,
