@@ -369,6 +369,131 @@ export type Database = {
         }
         Relationships: []
       }
+      directory_blocks: {
+        Row: {
+          blocked_id: string
+          blocker_id: string
+          created_at: string
+        }
+        Insert: {
+          blocked_id: string
+          blocker_id: string
+          created_at?: string
+        }
+        Update: {
+          blocked_id?: string
+          blocker_id?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
+      directory_profiles: {
+        Row: {
+          bio: string | null
+          country: string | null
+          created_at: string
+          display_name: string
+          field: string | null
+          github_url: string | null
+          graduation_year: number | null
+          interests: string[]
+          level: string | null
+          linkedin_url: string | null
+          open_to_collaboration: boolean
+          open_to_mentoring: boolean
+          open_to_opportunities: boolean
+          portfolio_url: string | null
+          programme: string | null
+          projects: string | null
+          seeking_mentor: boolean
+          skills: string[]
+          university: string | null
+          updated_at: string
+          user_id: string
+          visibility: string
+        }
+        Insert: {
+          bio?: string | null
+          country?: string | null
+          created_at?: string
+          display_name: string
+          field?: string | null
+          github_url?: string | null
+          graduation_year?: number | null
+          interests?: string[]
+          level?: string | null
+          linkedin_url?: string | null
+          open_to_collaboration?: boolean
+          open_to_mentoring?: boolean
+          open_to_opportunities?: boolean
+          portfolio_url?: string | null
+          programme?: string | null
+          projects?: string | null
+          seeking_mentor?: boolean
+          skills?: string[]
+          university?: string | null
+          updated_at?: string
+          user_id: string
+          visibility?: string
+        }
+        Update: {
+          bio?: string | null
+          country?: string | null
+          created_at?: string
+          display_name?: string
+          field?: string | null
+          github_url?: string | null
+          graduation_year?: number | null
+          interests?: string[]
+          level?: string | null
+          linkedin_url?: string | null
+          open_to_collaboration?: boolean
+          open_to_mentoring?: boolean
+          open_to_opportunities?: boolean
+          portfolio_url?: string | null
+          programme?: string | null
+          projects?: string | null
+          seeking_mentor?: boolean
+          skills?: string[]
+          university?: string | null
+          updated_at?: string
+          user_id?: string
+          visibility?: string
+        }
+        Relationships: []
+      }
+      directory_reports: {
+        Row: {
+          created_at: string
+          id: string
+          profile_user_id: string
+          reason: string
+          reporter_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          profile_user_id: string
+          reason: string
+          reporter_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          profile_user_id?: string
+          reason?: string
+          reporter_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "directory_reports_profile_user_id_fkey"
+            columns: ["profile_user_id"]
+            isOneToOne: false
+            referencedRelation: "directory_profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       faculties: {
         Row: {
           created_at: string
@@ -545,6 +670,9 @@ export type Database = {
           town: string | null
           university_id: string | null
           updated_at: string
+          verification_method: string | null
+          verification_notes: string | null
+          verified_by: string | null
           website_url: string | null
         }
         Insert: {
@@ -566,6 +694,9 @@ export type Database = {
           town?: string | null
           university_id?: string | null
           updated_at?: string
+          verification_method?: string | null
+          verification_notes?: string | null
+          verified_by?: string | null
           website_url?: string | null
         }
         Update: {
@@ -587,6 +718,9 @@ export type Database = {
           town?: string | null
           university_id?: string | null
           updated_at?: string
+          verification_method?: string | null
+          verification_notes?: string | null
+          verified_by?: string | null
           website_url?: string | null
         }
         Relationships: [
@@ -615,6 +749,9 @@ export type Database = {
           social_links: Json
           source_urls: string[]
           updated_at: string
+          verification_method: string | null
+          verification_notes: string | null
+          verified_by: string | null
           website_url: string | null
         }
         Insert: {
@@ -632,6 +769,9 @@ export type Database = {
           social_links?: Json
           source_urls?: string[]
           updated_at?: string
+          verification_method?: string | null
+          verification_notes?: string | null
+          verified_by?: string | null
           website_url?: string | null
         }
         Update: {
@@ -649,6 +789,9 @@ export type Database = {
           social_links?: Json
           source_urls?: string[]
           updated_at?: string
+          verification_method?: string | null
+          verification_notes?: string | null
+          verified_by?: string | null
           website_url?: string | null
         }
         Relationships: []
@@ -738,6 +881,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      life_path_items: {
+        Row: {
+          created_at: string
+          detail: string | null
+          id: string
+          stage: string
+          status: string
+          target_date: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          detail?: string | null
+          id?: string
+          stage: string
+          status?: string
+          target_date?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          detail?: string | null
+          id?: string
+          stage?: string
+          status?: string
+          target_date?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       logo_requests: {
         Row: {
@@ -888,6 +1067,134 @@ export type Database = {
           salary_period?: string
           salary_range?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      opportunities: {
+        Row: {
+          application_url: string | null
+          category: string
+          company_id: string | null
+          compensation: string | null
+          country: string | null
+          created_at: string
+          deadline_date: string | null
+          description: string | null
+          eligibility: string | null
+          fields: string[]
+          id: string
+          last_verified_at: string | null
+          location: string | null
+          organisation: string | null
+          published: boolean
+          skills: string[]
+          slug: string
+          source_url: string | null
+          title: string
+          updated_at: string
+          verified: boolean
+          work_mode: string | null
+        }
+        Insert: {
+          application_url?: string | null
+          category: string
+          company_id?: string | null
+          compensation?: string | null
+          country?: string | null
+          created_at?: string
+          deadline_date?: string | null
+          description?: string | null
+          eligibility?: string | null
+          fields?: string[]
+          id?: string
+          last_verified_at?: string | null
+          location?: string | null
+          organisation?: string | null
+          published?: boolean
+          skills?: string[]
+          slug: string
+          source_url?: string | null
+          title: string
+          updated_at?: string
+          verified?: boolean
+          work_mode?: string | null
+        }
+        Update: {
+          application_url?: string | null
+          category?: string
+          company_id?: string | null
+          compensation?: string | null
+          country?: string | null
+          created_at?: string
+          deadline_date?: string | null
+          description?: string | null
+          eligibility?: string | null
+          fields?: string[]
+          id?: string
+          last_verified_at?: string | null
+          location?: string | null
+          organisation?: string | null
+          published?: boolean
+          skills?: string[]
+          slug?: string
+          source_url?: string | null
+          title?: string
+          updated_at?: string
+          verified?: boolean
+          work_mode?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opportunities_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      opportunity_pipeline: {
+        Row: {
+          created_at: string
+          deadline_date: string | null
+          id: string
+          item_kind: string
+          item_ref: string | null
+          notes: string | null
+          organisation: string | null
+          stage: string
+          title: string
+          updated_at: string
+          url: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          deadline_date?: string | null
+          id?: string
+          item_kind: string
+          item_ref?: string | null
+          notes?: string | null
+          organisation?: string | null
+          stage?: string
+          title: string
+          updated_at?: string
+          url?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          deadline_date?: string | null
+          id?: string
+          item_kind?: string
+          item_ref?: string | null
+          notes?: string | null
+          organisation?: string | null
+          stage?: string
+          title?: string
+          updated_at?: string
+          url?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -1458,8 +1765,11 @@ export type Database = {
           source_urls: string[]
           university_id: string
           updated_at: string
+          verification_method: string | null
+          verification_notes: string | null
           verification_status: string
           verified: boolean
+          verified_by: string | null
           wassce_requirements: string | null
         }
         Insert: {
@@ -1488,8 +1798,11 @@ export type Database = {
           source_urls?: string[]
           university_id: string
           updated_at?: string
+          verification_method?: string | null
+          verification_notes?: string | null
           verification_status?: string
           verified?: boolean
+          verified_by?: string | null
           wassce_requirements?: string | null
         }
         Update: {
@@ -1518,8 +1831,11 @@ export type Database = {
           source_urls?: string[]
           university_id?: string
           updated_at?: string
+          verification_method?: string | null
+          verification_notes?: string | null
           verification_status?: string
           verified?: boolean
+          verified_by?: string | null
           wassce_requirements?: string | null
         }
         Relationships: [
@@ -1738,6 +2054,9 @@ export type Database = {
           skill_area: string | null
           source_urls: string[]
           updated_at: string
+          verification_method: string | null
+          verification_notes: string | null
+          verified_by: string | null
         }
         Insert: {
           application_url?: string | null
@@ -1754,6 +2073,9 @@ export type Database = {
           skill_area?: string | null
           source_urls?: string[]
           updated_at?: string
+          verification_method?: string | null
+          verification_notes?: string | null
+          verified_by?: string | null
         }
         Update: {
           application_url?: string | null
@@ -1770,6 +2092,9 @@ export type Database = {
           skill_area?: string | null
           source_urls?: string[]
           updated_at?: string
+          verification_method?: string | null
+          verification_notes?: string | null
+          verified_by?: string | null
         }
         Relationships: []
       }
@@ -2176,6 +2501,7 @@ export type Database = {
         Args: { _paths: string[]; _user_id: string }
         Returns: boolean
       }
+      platform_stats: { Args: never; Returns: Json }
       public_usage_stats: { Args: never; Returns: Json }
       refresh_admission_estimates: { Args: never; Returns: number }
       refresh_usage_counters: { Args: never; Returns: undefined }
