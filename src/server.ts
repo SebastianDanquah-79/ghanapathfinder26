@@ -4,9 +4,10 @@ import handler, { createServerEntry } from "@tanstack/react-start/server-entry";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 
-// Keep the TanStack server entry as a static dependency. A dynamic import here
-// can create an SSR chunk boundary that participates in Nitro/Rolldown cycles.
-// This previously produced the production failure: TypeError: __exportAll is not a function.
+// Keep the TanStack Start server entry statically imported.
+// The server entry must expose the standard fetch(request) interface so
+// TanStack Start and Nitro can bundle it without creating a dynamic SSR
+// chunk boundary.
 async function normalizeCatastrophicSsrResponse(response: Response): Promise<Response> {
   if (response.status < 500) return response;
 
@@ -32,9 +33,9 @@ function isH3SwallowedErrorBody(body: string): boolean {
   }
 }
 
-const fetch = async (request: Request, env: unknown, ctx: unknown): Promise<Response> => {
+const fetch = async (request: Request): Promise<Response> => {
   try {
-    const response = await handler.fetch(request, env, ctx);
+    const response = await handler.fetch(request);
     return await normalizeCatastrophicSsrResponse(response);
   } catch (error) {
     console.error(error);
