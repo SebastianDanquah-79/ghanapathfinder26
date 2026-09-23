@@ -53,6 +53,7 @@ const Index = () => (
     </div>
 
     <WhyGhanaPathFinder />
+    <GlobalPlatformAnalytics />
     <PathfinderDecisionHub />
     <PlatformOverview />
     <GlobalPlatformAnalytics />
