@@ -1,13 +1,13 @@
 import { useLocation } from "@/lib/router-compat";
-import { Home, Play, Briefcase, Newspaper, Landmark } from "@/lib/icons";
+import { Home, Briefcase, BookOpen, Globe, Award } from "@/lib/icons";
 import { useAuth } from "@/hooks/useAuth";
 
 const tabs = [
   { to: "/explore", label: "Home", icon: Home },
-  { to: "/feed", label: "Feed", icon: Play },
+  { to: "/feed", label: "Feed", icon: BookOpen },
   { to: "/opportunities", label: "Opportunities", icon: Briefcase },
-  { to: "/news", label: "News", icon: Newspaper },
-  { to: "/leaders", label: "Leaders", icon: Landmark },
+  { to: "/news", label: "News", icon: Globe },
+  { to: "/leaders", label: "Leaders", icon: Award },
 ];
 
 const hiddenOn = ["/auth", "/onboarding", "/reset-password", "/.lovable/oauth/consent"];
