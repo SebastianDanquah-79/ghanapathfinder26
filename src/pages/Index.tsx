@@ -9,6 +9,7 @@ import ExploreGrid from "@/components/ExploreGrid";
 import AnnouncementBanner from "@/components/AnnouncementBanner";
 import WhyGhanaPathFinder from "@/components/WhyGhanaPathFinder";
 import PathfinderDecisionHub from "@/components/PathfinderDecisionHub";
+import OpportunityIntelligence from "@/components/OpportunityIntelligence";
 
 const ImpactSection = lazy(() => import("@/components/ImpactSection"));
 const CareerSection = lazy(() => import("@/components/CareerSection"));
@@ -52,6 +53,7 @@ const Index = () => (
 
     <WhyGhanaPathFinder />
     <PathfinderDecisionHub />
+    <OpportunityIntelligence />
     <ExploreGrid />
     <CollegeRecommender />
     <UniversityDirectory />
