@@ -10,6 +10,7 @@ import AnnouncementBanner from "@/components/AnnouncementBanner";
 import WhyGhanaPathFinder from "@/components/WhyGhanaPathFinder";
 import PathfinderDecisionHub from "@/components/PathfinderDecisionHub";
 import PlatformOverview from "@/components/PlatformOverview";
+import StudentPulse from "@/components/StudentPulse";
 
 const ImpactSection = lazy(() => import("@/components/ImpactSection"));
 const CareerSection = lazy(() => import("@/components/CareerSection"));
@@ -51,6 +52,7 @@ const Index = () => (
       <HeroSection />
     </div>
 
+    <StudentPulse />
     <WhyGhanaPathFinder />
     <PathfinderDecisionHub />
     <PlatformOverview />
