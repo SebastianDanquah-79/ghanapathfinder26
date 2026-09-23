@@ -4579,6 +4579,7 @@ export type Database = {
         }
         Returns: Json
       }
+      toggle_feed_like: { Args: { p_post_id: string }; Returns: boolean }
     }
     Enums: {
       app_role: "student" | "parent" | "admin"
