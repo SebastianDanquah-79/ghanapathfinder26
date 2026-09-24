@@ -25,7 +25,7 @@ function News() {
       if(error) throw error;
       return data??[];
     },
-    getNextPageParam:(last,page)=>last.length===20?page*20+20:undefined,
+    getNextPageParam:(last,allPages)=>last.length===20?allPages.length*20:undefined,
     staleTime:120000,
   });
 
