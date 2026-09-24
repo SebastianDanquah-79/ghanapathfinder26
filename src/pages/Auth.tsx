@@ -121,7 +121,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
       provider,
       options: {
         redirectTo,
-        scopes: provider === "linkedin_oidc" ? "openid profile email" : undefined,
+        ...(provider === "linkedin_oidc" ? { scopes: "openid profile email" } : {}),
       },
     });
     if (error) {
