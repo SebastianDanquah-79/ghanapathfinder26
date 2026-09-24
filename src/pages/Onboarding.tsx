@@ -97,17 +97,20 @@ const Onboarding = () => {
         interests,
         skills:skillList,
         is_discoverable:discoverable,
-        onboarding_complete:true,
+onboarding_complete:true,
         onboarded:true,
+        pathways:[role],
       }, {onConflict:"id"});
-      if (error) throw error;
+      if (error) throw new Error(`Profile update failed: ${error.message}`);
 
-      const rows = results.filter(r => r.subject.trim() && r.grade).map(r => ({user_id:user.id,subject:r.subject.trim(),grade:r.grade}));
-      const {error:deleteError} = await supabase.from("wassce_results").delete().eq("user_id",user.id);
-      if (deleteError) throw deleteError;
-      if (rows.length) {
-        const {error:insertError} = await supabase.from("wassce_results").insert(rows);
-        if (insertError) throw insertError;
+      if (role === "student") {
+        const rows = results.filter(r => r.subject.trim() && r.grade).map(r => ({user_id:user.id,subject:r.subject.trim(),grade:r.grade}));
+        const {error:deleteError} = await supabase.from("wassce_results").delete().eq("user_id",user.id);
+        if (deleteError) throw new Error(`WASSCE results could not be updated: ${deleteError.message}`);
+        if (rows.length) {
+          const {error:insertError} = await supabase.from("wassce_results").insert(rows);
+          if (insertError) throw new Error(`WASSCE results could not be saved: ${insertError.message}`);
+        }
       }
 
       localStorage.setItem("selectedRole",role);
@@ -116,8 +119,8 @@ const Onboarding = () => {
       navigate(destination,{replace:true});
     } catch (error) {
       const message = error instanceof Error ? error.message : "Could not save profile";
-      console.error("Profile save failed",error);
-      toast.error("Could not save profile: " + message);
+      console.error("Onboarding save failed", { error, userId: user.id, role });
+      toast.error(message);
     } finally {
       setSaving(false);
     }
