@@ -607,6 +607,7 @@ export interface FileRoutesByFullPath {
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
   '/skills/$slug': typeof SkillsSlugRoute
   '/universities/$slug': typeof UniversitiesSlugRoute
+  '/universities': typeof UniversitiesIndexRoute
   '/universities/': typeof UniversitiesIndexRoute
   '/university/$slug': typeof UniversitySlugRoute
   '/careers/': typeof CareersIndexRoute
@@ -1649,6 +1650,13 @@ declare module '@tanstack/react-router' {
       path: '/skills/$slug'
       fullPath: '/skills/$slug'
       preLoaderRoute: typeof SkillsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/universities': {
+      id: '/universities/'
+      path: '/universities'
+      fullPath: '/universities/'
+      preLoaderRoute: typeof UniversitiesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/universities/': {
