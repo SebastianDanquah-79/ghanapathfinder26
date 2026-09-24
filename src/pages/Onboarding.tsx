@@ -8,7 +8,8 @@ import { useAuth } from "@/hooks/useAuth";
 const REGIONS = ["Greater Accra","Ashanti","Central","Eastern","Western","Volta","Northern","Upper East","Upper West","Bono","Ahafo","Oti","Savannah","North East","Western North","Bono East"];
 const GRADES = ["A1","B2","B3","C4","C5","C6","D7","E8","F9"];
 const CORE_SUBJECTS = ["English Language","Mathematics","Integrated Science","Social Studies"];
-const INTERESTS = ["Technology","Medicine & Health","Engineering","Business","Law","Education","Agriculture","Creative Arts","Media","Public Service"];
+const PATHWAYS = ["Learn","Find a job","Build a business","Find funding","Explore Africa","Travel","Meet people","Research","Hire talent","Study in Africa","Discover African companies","Discover African culture"];
+const INTERESTS = ["AI","Robotics","Technology","Business","Startups","Education","Engineering","Science","Finance","Agriculture","Music","Fashion","Food","Tourism","History","Culture","Sports","Research","Careers","Entrepreneurship"];
 type Role = "student" | "employee" | "employer" | "startup_founder";
 
 const roleLabels: Record<Role,string> = {
@@ -36,6 +37,7 @@ const Onboarding = () => {
   const [company,setCompany] = useState("");
   const [jobTitle,setJobTitle] = useState("");
   const [linkedinUrl,setLinkedinUrl] = useState("");
+  const [pathways,setPathways] = useState<string[]>([]);
   const [interests,setInterests] = useState<string[]>([]);
   const [skills,setSkills] = useState("");
   const [discoverable,setDiscoverable] = useState(false);
@@ -69,6 +71,7 @@ const Onboarding = () => {
     });
   }, [user]);
 
+  const togglePathway = (pathway:string) => setPathways(current => current.includes(pathway) ? current.filter(x => x !== pathway) : [...current,pathway]);
   const toggleInterest = (interest:string) => setInterests(current => current.includes(interest) ? current.filter(x => x !== interest) : [...current,interest]);
 
   const handleSave = async () => {
@@ -99,7 +102,7 @@ const Onboarding = () => {
         is_discoverable:discoverable,
 onboarding_complete:true,
         onboarded:true,
-        pathways:[role],
+        pathways:pathways.length ? pathways : [role],
       }, {onConflict:"id"});
       if (error) throw new Error(`Profile update failed: ${error.message}`);
 
@@ -134,7 +137,13 @@ onboarding_complete:true,
       <h1 className="mt-2 font-display text-2xl sm:text-3xl font-bold text-foreground">Build your path</h1>
       <p className="mt-2 text-sm text-muted-foreground">Your profile powers matching across education, work, startups and international opportunities.</p>
 
-      <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
+      <section className="mt-6 rounded-xl border border-border bg-card p-5">
+        <h2 className="font-display font-semibold text-foreground">What brings you here?</h2>
+        <p className="mt-1 text-xs text-muted-foreground">Choose as many as you want. These choices shape your discovery experience.</p>
+        <div className="mt-3 flex flex-wrap gap-2">{PATHWAYS.map(item => <button key={item} type="button" onClick={() => togglePathway(item)} aria-pressed={pathways.includes(item)} className={"rounded-full border px-3 py-2 text-xs font-medium " + (pathways.includes(item) ? "border-primary bg-primary text-primary-foreground" : "border-border bg-secondary text-muted-foreground")}>{item}</button>)}</div>
+      </section>
+
+      <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4">
         {(Object.keys(roleLabels) as Role[]).map(item => <button key={item} type="button" onClick={() => setRole(item)} className={"rounded-lg border px-3 py-3 text-sm font-medium " + (role === item ? "border-primary bg-primary/10 text-primary" : "border-border bg-secondary text-muted-foreground")}>{roleLabels[item]}</button>)}
       </div>
 
@@ -160,7 +169,8 @@ onboarding_complete:true,
         </section>
 
         <section className="bg-glass rounded-xl p-5">
-          <h2 className="font-display font-semibold text-foreground mb-3">Interests</h2>
+          <h2 className="font-display font-semibold text-foreground mb-1">What are you interested in?</h2>
+          <p className="text-xs text-muted-foreground mb-3">Select multiple topics. You can change these later in Preferences.</p>
           <div className="flex flex-wrap gap-2">{INTERESTS.map(i => <button key={i} type="button" onClick={() => toggleInterest(i)} className={"px-3 py-1.5 rounded-full text-xs font-medium " + (interests.includes(i) ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground")}>{i}</button>)}</div>
         </section>
 
