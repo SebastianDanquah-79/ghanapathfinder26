@@ -35,6 +35,57 @@ export type Database = {
         }
         Relationships: []
       }
+      africa_leaders: {
+        Row: {
+          biography: string | null
+          country_code: string
+          country_code_alpha2: string | null
+          country_name: string | null
+          id: string
+          is_current: boolean | null
+          key_policies: string[] | null
+          left_office: string | null
+          name: string
+          notable_achievements: string[] | null
+          official_source_url: string | null
+          photo_url: string | null
+          title: string | null
+          took_office: string | null
+        }
+        Insert: {
+          biography?: string | null
+          country_code: string
+          country_code_alpha2?: string | null
+          country_name?: string | null
+          id?: string
+          is_current?: boolean | null
+          key_policies?: string[] | null
+          left_office?: string | null
+          name: string
+          notable_achievements?: string[] | null
+          official_source_url?: string | null
+          photo_url?: string | null
+          title?: string | null
+          took_office?: string | null
+        }
+        Update: {
+          biography?: string | null
+          country_code?: string
+          country_code_alpha2?: string | null
+          country_name?: string | null
+          id?: string
+          is_current?: boolean | null
+          key_policies?: string[] | null
+          left_office?: string | null
+          name?: string
+          notable_achievements?: string[] | null
+          official_source_url?: string | null
+          photo_url?: string | null
+          title?: string | null
+          took_office?: string | null
+        }
+        Relationships: []
+      }
       analytics_events: {
         Row: {
           created_at: string
@@ -526,6 +577,86 @@ export type Database = {
           },
         ]
       }
+      feed_likes: {
+        Row: {
+          created_at: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "feed_likes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "feed_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      feed_posts: {
+        Row: {
+          author_id: string | null
+          category: string
+          comments_count: number
+          created_at: string
+          description: string | null
+          id: string
+          is_published: boolean
+          likes_count: number
+          shares_count: number
+          tags: string[]
+          thumbnail_url: string | null
+          title: string | null
+          video_url: string | null
+          views_count: number
+          youtube_url: string | null
+        }
+        Insert: {
+          author_id?: string | null
+          category?: string
+          comments_count?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_published?: boolean
+          likes_count?: number
+          shares_count?: number
+          tags?: string[]
+          thumbnail_url?: string | null
+          title?: string | null
+          video_url?: string | null
+          views_count?: number
+          youtube_url?: string | null
+        }
+        Update: {
+          author_id?: string | null
+          category?: string
+          comments_count?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_published?: boolean
+          likes_count?: number
+          shares_count?: number
+          tags?: string[]
+          thumbnail_url?: string | null
+          title?: string | null
+          video_url?: string | null
+          views_count?: number
+          youtube_url?: string | null
+        }
+        Relationships: []
+      }
       insight_comments: {
         Row: {
           author_label: string
@@ -733,6 +864,69 @@ export type Database = {
           },
         ]
       }
+      international_students: {
+        Row: {
+          academic_level: string | null
+          country_code: string | null
+          created_at: string
+          github_url: string | null
+          graduation_year: number | null
+          id: string
+          interests: string[]
+          linkedin_url: string | null
+          looking_for_opportunities: boolean
+          open_to_collaboration: boolean
+          open_to_mentorship: boolean
+          portfolio_url: string | null
+          programme_name: string | null
+          skills: string[]
+          university_name: string | null
+          updated_at: string
+          user_id: string
+          visible: boolean
+        }
+        Insert: {
+          academic_level?: string | null
+          country_code?: string | null
+          created_at?: string
+          github_url?: string | null
+          graduation_year?: number | null
+          id?: string
+          interests?: string[]
+          linkedin_url?: string | null
+          looking_for_opportunities?: boolean
+          open_to_collaboration?: boolean
+          open_to_mentorship?: boolean
+          portfolio_url?: string | null
+          programme_name?: string | null
+          skills?: string[]
+          university_name?: string | null
+          updated_at?: string
+          user_id: string
+          visible?: boolean
+        }
+        Update: {
+          academic_level?: string | null
+          country_code?: string | null
+          created_at?: string
+          github_url?: string | null
+          graduation_year?: number | null
+          id?: string
+          interests?: string[]
+          linkedin_url?: string | null
+          looking_for_opportunities?: boolean
+          open_to_collaboration?: boolean
+          open_to_mentorship?: boolean
+          portfolio_url?: string | null
+          programme_name?: string | null
+          skills?: string[]
+          university_name?: string | null
+          updated_at?: string
+          user_id?: string
+          visible?: boolean
+        }
+        Relationships: []
+      }
       internship_providers: {
         Row: {
           application_url: string | null
@@ -882,6 +1076,45 @@ export type Database = {
           },
         ]
       }
+      investors: {
+        Row: {
+          country_code: string | null
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          sectors: string[]
+          stages: string[]
+          type: string | null
+          verified: boolean
+          website_url: string | null
+        }
+        Insert: {
+          country_code?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          sectors?: string[]
+          stages?: string[]
+          type?: string | null
+          verified?: boolean
+          website_url?: string | null
+        }
+        Update: {
+          country_code?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          sectors?: string[]
+          stages?: string[]
+          type?: string | null
+          verified?: boolean
+          website_url?: string | null
+        }
+        Relationships: []
+      }
       life_path_items: {
         Row: {
           created_at: string
@@ -1001,37 +1234,94 @@ export type Database = {
         }
         Relationships: []
       }
+      news_articles: {
+        Row: {
+          category: string | null
+          country_code: string | null
+          excerpt: string | null
+          fetched_at: string | null
+          id: string
+          image_url: string | null
+          original_url: string | null
+          published_at: string | null
+          source_id: string | null
+          source_name: string | null
+          title: string
+        }
+        Insert: {
+          category?: string | null
+          country_code?: string | null
+          excerpt?: string | null
+          fetched_at?: string | null
+          id?: string
+          image_url?: string | null
+          original_url?: string | null
+          published_at?: string | null
+          source_id?: string | null
+          source_name?: string | null
+          title: string
+        }
+        Update: {
+          category?: string | null
+          country_code?: string | null
+          excerpt?: string | null
+          fetched_at?: string | null
+          id?: string
+          image_url?: string | null
+          original_url?: string | null
+          published_at?: string | null
+          source_id?: string | null
+          source_name?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
+          action_url: string | null
           body: string | null
           category: string
           created_at: string
           id: string
+          is_read: boolean
           link: string | null
+          message: string | null
+          read: boolean
           read_at: string | null
           title: string
+          type: string
           updated_at: string
           user_id: string
         }
         Insert: {
+          action_url?: string | null
           body?: string | null
           category?: string
           created_at?: string
           id?: string
+          is_read?: boolean
           link?: string | null
+          message?: string | null
+          read?: boolean
           read_at?: string | null
           title: string
+          type?: string
           updated_at?: string
           user_id: string
         }
         Update: {
+          action_url?: string | null
           body?: string | null
           category?: string
           created_at?: string
           id?: string
+          is_read?: boolean
           link?: string | null
+          message?: string | null
+          read?: boolean
           read_at?: string | null
           title?: string
+          type?: string
           updated_at?: string
           user_id?: string
         }
@@ -1075,21 +1365,34 @@ export type Database = {
           application_url: string | null
           category: string
           company_id: string | null
+          company_name: string | null
           compensation: string | null
           country: string | null
+          country_code: string | null
           created_at: string
+          deadline: string | null
           deadline_date: string | null
           description: string | null
           eligibility: string | null
           fields: string[]
           id: string
+          is_active: boolean
           last_verified_at: string | null
           location: string | null
+          opportunity_type: string
           organisation: string | null
+          posted_at: string | null
+          posted_by: string | null
           published: boolean
+          remote: boolean
           skills: string[]
+          skills_required: string[]
           slug: string
+          source: string | null
+          source_id: string | null
+          source_name: string | null
           source_url: string | null
+          status: string
           title: string
           updated_at: string
           verified: boolean
@@ -1099,21 +1402,34 @@ export type Database = {
           application_url?: string | null
           category: string
           company_id?: string | null
+          company_name?: string | null
           compensation?: string | null
           country?: string | null
+          country_code?: string | null
           created_at?: string
+          deadline?: string | null
           deadline_date?: string | null
           description?: string | null
           eligibility?: string | null
           fields?: string[]
           id?: string
+          is_active?: boolean
           last_verified_at?: string | null
           location?: string | null
+          opportunity_type?: string
           organisation?: string | null
+          posted_at?: string | null
+          posted_by?: string | null
           published?: boolean
+          remote?: boolean
           skills?: string[]
+          skills_required?: string[]
           slug: string
+          source?: string | null
+          source_id?: string | null
+          source_name?: string | null
           source_url?: string | null
+          status?: string
           title: string
           updated_at?: string
           verified?: boolean
@@ -1123,21 +1439,34 @@ export type Database = {
           application_url?: string | null
           category?: string
           company_id?: string | null
+          company_name?: string | null
           compensation?: string | null
           country?: string | null
+          country_code?: string | null
           created_at?: string
+          deadline?: string | null
           deadline_date?: string | null
           description?: string | null
           eligibility?: string | null
           fields?: string[]
           id?: string
+          is_active?: boolean
           last_verified_at?: string | null
           location?: string | null
+          opportunity_type?: string
           organisation?: string | null
+          posted_at?: string | null
+          posted_by?: string | null
           published?: boolean
+          remote?: boolean
           skills?: string[]
+          skills_required?: string[]
           slug?: string
+          source?: string | null
+          source_id?: string | null
+          source_name?: string | null
           source_url?: string | null
+          status?: string
           title?: string
           updated_at?: string
           verified?: boolean
@@ -1233,51 +1562,96 @@ export type Database = {
       }
       profiles: {
         Row: {
+          account_role: string | null
           account_type: string
+          avatar_url: string | null
+          bio: string | null
+          company: string | null
           created_at: string
           email: string | null
           full_name: string | null
+          graduation_year: number | null
           id: string
           interests: string[]
+          is_discoverable: boolean
+          job_title: string | null
+          linkedin_url: string | null
+          location: string | null
           onboarded: boolean
+          onboarding_complete: boolean
           phone: string | null
+          preferred_opportunity_types: string[]
+          program: string | null
           region: string | null
+          role: string | null
           school: string | null
+          skills: string[]
           target_career: string | null
           terms_accepted_at: string | null
           terms_version: string | null
+          university: string | null
           updated_at: string
         }
         Insert: {
+          account_role?: string | null
           account_type?: string
+          avatar_url?: string | null
+          bio?: string | null
+          company?: string | null
           created_at?: string
           email?: string | null
           full_name?: string | null
+          graduation_year?: number | null
           id: string
           interests?: string[]
+          is_discoverable?: boolean
+          job_title?: string | null
+          linkedin_url?: string | null
+          location?: string | null
           onboarded?: boolean
+          onboarding_complete?: boolean
           phone?: string | null
+          preferred_opportunity_types?: string[]
+          program?: string | null
           region?: string | null
+          role?: string | null
           school?: string | null
+          skills?: string[]
           target_career?: string | null
           terms_accepted_at?: string | null
           terms_version?: string | null
+          university?: string | null
           updated_at?: string
         }
         Update: {
+          account_role?: string | null
           account_type?: string
+          avatar_url?: string | null
+          bio?: string | null
+          company?: string | null
           created_at?: string
           email?: string | null
           full_name?: string | null
+          graduation_year?: number | null
           id?: string
           interests?: string[]
+          is_discoverable?: boolean
+          job_title?: string | null
+          linkedin_url?: string | null
+          location?: string | null
           onboarded?: boolean
+          onboarding_complete?: boolean
           phone?: string | null
+          preferred_opportunity_types?: string[]
+          program?: string | null
           region?: string | null
+          role?: string | null
           school?: string | null
+          skills?: string[]
           target_career?: string | null
           terms_accepted_at?: string | null
           terms_version?: string | null
+          university?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -2501,6 +2875,7 @@ export type Database = {
         Args: { _paths: string[]; _user_id: string }
         Returns: boolean
       }
+      platform_analytics: { Args: never; Returns: Json }
       platform_stats: { Args: never; Returns: Json }
       public_usage_stats: { Args: never; Returns: Json }
       refresh_admission_estimates: { Args: never; Returns: number }
@@ -2521,6 +2896,7 @@ export type Database = {
       show_trgm: { Args: { "": string }; Returns: string[] }
       site_rating_summary: { Args: never; Returns: Json }
       toggle_comment_like: { Args: { _comment_id: string }; Returns: Json }
+      toggle_feed_like: { Args: { p_post_id: string }; Returns: boolean }
       toggle_insight_helpful: { Args: { _insight_id: string }; Returns: Json }
     }
     Enums: {
