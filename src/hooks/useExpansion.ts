@@ -76,7 +76,7 @@ export const useCategoryListings = (slug: string) =>
             if (error) throw error;
             return (data ?? []).map((i) => ({
               key: `i-${i.id}`, title: i.title,
-              organisation: (i.companies as { name: string } | null)?.name ?? null,
+              organisation: (i.companies as unknown as { name: string } | null)?.name ?? null,
               location: i.location, summary: i.description, deadline: i.deadline_date ?? i.deadline_text,
               url: i.application_url, source: i.source_url, verified: i.verified, kind: "internship" as const,
               internalHref: `/internships/${i.slug ?? i.id}`, tags: [i.opportunity_type, ...(i.fields ?? [])].filter(Boolean) as string[],
