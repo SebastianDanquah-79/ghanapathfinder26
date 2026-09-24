@@ -37,7 +37,7 @@ export const useSourceTargets = (recordType: string, search: string, enabled: bo
           .ilike("name", q)
           .limit(20);
         return (data ?? []).map((p) => {
-          const uni = p.universities as { short_name: string | null; name: string } | null;
+          const uni = p.universities as unknown as { short_name: string | null; name: string } | null;
           return { id: p.id, label: `${p.name}${uni ? ` , ${uni.short_name ?? uni.name}` : ""}` };
         });
       }
