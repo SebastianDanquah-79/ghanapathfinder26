@@ -16,18 +16,24 @@ export type Database = {
     Tables: {
       active_sessions: {
         Row: {
+
+          [key: string]: any
           created_at: string
           last_seen: string
           session_id: string
           user_id: string | null
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           last_seen?: string
           session_id: string
           user_id?: string | null
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           last_seen?: string
           session_id?: string
@@ -37,6 +43,8 @@ export type Database = {
       }
       admin_audit_log: {
         Row: {
+
+          [key: string]: any
           action: string
           actor_id: string | null
           after_data: Json | null
@@ -47,6 +55,8 @@ export type Database = {
           id: number
         }
         Insert: {
+
+          [key: string]: any
           action: string
           actor_id?: string | null
           after_data?: Json | null
@@ -57,6 +67,8 @@ export type Database = {
           id?: number
         }
         Update: {
+
+          [key: string]: any
           action?: string
           actor_id?: string | null
           after_data?: Json | null
@@ -70,6 +82,8 @@ export type Database = {
       }
       africa_country_catalog: {
         Row: {
+
+          [key: string]: any
           code: string
           common_languages: string[]
           created_at: string
@@ -79,6 +93,8 @@ export type Database = {
           region: string
         }
         Insert: {
+
+          [key: string]: any
           code: string
           common_languages?: string[]
           created_at?: string
@@ -88,6 +104,8 @@ export type Database = {
           region: string
         }
         Update: {
+
+          [key: string]: any
           code?: string
           common_languages?: string[]
           created_at?: string
@@ -100,6 +118,8 @@ export type Database = {
       }
       africa_leaders: {
         Row: {
+
+          [key: string]: any
           biography: string | null
           country_code: string
           country_code_alpha2: string | null
@@ -120,6 +140,8 @@ export type Database = {
           verified_at: string | null
         }
         Insert: {
+
+          [key: string]: any
           biography?: string | null
           country_code: string
           country_code_alpha2?: string | null
@@ -140,6 +162,8 @@ export type Database = {
           verified_at?: string | null
         }
         Update: {
+
+          [key: string]: any
           biography?: string | null
           country_code?: string
           country_code_alpha2?: string | null
@@ -163,6 +187,8 @@ export type Database = {
       }
       african_heroes: {
         Row: {
+
+          [key: string]: any
           bio: string
           category: string
           country: string | null
@@ -175,6 +201,8 @@ export type Database = {
           source_url: string
         }
         Insert: {
+
+          [key: string]: any
           bio: string
           category: string
           country?: string | null
@@ -187,6 +215,8 @@ export type Database = {
           source_url: string
         }
         Update: {
+
+          [key: string]: any
           bio?: string
           category?: string
           country?: string | null
@@ -202,6 +232,8 @@ export type Database = {
       }
       african_startups: {
         Row: {
+
+          [key: string]: any
           active_status: string | null
           capital_usd: number | null
           city: string | null
@@ -219,6 +251,8 @@ export type Database = {
           stage: string | null
         }
         Insert: {
+
+          [key: string]: any
           active_status?: string | null
           capital_usd?: number | null
           city?: string | null
@@ -236,6 +270,8 @@ export type Database = {
           stage?: string | null
         }
         Update: {
+
+          [key: string]: any
           active_status?: string | null
           capital_usd?: number | null
           city?: string | null
@@ -256,6 +292,8 @@ export type Database = {
       }
       analytics_events: {
         Row: {
+
+          [key: string]: any
           created_at: string
           event_type: string
           id: string
@@ -266,6 +304,8 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           event_type: string
           id?: string
@@ -276,6 +316,8 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           event_type?: string
           id?: string
@@ -289,16 +331,22 @@ export type Database = {
       }
       app_settings: {
         Row: {
+
+          [key: string]: any
           key: string
           updated_at: string
           value: Json
         }
         Insert: {
+
+          [key: string]: any
           key: string
           updated_at?: string
           value: Json
         }
         Update: {
+
+          [key: string]: any
           key?: string
           updated_at?: string
           value?: Json
@@ -307,6 +355,8 @@ export type Database = {
       }
       application_checklist: {
         Row: {
+
+          [key: string]: any
           created_at: string
           done: boolean
           due_date: string | null
@@ -317,6 +367,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           done?: boolean
           due_date?: string | null
@@ -327,6 +379,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           done?: boolean
           due_date?: string | null
@@ -340,6 +394,8 @@ export type Database = {
       }
       application_notes: {
         Row: {
+
+          [key: string]: any
           application_id: string | null
           body: string
           created_at: string
@@ -350,6 +406,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           application_id?: string | null
           body?: string
           created_at?: string
@@ -360,6 +418,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           application_id?: string | null
           body?: string
           created_at?: string
@@ -373,6 +433,8 @@ export type Database = {
       }
       book_catalog: {
         Row: {
+
+          [key: string]: any
           author: string
           created_at: string
           description: string | null
@@ -384,6 +446,8 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+
+          [key: string]: any
           author: string
           created_at?: string
           description?: string | null
@@ -395,6 +459,8 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+
+          [key: string]: any
           author?: string
           created_at?: string
           description?: string | null
@@ -409,6 +475,8 @@ export type Database = {
       }
       campuses: {
         Row: {
+
+          [key: string]: any
           accreditation_status: string
           campus_name: string
           created_at: string
@@ -421,6 +489,8 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+
+          [key: string]: any
           accreditation_status?: string
           campus_name: string
           created_at?: string
@@ -433,6 +503,8 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+
+          [key: string]: any
           accreditation_status?: string
           campus_name?: string
           created_at?: string
@@ -456,18 +528,24 @@ export type Database = {
       }
       comment_likes: {
         Row: {
+
+          [key: string]: any
           comment_id: string
           created_at: string
           id: string
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           comment_id: string
           created_at?: string
           id?: string
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           comment_id?: string
           created_at?: string
           id?: string
@@ -485,6 +563,8 @@ export type Database = {
       }
       companies: {
         Row: {
+
+          [key: string]: any
           careers_url: string | null
           created_at: string
           description: string | null
@@ -504,6 +584,8 @@ export type Database = {
           website_url: string | null
         }
         Insert: {
+
+          [key: string]: any
           careers_url?: string | null
           created_at?: string
           description?: string | null
@@ -523,6 +605,8 @@ export type Database = {
           website_url?: string | null
         }
         Update: {
+
+          [key: string]: any
           careers_url?: string | null
           created_at?: string
           description?: string | null
@@ -545,6 +629,8 @@ export type Database = {
       }
       country_catalog: {
         Row: {
+
+          [key: string]: any
           code: string
           created_at: string
           enabled: boolean
@@ -553,6 +639,8 @@ export type Database = {
           region: string
         }
         Insert: {
+
+          [key: string]: any
           code: string
           created_at?: string
           enabled?: boolean
@@ -561,6 +649,8 @@ export type Database = {
           region: string
         }
         Update: {
+
+          [key: string]: any
           code?: string
           created_at?: string
           enabled?: boolean
@@ -572,6 +662,8 @@ export type Database = {
       }
       country_qualification_mapping: {
         Row: {
+
+          [key: string]: any
           country_code: string
           notes: string | null
           qualification_code: string
@@ -579,6 +671,8 @@ export type Database = {
           verification_status: string
         }
         Insert: {
+
+          [key: string]: any
           country_code: string
           notes?: string | null
           qualification_code: string
@@ -586,6 +680,8 @@ export type Database = {
           verification_status?: string
         }
         Update: {
+
+          [key: string]: any
           country_code?: string
           notes?: string | null
           qualification_code?: string
@@ -611,6 +707,8 @@ export type Database = {
       }
       cross_border_opportunities: {
         Row: {
+
+          [key: string]: any
           application_url: string | null
           country_code: string | null
           eligibility: Json
@@ -624,6 +722,8 @@ export type Database = {
           verified: boolean
         }
         Insert: {
+
+          [key: string]: any
           application_url?: string | null
           country_code?: string | null
           eligibility?: Json
@@ -637,6 +737,8 @@ export type Database = {
           verified?: boolean
         }
         Update: {
+
+          [key: string]: any
           application_url?: string | null
           country_code?: string | null
           eligibility?: Json
@@ -653,6 +755,8 @@ export type Database = {
       }
       cru_attempts: {
         Row: {
+
+          [key: string]: any
           activity_type: string
           answer: string | null
           concept_id: string | null
@@ -664,6 +768,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           activity_type: string
           answer?: string | null
           concept_id?: string | null
@@ -675,6 +781,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           activity_type?: string
           answer?: string | null
           concept_id?: string | null
@@ -697,18 +805,24 @@ export type Database = {
       }
       cru_concepts: {
         Row: {
+
+          [key: string]: any
           description: string | null
           domain: string | null
           id: string
           name: string
         }
         Insert: {
+
+          [key: string]: any
           description?: string | null
           domain?: string | null
           id?: string
           name: string
         }
         Update: {
+
+          [key: string]: any
           description?: string | null
           domain?: string | null
           id?: string
@@ -718,6 +832,8 @@ export type Database = {
       }
       cru_courses: {
         Row: {
+
+          [key: string]: any
           code: string
           created_at: string
           description: string | null
@@ -726,6 +842,8 @@ export type Database = {
           title: string
         }
         Insert: {
+
+          [key: string]: any
           code: string
           created_at?: string
           description?: string | null
@@ -734,6 +852,8 @@ export type Database = {
           title: string
         }
         Update: {
+
+          [key: string]: any
           code?: string
           created_at?: string
           description?: string | null
@@ -745,6 +865,8 @@ export type Database = {
       }
       cru_experiments: {
         Row: {
+
+          [key: string]: any
           conclusion: string | null
           config: Json
           created_at: string
@@ -755,6 +877,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           conclusion?: string | null
           config?: Json
           created_at?: string
@@ -765,6 +889,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           conclusion?: string | null
           config?: Json
           created_at?: string
@@ -786,6 +912,8 @@ export type Database = {
       }
       cru_grades: {
         Row: {
+
+          [key: string]: any
           course_code: string
           created_at: string
           credits: number
@@ -796,6 +924,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           course_code: string
           created_at?: string
           credits: number
@@ -806,6 +936,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           course_code?: string
           created_at?: string
           credits?: number
@@ -819,6 +951,8 @@ export type Database = {
       }
       cru_ideas: {
         Row: {
+
+          [key: string]: any
           created_at: string
           hypothesis: string | null
           id: string
@@ -829,6 +963,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           hypothesis?: string | null
           id?: string
@@ -839,6 +975,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           hypothesis?: string | null
           id?: string
@@ -852,6 +990,8 @@ export type Database = {
       }
       cru_lessons: {
         Row: {
+
+          [key: string]: any
           content: string
           course_id: string
           created_at: string
@@ -861,6 +1001,8 @@ export type Database = {
           title: string
         }
         Insert: {
+
+          [key: string]: any
           content: string
           course_id: string
           created_at?: string
@@ -870,6 +1012,8 @@ export type Database = {
           title: string
         }
         Update: {
+
+          [key: string]: any
           content?: string
           course_id?: string
           created_at?: string
@@ -890,6 +1034,8 @@ export type Database = {
       }
       cru_mastery: {
         Row: {
+
+          [key: string]: any
           attempts: number
           concept_id: string
           confidence: number
@@ -898,6 +1044,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           attempts?: number
           concept_id: string
           confidence?: number
@@ -906,6 +1054,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           attempts?: number
           concept_id?: string
           confidence?: number
@@ -925,6 +1075,8 @@ export type Database = {
       }
       cru_mistakes: {
         Row: {
+
+          [key: string]: any
           concept_id: string | null
           correction: string | null
           created_at: string
@@ -935,6 +1087,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           concept_id?: string | null
           correction?: string | null
           created_at?: string
@@ -945,6 +1099,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           concept_id?: string | null
           correction?: string | null
           created_at?: string
@@ -966,6 +1122,8 @@ export type Database = {
       }
       cru_news: {
         Row: {
+
+          [key: string]: any
           category: string | null
           created_at: string
           id: string
@@ -977,6 +1135,8 @@ export type Database = {
           title: string
         }
         Insert: {
+
+          [key: string]: any
           category?: string | null
           created_at?: string
           id?: string
@@ -988,6 +1148,8 @@ export type Database = {
           title: string
         }
         Update: {
+
+          [key: string]: any
           category?: string | null
           created_at?: string
           id?: string
@@ -1002,6 +1164,8 @@ export type Database = {
       }
       cru_paper_notes: {
         Row: {
+
+          [key: string]: any
           created_at: string
           id: string
           notes: string
@@ -1009,6 +1173,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           notes: string
@@ -1016,6 +1182,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           notes?: string
@@ -1034,6 +1202,8 @@ export type Database = {
       }
       cru_papers: {
         Row: {
+
+          [key: string]: any
           abstract: string | null
           arxiv_id: string | null
           authors: string[]
@@ -1047,6 +1217,8 @@ export type Database = {
           venue: string | null
         }
         Insert: {
+
+          [key: string]: any
           abstract?: string | null
           arxiv_id?: string | null
           authors?: string[]
@@ -1060,6 +1232,8 @@ export type Database = {
           venue?: string | null
         }
         Update: {
+
+          [key: string]: any
           abstract?: string | null
           arxiv_id?: string | null
           authors?: string[]
@@ -1076,6 +1250,8 @@ export type Database = {
       }
       cru_profiles: {
         Row: {
+
+          [key: string]: any
           created_at: string
           display_name: string | null
           id: string
@@ -1084,6 +1260,8 @@ export type Database = {
           year_of_study: number | null
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           display_name?: string | null
           id: string
@@ -1092,6 +1270,8 @@ export type Database = {
           year_of_study?: number | null
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           display_name?: string | null
           id?: string
@@ -1103,6 +1283,8 @@ export type Database = {
       }
       cru_projects: {
         Row: {
+
+          [key: string]: any
           created_at: string
           description: string | null
           github_url: string | null
@@ -1113,6 +1295,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           description?: string | null
           github_url?: string | null
@@ -1123,6 +1307,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           description?: string | null
           github_url?: string | null
@@ -1136,6 +1322,8 @@ export type Database = {
       }
       cru_study_sessions: {
         Row: {
+
+          [key: string]: any
           activity: string
           created_at: string
           id: string
@@ -1144,6 +1332,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           activity: string
           created_at?: string
           id?: string
@@ -1152,6 +1342,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           activity?: string
           created_at?: string
           id?: string
@@ -1163,6 +1355,8 @@ export type Database = {
       }
       cv_versions: {
         Row: {
+
+          [key: string]: any
           created_at: string
           cv_id: string
           data: Json
@@ -1170,6 +1364,8 @@ export type Database = {
           version_name: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           cv_id: string
           data?: Json
@@ -1177,6 +1373,8 @@ export type Database = {
           version_name: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           cv_id?: string
           data?: Json
@@ -1195,6 +1393,8 @@ export type Database = {
       }
       cvs: {
         Row: {
+
+          [key: string]: any
           created_at: string
           data: Json
           discoverable: boolean
@@ -1206,6 +1406,8 @@ export type Database = {
           visibility: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           data?: Json
           discoverable?: boolean
@@ -1217,6 +1419,8 @@ export type Database = {
           visibility?: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           data?: Json
           discoverable?: boolean
@@ -1231,6 +1435,8 @@ export type Database = {
       }
       data_sources: {
         Row: {
+
+          [key: string]: any
           created_at: string
           id: string
           notes: string | null
@@ -1244,6 +1450,8 @@ export type Database = {
           verified_at: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           notes?: string | null
@@ -1257,6 +1465,8 @@ export type Database = {
           verified_at?: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           notes?: string | null
@@ -1273,6 +1483,8 @@ export type Database = {
       }
       deadlines: {
         Row: {
+
+          [key: string]: any
           category: string | null
           created_at: string
           due_date: string
@@ -1283,6 +1495,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           category?: string | null
           created_at?: string
           due_date: string
@@ -1293,6 +1507,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           category?: string | null
           created_at?: string
           due_date?: string
@@ -1306,16 +1522,22 @@ export type Database = {
       }
       directory_blocks: {
         Row: {
+
+          [key: string]: any
           blocked_id: string
           blocker_id: string
           created_at: string
         }
         Insert: {
+
+          [key: string]: any
           blocked_id: string
           blocker_id: string
           created_at?: string
         }
         Update: {
+
+          [key: string]: any
           blocked_id?: string
           blocker_id?: string
           created_at?: string
@@ -1324,6 +1546,8 @@ export type Database = {
       }
       directory_profiles: {
         Row: {
+
+          [key: string]: any
           bio: string | null
           country: string | null
           created_at: string
@@ -1348,6 +1572,8 @@ export type Database = {
           visibility: string
         }
         Insert: {
+
+          [key: string]: any
           bio?: string | null
           country?: string | null
           created_at?: string
@@ -1372,6 +1598,8 @@ export type Database = {
           visibility?: string
         }
         Update: {
+
+          [key: string]: any
           bio?: string | null
           country?: string | null
           created_at?: string
@@ -1399,6 +1627,8 @@ export type Database = {
       }
       directory_reports: {
         Row: {
+
+          [key: string]: any
           created_at: string
           id: string
           profile_user_id: string
@@ -1406,6 +1636,8 @@ export type Database = {
           reporter_id: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           profile_user_id: string
@@ -1413,6 +1645,8 @@ export type Database = {
           reporter_id: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           profile_user_id?: string
@@ -1431,6 +1665,8 @@ export type Database = {
       }
       embassies: {
         Row: {
+
+          [key: string]: any
           address: string | null
           created_at: string | null
           email: string | null
@@ -1449,6 +1685,8 @@ export type Database = {
           visa_info_url: string | null
         }
         Insert: {
+
+          [key: string]: any
           address?: string | null
           created_at?: string | null
           email?: string | null
@@ -1467,6 +1705,8 @@ export type Database = {
           visa_info_url?: string | null
         }
         Update: {
+
+          [key: string]: any
           address?: string | null
           created_at?: string | null
           email?: string | null
@@ -1488,6 +1728,8 @@ export type Database = {
       }
       employee_profiles: {
         Row: {
+
+          [key: string]: any
           created_at: string
           employer_name: string | null
           professional_title: string | null
@@ -1496,6 +1738,8 @@ export type Database = {
           years_experience: number | null
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           employer_name?: string | null
           professional_title?: string | null
@@ -1504,6 +1748,8 @@ export type Database = {
           years_experience?: number | null
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           employer_name?: string | null
           professional_title?: string | null
@@ -1515,6 +1761,8 @@ export type Database = {
       }
       employer_messages: {
         Row: {
+
+          [key: string]: any
           candidate_user_id: string
           created_at: string
           employer_id: string
@@ -1524,6 +1772,8 @@ export type Database = {
           sender_user_id: string
         }
         Insert: {
+
+          [key: string]: any
           candidate_user_id: string
           created_at?: string
           employer_id: string
@@ -1533,6 +1783,8 @@ export type Database = {
           sender_user_id: string
         }
         Update: {
+
+          [key: string]: any
           candidate_user_id?: string
           created_at?: string
           employer_id?: string
@@ -1553,6 +1805,8 @@ export type Database = {
       }
       employer_profiles: {
         Row: {
+
+          [key: string]: any
           created_at: string
           hiring_focus: string[]
           organization_name: string | null
@@ -1561,6 +1815,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           hiring_focus?: string[]
           organization_name?: string | null
@@ -1569,6 +1825,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           hiring_focus?: string[]
           organization_name?: string | null
@@ -1580,6 +1838,8 @@ export type Database = {
       }
       employer_users: {
         Row: {
+
+          [key: string]: any
           created_at: string
           employer_id: string
           id: string
@@ -1587,6 +1847,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           employer_id: string
           id?: string
@@ -1594,6 +1856,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           employer_id?: string
           id?: string
@@ -1612,6 +1876,8 @@ export type Database = {
       }
       employer_verifications: {
         Row: {
+
+          [key: string]: any
           created_at: string
           employer_id: string
           evidence: Json
@@ -1622,6 +1888,8 @@ export type Database = {
           submitted_by: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           employer_id: string
           evidence?: Json
@@ -1632,6 +1900,8 @@ export type Database = {
           submitted_by: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           employer_id?: string
           evidence?: Json
@@ -1653,6 +1923,8 @@ export type Database = {
       }
       employers: {
         Row: {
+
+          [key: string]: any
           city: string | null
           company_id: string | null
           country_code: string | null
@@ -1670,6 +1942,8 @@ export type Database = {
           website_url: string | null
         }
         Insert: {
+
+          [key: string]: any
           city?: string | null
           company_id?: string | null
           country_code?: string | null
@@ -1687,6 +1961,8 @@ export type Database = {
           website_url?: string | null
         }
         Update: {
+
+          [key: string]: any
           city?: string | null
           company_id?: string | null
           country_code?: string | null
@@ -1715,6 +1991,8 @@ export type Database = {
       }
       faculties: {
         Row: {
+
+          [key: string]: any
           created_at: string
           id: string
           institution_id: string
@@ -1722,6 +2000,8 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           institution_id: string
@@ -1729,6 +2009,8 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           institution_id?: string
@@ -1747,6 +2029,8 @@ export type Database = {
       }
       feed_comments: {
         Row: {
+
+          [key: string]: any
           author_id: string
           content: string
           created_at: string
@@ -1754,6 +2038,8 @@ export type Database = {
           post_id: string
         }
         Insert: {
+
+          [key: string]: any
           author_id: string
           content: string
           created_at?: string
@@ -1761,6 +2047,8 @@ export type Database = {
           post_id: string
         }
         Update: {
+
+          [key: string]: any
           author_id?: string
           content?: string
           created_at?: string
@@ -1786,6 +2074,8 @@ export type Database = {
       }
       feed_items: {
         Row: {
+
+          [key: string]: any
           category: string
           description: string | null
           id: string
@@ -1797,6 +2087,8 @@ export type Database = {
           video_url: string | null
         }
         Insert: {
+
+          [key: string]: any
           category: string
           description?: string | null
           id?: string
@@ -1808,6 +2100,8 @@ export type Database = {
           video_url?: string | null
         }
         Update: {
+
+          [key: string]: any
           category?: string
           description?: string | null
           id?: string
@@ -1822,16 +2116,22 @@ export type Database = {
       }
       feed_likes: {
         Row: {
+
+          [key: string]: any
           created_at: string
           post_id: string
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           post_id: string
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           post_id?: string
           user_id?: string
@@ -1855,6 +2155,8 @@ export type Database = {
       }
       feed_posts: {
         Row: {
+
+          [key: string]: any
           author_id: string
           category: string
           comments_count: number
@@ -1872,6 +2174,8 @@ export type Database = {
           youtube_url: string | null
         }
         Insert: {
+
+          [key: string]: any
           author_id: string
           category?: string
           comments_count?: number
@@ -1889,6 +2193,8 @@ export type Database = {
           youtube_url?: string | null
         }
         Update: {
+
+          [key: string]: any
           author_id?: string
           category?: string
           comments_count?: number
@@ -1917,6 +2223,8 @@ export type Database = {
       }
       founder_profiles: {
         Row: {
+
+          [key: string]: any
           created_at: string
           pitch_url: string | null
           sector: string | null
@@ -1927,6 +2235,8 @@ export type Database = {
           website_url: string | null
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           pitch_url?: string | null
           sector?: string | null
@@ -1937,6 +2247,8 @@ export type Database = {
           website_url?: string | null
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           pitch_url?: string | null
           sector?: string | null
@@ -1950,6 +2262,8 @@ export type Database = {
       }
       ghana_institution_guides: {
         Row: {
+
+          [key: string]: any
           admissions_url: string | null
           application_url: string | null
           id: string
@@ -1962,6 +2276,8 @@ export type Database = {
           verification_status: string
         }
         Insert: {
+
+          [key: string]: any
           admissions_url?: string | null
           application_url?: string | null
           id?: string
@@ -1974,6 +2290,8 @@ export type Database = {
           verification_status?: string
         }
         Update: {
+
+          [key: string]: any
           admissions_url?: string | null
           application_url?: string | null
           id?: string
@@ -1989,6 +2307,8 @@ export type Database = {
       }
       ghana_student_visa_guides: {
         Row: {
+
+          [key: string]: any
           country_code: string
           destination_country: string
           last_verified_at: string | null
@@ -1998,6 +2318,8 @@ export type Database = {
           title: string
         }
         Insert: {
+
+          [key: string]: any
           country_code: string
           destination_country?: string
           last_verified_at?: string | null
@@ -2007,6 +2329,8 @@ export type Database = {
           title: string
         }
         Update: {
+
+          [key: string]: any
           country_code?: string
           destination_country?: string
           last_verified_at?: string | null
@@ -2027,6 +2351,8 @@ export type Database = {
       }
       innovation_items: {
         Row: {
+
+          [key: string]: any
           category: string
           description: string | null
           id: string
@@ -2038,6 +2364,8 @@ export type Database = {
           verified_at: string
         }
         Insert: {
+
+          [key: string]: any
           category: string
           description?: string | null
           id?: string
@@ -2049,6 +2377,8 @@ export type Database = {
           verified_at?: string
         }
         Update: {
+
+          [key: string]: any
           category?: string
           description?: string | null
           id?: string
@@ -2063,6 +2393,8 @@ export type Database = {
       }
       insight_comments: {
         Row: {
+
+          [key: string]: any
           author_label: string
           body: string
           created_at: string
@@ -2075,6 +2407,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           author_label?: string
           body: string
           created_at?: string
@@ -2087,6 +2421,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           author_label?: string
           body?: string
           created_at?: string
@@ -2117,18 +2453,24 @@ export type Database = {
       }
       insight_helpful: {
         Row: {
+
+          [key: string]: any
           created_at: string
           id: string
           insight_id: string
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           insight_id: string
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           insight_id?: string
@@ -2146,6 +2488,8 @@ export type Database = {
       }
       insight_reports: {
         Row: {
+
+          [key: string]: any
           created_at: string
           id: string
           insight_id: string
@@ -2155,6 +2499,8 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           insight_id: string
@@ -2164,6 +2510,8 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           insight_id?: string
@@ -2184,6 +2532,8 @@ export type Database = {
       }
       international_students: {
         Row: {
+
+          [key: string]: any
           academic_level: string | null
           country_code: string | null
           created_at: string | null
@@ -2206,6 +2556,8 @@ export type Database = {
           visible: boolean | null
         }
         Insert: {
+
+          [key: string]: any
           academic_level?: string | null
           country_code?: string | null
           created_at?: string | null
@@ -2228,6 +2580,8 @@ export type Database = {
           visible?: boolean | null
         }
         Update: {
+
+          [key: string]: any
           academic_level?: string | null
           country_code?: string | null
           created_at?: string | null
@@ -2261,6 +2615,8 @@ export type Database = {
       }
       international_universities: {
         Row: {
+
+          [key: string]: any
           admissions_url: string | null
           city: string | null
           country_code: string
@@ -2275,6 +2631,8 @@ export type Database = {
           website_url: string | null
         }
         Insert: {
+
+          [key: string]: any
           admissions_url?: string | null
           city?: string | null
           country_code: string
@@ -2289,6 +2647,8 @@ export type Database = {
           website_url?: string | null
         }
         Update: {
+
+          [key: string]: any
           admissions_url?: string | null
           city?: string | null
           country_code?: string
@@ -2306,6 +2666,8 @@ export type Database = {
       }
       internships: {
         Row: {
+
+          [key: string]: any
           application_url: string | null
           careers: string[] | null
           company_id: string
@@ -2322,6 +2684,8 @@ export type Database = {
           verified: boolean
         }
         Insert: {
+
+          [key: string]: any
           application_url?: string | null
           careers?: string[] | null
           company_id: string
@@ -2338,6 +2702,8 @@ export type Database = {
           verified?: boolean
         }
         Update: {
+
+          [key: string]: any
           application_url?: string | null
           careers?: string[] | null
           company_id?: string
@@ -2365,6 +2731,8 @@ export type Database = {
       }
       investors: {
         Row: {
+
+          [key: string]: any
           country_code: string | null
           created_at: string | null
           description: string | null
@@ -2378,6 +2746,8 @@ export type Database = {
           website_url: string | null
         }
         Insert: {
+
+          [key: string]: any
           country_code?: string | null
           created_at?: string | null
           description?: string | null
@@ -2391,6 +2761,8 @@ export type Database = {
           website_url?: string | null
         }
         Update: {
+
+          [key: string]: any
           country_code?: string | null
           created_at?: string | null
           description?: string | null
@@ -2407,6 +2779,8 @@ export type Database = {
       }
       learning_resources: {
         Row: {
+
+          [key: string]: any
           category: string | null
           country_code: string | null
           created_at: string | null
@@ -2419,6 +2793,8 @@ export type Database = {
           url: string
         }
         Insert: {
+
+          [key: string]: any
           category?: string | null
           country_code?: string | null
           created_at?: string | null
@@ -2431,6 +2807,8 @@ export type Database = {
           url: string
         }
         Update: {
+
+          [key: string]: any
           category?: string | null
           country_code?: string | null
           created_at?: string | null
@@ -2446,6 +2824,8 @@ export type Database = {
       }
       life_path_items: {
         Row: {
+
+          [key: string]: any
           created_at: string
           detail: string | null
           id: string
@@ -2457,6 +2837,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           detail?: string | null
           id?: string
@@ -2468,6 +2850,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           detail?: string | null
           id?: string
@@ -2482,6 +2866,8 @@ export type Database = {
       }
       logo_requests: {
         Row: {
+
+          [key: string]: any
           created_at: string
           id: string
           logo_url: string | null
@@ -2491,6 +2877,8 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           logo_url?: string | null
@@ -2500,6 +2888,8 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           logo_url?: string | null
@@ -2520,6 +2910,8 @@ export type Database = {
       }
       match_preferences: {
         Row: {
+
+          [key: string]: any
           created_at: string
           funding_types: string[]
           id: string
@@ -2528,6 +2920,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           funding_types?: string[]
           id?: string
@@ -2536,6 +2930,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           funding_types?: string[]
           id?: string
@@ -2547,6 +2943,8 @@ export type Database = {
       }
       news_articles: {
         Row: {
+
+          [key: string]: any
           category: string | null
           content_hash: string | null
           country_code: string | null
@@ -2561,6 +2959,8 @@ export type Database = {
           title: string
         }
         Insert: {
+
+          [key: string]: any
           category?: string | null
           content_hash?: string | null
           country_code?: string | null
@@ -2575,6 +2975,8 @@ export type Database = {
           title: string
         }
         Update: {
+
+          [key: string]: any
           category?: string | null
           content_hash?: string | null
           country_code?: string | null
@@ -2600,6 +3002,8 @@ export type Database = {
       }
       news_sources: {
         Row: {
+
+          [key: string]: any
           active: boolean
           category: string | null
           country_code: string | null
@@ -2614,6 +3018,8 @@ export type Database = {
           url: string
         }
         Insert: {
+
+          [key: string]: any
           active?: boolean
           category?: string | null
           country_code?: string | null
@@ -2628,6 +3034,8 @@ export type Database = {
           url: string
         }
         Update: {
+
+          [key: string]: any
           active?: boolean
           category?: string | null
           country_code?: string | null
@@ -2645,6 +3053,8 @@ export type Database = {
       }
       notification_preferences: {
         Row: {
+
+          [key: string]: any
           employer_messages: boolean
           internship_deadlines: boolean
           job_matches: boolean
@@ -2655,6 +3065,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           employer_messages?: boolean
           internship_deadlines?: boolean
           job_matches?: boolean
@@ -2665,6 +3077,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           employer_messages?: boolean
           internship_deadlines?: boolean
           job_matches?: boolean
@@ -2678,6 +3092,8 @@ export type Database = {
       }
       notifications: {
         Row: {
+
+          [key: string]: any
           action_url: string | null
           body: string | null
           created_at: string
@@ -2690,6 +3106,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           action_url?: string | null
           body?: string | null
           created_at?: string
@@ -2702,6 +3120,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           action_url?: string | null
           body?: string | null
           created_at?: string
@@ -2717,6 +3137,8 @@ export type Database = {
       }
       occupation_salaries: {
         Row: {
+
+          [key: string]: any
           created_at: string
           currency: string
           id: string
@@ -2727,6 +3149,8 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           currency?: string
           id?: string
@@ -2737,6 +3161,8 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           currency?: string
           id?: string
@@ -2750,6 +3176,8 @@ export type Database = {
       }
       opportunities: {
         Row: {
+
+          [key: string]: any
           application_url: string | null
           apply_url: string | null
           availability: string | null
@@ -2786,6 +3214,8 @@ export type Database = {
           views_count: number | null
         }
         Insert: {
+
+          [key: string]: any
           application_url?: string | null
           apply_url?: string | null
           availability?: string | null
@@ -2822,6 +3252,8 @@ export type Database = {
           views_count?: number | null
         }
         Update: {
+
+          [key: string]: any
           application_url?: string | null
           apply_url?: string | null
           availability?: string | null
@@ -2869,6 +3301,8 @@ export type Database = {
       }
       opportunity_applications: {
         Row: {
+
+          [key: string]: any
           applied_at: string | null
           created_at: string
           id: string
@@ -2879,6 +3313,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           applied_at?: string | null
           created_at?: string
           id?: string
@@ -2889,6 +3325,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           applied_at?: string | null
           created_at?: string
           id?: string
@@ -2910,6 +3348,8 @@ export type Database = {
       }
       opportunity_pipeline: {
         Row: {
+
+          [key: string]: any
           created_at: string
           deadline_date: string | null
           id: string
@@ -2924,6 +3364,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           deadline_date?: string | null
           id?: string
@@ -2938,6 +3380,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           deadline_date?: string | null
           id?: string
@@ -2955,6 +3399,8 @@ export type Database = {
       }
       parent_links: {
         Row: {
+
+          [key: string]: any
           created_at: string
           id: string
           invite_code: string
@@ -2965,6 +3411,8 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           invite_code: string
@@ -2975,6 +3423,8 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           invite_code?: string
@@ -2988,6 +3438,8 @@ export type Database = {
       }
       platform_countries: {
         Row: {
+
+          [key: string]: any
           active: boolean
           code: string
           created_at: string
@@ -2997,6 +3449,8 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+
+          [key: string]: any
           active?: boolean
           code: string
           created_at?: string
@@ -3006,6 +3460,8 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+
+          [key: string]: any
           active?: boolean
           code?: string
           created_at?: string
@@ -3018,6 +3474,8 @@ export type Database = {
       }
       platform_events: {
         Row: {
+
+          [key: string]: any
           country: string | null
           created_at: string | null
           description: string | null
@@ -3031,6 +3489,8 @@ export type Database = {
           type: string
         }
         Insert: {
+
+          [key: string]: any
           country?: string | null
           created_at?: string | null
           description?: string | null
@@ -3044,6 +3504,8 @@ export type Database = {
           type: string
         }
         Update: {
+
+          [key: string]: any
           country?: string | null
           created_at?: string | null
           description?: string | null
@@ -3060,6 +3522,8 @@ export type Database = {
       }
       profiles: {
         Row: {
+
+          [key: string]: any
           account_role: string
           account_type: string
           availability: string | null
@@ -3097,10 +3561,14 @@ export type Database = {
           school: string | null
           skills: string[] | null
           target_career: string | null
+          terms_accepted_at: string | null
+          terms_version: string | null
           university: string | null
           updated_at: string
         }
         Insert: {
+
+          [key: string]: any
           account_role?: string
           account_type?: string
           availability?: string | null
@@ -3138,10 +3606,14 @@ export type Database = {
           school?: string | null
           skills?: string[] | null
           target_career?: string | null
+          terms_accepted_at?: string | null
+          terms_version?: string | null
           university?: string | null
           updated_at?: string
         }
         Update: {
+
+          [key: string]: any
           account_role?: string
           account_type?: string
           availability?: string | null
@@ -3179,6 +3651,8 @@ export type Database = {
           school?: string | null
           skills?: string[] | null
           target_career?: string | null
+          terms_accepted_at?: string | null
+          terms_version?: string | null
           university?: string | null
           updated_at?: string
         }
@@ -3186,6 +3660,8 @@ export type Database = {
       }
       programme_admission_estimates: {
         Row: {
+
+          [key: string]: any
           confidence: number | null
           created_at: string
           estimated_cutoff: number | null
@@ -3197,6 +3673,8 @@ export type Database = {
           year: number | null
         }
         Insert: {
+
+          [key: string]: any
           confidence?: number | null
           created_at?: string
           estimated_cutoff?: number | null
@@ -3208,6 +3686,8 @@ export type Database = {
           year?: number | null
         }
         Update: {
+
+          [key: string]: any
           confidence?: number | null
           created_at?: string
           estimated_cutoff?: number | null
@@ -3237,6 +3717,8 @@ export type Database = {
       }
       programme_careers: {
         Row: {
+
+          [key: string]: any
           career: string
           created_at: string
           id: string
@@ -3244,6 +3726,8 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+
+          [key: string]: any
           career: string
           created_at?: string
           id?: string
@@ -3251,6 +3735,8 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+
+          [key: string]: any
           career?: string
           created_at?: string
           id?: string
@@ -3269,6 +3755,8 @@ export type Database = {
       }
       programme_curriculum: {
         Row: {
+
+          [key: string]: any
           course_code: string | null
           course_name: string
           courses: string[] | null
@@ -3279,6 +3767,8 @@ export type Database = {
           year: number | null
         }
         Insert: {
+
+          [key: string]: any
           course_code?: string | null
           course_name: string
           courses?: string[] | null
@@ -3289,6 +3779,8 @@ export type Database = {
           year?: number | null
         }
         Update: {
+
+          [key: string]: any
           course_code?: string | null
           course_name?: string
           courses?: string[] | null
@@ -3310,6 +3802,8 @@ export type Database = {
       }
       programme_cutoffs: {
         Row: {
+
+          [key: string]: any
           created_at: string
           cutoff: number | null
           id: string
@@ -3320,6 +3814,8 @@ export type Database = {
           year: number | null
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           cutoff?: number | null
           id?: string
@@ -3330,6 +3826,8 @@ export type Database = {
           year?: number | null
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           cutoff?: number | null
           id?: string
@@ -3358,6 +3856,8 @@ export type Database = {
       }
       programme_feedback: {
         Row: {
+
+          [key: string]: any
           comment: string | null
           created_at: string
           id: string
@@ -3367,6 +3867,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           comment?: string | null
           created_at?: string
           id?: string
@@ -3376,6 +3878,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           comment?: string | null
           created_at?: string
           id?: string
@@ -3396,6 +3900,8 @@ export type Database = {
       }
       programme_field_library: {
         Row: {
+
+          [key: string]: any
           created_at: string
           field: string
           id: string
@@ -3403,6 +3909,8 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           field: string
           id?: string
@@ -3410,6 +3918,8 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           field?: string
           id?: string
@@ -3420,6 +3930,8 @@ export type Database = {
       }
       programme_information: {
         Row: {
+
+          [key: string]: any
           average_salary: number | null
           career_opportunities: string[] | null
           created_at: string
@@ -3432,6 +3944,8 @@ export type Database = {
           why_choose: string | null
         }
         Insert: {
+
+          [key: string]: any
           average_salary?: number | null
           career_opportunities?: string[] | null
           created_at?: string
@@ -3444,6 +3958,8 @@ export type Database = {
           why_choose?: string | null
         }
         Update: {
+
+          [key: string]: any
           average_salary?: number | null
           career_opportunities?: string[] | null
           created_at?: string
@@ -3467,6 +3983,8 @@ export type Database = {
       }
       programme_qualification_requirements: {
         Row: {
+
+          [key: string]: any
           created_at: string
           id: string
           last_verified_at: string | null
@@ -3481,6 +3999,8 @@ export type Database = {
           verification_status: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           last_verified_at?: string | null
@@ -3495,6 +4015,8 @@ export type Database = {
           verification_status?: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           last_verified_at?: string | null
@@ -3527,6 +4049,8 @@ export type Database = {
       }
       programme_requirements: {
         Row: {
+
+          [key: string]: any
           created_at: string
           id: string
           programme_id: string
@@ -3534,6 +4058,8 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           programme_id: string
@@ -3541,6 +4067,8 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           programme_id?: string
@@ -3559,6 +4087,8 @@ export type Database = {
       }
       programme_sources: {
         Row: {
+
+          [key: string]: any
           created_at: string
           id: string
           programme_id: string
@@ -3567,6 +4097,8 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           programme_id: string
@@ -3575,6 +4107,8 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           programme_id?: string
@@ -3594,6 +4128,8 @@ export type Database = {
       }
       programmes: {
         Row: {
+
+          [key: string]: any
           academic_year: string | null
           application_url: string | null
           career_opportunities: string[] | null
@@ -3619,6 +4155,8 @@ export type Database = {
           wassce_requirements: string | null
         }
         Insert: {
+
+          [key: string]: any
           academic_year?: string | null
           application_url?: string | null
           career_opportunities?: string[] | null
@@ -3644,6 +4182,8 @@ export type Database = {
           wassce_requirements?: string | null
         }
         Update: {
+
+          [key: string]: any
           academic_year?: string | null
           application_url?: string | null
           career_opportunities?: string[] | null
@@ -3687,6 +4227,8 @@ export type Database = {
       }
       qualification_catalog: {
         Row: {
+
+          [key: string]: any
           code: string
           country_code: string | null
           created_at: string
@@ -3702,6 +4244,8 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+
+          [key: string]: any
           code: string
           country_code?: string | null
           created_at?: string
@@ -3717,6 +4261,8 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+
+          [key: string]: any
           code?: string
           country_code?: string | null
           created_at?: string
@@ -3735,6 +4281,8 @@ export type Database = {
       }
       recommendation_items: {
         Row: {
+
+          [key: string]: any
           category: string | null
           created_at: string
           entity_id: string | null
@@ -3748,6 +4296,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           category?: string | null
           created_at?: string
           entity_id?: string | null
@@ -3761,6 +4311,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           category?: string | null
           created_at?: string
           entity_id?: string | null
@@ -3785,6 +4337,8 @@ export type Database = {
       }
       recommendation_runs: {
         Row: {
+
+          [key: string]: any
           completed_at: string | null
           created_at: string
           engine_version: string
@@ -3797,6 +4351,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           completed_at?: string | null
           created_at?: string
           engine_version?: string
@@ -3809,6 +4365,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           completed_at?: string | null
           created_at?: string
           engine_version?: string
@@ -3824,18 +4382,24 @@ export type Database = {
       }
       saved_candidates: {
         Row: {
+
+          [key: string]: any
           candidate_user_id: string
           created_at: string
           employer_id: string
           id: string
         }
         Insert: {
+
+          [key: string]: any
           candidate_user_id: string
           created_at?: string
           employer_id: string
           id?: string
         }
         Update: {
+
+          [key: string]: any
           candidate_user_id?: string
           created_at?: string
           employer_id?: string
@@ -3853,6 +4417,8 @@ export type Database = {
       }
       saved_items: {
         Row: {
+
+          [key: string]: any
           created_at: string
           id: string
           item_key: string
@@ -3864,6 +4430,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           item_key: string
@@ -3875,6 +4443,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           item_key?: string
@@ -3889,6 +4459,8 @@ export type Database = {
       }
       saved_searches: {
         Row: {
+
+          [key: string]: any
           alerts_enabled: boolean
           created_at: string
           filters: Json
@@ -3900,6 +4472,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           alerts_enabled?: boolean
           created_at?: string
           filters?: Json
@@ -3911,6 +4485,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           alerts_enabled?: boolean
           created_at?: string
           filters?: Json
@@ -3925,6 +4501,8 @@ export type Database = {
       }
       scholarship_applications: {
         Row: {
+
+          [key: string]: any
           created_at: string
           id: string
           scholarship_id: string
@@ -3933,6 +4511,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           scholarship_id: string
@@ -3941,6 +4521,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           scholarship_id?: string
@@ -3952,6 +4534,8 @@ export type Database = {
       }
       scholarships: {
         Row: {
+
+          [key: string]: any
           application_url: string | null
           created_at: string
           deadline: string | null
@@ -3967,6 +4551,8 @@ export type Database = {
           verified: boolean
         }
         Insert: {
+
+          [key: string]: any
           application_url?: string | null
           created_at?: string
           deadline?: string | null
@@ -3982,6 +4568,8 @@ export type Database = {
           verified?: boolean
         }
         Update: {
+
+          [key: string]: any
           application_url?: string | null
           created_at?: string
           deadline?: string | null
@@ -4000,6 +4588,8 @@ export type Database = {
       }
       site_ratings: {
         Row: {
+
+          [key: string]: any
           comment: string | null
           created_at: string
           id: string
@@ -4007,6 +4597,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           comment?: string | null
           created_at?: string
           id?: string
@@ -4014,6 +4606,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           comment?: string | null
           created_at?: string
           id?: string
@@ -4024,6 +4618,8 @@ export type Database = {
       }
       skill_relationships: {
         Row: {
+
+          [key: string]: any
           from_skill_id: string
           id: string
           rationale: string | null
@@ -4032,6 +4628,8 @@ export type Database = {
           weight: number
         }
         Insert: {
+
+          [key: string]: any
           from_skill_id: string
           id?: string
           rationale?: string | null
@@ -4040,6 +4638,8 @@ export type Database = {
           weight?: number
         }
         Update: {
+
+          [key: string]: any
           from_skill_id?: string
           id?: string
           rationale?: string | null
@@ -4066,6 +4666,8 @@ export type Database = {
       }
       skills: {
         Row: {
+
+          [key: string]: any
           category: string
           created_at: string
           description: string | null
@@ -4080,6 +4682,8 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+
+          [key: string]: any
           category: string
           created_at?: string
           description?: string | null
@@ -4094,6 +4698,8 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+
+          [key: string]: any
           category?: string
           created_at?: string
           description?: string | null
@@ -4111,6 +4717,8 @@ export type Database = {
       }
       student_insights: {
         Row: {
+
+          [key: string]: any
           body: string
           created_at: string
           helpful_count: number
@@ -4123,6 +4731,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           body: string
           created_at?: string
           helpful_count?: number
@@ -4135,6 +4745,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           body?: string
           created_at?: string
           helpful_count?: number
@@ -4158,6 +4770,8 @@ export type Database = {
       }
       student_profiles: {
         Row: {
+
+          [key: string]: any
           created_at: string
           education_stage: string | null
           intended_country: string | null
@@ -4165,6 +4779,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           education_stage?: string | null
           intended_country?: string | null
@@ -4172,6 +4788,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           education_stage?: string | null
           intended_country?: string | null
@@ -4182,6 +4800,8 @@ export type Database = {
       }
       student_qualification_results: {
         Row: {
+
+          [key: string]: any
           created_at: string
           grade: string
           id: string
@@ -4191,6 +4811,8 @@ export type Database = {
           subject_code: string | null
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           grade: string
           id?: string
@@ -4200,6 +4822,8 @@ export type Database = {
           subject_code?: string | null
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           grade?: string
           id?: string
@@ -4220,6 +4844,8 @@ export type Database = {
       }
       student_qualifications: {
         Row: {
+
+          [key: string]: any
           country_code: string
           created_at: string
           grading_scale: string | null
@@ -4232,6 +4858,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           country_code?: string
           created_at?: string
           grading_scale?: string | null
@@ -4244,6 +4872,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           country_code?: string
           created_at?: string
           grading_scale?: string | null
@@ -4259,6 +4889,8 @@ export type Database = {
       }
       talent_directory: {
         Row: {
+
+          [key: string]: any
           bio: string | null
           city: string | null
           discoverable: boolean
@@ -4273,6 +4905,8 @@ export type Database = {
           years_experience: number | null
         }
         Insert: {
+
+          [key: string]: any
           bio?: string | null
           city?: string | null
           discoverable?: boolean
@@ -4287,6 +4921,8 @@ export type Database = {
           years_experience?: number | null
         }
         Update: {
+
+          [key: string]: any
           bio?: string | null
           city?: string | null
           discoverable?: boolean
@@ -4304,6 +4940,8 @@ export type Database = {
       }
       universities: {
         Row: {
+
+          [key: string]: any
           accreditation_expiry_date: string | null
           accreditation_start_date: string | null
           accreditation_status: string
@@ -4345,6 +4983,8 @@ export type Database = {
           website_url: string | null
         }
         Insert: {
+
+          [key: string]: any
           accreditation_expiry_date?: string | null
           accreditation_start_date?: string | null
           accreditation_status?: string
@@ -4386,6 +5026,8 @@ export type Database = {
           website_url?: string | null
         }
         Update: {
+
+          [key: string]: any
           accreditation_expiry_date?: string | null
           accreditation_start_date?: string | null
           accreditation_status?: string
@@ -4430,6 +5072,8 @@ export type Database = {
       }
       usage_counters: {
         Row: {
+
+          [key: string]: any
           active_students: number
           counter_key: string
           counter_value: number
@@ -4440,6 +5084,8 @@ export type Database = {
           website_visits: number
         }
         Insert: {
+
+          [key: string]: any
           active_students?: number
           counter_key: string
           counter_value?: number
@@ -4450,6 +5096,8 @@ export type Database = {
           website_visits?: number
         }
         Update: {
+
+          [key: string]: any
           active_students?: number
           counter_key?: string
           counter_value?: number
@@ -4463,6 +5111,8 @@ export type Database = {
       }
       user_activity: {
         Row: {
+
+          [key: string]: any
           created_at: string
           entity_id: string | null
           entity_type: string | null
@@ -4472,6 +5122,8 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           entity_id?: string | null
           entity_type?: string | null
@@ -4481,6 +5133,8 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           entity_id?: string | null
           entity_type?: string | null
@@ -4493,6 +5147,8 @@ export type Database = {
       }
       user_documents: {
         Row: {
+
+          [key: string]: any
           created_at: string
           document_type: string
           file_name: string
@@ -4506,6 +5162,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           document_type: string
           file_name: string
@@ -4519,6 +5177,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           document_type?: string
           file_name?: string
@@ -4535,18 +5195,24 @@ export type Database = {
       }
       user_roles: {
         Row: {
+
+          [key: string]: any
           created_at: string
           id: string
           role: Database["public"]["Enums"]["app_role"]
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           role: Database["public"]["Enums"]["app_role"]
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
@@ -4556,6 +5222,8 @@ export type Database = {
       }
       user_skill_profiles: {
         Row: {
+
+          [key: string]: any
           created_at: string
           evidence: Json
           id: string
@@ -4565,6 +5233,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           evidence?: Json
           id?: string
@@ -4574,6 +5244,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           evidence?: Json
           id?: string
@@ -4594,6 +5266,8 @@ export type Database = {
       }
       wassce_results: {
         Row: {
+
+          [key: string]: any
           created_at: string
           grade: string
           id: string
@@ -4602,6 +5276,8 @@ export type Database = {
           user_id: string
         }
         Insert: {
+
+          [key: string]: any
           created_at?: string
           grade: string
           id?: string
@@ -4610,6 +5286,8 @@ export type Database = {
           user_id: string
         }
         Update: {
+
+          [key: string]: any
           created_at?: string
           grade?: string
           id?: string
@@ -4623,6 +5301,8 @@ export type Database = {
     Views: {
       startup_directory: {
         Row: {
+
+          [key: string]: any
           pitch_url: string | null
           sector: string | null
           stage: string | null
@@ -4630,6 +5310,8 @@ export type Database = {
           website_url: string | null
         }
         Insert: {
+
+          [key: string]: any
           pitch_url?: string | null
           sector?: string | null
           stage?: string | null
@@ -4637,6 +5319,8 @@ export type Database = {
           website_url?: string | null
         }
         Update: {
+
+          [key: string]: any
           pitch_url?: string | null
           sector?: string | null
           stage?: string | null
@@ -4647,6 +5331,8 @@ export type Database = {
       }
       university_platform_analytics: {
         Row: {
+
+          [key: string]: any
           internships_indexed: number | null
           opportunities_indexed: number | null
           programmes_indexed: number | null
@@ -4658,6 +5344,8 @@ export type Database = {
       }
     }
     Functions: {
+
+      [key: string]: { Args: any; Returns: any }
       admin_analytics: { Args: never; Returns: Json }
       get_backend_content: {
         Args: { p_keys?: string[]; p_language?: string }
