@@ -1652,13 +1652,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SkillsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/universities': {
-      id: '/universities'
-      path: '/universities'
-      fullPath: '/universities'
-      preLoaderRoute: typeof UniversitiesIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/universities/': {
       id: '/universities/'
       path: '/universities'
