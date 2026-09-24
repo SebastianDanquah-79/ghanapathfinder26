@@ -1653,9 +1653,9 @@ declare module '@tanstack/react-router' {
       parentRoute: typeof rootRouteImport
     }
     '/universities': {
-      id: '/universities/'
+      id: '/universities'
       path: '/universities'
-      fullPath: '/universities/'
+      fullPath: '/universities'
       preLoaderRoute: typeof UniversitiesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
