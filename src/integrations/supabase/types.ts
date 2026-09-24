@@ -4958,4 +4958,18 @@ export const Constants = {
 } as const
 
 
+type PublicTables = Database["public"]["Tables"];
+type PublicViews = Database["public"]["Views"];
+type PublicEnums = Database["public"]["Enums"];
+type PublicCompositeTypes = Database["public"]["CompositeTypes"];
+
+export type Tables<K extends keyof (PublicTables & PublicViews) = keyof (PublicTables & PublicViews)> =
+  (PublicTables & PublicViews)[K] extends { Row: infer R } ? R : never;
+export type TablesInsert<K extends keyof PublicTables = keyof PublicTables> =
+  PublicTables[K] extends { Insert: infer I } ? I : never;
+export type TablesUpdate<K extends keyof PublicTables = keyof PublicTables> =
+  PublicTables[K] extends { Update: infer U } ? U : never;
+export type Enums<K extends keyof PublicEnums = keyof PublicEnums> = PublicEnums[K];
+export type CompositeTypes<K extends keyof PublicCompositeTypes = keyof PublicCompositeTypes> = PublicCompositeTypes[K];
+
 export type GeneratedDatabase = Database;
