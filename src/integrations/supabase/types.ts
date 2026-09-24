@@ -454,47 +454,6 @@ export type Database = {
           },
         ]
       }
-      collection_items: {
-        Row: {
-          collection_id: string
-          created_at: string
-          entity_key: string
-          entity_type: string
-          id: string
-          position: number
-          subtitle: string | null
-          title: string
-        }
-        Insert: {
-          collection_id: string
-          created_at?: string
-          entity_key: string
-          entity_type: string
-          id?: string
-          position?: number
-          subtitle?: string | null
-          title: string
-        }
-        Update: {
-          collection_id?: string
-          created_at?: string
-          entity_key?: string
-          entity_type?: string
-          id?: string
-          position?: number
-          subtitle?: string | null
-          title?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "collection_items_collection_id_fkey"
-            columns: ["collection_id"]
-            isOneToOne: false
-            referencedRelation: "user_collections"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       comment_likes: {
         Row: {
           comment_id: string
@@ -4538,36 +4497,6 @@ export type Database = {
         }
         Relationships: []
       }
-      user_collections: {
-        Row: {
-          created_at: string
-          description: string | null
-          id: string
-          name: string
-          updated_at: string
-          user_id: string
-          visibility: string
-        }
-        Insert: {
-          created_at?: string
-          description?: string | null
-          id?: string
-          name: string
-          updated_at?: string
-          user_id: string
-          visibility?: string
-        }
-        Update: {
-          created_at?: string
-          description?: string | null
-          id?: string
-          name?: string
-          updated_at?: string
-          user_id?: string
-          visibility?: string
-        }
-        Relationships: []
-      }
       user_documents: {
         Row: {
           created_at: string
@@ -4610,6 +4539,77 @@ export type Database = {
         }
         Relationships: []
       }
+      collection_items: {
+        Row: {
+          collection_id: string
+          created_at: string
+          entity_key: string
+          entity_type: string
+          id: string
+          position: number
+          subtitle: string | null
+          title: string
+        }
+        Insert: {
+          collection_id: string
+          created_at?: string
+          entity_key: string
+          entity_type: string
+          id?: string
+          position?: number
+          subtitle?: string | null
+          title: string
+        }
+        Update: {
+          collection_id?: string
+          created_at?: string
+          entity_key?: string
+          entity_type?: string
+          id?: string
+          position?: number
+          subtitle?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "collection_items_collection_id_fkey"
+            columns: ["collection_id"]
+            isOneToOne: false
+            referencedRelation: "user_collections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_collections: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          updated_at: string
+          user_id: string
+          visibility: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          updated_at?: string
+          user_id: string
+          visibility?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          updated_at?: string
+          user_id?: string
+          visibility?: string
+        }
+        Relationships: []
+      }
       user_follows: {
         Row: {
           created_at: string
@@ -4634,6 +4634,7 @@ export type Database = {
         }
         Relationships: []
       }
+
       user_roles: {
         Row: {
           created_at: string
@@ -4832,122 +4833,13 @@ export type Database = {
   }
 }
 
-type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
+export type GeneratedDatabase = Database;
 
-type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
-
-export type Tables<
-  DefaultSchemaTableNameOrOptions extends
-    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
-    | { schema: keyof DatabaseWithoutInternals },
-  TableName extends (DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
-  }
-    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never) = never,
-> = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
-}
-  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R
-    }
-    ? R
-    : never
-  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
-        DefaultSchema["Views"])
-    ? (DefaultSchema["Tables"] &
-        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
-        Row: infer R
-      }
-      ? R
-      : never
-    : never
-
-export type TablesInsert<
-  DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema["Tables"]
-    | { schema: keyof DatabaseWithoutInternals },
-  TableName extends (DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
-  }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never) = never,
-> = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
-}
-  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I
-    }
-    ? I
-    : never
-  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Insert: infer I
-      }
-      ? I
-      : never
-    : never
-
-export type TablesUpdate<
-  DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema["Tables"]
-    | { schema: keyof DatabaseWithoutInternals },
-  TableName extends (DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
-  }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never) = never,
-> = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
-}
-  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U
-    }
-    ? U
-    : never
-  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Update: infer U
-      }
-      ? U
-      : never
-    : never
-
-export type Enums<
-  DefaultSchemaEnumNameOrOptions extends
-    | keyof DefaultSchema["Enums"]
-    | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
-  }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never) = never,
-> = DefaultSchemaEnumNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
-}
-  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
-    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
-    : never
-
-export type CompositeTypes<
-  PublicCompositeTypeNameOrOptions extends
-    | keyof DefaultSchema["CompositeTypes"]
-    | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
-  }
-    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never) = never,
-> = PublicCompositeTypeNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
-}
-  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
-  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
-    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
-    : never
+export type Tables<T = any, U = any> = any;
+export type TablesInsert<T = any, U = any> = any;
+export type TablesUpdate<T = any, U = any> = any;
+export type Enums<T = any, U = any> = any;
+export type CompositeTypes<T = any, U = any> = any;
 
 export const Constants = {
   public: {
@@ -4955,21 +4847,4 @@ export const Constants = {
       app_role: ["student", "parent", "admin"],
     },
   },
-} as const
-
-
-type PublicTables = Database["public"]["Tables"];
-type PublicViews = Database["public"]["Views"];
-type PublicEnums = Database["public"]["Enums"];
-type PublicCompositeTypes = Database["public"]["CompositeTypes"];
-
-export type Tables<K extends keyof (PublicTables & PublicViews) = keyof (PublicTables & PublicViews)> =
-  (PublicTables & PublicViews)[K] extends { Row: infer R } ? R : never;
-export type TablesInsert<K extends keyof PublicTables = keyof PublicTables> =
-  PublicTables[K] extends { Insert: infer I } ? I : never;
-export type TablesUpdate<K extends keyof PublicTables = keyof PublicTables> =
-  PublicTables[K] extends { Update: infer U } ? U : never;
-export type Enums<K extends keyof PublicEnums = keyof PublicEnums> = PublicEnums[K];
-export type CompositeTypes<K extends keyof PublicCompositeTypes = keyof PublicCompositeTypes> = PublicCompositeTypes[K];
-
-export type GeneratedDatabase = Database;
+} as const;
