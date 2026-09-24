@@ -35,6 +35,15 @@ function isH3SwallowedErrorBody(body: string): boolean {
 
 const fetch = async (request: Request): Promise<Response> => {
   try {
+    const url = new URL(request.url);
+    if (request.method === "GET" && (url.pathname === "/opportunities" || url.pathname.startsWith("/opportunities/"))) {
+      const slug = url.pathname.slice("/opportunities/".length).replace(/^\\/+|\\/+$/g, "");
+      const destination = new URL("/search", url);
+      destination.searchParams.set("kind", "opportunity");
+      if (slug) destination.searchParams.set("category", slug);
+      return Response.redirect(destination, 307);
+    }
+
     const response = await handler.fetch(request);
     return await normalizeCatastrophicSsrResponse(response);
   } catch (error) {
