@@ -21,14 +21,16 @@
   ],
   "framework": "tanstack-start",
   "installCommand": "bun install --no-frozen-lockfile",
-  "rewrites": [
+  "redirects": [
     {
       "source": "/opportunities",
-      "destination": "/search?kind=opportunity"
+      "destination": "/search?kind=opportunity",
+      "permanent": false
     },
     {
       "source": "/opportunities/:slug",
-      "destination": "/search?kind=opportunity&category=:slug"
+      "destination": "/search?kind=opportunity&category=:slug",
+      "permanent": false
     }
   ]
 }
