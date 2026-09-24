@@ -19,5 +19,6 @@
       ]
     }
   ],
-  "framework": "tanstack-start"
+  "framework": "tanstack-start",
+  "installCommand": "bun install --no-frozen-lockfile"
 }
