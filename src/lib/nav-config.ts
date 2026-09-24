@@ -46,6 +46,7 @@ export const navSections: NavSection[] = [
     {label:"Admission match",href:"/admission-match",desc:"See what fits your results"},
     {label:"Applications & deadlines",href:"/applications",desc:"Never miss your next step"},
     {label:"Saved items",href:"/saved",desc:"Keep your best options close"},
+    {label:"Collections",href:"/collections",desc:"Organise what you discover"},
     {label:"Match preferences",href:"/preferences",desc:"Make every match more personal"},
   ]},
 ];
@@ -55,6 +56,7 @@ export const accountItems: NavItem[] = [
   {label:"Notifications",href:"/notifications"},
   {label:"My Path",href:"/my-path"},
   {label:"Saved items",href:"/saved"},
+  {label:"Collections",href:"/collections"},
   {label:"Applications",href:"/applications"},
   {label:"Match preferences",href:"/preferences"},
 ];
