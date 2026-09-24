@@ -16,24 +16,18 @@ export type GeneratedDatabase = {
     Tables: {
       active_sessions: {
         Row: {
-
-          [key: string]: any
           created_at: string
           last_seen: string
           session_id: string
           user_id: string | null
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           last_seen?: string
           session_id: string
           user_id?: string | null
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           last_seen?: string
           session_id?: string
@@ -43,8 +37,6 @@ export type GeneratedDatabase = {
       }
       admin_audit_log: {
         Row: {
-
-          [key: string]: any
           action: string
           actor_id: string | null
           after_data: Json | null
@@ -55,8 +47,6 @@ export type GeneratedDatabase = {
           id: number
         }
         Insert: {
-
-          [key: string]: any
           action: string
           actor_id?: string | null
           after_data?: Json | null
@@ -67,8 +57,6 @@ export type GeneratedDatabase = {
           id?: number
         }
         Update: {
-
-          [key: string]: any
           action?: string
           actor_id?: string | null
           after_data?: Json | null
@@ -82,8 +70,6 @@ export type GeneratedDatabase = {
       }
       africa_country_catalog: {
         Row: {
-
-          [key: string]: any
           code: string
           common_languages: string[]
           created_at: string
@@ -93,8 +79,6 @@ export type GeneratedDatabase = {
           region: string
         }
         Insert: {
-
-          [key: string]: any
           code: string
           common_languages?: string[]
           created_at?: string
@@ -104,8 +88,6 @@ export type GeneratedDatabase = {
           region: string
         }
         Update: {
-
-          [key: string]: any
           code?: string
           common_languages?: string[]
           created_at?: string
@@ -118,8 +100,6 @@ export type GeneratedDatabase = {
       }
       africa_leaders: {
         Row: {
-
-          [key: string]: any
           biography: string | null
           country_code: string
           country_code_alpha2: string | null
@@ -140,8 +120,6 @@ export type GeneratedDatabase = {
           verified_at: string | null
         }
         Insert: {
-
-          [key: string]: any
           biography?: string | null
           country_code: string
           country_code_alpha2?: string | null
@@ -162,8 +140,6 @@ export type GeneratedDatabase = {
           verified_at?: string | null
         }
         Update: {
-
-          [key: string]: any
           biography?: string | null
           country_code?: string
           country_code_alpha2?: string | null
@@ -187,8 +163,6 @@ export type GeneratedDatabase = {
       }
       african_heroes: {
         Row: {
-
-          [key: string]: any
           bio: string
           category: string
           country: string | null
@@ -201,8 +175,6 @@ export type GeneratedDatabase = {
           source_url: string
         }
         Insert: {
-
-          [key: string]: any
           bio: string
           category: string
           country?: string | null
@@ -215,8 +187,6 @@ export type GeneratedDatabase = {
           source_url: string
         }
         Update: {
-
-          [key: string]: any
           bio?: string
           category?: string
           country?: string | null
@@ -232,8 +202,6 @@ export type GeneratedDatabase = {
       }
       african_startups: {
         Row: {
-
-          [key: string]: any
           active_status: string | null
           capital_usd: number | null
           city: string | null
@@ -251,8 +219,6 @@ export type GeneratedDatabase = {
           stage: string | null
         }
         Insert: {
-
-          [key: string]: any
           active_status?: string | null
           capital_usd?: number | null
           city?: string | null
@@ -270,8 +236,6 @@ export type GeneratedDatabase = {
           stage?: string | null
         }
         Update: {
-
-          [key: string]: any
           active_status?: string | null
           capital_usd?: number | null
           city?: string | null
@@ -292,8 +256,6 @@ export type GeneratedDatabase = {
       }
       analytics_events: {
         Row: {
-
-          [key: string]: any
           created_at: string
           event_type: string
           id: string
@@ -304,8 +266,6 @@ export type GeneratedDatabase = {
           user_id: string | null
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           event_type: string
           id?: string
@@ -316,8 +276,6 @@ export type GeneratedDatabase = {
           user_id?: string | null
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           event_type?: string
           id?: string
@@ -331,22 +289,16 @@ export type GeneratedDatabase = {
       }
       app_settings: {
         Row: {
-
-          [key: string]: any
           key: string
           updated_at: string
           value: Json
         }
         Insert: {
-
-          [key: string]: any
           key: string
           updated_at?: string
           value: Json
         }
         Update: {
-
-          [key: string]: any
           key?: string
           updated_at?: string
           value?: Json
@@ -355,8 +307,6 @@ export type GeneratedDatabase = {
       }
       application_checklist: {
         Row: {
-
-          [key: string]: any
           created_at: string
           done: boolean
           due_date: string | null
@@ -367,8 +317,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           done?: boolean
           due_date?: string | null
@@ -379,8 +327,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           done?: boolean
           due_date?: string | null
@@ -394,8 +340,6 @@ export type GeneratedDatabase = {
       }
       application_notes: {
         Row: {
-
-          [key: string]: any
           application_id: string | null
           body: string
           created_at: string
@@ -406,8 +350,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           application_id?: string | null
           body?: string
           created_at?: string
@@ -418,8 +360,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           application_id?: string | null
           body?: string
           created_at?: string
@@ -433,8 +373,6 @@ export type GeneratedDatabase = {
       }
       book_catalog: {
         Row: {
-
-          [key: string]: any
           author: string
           created_at: string
           description: string | null
@@ -446,8 +384,6 @@ export type GeneratedDatabase = {
           updated_at: string
         }
         Insert: {
-
-          [key: string]: any
           author: string
           created_at?: string
           description?: string | null
@@ -459,8 +395,6 @@ export type GeneratedDatabase = {
           updated_at?: string
         }
         Update: {
-
-          [key: string]: any
           author?: string
           created_at?: string
           description?: string | null
@@ -475,8 +409,6 @@ export type GeneratedDatabase = {
       }
       campuses: {
         Row: {
-
-          [key: string]: any
           accreditation_status: string
           campus_name: string
           created_at: string
@@ -489,8 +421,6 @@ export type GeneratedDatabase = {
           updated_at: string
         }
         Insert: {
-
-          [key: string]: any
           accreditation_status?: string
           campus_name: string
           created_at?: string
@@ -503,8 +433,6 @@ export type GeneratedDatabase = {
           updated_at?: string
         }
         Update: {
-
-          [key: string]: any
           accreditation_status?: string
           campus_name?: string
           created_at?: string
@@ -528,24 +456,18 @@ export type GeneratedDatabase = {
       }
       comment_likes: {
         Row: {
-
-          [key: string]: any
           comment_id: string
           created_at: string
           id: string
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           comment_id: string
           created_at?: string
           id?: string
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           comment_id?: string
           created_at?: string
           id?: string
@@ -563,8 +485,6 @@ export type GeneratedDatabase = {
       }
       companies: {
         Row: {
-
-          [key: string]: any
           careers_url: string | null
           created_at: string
           description: string | null
@@ -584,8 +504,6 @@ export type GeneratedDatabase = {
           website_url: string | null
         }
         Insert: {
-
-          [key: string]: any
           careers_url?: string | null
           created_at?: string
           description?: string | null
@@ -605,8 +523,6 @@ export type GeneratedDatabase = {
           website_url?: string | null
         }
         Update: {
-
-          [key: string]: any
           careers_url?: string | null
           created_at?: string
           description?: string | null
@@ -629,8 +545,6 @@ export type GeneratedDatabase = {
       }
       country_catalog: {
         Row: {
-
-          [key: string]: any
           code: string
           created_at: string
           enabled: boolean
@@ -639,8 +553,6 @@ export type GeneratedDatabase = {
           region: string
         }
         Insert: {
-
-          [key: string]: any
           code: string
           created_at?: string
           enabled?: boolean
@@ -649,8 +561,6 @@ export type GeneratedDatabase = {
           region: string
         }
         Update: {
-
-          [key: string]: any
           code?: string
           created_at?: string
           enabled?: boolean
@@ -662,8 +572,6 @@ export type GeneratedDatabase = {
       }
       country_qualification_mapping: {
         Row: {
-
-          [key: string]: any
           country_code: string
           notes: string | null
           qualification_code: string
@@ -671,8 +579,6 @@ export type GeneratedDatabase = {
           verification_status: string
         }
         Insert: {
-
-          [key: string]: any
           country_code: string
           notes?: string | null
           qualification_code: string
@@ -680,8 +586,6 @@ export type GeneratedDatabase = {
           verification_status?: string
         }
         Update: {
-
-          [key: string]: any
           country_code?: string
           notes?: string | null
           qualification_code?: string
@@ -707,8 +611,6 @@ export type GeneratedDatabase = {
       }
       cross_border_opportunities: {
         Row: {
-
-          [key: string]: any
           application_url: string | null
           country_code: string | null
           eligibility: Json
@@ -722,8 +624,6 @@ export type GeneratedDatabase = {
           verified: boolean
         }
         Insert: {
-
-          [key: string]: any
           application_url?: string | null
           country_code?: string | null
           eligibility?: Json
@@ -737,8 +637,6 @@ export type GeneratedDatabase = {
           verified?: boolean
         }
         Update: {
-
-          [key: string]: any
           application_url?: string | null
           country_code?: string | null
           eligibility?: Json
@@ -755,8 +653,6 @@ export type GeneratedDatabase = {
       }
       cru_attempts: {
         Row: {
-
-          [key: string]: any
           activity_type: string
           answer: string | null
           concept_id: string | null
@@ -768,8 +664,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           activity_type: string
           answer?: string | null
           concept_id?: string | null
@@ -781,8 +675,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           activity_type?: string
           answer?: string | null
           concept_id?: string | null
@@ -805,24 +697,18 @@ export type GeneratedDatabase = {
       }
       cru_concepts: {
         Row: {
-
-          [key: string]: any
           description: string | null
           domain: string | null
           id: string
           name: string
         }
         Insert: {
-
-          [key: string]: any
           description?: string | null
           domain?: string | null
           id?: string
           name: string
         }
         Update: {
-
-          [key: string]: any
           description?: string | null
           domain?: string | null
           id?: string
@@ -832,8 +718,6 @@ export type GeneratedDatabase = {
       }
       cru_courses: {
         Row: {
-
-          [key: string]: any
           code: string
           created_at: string
           description: string | null
@@ -842,8 +726,6 @@ export type GeneratedDatabase = {
           title: string
         }
         Insert: {
-
-          [key: string]: any
           code: string
           created_at?: string
           description?: string | null
@@ -852,8 +734,6 @@ export type GeneratedDatabase = {
           title: string
         }
         Update: {
-
-          [key: string]: any
           code?: string
           created_at?: string
           description?: string | null
@@ -865,8 +745,6 @@ export type GeneratedDatabase = {
       }
       cru_experiments: {
         Row: {
-
-          [key: string]: any
           conclusion: string | null
           config: Json
           created_at: string
@@ -877,8 +755,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           conclusion?: string | null
           config?: Json
           created_at?: string
@@ -889,8 +765,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           conclusion?: string | null
           config?: Json
           created_at?: string
@@ -912,8 +786,6 @@ export type GeneratedDatabase = {
       }
       cru_grades: {
         Row: {
-
-          [key: string]: any
           course_code: string
           created_at: string
           credits: number
@@ -924,8 +796,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           course_code: string
           created_at?: string
           credits: number
@@ -936,8 +806,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           course_code?: string
           created_at?: string
           credits?: number
@@ -951,8 +819,6 @@ export type GeneratedDatabase = {
       }
       cru_ideas: {
         Row: {
-
-          [key: string]: any
           created_at: string
           hypothesis: string | null
           id: string
@@ -963,8 +829,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           hypothesis?: string | null
           id?: string
@@ -975,8 +839,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           hypothesis?: string | null
           id?: string
@@ -990,8 +852,6 @@ export type GeneratedDatabase = {
       }
       cru_lessons: {
         Row: {
-
-          [key: string]: any
           content: string
           course_id: string
           created_at: string
@@ -1001,8 +861,6 @@ export type GeneratedDatabase = {
           title: string
         }
         Insert: {
-
-          [key: string]: any
           content: string
           course_id: string
           created_at?: string
@@ -1012,8 +870,6 @@ export type GeneratedDatabase = {
           title: string
         }
         Update: {
-
-          [key: string]: any
           content?: string
           course_id?: string
           created_at?: string
@@ -1034,8 +890,6 @@ export type GeneratedDatabase = {
       }
       cru_mastery: {
         Row: {
-
-          [key: string]: any
           attempts: number
           concept_id: string
           confidence: number
@@ -1044,8 +898,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           attempts?: number
           concept_id: string
           confidence?: number
@@ -1054,8 +906,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           attempts?: number
           concept_id?: string
           confidence?: number
@@ -1075,8 +925,6 @@ export type GeneratedDatabase = {
       }
       cru_mistakes: {
         Row: {
-
-          [key: string]: any
           concept_id: string | null
           correction: string | null
           created_at: string
@@ -1087,8 +935,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           concept_id?: string | null
           correction?: string | null
           created_at?: string
@@ -1099,8 +945,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           concept_id?: string | null
           correction?: string | null
           created_at?: string
@@ -1122,8 +966,6 @@ export type GeneratedDatabase = {
       }
       cru_news: {
         Row: {
-
-          [key: string]: any
           category: string | null
           created_at: string
           id: string
@@ -1135,8 +977,6 @@ export type GeneratedDatabase = {
           title: string
         }
         Insert: {
-
-          [key: string]: any
           category?: string | null
           created_at?: string
           id?: string
@@ -1148,8 +988,6 @@ export type GeneratedDatabase = {
           title: string
         }
         Update: {
-
-          [key: string]: any
           category?: string | null
           created_at?: string
           id?: string
@@ -1164,8 +1002,6 @@ export type GeneratedDatabase = {
       }
       cru_paper_notes: {
         Row: {
-
-          [key: string]: any
           created_at: string
           id: string
           notes: string
@@ -1173,8 +1009,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           notes: string
@@ -1182,8 +1016,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           notes?: string
@@ -1202,8 +1034,6 @@ export type GeneratedDatabase = {
       }
       cru_papers: {
         Row: {
-
-          [key: string]: any
           abstract: string | null
           arxiv_id: string | null
           authors: string[]
@@ -1217,8 +1047,6 @@ export type GeneratedDatabase = {
           venue: string | null
         }
         Insert: {
-
-          [key: string]: any
           abstract?: string | null
           arxiv_id?: string | null
           authors?: string[]
@@ -1232,8 +1060,6 @@ export type GeneratedDatabase = {
           venue?: string | null
         }
         Update: {
-
-          [key: string]: any
           abstract?: string | null
           arxiv_id?: string | null
           authors?: string[]
@@ -1250,8 +1076,6 @@ export type GeneratedDatabase = {
       }
       cru_profiles: {
         Row: {
-
-          [key: string]: any
           created_at: string
           display_name: string | null
           id: string
@@ -1260,8 +1084,6 @@ export type GeneratedDatabase = {
           year_of_study: number | null
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           display_name?: string | null
           id: string
@@ -1270,8 +1092,6 @@ export type GeneratedDatabase = {
           year_of_study?: number | null
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           display_name?: string | null
           id?: string
@@ -1283,8 +1103,6 @@ export type GeneratedDatabase = {
       }
       cru_projects: {
         Row: {
-
-          [key: string]: any
           created_at: string
           description: string | null
           github_url: string | null
@@ -1295,8 +1113,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           description?: string | null
           github_url?: string | null
@@ -1307,8 +1123,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           description?: string | null
           github_url?: string | null
@@ -1322,8 +1136,6 @@ export type GeneratedDatabase = {
       }
       cru_study_sessions: {
         Row: {
-
-          [key: string]: any
           activity: string
           created_at: string
           id: string
@@ -1332,8 +1144,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           activity: string
           created_at?: string
           id?: string
@@ -1342,8 +1152,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           activity?: string
           created_at?: string
           id?: string
@@ -1355,8 +1163,6 @@ export type GeneratedDatabase = {
       }
       cv_versions: {
         Row: {
-
-          [key: string]: any
           created_at: string
           cv_id: string
           data: Json
@@ -1364,8 +1170,6 @@ export type GeneratedDatabase = {
           version_name: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           cv_id: string
           data?: Json
@@ -1373,8 +1177,6 @@ export type GeneratedDatabase = {
           version_name: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           cv_id?: string
           data?: Json
@@ -1393,8 +1195,6 @@ export type GeneratedDatabase = {
       }
       cvs: {
         Row: {
-
-          [key: string]: any
           created_at: string
           data: Json
           discoverable: boolean
@@ -1406,8 +1206,6 @@ export type GeneratedDatabase = {
           visibility: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           data?: Json
           discoverable?: boolean
@@ -1419,8 +1217,6 @@ export type GeneratedDatabase = {
           visibility?: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           data?: Json
           discoverable?: boolean
@@ -1435,8 +1231,6 @@ export type GeneratedDatabase = {
       }
       data_sources: {
         Row: {
-
-          [key: string]: any
           created_at: string
           id: string
           notes: string | null
@@ -1450,8 +1244,6 @@ export type GeneratedDatabase = {
           verified_at: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           notes?: string | null
@@ -1465,8 +1257,6 @@ export type GeneratedDatabase = {
           verified_at?: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           notes?: string | null
@@ -1483,8 +1273,6 @@ export type GeneratedDatabase = {
       }
       deadlines: {
         Row: {
-
-          [key: string]: any
           category: string | null
           created_at: string
           due_date: string
@@ -1495,8 +1283,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           category?: string | null
           created_at?: string
           due_date: string
@@ -1507,8 +1293,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           category?: string | null
           created_at?: string
           due_date?: string
@@ -1522,22 +1306,16 @@ export type GeneratedDatabase = {
       }
       directory_blocks: {
         Row: {
-
-          [key: string]: any
           blocked_id: string
           blocker_id: string
           created_at: string
         }
         Insert: {
-
-          [key: string]: any
           blocked_id: string
           blocker_id: string
           created_at?: string
         }
         Update: {
-
-          [key: string]: any
           blocked_id?: string
           blocker_id?: string
           created_at?: string
@@ -1546,8 +1324,6 @@ export type GeneratedDatabase = {
       }
       directory_profiles: {
         Row: {
-
-          [key: string]: any
           bio: string | null
           country: string | null
           created_at: string
@@ -1572,8 +1348,6 @@ export type GeneratedDatabase = {
           visibility: string
         }
         Insert: {
-
-          [key: string]: any
           bio?: string | null
           country?: string | null
           created_at?: string
@@ -1598,8 +1372,6 @@ export type GeneratedDatabase = {
           visibility?: string
         }
         Update: {
-
-          [key: string]: any
           bio?: string | null
           country?: string | null
           created_at?: string
@@ -1627,8 +1399,6 @@ export type GeneratedDatabase = {
       }
       directory_reports: {
         Row: {
-
-          [key: string]: any
           created_at: string
           id: string
           profile_user_id: string
@@ -1636,8 +1406,6 @@ export type GeneratedDatabase = {
           reporter_id: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           profile_user_id: string
@@ -1645,8 +1413,6 @@ export type GeneratedDatabase = {
           reporter_id: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           profile_user_id?: string
@@ -1665,8 +1431,6 @@ export type GeneratedDatabase = {
       }
       embassies: {
         Row: {
-
-          [key: string]: any
           address: string | null
           created_at: string | null
           email: string | null
@@ -1685,8 +1449,6 @@ export type GeneratedDatabase = {
           visa_info_url: string | null
         }
         Insert: {
-
-          [key: string]: any
           address?: string | null
           created_at?: string | null
           email?: string | null
@@ -1705,8 +1467,6 @@ export type GeneratedDatabase = {
           visa_info_url?: string | null
         }
         Update: {
-
-          [key: string]: any
           address?: string | null
           created_at?: string | null
           email?: string | null
@@ -1728,8 +1488,6 @@ export type GeneratedDatabase = {
       }
       employee_profiles: {
         Row: {
-
-          [key: string]: any
           created_at: string
           employer_name: string | null
           professional_title: string | null
@@ -1738,8 +1496,6 @@ export type GeneratedDatabase = {
           years_experience: number | null
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           employer_name?: string | null
           professional_title?: string | null
@@ -1748,8 +1504,6 @@ export type GeneratedDatabase = {
           years_experience?: number | null
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           employer_name?: string | null
           professional_title?: string | null
@@ -1761,8 +1515,6 @@ export type GeneratedDatabase = {
       }
       employer_messages: {
         Row: {
-
-          [key: string]: any
           candidate_user_id: string
           created_at: string
           employer_id: string
@@ -1772,8 +1524,6 @@ export type GeneratedDatabase = {
           sender_user_id: string
         }
         Insert: {
-
-          [key: string]: any
           candidate_user_id: string
           created_at?: string
           employer_id: string
@@ -1783,8 +1533,6 @@ export type GeneratedDatabase = {
           sender_user_id: string
         }
         Update: {
-
-          [key: string]: any
           candidate_user_id?: string
           created_at?: string
           employer_id?: string
@@ -1805,8 +1553,6 @@ export type GeneratedDatabase = {
       }
       employer_profiles: {
         Row: {
-
-          [key: string]: any
           created_at: string
           hiring_focus: string[]
           organization_name: string | null
@@ -1815,8 +1561,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           hiring_focus?: string[]
           organization_name?: string | null
@@ -1825,8 +1569,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           hiring_focus?: string[]
           organization_name?: string | null
@@ -1838,8 +1580,6 @@ export type GeneratedDatabase = {
       }
       employer_users: {
         Row: {
-
-          [key: string]: any
           created_at: string
           employer_id: string
           id: string
@@ -1847,8 +1587,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           employer_id: string
           id?: string
@@ -1856,8 +1594,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           employer_id?: string
           id?: string
@@ -1876,8 +1612,6 @@ export type GeneratedDatabase = {
       }
       employer_verifications: {
         Row: {
-
-          [key: string]: any
           created_at: string
           employer_id: string
           evidence: Json
@@ -1888,8 +1622,6 @@ export type GeneratedDatabase = {
           submitted_by: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           employer_id: string
           evidence?: Json
@@ -1900,8 +1632,6 @@ export type GeneratedDatabase = {
           submitted_by: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           employer_id?: string
           evidence?: Json
@@ -1923,8 +1653,6 @@ export type GeneratedDatabase = {
       }
       employers: {
         Row: {
-
-          [key: string]: any
           city: string | null
           company_id: string | null
           country_code: string | null
@@ -1942,8 +1670,6 @@ export type GeneratedDatabase = {
           website_url: string | null
         }
         Insert: {
-
-          [key: string]: any
           city?: string | null
           company_id?: string | null
           country_code?: string | null
@@ -1961,8 +1687,6 @@ export type GeneratedDatabase = {
           website_url?: string | null
         }
         Update: {
-
-          [key: string]: any
           city?: string | null
           company_id?: string | null
           country_code?: string | null
@@ -1991,8 +1715,6 @@ export type GeneratedDatabase = {
       }
       faculties: {
         Row: {
-
-          [key: string]: any
           created_at: string
           id: string
           institution_id: string
@@ -2000,8 +1722,6 @@ export type GeneratedDatabase = {
           updated_at: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           institution_id: string
@@ -2009,8 +1729,6 @@ export type GeneratedDatabase = {
           updated_at?: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           institution_id?: string
@@ -2029,8 +1747,6 @@ export type GeneratedDatabase = {
       }
       feed_comments: {
         Row: {
-
-          [key: string]: any
           author_id: string
           content: string
           created_at: string
@@ -2038,8 +1754,6 @@ export type GeneratedDatabase = {
           post_id: string
         }
         Insert: {
-
-          [key: string]: any
           author_id: string
           content: string
           created_at?: string
@@ -2047,8 +1761,6 @@ export type GeneratedDatabase = {
           post_id: string
         }
         Update: {
-
-          [key: string]: any
           author_id?: string
           content?: string
           created_at?: string
@@ -2074,8 +1786,6 @@ export type GeneratedDatabase = {
       }
       feed_items: {
         Row: {
-
-          [key: string]: any
           category: string
           description: string | null
           id: string
@@ -2087,8 +1797,6 @@ export type GeneratedDatabase = {
           video_url: string | null
         }
         Insert: {
-
-          [key: string]: any
           category: string
           description?: string | null
           id?: string
@@ -2100,8 +1808,6 @@ export type GeneratedDatabase = {
           video_url?: string | null
         }
         Update: {
-
-          [key: string]: any
           category?: string
           description?: string | null
           id?: string
@@ -2116,22 +1822,16 @@ export type GeneratedDatabase = {
       }
       feed_likes: {
         Row: {
-
-          [key: string]: any
           created_at: string
           post_id: string
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           post_id: string
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           post_id?: string
           user_id?: string
@@ -2155,8 +1855,6 @@ export type GeneratedDatabase = {
       }
       feed_posts: {
         Row: {
-
-          [key: string]: any
           author_id: string
           category: string
           comments_count: number
@@ -2174,8 +1872,6 @@ export type GeneratedDatabase = {
           youtube_url: string | null
         }
         Insert: {
-
-          [key: string]: any
           author_id: string
           category?: string
           comments_count?: number
@@ -2193,8 +1889,6 @@ export type GeneratedDatabase = {
           youtube_url?: string | null
         }
         Update: {
-
-          [key: string]: any
           author_id?: string
           category?: string
           comments_count?: number
@@ -2223,8 +1917,6 @@ export type GeneratedDatabase = {
       }
       founder_profiles: {
         Row: {
-
-          [key: string]: any
           created_at: string
           pitch_url: string | null
           sector: string | null
@@ -2235,8 +1927,6 @@ export type GeneratedDatabase = {
           website_url: string | null
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           pitch_url?: string | null
           sector?: string | null
@@ -2247,8 +1937,6 @@ export type GeneratedDatabase = {
           website_url?: string | null
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           pitch_url?: string | null
           sector?: string | null
@@ -2262,8 +1950,6 @@ export type GeneratedDatabase = {
       }
       ghana_institution_guides: {
         Row: {
-
-          [key: string]: any
           admissions_url: string | null
           application_url: string | null
           id: string
@@ -2276,8 +1962,6 @@ export type GeneratedDatabase = {
           verification_status: string
         }
         Insert: {
-
-          [key: string]: any
           admissions_url?: string | null
           application_url?: string | null
           id?: string
@@ -2290,8 +1974,6 @@ export type GeneratedDatabase = {
           verification_status?: string
         }
         Update: {
-
-          [key: string]: any
           admissions_url?: string | null
           application_url?: string | null
           id?: string
@@ -2307,8 +1989,6 @@ export type GeneratedDatabase = {
       }
       ghana_student_visa_guides: {
         Row: {
-
-          [key: string]: any
           country_code: string
           destination_country: string
           last_verified_at: string | null
@@ -2318,8 +1998,6 @@ export type GeneratedDatabase = {
           title: string
         }
         Insert: {
-
-          [key: string]: any
           country_code: string
           destination_country?: string
           last_verified_at?: string | null
@@ -2329,8 +2007,6 @@ export type GeneratedDatabase = {
           title: string
         }
         Update: {
-
-          [key: string]: any
           country_code?: string
           destination_country?: string
           last_verified_at?: string | null
@@ -2351,8 +2027,6 @@ export type GeneratedDatabase = {
       }
       innovation_items: {
         Row: {
-
-          [key: string]: any
           category: string
           description: string | null
           id: string
@@ -2364,8 +2038,6 @@ export type GeneratedDatabase = {
           verified_at: string
         }
         Insert: {
-
-          [key: string]: any
           category: string
           description?: string | null
           id?: string
@@ -2377,8 +2049,6 @@ export type GeneratedDatabase = {
           verified_at?: string
         }
         Update: {
-
-          [key: string]: any
           category?: string
           description?: string | null
           id?: string
@@ -2393,8 +2063,6 @@ export type GeneratedDatabase = {
       }
       insight_comments: {
         Row: {
-
-          [key: string]: any
           author_label: string
           body: string
           created_at: string
@@ -2407,8 +2075,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           author_label?: string
           body: string
           created_at?: string
@@ -2421,8 +2087,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           author_label?: string
           body?: string
           created_at?: string
@@ -2453,24 +2117,18 @@ export type GeneratedDatabase = {
       }
       insight_helpful: {
         Row: {
-
-          [key: string]: any
           created_at: string
           id: string
           insight_id: string
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           insight_id: string
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           insight_id?: string
@@ -2488,8 +2146,6 @@ export type GeneratedDatabase = {
       }
       insight_reports: {
         Row: {
-
-          [key: string]: any
           created_at: string
           id: string
           insight_id: string
@@ -2499,8 +2155,6 @@ export type GeneratedDatabase = {
           updated_at: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           insight_id: string
@@ -2510,8 +2164,6 @@ export type GeneratedDatabase = {
           updated_at?: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           insight_id?: string
@@ -2532,8 +2184,6 @@ export type GeneratedDatabase = {
       }
       international_students: {
         Row: {
-
-          [key: string]: any
           academic_level: string | null
           country_code: string | null
           created_at: string | null
@@ -2556,8 +2206,6 @@ export type GeneratedDatabase = {
           visible: boolean | null
         }
         Insert: {
-
-          [key: string]: any
           academic_level?: string | null
           country_code?: string | null
           created_at?: string | null
@@ -2580,8 +2228,6 @@ export type GeneratedDatabase = {
           visible?: boolean | null
         }
         Update: {
-
-          [key: string]: any
           academic_level?: string | null
           country_code?: string | null
           created_at?: string | null
@@ -2615,8 +2261,6 @@ export type GeneratedDatabase = {
       }
       international_universities: {
         Row: {
-
-          [key: string]: any
           admissions_url: string | null
           city: string | null
           country_code: string
@@ -2631,8 +2275,6 @@ export type GeneratedDatabase = {
           website_url: string | null
         }
         Insert: {
-
-          [key: string]: any
           admissions_url?: string | null
           city?: string | null
           country_code: string
@@ -2647,8 +2289,6 @@ export type GeneratedDatabase = {
           website_url?: string | null
         }
         Update: {
-
-          [key: string]: any
           admissions_url?: string | null
           city?: string | null
           country_code?: string
@@ -2666,8 +2306,6 @@ export type GeneratedDatabase = {
       }
       internships: {
         Row: {
-
-          [key: string]: any
           application_url: string | null
           careers: string[] | null
           company_id: string
@@ -2684,8 +2322,6 @@ export type GeneratedDatabase = {
           verified: boolean
         }
         Insert: {
-
-          [key: string]: any
           application_url?: string | null
           careers?: string[] | null
           company_id: string
@@ -2702,8 +2338,6 @@ export type GeneratedDatabase = {
           verified?: boolean
         }
         Update: {
-
-          [key: string]: any
           application_url?: string | null
           careers?: string[] | null
           company_id?: string
@@ -2731,8 +2365,6 @@ export type GeneratedDatabase = {
       }
       investors: {
         Row: {
-
-          [key: string]: any
           country_code: string | null
           created_at: string | null
           description: string | null
@@ -2746,8 +2378,6 @@ export type GeneratedDatabase = {
           website_url: string | null
         }
         Insert: {
-
-          [key: string]: any
           country_code?: string | null
           created_at?: string | null
           description?: string | null
@@ -2761,8 +2391,6 @@ export type GeneratedDatabase = {
           website_url?: string | null
         }
         Update: {
-
-          [key: string]: any
           country_code?: string | null
           created_at?: string | null
           description?: string | null
@@ -2779,8 +2407,6 @@ export type GeneratedDatabase = {
       }
       learning_resources: {
         Row: {
-
-          [key: string]: any
           category: string | null
           country_code: string | null
           created_at: string | null
@@ -2793,8 +2419,6 @@ export type GeneratedDatabase = {
           url: string
         }
         Insert: {
-
-          [key: string]: any
           category?: string | null
           country_code?: string | null
           created_at?: string | null
@@ -2807,8 +2431,6 @@ export type GeneratedDatabase = {
           url: string
         }
         Update: {
-
-          [key: string]: any
           category?: string | null
           country_code?: string | null
           created_at?: string | null
@@ -2824,8 +2446,6 @@ export type GeneratedDatabase = {
       }
       life_path_items: {
         Row: {
-
-          [key: string]: any
           created_at: string
           detail: string | null
           id: string
@@ -2837,8 +2457,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           detail?: string | null
           id?: string
@@ -2850,8 +2468,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           detail?: string | null
           id?: string
@@ -2866,8 +2482,6 @@ export type GeneratedDatabase = {
       }
       logo_requests: {
         Row: {
-
-          [key: string]: any
           created_at: string
           id: string
           logo_url: string | null
@@ -2877,8 +2491,6 @@ export type GeneratedDatabase = {
           updated_at: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           logo_url?: string | null
@@ -2888,8 +2500,6 @@ export type GeneratedDatabase = {
           updated_at?: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           logo_url?: string | null
@@ -2910,8 +2520,6 @@ export type GeneratedDatabase = {
       }
       match_preferences: {
         Row: {
-
-          [key: string]: any
           created_at: string
           funding_types: string[]
           id: string
@@ -2920,8 +2528,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           funding_types?: string[]
           id?: string
@@ -2930,8 +2536,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           funding_types?: string[]
           id?: string
@@ -2943,8 +2547,6 @@ export type GeneratedDatabase = {
       }
       news_articles: {
         Row: {
-
-          [key: string]: any
           category: string | null
           content_hash: string | null
           country_code: string | null
@@ -2959,8 +2561,6 @@ export type GeneratedDatabase = {
           title: string
         }
         Insert: {
-
-          [key: string]: any
           category?: string | null
           content_hash?: string | null
           country_code?: string | null
@@ -2975,8 +2575,6 @@ export type GeneratedDatabase = {
           title: string
         }
         Update: {
-
-          [key: string]: any
           category?: string | null
           content_hash?: string | null
           country_code?: string | null
@@ -3002,8 +2600,6 @@ export type GeneratedDatabase = {
       }
       news_sources: {
         Row: {
-
-          [key: string]: any
           active: boolean
           category: string | null
           country_code: string | null
@@ -3018,8 +2614,6 @@ export type GeneratedDatabase = {
           url: string
         }
         Insert: {
-
-          [key: string]: any
           active?: boolean
           category?: string | null
           country_code?: string | null
@@ -3034,8 +2628,6 @@ export type GeneratedDatabase = {
           url: string
         }
         Update: {
-
-          [key: string]: any
           active?: boolean
           category?: string | null
           country_code?: string | null
@@ -3053,8 +2645,6 @@ export type GeneratedDatabase = {
       }
       notification_preferences: {
         Row: {
-
-          [key: string]: any
           employer_messages: boolean
           internship_deadlines: boolean
           job_matches: boolean
@@ -3065,8 +2655,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           employer_messages?: boolean
           internship_deadlines?: boolean
           job_matches?: boolean
@@ -3077,8 +2665,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           employer_messages?: boolean
           internship_deadlines?: boolean
           job_matches?: boolean
@@ -3092,8 +2678,6 @@ export type GeneratedDatabase = {
       }
       notifications: {
         Row: {
-
-          [key: string]: any
           action_url: string | null
           body: string | null
           created_at: string
@@ -3106,8 +2690,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           action_url?: string | null
           body?: string | null
           created_at?: string
@@ -3120,8 +2702,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           action_url?: string | null
           body?: string | null
           created_at?: string
@@ -3137,8 +2717,6 @@ export type GeneratedDatabase = {
       }
       occupation_salaries: {
         Row: {
-
-          [key: string]: any
           created_at: string
           currency: string
           id: string
@@ -3149,8 +2727,6 @@ export type GeneratedDatabase = {
           updated_at: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           currency?: string
           id?: string
@@ -3161,8 +2737,6 @@ export type GeneratedDatabase = {
           updated_at?: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           currency?: string
           id?: string
@@ -3176,8 +2750,6 @@ export type GeneratedDatabase = {
       }
       opportunities: {
         Row: {
-
-          [key: string]: any
           application_url: string | null
           apply_url: string | null
           availability: string | null
@@ -3214,8 +2786,6 @@ export type GeneratedDatabase = {
           views_count: number | null
         }
         Insert: {
-
-          [key: string]: any
           application_url?: string | null
           apply_url?: string | null
           availability?: string | null
@@ -3252,8 +2822,6 @@ export type GeneratedDatabase = {
           views_count?: number | null
         }
         Update: {
-
-          [key: string]: any
           application_url?: string | null
           apply_url?: string | null
           availability?: string | null
@@ -3301,8 +2869,6 @@ export type GeneratedDatabase = {
       }
       opportunity_applications: {
         Row: {
-
-          [key: string]: any
           applied_at: string | null
           created_at: string
           id: string
@@ -3313,8 +2879,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           applied_at?: string | null
           created_at?: string
           id?: string
@@ -3325,8 +2889,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           applied_at?: string | null
           created_at?: string
           id?: string
@@ -3348,8 +2910,6 @@ export type GeneratedDatabase = {
       }
       opportunity_pipeline: {
         Row: {
-
-          [key: string]: any
           created_at: string
           deadline_date: string | null
           id: string
@@ -3364,8 +2924,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           deadline_date?: string | null
           id?: string
@@ -3380,8 +2938,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           deadline_date?: string | null
           id?: string
@@ -3399,8 +2955,6 @@ export type GeneratedDatabase = {
       }
       parent_links: {
         Row: {
-
-          [key: string]: any
           created_at: string
           id: string
           invite_code: string
@@ -3411,8 +2965,6 @@ export type GeneratedDatabase = {
           updated_at: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           invite_code: string
@@ -3423,8 +2975,6 @@ export type GeneratedDatabase = {
           updated_at?: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           invite_code?: string
@@ -3438,8 +2988,6 @@ export type GeneratedDatabase = {
       }
       platform_countries: {
         Row: {
-
-          [key: string]: any
           active: boolean
           code: string
           created_at: string
@@ -3449,8 +2997,6 @@ export type GeneratedDatabase = {
           updated_at: string
         }
         Insert: {
-
-          [key: string]: any
           active?: boolean
           code: string
           created_at?: string
@@ -3460,8 +3006,6 @@ export type GeneratedDatabase = {
           updated_at?: string
         }
         Update: {
-
-          [key: string]: any
           active?: boolean
           code?: string
           created_at?: string
@@ -3474,8 +3018,6 @@ export type GeneratedDatabase = {
       }
       platform_events: {
         Row: {
-
-          [key: string]: any
           country: string | null
           created_at: string | null
           description: string | null
@@ -3489,8 +3031,6 @@ export type GeneratedDatabase = {
           type: string
         }
         Insert: {
-
-          [key: string]: any
           country?: string | null
           created_at?: string | null
           description?: string | null
@@ -3504,8 +3044,6 @@ export type GeneratedDatabase = {
           type: string
         }
         Update: {
-
-          [key: string]: any
           country?: string | null
           created_at?: string | null
           description?: string | null
@@ -3522,8 +3060,6 @@ export type GeneratedDatabase = {
       }
       profiles: {
         Row: {
-
-          [key: string]: any
           account_role: string
           account_type: string
           availability: string | null
@@ -3567,8 +3103,6 @@ export type GeneratedDatabase = {
           updated_at: string
         }
         Insert: {
-
-          [key: string]: any
           account_role?: string
           account_type?: string
           availability?: string | null
@@ -3612,8 +3146,6 @@ export type GeneratedDatabase = {
           updated_at?: string
         }
         Update: {
-
-          [key: string]: any
           account_role?: string
           account_type?: string
           availability?: string | null
@@ -3660,8 +3192,6 @@ export type GeneratedDatabase = {
       }
       programme_admission_estimates: {
         Row: {
-
-          [key: string]: any
           confidence: number | null
           created_at: string
           estimated_cutoff: number | null
@@ -3673,8 +3203,6 @@ export type GeneratedDatabase = {
           year: number | null
         }
         Insert: {
-
-          [key: string]: any
           confidence?: number | null
           created_at?: string
           estimated_cutoff?: number | null
@@ -3686,8 +3214,6 @@ export type GeneratedDatabase = {
           year?: number | null
         }
         Update: {
-
-          [key: string]: any
           confidence?: number | null
           created_at?: string
           estimated_cutoff?: number | null
@@ -3717,8 +3243,6 @@ export type GeneratedDatabase = {
       }
       programme_careers: {
         Row: {
-
-          [key: string]: any
           career: string
           created_at: string
           id: string
@@ -3726,8 +3250,6 @@ export type GeneratedDatabase = {
           updated_at: string
         }
         Insert: {
-
-          [key: string]: any
           career: string
           created_at?: string
           id?: string
@@ -3735,8 +3257,6 @@ export type GeneratedDatabase = {
           updated_at?: string
         }
         Update: {
-
-          [key: string]: any
           career?: string
           created_at?: string
           id?: string
@@ -3755,8 +3275,6 @@ export type GeneratedDatabase = {
       }
       programme_curriculum: {
         Row: {
-
-          [key: string]: any
           course_code: string | null
           course_name: string
           courses: string[] | null
@@ -3767,8 +3285,6 @@ export type GeneratedDatabase = {
           year: number | null
         }
         Insert: {
-
-          [key: string]: any
           course_code?: string | null
           course_name: string
           courses?: string[] | null
@@ -3779,8 +3295,6 @@ export type GeneratedDatabase = {
           year?: number | null
         }
         Update: {
-
-          [key: string]: any
           course_code?: string | null
           course_name?: string
           courses?: string[] | null
@@ -3802,8 +3316,6 @@ export type GeneratedDatabase = {
       }
       programme_cutoffs: {
         Row: {
-
-          [key: string]: any
           created_at: string
           cutoff: number | null
           id: string
@@ -3814,8 +3326,6 @@ export type GeneratedDatabase = {
           year: number | null
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           cutoff?: number | null
           id?: string
@@ -3826,8 +3336,6 @@ export type GeneratedDatabase = {
           year?: number | null
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           cutoff?: number | null
           id?: string
@@ -3856,8 +3364,6 @@ export type GeneratedDatabase = {
       }
       programme_feedback: {
         Row: {
-
-          [key: string]: any
           comment: string | null
           created_at: string
           id: string
@@ -3867,8 +3373,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           comment?: string | null
           created_at?: string
           id?: string
@@ -3878,8 +3382,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           comment?: string | null
           created_at?: string
           id?: string
@@ -3900,8 +3402,6 @@ export type GeneratedDatabase = {
       }
       programme_field_library: {
         Row: {
-
-          [key: string]: any
           created_at: string
           field: string
           id: string
@@ -3909,8 +3409,6 @@ export type GeneratedDatabase = {
           updated_at: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           field: string
           id?: string
@@ -3918,8 +3416,6 @@ export type GeneratedDatabase = {
           updated_at?: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           field?: string
           id?: string
@@ -3930,8 +3426,6 @@ export type GeneratedDatabase = {
       }
       programme_information: {
         Row: {
-
-          [key: string]: any
           average_salary: number | null
           career_opportunities: string[] | null
           created_at: string
@@ -3944,8 +3438,6 @@ export type GeneratedDatabase = {
           why_choose: string | null
         }
         Insert: {
-
-          [key: string]: any
           average_salary?: number | null
           career_opportunities?: string[] | null
           created_at?: string
@@ -3958,8 +3450,6 @@ export type GeneratedDatabase = {
           why_choose?: string | null
         }
         Update: {
-
-          [key: string]: any
           average_salary?: number | null
           career_opportunities?: string[] | null
           created_at?: string
@@ -3983,8 +3473,6 @@ export type GeneratedDatabase = {
       }
       programme_qualification_requirements: {
         Row: {
-
-          [key: string]: any
           created_at: string
           id: string
           last_verified_at: string | null
@@ -3999,8 +3487,6 @@ export type GeneratedDatabase = {
           verification_status: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           last_verified_at?: string | null
@@ -4015,8 +3501,6 @@ export type GeneratedDatabase = {
           verification_status?: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           last_verified_at?: string | null
@@ -4049,8 +3533,6 @@ export type GeneratedDatabase = {
       }
       programme_requirements: {
         Row: {
-
-          [key: string]: any
           created_at: string
           id: string
           programme_id: string
@@ -4058,8 +3540,6 @@ export type GeneratedDatabase = {
           updated_at: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           programme_id: string
@@ -4067,8 +3547,6 @@ export type GeneratedDatabase = {
           updated_at?: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           programme_id?: string
@@ -4087,8 +3565,6 @@ export type GeneratedDatabase = {
       }
       programme_sources: {
         Row: {
-
-          [key: string]: any
           created_at: string
           id: string
           programme_id: string
@@ -4097,8 +3573,6 @@ export type GeneratedDatabase = {
           updated_at: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           programme_id: string
@@ -4107,8 +3581,6 @@ export type GeneratedDatabase = {
           updated_at?: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           programme_id?: string
@@ -4128,8 +3600,6 @@ export type GeneratedDatabase = {
       }
       programmes: {
         Row: {
-
-          [key: string]: any
           academic_year: string | null
           application_url: string | null
           career_opportunities: string[] | null
@@ -4155,8 +3625,6 @@ export type GeneratedDatabase = {
           wassce_requirements: string | null
         }
         Insert: {
-
-          [key: string]: any
           academic_year?: string | null
           application_url?: string | null
           career_opportunities?: string[] | null
@@ -4182,8 +3650,6 @@ export type GeneratedDatabase = {
           wassce_requirements?: string | null
         }
         Update: {
-
-          [key: string]: any
           academic_year?: string | null
           application_url?: string | null
           career_opportunities?: string[] | null
@@ -4227,8 +3693,6 @@ export type GeneratedDatabase = {
       }
       qualification_catalog: {
         Row: {
-
-          [key: string]: any
           code: string
           country_code: string | null
           created_at: string
@@ -4244,8 +3708,6 @@ export type GeneratedDatabase = {
           updated_at: string
         }
         Insert: {
-
-          [key: string]: any
           code: string
           country_code?: string | null
           created_at?: string
@@ -4261,8 +3723,6 @@ export type GeneratedDatabase = {
           updated_at?: string
         }
         Update: {
-
-          [key: string]: any
           code?: string
           country_code?: string | null
           created_at?: string
@@ -4281,8 +3741,6 @@ export type GeneratedDatabase = {
       }
       recommendation_items: {
         Row: {
-
-          [key: string]: any
           category: string | null
           created_at: string
           entity_id: string | null
@@ -4296,8 +3754,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           category?: string | null
           created_at?: string
           entity_id?: string | null
@@ -4311,8 +3767,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           category?: string | null
           created_at?: string
           entity_id?: string | null
@@ -4337,8 +3791,6 @@ export type GeneratedDatabase = {
       }
       recommendation_runs: {
         Row: {
-
-          [key: string]: any
           completed_at: string | null
           created_at: string
           engine_version: string
@@ -4351,8 +3803,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           completed_at?: string | null
           created_at?: string
           engine_version?: string
@@ -4365,8 +3815,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           completed_at?: string | null
           created_at?: string
           engine_version?: string
@@ -4382,24 +3830,18 @@ export type GeneratedDatabase = {
       }
       saved_candidates: {
         Row: {
-
-          [key: string]: any
           candidate_user_id: string
           created_at: string
           employer_id: string
           id: string
         }
         Insert: {
-
-          [key: string]: any
           candidate_user_id: string
           created_at?: string
           employer_id: string
           id?: string
         }
         Update: {
-
-          [key: string]: any
           candidate_user_id?: string
           created_at?: string
           employer_id?: string
@@ -4417,8 +3859,6 @@ export type GeneratedDatabase = {
       }
       saved_items: {
         Row: {
-
-          [key: string]: any
           created_at: string
           id: string
           item_key: string
@@ -4430,8 +3870,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           item_key: string
@@ -4443,8 +3881,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           item_key?: string
@@ -4459,8 +3895,6 @@ export type GeneratedDatabase = {
       }
       saved_searches: {
         Row: {
-
-          [key: string]: any
           alerts_enabled: boolean
           created_at: string
           filters: Json
@@ -4472,8 +3906,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           alerts_enabled?: boolean
           created_at?: string
           filters?: Json
@@ -4485,8 +3917,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           alerts_enabled?: boolean
           created_at?: string
           filters?: Json
@@ -4501,8 +3931,6 @@ export type GeneratedDatabase = {
       }
       scholarship_applications: {
         Row: {
-
-          [key: string]: any
           created_at: string
           id: string
           scholarship_id: string
@@ -4511,8 +3939,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           scholarship_id: string
@@ -4521,8 +3947,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           scholarship_id?: string
@@ -4534,8 +3958,6 @@ export type GeneratedDatabase = {
       }
       scholarships: {
         Row: {
-
-          [key: string]: any
           application_url: string | null
           created_at: string
           deadline: string | null
@@ -4551,8 +3973,6 @@ export type GeneratedDatabase = {
           verified: boolean
         }
         Insert: {
-
-          [key: string]: any
           application_url?: string | null
           created_at?: string
           deadline?: string | null
@@ -4568,8 +3988,6 @@ export type GeneratedDatabase = {
           verified?: boolean
         }
         Update: {
-
-          [key: string]: any
           application_url?: string | null
           created_at?: string
           deadline?: string | null
@@ -4588,8 +4006,6 @@ export type GeneratedDatabase = {
       }
       site_ratings: {
         Row: {
-
-          [key: string]: any
           comment: string | null
           created_at: string
           id: string
@@ -4597,8 +4013,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           comment?: string | null
           created_at?: string
           id?: string
@@ -4606,8 +4020,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           comment?: string | null
           created_at?: string
           id?: string
@@ -4618,8 +4030,6 @@ export type GeneratedDatabase = {
       }
       skill_relationships: {
         Row: {
-
-          [key: string]: any
           from_skill_id: string
           id: string
           rationale: string | null
@@ -4628,8 +4038,6 @@ export type GeneratedDatabase = {
           weight: number
         }
         Insert: {
-
-          [key: string]: any
           from_skill_id: string
           id?: string
           rationale?: string | null
@@ -4638,8 +4046,6 @@ export type GeneratedDatabase = {
           weight?: number
         }
         Update: {
-
-          [key: string]: any
           from_skill_id?: string
           id?: string
           rationale?: string | null
@@ -4666,8 +4072,6 @@ export type GeneratedDatabase = {
       }
       skills: {
         Row: {
-
-          [key: string]: any
           category: string
           created_at: string
           description: string | null
@@ -4682,8 +4086,6 @@ export type GeneratedDatabase = {
           updated_at: string
         }
         Insert: {
-
-          [key: string]: any
           category: string
           created_at?: string
           description?: string | null
@@ -4698,8 +4100,6 @@ export type GeneratedDatabase = {
           updated_at?: string
         }
         Update: {
-
-          [key: string]: any
           category?: string
           created_at?: string
           description?: string | null
@@ -4717,8 +4117,6 @@ export type GeneratedDatabase = {
       }
       student_insights: {
         Row: {
-
-          [key: string]: any
           body: string
           created_at: string
           helpful_count: number
@@ -4731,8 +4129,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           body: string
           created_at?: string
           helpful_count?: number
@@ -4745,8 +4141,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           body?: string
           created_at?: string
           helpful_count?: number
@@ -4770,8 +4164,6 @@ export type GeneratedDatabase = {
       }
       student_profiles: {
         Row: {
-
-          [key: string]: any
           created_at: string
           education_stage: string | null
           intended_country: string | null
@@ -4779,8 +4171,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           education_stage?: string | null
           intended_country?: string | null
@@ -4788,8 +4178,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           education_stage?: string | null
           intended_country?: string | null
@@ -4800,8 +4188,6 @@ export type GeneratedDatabase = {
       }
       student_qualification_results: {
         Row: {
-
-          [key: string]: any
           created_at: string
           grade: string
           id: string
@@ -4811,8 +4197,6 @@ export type GeneratedDatabase = {
           subject_code: string | null
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           grade: string
           id?: string
@@ -4822,8 +4206,6 @@ export type GeneratedDatabase = {
           subject_code?: string | null
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           grade?: string
           id?: string
@@ -4844,8 +4226,6 @@ export type GeneratedDatabase = {
       }
       student_qualifications: {
         Row: {
-
-          [key: string]: any
           country_code: string
           created_at: string
           grading_scale: string | null
@@ -4858,8 +4238,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           country_code?: string
           created_at?: string
           grading_scale?: string | null
@@ -4872,8 +4250,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           country_code?: string
           created_at?: string
           grading_scale?: string | null
@@ -4889,8 +4265,6 @@ export type GeneratedDatabase = {
       }
       talent_directory: {
         Row: {
-
-          [key: string]: any
           bio: string | null
           city: string | null
           discoverable: boolean
@@ -4905,8 +4279,6 @@ export type GeneratedDatabase = {
           years_experience: number | null
         }
         Insert: {
-
-          [key: string]: any
           bio?: string | null
           city?: string | null
           discoverable?: boolean
@@ -4921,8 +4293,6 @@ export type GeneratedDatabase = {
           years_experience?: number | null
         }
         Update: {
-
-          [key: string]: any
           bio?: string | null
           city?: string | null
           discoverable?: boolean
@@ -4940,8 +4310,6 @@ export type GeneratedDatabase = {
       }
       universities: {
         Row: {
-
-          [key: string]: any
           accreditation_expiry_date: string | null
           accreditation_start_date: string | null
           accreditation_status: string
@@ -4983,8 +4351,6 @@ export type GeneratedDatabase = {
           website_url: string | null
         }
         Insert: {
-
-          [key: string]: any
           accreditation_expiry_date?: string | null
           accreditation_start_date?: string | null
           accreditation_status?: string
@@ -5026,8 +4392,6 @@ export type GeneratedDatabase = {
           website_url?: string | null
         }
         Update: {
-
-          [key: string]: any
           accreditation_expiry_date?: string | null
           accreditation_start_date?: string | null
           accreditation_status?: string
@@ -5072,8 +4436,6 @@ export type GeneratedDatabase = {
       }
       usage_counters: {
         Row: {
-
-          [key: string]: any
           active_students: number
           counter_key: string
           counter_value: number
@@ -5084,8 +4446,6 @@ export type GeneratedDatabase = {
           website_visits: number
         }
         Insert: {
-
-          [key: string]: any
           active_students?: number
           counter_key: string
           counter_value?: number
@@ -5096,8 +4456,6 @@ export type GeneratedDatabase = {
           website_visits?: number
         }
         Update: {
-
-          [key: string]: any
           active_students?: number
           counter_key?: string
           counter_value?: number
@@ -5111,8 +4469,6 @@ export type GeneratedDatabase = {
       }
       user_activity: {
         Row: {
-
-          [key: string]: any
           created_at: string
           entity_id: string | null
           entity_type: string | null
@@ -5122,8 +4478,6 @@ export type GeneratedDatabase = {
           user_id: string | null
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           entity_id?: string | null
           entity_type?: string | null
@@ -5133,8 +4487,6 @@ export type GeneratedDatabase = {
           user_id?: string | null
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           entity_id?: string | null
           entity_type?: string | null
@@ -5147,8 +4499,6 @@ export type GeneratedDatabase = {
       }
       user_documents: {
         Row: {
-
-          [key: string]: any
           created_at: string
           document_type: string
           file_name: string
@@ -5162,8 +4512,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           document_type: string
           file_name: string
@@ -5177,8 +4525,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           document_type?: string
           file_name?: string
@@ -5195,24 +4541,18 @@ export type GeneratedDatabase = {
       }
       user_roles: {
         Row: {
-
-          [key: string]: any
           created_at: string
           id: string
           role: Database["public"]["Enums"]["app_role"]
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           role: Database["public"]["Enums"]["app_role"]
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
@@ -5222,8 +4562,6 @@ export type GeneratedDatabase = {
       }
       user_skill_profiles: {
         Row: {
-
-          [key: string]: any
           created_at: string
           evidence: Json
           id: string
@@ -5233,8 +4571,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           evidence?: Json
           id?: string
@@ -5244,8 +4580,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           evidence?: Json
           id?: string
@@ -5266,8 +4600,6 @@ export type GeneratedDatabase = {
       }
       wassce_results: {
         Row: {
-
-          [key: string]: any
           created_at: string
           grade: string
           id: string
@@ -5276,8 +4608,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Insert: {
-
-          [key: string]: any
           created_at?: string
           grade: string
           id?: string
@@ -5286,8 +4616,6 @@ export type GeneratedDatabase = {
           user_id: string
         }
         Update: {
-
-          [key: string]: any
           created_at?: string
           grade?: string
           id?: string
@@ -5301,8 +4629,6 @@ export type GeneratedDatabase = {
     Views: {
       startup_directory: {
         Row: {
-
-          [key: string]: any
           pitch_url: string | null
           sector: string | null
           stage: string | null
@@ -5310,8 +4636,6 @@ export type GeneratedDatabase = {
           website_url: string | null
         }
         Insert: {
-
-          [key: string]: any
           pitch_url?: string | null
           sector?: string | null
           stage?: string | null
@@ -5319,8 +4643,6 @@ export type GeneratedDatabase = {
           website_url?: string | null
         }
         Update: {
-
-          [key: string]: any
           pitch_url?: string | null
           sector?: string | null
           stage?: string | null
@@ -5331,8 +4653,6 @@ export type GeneratedDatabase = {
       }
       university_platform_analytics: {
         Row: {
-
-          [key: string]: any
           internships_indexed: number | null
           opportunities_indexed: number | null
           programmes_indexed: number | null
@@ -5344,8 +4664,6 @@ export type GeneratedDatabase = {
       }
     }
     Functions: {
-
-      [key: string]: { Args: any; Returns: any }
       admin_analytics: { Args: never; Returns: Json }
       get_backend_content: {
         Args: { p_keys?: string[]; p_language?: string }
@@ -5419,124 +4737,12 @@ export type GeneratedDatabase = {
   }
 }
 
-export type Database = any
-
-type DatabaseWithoutInternals = Omit<GeneratedDatabase, "__InternalSupabase">
-
-type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
-
-export type Tables<
-  DefaultSchemaTableNameOrOptions extends
-    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
-    | { schema: keyof DatabaseWithoutInternals },
-  TableName extends (DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
-  }
-    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
-    : never) = never,
-> = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
-}
-  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R
-    }
-    ? R
-    : never
-  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
-        DefaultSchema["Views"])
-    ? (DefaultSchema["Tables"] &
-        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
-        Row: infer R
-      }
-      ? R
-      : never
-    : never
-
-export type TablesInsert<
-  DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema["Tables"]
-    | { schema: keyof DatabaseWithoutInternals },
-  TableName extends (DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
-  }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never) = never,
-> = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
-}
-  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I
-    }
-    ? I
-    : never
-  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Insert: infer I
-      }
-      ? I
-      : never
-    : never
-
-export type TablesUpdate<
-  DefaultSchemaTableNameOrOptions extends
-    | keyof DefaultSchema["Tables"]
-    | { schema: keyof DatabaseWithoutInternals },
-  TableName extends (DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
-  }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
-    : never) = never,
-> = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
-}
-  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U
-    }
-    ? U
-    : never
-  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
-    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Update: infer U
-      }
-      ? U
-      : never
-    : never
-
-export type Enums<
-  DefaultSchemaEnumNameOrOptions extends
-    | keyof DefaultSchema["Enums"]
-    | { schema: keyof DatabaseWithoutInternals },
-  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
-  }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
-    : never) = never,
-> = DefaultSchemaEnumNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
-}
-  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
-    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
-    : never
-
-export type CompositeTypes<
-  PublicCompositeTypeNameOrOptions extends
-    | keyof DefaultSchema["CompositeTypes"]
-    | { schema: keyof DatabaseWithoutInternals },
-  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals
-  }
-    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
-    : never) = never,
-> = PublicCompositeTypeNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals
-}
-  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
-  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
-    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
-    : never
+export type Database = GeneratedDatabase;
+export type Tables<T = any, U = any> = any;
+export type TablesInsert<T = any, U = any> = any;
+export type TablesUpdate<T = any, U = any> = any;
+export type Enums<T = any, U = any> = any;
+export type CompositeTypes<T = any, U = any> = any;
 
 export const Constants = {
   public: {
