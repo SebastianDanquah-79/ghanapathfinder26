@@ -90,6 +90,7 @@ import { Route as ScholarshipsSlugRouteImport } from './routes/scholarships/$slu
 import { Route as SkillsIndexRouteImport } from './routes/skills/index'
 import { Route as SkillsSlugRouteImport } from './routes/skills/$slug'
 import { Route as UniversitiesSlugRouteImport } from './routes/universities/$slug'
+import { Route as UniversitiesIndexRouteImport } from './routes/universities/index'
 import { Route as UniversitySlugRouteImport } from './routes/university/$slug'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as FunctionsV1McpRouteImport } from './routes/functions/v1/mcp'
@@ -502,6 +503,11 @@ const UniversitiesSlugRoute = UniversitiesSlugRouteImport.update({
   path: '/universities/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UniversitiesIndexRoute = UniversitiesIndexRouteImport.update({
+  id: '/universities/',
+  path: '/universities',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const UniversitySlugRoute = UniversitySlugRouteImport.update({
   id: '/university/$slug',
   path: '/university/$slug',
@@ -601,6 +607,7 @@ export interface FileRoutesByFullPath {
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
   '/skills/$slug': typeof SkillsSlugRoute
   '/universities/$slug': typeof UniversitiesSlugRoute
+  '/universities/': typeof UniversitiesIndexRoute
   '/university/$slug': typeof UniversitySlugRoute
   '/careers/': typeof CareersIndexRoute
   '/internships/': typeof InternshipsIndexRoute
@@ -1071,6 +1078,7 @@ export interface RootRouteChildren {
   SkillsSlugRoute: typeof SkillsSlugRoute
   UniversitiesSlugRoute: typeof UniversitiesSlugRoute
   UniversitySlugRoute: typeof UniversitySlugRoute
+  UniversitiesIndexRoute: typeof UniversitiesIndexRoute
   CareersIndexRoute: typeof CareersIndexRoute
   InternshipsIndexRoute: typeof InternshipsIndexRoute
   ProgrammesIndexRoute: typeof ProgrammesIndexRoute
@@ -1643,6 +1651,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SkillsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/universities/': {
+      id: '/universities/'
+      path: '/universities'
+      fullPath: '/universities/'
+      preLoaderRoute: typeof UniversitiesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/universities/$slug': {
       id: '/universities/$slug'
       path: '/universities/$slug'
@@ -1791,6 +1806,7 @@ const rootRouteChildren: RootRouteChildren = {
   ScholarshipsSlugRoute: ScholarshipsSlugRoute,
   SkillsSlugRoute: SkillsSlugRoute,
   UniversitiesSlugRoute: UniversitiesSlugRoute,
+  UniversitiesIndexRoute: UniversitiesIndexRoute,
   UniversitySlugRoute: UniversitySlugRoute,
   CareersIndexRoute: CareersIndexRoute,
   InternshipsIndexRoute: InternshipsIndexRoute,
