@@ -19,8 +19,6 @@
     "@ai-sdk/openai-compatible": "^3.0.34",
     "@ai-sdk/react": "^4.0.79",
     "@hookform/resolvers": "^5.2.2",
-    "@lovable.dev/cloud-auth-js": "^1.1.2",
-    "@lovable.dev/mcp-js": "^0.26.2",
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.11",
     "@radix-ui/react-aspect-ratio": "^1.1.8",
@@ -90,14 +88,11 @@
     "vaul": "^1.1.2",
     "vite-tsconfig-paths": "^6.0.0",
     "zod": "^3.24.2",
-    "@lovable.dev/email-js": "0.1.0",
-    "@lovable.dev/webhooks-js": "^0.0.1",
     "@react-email/components": "^1.0.12",
     "@react-email/render": "^2.0.10"
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",
-    "@lovable.dev/vite-tanstack-config": "2.23.1",
     "@playwright/test": "^1.57.0",
     "@tailwindcss/typography": "^0.5.16",
     "@testing-library/jest-dom": "^6.6.0",
