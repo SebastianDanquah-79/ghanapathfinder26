@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdmissionMatchRouteImport } from './routes/admission-match'
+import { Route as AiRouteImport } from './routes/ai'
 import { Route as ApplicationsRouteImport } from './routes/applications'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CareerPathRouteImport } from './routes/career-path'
@@ -22,19 +23,33 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CreditsRouteImport } from './routes/credits'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
+import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as FeedRouteImport } from './routes/feed'
+import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as InspirationRouteImport } from './routes/inspiration'
+import { Route as InternationalStudentsRouteImport } from './routes/international-students'
+import { Route as InternationalStudentsMeRouteImport } from './routes/international-students-me'
+import { Route as InternationalUniversitiesRouteImport } from './routes/international-universities'
+import { Route as LeadersRouteImport } from './routes/leaders'
+import { Route as LifePathRouteImport } from './routes/life-path'
 import { Route as MatcherRouteImport } from './routes/matcher'
 import { Route as MyPathRouteImport } from './routes/my-path'
+import { Route as NewsRouteImport } from './routes/news'
+import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as OpportunitiesRouteImport } from './routes/opportunities'
 import { Route as ParentRouteImport } from './routes/parent'
+import { Route as PipelineRouteImport } from './routes/pipeline'
 import { Route as PreferencesRouteImport } from './routes/preferences'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProfessionalCouncilsRouteImport } from './routes/professional-councils'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ReferencesRouteImport } from './routes/references'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SavedRouteImport } from './routes/saved'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as StudentsRouteImport } from './routes/students'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin/analytics'
 import { Route as AdminDataRouteImport } from './routes/admin/data'
@@ -45,10 +60,15 @@ import { Route as ApiCareerPathRouteImport } from './routes/api/career-path'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as ApiInstitutionMediaRouteImport } from './routes/api/institution-media'
 import { Route as ApiInstitutionProgrammesRouteImport } from './routes/api/institution-programmes'
+import { Route as AuthCallbackRouteImport } from './routes/auth/callback'
 import { Route as CareersIndexRouteImport } from './routes/careers/index'
 import { Route as CareersSlugRouteImport } from './routes/careers/$slug'
+import { Route as DashboardEmployeeRouteImport } from './routes/dashboard/employee'
+import { Route as DashboardEmployerRouteImport } from './routes/dashboard/employer'
+import { Route as DashboardFounderRouteImport } from './routes/dashboard/founder'
 import { Route as InternshipsIndexRouteImport } from './routes/internships/index'
 import { Route as InternshipsIdRouteImport } from './routes/internships/$id'
+import { Route as OpportunitiesSlugRouteImport } from './routes/opportunities/$slug'
 import { Route as ProgrammeSlugRouteImport } from './routes/programme/$slug'
 import { Route as ProgrammesIndexRouteImport } from './routes/programmes/index'
 import { Route as ProgrammesSlugRouteImport } from './routes/programmes/$slug'
@@ -75,6 +95,11 @@ const AboutRoute = AboutRouteImport.update({
 const AdmissionMatchRoute = AdmissionMatchRouteImport.update({
   id: '/admission-match',
   path: '/admission-match',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiRoute = AiRouteImport.update({
+  id: '/ai',
+  path: '/ai',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApplicationsRoute = ApplicationsRouteImport.update({
@@ -127,14 +152,55 @@ const DisclaimerRoute = DisclaimerRouteImport.update({
   path: '/disclaimer',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExploreRoute = ExploreRouteImport.update({
+  id: '/explore',
+  path: '/explore',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FeedRoute = FeedRouteImport.update({
+  id: '/feed',
+  path: '/feed',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InsightsRoute = InsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InspirationRoute = InspirationRouteImport.update({
   id: '/inspiration',
   path: '/inspiration',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InternationalStudentsRoute = InternationalStudentsRouteImport.update({
+  id: '/international-students',
+  path: '/international-students',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InternationalStudentsMeRoute = InternationalStudentsMeRouteImport.update({
+  id: '/international-students-me',
+  path: '/international-students-me',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InternationalUniversitiesRoute =
+  InternationalUniversitiesRouteImport.update({
+    id: '/international-universities',
+    path: '/international-universities',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const LeadersRoute = LeadersRouteImport.update({
+  id: '/leaders',
+  path: '/leaders',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LifePathRoute = LifePathRouteImport.update({
+  id: '/life-path',
+  path: '/life-path',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MatcherRoute = MatcherRouteImport.update({
@@ -147,14 +213,34 @@ const MyPathRoute = MyPathRouteImport.update({
   path: '/my-path',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NewsRoute = NewsRouteImport.update({
+  id: '/news',
+  path: '/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OpportunitiesRoute = OpportunitiesRouteImport.update({
+  id: '/opportunities',
+  path: '/opportunities',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ParentRoute = ParentRouteImport.update({
   id: '/parent',
   path: '/parent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PipelineRoute = PipelineRouteImport.update({
+  id: '/pipeline',
+  path: '/pipeline',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PreferencesRoute = PreferencesRouteImport.update({
@@ -170,6 +256,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const ProfessionalCouncilsRoute = ProfessionalCouncilsRouteImport.update({
   id: '/professional-councils',
   path: '/professional-councils',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReferencesRoute = ReferencesRouteImport.update({
@@ -190,6 +281,11 @@ const SavedRoute = SavedRouteImport.update({
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StudentsRoute = StudentsRouteImport.update({
+  id: '/students',
+  path: '/students',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -243,6 +339,11 @@ const ApiInstitutionProgrammesRoute =
     path: '/api/institution-programmes',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/callback',
+  path: '/callback',
+  getParentRoute: () => AuthRoute,
+} as any)
 const CareersIndexRoute = CareersIndexRouteImport.update({
   id: '/careers/',
   path: '/careers/',
@@ -253,6 +354,21 @@ const CareersSlugRoute = CareersSlugRouteImport.update({
   path: '/careers/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardEmployeeRoute = DashboardEmployeeRouteImport.update({
+  id: '/employee',
+  path: '/employee',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardEmployerRoute = DashboardEmployerRouteImport.update({
+  id: '/employer',
+  path: '/employer',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardFounderRoute = DashboardFounderRouteImport.update({
+  id: '/founder',
+  path: '/founder',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const InternshipsIndexRoute = InternshipsIndexRouteImport.update({
   id: '/internships/',
   path: '/internships/',
@@ -262,6 +378,11 @@ const InternshipsIdRoute = InternshipsIdRouteImport.update({
   id: '/internships/$id',
   path: '/internships/$id',
   getParentRoute: () => rootRouteImport,
+} as any)
+const OpportunitiesSlugRoute = OpportunitiesSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => OpportunitiesRoute,
 } as any)
 const ProgrammeSlugRoute = ProgrammeSlugRouteImport.update({
   id: '/programme/$slug',
@@ -329,29 +450,44 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
+  '/ai': typeof AiRoute
   '/applications': typeof ApplicationsRoute
-  '/auth': typeof AuthRoute
+  '/auth': typeof AuthRouteWithChildren
   '/career-path': typeof CareerPathRoute
   '/community': typeof CommunityRoute
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
   '/contact': typeof ContactRoute
   '/credits': typeof CreditsRoute
-  '/dashboard': typeof DashboardRoute
+  '/dashboard': typeof DashboardRouteWithChildren
   '/disclaimer': typeof DisclaimerRoute
+  '/explore': typeof ExploreRoute
   '/faq': typeof FaqRoute
+  '/feed': typeof FeedRoute
+  '/insights': typeof InsightsRoute
   '/inspiration': typeof InspirationRoute
+  '/international-students': typeof InternationalStudentsRoute
+  '/international-students-me': typeof InternationalStudentsMeRoute
+  '/international-universities': typeof InternationalUniversitiesRoute
+  '/leaders': typeof LeadersRoute
+  '/life-path': typeof LifePathRoute
   '/matcher': typeof MatcherRoute
   '/my-path': typeof MyPathRoute
+  '/news': typeof NewsRoute
+  '/notifications': typeof NotificationsRoute
   '/onboarding': typeof OnboardingRoute
+  '/opportunities': typeof OpportunitiesRouteWithChildren
   '/parent': typeof ParentRoute
+  '/pipeline': typeof PipelineRoute
   '/preferences': typeof PreferencesRoute
   '/privacy': typeof PrivacyRoute
   '/professional-councils': typeof ProfessionalCouncilsRoute
+  '/profile': typeof ProfileRoute
   '/references': typeof ReferencesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
+  '/students': typeof StudentsRoute
   '/terms': typeof TermsRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
@@ -362,8 +498,13 @@ export interface FileRoutesByFullPath {
   '/api/chat': typeof ApiChatRoute
   '/api/institution-media': typeof ApiInstitutionMediaRoute
   '/api/institution-programmes': typeof ApiInstitutionProgrammesRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/dashboard/employee': typeof DashboardEmployeeRoute
+  '/dashboard/employer': typeof DashboardEmployerRoute
+  '/dashboard/founder': typeof DashboardFounderRoute
   '/internships/$id': typeof InternshipsIdRoute
+  '/opportunities/$slug': typeof OpportunitiesSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/programmes/$slug': typeof ProgrammesSlugRoute
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
@@ -383,29 +524,44 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
+  '/ai': typeof AiRoute
   '/applications': typeof ApplicationsRoute
-  '/auth': typeof AuthRoute
+  '/auth': typeof AuthRouteWithChildren
   '/career-path': typeof CareerPathRoute
   '/community': typeof CommunityRoute
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
   '/contact': typeof ContactRoute
   '/credits': typeof CreditsRoute
-  '/dashboard': typeof DashboardRoute
+  '/dashboard': typeof DashboardRouteWithChildren
   '/disclaimer': typeof DisclaimerRoute
+  '/explore': typeof ExploreRoute
   '/faq': typeof FaqRoute
+  '/feed': typeof FeedRoute
+  '/insights': typeof InsightsRoute
   '/inspiration': typeof InspirationRoute
+  '/international-students': typeof InternationalStudentsRoute
+  '/international-students-me': typeof InternationalStudentsMeRoute
+  '/international-universities': typeof InternationalUniversitiesRoute
+  '/leaders': typeof LeadersRoute
+  '/life-path': typeof LifePathRoute
   '/matcher': typeof MatcherRoute
   '/my-path': typeof MyPathRoute
+  '/news': typeof NewsRoute
+  '/notifications': typeof NotificationsRoute
   '/onboarding': typeof OnboardingRoute
+  '/opportunities': typeof OpportunitiesRouteWithChildren
   '/parent': typeof ParentRoute
+  '/pipeline': typeof PipelineRoute
   '/preferences': typeof PreferencesRoute
   '/privacy': typeof PrivacyRoute
   '/professional-councils': typeof ProfessionalCouncilsRoute
+  '/profile': typeof ProfileRoute
   '/references': typeof ReferencesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
+  '/students': typeof StudentsRoute
   '/terms': typeof TermsRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
@@ -416,8 +572,13 @@ export interface FileRoutesByTo {
   '/api/chat': typeof ApiChatRoute
   '/api/institution-media': typeof ApiInstitutionMediaRoute
   '/api/institution-programmes': typeof ApiInstitutionProgrammesRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/dashboard/employee': typeof DashboardEmployeeRoute
+  '/dashboard/employer': typeof DashboardEmployerRoute
+  '/dashboard/founder': typeof DashboardFounderRoute
   '/internships/$id': typeof InternshipsIdRoute
+  '/opportunities/$slug': typeof OpportunitiesSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/programmes/$slug': typeof ProgrammesSlugRoute
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
@@ -438,29 +599,44 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
+  '/ai': typeof AiRoute
   '/applications': typeof ApplicationsRoute
-  '/auth': typeof AuthRoute
+  '/auth': typeof AuthRouteWithChildren
   '/career-path': typeof CareerPathRoute
   '/community': typeof CommunityRoute
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
   '/contact': typeof ContactRoute
   '/credits': typeof CreditsRoute
-  '/dashboard': typeof DashboardRoute
+  '/dashboard': typeof DashboardRouteWithChildren
   '/disclaimer': typeof DisclaimerRoute
+  '/explore': typeof ExploreRoute
   '/faq': typeof FaqRoute
+  '/feed': typeof FeedRoute
+  '/insights': typeof InsightsRoute
   '/inspiration': typeof InspirationRoute
+  '/international-students': typeof InternationalStudentsRoute
+  '/international-students-me': typeof InternationalStudentsMeRoute
+  '/international-universities': typeof InternationalUniversitiesRoute
+  '/leaders': typeof LeadersRoute
+  '/life-path': typeof LifePathRoute
   '/matcher': typeof MatcherRoute
   '/my-path': typeof MyPathRoute
+  '/news': typeof NewsRoute
+  '/notifications': typeof NotificationsRoute
   '/onboarding': typeof OnboardingRoute
+  '/opportunities': typeof OpportunitiesRouteWithChildren
   '/parent': typeof ParentRoute
+  '/pipeline': typeof PipelineRoute
   '/preferences': typeof PreferencesRoute
   '/privacy': typeof PrivacyRoute
   '/professional-councils': typeof ProfessionalCouncilsRoute
+  '/profile': typeof ProfileRoute
   '/references': typeof ReferencesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
+  '/students': typeof StudentsRoute
   '/terms': typeof TermsRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
@@ -471,8 +647,13 @@ export interface FileRoutesById {
   '/api/chat': typeof ApiChatRoute
   '/api/institution-media': typeof ApiInstitutionMediaRoute
   '/api/institution-programmes': typeof ApiInstitutionProgrammesRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/careers/$slug': typeof CareersSlugRoute
+  '/dashboard/employee': typeof DashboardEmployeeRoute
+  '/dashboard/employer': typeof DashboardEmployerRoute
+  '/dashboard/founder': typeof DashboardFounderRoute
   '/internships/$id': typeof InternshipsIdRoute
+  '/opportunities/$slug': typeof OpportunitiesSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/programmes/$slug': typeof ProgrammesSlugRoute
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
@@ -494,6 +675,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admission-match'
+    | '/ai'
     | '/applications'
     | '/auth'
     | '/career-path'
@@ -504,19 +686,33 @@ export interface FileRouteTypes {
     | '/credits'
     | '/dashboard'
     | '/disclaimer'
+    | '/explore'
     | '/faq'
+    | '/feed'
+    | '/insights'
     | '/inspiration'
+    | '/international-students'
+    | '/international-students-me'
+    | '/international-universities'
+    | '/leaders'
+    | '/life-path'
     | '/matcher'
     | '/my-path'
+    | '/news'
+    | '/notifications'
     | '/onboarding'
+    | '/opportunities'
     | '/parent'
+    | '/pipeline'
     | '/preferences'
     | '/privacy'
     | '/professional-councils'
+    | '/profile'
     | '/references'
     | '/reset-password'
     | '/saved'
     | '/search'
+    | '/students'
     | '/terms'
     | '/admin/analytics'
     | '/admin/data'
@@ -527,8 +723,13 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/api/institution-media'
     | '/api/institution-programmes'
+    | '/auth/callback'
     | '/careers/$slug'
+    | '/dashboard/employee'
+    | '/dashboard/employer'
+    | '/dashboard/founder'
     | '/internships/$id'
+    | '/opportunities/$slug'
     | '/programme/$slug'
     | '/programmes/$slug'
     | '/scholarships/$slug'
@@ -548,6 +749,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admission-match'
+    | '/ai'
     | '/applications'
     | '/auth'
     | '/career-path'
@@ -558,19 +760,33 @@ export interface FileRouteTypes {
     | '/credits'
     | '/dashboard'
     | '/disclaimer'
+    | '/explore'
     | '/faq'
+    | '/feed'
+    | '/insights'
     | '/inspiration'
+    | '/international-students'
+    | '/international-students-me'
+    | '/international-universities'
+    | '/leaders'
+    | '/life-path'
     | '/matcher'
     | '/my-path'
+    | '/news'
+    | '/notifications'
     | '/onboarding'
+    | '/opportunities'
     | '/parent'
+    | '/pipeline'
     | '/preferences'
     | '/privacy'
     | '/professional-councils'
+    | '/profile'
     | '/references'
     | '/reset-password'
     | '/saved'
     | '/search'
+    | '/students'
     | '/terms'
     | '/admin/analytics'
     | '/admin/data'
@@ -581,8 +797,13 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/api/institution-media'
     | '/api/institution-programmes'
+    | '/auth/callback'
     | '/careers/$slug'
+    | '/dashboard/employee'
+    | '/dashboard/employer'
+    | '/dashboard/founder'
     | '/internships/$id'
+    | '/opportunities/$slug'
     | '/programme/$slug'
     | '/programmes/$slug'
     | '/scholarships/$slug'
@@ -602,6 +823,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admission-match'
+    | '/ai'
     | '/applications'
     | '/auth'
     | '/career-path'
@@ -612,19 +834,33 @@ export interface FileRouteTypes {
     | '/credits'
     | '/dashboard'
     | '/disclaimer'
+    | '/explore'
     | '/faq'
+    | '/feed'
+    | '/insights'
     | '/inspiration'
+    | '/international-students'
+    | '/international-students-me'
+    | '/international-universities'
+    | '/leaders'
+    | '/life-path'
     | '/matcher'
     | '/my-path'
+    | '/news'
+    | '/notifications'
     | '/onboarding'
+    | '/opportunities'
     | '/parent'
+    | '/pipeline'
     | '/preferences'
     | '/privacy'
     | '/professional-councils'
+    | '/profile'
     | '/references'
     | '/reset-password'
     | '/saved'
     | '/search'
+    | '/students'
     | '/terms'
     | '/admin/analytics'
     | '/admin/data'
@@ -635,8 +871,13 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/api/institution-media'
     | '/api/institution-programmes'
+    | '/auth/callback'
     | '/careers/$slug'
+    | '/dashboard/employee'
+    | '/dashboard/employer'
+    | '/dashboard/founder'
     | '/internships/$id'
+    | '/opportunities/$slug'
     | '/programme/$slug'
     | '/programmes/$slug'
     | '/scholarships/$slug'
@@ -657,29 +898,44 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AdmissionMatchRoute: typeof AdmissionMatchRoute
+  AiRoute: typeof AiRoute
   ApplicationsRoute: typeof ApplicationsRoute
-  AuthRoute: typeof AuthRoute
+  AuthRoute: typeof AuthRouteWithChildren
   CareerPathRoute: typeof CareerPathRoute
   CommunityRoute: typeof CommunityRoute
   CompareRoute: typeof CompareRoute
   CompareScholarshipsRoute: typeof CompareScholarshipsRoute
   ContactRoute: typeof ContactRoute
   CreditsRoute: typeof CreditsRoute
-  DashboardRoute: typeof DashboardRoute
+  DashboardRoute: typeof DashboardRouteWithChildren
   DisclaimerRoute: typeof DisclaimerRoute
+  ExploreRoute: typeof ExploreRoute
   FaqRoute: typeof FaqRoute
+  FeedRoute: typeof FeedRoute
+  InsightsRoute: typeof InsightsRoute
   InspirationRoute: typeof InspirationRoute
+  InternationalStudentsRoute: typeof InternationalStudentsRoute
+  InternationalStudentsMeRoute: typeof InternationalStudentsMeRoute
+  InternationalUniversitiesRoute: typeof InternationalUniversitiesRoute
+  LeadersRoute: typeof LeadersRoute
+  LifePathRoute: typeof LifePathRoute
   MatcherRoute: typeof MatcherRoute
   MyPathRoute: typeof MyPathRoute
+  NewsRoute: typeof NewsRoute
+  NotificationsRoute: typeof NotificationsRoute
   OnboardingRoute: typeof OnboardingRoute
+  OpportunitiesRoute: typeof OpportunitiesRouteWithChildren
   ParentRoute: typeof ParentRoute
+  PipelineRoute: typeof PipelineRoute
   PreferencesRoute: typeof PreferencesRoute
   PrivacyRoute: typeof PrivacyRoute
   ProfessionalCouncilsRoute: typeof ProfessionalCouncilsRoute
+  ProfileRoute: typeof ProfileRoute
   ReferencesRoute: typeof ReferencesRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SavedRoute: typeof SavedRoute
   SearchRoute: typeof SearchRoute
+  StudentsRoute: typeof StudentsRoute
   TermsRoute: typeof TermsRoute
   AdminAnalyticsRoute: typeof AdminAnalyticsRoute
   AdminDataRoute: typeof AdminDataRoute
@@ -729,6 +985,13 @@ declare module '@tanstack/react-router' {
       path: '/admission-match'
       fullPath: '/admission-match'
       preLoaderRoute: typeof AdmissionMatchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai': {
+      id: '/ai'
+      path: '/ai'
+      fullPath: '/ai'
+      preLoaderRoute: typeof AiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/applications': {
@@ -801,6 +1064,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DisclaimerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/explore': {
+      id: '/explore'
+      path: '/explore'
+      fullPath: '/explore'
+      preLoaderRoute: typeof ExploreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/faq': {
       id: '/faq'
       path: '/faq'
@@ -808,11 +1078,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/feed': {
+      id: '/feed'
+      path: '/feed'
+      fullPath: '/feed'
+      preLoaderRoute: typeof FeedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/insights': {
+      id: '/insights'
+      path: '/insights'
+      fullPath: '/insights'
+      preLoaderRoute: typeof InsightsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/inspiration': {
       id: '/inspiration'
       path: '/inspiration'
       fullPath: '/inspiration'
       preLoaderRoute: typeof InspirationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/international-students': {
+      id: '/international-students'
+      path: '/international-students'
+      fullPath: '/international-students'
+      preLoaderRoute: typeof InternationalStudentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/international-students-me': {
+      id: '/international-students-me'
+      path: '/international-students-me'
+      fullPath: '/international-students-me'
+      preLoaderRoute: typeof InternationalStudentsMeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/international-universities': {
+      id: '/international-universities'
+      path: '/international-universities'
+      fullPath: '/international-universities'
+      preLoaderRoute: typeof InternationalUniversitiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/leaders': {
+      id: '/leaders'
+      path: '/leaders'
+      fullPath: '/leaders'
+      preLoaderRoute: typeof LeadersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/life-path': {
+      id: '/life-path'
+      path: '/life-path'
+      fullPath: '/life-path'
+      preLoaderRoute: typeof LifePathRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/matcher': {
@@ -829,6 +1148,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MyPathRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/news': {
+      id: '/news'
+      path: '/news'
+      fullPath: '/news'
+      preLoaderRoute: typeof NewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/onboarding': {
       id: '/onboarding'
       path: '/onboarding'
@@ -836,11 +1169,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/opportunities': {
+      id: '/opportunities'
+      path: '/opportunities'
+      fullPath: '/opportunities'
+      preLoaderRoute: typeof OpportunitiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/parent': {
       id: '/parent'
       path: '/parent'
       fullPath: '/parent'
       preLoaderRoute: typeof ParentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pipeline': {
+      id: '/pipeline'
+      path: '/pipeline'
+      fullPath: '/pipeline'
+      preLoaderRoute: typeof PipelineRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/preferences': {
@@ -862,6 +1209,13 @@ declare module '@tanstack/react-router' {
       path: '/professional-councils'
       fullPath: '/professional-councils'
       preLoaderRoute: typeof ProfessionalCouncilsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/references': {
@@ -890,6 +1244,13 @@ declare module '@tanstack/react-router' {
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/students': {
+      id: '/students'
+      path: '/students'
+      fullPath: '/students'
+      preLoaderRoute: typeof StudentsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -962,6 +1323,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiInstitutionProgrammesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/careers/': {
       id: '/careers/'
       path: '/careers'
@@ -976,6 +1344,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CareersSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/employee': {
+      id: '/dashboard/employee'
+      path: '/employee'
+      fullPath: '/dashboard/employee'
+      preLoaderRoute: typeof DashboardEmployeeRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/employer': {
+      id: '/dashboard/employer'
+      path: '/employer'
+      fullPath: '/dashboard/employer'
+      preLoaderRoute: typeof DashboardEmployerRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/founder': {
+      id: '/dashboard/founder'
+      path: '/founder'
+      fullPath: '/dashboard/founder'
+      preLoaderRoute: typeof DashboardFounderRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/internships/': {
       id: '/internships/'
       path: '/internships'
@@ -989,6 +1378,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/internships/$id'
       preLoaderRoute: typeof InternshipsIdRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/opportunities/$slug': {
+      id: '/opportunities/$slug'
+      path: '/$slug'
+      fullPath: '/opportunities/$slug'
+      preLoaderRoute: typeof OpportunitiesSlugRouteImport
+      parentRoute: typeof OpportunitiesRoute
     }
     '/programme/$slug': {
       id: '/programme/$slug'
@@ -1077,33 +1473,86 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthRouteChildren {
+  AuthCallbackRoute: typeof AuthCallbackRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthCallbackRoute: AuthCallbackRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
+interface DashboardRouteChildren {
+  DashboardEmployeeRoute: typeof DashboardEmployeeRoute
+  DashboardEmployerRoute: typeof DashboardEmployerRoute
+  DashboardFounderRoute: typeof DashboardFounderRoute
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardEmployeeRoute: DashboardEmployeeRoute,
+  DashboardEmployerRoute: DashboardEmployerRoute,
+  DashboardFounderRoute: DashboardFounderRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
+
+interface OpportunitiesRouteChildren {
+  OpportunitiesSlugRoute: typeof OpportunitiesSlugRoute
+}
+
+const OpportunitiesRouteChildren: OpportunitiesRouteChildren = {
+  OpportunitiesSlugRoute: OpportunitiesSlugRoute,
+}
+
+const OpportunitiesRouteWithChildren = OpportunitiesRoute._addFileChildren(
+  OpportunitiesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AdmissionMatchRoute: AdmissionMatchRoute,
+  AiRoute: AiRoute,
   ApplicationsRoute: ApplicationsRoute,
-  AuthRoute: AuthRoute,
+  AuthRoute: AuthRouteWithChildren,
   CareerPathRoute: CareerPathRoute,
   CommunityRoute: CommunityRoute,
   CompareRoute: CompareRoute,
   CompareScholarshipsRoute: CompareScholarshipsRoute,
   ContactRoute: ContactRoute,
   CreditsRoute: CreditsRoute,
-  DashboardRoute: DashboardRoute,
+  DashboardRoute: DashboardRouteWithChildren,
   DisclaimerRoute: DisclaimerRoute,
+  ExploreRoute: ExploreRoute,
   FaqRoute: FaqRoute,
+  FeedRoute: FeedRoute,
+  InsightsRoute: InsightsRoute,
   InspirationRoute: InspirationRoute,
+  InternationalStudentsRoute: InternationalStudentsRoute,
+  InternationalStudentsMeRoute: InternationalStudentsMeRoute,
+  InternationalUniversitiesRoute: InternationalUniversitiesRoute,
+  LeadersRoute: LeadersRoute,
+  LifePathRoute: LifePathRoute,
   MatcherRoute: MatcherRoute,
   MyPathRoute: MyPathRoute,
+  NewsRoute: NewsRoute,
+  NotificationsRoute: NotificationsRoute,
   OnboardingRoute: OnboardingRoute,
+  OpportunitiesRoute: OpportunitiesRouteWithChildren,
   ParentRoute: ParentRoute,
+  PipelineRoute: PipelineRoute,
   PreferencesRoute: PreferencesRoute,
   PrivacyRoute: PrivacyRoute,
   ProfessionalCouncilsRoute: ProfessionalCouncilsRoute,
+  ProfileRoute: ProfileRoute,
   ReferencesRoute: ReferencesRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SavedRoute: SavedRoute,
   SearchRoute: SearchRoute,
+  StudentsRoute: StudentsRoute,
   TermsRoute: TermsRoute,
   AdminAnalyticsRoute: AdminAnalyticsRoute,
   AdminDataRoute: AdminDataRoute,
