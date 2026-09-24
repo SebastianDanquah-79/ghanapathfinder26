@@ -3,6 +3,7 @@ import { useNavigate, Link, useSearchParams } from "@/lib/router-compat";
 import { Loader2, BrandLogoIcon } from "@/lib/icons";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import type { Provider } from "@supabase/supabase-js";
 import { useAuth } from "@/hooks/useAuth";
 import { TERMS_VERSION } from "@/lib/legal";
 import { useEffect } from "react";
@@ -109,7 +110,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
     else toast.success("Password reset link sent , check your email.");
   };
 
-  const handleOAuth = async (provider: "google" | "linkedin_oidc") => {
+  const handleOAuth = async (provider: Extract<Provider, "google" | "linkedin_oidc">) => {
     if (!acceptedTerms) {
       toast.error("Please accept the Terms & Conditions to continue.");
       return;
