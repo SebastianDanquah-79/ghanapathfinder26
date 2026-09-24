@@ -39,6 +39,19 @@ import { Route as NewsRouteImport } from './routes/news'
 import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as OpportunitiesRouteImport } from './routes/opportunities/index'
+import { Route as AskAfricaRouteImport } from './routes/ask-africa'
+import { Route as BuildInAfricaRouteImport } from './routes/build-in-africa'
+import { Route as CitiesRouteImport } from './routes/cities'
+import { Route as CompaniesRouteImport } from './routes/companies'
+import { Route as CountriesRouteImport } from './routes/countries'
+import { Route as DiscoverGhanaRouteImport } from './routes/discover-ghana'
+import { Route as EventsRouteImport } from './routes/events'
+import { Route as JobsRouteImport } from './routes/jobs'
+import { Route as MyAfricaRouteImport } from './routes/my-africa'
+import { Route as OpportunityRadarRouteImport } from './routes/opportunity-radar'
+import { Route as PeopleRouteImport } from './routes/people'
+import { Route as StartupsRouteImport } from './routes/startups'
+import { Route as TopicsRouteImport } from './routes/topics'
 import { Route as ParentRouteImport } from './routes/parent'
 import { Route as PipelineRouteImport } from './routes/pipeline'
 import { Route as PreferencesRouteImport } from './routes/preferences'
@@ -231,6 +244,71 @@ const OnboardingRoute = OnboardingRouteImport.update({
 const OpportunitiesRoute = OpportunitiesRouteImport.update({
   id: '/opportunities',
   path: '/opportunities',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AskAfricaRoute = AskAfricaRouteImport.update({
+  id: '/ask-africa',
+  path: '/ask-africa',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BuildInAfricaRoute = BuildInAfricaRouteImport.update({
+  id: '/build-in-africa',
+  path: '/build-in-africa',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CitiesRoute = CitiesRouteImport.update({
+  id: '/cities',
+  path: '/cities',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompaniesRoute = CompaniesRouteImport.update({
+  id: '/companies',
+  path: '/companies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CountriesRoute = CountriesRouteImport.update({
+  id: '/countries',
+  path: '/countries',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DiscoverGhanaRoute = DiscoverGhanaRouteImport.update({
+  id: '/discover-ghana',
+  path: '/discover-ghana',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EventsRoute = EventsRouteImport.update({
+  id: '/events',
+  path: '/events',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JobsRoute = JobsRouteImport.update({
+  id: '/jobs',
+  path: '/jobs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MyAfricaRoute = MyAfricaRouteImport.update({
+  id: '/my-africa',
+  path: '/my-africa',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OpportunityRadarRoute = OpportunityRadarRouteImport.update({
+  id: '/opportunity-radar',
+  path: '/opportunity-radar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PeopleRoute = PeopleRouteImport.update({
+  id: '/people',
+  path: '/people',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StartupsRoute = StartupsRouteImport.update({
+  id: '/startups',
+  path: '/startups',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TopicsRoute = TopicsRouteImport.update({
+  id: '/topics',
+  path: '/topics',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ParentRoute = ParentRouteImport.update({
@@ -447,6 +525,19 @@ const LovableEmailTransactionalPreviewRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
+  '/ask-africa': typeof AskAfricaRoute
+  '/build-in-africa': typeof BuildInAfricaRoute
+  '/cities': typeof CitiesRoute
+  '/companies': typeof CompaniesRoute
+  '/countries': typeof CountriesRoute
+  '/discover-ghana': typeof DiscoverGhanaRoute
+  '/events': typeof EventsRoute
+  '/jobs': typeof JobsRoute
+  '/my-africa': typeof MyAfricaRoute
+  '/opportunity-radar': typeof OpportunityRadarRoute
+  '/people': typeof PeopleRoute
+  '/startups': typeof StartupsRoute
+  '/topics': typeof TopicsRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
@@ -521,6 +612,19 @@ export interface FileRoutesByFullPath {
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesByTo {
+  '/ask-africa': typeof AskAfricaRoute
+  '/build-in-africa': typeof BuildInAfricaRoute
+  '/cities': typeof CitiesRoute
+  '/companies': typeof CompaniesRoute
+  '/countries': typeof CountriesRoute
+  '/discover-ghana': typeof DiscoverGhanaRoute
+  '/events': typeof EventsRoute
+  '/jobs': typeof JobsRoute
+  '/my-africa': typeof MyAfricaRoute
+  '/opportunity-radar': typeof OpportunityRadarRoute
+  '/people': typeof PeopleRoute
+  '/startups': typeof StartupsRoute
+  '/topics': typeof TopicsRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
@@ -895,6 +999,19 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  '/ask-africa': typeof AskAfricaRoute
+  '/build-in-africa': typeof BuildInAfricaRoute
+  '/cities': typeof CitiesRoute
+  '/companies': typeof CompaniesRoute
+  '/countries': typeof CountriesRoute
+  '/discover-ghana': typeof DiscoverGhanaRoute
+  '/events': typeof EventsRoute
+  '/jobs': typeof JobsRoute
+  '/my-africa': typeof MyAfricaRoute
+  '/opportunity-radar': typeof OpportunityRadarRoute
+  '/people': typeof PeopleRoute
+  '/startups': typeof StartupsRoute
+  '/topics': typeof TopicsRoute
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AdmissionMatchRoute: typeof AdmissionMatchRoute
@@ -966,6 +1083,97 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/ask-africa': {
+      id: '/ask-africa'
+      path: '/ask-africa'
+      fullPath: '/ask-africa'
+      preLoaderRoute: typeof AskAfricaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/build-in-africa': {
+      id: '/build-in-africa'
+      path: '/build-in-africa'
+      fullPath: '/build-in-africa'
+      preLoaderRoute: typeof BuildInAfricaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cities': {
+      id: '/cities'
+      path: '/cities'
+      fullPath: '/cities'
+      preLoaderRoute: typeof CitiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/companies': {
+      id: '/companies'
+      path: '/companies'
+      fullPath: '/companies'
+      preLoaderRoute: typeof CompaniesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/countries': {
+      id: '/countries'
+      path: '/countries'
+      fullPath: '/countries'
+      preLoaderRoute: typeof CountriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/discover-ghana': {
+      id: '/discover-ghana'
+      path: '/discover-ghana'
+      fullPath: '/discover-ghana'
+      preLoaderRoute: typeof DiscoverGhanaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/events': {
+      id: '/events'
+      path: '/events'
+      fullPath: '/events'
+      preLoaderRoute: typeof EventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jobs': {
+      id: '/jobs'
+      path: '/jobs'
+      fullPath: '/jobs'
+      preLoaderRoute: typeof JobsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my-africa': {
+      id: '/my-africa'
+      path: '/my-africa'
+      fullPath: '/my-africa'
+      preLoaderRoute: typeof MyAfricaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/opportunity-radar': {
+      id: '/opportunity-radar'
+      path: '/opportunity-radar'
+      fullPath: '/opportunity-radar'
+      preLoaderRoute: typeof OpportunityRadarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/people': {
+      id: '/people'
+      path: '/people'
+      fullPath: '/people'
+      preLoaderRoute: typeof PeopleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/startups': {
+      id: '/startups'
+      path: '/startups'
+      fullPath: '/startups'
+      preLoaderRoute: typeof StartupsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/topics': {
+      id: '/topics'
+      path: '/topics'
+      fullPath: '/topics'
+      preLoaderRoute: typeof TopicsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -1512,6 +1720,19 @@ const OpportunitiesRouteWithChildren = OpportunitiesRoute._addFileChildren(
 )
 
 const rootRouteChildren: RootRouteChildren = {
+  AskAfricaRoute: AskAfricaRoute,
+  BuildInAfricaRoute: BuildInAfricaRoute,
+  CitiesRoute: CitiesRoute,
+  CompaniesRoute: CompaniesRoute,
+  CountriesRoute: CountriesRoute,
+  DiscoverGhanaRoute: DiscoverGhanaRoute,
+  EventsRoute: EventsRoute,
+  JobsRoute: JobsRoute,
+  MyAfricaRoute: MyAfricaRoute,
+  OpportunityRadarRoute: OpportunityRadarRoute,
+  PeopleRoute: PeopleRoute,
+  StartupsRoute: StartupsRoute,
+  TopicsRoute: TopicsRoute,
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AdmissionMatchRoute: AdmissionMatchRoute,
