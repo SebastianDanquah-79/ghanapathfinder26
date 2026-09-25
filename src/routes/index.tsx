@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ArrowRight, BriefcaseBusiness, GraduationCap, Rocket, Sparkles } from "lucide-react";
+import { ArrowRight, BriefcaseBusiness, GraduationCap, Globe2, Rocket, Sparkles } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -10,6 +10,7 @@ const roles = [
   { role: "employee", title: "Job Seeker", text: "Jobs, internships, remote work and a professional profile.", icon: BriefcaseBusiness },
   { role: "employer", title: "Employer", text: "Publish opportunities and discover opted-in African talent.", icon: BriefcaseBusiness },
   { role: "startup_founder", title: "Startup Founder", text: "Funding, investors, accelerators and founder intelligence.", icon: Rocket },
+  { role: "international_student", title: "International Student", text: "Study abroad, peer connections, embassies and global opportunities.", icon: Globe2 },
 ] as const;
 
 function RoleGateway() {
