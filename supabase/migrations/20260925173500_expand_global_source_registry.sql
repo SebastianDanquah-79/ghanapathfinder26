@@ -72,7 +72,6 @@ insert into public.source_registry(name,source_type,canonical_url,country_code,c
 ('Daily News Tanzania','news','https://dailynews.co.tz/','TZ','news','Publicly accessible source verified for GhanaPathFinder discovery',now(),now(),'active',now(),now()),
 ('The Guardian Tanzania','news','https://www.ippmedia.com/','TZ','news','Publicly accessible source verified for GhanaPathFinder discovery',now(),now(),'active',now(),now()),
 ('Mwananchi Tanzania','news','https://www.mwananchi.co.tz/','TZ','news','Publicly accessible source verified for GhanaPathFinder discovery',now(),now(),'active',now(),now()),
-('Tanzania Daily News','news','https://dailynews.co.tz/','TZ','news','Publicly accessible source verified for GhanaPathFinder discovery',now(),now(),'active',now(),now()),
 ('The East African Business Week','news','https://www.busiweek.com/','UG','business','Publicly accessible source verified for GhanaPathFinder discovery',now(),now(),'active',now(),now()),
 ('Addis Standard','news','https://addisstandard.com/','ET','news','Publicly accessible source verified for GhanaPathFinder discovery',now(),now(),'active',now(),now()),
 ('Ethiopian News Agency','news','https://www.ena.et/en/','ET','news','Publicly accessible source verified for GhanaPathFinder discovery',now(),now(),'active',now(),now()),
