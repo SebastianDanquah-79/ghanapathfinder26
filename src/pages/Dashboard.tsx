@@ -219,8 +219,8 @@ const Dashboard = () => {
               ["/internships", "Internships"],
               ["/news", "News"],
               ["/startups", "Startups"],
-            ].map(([to, label]) => (
-              <Link key={to} to={to} className="flex min-h-10 items-center px-2 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground">
+            ].map((item) => (
+              <Link key={item[0]} to={item[0] ?? "/"} className="flex min-h-10 items-center px-2 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground">
                 {label}
               </Link>
             ))}
@@ -440,7 +440,7 @@ const Dashboard = () => {
                 ["/programmes", "Programmes"],
                 ["/internships", "Internships"],
               ].map(([to, label]) => (
-                <Link key={to} to={to} className="block px-2 py-2 text-sm hover:bg-secondary">{label}</Link>
+                <Link key={to} to={to} className="block px-2 py-2 text-sm hover:bg-secondary">{item[1]}</Link>
               ))}
             </div>
           </section>
