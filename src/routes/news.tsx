@@ -6,6 +6,16 @@ import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
 
 const categories=["all","tech","startup","business","politics","education","health","entertainment"] as const;
+const categoryFilters: Record<(typeof categories)[number], { exact?: string[]; terms?: string[] }> = {
+  all: {},
+  tech: { exact: ["Technology"], terms: ["technology","AI","artificial intelligence","software","robotics","cybersecurity","semiconductor"] },
+  startup: { exact: ["Startups"], terms: ["startup","funding","founder","venture capital","accelerator"] },
+  business: { exact: ["Business","Business and Politics","Africa Business"], terms: ["business","economy","finance","investment","market"] },
+  politics: { exact: ["Public Affairs","Business and Politics"], terms: ["government","president","parliament","election","policy","politics"] },
+  education: { terms: ["education","university","school","scholarship","student","research"] },
+  health: { exact: ["Health"], terms: ["health","medical","hospital","disease","healthcare"] },
+  entertainment: { terms: ["music","film","culture","fashion","entertainment","artist"] },
+};
 
 export const Route=createFileRoute("/news")({component:News});
 
@@ -19,7 +29,15 @@ function News() {
     initialPageParam:0,
     queryFn:async({pageParam})=>{
       let request=supabase.from("news_articles").select("id,title,excerpt,original_url,image_url,category,country_code,published_at,source_id").gte("published_at",new Date(Date.now() - 90*24*60*60*1000).toISOString()).order("published_at",{ascending:false}).range(pageParam,pageParam+19);
-      if(category!=="all") request=request.eq("category",category);
+      const filter=categoryFilters[category];
+      if(filter?.exact?.length) request=request.in("category",filter.exact);
+      else if(filter?.terms?.length) {
+        const or=filter.terms.flatMap(term=>[
+          `title.ilike.%${term}%`,
+          `excerpt.ilike.%${term}%`,
+        ]).join(",");
+        request=request.or(or);
+      }
       if(ghanaOnly) request=request.eq("country_code","GH");
       const {data,error}=await request;
       if(error) throw error;
