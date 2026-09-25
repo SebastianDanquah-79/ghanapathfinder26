@@ -68,6 +68,21 @@ export type Database = {
         }
         Relationships: []
       }
+      admin_reviewers: {
+        Row: {
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       africa_country_catalog: {
         Row: {
           code: string
@@ -4155,6 +4170,7 @@ export type Database = {
           faculty_id: string | null
           field: string | null
           id: string
+          institution_id: string | null
           last_verified_at: string | null
           mode: string | null
           name: string
@@ -4188,6 +4204,7 @@ export type Database = {
           faculty_id?: string | null
           field?: string | null
           id?: string
+          institution_id?: string | null
           last_verified_at?: string | null
           mode?: string | null
           name: string
@@ -4221,6 +4238,7 @@ export type Database = {
           faculty_id?: string | null
           field?: string | null
           id?: string
+          institution_id?: string | null
           last_verified_at?: string | null
           mode?: string | null
           name?: string
@@ -4246,6 +4264,13 @@ export type Database = {
             columns: ["faculty_id"]
             isOneToOne: false
             referencedRelation: "faculties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "programmes_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
             referencedColumns: ["id"]
           },
           {
@@ -4391,6 +4416,39 @@ export type Database = {
           run_type?: string
           status?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      review_audit: {
+        Row: {
+          action: string
+          after_data: Json | null
+          before_data: Json | null
+          created_at: string
+          id: string
+          reviewer_id: string | null
+          row_id: string
+          table_name: string
+        }
+        Insert: {
+          action: string
+          after_data?: Json | null
+          before_data?: Json | null
+          created_at?: string
+          id?: string
+          reviewer_id?: string | null
+          row_id: string
+          table_name: string
+        }
+        Update: {
+          action?: string
+          after_data?: Json | null
+          before_data?: Json | null
+          created_at?: string
+          id?: string
+          reviewer_id?: string | null
+          row_id?: string
+          table_name?: string
         }
         Relationships: []
       }
