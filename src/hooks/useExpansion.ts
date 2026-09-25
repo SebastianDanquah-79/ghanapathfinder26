@@ -60,7 +60,7 @@ export const useCategoryListings = (slug: string) =>
             key: `o-${o.id}`, title: o.title, organisation: o.organisation,
             location: [o.location, o.country].filter(Boolean).join(", ") || null,
             summary: o.description, deadline: o.deadline_date, url: o.application_url,
-            source: o.source_url, verified: o.verified, kind: "opportunity" as const, tags: o.fields ?? [],
+            source: o.source_url, verified: o.verified ?? false, kind: "opportunity" as const, tags: o.fields ?? [],
           }));
         })(),
       );
