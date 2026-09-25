@@ -154,17 +154,19 @@ export const useReviewAction = () => {
       patch?: Record<string, any>;
       approve?: boolean;
     }) => {
-      const body: Record<string, any> = { ...(patch ?? {}) };
       if (approve) {
-        body["needs_review"] = false;
-        body["last_verified_at"] = new Date().toISOString();
-        if (table === "universities" || table === "programmes") {
-          body["verified"] = true;
-          body["verification_status"] = "verified";
-        }
+        const { error } = await supabase.rpc("gpf_admin_approve_catalogue", {
+          p_table: table === "universities" ? "institutions" : table,
+          p_id: id,
+          p_patch: patch ?? {},
+        });
+        if (error) throw error;
+        return;
       }
-      const { error } = await supabase.from(table as any).update(body).eq("id", id);
-      if (error) throw error;
+      if (patch && Object.keys(patch).length > 0) {
+        const { error } = await supabase.from(table as any).update(patch).eq("id", id);
+        if (error) throw error;
+      }
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["review_queue"] });
