@@ -2274,6 +2274,42 @@ export type Database = {
           },
         ]
       }
+      institution_ingestion_queue: {
+        Row: {
+          created_at: string
+          id: string
+          institution_name: string
+          needs_review: boolean
+          payload: Json
+          source_name: string
+          source_url: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          institution_name: string
+          needs_review?: boolean
+          payload?: Json
+          source_name: string
+          source_url: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          institution_name?: string
+          needs_review?: boolean
+          payload?: Json
+          source_name?: string
+          source_url?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       institutions: {
         Row: {
           created_at: string
@@ -5514,6 +5550,14 @@ export type Database = {
       }
       get_public_usage_stats: { Args: never; Returns: Json }
       get_user_backend_snapshot: { Args: never; Returns: Json }
+      gpf_admin_approve_catalogue: {
+        Args: { p_id: string; p_patch?: Json; p_table: string }
+        Returns: boolean
+      }
+      gpf_admin_reject_catalogue: {
+        Args: { p_id: string; p_table: string }
+        Returns: boolean
+      }
       match_international_programmes: {
         Args: { p_country_code?: string; p_qualification_code?: string }
         Returns: {
