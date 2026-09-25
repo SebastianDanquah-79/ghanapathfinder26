@@ -63,9 +63,9 @@ export default function DiscoveryDashboard() {
   const { data: universities = [] } = useQuery({
     queryKey: ["dashboard-discovery-universities"],
     queryFn: async () => {
-      const { data, error } = await supabase.from("universities").select("id,name,country,city,website_url").not("website_url", "is", null).order("updated_at", { ascending: false }).limit(5);
+      const { data, error } = await supabase.from("institutions").select("id,official_name,institution_type,town,region,website_url").not("website_url", "is", null).order("last_verified_at", { ascending: false, nullsFirst: false }).limit(5);
       if (error) throw error;
-      return (data ?? []).map((x) => ({ id: x.id, title: x.name, subtitle: [x.city, x.country].filter(Boolean).join(" · "), url: x.website_url, kind: "university" }));
+      return (data ?? []).map((x) => ({ id: x.id, title: x.official_name, subtitle: [x.institution_type, x.town || x.region].filter(Boolean).join(" · "), url: x.website_url, kind: "university" }));
     },
     staleTime: 600_000,
   });
