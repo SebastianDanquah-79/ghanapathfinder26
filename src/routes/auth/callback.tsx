@@ -28,7 +28,7 @@ function AuthCallback() {
       const role = profile.role ?? profile.account_role ?? "student";
       const rawNext = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("next") : null;
       const next = rawNext && rawNext.startsWith("/") && !rawNext.startsWith("//") ? rawNext : null;
-      const destination = next ?? (role === "employer" ? "/dashboard/employer" : role === "employee" ? "/dashboard/employee" : role === "startup_founder" ? "/dashboard/founder" : "/dashboard");
+      const destination = next ?? (role === "employer" ? "/portal/employer" : role === "employee" ? "/portal/employee" : role === "startup_founder" ? "/portal/founder" : role === "international_student" ? "/portal/international-student" : "/portal/student");
       navigate({ to: destination, replace: true });
     };
 
