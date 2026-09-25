@@ -41,6 +41,8 @@ const Onboarding = () => {
   const [interests,setInterests] = useState<string[]>([]);
   const [skills,setSkills] = useState("");
   const [discoverable,setDiscoverable] = useState(false);
+  const [avatarUrl,setAvatarUrl] = useState<string | null>(null);
+  const [avatarFile,setAvatarFile] = useState<File | null>(null);
   const [results,setResults] = useState(CORE_SUBJECTS.map(subject => ({subject,grade:""})));
 
   useEffect(() => {
@@ -54,7 +56,7 @@ const Onboarding = () => {
 
   useEffect(() => {
     if (!user) return;
-    void supabase.from("profiles").select("full_name,role,account_role,bio,location,university,program,graduation_year,company,job_title,linkedin_url,skills,is_discoverable").eq("id",user.id).maybeSingle().then(({data}) => {
+    void supabase.from("profiles").select("full_name,role,account_role,bio,location,university,program,graduation_year,company,job_title,linkedin_url,skills,is_discoverable,avatar_url").eq("id",user.id).maybeSingle().then(({data}) => {
       if (!data) return;
       setFullName(data.full_name ?? "");
       if (data.role === "student" || data.role === "employee" || data.role === "employer" || data.role === "startup_founder") setRole(data.role);
@@ -68,6 +70,7 @@ const Onboarding = () => {
       setLinkedinUrl(data.linkedin_url ?? "");
       setSkills((data.skills ?? []).join(", "));
       setDiscoverable(Boolean(data.is_discoverable));
+      setAvatarUrl(data.avatar_url ?? null);
     });
   }, [user]);
 
@@ -79,6 +82,15 @@ const Onboarding = () => {
     setSaving(true);
     try {
       const skillList = skills.split(",").map(x => x.trim()).filter(Boolean);
+      let nextAvatarUrl = avatarUrl;
+      if (avatarFile) {
+        const extension = avatarFile.name.split(".").pop()?.toLowerCase() || "jpg";
+        const objectPath = `${user.id}/profile-${Date.now()}.${extension}`;
+        const { error: uploadError } = await supabase.storage.from("avatars").upload(objectPath, avatarFile, { upsert: true, contentType: avatarFile.type || "image/jpeg", cacheControl: "3600" });
+        if (uploadError) throw new Error(`Profile photo upload failed: ${uploadError.message}`);
+        const { data: publicData } = supabase.storage.from("avatars").getPublicUrl(objectPath);
+        nextAvatarUrl = publicData.publicUrl;
+      }
       const { error } = await supabase.from("profiles").upsert({
         id:user.id,
         email:user.email ?? null,
@@ -97,6 +109,7 @@ const Onboarding = () => {
         company:company.trim() || null,
         job_title:jobTitle.trim() || null,
         linkedin_url:linkedinUrl.trim() || null,
+        avatar_url:nextAvatarUrl,
         interests,
         skills:skillList,
         is_discoverable:discoverable,
@@ -116,6 +129,8 @@ onboarding_complete:true,
         }
       }
 
+      setAvatarUrl(nextAvatarUrl);
+      setAvatarFile(null);
       localStorage.setItem("selectedRole",role);
       toast.success("Profile saved");
       const destination = role === "student" ? "/dashboard" : role === "employee" ? "/dashboard/employee" : role === "employer" ? "/dashboard/employer" : "/dashboard/founder";
@@ -150,6 +165,19 @@ onboarding_complete:true,
       <div className="mt-5 space-y-4">
         <section className="bg-glass rounded-xl p-5 space-y-3">
           <h2 className="font-display font-semibold text-foreground">About you</h2>
+          <div className="flex items-center gap-4 rounded-lg border border-border bg-secondary/40 p-4">
+            <div className="h-16 w-16 shrink-0 overflow-hidden rounded-full border border-border bg-background grid place-items-center">
+              {avatarUrl ? <img src={avatarUrl} alt="Profile" className="h-full w-full object-cover" /> : <span className="text-xs text-muted-foreground">Photo</span>}
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-foreground">Profile photo</p>
+              <p className="text-xs text-muted-foreground">Optional. JPG, PNG or WebP, up to 5 MB.</p>
+              <label className="mt-2 inline-flex cursor-pointer rounded-lg border border-border bg-background px-3 py-2 text-xs font-medium hover:bg-secondary">
+                {avatarFile ? avatarFile.name : "Choose photo"}
+                <input type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" onChange={e => { const file=e.target.files?.[0] ?? null; if(file && file.size > 5*1024*1024){toast.error("Profile photo must be 5 MB or smaller.");return;} setAvatarFile(file); if(file) setAvatarUrl(URL.createObjectURL(file)); }} />
+              </label>
+            </div>
+          </div>
           <input className={inputClass} placeholder="Full name" value={fullName} maxLength={100} onChange={e => setFullName(e.target.value)} />
           <input className={inputClass} placeholder="Location" value={location} maxLength={120} onChange={e => setLocation(e.target.value)} />
           <textarea className={inputClass} placeholder="Short bio" value={bio} maxLength={500} onChange={e => setBio(e.target.value)} />
