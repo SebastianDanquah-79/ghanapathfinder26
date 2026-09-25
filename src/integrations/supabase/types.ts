@@ -2753,7 +2753,7 @@ export type Database = {
           requested_by: string
           status: string
           suggested_url: string | null
-          university_id: string
+          university_id: string | null
           updated_at: string
         }
         Insert: {
@@ -2765,7 +2765,7 @@ export type Database = {
           requested_by: string
           status?: string
           suggested_url?: string | null
-          university_id: string
+          university_id?: string | null
           updated_at?: string
         }
         Update: {
@@ -2777,7 +2777,7 @@ export type Database = {
           requested_by?: string
           status?: string
           suggested_url?: string | null
-          university_id?: string
+          university_id?: string | null
           updated_at?: string
         }
         Relationships: [
