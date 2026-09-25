@@ -13,4 +13,7 @@ export default defineConfig({
     tailwindcss(),
     tsConfigPaths(),
   ],
+  optimizeDeps: {
+    exclude: ['@tanstack/start-client-core', '@tanstack/start-storage-context', '@tanstack/react-start'],
+  },
 })
