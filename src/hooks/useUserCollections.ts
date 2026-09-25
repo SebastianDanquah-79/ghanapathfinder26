@@ -40,7 +40,7 @@ export function useCreateCollection() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (input: Pick<TablesInsert<"user_collections">, "name" | "description" | "visibility">) => {
+    mutationFn: async (input: Pick<UserCollection, "name" | "description" | "visibility">) => {
       if (!user) throw new Error("Sign in to create a collection.");
       const { data, error } = await supabase.from("user_collections").insert({ ...input, user_id: user.id }).select("*").single();
       if (error) throw error;
