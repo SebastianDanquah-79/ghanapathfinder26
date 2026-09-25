@@ -49,14 +49,14 @@ export const useMatchPreferences = () => {
       if (error) throw error;
       if (!data) return DEFAULT_PREFERENCES;
       return {
-        level: data.level,
-        field: data.field,
+        level: data.level ?? DEFAULT_PREFERENCES.level,
+        field: data.field ?? DEFAULT_PREFERENCES.field,
         region: data.region,
-        need_based: data.need_based,
-        gender: data.gender,
+        need_based: data.need_based ?? DEFAULT_PREFERENCES.need_based,
+        gender: data.gender ?? DEFAULT_PREFERENCES.gender,
         funding_types: data.funding_types ?? [],
-        min_coverage: data.min_coverage,
-        study_abroad: data.study_abroad,
+        min_coverage: data.min_coverage ?? DEFAULT_PREFERENCES.min_coverage,
+        study_abroad: data.study_abroad ?? DEFAULT_PREFERENCES.study_abroad,
       };
     },
   });
