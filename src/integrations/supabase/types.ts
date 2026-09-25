@@ -4066,7 +4066,7 @@ export type Database = {
           id: string
           programme_id: string
           source_name: string | null
-          source_type: string | null
+          source_type: string
           source_url: string
           updated_at: string
           verification_status: string | null
@@ -4077,7 +4077,7 @@ export type Database = {
           id?: string
           programme_id: string
           source_name?: string | null
-          source_type?: string | null
+          source_type: string
           source_url: string
           updated_at?: string
           verification_status?: string | null
@@ -4088,7 +4088,7 @@ export type Database = {
           id?: string
           programme_id?: string
           source_name?: string | null
-          source_type?: string | null
+          source_type?: string
           source_url?: string
           updated_at?: string
           verification_status?: string | null
@@ -4109,7 +4109,7 @@ export type Database = {
           academic_year: string | null
           admission_summary: string | null
           application_url: string | null
-          career_opportunities: string[] | null
+          career_opportunities: string[]
           created_at: string | null
           degree_type: string | null
           department: string | null
@@ -4121,12 +4121,12 @@ export type Database = {
           id: string
           last_verified_at: string | null
           mode: string | null
-          name: string | null
+          name: string
           needs_review: boolean | null
           programme_url: string | null
           qualification: string | null
-          relevant_subjects: string[] | null
-          slug: string | null
+          relevant_subjects: string[]
+          slug: string
           source_url: string | null
           source_urls: string[] | null
           university_id: string | null
@@ -4134,7 +4134,7 @@ export type Database = {
           verification_method: string | null
           verification_notes: string | null
           verification_status: string | null
-          verified: boolean | null
+          verified: boolean
           verified_by: string | null
           wassce_requirements: string | null
         }
@@ -4142,7 +4142,7 @@ export type Database = {
           academic_year?: string | null
           admission_summary?: string | null
           application_url?: string | null
-          career_opportunities?: string[] | null
+          career_opportunities?: string[]
           created_at?: string | null
           degree_type?: string | null
           department?: string | null
@@ -4154,12 +4154,12 @@ export type Database = {
           id?: string
           last_verified_at?: string | null
           mode?: string | null
-          name?: string | null
+          name: string
           needs_review?: boolean | null
           programme_url?: string | null
           qualification?: string | null
-          relevant_subjects?: string[] | null
-          slug?: string | null
+          relevant_subjects?: string[]
+          slug: string
           source_url?: string | null
           source_urls?: string[] | null
           university_id?: string | null
@@ -4167,7 +4167,7 @@ export type Database = {
           verification_method?: string | null
           verification_notes?: string | null
           verification_status?: string | null
-          verified?: boolean | null
+          verified?: boolean
           verified_by?: string | null
           wassce_requirements?: string | null
         }
@@ -4175,7 +4175,7 @@ export type Database = {
           academic_year?: string | null
           admission_summary?: string | null
           application_url?: string | null
-          career_opportunities?: string[] | null
+          career_opportunities?: string[]
           created_at?: string | null
           degree_type?: string | null
           department?: string | null
@@ -4187,12 +4187,12 @@ export type Database = {
           id?: string
           last_verified_at?: string | null
           mode?: string | null
-          name?: string | null
+          name?: string
           needs_review?: boolean | null
           programme_url?: string | null
           qualification?: string | null
-          relevant_subjects?: string[] | null
-          slug?: string | null
+          relevant_subjects?: string[]
+          slug?: string
           source_url?: string | null
           source_urls?: string[] | null
           university_id?: string | null
@@ -4200,7 +4200,7 @@ export type Database = {
           verification_method?: string | null
           verification_notes?: string | null
           verification_status?: string | null
-          verified?: boolean | null
+          verified?: boolean
           verified_by?: string | null
           wassce_requirements?: string | null
         }
@@ -4467,7 +4467,7 @@ export type Database = {
           link: string | null
           notes: string | null
           provider: string | null
-          scholarship_id: string
+          scholarship_id: string | null
           scholarship_name: string | null
           status: string
           submitted_at: string | null
@@ -4481,7 +4481,7 @@ export type Database = {
           link?: string | null
           notes?: string | null
           provider?: string | null
-          scholarship_id: string
+          scholarship_id?: string | null
           scholarship_name?: string | null
           status?: string
           submitted_at?: string | null
@@ -4495,7 +4495,7 @@ export type Database = {
           link?: string | null
           notes?: string | null
           provider?: string | null
-          scholarship_id?: string
+          scholarship_id?: string | null
           scholarship_name?: string | null
           status?: string
           submitted_at?: string | null
