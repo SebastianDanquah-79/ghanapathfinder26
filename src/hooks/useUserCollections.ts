@@ -1,10 +1,26 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import type { Tables, TablesInsert } from "@/integrations/supabase/types";
+// These tables were added after the generated Supabase types, so we declare
+// their shapes locally instead of using Tables<...>.
+export interface UserCollection {
+  id: string;
+  user_id: string;
+  name: string;
+  description: string | null;
+  visibility: string;
+  created_at: string;
+  updated_at: string;
+}
 
-export type UserCollection = Tables<"user_collections">;
-export type CollectionItem = Tables<"collection_items">;
+export interface CollectionItem {
+  id: string;
+  collection_id: string;
+  item_type: string;
+  item_key: string;
+  note: string | null;
+  created_at: string;
+}
 
 export function useUserCollections() {
   const { user } = useAuth();
@@ -24,7 +40,7 @@ export function useCreateCollection() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (input: Pick<TablesInsert<"user_collections">, "name" | "description" | "visibility">) => {
+    mutationFn: async (input: Pick<UserCollection, "name" | "description" | "visibility">) => {
       if (!user) throw new Error("Sign in to create a collection.");
       const { data, error } = await supabase.from("user_collections").insert({ ...input, user_id: user.id }).select("*").single();
       if (error) throw error;
