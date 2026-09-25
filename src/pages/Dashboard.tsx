@@ -11,6 +11,7 @@ import ParentAccessCard from "@/components/ParentAccessCard";
 import type { JourneyInput } from "@/lib/motivation";
 import Navbar from "@/components/Navbar";
 import { useRecentlyViewed } from "@/hooks/useRecentlyViewed";
+import DiscoveryDashboard from "@/components/DiscoveryDashboard";
 
 /** Whole days between today (local midnight) and a stored ISO date. */
 const daysUntil = (iso: string) => {
@@ -455,6 +456,10 @@ const Dashboard = () => {
           {/* 7 , Career progress */}
           <div className="md:col-span-2 lg:col-span-3 min-w-0">
             <MotivationPanel data={journey} />
+          </div>
+
+          <div className="md:col-span-2 lg:col-span-3 min-w-0">
+            <DiscoveryDashboard />
           </div>
 
           {/* 8 , Recently viewed */}
