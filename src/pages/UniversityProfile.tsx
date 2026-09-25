@@ -246,7 +246,7 @@ const UniversityProfile = () => {
                     <article key={p.id} className="bg-glass rounded-xl p-5 flex flex-col gap-2">
                       <h3 className="font-medium text-foreground text-sm">
                         <Link to={`/programme/${p.slug}`} className="hover:text-primary transition-colors">
-                          {p.name}
+                          {p.name ?? "Programme"}
                         </Link>
                       </h3>
                       <p className="text-xs text-muted-foreground">
@@ -257,9 +257,9 @@ const UniversityProfile = () => {
                           <span className="text-foreground">WASSCE:</span> {p.wassce_requirements}
                         </p>
                       )}
-                      {p.career_opportunities.length > 0 && (
+                      {(p.career_opportunities ?? []).length > 0 && (
                         <div className="flex flex-wrap gap-1.5">
-                          {p.career_opportunities.slice(0, 3).map((c) => (
+                          {(p.career_opportunities ?? []).slice(0, 3).map((c) => (
                             <span
                               key={c}
                               className="px-2 py-0.5 rounded-full bg-secondary text-[11px] text-muted-foreground"
@@ -273,8 +273,8 @@ const UniversityProfile = () => {
                         <SaveButton
                           item={{
                             item_type: "programme",
-                            item_key: p.slug,
-                            title: p.name,
+                            item_key: p.slug ?? p.id,
+                            title: p.name ?? "Programme",
                             subtitle: uni.short_name ?? uni.name,
                             metadata: { university: uni.name, degree_type: p.degree_type },
                           }}
