@@ -81,7 +81,7 @@ const ScholarshipSection = () => {
               <button onClick={() => setExpanded(expanded === s.id ? null : s.id)} className="inline-flex items-center gap-1 text-xs font-medium text-primary mb-3" aria-expanded={expanded === s.id}>How to apply<ChevronDown className={`h-3.5 w-3.5 transition-transform ${expanded === s.id ? "rotate-180" : ""}`} /></button>
               <AnimatePresence initial={false}>{expanded === s.id && <motion.p initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="text-xs text-muted-foreground leading-relaxed overflow-hidden mb-3">{s.how_to_apply}</motion.p>}</AnimatePresence>
               <div className="flex flex-wrap items-center gap-2 mt-auto">
-                <SaveButton item={{ item_type: "scholarship", item_key: s.slug, title: s.name, subtitle: s.provider, metadata: { deadline_text: s.deadline_text, coverage: s.coverage, application_url: s.application_url ?? s.website_url } }} />
+                <SaveButton item={{ item_type: "scholarship", item_key: s.slug ?? s.id, title: s.name ?? "Scholarship", subtitle: s.provider, metadata: { deadline_text: s.deadline_text, coverage: s.coverage, application_url: s.application_url ?? s.website_url } }} />
                 <OfficialLink href={s.application_url} label="Apply now" fallbackNote="There is no verified application link for this award right now. Check the provider's official website or your school's scholarship office." variant="ghost" />
                 <OfficialLink href={s.website_url} label="Official info" variant="ghost" />
               </div>
