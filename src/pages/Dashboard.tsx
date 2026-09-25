@@ -204,7 +204,7 @@ const Dashboard = () => {
               ["/scholarships", "Scholarships"],
               ["/applications", "Applications"],
               ["/community", "Community"],
-            ] as const).map(([to, label]) => (
+            ].map(([to, label]: [string, string]) => (
               <Link key={to} to={to} className="flex min-h-10 items-center px-2 text-sm font-medium text-foreground hover:bg-secondary">
                 {label}
               </Link>
