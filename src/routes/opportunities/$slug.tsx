@@ -32,10 +32,8 @@ function OpportunityCategory() {
       return rows.filter((opportunity) => {
         const haystack = [
           opportunity.opportunity_type,
-          opportunity.category,
           opportunity.title,
           opportunity.company_name,
-          opportunity.organisation,
         ]
           .filter((value): value is string => Boolean(value))
           .join(" ")
@@ -82,7 +80,7 @@ function OpportunityCategory() {
                 </h2>
                 <p className="mt-1 text-xs text-muted-foreground">
                   {[
-                    opportunity.company_name ?? opportunity.organisation,
+                    opportunity.company_name,
                     opportunity.opportunity_type,
                     opportunity.country_code,
                   ]
