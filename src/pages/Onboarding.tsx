@@ -10,13 +10,14 @@ const GRADES = ["A1","B2","B3","C4","C5","C6","D7","E8","F9"];
 const CORE_SUBJECTS = ["English Language","Mathematics","Integrated Science","Social Studies"];
 const PATHWAYS = ["Learn","Find a job","Build a business","Find funding","Explore Africa","Travel","Meet people","Research","Hire talent","Study in Africa","Discover African companies","Discover African culture"];
 const INTERESTS = ["AI","Robotics","Technology","Business","Startups","Education","Engineering","Science","Finance","Agriculture","Music","Fashion","Food","Tourism","History","Culture","Sports","Research","Careers","Entrepreneurship"];
-type Role = "student" | "employee" | "employer" | "startup_founder";
+type Role = "student" | "employee" | "employer" | "startup_founder" | "international_student";
 
 const roleLabels: Record<Role,string> = {
   student: "Student",
   employee: "Job Seeker",
   employer: "Employer",
   startup_founder: "Startup Founder",
+  international_student: "International Student",
 };
 
 const Onboarding = () => {
@@ -51,7 +52,7 @@ const Onboarding = () => {
 
   useEffect(() => {
     const raw = params.get("role") ?? localStorage.getItem("selectedRole");
-    if (raw === "student" || raw === "employee" || raw === "employer" || raw === "startup_founder") setRole(raw);
+    if (raw === "student" || raw === "employee" || raw === "employer" || raw === "startup_founder" || raw === "international_student") setRole(raw);
   }, [params]);
 
   useEffect(() => {
@@ -59,7 +60,7 @@ const Onboarding = () => {
     void supabase.from("profiles").select("full_name,role,account_role,bio,location,university,program,graduation_year,company,job_title,linkedin_url,skills,is_discoverable,avatar_url").eq("id",user.id).maybeSingle().then(({data}) => {
       if (!data) return;
       setFullName(data.full_name ?? "");
-      if (data.role === "student" || data.role === "employee" || data.role === "employer" || data.role === "startup_founder") setRole(data.role);
+      if (data.role === "student" || data.role === "employee" || data.role === "employer" || data.role === "startup_founder" || data.role === "international_student") setRole(data.role);
       setBio(data.bio ?? "");
       setLocation(data.location ?? "");
       setUniversity(data.university ?? "");
@@ -129,11 +130,56 @@ onboarding_complete:true,
         }
       }
 
+      if (role === "employee") {
+        const { error } = await supabase.from("employee_profiles").upsert({
+          user_id: user.id,
+          professional_title: jobTitle.trim() || career.trim() || null,
+          employer_name: company.trim() || null,
+        }, { onConflict: "user_id" });
+        if (error) throw new Error(`Employee profile could not be saved: ${error.message}`);
+      }
+
+      if (role === "employer") {
+        const { error } = await supabase.from("employer_profiles").upsert({
+          user_id: user.id,
+          organization_name: company.trim() || fullName.trim() || null,
+          organization_type: jobTitle.trim() || null,
+          hiring_focus: skills.trim() || career.trim() || null,
+        }, { onConflict: "user_id" });
+        if (error) throw new Error(`Employer profile could not be saved: ${error.message}`);
+      }
+
+      if (role === "startup_founder") {
+        const { error } = await supabase.from("founder_profiles").upsert({
+          user_id: user.id,
+          startup_name: company.trim() || null,
+          sector: interests[0] || null,
+        }, { onConflict: "user_id" });
+        if (error) throw new Error(`Founder profile could not be saved: ${error.message}`);
+      }
+
+      if (role === "international_student") {
+        const { error } = await supabase.from("international_students").upsert({
+          user_id: user.id,
+          university_name: university.trim() || null,
+          programme_name: program.trim() || null,
+          graduation_year: graduationYear ? Number(graduationYear) : null,
+          skills: skillList,
+          interests,
+          is_discoverable: discoverable,
+          visible: discoverable,
+          open_to_collaboration: pathways.includes("Meet people") || pathways.includes("Build a business"),
+          open_to_mentorship: pathways.includes("Meet people"),
+          looking_for_opportunities: pathways.includes("Find a job") || pathways.includes("Find funding"),
+        }, { onConflict: "user_id" });
+        if (error) throw new Error(`International student profile could not be saved: ${error.message}`);
+      }
+
       setAvatarUrl(nextAvatarUrl);
       setAvatarFile(null);
       localStorage.setItem("selectedRole",role);
       toast.success("Profile saved");
-      const destination = role === "student" ? "/dashboard" : role === "employee" ? "/dashboard/employee" : role === "employer" ? "/dashboard/employer" : "/dashboard/founder";
+      const destination = role === "student" ? "/portal/student" : role === "employee" ? "/portal/employee" : role === "employer" ? "/portal/employer" : role === "startup_founder" ? "/portal/founder" : "/portal/international-student";
       navigate(destination,{replace:true});
     } catch (error) {
       const message = error instanceof Error ? error.message : "Could not save profile";
@@ -186,9 +232,9 @@ onboarding_complete:true,
             <select className={inputClass} value={region} onChange={e => setRegion(e.target.value)}><option value="">Select your region</option>{REGIONS.map(r => <option key={r} value={r}>{r}</option>)}</select>
             <input className={inputClass} placeholder="Target career" value={career} maxLength={100} onChange={e => setCareer(e.target.value)} />
           </>}
-          {(role === "employee" || role === "employer" || role === "startup_founder") && <>
-            <input className={inputClass} placeholder={role === "employee" ? "University" : "Company / organisation"} value={role === "employee" ? university : company} onChange={e => role === "employee" ? setUniversity(e.target.value) : setCompany(e.target.value)} />
-            <input className={inputClass} placeholder={role === "employee" ? "Programme" : "Job title / founder role"} value={role === "employee" ? program : jobTitle} onChange={e => role === "employee" ? setProgram(e.target.value) : setJobTitle(e.target.value)} />
+          {(role === "employee" || role === "employer" || role === "startup_founder" || role === "international_student") && <>
+            <input className={inputClass} placeholder={role === "employee" || role === "international_student" ? "University" : "Company / organisation"} value={role === "employee" || role === "international_student" ? university : company} onChange={e => role === "employee" ? setUniversity(e.target.value) : setCompany(e.target.value)} />
+            <input className={inputClass} placeholder={role === "employee" || role === "international_student" ? "Programme" : "Job title / founder role"} value={role === "employee" || role === "international_student" ? program : jobTitle} onChange={e => role === "employee" ? setProgram(e.target.value) : setJobTitle(e.target.value)} />
             <input className={inputClass} placeholder="Graduation year (optional)" inputMode="numeric" value={graduationYear} onChange={e => setGraduationYear(e.target.value.replace(/\\D/g,"").slice(0,4))} />
           </>}
           <input className={inputClass} placeholder="LinkedIn URL (optional)" value={linkedinUrl} onChange={e => setLinkedinUrl(e.target.value)} />
