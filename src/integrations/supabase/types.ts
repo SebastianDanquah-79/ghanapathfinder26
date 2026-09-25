@@ -1,1 +1,5721 @@
-{"types":"export type Json =\n  | string\n  | number\n  | boolean\n  | null\n  | { [key: string]: Json | undefined }\n  | Json[]\n\nexport type Database = {\n  // Allows to automatically instantiate createClient with right options\n  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)\n  __InternalSupabase: {\n    PostgrestVersion: \"14.5\"\n  }\n  public: {\n    Tables: {\n      active_sessions: {\n        Row: {\n          created_at: string\n          last_seen: string\n          session_id: string\n          user_id: string | null\n        }\n        Insert: {\n          created_at?: string\n          last_seen?: string\n          session_id: string\n          user_id?: string | null\n        }\n        Update: {\n          created_at?: string\n          last_seen?: string\n          session_id?: string\n          user_id?: string | null\n        }\n        Relationships: []\n      }\n      admin_audit_log: {\n        Row: {\n          action: string\n          actor_id: string | null\n          after_data: Json | null\n          before_data: Json | null\n          created_at: string\n          entity_id: string | null\n          entity_type: string\n          id: number\n        }\n        Insert: {\n          action: string\n          actor_id?: string | null\n          after_data?: Json | null\n          before_data?: Json | null\n          created_at?: string\n          entity_id?: string | null\n          entity_type: string\n          id?: number\n        }\n        Update: {\n          action?: string\n          actor_id?: string | null\n          after_data?: Json | null\n          before_data?: Json | null\n          created_at?: string\n          entity_id?: string | null\n          entity_type?: string\n          id?: number\n        }\n        Relationships: []\n      }\n      africa_country_catalog: {\n        Row: {\n          code: string\n          common_languages: string[]\n          created_at: string\n          enabled: boolean\n          name: string\n          official_languages: string[]\n          region: string\n        }\n        Insert: {\n          code: string\n          common_languages?: string[]\n          created_at?: string\n          enabled?: boolean\n          name: string\n          official_languages?: string[]\n          region: string\n        }\n        Update: {\n          code?: string\n          common_languages?: string[]\n          created_at?: string\n          enabled?: boolean\n          name?: string\n          official_languages?: string[]\n          region?: string\n        }\n        Relationships: []\n      }\n      africa_leaders: {\n        Row: {\n          biography: string | null\n          country_code: string\n          country_code_alpha2: string | null\n          country_name: string | null\n          created_at: string\n          id: string\n          is_current: boolean | null\n          key_policies: string[] | null\n          left_office: string | null\n          name: string\n          notable_achievements: string[] | null\n          official_source_url: string | null\n          photo_url: string | null\n          role: string\n          title: string | null\n          took_office: string | null\n          updated_at: string\n          verified_at: string | null\n        }\n        Insert: {\n          biography?: string | null\n          country_code: string\n          country_code_alpha2?: string | null\n          country_name?: string | null\n          created_at?: string\n          id?: string\n          is_current?: boolean | null\n          key_policies?: string[] | null\n          left_office?: string | null\n          name: string\n          notable_achievements?: string[] | null\n          official_source_url?: string | null\n          photo_url?: string | null\n          role: string\n          title?: string | null\n          took_office?: string | null\n          updated_at?: string\n          verified_at?: string | null\n        }\n        Update: {\n          biography?: string | null\n          country_code?: string\n          country_code_alpha2?: string | null\n          country_name?: string | null\n          created_at?: string\n          id?: string\n          is_current?: boolean | null\n          key_policies?: string[] | null\n          left_office?: string | null\n          name?: string\n          notable_achievements?: string[] | null\n          official_source_url?: string | null\n          photo_url?: string | null\n          role?: string\n          title?: string | null\n          took_office?: string | null\n          updated_at?: string\n          verified_at?: string | null\n        }\n        Relationships: []\n      }\n      african_heroes: {\n        Row: {\n          bio: string\n          category: string\n          country: string | null\n          created_at: string | null\n          era: string | null\n          id: string\n          legacy: string | null\n          name: string\n          photo_url: string | null\n          source_url: string\n        }\n        Insert: {\n          bio: string\n          category: string\n          country?: string | null\n          created_at?: string | null\n          era?: string | null\n          id?: string\n          legacy?: string | null\n          name: string\n          photo_url?: string | null\n          source_url: string\n        }\n        Update: {\n          bio?: string\n          category?: string\n          country?: string | null\n          created_at?: string | null\n          era?: string | null\n          id?: string\n          legacy?: string | null\n          name?: string\n          photo_url?: string | null\n          source_url?: string\n        }\n        Relationships: []\n      }\n      african_startups: {\n        Row: {\n          active_status: string | null\n          capital_usd: number | null\n          city: string | null\n          company_name: string\n          country: string | null\n          created_at: string\n          evidence_date: string | null\n          id: string\n          last_verified_at: string\n          metric_type: string\n          official_url: string | null\n          sector: string | null\n          source_name: string\n          source_url: string\n          stage: string | null\n        }\n        Insert: {\n          active_status?: string | null\n          capital_usd?: number | null\n          city?: string | null\n          company_name: string\n          country?: string | null\n          created_at?: string\n          evidence_date?: string | null\n          id?: string\n          last_verified_at?: string\n          metric_type?: string\n          official_url?: string | null\n          sector?: string | null\n          source_name: string\n          source_url: string\n          stage?: string | null\n        }\n        Update: {\n          active_status?: string | null\n          capital_usd?: number | null\n          city?: string | null\n          company_name?: string\n          country?: string | null\n          created_at?: string\n          evidence_date?: string | null\n          id?: string\n          last_verified_at?: string\n          metric_type?: string\n          official_url?: string | null\n          sector?: string | null\n          source_name?: string\n          source_url?: string\n          stage?: string | null\n        }\n        Relationships: []\n      }\n      analytics_events: {\n        Row: {\n          created_at: string\n          event_type: string\n          id: string\n          path: string | null\n          ref_id: string | null\n          ref_type: string | null\n          session_id: string\n          user_id: string | null\n        }\n        Insert: {\n          created_at?: string\n          event_type: string\n          id?: string\n          path?: string | null\n          ref_id?: string | null\n          ref_type?: string | null\n          session_id: string\n          user_id?: string | null\n        }\n        Update: {\n          created_at?: string\n          event_type?: string\n          id?: string\n          path?: string | null\n          ref_id?: string | null\n          ref_type?: string | null\n          session_id?: string\n          user_id?: string | null\n        }\n        Relationships: []\n      }\n      app_settings: {\n        Row: {\n          key: string\n          updated_at: string\n          value: Json\n        }\n        Insert: {\n          key: string\n          updated_at?: string\n          value: Json\n        }\n        Update: {\n          key?: string\n          updated_at?: string\n          value?: Json\n        }\n        Relationships: []\n      }\n      application_checklist: {\n        Row: {\n          created_at: string\n          done: boolean\n          due_date: string | null\n          id: string\n          target: string | null\n          task: string\n          updated_at: string\n          user_id: string\n        }\n        Insert: {\n          created_at?: string\n          done?: boolean\n          due_date?: string | null\n          id?: string\n          target?: string | null\n          task: string\n          updated_at?: string\n          user_id: string\n        }\n        Update: {\n          created_at?: string\n          done?: boolean\n          due_date?: string | null\n          id?: string\n          target?: string | null\n          task?: string\n          updated_at?: string\n          user_id?: string\n        }\n        Relationships: []\n      }\n      application_notes: {\n        Row: {\n          application_id: string | null\n          body: string\n          created_at: string\n          id: string\n          is_private: boolean\n          title: string\n          updated_at: string\n          user_id: string\n        }\n        Insert: {\n          application_id?: string | null\n          body?: string\n          created_at?: string\n          id?: string\n          is_private?: boolean\n          title: string\n          updated_at?: string\n          user_id: string\n        }\n        Update: {\n          application_id?: string | null\n          body?: string\n          created_at?: string\n          id?: string\n          is_private?: boolean\n          title?: string\n          updated_at?: string\n          user_id?: string\n        }\n        Relationships: []\n      }\n      book_catalog: {\n        Row: {\n          author: string\n          created_at: string\n          description: string | null\n          id: string\n          publication_year: number | null\n          source_url: string | null\n          subject: string | null\n          title: string\n          updated_at: string\n        }\n        Insert: {\n          author: string\n          created_at?: string\n          description?: string | null\n          id?: string\n          publication_year?: number | null\n          source_url?: string | null\n          subject?: string | null\n          title: string\n          updated_at?: string\n        }\n        Update: {\n          author?: string\n          created_at?: string\n          description?: string | null\n          id?: string\n          publication_year?: number | null\n          source_url?: string | null\n          subject?: string | null\n          title?: string\n          updated_at?: string\n        }\n        Relationships: []\n      }\n      campuses: {\n        Row: {\n          accreditation_status: string\n          campus_name: string\n          created_at: string\n          id: string\n          institution_id: string\n          last_verified_at: string | null\n          location: string | null\n          region: string | null\n          source_url: string | null\n          updated_at: string\n        }\n        Insert: {\n          accreditation_status?: string\n          campus_name: string\n          created_at?: string\n          id?: string\n          institution_id: string\n          last_verified_at?: string | null\n          location?: string | null\n          region?: string | null\n          source_url?: string | null\n          updated_at?: string\n        }\n        Update: {\n          accreditation_status?: string\n          campus_name?: string\n          created_at?: string\n          id?: string\n          institution_id?: string\n          last_verified_at?: string | null\n          location?: string | null\n          region?: string | null\n          source_url?: string | null\n          updated_at?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"campuses_institution_id_fkey\"\n            columns: [\"institution_id\"]\n            isOneToOne: false\n            referencedRelation: \"universities\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      collection_items: {\n        Row: {\n          collection_id: string\n          created_at: string\n          entity_key: string\n          entity_type: string\n          id: string\n          item_key: string | null\n          item_type: string | null\n          note: string | null\n          position: number\n          subtitle: string | null\n          title: string\n        }\n        Insert: {\n          collection_id: string\n          created_at?: string\n          entity_key: string\n          entity_type: string\n          id?: string\n          item_key?: string | null\n          item_type?: string | null\n          note?: string | null\n          position?: number\n          subtitle?: string | null\n          title: string\n        }\n        Update: {\n          collection_id?: string\n          created_at?: string\n          entity_key?: string\n          entity_type?: string\n          id?: string\n          item_key?: string | null\n          item_type?: string | null\n          note?: string | null\n          position?: number\n          subtitle?: string | null\n          title?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"collection_items_collection_id_fkey\"\n            columns: [\"collection_id\"]\n            isOneToOne: false\n            referencedRelation: \"user_collections\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      comment_likes: {\n        Row: {\n          comment_id: string\n          created_at: string\n          id: string\n          user_id: string\n        }\n        Insert: {\n          comment_id: string\n          created_at?: string\n          id?: string\n          user_id: string\n        }\n        Update: {\n          comment_id?: string\n          created_at?: string\n          id?: string\n          user_id?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"comment_likes_comment_id_fkey\"\n            columns: [\"comment_id\"]\n            isOneToOne: false\n            referencedRelation: \"insight_comments\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      companies: {\n        Row: {\n          careers_url: string | null\n          created_at: string\n          description: string | null\n          employer_type: string\n          id: string\n          last_verified_at: string | null\n          location: string | null\n          logo_url: string | null\n          name: string\n          region: string | null\n          sector: string\n          size: string | null\n          slug: string\n          source_url: string | null\n          updated_at: string\n          verified: boolean\n          website_url: string | null\n        }\n        Insert: {\n          careers_url?: string | null\n          created_at?: string\n          description?: string | null\n          employer_type?: string\n          id?: string\n          last_verified_at?: string | null\n          location?: string | null\n          logo_url?: string | null\n          name: string\n          region?: string | null\n          sector?: string\n          size?: string | null\n          slug: string\n          source_url?: string | null\n          updated_at?: string\n          verified?: boolean\n          website_url?: string | null\n        }\n        Update: {\n          careers_url?: string | null\n          created_at?: string\n          description?: string | null\n          employer_type?: string\n          id?: string\n          last_verified_at?: string | null\n          location?: string | null\n          logo_url?: string | null\n          name?: string\n          region?: string | null\n          sector?: string\n          size?: string | null\n          slug?: string\n          source_url?: string | null\n          updated_at?: string\n          verified?: boolean\n          website_url?: string | null\n        }\n        Relationships: []\n      }\n      corrections: {\n        Row: {\n          created_at: string\n          id: string\n          note: string\n          resolved: boolean\n          row_id: string | null\n          row_label: string | null\n          submitted_at: string\n          submitted_by: string | null\n          table_name: string\n          updated_at: string\n        }\n        Insert: {\n          created_at?: string\n          id?: string\n          note: string\n          resolved?: boolean\n          row_id?: string | null\n          row_label?: string | null\n          submitted_at?: string\n          submitted_by?: string | null\n          table_name: string\n          updated_at?: string\n        }\n        Update: {\n          created_at?: string\n          id?: string\n          note?: string\n          resolved?: boolean\n          row_id?: string | null\n          row_label?: string | null\n          submitted_at?: string\n          submitted_by?: string | null\n          table_name?: string\n          updated_at?: string\n        }\n        Relationships: []\n      }\n      country_catalog: {\n        Row: {\n          code: string\n          created_at: string\n          enabled: boolean\n          name: string\n          primary_language: string\n          region: string\n        }\n        Insert: {\n          code: string\n          created_at?: string\n          enabled?: boolean\n          name: string\n          primary_language: string\n          region: string\n        }\n        Update: {\n          code?: string\n          created_at?: string\n          enabled?: boolean\n          name?: string\n          primary_language?: string\n          region?: string\n        }\n        Relationships: []\n      }\n      country_qualification_mapping: {\n        Row: {\n          country_code: string\n          notes: string | null\n          qualification_code: string\n          source_url: string | null\n          verification_status: string\n        }\n        Insert: {\n          country_code: string\n          notes?: string | null\n          qualification_code: string\n          source_url?: string | null\n          verification_status?: string\n        }\n        Update: {\n          country_code?: string\n          notes?: string | null\n          qualification_code?: string\n          source_url?: string | null\n          verification_status?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"country_qualification_mapping_country_code_fkey\"\n            columns: [\"country_code\"]\n            isOneToOne: false\n            referencedRelation: \"africa_country_catalog\"\n            referencedColumns: [\"code\"]\n          },\n          {\n            foreignKeyName: \"country_qualification_mapping_qualification_code_fkey\"\n            columns: [\"qualification_code\"]\n            isOneToOne: false\n            referencedRelation: \"qualification_catalog\"\n            referencedColumns: [\"code\"]\n          },\n        ]\n      }\n      cross_border_opportunities: {\n        Row: {\n          application_url: string | null\n          country_code: string | null\n          eligibility: Json\n          employer: string\n          id: string\n          last_verified_at: string | null\n          opportunity_type: string\n          role_family: string | null\n          source_url: string | null\n          title: string | null\n          verified: boolean\n        }\n        Insert: {\n          application_url?: string | null\n          country_code?: string | null\n          eligibility?: Json\n          employer: string\n          id?: string\n          last_verified_at?: string | null\n          opportunity_type: string\n          role_family?: string | null\n          source_url?: string | null\n          title?: string | null\n          verified?: boolean\n        }\n        Update: {\n          application_url?: string | null\n          country_code?: string | null\n          eligibility?: Json\n          employer?: string\n          id?: string\n          last_verified_at?: string | null\n          opportunity_type?: string\n          role_family?: string | null\n          source_url?: string | null\n          title?: string | null\n          verified?: boolean\n        }\n        Relationships: []\n      }\n      cru_attempts: {\n        Row: {\n          activity_type: string\n          answer: string | null\n          concept_id: string | null\n          created_at: string\n          diagnosis: string | null\n          id: string\n          prompt: string | null\n          score: number | null\n          user_id: string\n        }\n        Insert: {\n          activity_type: string\n          answer?: string | null\n          concept_id?: string | null\n          created_at?: string\n          diagnosis?: string | null\n          id?: string\n          prompt?: string | null\n          score?: number | null\n          user_id: string\n        }\n        Update: {\n          activity_type?: string\n          answer?: string | null\n          concept_id?: string | null\n          created_at?: string\n          diagnosis?: string | null\n          id?: string\n          prompt?: string | null\n          score?: number | null\n          user_id?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"cru_attempts_concept_id_fkey\"\n            columns: [\"concept_id\"]\n            isOneToOne: false\n            referencedRelation: \"cru_concepts\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      cru_concepts: {\n        Row: {\n          description: string | null\n          domain: string | null\n          id: string\n          name: string\n        }\n        Insert: {\n          description?: string | null\n          domain?: string | null\n          id?: string\n          name: string\n        }\n        Update: {\n          description?: string | null\n          domain?: string | null\n          id?: string\n          name?: string\n        }\n        Relationships: []\n      }\n      cru_courses: {\n        Row: {\n          code: string\n          created_at: string\n          description: string | null\n          id: string\n          level: number\n          title: string\n        }\n        Insert: {\n          code: string\n          created_at?: string\n          description?: string | null\n          id?: string\n          level?: number\n          title: string\n        }\n        Update: {\n          code?: string\n          created_at?: string\n          description?: string | null\n          id?: string\n          level?: number\n          title?: string\n        }\n        Relationships: []\n      }\n      cru_experiments: {\n        Row: {\n          conclusion: string | null\n          config: Json\n          created_at: string\n          id: string\n          metrics: Json\n          name: string\n          project_id: string | null\n          user_id: string\n        }\n        Insert: {\n          conclusion?: string | null\n          config?: Json\n          created_at?: string\n          id?: string\n          metrics?: Json\n          name: string\n          project_id?: string | null\n          user_id: string\n        }\n        Update: {\n          conclusion?: string | null\n          config?: Json\n          created_at?: string\n          id?: string\n          metrics?: Json\n          name?: string\n          project_id?: string | null\n          user_id?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"cru_experiments_project_id_fkey\"\n            columns: [\"project_id\"]\n            isOneToOne: false\n            referencedRelation: \"cru_projects\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      cru_grades: {\n        Row: {\n          course_code: string\n          created_at: string\n          credits: number\n          grade: string | null\n          id: string\n          score: number | null\n          semester: string | null\n          user_id: string\n        }\n        Insert: {\n          course_code: string\n          created_at?: string\n          credits: number\n          grade?: string | null\n          id?: string\n          score?: number | null\n          semester?: string | null\n          user_id: string\n        }\n        Update: {\n          course_code?: string\n          created_at?: string\n          credits?: number\n          grade?: string | null\n          id?: string\n          score?: number | null\n          semester?: string | null\n          user_id?: string\n        }\n        Relationships: []\n      }\n      cru_ideas: {\n        Row: {\n          created_at: string\n          hypothesis: string | null\n          id: string\n          novelty_notes: string | null\n          problem: string | null\n          status: string\n          title: string\n          user_id: string\n        }\n        Insert: {\n          created_at?: string\n          hypothesis?: string | null\n          id?: string\n          novelty_notes?: string | null\n          problem?: string | null\n          status?: string\n          title: string\n          user_id: string\n        }\n        Update: {\n          created_at?: string\n          hypothesis?: string | null\n          id?: string\n          novelty_notes?: string | null\n          problem?: string | null\n          status?: string\n          title?: string\n          user_id?: string\n        }\n        Relationships: []\n      }\n      cru_lessons: {\n        Row: {\n          content: string\n          course_id: string\n          created_at: string\n          difficulty: string\n          id: string\n          order_index: number\n          title: string\n        }\n        Insert: {\n          content: string\n          course_id: string\n          created_at?: string\n          difficulty?: string\n          id?: string\n          order_index?: number\n          title: string\n        }\n        Update: {\n          content?: string\n          course_id?: string\n          created_at?: string\n          difficulty?: string\n          id?: string\n          order_index?: number\n          title?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"cru_lessons_course_id_fkey\"\n            columns: [\"course_id\"]\n            isOneToOne: false\n            referencedRelation: \"cru_courses\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      cru_mastery: {\n        Row: {\n          attempts: number\n          concept_id: string\n          confidence: number\n          mastery: number\n          updated_at: string\n          user_id: string\n        }\n        Insert: {\n          attempts?: number\n          concept_id: string\n          confidence?: number\n          mastery?: number\n          updated_at?: string\n          user_id: string\n        }\n        Update: {\n          attempts?: number\n          concept_id?: string\n          confidence?: number\n          mastery?: number\n          updated_at?: string\n          user_id?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"cru_mastery_concept_id_fkey\"\n            columns: [\"concept_id\"]\n            isOneToOne: false\n            referencedRelation: \"cru_concepts\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      cru_mistakes: {\n        Row: {\n          concept_id: string | null\n          correction: string | null\n          created_at: string\n          description: string\n          id: string\n          mistake_type: string\n          resolved: boolean\n          user_id: string\n        }\n        Insert: {\n          concept_id?: string | null\n          correction?: string | null\n          created_at?: string\n          description: string\n          id?: string\n          mistake_type: string\n          resolved?: boolean\n          user_id: string\n        }\n        Update: {\n          concept_id?: string | null\n          correction?: string | null\n          created_at?: string\n          description?: string\n          id?: string\n          mistake_type?: string\n          resolved?: boolean\n          user_id?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"cru_mistakes_concept_id_fkey\"\n            columns: [\"concept_id\"]\n            isOneToOne: false\n            referencedRelation: \"cru_concepts\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      cru_news: {\n        Row: {\n          category: string | null\n          created_at: string\n          id: string\n          published_at: string | null\n          reliability: string | null\n          source_name: string | null\n          source_url: string | null\n          summary: string | null\n          title: string\n        }\n        Insert: {\n          category?: string | null\n          created_at?: string\n          id?: string\n          published_at?: string | null\n          reliability?: string | null\n          source_name?: string | null\n          source_url?: string | null\n          summary?: string | null\n          title: string\n        }\n        Update: {\n          category?: string | null\n          created_at?: string\n          id?: string\n          published_at?: string | null\n          reliability?: string | null\n          source_name?: string | null\n          source_url?: string | null\n          summary?: string | null\n          title?: string\n        }\n        Relationships: []\n      }\n      cru_paper_notes: {\n        Row: {\n          created_at: string\n          id: string\n          notes: string\n          paper_id: string\n          user_id: string\n        }\n        Insert: {\n          created_at?: string\n          id?: string\n          notes: string\n          paper_id: string\n          user_id: string\n        }\n        Update: {\n          created_at?: string\n          id?: string\n          notes?: string\n          paper_id?: string\n          user_id?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"cru_paper_notes_paper_id_fkey\"\n            columns: [\"paper_id\"]\n            isOneToOne: false\n            referencedRelation: \"cru_papers\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      cru_papers: {\n        Row: {\n          abstract: string | null\n          arxiv_id: string | null\n          authors: string[]\n          created_at: string\n          doi: string | null\n          id: string\n          publication_date: string | null\n          title: string\n          topics: string[]\n          url: string | null\n          venue: string | null\n        }\n        Insert: {\n          abstract?: string | null\n          arxiv_id?: string | null\n          authors?: string[]\n          created_at?: string\n          doi?: string | null\n          id?: string\n          publication_date?: string | null\n          title: string\n          topics?: string[]\n          url?: string | null\n          venue?: string | null\n        }\n        Update: {\n          abstract?: string | null\n          arxiv_id?: string | null\n          authors?: string[]\n          created_at?: string\n          doi?: string | null\n          id?: string\n          publication_date?: string | null\n          title?: string\n          topics?: string[]\n          url?: string | null\n          venue?: string | null\n        }\n        Relationships: []\n      }\n      cru_profiles: {\n        Row: {\n          created_at: string\n          display_name: string | null\n          id: string\n          university: string | null\n          updated_at: string\n          year_of_study: number | null\n        }\n        Insert: {\n          created_at?: string\n          display_name?: string | null\n          id: string\n          university?: string | null\n          updated_at?: string\n          year_of_study?: number | null\n        }\n        Update: {\n          created_at?: string\n          display_name?: string | null\n          id?: string\n          university?: string | null\n          updated_at?: string\n          year_of_study?: number | null\n        }\n        Relationships: []\n      }\n      cru_projects: {\n        Row: {\n          created_at: string\n          description: string | null\n          github_url: string | null\n          id: string\n          status: string\n          title: string\n          updated_at: string\n          user_id: string\n        }\n        Insert: {\n          created_at?: string\n          description?: string | null\n          github_url?: string | null\n          id?: string\n          status?: string\n          title: string\n          updated_at?: string\n          user_id: string\n        }\n        Update: {\n          created_at?: string\n          description?: string | null\n          github_url?: string | null\n          id?: string\n          status?: string\n          title?: string\n          updated_at?: string\n          user_id?: string\n        }\n        Relationships: []\n      }\n      cru_study_sessions: {\n        Row: {\n          activity: string\n          created_at: string\n          id: string\n          minutes: number\n          notes: string | null\n          user_id: string\n        }\n        Insert: {\n          activity: string\n          created_at?: string\n          id?: string\n          minutes?: number\n          notes?: string | null\n          user_id: string\n        }\n        Update: {\n          activity?: string\n          created_at?: string\n          id?: string\n          minutes?: number\n          notes?: string | null\n          user_id?: string\n        }\n        Relationships: []\n      }\n      cv_versions: {\n        Row: {\n          created_at: string\n          cv_id: string\n          data: Json\n          id: string\n          version_name: string\n        }\n        Insert: {\n          created_at?: string\n          cv_id: string\n          data?: Json\n          id?: string\n          version_name: string\n        }\n        Update: {\n          created_at?: string\n          cv_id?: string\n          data?: Json\n          id?: string\n          version_name?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"cv_versions_cv_id_fkey\"\n            columns: [\"cv_id\"]\n            isOneToOne: false\n            referencedRelation: \"cvs\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      cvs: {\n        Row: {\n          created_at: string\n          data: Json\n          discoverable: boolean\n          id: string\n          name: string\n          template: string\n          updated_at: string\n          user_id: string\n          visibility: string\n        }\n        Insert: {\n          created_at?: string\n          data?: Json\n          discoverable?: boolean\n          id?: string\n          name?: string\n          template?: string\n          updated_at?: string\n          user_id: string\n          visibility?: string\n        }\n        Update: {\n          created_at?: string\n          data?: Json\n          discoverable?: boolean\n          id?: string\n          name?: string\n          template?: string\n          updated_at?: string\n          user_id?: string\n          visibility?: string\n        }\n        Relationships: []\n      }\n      data_sources: {\n        Row: {\n          created_at: string\n          id: string\n          notes: string | null\n          record_id: string\n          record_type: string\n          source_name: string | null\n          source_type: string\n          source_url: string\n          updated_at: string\n          verification_status: string\n          verified_at: string\n        }\n        Insert: {\n          created_at?: string\n          id?: string\n          notes?: string | null\n          record_id: string\n          record_type: string\n          source_name?: string | null\n          source_type?: string\n          source_url: string\n          updated_at?: string\n          verification_status?: string\n          verified_at?: string\n        }\n        Update: {\n          created_at?: string\n          id?: string\n          notes?: string | null\n          record_id?: string\n          record_type?: string\n          source_name?: string | null\n          source_type?: string\n          source_url?: string\n          updated_at?: string\n          verification_status?: string\n          verified_at?: string\n        }\n        Relationships: []\n      }\n      deadlines: {\n        Row: {\n          category: string | null\n          created_at: string\n          due_date: string\n          id: string\n          notes: string | null\n          title: string\n          updated_at: string\n          user_id: string\n        }\n        Insert: {\n          category?: string | null\n          created_at?: string\n          due_date: string\n          id?: string\n          notes?: string | null\n          title: string\n          updated_at?: string\n          user_id: string\n        }\n        Update: {\n          category?: string | null\n          created_at?: string\n          due_date?: string\n          id?: string\n          notes?: string | null\n          title?: string\n          updated_at?: string\n          user_id?: string\n        }\n        Relationships: []\n      }\n      directory_blocks: {\n        Row: {\n          blocked_id: string\n          blocker_id: string\n          created_at: string\n        }\n        Insert: {\n          blocked_id: string\n          blocker_id: string\n          created_at?: string\n        }\n        Update: {\n          blocked_id?: string\n          blocker_id?: string\n          created_at?: string\n        }\n        Relationships: []\n      }\n      directory_profiles: {\n        Row: {\n          bio: string | null\n          country: string | null\n          created_at: string\n          display_name: string\n          field: string | null\n          github_url: string | null\n          graduation_year: number | null\n          interests: string[]\n          level: string | null\n          linkedin_url: string | null\n          open_to_collaboration: boolean\n          open_to_mentoring: boolean\n          open_to_opportunities: boolean\n          portfolio_url: string | null\n          programme: string | null\n          projects: string | null\n          seeking_mentor: boolean\n          skills: string[]\n          university: string | null\n          updated_at: string\n          user_id: string\n          visibility: string\n        }\n        Insert: {\n          bio?: string | null\n          country?: string | null\n          created_at?: string\n          display_name: string\n          field?: string | null\n          github_url?: string | null\n          graduation_year?: number | null\n          interests?: string[]\n          level?: string | null\n          linkedin_url?: string | null\n          open_to_collaboration?: boolean\n          open_to_mentoring?: boolean\n          open_to_opportunities?: boolean\n          portfolio_url?: string | null\n          programme?: string | null\n          projects?: string | null\n          seeking_mentor?: boolean\n          skills?: string[]\n          university?: string | null\n          updated_at?: string\n          user_id: string\n          visibility?: string\n        }\n        Update: {\n          bio?: string | null\n          country?: string | null\n          created_at?: string\n          display_name?: string\n          field?: string | null\n          github_url?: string | null\n          graduation_year?: number | null\n          interests?: string[]\n          level?: string | null\n          linkedin_url?: string | null\n          open_to_collaboration?: boolean\n          open_to_mentoring?: boolean\n          open_to_opportunities?: boolean\n          portfolio_url?: string | null\n          programme?: string | null\n          projects?: string | null\n          seeking_mentor?: boolean\n          skills?: string[]\n          university?: string | null\n          updated_at?: string\n          user_id?: string\n          visibility?: string\n        }\n        Relationships: []\n      }\n      directory_reports: {\n        Row: {\n          created_at: string\n          id: string\n          profile_user_id: string\n          reason: string\n          reporter_id: string\n        }\n        Insert: {\n          created_at?: string\n          id?: string\n          profile_user_id: string\n          reason: string\n          reporter_id: string\n        }\n        Update: {\n          created_at?: string\n          id?: string\n          profile_user_id?: string\n          reason?: string\n          reporter_id?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"directory_reports_profile_user_id_fkey\"\n            columns: [\"profile_user_id\"]\n            isOneToOne: false\n            referencedRelation: \"directory_profiles\"\n            referencedColumns: [\"user_id\"]\n          },\n        ]\n      }\n      embassies: {\n        Row: {\n          address: string | null\n          created_at: string | null\n          email: string | null\n          head_of_mission_name: string | null\n          head_of_mission_title: string | null\n          host_country: string\n          id: string\n          last_verified: string | null\n          latitude: number | null\n          longitude: number | null\n          mission_type: string | null\n          official_website: string | null\n          phone: string | null\n          represents_country: string\n          represents_country_code: string\n          visa_info_url: string | null\n        }\n        Insert: {\n          address?: string | null\n          created_at?: string | null\n          email?: string | null\n          head_of_mission_name?: string | null\n          head_of_mission_title?: string | null\n          host_country?: string\n          id?: string\n          last_verified?: string | null\n          latitude?: number | null\n          longitude?: number | null\n          mission_type?: string | null\n          official_website?: string | null\n          phone?: string | null\n          represents_country: string\n          represents_country_code: string\n          visa_info_url?: string | null\n        }\n        Update: {\n          address?: string | null\n          created_at?: string | null\n          email?: string | null\n          head_of_mission_name?: string | null\n          head_of_mission_title?: string | null\n          host_country?: string\n          id?: string\n          last_verified?: string | null\n          latitude?: number | null\n          longitude?: number | null\n          mission_type?: string | null\n          official_website?: string | null\n          phone?: string | null\n          represents_country?: string\n          represents_country_code?: string\n          visa_info_url?: string | null\n        }\n        Relationships: []\n      }\n      employee_profiles: {\n        Row: {\n          created_at: string\n          employer_name: string | null\n          professional_title: string | null\n          updated_at: string\n          user_id: string\n          years_experience: number | null\n        }\n        Insert: {\n          created_at?: string\n          employer_name?: string | null\n          professional_title?: string | null\n          updated_at?: string\n          user_id: string\n          years_experience?: number | null\n        }\n        Update: {\n          created_at?: string\n          employer_name?: string | null\n          professional_title?: string | null\n          updated_at?: string\n          user_id?: string\n          years_experience?: number | null\n        }\n        Relationships: []\n      }\n      employer_messages: {\n        Row: {\n          candidate_user_id: string\n          created_at: string\n          employer_id: string\n          id: string\n          message: string\n          read_at: string | null\n          sender_user_id: string\n        }\n        Insert: {\n          candidate_user_id: string\n          created_at?: string\n          employer_id: string\n          id?: string\n          message: string\n          read_at?: string | null\n          sender_user_id: string\n        }\n        Update: {\n          candidate_user_id?: string\n          created_at?: string\n          employer_id?: string\n          id?: string\n          message?: string\n          read_at?: string | null\n          sender_user_id?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"employer_messages_employer_id_fkey\"\n            columns: [\"employer_id\"]\n            isOneToOne: false\n            referencedRelation: \"employers\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      employer_profiles: {\n        Row: {\n          created_at: string\n          hiring_focus: string[]\n          organization_name: string | null\n          organization_type: string | null\n          updated_at: string\n          user_id: string\n        }\n        Insert: {\n          created_at?: string\n          hiring_focus?: string[]\n          organization_name?: string | null\n          organization_type?: string | null\n          updated_at?: string\n          user_id: string\n        }\n        Update: {\n          created_at?: string\n          hiring_focus?: string[]\n          organization_name?: string | null\n          organization_type?: string | null\n          updated_at?: string\n          user_id?: string\n        }\n        Relationships: []\n      }\n      employer_users: {\n        Row: {\n          created_at: string\n          employer_id: string\n          id: string\n          role: string\n          user_id: string\n        }\n        Insert: {\n          created_at?: string\n          employer_id: string\n          id?: string\n          role?: string\n          user_id: string\n        }\n        Update: {\n          created_at?: string\n          employer_id?: string\n          id?: string\n          role?: string\n          user_id?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"employer_users_employer_id_fkey\"\n            columns: [\"employer_id\"]\n            isOneToOne: false\n            referencedRelation: \"employers\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      employer_verifications: {\n        Row: {\n          created_at: string\n          employer_id: string\n          evidence: Json\n          id: string\n          reviewed_at: string | null\n          reviewer_user_id: string | null\n          status: string\n          submitted_by: string\n        }\n        Insert: {\n          created_at?: string\n          employer_id: string\n          evidence?: Json\n          id?: string\n          reviewed_at?: string | null\n          reviewer_user_id?: string | null\n          status?: string\n          submitted_by: string\n        }\n        Update: {\n          created_at?: string\n          employer_id?: string\n          evidence?: Json\n          id?: string\n          reviewed_at?: string | null\n          reviewer_user_id?: string | null\n          status?: string\n          submitted_by?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"employer_verifications_employer_id_fkey\"\n            columns: [\"employer_id\"]\n            isOneToOne: false\n            referencedRelation: \"employers\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      employers: {\n        Row: {\n          city: string | null\n          company_id: string | null\n          country_code: string | null\n          created_at: string\n          description: string | null\n          id: string\n          industry: string | null\n          logo_url: string | null\n          name: string\n          organization_type: string\n          updated_at: string\n          verification_source: string | null\n          verification_status: string\n          verified_at: string | null\n          website_url: string | null\n        }\n        Insert: {\n          city?: string | null\n          company_id?: string | null\n          country_code?: string | null\n          created_at?: string\n          description?: string | null\n          id?: string\n          industry?: string | null\n          logo_url?: string | null\n          name: string\n          organization_type?: string\n          updated_at?: string\n          verification_source?: string | null\n          verification_status?: string\n          verified_at?: string | null\n          website_url?: string | null\n        }\n        Update: {\n          city?: string | null\n          company_id?: string | null\n          country_code?: string | null\n          created_at?: string\n          description?: string | null\n          id?: string\n          industry?: string | null\n          logo_url?: string | null\n          name?: string\n          organization_type?: string\n          updated_at?: string\n          verification_source?: string | null\n          verification_status?: string\n          verified_at?: string | null\n          website_url?: string | null\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"employers_company_id_fkey\"\n            columns: [\"company_id\"]\n            isOneToOne: false\n            referencedRelation: \"companies\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      faculties: {\n        Row: {\n          created_at: string\n          id: string\n          institution_id: string\n          name: string\n          updated_at: string\n        }\n        Insert: {\n          created_at?: string\n          id?: string\n          institution_id: string\n          name: string\n          updated_at?: string\n        }\n        Update: {\n          created_at?: string\n          id?: string\n          institution_id?: string\n          name?: string\n          updated_at?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"faculties_institution_id_fkey\"\n            columns: [\"institution_id\"]\n            isOneToOne: false\n            referencedRelation: \"universities\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      feed_comments: {\n        Row: {\n          author_id: string\n          content: string\n          created_at: string\n          id: string\n          post_id: string\n        }\n        Insert: {\n          author_id: string\n          content: string\n          created_at?: string\n          id?: string\n          post_id: string\n        }\n        Update: {\n          author_id?: string\n          content?: string\n          created_at?: string\n          id?: string\n          post_id?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"feed_comments_author_id_fkey\"\n            columns: [\"author_id\"]\n            isOneToOne: false\n            referencedRelation: \"profiles\"\n            referencedColumns: [\"id\"]\n          },\n          {\n            foreignKeyName: \"feed_comments_post_id_fkey\"\n            columns: [\"post_id\"]\n            isOneToOne: false\n            referencedRelation: \"feed_posts\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      feed_items: {\n        Row: {\n          category: string\n          description: string | null\n          id: string\n          published_at: string | null\n          source_name: string\n          source_url: string\n          title: string\n          verified_at: string\n          video_url: string | null\n        }\n        Insert: {\n          category: string\n          description?: string | null\n          id?: string\n          published_at?: string | null\n          source_name: string\n          source_url: string\n          title: string\n          verified_at?: string\n          video_url?: string | null\n        }\n        Update: {\n          category?: string\n          description?: string | null\n          id?: string\n          published_at?: string | null\n          source_name?: string\n          source_url?: string\n          title?: string\n          verified_at?: string\n          video_url?: string | null\n        }\n        Relationships: []\n      }\n      feed_likes: {\n        Row: {\n          created_at: string\n          post_id: string\n          user_id: string\n        }\n        Insert: {\n          created_at?: string\n          post_id: string\n          user_id: string\n        }\n        Update: {\n          created_at?: string\n          post_id?: string\n          user_id?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"feed_likes_post_id_fkey\"\n            columns: [\"post_id\"]\n            isOneToOne: false\n            referencedRelation: \"feed_posts\"\n            referencedColumns: [\"id\"]\n          },\n          {\n            foreignKeyName: \"feed_likes_user_id_fkey\"\n            columns: [\"user_id\"]\n            isOneToOne: false\n            referencedRelation: \"profiles\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      feed_posts: {\n        Row: {\n          author_id: string\n          category: string\n          comments_count: number\n          created_at: string\n          description: string | null\n          id: string\n          is_published: boolean\n          likes_count: number\n          shares_count: number\n          tags: string[]\n          thumbnail_url: string | null\n          title: string | null\n          video_url: string | null\n          views_count: number\n          youtube_url: string | null\n        }\n        Insert: {\n          author_id: string\n          category?: string\n          comments_count?: number\n          created_at?: string\n          description?: string | null\n          id?: string\n          is_published?: boolean\n          likes_count?: number\n          shares_count?: number\n          tags?: string[]\n          thumbnail_url?: string | null\n          title?: string | null\n          video_url?: string | null\n          views_count?: number\n          youtube_url?: string | null\n        }\n        Update: {\n          author_id?: string\n          category?: string\n          comments_count?: number\n          created_at?: string\n          description?: string | null\n          id?: string\n          is_published?: boolean\n          likes_count?: number\n          shares_count?: number\n          tags?: string[]\n          thumbnail_url?: string | null\n          title?: string | null\n          video_url?: string | null\n          views_count?: number\n          youtube_url?: string | null\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"feed_posts_author_id_fkey\"\n            columns: [\"author_id\"]\n            isOneToOne: false\n            referencedRelation: \"profiles\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      founder_profiles: {\n        Row: {\n          created_at: string\n          pitch_url: string | null\n          sector: string | null\n          stage: string | null\n          startup_name: string | null\n          updated_at: string\n          user_id: string\n          website_url: string | null\n        }\n        Insert: {\n          created_at?: string\n          pitch_url?: string | null\n          sector?: string | null\n          stage?: string | null\n          startup_name?: string | null\n          updated_at?: string\n          user_id: string\n          website_url?: string | null\n        }\n        Update: {\n          created_at?: string\n          pitch_url?: string | null\n          sector?: string | null\n          stage?: string | null\n          startup_name?: string | null\n          updated_at?: string\n          user_id?: string\n          website_url?: string | null\n        }\n        Relationships: []\n      }\n      ghana_institution_guides: {\n        Row: {\n          admissions_url: string | null\n          application_url: string | null\n          id: string\n          institution_name: string\n          institution_type: string | null\n          international_url: string | null\n          last_verified_at: string | null\n          notes: string | null\n          scholarship_url: string | null\n          verification_status: string\n        }\n        Insert: {\n          admissions_url?: string | null\n          application_url?: string | null\n          id?: string\n          institution_name: string\n          institution_type?: string | null\n          international_url?: string | null\n          last_verified_at?: string | null\n          notes?: string | null\n          scholarship_url?: string | null\n          verification_status?: string\n        }\n        Update: {\n          admissions_url?: string | null\n          application_url?: string | null\n          id?: string\n          institution_name?: string\n          institution_type?: string | null\n          international_url?: string | null\n          last_verified_at?: string | null\n          notes?: string | null\n          scholarship_url?: string | null\n          verification_status?: string\n        }\n        Relationships: []\n      }\n      ghana_student_visa_guides: {\n        Row: {\n          country_code: string\n          destination_country: string\n          last_verified_at: string | null\n          required_documents: Json\n          source_url: string | null\n          steps: Json\n          title: string\n        }\n        Insert: {\n          country_code: string\n          destination_country?: string\n          last_verified_at?: string | null\n          required_documents?: Json\n          source_url?: string | null\n          steps?: Json\n          title: string\n        }\n        Update: {\n          country_code?: string\n          destination_country?: string\n          last_verified_at?: string | null\n          required_documents?: Json\n          source_url?: string | null\n          steps?: Json\n          title?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"ghana_student_visa_guides_country_code_fkey\"\n            columns: [\"country_code\"]\n            isOneToOne: true\n            referencedRelation: \"africa_country_catalog\"\n            referencedColumns: [\"code\"]\n          },\n        ]\n      }\n      innovation_items: {\n        Row: {\n          category: string\n          description: string | null\n          id: string\n          media_url: string | null\n          published_at: string | null\n          source_name: string\n          source_url: string\n          title: string\n          verified_at: string\n        }\n        Insert: {\n          category: string\n          description?: string | null\n          id?: string\n          media_url?: string | null\n          published_at?: string | null\n          source_name: string\n          source_url: string\n          title: string\n          verified_at?: string\n        }\n        Update: {\n          category?: string\n          description?: string | null\n          id?: string\n          media_url?: string | null\n          published_at?: string | null\n          source_name?: string\n          source_url?: string\n          title?: string\n          verified_at?: string\n        }\n        Relationships: []\n      }\n      insight_comments: {\n        Row: {\n          author_label: string\n          body: string\n          created_at: string\n          id: string\n          insight_id: string\n          like_count: number\n          parent_id: string | null\n          status: string\n          updated_at: string\n          user_id: string\n        }\n        Insert: {\n          author_label?: string\n          body: string\n          created_at?: string\n          id?: string\n          insight_id: string\n          like_count?: number\n          parent_id?: string | null\n          status?: string\n          updated_at?: string\n          user_id: string\n        }\n        Update: {\n          author_label?: string\n          body?: string\n          created_at?: string\n          id?: string\n          insight_id?: string\n          like_count?: number\n          parent_id?: string | null\n          status?: string\n          updated_at?: string\n          user_id?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"insight_comments_insight_id_fkey\"\n            columns: [\"insight_id\"]\n            isOneToOne: false\n            referencedRelation: \"student_insights\"\n            referencedColumns: [\"id\"]\n          },\n          {\n            foreignKeyName: \"insight_comments_parent_id_fkey\"\n            columns: [\"parent_id\"]\n            isOneToOne: false\n            referencedRelation: \"insight_comments\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      insight_helpful: {\n        Row: {\n          created_at: string\n          id: string\n          insight_id: string\n          user_id: string\n        }\n        Insert: {\n          created_at?: string\n          id?: string\n          insight_id: string\n          user_id: string\n        }\n        Update: {\n          created_at?: string\n          id?: string\n          insight_id?: string\n          user_id?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"insight_helpful_insight_id_fkey\"\n            columns: [\"insight_id\"]\n            isOneToOne: false\n            referencedRelation: \"student_insights\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      insight_reports: {\n        Row: {\n          created_at: string\n          details: string | null\n          id: string\n          insight_id: string\n          reason: string\n          reporter_id: string\n          status: string\n          updated_at: string\n        }\n        Insert: {\n          created_at?: string\n          details?: string | null\n          id?: string\n          insight_id: string\n          reason: string\n          reporter_id: string\n          status?: string\n          updated_at?: string\n        }\n        Update: {\n          created_at?: string\n          details?: string | null\n          id?: string\n          insight_id?: string\n          reason?: string\n          reporter_id?: string\n          status?: string\n          updated_at?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"insight_reports_insight_id_fkey\"\n            columns: [\"insight_id\"]\n            isOneToOne: false\n            referencedRelation: \"student_insights\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      institutions: {\n        Row: {\n          created_at: string\n          google_place_id: string | null\n          gtec_accreditation_status: string | null\n          id: string\n          institution_type: string\n          last_verified_at: string | null\n          logo_source_url: string | null\n          logo_verification_status: string\n          logo_verified_at: string | null\n          needs_review: boolean\n          official_name: string\n          region: string | null\n          short_description: string | null\n          social_links: Json\n          source_urls: string[]\n          town: string | null\n          university_id: string | null\n          updated_at: string\n          verification_method: string | null\n          verification_notes: string | null\n          verified_by: string | null\n          website_url: string | null\n        }\n        Insert: {\n          created_at?: string\n          google_place_id?: string | null\n          gtec_accreditation_status?: string | null\n          id?: string\n          institution_type: string\n          last_verified_at?: string | null\n          logo_source_url?: string | null\n          logo_verification_status?: string\n          logo_verified_at?: string | null\n          needs_review?: boolean\n          official_name: string\n          region?: string | null\n          short_description?: string | null\n          social_links?: Json\n          source_urls?: string[]\n          town?: string | null\n          university_id?: string | null\n          updated_at?: string\n          verification_method?: string | null\n          verification_notes?: string | null\n          verified_by?: string | null\n          website_url?: string | null\n        }\n        Update: {\n          created_at?: string\n          google_place_id?: string | null\n          gtec_accreditation_status?: string | null\n          id?: string\n          institution_type?: string\n          last_verified_at?: string | null\n          logo_source_url?: string | null\n          logo_verification_status?: string\n          logo_verified_at?: string | null\n          needs_review?: boolean\n          official_name?: string\n          region?: string | null\n          short_description?: string | null\n          social_links?: Json\n          source_urls?: string[]\n          town?: string | null\n          university_id?: string | null\n          updated_at?: string\n          verification_method?: string | null\n          verification_notes?: string | null\n          verified_by?: string | null\n          website_url?: string | null\n        }\n        Relationships: []\n      }\n      international_students: {\n        Row: {\n          academic_level: string | null\n          country_code: string | null\n          created_at: string | null\n          github_url: string | null\n          graduation_year: number | null\n          id: string\n          interests: string[] | null\n          is_discoverable: boolean | null\n          linkedin_url: string | null\n          looking_for_opportunities: boolean | null\n          open_to_collaboration: boolean | null\n          open_to_mentorship: boolean | null\n          portfolio_url: string | null\n          programme_name: string | null\n          projects: string[] | null\n          skills: string[] | null\n          university_name: string | null\n          updated_at: string | null\n          user_id: string\n          visible: boolean | null\n        }\n        Insert: {\n          academic_level?: string | null\n          country_code?: string | null\n          created_at?: string | null\n          github_url?: string | null\n          graduation_year?: number | null\n          id?: string\n          interests?: string[] | null\n          is_discoverable?: boolean | null\n          linkedin_url?: string | null\n          looking_for_opportunities?: boolean | null\n          open_to_collaboration?: boolean | null\n          open_to_mentorship?: boolean | null\n          portfolio_url?: string | null\n          programme_name?: string | null\n          projects?: string[] | null\n          skills?: string[] | null\n          university_name?: string | null\n          updated_at?: string | null\n          user_id: string\n          visible?: boolean | null\n        }\n        Update: {\n          academic_level?: string | null\n          country_code?: string | null\n          created_at?: string | null\n          github_url?: string | null\n          graduation_year?: number | null\n          id?: string\n          interests?: string[] | null\n          is_discoverable?: boolean | null\n          linkedin_url?: string | null\n          looking_for_opportunities?: boolean | null\n          open_to_collaboration?: boolean | null\n          open_to_mentorship?: boolean | null\n          portfolio_url?: string | null\n          programme_name?: string | null\n          projects?: string[] | null\n          skills?: string[] | null\n          university_name?: string | null\n          updated_at?: string | null\n          user_id?: string\n          visible?: boolean | null\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"international_students_user_id_fkey\"\n            columns: [\"user_id\"]\n            isOneToOne: true\n            referencedRelation: \"profiles\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      international_universities: {\n        Row: {\n          admissions_url: string | null\n          city: string | null\n          country_code: string\n          created_at: string | null\n          description: string | null\n          id: string\n          image_url: string | null\n          name: string\n          source_url: string | null\n          updated_at: string | null\n          verified: boolean | null\n          website_url: string | null\n        }\n        Insert: {\n          admissions_url?: string | null\n          city?: string | null\n          country_code: string\n          created_at?: string | null\n          description?: string | null\n          id?: string\n          image_url?: string | null\n          name: string\n          source_url?: string | null\n          updated_at?: string | null\n          verified?: boolean | null\n          website_url?: string | null\n        }\n        Update: {\n          admissions_url?: string | null\n          city?: string | null\n          country_code?: string\n          created_at?: string | null\n          description?: string | null\n          id?: string\n          image_url?: string | null\n          name?: string\n          source_url?: string | null\n          updated_at?: string | null\n          verified?: boolean | null\n          website_url?: string | null\n        }\n        Relationships: []\n      }\n      internship_providers: {\n        Row: {\n          application_url: string | null\n          created_at: string\n          id: string\n          last_verified_at: string | null\n          logo_source_url: string | null\n          name: string\n          needs_review: boolean\n          paid: boolean | null\n          programme_summary: string | null\n          provider_type: string | null\n          sector: string | null\n          social_links: Json\n          source_urls: string[]\n          updated_at: string\n          verification_method: string | null\n          verification_notes: string | null\n          verified_by: string | null\n          website_url: string | null\n        }\n        Insert: {\n          application_url?: string | null\n          created_at?: string\n          id?: string\n          last_verified_at?: string | null\n          logo_source_url?: string | null\n          name: string\n          needs_review?: boolean\n          paid?: boolean | null\n          programme_summary?: string | null\n          provider_type?: string | null\n          sector?: string | null\n          social_links?: Json\n          source_urls?: string[]\n          updated_at?: string\n          verification_method?: string | null\n          verification_notes?: string | null\n          verified_by?: string | null\n          website_url?: string | null\n        }\n        Update: {\n          application_url?: string | null\n          created_at?: string\n          id?: string\n          last_verified_at?: string | null\n          logo_source_url?: string | null\n          name?: string\n          needs_review?: boolean\n          paid?: boolean | null\n          programme_summary?: string | null\n          provider_type?: string | null\n          sector?: string | null\n          social_links?: Json\n          source_urls?: string[]\n          updated_at?: string\n          verification_method?: string | null\n          verification_notes?: string | null\n          verified_by?: string | null\n          website_url?: string | null\n        }\n        Relationships: []\n      }\n      internships: {\n        Row: {\n          application_url: string | null\n          careers: string[] | null\n          company_id: string\n          created_at: string\n          deadline_date: string | null\n          deadline_text: string | null\n          description: string | null\n          duration: string | null\n          eligibility: string | null\n          end_date: string | null\n          fields: string[] | null\n          id: string\n          last_verified_at: string | null\n          location: string | null\n          opportunity_type: string | null\n          paid: boolean | null\n          region: string | null\n          slug: string | null\n          source_url: string | null\n          start_date: string | null\n          stipend_text: string | null\n          title: string\n          updated_at: string\n          verified: boolean\n          work_mode: string | null\n        }\n        Insert: {\n          application_url?: string | null\n          careers?: string[] | null\n          company_id: string\n          created_at?: string\n          deadline_date?: string | null\n          deadline_text?: string | null\n          description?: string | null\n          duration?: string | null\n          eligibility?: string | null\n          end_date?: string | null\n          fields?: string[] | null\n          id?: string\n          last_verified_at?: string | null\n          location?: string | null\n          opportunity_type?: string | null\n          paid?: boolean | null\n          region?: string | null\n          slug?: string | null\n          source_url?: string | null\n          start_date?: string | null\n          stipend_text?: string | null\n          title: string\n          updated_at?: string\n          verified?: boolean\n          work_mode?: string | null\n        }\n        Update: {\n          application_url?: string | null\n          careers?: string[] | null\n          company_id?: string\n          created_at?: string\n          deadline_date?: string | null\n          deadline_text?: string | null\n          description?: string | null\n          duration?: string | null\n          eligibility?: string | null\n          end_date?: string | null\n          fields?: string[] | null\n          id?: string\n          last_verified_at?: string | null\n          location?: string | null\n          opportunity_type?: string | null\n          paid?: boolean | null\n          region?: string | null\n          slug?: string | null\n          source_url?: string | null\n          start_date?: string | null\n          stipend_text?: string | null\n          title?: string\n          updated_at?: string\n          verified?: boolean\n          work_mode?: string | null\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"internships_company_id_fkey\"\n            columns: [\"company_id\"]\n            isOneToOne: false\n            referencedRelation: \"companies\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      investors: {\n        Row: {\n          country_code: string | null\n          created_at: string | null\n          description: string | null\n          id: string\n          name: string\n          sectors: string[] | null\n          source_url: string | null\n          stages: string[] | null\n          type: string | null\n          verified: boolean | null\n          website_url: string | null\n        }\n        Insert: {\n          country_code?: string | null\n          created_at?: string | null\n          description?: string | null\n          id?: string\n          name: string\n          sectors?: string[] | null\n          source_url?: string | null\n          stages?: string[] | null\n          type?: string | null\n          verified?: boolean | null\n          website_url?: string | null\n        }\n        Update: {\n          country_code?: string | null\n          created_at?: string | null\n          description?: string | null\n          id?: string\n          name?: string\n          sectors?: string[] | null\n          source_url?: string | null\n          stages?: string[] | null\n          type?: string | null\n          verified?: boolean | null\n          website_url?: string | null\n        }\n        Relationships: []\n      }\n      learning_resources: {\n        Row: {\n          category: string | null\n          country_code: string | null\n          created_at: string | null\n          id: string\n          level: string | null\n          provider: string\n          skills: string[] | null\n          source_url: string | null\n          title: string\n          url: string\n        }\n        Insert: {\n          category?: string | null\n          country_code?: string | null\n          created_at?: string | null\n          id?: string\n          level?: string | null\n          provider: string\n          skills?: string[] | null\n          source_url?: string | null\n          title: string\n          url: string\n        }\n        Update: {\n          category?: string | null\n          country_code?: string | null\n          created_at?: string | null\n          id?: string\n          level?: string | null\n          provider?: string\n          skills?: string[] | null\n          source_url?: string | null\n          title?: string\n          url?: string\n        }\n        Relationships: []\n      }\n      life_path_items: {\n        Row: {\n          created_at: string\n          detail: string | null\n          id: string\n          stage: string\n          status: string\n          target_date: string | null\n          title: string\n          updated_at: string\n          user_id: string\n        }\n        Insert: {\n          created_at?: string\n          detail?: string | null\n          id?: string\n          stage: string\n          status?: string\n          target_date?: string | null\n          title: string\n          updated_at?: string\n          user_id: string\n        }\n        Update: {\n          created_at?: string\n          detail?: string | null\n          id?: string\n          stage?: string\n          status?: string\n          target_date?: string | null\n          title?: string\n          updated_at?: string\n          user_id?: string\n        }\n        Relationships: []\n      }\n      logo_requests: {\n        Row: {\n          created_at: string\n          id: string\n          logo_url: string | null\n          note: string | null\n          organisation_name: string | null\n          requested_by: string\n          status: string\n          suggested_url: string | null\n          university_id: string | null\n          updated_at: string\n        }\n        Insert: {\n          created_at?: string\n          id?: string\n          logo_url?: string | null\n          note?: string | null\n          organisation_name?: string | null\n          requested_by: string\n          status?: string\n          suggested_url?: string | null\n          university_id?: string | null\n          updated_at?: string\n        }\n        Update: {\n          created_at?: string\n          id?: string\n          logo_url?: string | null\n          note?: string | null\n          organisation_name?: string | null\n          requested_by?: string\n          status?: string\n          suggested_url?: string | null\n          university_id?: string | null\n          updated_at?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"logo_requests_university_id_fkey\"\n            columns: [\"university_id\"]\n            isOneToOne: false\n            referencedRelation: \"universities\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      match_preferences: {\n        Row: {\n          created_at: string\n          field: string | null\n          funding_types: string[]\n          gender: string | null\n          id: string\n          level: string | null\n          min_coverage: string | null\n          need_based: boolean | null\n          preferred_locations: string | null\n          region: string | null\n          study_abroad: boolean | null\n          updated_at: string\n          user_id: string\n        }\n        Insert: {\n          created_at?: string\n          field?: string | null\n          funding_types?: string[]\n          gender?: string | null\n          id?: string\n          level?: string | null\n          min_coverage?: string | null\n          need_based?: boolean | null\n          preferred_locations?: string | null\n          region?: string | null\n          study_abroad?: boolean | null\n          updated_at?: string\n          user_id: string\n        }\n        Update: {\n          created_at?: string\n          field?: string | null\n          funding_types?: string[]\n          gender?: string | null\n          id?: string\n          level?: string | null\n          min_coverage?: string | null\n          need_based?: boolean | null\n          preferred_locations?: string | null\n          region?: string | null\n          study_abroad?: boolean | null\n          updated_at?: string\n          user_id?: string\n        }\n        Relationships: []\n      }\n      news_articles: {\n        Row: {\n          category: string | null\n          content_hash: string | null\n          country_code: string | null\n          created_at: string\n          excerpt: string | null\n          fetched_at: string\n          id: string\n          image_url: string | null\n          original_url: string\n          published_at: string | null\n          source_id: string | null\n          source_name: string | null\n          title: string\n        }\n        Insert: {\n          category?: string | null\n          content_hash?: string | null\n          country_code?: string | null\n          created_at?: string\n          excerpt?: string | null\n          fetched_at?: string\n          id?: string\n          image_url?: string | null\n          original_url: string\n          published_at?: string | null\n          source_id?: string | null\n          source_name?: string | null\n          title: string\n        }\n        Update: {\n          category?: string | null\n          content_hash?: string | null\n          country_code?: string | null\n          created_at?: string\n          excerpt?: string | null\n          fetched_at?: string\n          id?: string\n          image_url?: string | null\n          original_url?: string\n          published_at?: string | null\n          source_id?: string | null\n          source_name?: string | null\n          title?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"news_articles_source_id_fkey\"\n            columns: [\"source_id\"]\n            isOneToOne: false\n            referencedRelation: \"news_sources\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      news_sources: {\n        Row: {\n          active: boolean\n          category: string | null\n          country_code: string | null\n          created_at: string\n          id: string\n          last_error: string | null\n          last_fetched_at: string | null\n          last_success_at: string | null\n          name: string\n          refresh_interval_minutes: number\n          updated_at: string\n          url: string\n        }\n        Insert: {\n          active?: boolean\n          category?: string | null\n          country_code?: string | null\n          created_at?: string\n          id?: string\n          last_error?: string | null\n          last_fetched_at?: string | null\n          last_success_at?: string | null\n          name: string\n          refresh_interval_minutes?: number\n          updated_at?: string\n          url: string\n        }\n        Update: {\n          active?: boolean\n          category?: string | null\n          country_code?: string | null\n          created_at?: string\n          id?: string\n          last_error?: string | null\n          last_fetched_at?: string | null\n          last_success_at?: string | null\n          name?: string\n          refresh_interval_minutes?: number\n          updated_at?: string\n          url?: string\n        }\n        Relationships: []\n      }\n      notification_preferences: {\n        Row: {\n          employer_messages: boolean\n          internship_deadlines: boolean\n          job_matches: boolean\n          recommendations: boolean\n          scholarship_deadlines: boolean\n          startup_news: boolean\n          updated_at: string\n          user_id: string\n        }\n        Insert: {\n          employer_messages?: boolean\n          internship_deadlines?: boolean\n          job_matches?: boolean\n          recommendations?: boolean\n          scholarship_deadlines?: boolean\n          startup_news?: boolean\n          updated_at?: string\n          user_id: string\n        }\n        Update: {\n          employer_messages?: boolean\n          internship_deadlines?: boolean\n          job_matches?: boolean\n          recommendations?: boolean\n          scholarship_deadlines?: boolean\n          startup_news?: boolean\n          updated_at?: string\n          user_id?: string\n        }\n        Relationships: []\n      }\n      notifications: {\n        Row: {\n          action_url: string | null\n          body: string | null\n          category: string | null\n          created_at: string\n          id: string\n          is_read: boolean | null\n          link: string | null\n          message: string\n          read: boolean\n          read_at: string | null\n          title: string | null\n          type: string\n          updated_at: string | null\n          user_id: string\n        }\n        Insert: {\n          action_url?: string | null\n          body?: string | null\n          category?: string | null\n          created_at?: string\n          id?: string\n          is_read?: boolean | null\n          link?: string | null\n          message: string\n          read?: boolean\n          read_at?: string | null\n          title?: string | null\n          type: string\n          updated_at?: string | null\n          user_id: string\n        }\n        Update: {\n          action_url?: string | null\n          body?: string | null\n          category?: string | null\n          created_at?: string\n          id?: string\n          is_read?: boolean | null\n          link?: string | null\n          message?: string\n          read?: boolean\n          read_at?: string | null\n          title?: string | null\n          type?: string\n          updated_at?: string | null\n          user_id?: string\n        }\n        Relationships: []\n      }\n      occupation_salaries: {\n        Row: {\n          created_at: string\n          currency: string\n          data_source: string | null\n          experience_level: string | null\n          id: string\n          job_title: string\n          last_verified: string | null\n          max_salary: number | null\n          min_salary: number | null\n          occupation: string | null\n          salary_period: string | null\n          salary_range: string | null\n          source_url: string | null\n          updated_at: string\n        }\n        Insert: {\n          created_at?: string\n          currency?: string\n          data_source?: string | null\n          experience_level?: string | null\n          id?: string\n          job_title: string\n          last_verified?: string | null\n          max_salary?: number | null\n          min_salary?: number | null\n          occupation?: string | null\n          salary_period?: string | null\n          salary_range?: string | null\n          source_url?: string | null\n          updated_at?: string\n        }\n        Update: {\n          created_at?: string\n          currency?: string\n          data_source?: string | null\n          experience_level?: string | null\n          id?: string\n          job_title?: string\n          last_verified?: string | null\n          max_salary?: number | null\n          min_salary?: number | null\n          occupation?: string | null\n          salary_period?: string | null\n          salary_range?: string | null\n          source_url?: string | null\n          updated_at?: string\n        }\n        Relationships: []\n      }\n      opportunities: {\n        Row: {\n          application_url: string | null\n          apply_url: string | null\n          availability: string | null\n          category: string | null\n          city: string | null\n          company_id: string | null\n          company_logo_url: string | null\n          company_name: string | null\n          compensation: string | null\n          country: string | null\n          country_code: string | null\n          created_at: string\n          deadline: string | null\n          deadline_date: string | null\n          description: string | null\n          eligibility: string | null\n          employment_type: string | null\n          fields: string[] | null\n          id: string\n          is_active: boolean | null\n          is_remote: boolean | null\n          last_verified_at: string | null\n          location: string | null\n          opportunity_type: string\n          organisation: string | null\n          posted_at: string | null\n          posted_by: string | null\n          published: boolean | null\n          remote: boolean\n          requirements: string | null\n          skills: string[]\n          skills_required: string[] | null\n          slug: string | null\n          source: string | null\n          source_id: string | null\n          source_name: string | null\n          source_url: string | null\n          status: string\n          title: string\n          type: string | null\n          updated_at: string\n          verified: boolean | null\n          views_count: number | null\n          work_mode: string | null\n        }\n        Insert: {\n          application_url?: string | null\n          apply_url?: string | null\n          availability?: string | null\n          category?: string | null\n          city?: string | null\n          company_id?: string | null\n          company_logo_url?: string | null\n          company_name?: string | null\n          compensation?: string | null\n          country?: string | null\n          country_code?: string | null\n          created_at?: string\n          deadline?: string | null\n          deadline_date?: string | null\n          description?: string | null\n          eligibility?: string | null\n          employment_type?: string | null\n          fields?: string[] | null\n          id?: string\n          is_active?: boolean | null\n          is_remote?: boolean | null\n          last_verified_at?: string | null\n          location?: string | null\n          opportunity_type?: string\n          organisation?: string | null\n          posted_at?: string | null\n          posted_by?: string | null\n          published?: boolean | null\n          remote?: boolean\n          requirements?: string | null\n          skills?: string[]\n          skills_required?: string[] | null\n          slug?: string | null\n          source?: string | null\n          source_id?: string | null\n          source_name?: string | null\n          source_url?: string | null\n          status?: string\n          title: string\n          type?: string | null\n          updated_at?: string\n          verified?: boolean | null\n          views_count?: number | null\n          work_mode?: string | null\n        }\n        Update: {\n          application_url?: string | null\n          apply_url?: string | null\n          availability?: string | null\n          category?: string | null\n          city?: string | null\n          company_id?: string | null\n          company_logo_url?: string | null\n          company_name?: string | null\n          compensation?: string | null\n          country?: string | null\n          country_code?: string | null\n          created_at?: string\n          deadline?: string | null\n          deadline_date?: string | null\n          description?: string | null\n          eligibility?: string | null\n          employment_type?: string | null\n          fields?: string[] | null\n          id?: string\n          is_active?: boolean | null\n          is_remote?: boolean | null\n          last_verified_at?: string | null\n          location?: string | null\n          opportunity_type?: string\n          organisation?: string | null\n          posted_at?: string | null\n          posted_by?: string | null\n          published?: boolean | null\n          remote?: boolean\n          requirements?: string | null\n          skills?: string[]\n          skills_required?: string[] | null\n          slug?: string | null\n          source?: string | null\n          source_id?: string | null\n          source_name?: string | null\n          source_url?: string | null\n          status?: string\n          title?: string\n          type?: string | null\n          updated_at?: string\n          verified?: boolean | null\n          views_count?: number | null\n          work_mode?: string | null\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"opportunities_company_id_fkey\"\n            columns: [\"company_id\"]\n            isOneToOne: false\n            referencedRelation: \"companies\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      opportunity_applications: {\n        Row: {\n          applied_at: string | null\n          created_at: string\n          id: string\n          notes: string | null\n          opportunity_id: string\n          status: string\n          updated_at: string\n          user_id: string\n        }\n        Insert: {\n          applied_at?: string | null\n          created_at?: string\n          id?: string\n          notes?: string | null\n          opportunity_id: string\n          status?: string\n          updated_at?: string\n          user_id: string\n        }\n        Update: {\n          applied_at?: string | null\n          created_at?: string\n          id?: string\n          notes?: string | null\n          opportunity_id?: string\n          status?: string\n          updated_at?: string\n          user_id?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"opportunity_applications_opportunity_id_fkey\"\n            columns: [\"opportunity_id\"]\n            isOneToOne: false\n            referencedRelation: \"opportunities\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      opportunity_pipeline: {\n        Row: {\n          created_at: string\n          deadline_date: string | null\n          id: string\n          item_kind: string\n          item_ref: string | null\n          notes: string | null\n          organisation: string | null\n          stage: string\n          title: string\n          updated_at: string\n          url: string | null\n          user_id: string\n        }\n        Insert: {\n          created_at?: string\n          deadline_date?: string | null\n          id?: string\n          item_kind: string\n          item_ref?: string | null\n          notes?: string | null\n          organisation?: string | null\n          stage?: string\n          title: string\n          updated_at?: string\n          url?: string | null\n          user_id: string\n        }\n        Update: {\n          created_at?: string\n          deadline_date?: string | null\n          id?: string\n          item_kind?: string\n          item_ref?: string | null\n          notes?: string | null\n          organisation?: string | null\n          stage?: string\n          title?: string\n          updated_at?: string\n          url?: string | null\n          user_id?: string\n        }\n        Relationships: []\n      }\n      parent_links: {\n        Row: {\n          created_at: string\n          id: string\n          invite_code: string\n          parent_email: string | null\n          parent_id: string | null\n          status: string\n          student_id: string\n          updated_at: string\n        }\n        Insert: {\n          created_at?: string\n          id?: string\n          invite_code: string\n          parent_email?: string | null\n          parent_id?: string | null\n          status?: string\n          student_id: string\n          updated_at?: string\n        }\n        Update: {\n          created_at?: string\n          id?: string\n          invite_code?: string\n          parent_email?: string | null\n          parent_id?: string | null\n          status?: string\n          student_id?: string\n          updated_at?: string\n        }\n        Relationships: []\n      }\n      platform_countries: {\n        Row: {\n          active: boolean\n          code: string\n          created_at: string\n          currency_code: string | null\n          name: string\n          region: string | null\n          updated_at: string\n        }\n        Insert: {\n          active?: boolean\n          code: string\n          created_at?: string\n          currency_code?: string | null\n          name: string\n          region?: string | null\n          updated_at?: string\n        }\n        Update: {\n          active?: boolean\n          code?: string\n          created_at?: string\n          currency_code?: string | null\n          name?: string\n          region?: string | null\n          updated_at?: string\n        }\n        Relationships: []\n      }\n      platform_events: {\n        Row: {\n          country: string | null\n          created_at: string | null\n          description: string | null\n          ends_at: string | null\n          id: string\n          is_virtual: boolean | null\n          location: string | null\n          registration_url: string | null\n          starts_at: string\n          title: string\n          type: string\n        }\n        Insert: {\n          country?: string | null\n          created_at?: string | null\n          description?: string | null\n          ends_at?: string | null\n          id?: string\n          is_virtual?: boolean | null\n          location?: string | null\n          registration_url?: string | null\n          starts_at: string\n          title: string\n          type: string\n        }\n        Update: {\n          country?: string | null\n          created_at?: string | null\n          description?: string | null\n          ends_at?: string | null\n          id?: string\n          is_virtual?: boolean | null\n          location?: string | null\n          registration_url?: string | null\n          starts_at?: string\n          title?: string\n          type?: string\n        }\n        Relationships: []\n      }\n      profiles: {\n        Row: {\n          account_role: string\n          account_type: string\n          availability: string | null\n          avatar_url: string | null\n          bio: string | null\n          city: string | null\n          company: string | null\n          country_code: string | null\n          created_at: string\n          cv_visibility: string\n          discoverable_to_recruiters: boolean\n          education_level: string | null\n          email: string | null\n          full_name: string | null\n          github_url: string | null\n          graduation_year: number | null\n          id: string\n          interests: string[]\n          is_discoverable: boolean | null\n          job_title: string | null\n          linkedin_url: string | null\n          location: string | null\n          onboarded: boolean\n          onboarding_complete: boolean | null\n          pathways: string[]\n          phone: string | null\n          portfolio_url: string | null\n          preferred_industries: string[]\n          preferred_locations: string[]\n          preferred_opportunity_types: string[]\n          profile_visibility: string\n          program: string | null\n          region: string | null\n          role: string | null\n          school: string | null\n          skills: string[] | null\n          target_career: string | null\n          terms_accepted_at: string | null\n          terms_version: string | null\n          university: string | null\n          updated_at: string\n        }\n        Insert: {\n          account_role?: string\n          account_type?: string\n          availability?: string | null\n          avatar_url?: string | null\n          bio?: string | null\n          city?: string | null\n          company?: string | null\n          country_code?: string | null\n          created_at?: string\n          cv_visibility?: string\n          discoverable_to_recruiters?: boolean\n          education_level?: string | null\n          email?: string | null\n          full_name?: string | null\n          github_url?: string | null\n          graduation_year?: number | null\n          id: string\n          interests?: string[]\n          is_discoverable?: boolean | null\n          job_title?: string | null\n          linkedin_url?: string | null\n          location?: string | null\n          onboarded?: boolean\n          onboarding_complete?: boolean | null\n          pathways?: string[]\n          phone?: string | null\n          portfolio_url?: string | null\n          preferred_industries?: string[]\n          preferred_locations?: string[]\n          preferred_opportunity_types?: string[]\n          profile_visibility?: string\n          program?: string | null\n          region?: string | null\n          role?: string | null\n          school?: string | null\n          skills?: string[] | null\n          target_career?: string | null\n          terms_accepted_at?: string | null\n          terms_version?: string | null\n          university?: string | null\n          updated_at?: string\n        }\n        Update: {\n          account_role?: string\n          account_type?: string\n          availability?: string | null\n          avatar_url?: string | null\n          bio?: string | null\n          city?: string | null\n          company?: string | null\n          country_code?: string | null\n          created_at?: string\n          cv_visibility?: string\n          discoverable_to_recruiters?: boolean\n          education_level?: string | null\n          email?: string | null\n          full_name?: string | null\n          github_url?: string | null\n          graduation_year?: number | null\n          id?: string\n          interests?: string[]\n          is_discoverable?: boolean | null\n          job_title?: string | null\n          linkedin_url?: string | null\n          location?: string | null\n          onboarded?: boolean\n          onboarding_complete?: boolean | null\n          pathways?: string[]\n          phone?: string | null\n          portfolio_url?: string | null\n          preferred_industries?: string[]\n          preferred_locations?: string[]\n          preferred_opportunity_types?: string[]\n          profile_visibility?: string\n          program?: string | null\n          region?: string | null\n          role?: string | null\n          school?: string | null\n          skills?: string[] | null\n          target_career?: string | null\n          terms_accepted_at?: string | null\n          terms_version?: string | null\n          university?: string | null\n          updated_at?: string\n        }\n        Relationships: []\n      }\n      programme_admission_estimates: {\n        Row: {\n          confidence: number | null\n          confidence_level: string | null\n          created_at: string\n          estimate_high: number | null\n          estimate_low: number | null\n          estimated_cutoff: number | null\n          evidence: string | null\n          id: string\n          method: string | null\n          programme_id: string\n          sample_size: number | null\n          source_url: string | null\n          university_id: string\n          updated_at: string\n          year: number | null\n        }\n        Insert: {\n          confidence?: number | null\n          confidence_level?: string | null\n          created_at?: string\n          estimate_high?: number | null\n          estimate_low?: number | null\n          estimated_cutoff?: number | null\n          evidence?: string | null\n          id?: string\n          method?: string | null\n          programme_id: string\n          sample_size?: number | null\n          source_url?: string | null\n          university_id: string\n          updated_at?: string\n          year?: number | null\n        }\n        Update: {\n          confidence?: number | null\n          confidence_level?: string | null\n          created_at?: string\n          estimate_high?: number | null\n          estimate_low?: number | null\n          estimated_cutoff?: number | null\n          evidence?: string | null\n          id?: string\n          method?: string | null\n          programme_id?: string\n          sample_size?: number | null\n          source_url?: string | null\n          university_id?: string\n          updated_at?: string\n          year?: number | null\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"programme_admission_estimates_programme_id_fkey\"\n            columns: [\"programme_id\"]\n            isOneToOne: false\n            referencedRelation: \"programmes\"\n            referencedColumns: [\"id\"]\n          },\n          {\n            foreignKeyName: \"programme_admission_estimates_university_id_fkey\"\n            columns: [\"university_id\"]\n            isOneToOne: false\n            referencedRelation: \"universities\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      programme_careers: {\n        Row: {\n          career: string\n          created_at: string\n          description: string | null\n          id: string\n          last_verified: string | null\n          licence_note: string | null\n          occupation: string | null\n          programme_id: string\n          salary_data_source: string | null\n          salary_experience_level: string | null\n          salary_period: string | null\n          salary_range: string | null\n          updated_at: string\n        }\n        Insert: {\n          career: string\n          created_at?: string\n          description?: string | null\n          id?: string\n          last_verified?: string | null\n          licence_note?: string | null\n          occupation?: string | null\n          programme_id: string\n          salary_data_source?: string | null\n          salary_experience_level?: string | null\n          salary_period?: string | null\n          salary_range?: string | null\n          updated_at?: string\n        }\n        Update: {\n          career?: string\n          created_at?: string\n          description?: string | null\n          id?: string\n          last_verified?: string | null\n          licence_note?: string | null\n          occupation?: string | null\n          programme_id?: string\n          salary_data_source?: string | null\n          salary_experience_level?: string | null\n          salary_period?: string | null\n          salary_range?: string | null\n          updated_at?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"programme_careers_programme_id_fkey\"\n            columns: [\"programme_id\"]\n            isOneToOne: false\n            referencedRelation: \"programmes\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      programme_curriculum: {\n        Row: {\n          course_code: string | null\n          course_name: string\n          courses: string[] | null\n          created_at: string\n          id: string\n          note: string | null\n          position: number | null\n          programme_id: string\n          source: string | null\n          updated_at: string\n          year: number | null\n          year_label: string | null\n        }\n        Insert: {\n          course_code?: string | null\n          course_name: string\n          courses?: string[] | null\n          created_at?: string\n          id?: string\n          note?: string | null\n          position?: number | null\n          programme_id: string\n          source?: string | null\n          updated_at?: string\n          year?: number | null\n          year_label?: string | null\n        }\n        Update: {\n          course_code?: string | null\n          course_name?: string\n          courses?: string[] | null\n          created_at?: string\n          id?: string\n          note?: string | null\n          position?: number | null\n          programme_id?: string\n          source?: string | null\n          updated_at?: string\n          year?: number | null\n          year_label?: string | null\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"programme_curriculum_programme_id_fkey\"\n            columns: [\"programme_id\"]\n            isOneToOne: false\n            referencedRelation: \"programmes\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      programme_cutoffs: {\n        Row: {\n          academic_year: string | null\n          admission_notes: string | null\n          applicant_category: string | null\n          created_at: string\n          cut_off_aggregate: number | null\n          cutoff: number | null\n          id: string\n          last_verified_at: string | null\n          minimum_grades: Json | null\n          official_source_url: string | null\n          programme_id: string\n          programme_name: string | null\n          source_name: string | null\n          source_type: string | null\n          source_url: string | null\n          subject_requirements: string | null\n          university_id: string\n          updated_at: string\n          verification_status: string | null\n          year: number | null\n        }\n        Insert: {\n          academic_year?: string | null\n          admission_notes?: string | null\n          applicant_category?: string | null\n          created_at?: string\n          cut_off_aggregate?: number | null\n          cutoff?: number | null\n          id?: string\n          last_verified_at?: string | null\n          minimum_grades?: Json | null\n          official_source_url?: string | null\n          programme_id: string\n          programme_name?: string | null\n          source_name?: string | null\n          source_type?: string | null\n          source_url?: string | null\n          subject_requirements?: string | null\n          university_id: string\n          updated_at?: string\n          verification_status?: string | null\n          year?: number | null\n        }\n        Update: {\n          academic_year?: string | null\n          admission_notes?: string | null\n          applicant_category?: string | null\n          created_at?: string\n          cut_off_aggregate?: number | null\n          cutoff?: number | null\n          id?: string\n          last_verified_at?: string | null\n          minimum_grades?: Json | null\n          official_source_url?: string | null\n          programme_id?: string\n          programme_name?: string | null\n          source_name?: string | null\n          source_type?: string | null\n          source_url?: string | null\n          subject_requirements?: string | null\n          university_id?: string\n          updated_at?: string\n          verification_status?: string | null\n          year?: number | null\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"programme_cutoffs_programme_id_fkey\"\n            columns: [\"programme_id\"]\n            isOneToOne: false\n            referencedRelation: \"programmes\"\n            referencedColumns: [\"id\"]\n          },\n          {\n            foreignKeyName: \"programme_cutoffs_university_id_fkey\"\n            columns: [\"university_id\"]\n            isOneToOne: false\n            referencedRelation: \"universities\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      programme_feedback: {\n        Row: {\n          comment: string | null\n          created_at: string\n          id: string\n          programme_id: string\n          rating: number\n          updated_at: string\n          user_id: string\n        }\n        Insert: {\n          comment?: string | null\n          created_at?: string\n          id?: string\n          programme_id: string\n          rating: number\n          updated_at?: string\n          user_id: string\n        }\n        Update: {\n          comment?: string | null\n          created_at?: string\n          id?: string\n          programme_id?: string\n          rating?: number\n          updated_at?: string\n          user_id?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"programme_feedback_programme_id_fkey\"\n            columns: [\"programme_id\"]\n            isOneToOne: false\n            referencedRelation: \"programmes\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      programme_field_library: {\n        Row: {\n          about: string | null\n          academic_difficulty: string | null\n          careers: Json | null\n          created_at: string\n          field: string\n          id: string\n          job_market: string | null\n          short_bio: string | null\n          study_areas: string[] | null\n          updated_at: string\n          why_choose: string | null\n        }\n        Insert: {\n          about?: string | null\n          academic_difficulty?: string | null\n          careers?: Json | null\n          created_at?: string\n          field: string\n          id?: string\n          job_market?: string | null\n          short_bio?: string | null\n          study_areas?: string[] | null\n          updated_at?: string\n          why_choose?: string | null\n        }\n        Update: {\n          about?: string | null\n          academic_difficulty?: string | null\n          careers?: Json | null\n          created_at?: string\n          field?: string\n          id?: string\n          job_market?: string | null\n          short_bio?: string | null\n          study_areas?: string[] | null\n          updated_at?: string\n          why_choose?: string | null\n        }\n        Relationships: []\n      }\n      programme_information: {\n        Row: {\n          academic_difficulty: string | null\n          average_salary: number | null\n          career_opportunities: string[] | null\n          content_scope: string | null\n          created_at: string\n          description: string | null\n          id: string\n          job_market: string | null\n          job_market_outlook: string | null\n          last_updated: string | null\n          programme_id: string\n          short_bio: string | null\n          source: string | null\n          study_areas: string[] | null\n          updated_at: string\n          why_choose: string | null\n        }\n        Insert: {\n          academic_difficulty?: string | null\n          average_salary?: number | null\n          career_opportunities?: string[] | null\n          content_scope?: string | null\n          created_at?: string\n          description?: string | null\n          id?: string\n          job_market?: string | null\n          job_market_outlook?: string | null\n          last_updated?: string | null\n          programme_id: string\n          short_bio?: string | null\n          source?: string | null\n          study_areas?: string[] | null\n          updated_at?: string\n          why_choose?: string | null\n        }\n        Update: {\n          academic_difficulty?: string | null\n          average_salary?: number | null\n          career_opportunities?: string[] | null\n          content_scope?: string | null\n          created_at?: string\n          description?: string | null\n          id?: string\n          job_market?: string | null\n          job_market_outlook?: string | null\n          last_updated?: string | null\n          programme_id?: string\n          short_bio?: string | null\n          source?: string | null\n          study_areas?: string[] | null\n          updated_at?: string\n          why_choose?: string | null\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"programme_information_programme_id_fkey\"\n            columns: [\"programme_id\"]\n            isOneToOne: false\n            referencedRelation: \"programmes\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      programme_qualification_requirements: {\n        Row: {\n          created_at: string\n          id: string\n          last_verified_at: string | null\n          minimum_overall_score: number | null\n          minimum_score_operator: string | null\n          notes: string | null\n          programme_id: string\n          qualification_code: string\n          required_subjects: Json\n          source_url: string | null\n          updated_at: string\n          verification_status: string\n        }\n        Insert: {\n          created_at?: string\n          id?: string\n          last_verified_at?: string | null\n          minimum_overall_score?: number | null\n          minimum_score_operator?: string | null\n          notes?: string | null\n          programme_id: string\n          qualification_code: string\n          required_subjects?: Json\n          source_url?: string | null\n          updated_at?: string\n          verification_status?: string\n        }\n        Update: {\n          created_at?: string\n          id?: string\n          last_verified_at?: string | null\n          minimum_overall_score?: number | null\n          minimum_score_operator?: string | null\n          notes?: string | null\n          programme_id?: string\n          qualification_code?: string\n          required_subjects?: Json\n          source_url?: string | null\n          updated_at?: string\n          verification_status?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"programme_qualification_requirements_programme_id_fkey\"\n            columns: [\"programme_id\"]\n            isOneToOne: false\n            referencedRelation: \"programmes\"\n            referencedColumns: [\"id\"]\n          },\n          {\n            foreignKeyName: \"programme_qualification_requirements_qualification_code_fkey\"\n            columns: [\"qualification_code\"]\n            isOneToOne: false\n            referencedRelation: \"qualification_catalog\"\n            referencedColumns: [\"code\"]\n          },\n        ]\n      }\n      programme_requirements: {\n        Row: {\n          additional_requirement: string | null\n          aggregate_requirement: number | null\n          created_at: string\n          id: string\n          minimum_grade: string | null\n          programme_id: string\n          required_subject: string | null\n          requirement: string\n          source_url: string | null\n          updated_at: string\n        }\n        Insert: {\n          additional_requirement?: string | null\n          aggregate_requirement?: number | null\n          created_at?: string\n          id?: string\n          minimum_grade?: string | null\n          programme_id: string\n          required_subject?: string | null\n          requirement: string\n          source_url?: string | null\n          updated_at?: string\n        }\n        Update: {\n          additional_requirement?: string | null\n          aggregate_requirement?: number | null\n          created_at?: string\n          id?: string\n          minimum_grade?: string | null\n          programme_id?: string\n          required_subject?: string | null\n          requirement?: string\n          source_url?: string | null\n          updated_at?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"programme_requirements_programme_id_fkey\"\n            columns: [\"programme_id\"]\n            isOneToOne: false\n            referencedRelation: \"programmes\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      programme_sources: {\n        Row: {\n          created_at: string\n          id: string\n          programme_id: string\n          source_name: string | null\n          source_type: string\n          source_url: string\n          updated_at: string\n          verification_status: string | null\n          verified_at: string | null\n        }\n        Insert: {\n          created_at?: string\n          id?: string\n          programme_id: string\n          source_name?: string | null\n          source_type: string\n          source_url: string\n          updated_at?: string\n          verification_status?: string | null\n          verified_at?: string | null\n        }\n        Update: {\n          created_at?: string\n          id?: string\n          programme_id?: string\n          source_name?: string | null\n          source_type?: string\n          source_url?: string\n          updated_at?: string\n          verification_status?: string | null\n          verified_at?: string | null\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"programme_sources_programme_id_fkey\"\n            columns: [\"programme_id\"]\n            isOneToOne: false\n            referencedRelation: \"programmes\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      programmes: {\n        Row: {\n          academic_year: string | null\n          admission_summary: string | null\n          application_url: string | null\n          career_opportunities: string[]\n          created_at: string | null\n          degree_type: string | null\n          department: string | null\n          description: string | null\n          duration: string | null\n          entry_requirements: string | null\n          faculty_id: string | null\n          field: string | null\n          id: string\n          last_verified_at: string | null\n          mode: string | null\n          name: string\n          needs_review: boolean | null\n          programme_url: string | null\n          qualification: string | null\n          relevant_subjects: string[]\n          slug: string\n          source_url: string | null\n          source_urls: string[] | null\n          university_id: string | null\n          updated_at: string | null\n          verification_method: string | null\n          verification_notes: string | null\n          verification_status: string | null\n          verified: boolean\n          verified_by: string | null\n          wassce_requirements: string | null\n        }\n        Insert: {\n          academic_year?: string | null\n          admission_summary?: string | null\n          application_url?: string | null\n          career_opportunities?: string[]\n          created_at?: string | null\n          degree_type?: string | null\n          department?: string | null\n          description?: string | null\n          duration?: string | null\n          entry_requirements?: string | null\n          faculty_id?: string | null\n          field?: string | null\n          id?: string\n          last_verified_at?: string | null\n          mode?: string | null\n          name: string\n          needs_review?: boolean | null\n          programme_url?: string | null\n          qualification?: string | null\n          relevant_subjects?: string[]\n          slug: string\n          source_url?: string | null\n          source_urls?: string[] | null\n          university_id?: string | null\n          updated_at?: string | null\n          verification_method?: string | null\n          verification_notes?: string | null\n          verification_status?: string | null\n          verified?: boolean\n          verified_by?: string | null\n          wassce_requirements?: string | null\n        }\n        Update: {\n          academic_year?: string | null\n          admission_summary?: string | null\n          application_url?: string | null\n          career_opportunities?: string[]\n          created_at?: string | null\n          degree_type?: string | null\n          department?: string | null\n          description?: string | null\n          duration?: string | null\n          entry_requirements?: string | null\n          faculty_id?: string | null\n          field?: string | null\n          id?: string\n          last_verified_at?: string | null\n          mode?: string | null\n          name?: string\n          needs_review?: boolean | null\n          programme_url?: string | null\n          qualification?: string | null\n          relevant_subjects?: string[]\n          slug?: string\n          source_url?: string | null\n          source_urls?: string[] | null\n          university_id?: string | null\n          updated_at?: string | null\n          verification_method?: string | null\n          verification_notes?: string | null\n          verification_status?: string | null\n          verified?: boolean\n          verified_by?: string | null\n          wassce_requirements?: string | null\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"programmes_faculty_id_fkey\"\n            columns: [\"faculty_id\"]\n            isOneToOne: false\n            referencedRelation: \"faculties\"\n            referencedColumns: [\"id\"]\n          },\n          {\n            foreignKeyName: \"programmes_university_id_fkey\"\n            columns: [\"university_id\"]\n            isOneToOne: false\n            referencedRelation: \"universities\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      qualification_catalog: {\n        Row: {\n          code: string\n          country_code: string | null\n          created_at: string\n          enabled: boolean\n          family: string\n          grades: string[]\n          grading_scale: string | null\n          levels: string[]\n          metadata: Json\n          name: string\n          score_max: number | null\n          score_min: number | null\n          updated_at: string\n        }\n        Insert: {\n          code: string\n          country_code?: string | null\n          created_at?: string\n          enabled?: boolean\n          family: string\n          grades?: string[]\n          grading_scale?: string | null\n          levels?: string[]\n          metadata?: Json\n          name: string\n          score_max?: number | null\n          score_min?: number | null\n          updated_at?: string\n        }\n        Update: {\n          code?: string\n          country_code?: string | null\n          created_at?: string\n          enabled?: boolean\n          family?: string\n          grades?: string[]\n          grading_scale?: string | null\n          levels?: string[]\n          metadata?: Json\n          name?: string\n          score_max?: number | null\n          score_min?: number | null\n          updated_at?: string\n        }\n        Relationships: []\n      }\n      recommendation_items: {\n        Row: {\n          category: string | null\n          created_at: string\n          entity_id: string | null\n          evidence: Json\n          explanation: string | null\n          id: string\n          item_type: string\n          rank: number\n          run_id: string\n          score: number | null\n          user_id: string\n        }\n        Insert: {\n          category?: string | null\n          created_at?: string\n          entity_id?: string | null\n          evidence?: Json\n          explanation?: string | null\n          id?: string\n          item_type: string\n          rank: number\n          run_id: string\n          score?: number | null\n          user_id: string\n        }\n        Update: {\n          category?: string | null\n          created_at?: string\n          entity_id?: string | null\n          evidence?: Json\n          explanation?: string | null\n          id?: string\n          item_type?: string\n          rank?: number\n          run_id?: string\n          score?: number | null\n          user_id?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"recommendation_items_run_id_fkey\"\n            columns: [\"run_id\"]\n            isOneToOne: false\n            referencedRelation: \"recommendation_runs\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      recommendation_runs: {\n        Row: {\n          completed_at: string | null\n          created_at: string\n          engine_version: string\n          error_message: string | null\n          id: string\n          input_snapshot: Json\n          result_count: number\n          run_type: string\n          status: string\n          user_id: string\n        }\n        Insert: {\n          completed_at?: string | null\n          created_at?: string\n          engine_version?: string\n          error_message?: string | null\n          id?: string\n          input_snapshot?: Json\n          result_count?: number\n          run_type?: string\n          status?: string\n          user_id: string\n        }\n        Update: {\n          completed_at?: string | null\n          created_at?: string\n          engine_version?: string\n          error_message?: string | null\n          id?: string\n          input_snapshot?: Json\n          result_count?: number\n          run_type?: string\n          status?: string\n          user_id?: string\n        }\n        Relationships: []\n      }\n      saved_candidates: {\n        Row: {\n          candidate_user_id: string\n          created_at: string\n          employer_id: string\n          id: string\n        }\n        Insert: {\n          candidate_user_id: string\n          created_at?: string\n          employer_id: string\n          id?: string\n        }\n        Update: {\n          candidate_user_id?: string\n          created_at?: string\n          employer_id?: string\n          id?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"saved_candidates_employer_id_fkey\"\n            columns: [\"employer_id\"]\n            isOneToOne: false\n            referencedRelation: \"employers\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      saved_items: {\n        Row: {\n          created_at: string\n          id: string\n          item_key: string\n          item_type: string\n          metadata: Json\n          subtitle: string | null\n          title: string\n          updated_at: string\n          user_id: string\n        }\n        Insert: {\n          created_at?: string\n          id?: string\n          item_key: string\n          item_type: string\n          metadata?: Json\n          subtitle?: string | null\n          title: string\n          updated_at?: string\n          user_id: string\n        }\n        Update: {\n          created_at?: string\n          id?: string\n          item_key?: string\n          item_type?: string\n          metadata?: Json\n          subtitle?: string | null\n          title?: string\n          updated_at?: string\n          user_id?: string\n        }\n        Relationships: []\n      }\n      saved_searches: {\n        Row: {\n          alerts_enabled: boolean\n          created_at: string\n          filters: Json\n          id: string\n          last_run_at: string | null\n          name: string\n          search_type: string\n          updated_at: string\n          user_id: string\n        }\n        Insert: {\n          alerts_enabled?: boolean\n          created_at?: string\n          filters?: Json\n          id?: string\n          last_run_at?: string | null\n          name: string\n          search_type: string\n          updated_at?: string\n          user_id: string\n        }\n        Update: {\n          alerts_enabled?: boolean\n          created_at?: string\n          filters?: Json\n          id?: string\n          last_run_at?: string | null\n          name?: string\n          search_type?: string\n          updated_at?: string\n          user_id?: string\n        }\n        Relationships: []\n      }\n      scholarship_applications: {\n        Row: {\n          created_at: string\n          deadline: string | null\n          id: string\n          link: string | null\n          notes: string | null\n          provider: string | null\n          scholarship_id: string | null\n          scholarship_name: string | null\n          status: string\n          submitted_at: string | null\n          updated_at: string\n          user_id: string\n        }\n        Insert: {\n          created_at?: string\n          deadline?: string | null\n          id?: string\n          link?: string | null\n          notes?: string | null\n          provider?: string | null\n          scholarship_id?: string | null\n          scholarship_name?: string | null\n          status?: string\n          submitted_at?: string | null\n          updated_at?: string\n          user_id: string\n        }\n        Update: {\n          created_at?: string\n          deadline?: string | null\n          id?: string\n          link?: string | null\n          notes?: string | null\n          provider?: string | null\n          scholarship_id?: string | null\n          scholarship_name?: string | null\n          status?: string\n          submitted_at?: string | null\n          updated_at?: string\n          user_id?: string\n        }\n        Relationships: []\n      }\n      scholarships: {\n        Row: {\n          academic_requirements: string | null\n          application_url: string | null\n          coverage: string | null\n          created_at: string\n          deadline: string | null\n          deadline_date: string | null\n          deadline_text: string | null\n          description: string | null\n          eligibility: string | null\n          fields: string[] | null\n          funding_type: string | null\n          how_to_apply: string | null\n          id: string\n          last_verified_at: string | null\n          location: string | null\n          name: string | null\n          nationality_requirement: string | null\n          provider: string\n          slug: string | null\n          source_url: string | null\n          study_level: string | null\n          title: string\n          type: string\n          updated_at: string\n          verified: boolean\n          website_url: string | null\n        }\n        Insert: {\n          academic_requirements?: string | null\n          application_url?: string | null\n          coverage?: string | null\n          created_at?: string\n          deadline?: string | null\n          deadline_date?: string | null\n          deadline_text?: string | null\n          description?: string | null\n          eligibility?: string | null\n          fields?: string[] | null\n          funding_type?: string | null\n          how_to_apply?: string | null\n          id?: string\n          last_verified_at?: string | null\n          location?: string | null\n          name?: string | null\n          nationality_requirement?: string | null\n          provider: string\n          slug?: string | null\n          source_url?: string | null\n          study_level?: string | null\n          title: string\n          type?: string\n          updated_at?: string\n          verified?: boolean\n          website_url?: string | null\n        }\n        Update: {\n          academic_requirements?: string | null\n          application_url?: string | null\n          coverage?: string | null\n          created_at?: string\n          deadline?: string | null\n          deadline_date?: string | null\n          deadline_text?: string | null\n          description?: string | null\n          eligibility?: string | null\n          fields?: string[] | null\n          funding_type?: string | null\n          how_to_apply?: string | null\n          id?: string\n          last_verified_at?: string | null\n          location?: string | null\n          name?: string | null\n          nationality_requirement?: string | null\n          provider?: string\n          slug?: string | null\n          source_url?: string | null\n          study_level?: string | null\n          title?: string\n          type?: string\n          updated_at?: string\n          verified?: boolean\n          website_url?: string | null\n        }\n        Relationships: []\n      }\n      site_ratings: {\n        Row: {\n          comment: string | null\n          created_at: string\n          id: string\n          rating: number\n          updated_at: string | null\n          user_id: string\n        }\n        Insert: {\n          comment?: string | null\n          created_at?: string\n          id?: string\n          rating: number\n          updated_at?: string | null\n          user_id: string\n        }\n        Update: {\n          comment?: string | null\n          created_at?: string\n          id?: string\n          rating?: number\n          updated_at?: string | null\n          user_id?: string\n        }\n        Relationships: []\n      }\n      skill_providers: {\n        Row: {\n          application_url: string | null\n          certification_issued_by: string | null\n          cost: string | null\n          course_name: string | null\n          created_at: string\n          duration: string | null\n          format: string | null\n          id: string\n          last_verified_at: string | null\n          needs_review: boolean\n          provider_name: string\n          skill_area: string | null\n          source_urls: string[]\n          updated_at: string\n          verification_method: string | null\n          verification_notes: string | null\n          verified_by: string | null\n        }\n        Insert: {\n          application_url?: string | null\n          certification_issued_by?: string | null\n          cost?: string | null\n          course_name?: string | null\n          created_at?: string\n          duration?: string | null\n          format?: string | null\n          id?: string\n          last_verified_at?: string | null\n          needs_review?: boolean\n          provider_name: string\n          skill_area?: string | null\n          source_urls?: string[]\n          updated_at?: string\n          verification_method?: string | null\n          verification_notes?: string | null\n          verified_by?: string | null\n        }\n        Update: {\n          application_url?: string | null\n          certification_issued_by?: string | null\n          cost?: string | null\n          course_name?: string | null\n          created_at?: string\n          duration?: string | null\n          format?: string | null\n          id?: string\n          last_verified_at?: string | null\n          needs_review?: boolean\n          provider_name?: string\n          skill_area?: string | null\n          source_urls?: string[]\n          updated_at?: string\n          verification_method?: string | null\n          verification_notes?: string | null\n          verified_by?: string | null\n        }\n        Relationships: []\n      }\n      skill_relationships: {\n        Row: {\n          from_skill_id: string\n          id: string\n          rationale: string | null\n          relationship_type: string\n          to_skill_id: string\n          weight: number\n        }\n        Insert: {\n          from_skill_id: string\n          id?: string\n          rationale?: string | null\n          relationship_type?: string\n          to_skill_id: string\n          weight?: number\n        }\n        Update: {\n          from_skill_id?: string\n          id?: string\n          rationale?: string | null\n          relationship_type?: string\n          to_skill_id?: string\n          weight?: number\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"skill_relationships_from_skill_id_fkey\"\n            columns: [\"from_skill_id\"]\n            isOneToOne: false\n            referencedRelation: \"skills\"\n            referencedColumns: [\"id\"]\n          },\n          {\n            foreignKeyName: \"skill_relationships_to_skill_id_fkey\"\n            columns: [\"to_skill_id\"]\n            isOneToOne: false\n            referencedRelation: \"skills\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      skills: {\n        Row: {\n          category: string\n          created_at: string\n          description: string | null\n          difficulty: string | null\n          id: string\n          learning_resources: Json\n          name: string\n          prerequisites: string[]\n          projects: Json\n          related_jobs: Json\n          slug: string\n          updated_at: string\n        }\n        Insert: {\n          category: string\n          created_at?: string\n          description?: string | null\n          difficulty?: string | null\n          id?: string\n          learning_resources?: Json\n          name: string\n          prerequisites?: string[]\n          projects?: Json\n          related_jobs?: Json\n          slug: string\n          updated_at?: string\n        }\n        Update: {\n          category?: string\n          created_at?: string\n          description?: string | null\n          difficulty?: string | null\n          id?: string\n          learning_resources?: Json\n          name?: string\n          prerequisites?: string[]\n          projects?: Json\n          related_jobs?: Json\n          slug?: string\n          updated_at?: string\n        }\n        Relationships: []\n      }\n      sms_sends: {\n        Row: {\n          campaign: string\n          created_at: string\n          error: string | null\n          id: string\n          phone: string\n          status: string\n          user_id: string\n        }\n        Insert: {\n          campaign: string\n          created_at?: string\n          error?: string | null\n          id?: string\n          phone: string\n          status?: string\n          user_id: string\n        }\n        Update: {\n          campaign?: string\n          created_at?: string\n          error?: string | null\n          id?: string\n          phone?: string\n          status?: string\n          user_id?: string\n        }\n        Relationships: []\n      }\n      source_registry: {\n        Row: {\n          canonical_url: string\n          category: string | null\n          country_code: string | null\n          created_at: string\n          description: string | null\n          id: string\n          last_checked_at: string\n          name: string\n          source_type: string\n          status: string\n          updated_at: string\n          verified_at: string\n        }\n        Insert: {\n          canonical_url: string\n          category?: string | null\n          country_code?: string | null\n          created_at?: string\n          description?: string | null\n          id?: string\n          last_checked_at?: string\n          name: string\n          source_type: string\n          status?: string\n          updated_at?: string\n          verified_at?: string\n        }\n        Update: {\n          canonical_url?: string\n          category?: string | null\n          country_code?: string | null\n          created_at?: string\n          description?: string | null\n          id?: string\n          last_checked_at?: string\n          name?: string\n          source_type?: string\n          status?: string\n          updated_at?: string\n          verified_at?: string\n        }\n        Relationships: []\n      }\n      student_insights: {\n        Row: {\n          advice: string | null\n          body: string\n          category: string | null\n          created_at: string\n          helpful_count: number\n          id: string\n          image_paths: string[] | null\n          programme: string | null\n          rating: number | null\n          status: string\n          student_status: string | null\n          title: string\n          university_id: string\n          updated_at: string\n          user_id: string\n          wish_i_knew: string | null\n          year_of_study: string | null\n        }\n        Insert: {\n          advice?: string | null\n          body: string\n          category?: string | null\n          created_at?: string\n          helpful_count?: number\n          id?: string\n          image_paths?: string[] | null\n          programme?: string | null\n          rating?: number | null\n          status?: string\n          student_status?: string | null\n          title: string\n          university_id: string\n          updated_at?: string\n          user_id: string\n          wish_i_knew?: string | null\n          year_of_study?: string | null\n        }\n        Update: {\n          advice?: string | null\n          body?: string\n          category?: string | null\n          created_at?: string\n          helpful_count?: number\n          id?: string\n          image_paths?: string[] | null\n          programme?: string | null\n          rating?: number | null\n          status?: string\n          student_status?: string | null\n          title?: string\n          university_id?: string\n          updated_at?: string\n          user_id?: string\n          wish_i_knew?: string | null\n          year_of_study?: string | null\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"student_insights_university_id_fkey\"\n            columns: [\"university_id\"]\n            isOneToOne: false\n            referencedRelation: \"universities\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      student_profiles: {\n        Row: {\n          created_at: string\n          education_stage: string | null\n          intended_country: string | null\n          updated_at: string\n          user_id: string\n        }\n        Insert: {\n          created_at?: string\n          education_stage?: string | null\n          intended_country?: string | null\n          updated_at?: string\n          user_id: string\n        }\n        Update: {\n          created_at?: string\n          education_stage?: string | null\n          intended_country?: string | null\n          updated_at?: string\n          user_id?: string\n        }\n        Relationships: []\n      }\n      student_qualification_results: {\n        Row: {\n          created_at: string\n          grade: string\n          id: string\n          level: string | null\n          qualification_id: string\n          subject: string\n          subject_code: string | null\n        }\n        Insert: {\n          created_at?: string\n          grade: string\n          id?: string\n          level?: string | null\n          qualification_id: string\n          subject: string\n          subject_code?: string | null\n        }\n        Update: {\n          created_at?: string\n          grade?: string\n          id?: string\n          level?: string | null\n          qualification_id?: string\n          subject?: string\n          subject_code?: string | null\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"student_qualification_results_qualification_id_fkey\"\n            columns: [\"qualification_id\"]\n            isOneToOne: false\n            referencedRelation: \"student_qualifications\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      student_qualifications: {\n        Row: {\n          country_code: string\n          created_at: string\n          grading_scale: string | null\n          id: string\n          metadata: Json\n          overall_score: string | null\n          qualification_code: string\n          qualification_name: string\n          updated_at: string\n          user_id: string\n        }\n        Insert: {\n          country_code?: string\n          created_at?: string\n          grading_scale?: string | null\n          id?: string\n          metadata?: Json\n          overall_score?: string | null\n          qualification_code: string\n          qualification_name: string\n          updated_at?: string\n          user_id: string\n        }\n        Update: {\n          country_code?: string\n          created_at?: string\n          grading_scale?: string | null\n          id?: string\n          metadata?: Json\n          overall_score?: string | null\n          qualification_code?: string\n          qualification_name?: string\n          updated_at?: string\n          user_id?: string\n        }\n        Relationships: []\n      }\n      talent_directory: {\n        Row: {\n          bio: string | null\n          city: string | null\n          discoverable: boolean\n          full_name: string | null\n          linkedin_url: string | null\n          preferred_industries: string[]\n          preferred_locations: string[]\n          professional_title: string | null\n          skills: string[]\n          updated_at: string\n          user_id: string\n          years_experience: number | null\n        }\n        Insert: {\n          bio?: string | null\n          city?: string | null\n          discoverable?: boolean\n          full_name?: string | null\n          linkedin_url?: string | null\n          preferred_industries?: string[]\n          preferred_locations?: string[]\n          professional_title?: string | null\n          skills?: string[]\n          updated_at?: string\n          user_id: string\n          years_experience?: number | null\n        }\n        Update: {\n          bio?: string | null\n          city?: string | null\n          discoverable?: boolean\n          full_name?: string | null\n          linkedin_url?: string | null\n          preferred_industries?: string[]\n          preferred_locations?: string[]\n          professional_title?: string | null\n          skills?: string[]\n          updated_at?: string\n          user_id?: string\n          years_experience?: number | null\n        }\n        Relationships: []\n      }\n      universities: {\n        Row: {\n          accreditation_expiry_date: string | null\n          accreditation_start_date: string | null\n          accreditation_status: string\n          address: string | null\n          admission_aggregate: string | null\n          admission_info: string | null\n          admissions_url: string | null\n          aliases: string[] | null\n          campus_vibe: string | null\n          category: string\n          city: string | null\n          country: string\n          created_at: string\n          delivery_mode: string\n          description: string | null\n          email: string | null\n          established_year: number | null\n          financial_aid_url: string | null\n          google_place_id: string | null\n          gtec_accreditation_status: string | null\n          gtec_category: string | null\n          id: string\n          institution_type: string | null\n          last_verified_at: string | null\n          location: string | null\n          logo_source_url: string | null\n          logo_url: string | null\n          logo_verification_status: string | null\n          logo_verified_at: string | null\n          name: string\n          needs_review: boolean | null\n          ownership: string | null\n          region: string | null\n          scholarship_info: string | null\n          short_description: string | null\n          short_name: string | null\n          slug: string\n          social_links: Json | null\n          source_type: string\n          source_url: string | null\n          source_urls: string[] | null\n          student_count: number | null\n          top_programmes: string[] | null\n          tuition_range: string | null\n          type: string\n          updated_at: string\n          verification_status: string\n          verified: boolean\n          website_url: string | null\n        }\n        Insert: {\n          accreditation_expiry_date?: string | null\n          accreditation_start_date?: string | null\n          accreditation_status?: string\n          address?: string | null\n          admission_aggregate?: string | null\n          admission_info?: string | null\n          admissions_url?: string | null\n          aliases?: string[] | null\n          campus_vibe?: string | null\n          category?: string\n          city?: string | null\n          country?: string\n          created_at?: string\n          delivery_mode?: string\n          description?: string | null\n          email?: string | null\n          established_year?: number | null\n          financial_aid_url?: string | null\n          google_place_id?: string | null\n          gtec_accreditation_status?: string | null\n          gtec_category?: string | null\n          id?: string\n          institution_type?: string | null\n          last_verified_at?: string | null\n          location?: string | null\n          logo_source_url?: string | null\n          logo_url?: string | null\n          logo_verification_status?: string | null\n          logo_verified_at?: string | null\n          name: string\n          needs_review?: boolean | null\n          ownership?: string | null\n          region?: string | null\n          scholarship_info?: string | null\n          short_description?: string | null\n          short_name?: string | null\n          slug: string\n          social_links?: Json | null\n          source_type?: string\n          source_url?: string | null\n          source_urls?: string[] | null\n          student_count?: number | null\n          top_programmes?: string[] | null\n          tuition_range?: string | null\n          type?: string\n          updated_at?: string\n          verification_status?: string\n          verified?: boolean\n          website_url?: string | null\n        }\n        Update: {\n          accreditation_expiry_date?: string | null\n          accreditation_start_date?: string | null\n          accreditation_status?: string\n          address?: string | null\n          admission_aggregate?: string | null\n          admission_info?: string | null\n          admissions_url?: string | null\n          aliases?: string[] | null\n          campus_vibe?: string | null\n          category?: string\n          city?: string | null\n          country?: string\n          created_at?: string\n          delivery_mode?: string\n          description?: string | null\n          email?: string | null\n          established_year?: number | null\n          financial_aid_url?: string | null\n          google_place_id?: string | null\n          gtec_accreditation_status?: string | null\n          gtec_category?: string | null\n          id?: string\n          institution_type?: string | null\n          last_verified_at?: string | null\n          location?: string | null\n          logo_source_url?: string | null\n          logo_url?: string | null\n          logo_verification_status?: string | null\n          logo_verified_at?: string | null\n          name?: string\n          needs_review?: boolean | null\n          ownership?: string | null\n          region?: string | null\n          scholarship_info?: string | null\n          short_description?: string | null\n          short_name?: string | null\n          slug?: string\n          social_links?: Json | null\n          source_type?: string\n          source_url?: string | null\n          source_urls?: string[] | null\n          student_count?: number | null\n          top_programmes?: string[] | null\n          tuition_range?: string | null\n          type?: string\n          updated_at?: string\n          verification_status?: string\n          verified?: boolean\n          website_url?: string | null\n        }\n        Relationships: []\n      }\n      usage_counters: {\n        Row: {\n          active_students: number\n          counter_key: string\n          counter_value: number\n          id: string | null\n          metric: string\n          recommendation_runs: number\n          students: number\n          updated_at: string\n          website_visits: number\n        }\n        Insert: {\n          active_students?: number\n          counter_key: string\n          counter_value?: number\n          id?: string | null\n          metric?: string\n          recommendation_runs?: number\n          students?: number\n          updated_at?: string\n          website_visits?: number\n        }\n        Update: {\n          active_students?: number\n          counter_key?: string\n          counter_value?: number\n          id?: string | null\n          metric?: string\n          recommendation_runs?: number\n          students?: number\n          updated_at?: string\n          website_visits?: number\n        }\n        Relationships: []\n      }\n      user_activity: {\n        Row: {\n          created_at: string\n          entity_id: string | null\n          entity_type: string | null\n          event_name: string\n          id: number\n          metadata: Json\n          user_id: string | null\n        }\n        Insert: {\n          created_at?: string\n          entity_id?: string | null\n          entity_type?: string | null\n          event_name: string\n          id?: number\n          metadata?: Json\n          user_id?: string | null\n        }\n        Update: {\n          created_at?: string\n          entity_id?: string | null\n          entity_type?: string | null\n          event_name?: string\n          id?: number\n          metadata?: Json\n          user_id?: string | null\n        }\n        Relationships: []\n      }\n      user_collections: {\n        Row: {\n          created_at: string\n          description: string | null\n          id: string\n          name: string\n          updated_at: string\n          user_id: string\n          visibility: string\n        }\n        Insert: {\n          created_at?: string\n          description?: string | null\n          id?: string\n          name: string\n          updated_at?: string\n          user_id: string\n          visibility?: string\n        }\n        Update: {\n          created_at?: string\n          description?: string | null\n          id?: string\n          name?: string\n          updated_at?: string\n          user_id?: string\n          visibility?: string\n        }\n        Relationships: []\n      }\n      user_documents: {\n        Row: {\n          created_at: string\n          document_type: string\n          file_name: string\n          file_size_bytes: number | null\n          id: string\n          metadata: Json\n          mime_type: string | null\n          status: string\n          storage_path: string\n          updated_at: string\n          user_id: string\n        }\n        Insert: {\n          created_at?: string\n          document_type: string\n          file_name: string\n          file_size_bytes?: number | null\n          id?: string\n          metadata?: Json\n          mime_type?: string | null\n          status?: string\n          storage_path: string\n          updated_at?: string\n          user_id: string\n        }\n        Update: {\n          created_at?: string\n          document_type?: string\n          file_name?: string\n          file_size_bytes?: number | null\n          id?: string\n          metadata?: Json\n          mime_type?: string | null\n          status?: string\n          storage_path?: string\n          updated_at?: string\n          user_id?: string\n        }\n        Relationships: []\n      }\n      user_follows: {\n        Row: {\n          created_at: string\n          entity_key: string\n          entity_type: string\n          id: string\n          user_id: string\n        }\n        Insert: {\n          created_at?: string\n          entity_key: string\n          entity_type: string\n          id?: string\n          user_id: string\n        }\n        Update: {\n          created_at?: string\n          entity_key?: string\n          entity_type?: string\n          id?: string\n          user_id?: string\n        }\n        Relationships: []\n      }\n      user_roles: {\n        Row: {\n          created_at: string\n          id: string\n          role: Database[\"public\"][\"Enums\"][\"app_role\"]\n          user_id: string\n        }\n        Insert: {\n          created_at?: string\n          id?: string\n          role: Database[\"public\"][\"Enums\"][\"app_role\"]\n          user_id: string\n        }\n        Update: {\n          created_at?: string\n          id?: string\n          role?: Database[\"public\"][\"Enums\"][\"app_role\"]\n          user_id?: string\n        }\n        Relationships: []\n      }\n      user_skill_profiles: {\n        Row: {\n          created_at: string\n          evidence: Json\n          id: string\n          level: string | null\n          skill_id: string\n          updated_at: string\n          user_id: string\n        }\n        Insert: {\n          created_at?: string\n          evidence?: Json\n          id?: string\n          level?: string | null\n          skill_id: string\n          updated_at?: string\n          user_id: string\n        }\n        Update: {\n          created_at?: string\n          evidence?: Json\n          id?: string\n          level?: string | null\n          skill_id?: string\n          updated_at?: string\n          user_id?: string\n        }\n        Relationships: [\n          {\n            foreignKeyName: \"user_skill_profiles_skill_id_fkey\"\n            columns: [\"skill_id\"]\n            isOneToOne: false\n            referencedRelation: \"skills\"\n            referencedColumns: [\"id\"]\n          },\n        ]\n      }\n      wassce_results: {\n        Row: {\n          created_at: string\n          grade: string\n          id: string\n          subject: string\n          updated_at: string\n          user_id: string\n        }\n        Insert: {\n          created_at?: string\n          grade: string\n          id?: string\n          subject: string\n          updated_at?: string\n          user_id: string\n        }\n        Update: {\n          created_at?: string\n          grade?: string\n          id?: string\n          subject?: string\n          updated_at?: string\n          user_id?: string\n        }\n        Relationships: []\n      }\n    }\n    Views: {\n      startup_directory: {\n        Row: {\n          pitch_url: string | null\n          sector: string | null\n          stage: string | null\n          startup_name: string | null\n          website_url: string | null\n        }\n        Insert: {\n          pitch_url?: string | null\n          sector?: string | null\n          stage?: string | null\n          startup_name?: string | null\n          website_url?: string | null\n        }\n        Update: {\n          pitch_url?: string | null\n          sector?: string | null\n          stage?: string | null\n          startup_name?: string | null\n          website_url?: string | null\n        }\n        Relationships: []\n      }\n      university_platform_analytics: {\n        Row: {\n          internships_indexed: number | null\n          opportunities_indexed: number | null\n          programmes_indexed: number | null\n          scholarships_indexed: number | null\n          universities_indexed: number | null\n          university_countries_indexed: number | null\n        }\n        Relationships: []\n      }\n    }\n    Functions: {\n      accept_parent_invite: { Args: { _code: string }; Returns: string }\n      admin_analytics: { Args: never; Returns: Json }\n      find_duplicate_institution: {\n        Args: { _name: string }\n        Returns: {\n          id: string\n          name: string\n          similarity: number\n          slug: string\n        }[]\n      }\n      get_backend_content: {\n        Args: { p_keys?: string[]; p_language?: string }\n        Returns: Json[]\n      }\n      get_public_usage_stats: { Args: never; Returns: Json }\n      get_user_backend_snapshot: { Args: never; Returns: Json }\n      match_international_programmes: {\n        Args: { p_country_code?: string; p_qualification_code?: string }\n        Returns: {\n          admissions_url: string\n          match_status: string\n          minimum_overall_score: number\n          minimum_score_operator: string\n          notes: string\n          programme_id: string\n          programme_name: string\n          programme_url: string\n          qualification_code: string\n          required_subjects: Json\n          source_url: string\n          university_id: string\n          university_name: string\n          verification_status: string\n        }[]\n      }\n      platform_analytics: { Args: never; Returns: Json }\n      platform_stats: { Args: never; Returns: Json }\n      refresh_public_usage_counters: { Args: never; Returns: undefined }\n      resolve_gpf_backend: {\n        Args: { p_country_code?: string; p_language?: string }\n        Returns: {\n          country_code: string\n          direction: string\n          language_backend: string\n          language_code: string\n          locale: string\n        }[]\n      }\n      save_profile_bundle: {\n        Args: {\n          p_account_role?: string\n          p_country_code?: string\n          p_email?: string\n          p_full_name: string\n          p_grading_scale?: string\n          p_interests?: string[]\n          p_linkedin_url?: string\n          p_overall_score?: string\n          p_pathways?: string[]\n          p_qualification_code?: string\n          p_qualification_metadata?: Json\n          p_qualification_name?: string\n          p_qualification_results?: Json\n          p_region?: string\n          p_school?: string\n          p_target_career?: string\n          p_wassce_results?: Json\n          p_whatsapp_number?: string\n        }\n        Returns: Json\n      }\n      search_catalogue: {\n        Args: { _kind?: string; _limit?: number; _offset?: number; _q: string }\n        Returns: {\n          id: string\n          kind: string\n          meta: Json\n          score: number\n          slug: string\n          subtitle: string\n          title: string\n        }[]\n      }\n      site_rating_summary: { Args: never; Returns: Json }\n      toggle_comment_like: { Args: { _comment_id: string }; Returns: Json }\n      toggle_feed_like: { Args: { p_post_id: string }; Returns: boolean }\n      toggle_insight_helpful: { Args: { _insight_id: string }; Returns: Json }\n    }\n    Enums: {\n      app_role: \"student\" | \"parent\" | \"admin\"\n    }\n    CompositeTypes: {\n      [_ in never]: never\n    }\n  }\n}\n\ntype DatabaseWithoutInternals = Omit<Database, \"__InternalSupabase\">\n\ntype DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, \"public\">]\n\nexport type Tables<\n  DefaultSchemaTableNameOrOptions extends\n    | keyof (DefaultSchema[\"Tables\"] & DefaultSchema[\"Views\"])\n    | { schema: keyof DatabaseWithoutInternals },\n  TableName extends (DefaultSchemaTableNameOrOptions extends {\n    schema: keyof DatabaseWithoutInternals\n  }\n    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions[\"schema\"]][\"Tables\"] &\n        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions[\"schema\"]][\"Views\"])\n    : never) = never,\n> = DefaultSchemaTableNameOrOptions extends {\n  schema: keyof DatabaseWithoutInternals\n}\n  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions[\"schema\"]][\"Tables\"] &\n      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions[\"schema\"]][\"Views\"])[TableName] extends {\n      Row: infer R\n    }\n    ? R\n    : never\n  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema[\"Tables\"] &\n        DefaultSchema[\"Views\"])\n    ? (DefaultSchema[\"Tables\"] &\n        DefaultSchema[\"Views\"])[DefaultSchemaTableNameOrOptions] extends {\n        Row: infer R\n      }\n      ? R\n      : never\n    : never\n\nexport type TablesInsert<\n  DefaultSchemaTableNameOrOptions extends\n    | keyof DefaultSchema[\"Tables\"]\n    | { schema: keyof DatabaseWithoutInternals },\n  TableName extends (DefaultSchemaTableNameOrOptions extends {\n    schema: keyof DatabaseWithoutInternals\n  }\n    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions[\"schema\"]][\"Tables\"]\n    : never) = never,\n> = DefaultSchemaTableNameOrOptions extends {\n  schema: keyof DatabaseWithoutInternals\n}\n  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions[\"schema\"]][\"Tables\"][TableName] extends {\n      Insert: infer I\n    }\n    ? I\n    : never\n  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema[\"Tables\"]\n    ? DefaultSchema[\"Tables\"][DefaultSchemaTableNameOrOptions] extends {\n        Insert: infer I\n      }\n      ? I\n      : never\n    : never\n\nexport type TablesUpdate<\n  DefaultSchemaTableNameOrOptions extends\n    | keyof DefaultSchema[\"Tables\"]\n    | { schema: keyof DatabaseWithoutInternals },\n  TableName extends (DefaultSchemaTableNameOrOptions extends {\n    schema: keyof DatabaseWithoutInternals\n  }\n    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions[\"schema\"]][\"Tables\"]\n    : never) = never,\n> = DefaultSchemaTableNameOrOptions extends {\n  schema: keyof DatabaseWithoutInternals\n}\n  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions[\"schema\"]][\"Tables\"][TableName] extends {\n      Update: infer U\n    }\n    ? U\n    : never\n  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema[\"Tables\"]\n    ? DefaultSchema[\"Tables\"][DefaultSchemaTableNameOrOptions] extends {\n        Update: infer U\n      }\n      ? U\n      : never\n    : never\n\nexport type Enums<\n  DefaultSchemaEnumNameOrOptions extends\n    | keyof DefaultSchema[\"Enums\"]\n    | { schema: keyof DatabaseWithoutInternals },\n  EnumName extends (DefaultSchemaEnumNameOrOptions extends {\n    schema: keyof DatabaseWithoutInternals\n  }\n    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions[\"schema\"]][\"Enums\"]\n    : never) = never,\n> = DefaultSchemaEnumNameOrOptions extends {\n  schema: keyof DatabaseWithoutInternals\n}\n  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions[\"schema\"]][\"Enums\"][EnumName]\n  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema[\"Enums\"]\n    ? DefaultSchema[\"Enums\"][DefaultSchemaEnumNameOrOptions]\n    : never\n\nexport type CompositeTypes<\n  PublicCompositeTypeNameOrOptions extends\n    | keyof DefaultSchema[\"CompositeTypes\"]\n    | { schema: keyof DatabaseWithoutInternals },\n  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {\n    schema: keyof DatabaseWithoutInternals\n  }\n    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions[\"schema\"]][\"CompositeTypes\"]\n    : never) = never,\n> = PublicCompositeTypeNameOrOptions extends {\n  schema: keyof DatabaseWithoutInternals\n}\n  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions[\"schema\"]][\"CompositeTypes\"][CompositeTypeName]\n  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema[\"CompositeTypes\"]\n    ? DefaultSchema[\"CompositeTypes\"][PublicCompositeTypeNameOrOptions]\n    : never\n\nexport const Constants = {\n  public: {\n    Enums: {\n      app_role: [\"student\", \"parent\", \"admin\"],\n    },\n  },\n} as const\n"}
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
+
+export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "14.5"
+  }
+  public: {
+    Tables: {
+      active_sessions: {
+        Row: {
+          created_at: string
+          last_seen: string
+          session_id: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          last_seen?: string
+          session_id: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          last_seen?: string
+          session_id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      admin_audit_log: {
+        Row: {
+          action: string
+          actor_id: string | null
+          after_data: Json | null
+          before_data: Json | null
+          created_at: string
+          entity_id: string | null
+          entity_type: string
+          id: number
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          after_data?: Json | null
+          before_data?: Json | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type: string
+          id?: number
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          after_data?: Json | null
+          before_data?: Json | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string
+          id?: number
+        }
+        Relationships: []
+      }
+      africa_country_catalog: {
+        Row: {
+          code: string
+          common_languages: string[]
+          created_at: string
+          enabled: boolean
+          name: string
+          official_languages: string[]
+          region: string
+        }
+        Insert: {
+          code: string
+          common_languages?: string[]
+          created_at?: string
+          enabled?: boolean
+          name: string
+          official_languages?: string[]
+          region: string
+        }
+        Update: {
+          code?: string
+          common_languages?: string[]
+          created_at?: string
+          enabled?: boolean
+          name?: string
+          official_languages?: string[]
+          region?: string
+        }
+        Relationships: []
+      }
+      africa_leaders: {
+        Row: {
+          biography: string | null
+          country_code: string
+          country_code_alpha2: string | null
+          country_name: string | null
+          created_at: string
+          id: string
+          is_current: boolean | null
+          key_policies: string[] | null
+          left_office: string | null
+          name: string
+          notable_achievements: string[] | null
+          official_source_url: string | null
+          photo_url: string | null
+          role: string
+          title: string | null
+          took_office: string | null
+          updated_at: string
+          verified_at: string | null
+        }
+        Insert: {
+          biography?: string | null
+          country_code: string
+          country_code_alpha2?: string | null
+          country_name?: string | null
+          created_at?: string
+          id?: string
+          is_current?: boolean | null
+          key_policies?: string[] | null
+          left_office?: string | null
+          name: string
+          notable_achievements?: string[] | null
+          official_source_url?: string | null
+          photo_url?: string | null
+          role: string
+          title?: string | null
+          took_office?: string | null
+          updated_at?: string
+          verified_at?: string | null
+        }
+        Update: {
+          biography?: string | null
+          country_code?: string
+          country_code_alpha2?: string | null
+          country_name?: string | null
+          created_at?: string
+          id?: string
+          is_current?: boolean | null
+          key_policies?: string[] | null
+          left_office?: string | null
+          name?: string
+          notable_achievements?: string[] | null
+          official_source_url?: string | null
+          photo_url?: string | null
+          role?: string
+          title?: string | null
+          took_office?: string | null
+          updated_at?: string
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
+      african_heroes: {
+        Row: {
+          bio: string
+          category: string
+          country: string | null
+          created_at: string | null
+          era: string | null
+          id: string
+          legacy: string | null
+          name: string
+          photo_url: string | null
+          source_url: string
+        }
+        Insert: {
+          bio: string
+          category: string
+          country?: string | null
+          created_at?: string | null
+          era?: string | null
+          id?: string
+          legacy?: string | null
+          name: string
+          photo_url?: string | null
+          source_url: string
+        }
+        Update: {
+          bio?: string
+          category?: string
+          country?: string | null
+          created_at?: string | null
+          era?: string | null
+          id?: string
+          legacy?: string | null
+          name?: string
+          photo_url?: string | null
+          source_url?: string
+        }
+        Relationships: []
+      }
+      african_startups: {
+        Row: {
+          active_status: string | null
+          capital_usd: number | null
+          city: string | null
+          company_name: string
+          country: string | null
+          created_at: string
+          evidence_date: string | null
+          id: string
+          last_verified_at: string
+          metric_type: string
+          official_url: string | null
+          sector: string | null
+          source_name: string
+          source_url: string
+          stage: string | null
+        }
+        Insert: {
+          active_status?: string | null
+          capital_usd?: number | null
+          city?: string | null
+          company_name: string
+          country?: string | null
+          created_at?: string
+          evidence_date?: string | null
+          id?: string
+          last_verified_at?: string
+          metric_type?: string
+          official_url?: string | null
+          sector?: string | null
+          source_name: string
+          source_url: string
+          stage?: string | null
+        }
+        Update: {
+          active_status?: string | null
+          capital_usd?: number | null
+          city?: string | null
+          company_name?: string
+          country?: string | null
+          created_at?: string
+          evidence_date?: string | null
+          id?: string
+          last_verified_at?: string
+          metric_type?: string
+          official_url?: string | null
+          sector?: string | null
+          source_name?: string
+          source_url?: string
+          stage?: string | null
+        }
+        Relationships: []
+      }
+      analytics_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          path: string | null
+          ref_id: string | null
+          ref_type: string | null
+          session_id: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          path?: string | null
+          ref_id?: string | null
+          ref_type?: string | null
+          session_id: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          path?: string | null
+          ref_id?: string | null
+          ref_type?: string | null
+          session_id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      app_settings: {
+        Row: {
+          key: string
+          updated_at: string
+          value: Json
+        }
+        Insert: {
+          key: string
+          updated_at?: string
+          value: Json
+        }
+        Update: {
+          key?: string
+          updated_at?: string
+          value?: Json
+        }
+        Relationships: []
+      }
+      application_checklist: {
+        Row: {
+          created_at: string
+          done: boolean
+          due_date: string | null
+          id: string
+          target: string | null
+          task: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          done?: boolean
+          due_date?: string | null
+          id?: string
+          target?: string | null
+          task: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          done?: boolean
+          due_date?: string | null
+          id?: string
+          target?: string | null
+          task?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      application_notes: {
+        Row: {
+          application_id: string | null
+          body: string
+          created_at: string
+          id: string
+          is_private: boolean
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          application_id?: string | null
+          body?: string
+          created_at?: string
+          id?: string
+          is_private?: boolean
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          application_id?: string | null
+          body?: string
+          created_at?: string
+          id?: string
+          is_private?: boolean
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      book_catalog: {
+        Row: {
+          author: string
+          created_at: string
+          description: string | null
+          id: string
+          publication_year: number | null
+          source_url: string | null
+          subject: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          publication_year?: number | null
+          source_url?: string | null
+          subject?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          publication_year?: number | null
+          source_url?: string | null
+          subject?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      campuses: {
+        Row: {
+          accreditation_status: string
+          campus_name: string
+          created_at: string
+          id: string
+          institution_id: string
+          last_verified_at: string | null
+          location: string | null
+          region: string | null
+          source_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          accreditation_status?: string
+          campus_name: string
+          created_at?: string
+          id?: string
+          institution_id: string
+          last_verified_at?: string | null
+          location?: string | null
+          region?: string | null
+          source_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          accreditation_status?: string
+          campus_name?: string
+          created_at?: string
+          id?: string
+          institution_id?: string
+          last_verified_at?: string | null
+          location?: string | null
+          region?: string | null
+          source_url?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campuses_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "universities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      collection_items: {
+        Row: {
+          collection_id: string
+          created_at: string
+          entity_key: string
+          entity_type: string
+          id: string
+          item_key: string | null
+          item_type: string | null
+          note: string | null
+          position: number
+          subtitle: string | null
+          title: string
+        }
+        Insert: {
+          collection_id: string
+          created_at?: string
+          entity_key: string
+          entity_type: string
+          id?: string
+          item_key?: string | null
+          item_type?: string | null
+          note?: string | null
+          position?: number
+          subtitle?: string | null
+          title: string
+        }
+        Update: {
+          collection_id?: string
+          created_at?: string
+          entity_key?: string
+          entity_type?: string
+          id?: string
+          item_key?: string | null
+          item_type?: string | null
+          note?: string | null
+          position?: number
+          subtitle?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "collection_items_collection_id_fkey"
+            columns: ["collection_id"]
+            isOneToOne: false
+            referencedRelation: "user_collections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      comment_likes: {
+        Row: {
+          comment_id: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          comment_id: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          comment_id?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "comment_likes_comment_id_fkey"
+            columns: ["comment_id"]
+            isOneToOne: false
+            referencedRelation: "insight_comments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      companies: {
+        Row: {
+          careers_url: string | null
+          created_at: string
+          description: string | null
+          employer_type: string
+          id: string
+          last_verified_at: string | null
+          location: string | null
+          logo_url: string | null
+          name: string
+          region: string | null
+          sector: string
+          size: string | null
+          slug: string
+          source_url: string | null
+          updated_at: string
+          verified: boolean
+          website_url: string | null
+        }
+        Insert: {
+          careers_url?: string | null
+          created_at?: string
+          description?: string | null
+          employer_type?: string
+          id?: string
+          last_verified_at?: string | null
+          location?: string | null
+          logo_url?: string | null
+          name: string
+          region?: string | null
+          sector?: string
+          size?: string | null
+          slug: string
+          source_url?: string | null
+          updated_at?: string
+          verified?: boolean
+          website_url?: string | null
+        }
+        Update: {
+          careers_url?: string | null
+          created_at?: string
+          description?: string | null
+          employer_type?: string
+          id?: string
+          last_verified_at?: string | null
+          location?: string | null
+          logo_url?: string | null
+          name?: string
+          region?: string | null
+          sector?: string
+          size?: string | null
+          slug?: string
+          source_url?: string | null
+          updated_at?: string
+          verified?: boolean
+          website_url?: string | null
+        }
+        Relationships: []
+      }
+      corrections: {
+        Row: {
+          created_at: string
+          id: string
+          note: string
+          resolved: boolean
+          row_id: string | null
+          row_label: string | null
+          submitted_at: string
+          submitted_by: string | null
+          table_name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          note: string
+          resolved?: boolean
+          row_id?: string | null
+          row_label?: string | null
+          submitted_at?: string
+          submitted_by?: string | null
+          table_name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          note?: string
+          resolved?: boolean
+          row_id?: string | null
+          row_label?: string | null
+          submitted_at?: string
+          submitted_by?: string | null
+          table_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      country_catalog: {
+        Row: {
+          code: string
+          created_at: string
+          enabled: boolean
+          name: string
+          primary_language: string
+          region: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          enabled?: boolean
+          name: string
+          primary_language: string
+          region: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          enabled?: boolean
+          name?: string
+          primary_language?: string
+          region?: string
+        }
+        Relationships: []
+      }
+      country_qualification_mapping: {
+        Row: {
+          country_code: string
+          notes: string | null
+          qualification_code: string
+          source_url: string | null
+          verification_status: string
+        }
+        Insert: {
+          country_code: string
+          notes?: string | null
+          qualification_code: string
+          source_url?: string | null
+          verification_status?: string
+        }
+        Update: {
+          country_code?: string
+          notes?: string | null
+          qualification_code?: string
+          source_url?: string | null
+          verification_status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "country_qualification_mapping_country_code_fkey"
+            columns: ["country_code"]
+            isOneToOne: false
+            referencedRelation: "africa_country_catalog"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "country_qualification_mapping_qualification_code_fkey"
+            columns: ["qualification_code"]
+            isOneToOne: false
+            referencedRelation: "qualification_catalog"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
+      cross_border_opportunities: {
+        Row: {
+          application_url: string | null
+          country_code: string | null
+          eligibility: Json
+          employer: string
+          id: string
+          last_verified_at: string | null
+          opportunity_type: string
+          role_family: string | null
+          source_url: string | null
+          title: string | null
+          verified: boolean
+        }
+        Insert: {
+          application_url?: string | null
+          country_code?: string | null
+          eligibility?: Json
+          employer: string
+          id?: string
+          last_verified_at?: string | null
+          opportunity_type: string
+          role_family?: string | null
+          source_url?: string | null
+          title?: string | null
+          verified?: boolean
+        }
+        Update: {
+          application_url?: string | null
+          country_code?: string | null
+          eligibility?: Json
+          employer?: string
+          id?: string
+          last_verified_at?: string | null
+          opportunity_type?: string
+          role_family?: string | null
+          source_url?: string | null
+          title?: string | null
+          verified?: boolean
+        }
+        Relationships: []
+      }
+      cru_attempts: {
+        Row: {
+          activity_type: string
+          answer: string | null
+          concept_id: string | null
+          created_at: string
+          diagnosis: string | null
+          id: string
+          prompt: string | null
+          score: number | null
+          user_id: string
+        }
+        Insert: {
+          activity_type: string
+          answer?: string | null
+          concept_id?: string | null
+          created_at?: string
+          diagnosis?: string | null
+          id?: string
+          prompt?: string | null
+          score?: number | null
+          user_id: string
+        }
+        Update: {
+          activity_type?: string
+          answer?: string | null
+          concept_id?: string | null
+          created_at?: string
+          diagnosis?: string | null
+          id?: string
+          prompt?: string | null
+          score?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cru_attempts_concept_id_fkey"
+            columns: ["concept_id"]
+            isOneToOne: false
+            referencedRelation: "cru_concepts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cru_concepts: {
+        Row: {
+          description: string | null
+          domain: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          description?: string | null
+          domain?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          description?: string | null
+          domain?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      cru_courses: {
+        Row: {
+          code: string
+          created_at: string
+          description: string | null
+          id: string
+          level: number
+          title: string
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          level?: number
+          title: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          level?: number
+          title?: string
+        }
+        Relationships: []
+      }
+      cru_experiments: {
+        Row: {
+          conclusion: string | null
+          config: Json
+          created_at: string
+          id: string
+          metrics: Json
+          name: string
+          project_id: string | null
+          user_id: string
+        }
+        Insert: {
+          conclusion?: string | null
+          config?: Json
+          created_at?: string
+          id?: string
+          metrics?: Json
+          name: string
+          project_id?: string | null
+          user_id: string
+        }
+        Update: {
+          conclusion?: string | null
+          config?: Json
+          created_at?: string
+          id?: string
+          metrics?: Json
+          name?: string
+          project_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cru_experiments_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "cru_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cru_grades: {
+        Row: {
+          course_code: string
+          created_at: string
+          credits: number
+          grade: string | null
+          id: string
+          score: number | null
+          semester: string | null
+          user_id: string
+        }
+        Insert: {
+          course_code: string
+          created_at?: string
+          credits: number
+          grade?: string | null
+          id?: string
+          score?: number | null
+          semester?: string | null
+          user_id: string
+        }
+        Update: {
+          course_code?: string
+          created_at?: string
+          credits?: number
+          grade?: string | null
+          id?: string
+          score?: number | null
+          semester?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      cru_ideas: {
+        Row: {
+          created_at: string
+          hypothesis: string | null
+          id: string
+          novelty_notes: string | null
+          problem: string | null
+          status: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          hypothesis?: string | null
+          id?: string
+          novelty_notes?: string | null
+          problem?: string | null
+          status?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          hypothesis?: string | null
+          id?: string
+          novelty_notes?: string | null
+          problem?: string | null
+          status?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      cru_lessons: {
+        Row: {
+          content: string
+          course_id: string
+          created_at: string
+          difficulty: string
+          id: string
+          order_index: number
+          title: string
+        }
+        Insert: {
+          content: string
+          course_id: string
+          created_at?: string
+          difficulty?: string
+          id?: string
+          order_index?: number
+          title: string
+        }
+        Update: {
+          content?: string
+          course_id?: string
+          created_at?: string
+          difficulty?: string
+          id?: string
+          order_index?: number
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cru_lessons_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "cru_courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cru_mastery: {
+        Row: {
+          attempts: number
+          concept_id: string
+          confidence: number
+          mastery: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          attempts?: number
+          concept_id: string
+          confidence?: number
+          mastery?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          attempts?: number
+          concept_id?: string
+          confidence?: number
+          mastery?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cru_mastery_concept_id_fkey"
+            columns: ["concept_id"]
+            isOneToOne: false
+            referencedRelation: "cru_concepts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cru_mistakes: {
+        Row: {
+          concept_id: string | null
+          correction: string | null
+          created_at: string
+          description: string
+          id: string
+          mistake_type: string
+          resolved: boolean
+          user_id: string
+        }
+        Insert: {
+          concept_id?: string | null
+          correction?: string | null
+          created_at?: string
+          description: string
+          id?: string
+          mistake_type: string
+          resolved?: boolean
+          user_id: string
+        }
+        Update: {
+          concept_id?: string | null
+          correction?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          mistake_type?: string
+          resolved?: boolean
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cru_mistakes_concept_id_fkey"
+            columns: ["concept_id"]
+            isOneToOne: false
+            referencedRelation: "cru_concepts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cru_news: {
+        Row: {
+          category: string | null
+          created_at: string
+          id: string
+          published_at: string | null
+          reliability: string | null
+          source_name: string | null
+          source_url: string | null
+          summary: string | null
+          title: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          id?: string
+          published_at?: string | null
+          reliability?: string | null
+          source_name?: string | null
+          source_url?: string | null
+          summary?: string | null
+          title: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          id?: string
+          published_at?: string | null
+          reliability?: string | null
+          source_name?: string | null
+          source_url?: string | null
+          summary?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
+      cru_paper_notes: {
+        Row: {
+          created_at: string
+          id: string
+          notes: string
+          paper_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          notes: string
+          paper_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          notes?: string
+          paper_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cru_paper_notes_paper_id_fkey"
+            columns: ["paper_id"]
+            isOneToOne: false
+            referencedRelation: "cru_papers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cru_papers: {
+        Row: {
+          abstract: string | null
+          arxiv_id: string | null
+          authors: string[]
+          created_at: string
+          doi: string | null
+          id: string
+          publication_date: string | null
+          title: string
+          topics: string[]
+          url: string | null
+          venue: string | null
+        }
+        Insert: {
+          abstract?: string | null
+          arxiv_id?: string | null
+          authors?: string[]
+          created_at?: string
+          doi?: string | null
+          id?: string
+          publication_date?: string | null
+          title: string
+          topics?: string[]
+          url?: string | null
+          venue?: string | null
+        }
+        Update: {
+          abstract?: string | null
+          arxiv_id?: string | null
+          authors?: string[]
+          created_at?: string
+          doi?: string | null
+          id?: string
+          publication_date?: string | null
+          title?: string
+          topics?: string[]
+          url?: string | null
+          venue?: string | null
+        }
+        Relationships: []
+      }
+      cru_profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          id: string
+          university: string | null
+          updated_at: string
+          year_of_study: number | null
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          id: string
+          university?: string | null
+          updated_at?: string
+          year_of_study?: number | null
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          university?: string | null
+          updated_at?: string
+          year_of_study?: number | null
+        }
+        Relationships: []
+      }
+      cru_projects: {
+        Row: {
+          created_at: string
+          description: string | null
+          github_url: string | null
+          id: string
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          github_url?: string | null
+          id?: string
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          github_url?: string | null
+          id?: string
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      cru_study_sessions: {
+        Row: {
+          activity: string
+          created_at: string
+          id: string
+          minutes: number
+          notes: string | null
+          user_id: string
+        }
+        Insert: {
+          activity: string
+          created_at?: string
+          id?: string
+          minutes?: number
+          notes?: string | null
+          user_id: string
+        }
+        Update: {
+          activity?: string
+          created_at?: string
+          id?: string
+          minutes?: number
+          notes?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      cv_versions: {
+        Row: {
+          created_at: string
+          cv_id: string
+          data: Json
+          id: string
+          version_name: string
+        }
+        Insert: {
+          created_at?: string
+          cv_id: string
+          data?: Json
+          id?: string
+          version_name: string
+        }
+        Update: {
+          created_at?: string
+          cv_id?: string
+          data?: Json
+          id?: string
+          version_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cv_versions_cv_id_fkey"
+            columns: ["cv_id"]
+            isOneToOne: false
+            referencedRelation: "cvs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      cvs: {
+        Row: {
+          created_at: string
+          data: Json
+          discoverable: boolean
+          id: string
+          name: string
+          template: string
+          updated_at: string
+          user_id: string
+          visibility: string
+        }
+        Insert: {
+          created_at?: string
+          data?: Json
+          discoverable?: boolean
+          id?: string
+          name?: string
+          template?: string
+          updated_at?: string
+          user_id: string
+          visibility?: string
+        }
+        Update: {
+          created_at?: string
+          data?: Json
+          discoverable?: boolean
+          id?: string
+          name?: string
+          template?: string
+          updated_at?: string
+          user_id?: string
+          visibility?: string
+        }
+        Relationships: []
+      }
+      data_sources: {
+        Row: {
+          created_at: string
+          id: string
+          notes: string | null
+          record_id: string
+          record_type: string
+          source_name: string | null
+          source_type: string
+          source_url: string
+          updated_at: string
+          verification_status: string
+          verified_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          record_id: string
+          record_type: string
+          source_name?: string | null
+          source_type?: string
+          source_url: string
+          updated_at?: string
+          verification_status?: string
+          verified_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          notes?: string | null
+          record_id?: string
+          record_type?: string
+          source_name?: string | null
+          source_type?: string
+          source_url?: string
+          updated_at?: string
+          verification_status?: string
+          verified_at?: string
+        }
+        Relationships: []
+      }
+      deadlines: {
+        Row: {
+          category: string | null
+          created_at: string
+          due_date: string
+          id: string
+          notes: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          due_date: string
+          id?: string
+          notes?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          due_date?: string
+          id?: string
+          notes?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      directory_blocks: {
+        Row: {
+          blocked_id: string
+          blocker_id: string
+          created_at: string
+        }
+        Insert: {
+          blocked_id: string
+          blocker_id: string
+          created_at?: string
+        }
+        Update: {
+          blocked_id?: string
+          blocker_id?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
+      directory_profiles: {
+        Row: {
+          bio: string | null
+          country: string | null
+          created_at: string
+          display_name: string
+          field: string | null
+          github_url: string | null
+          graduation_year: number | null
+          interests: string[]
+          level: string | null
+          linkedin_url: string | null
+          open_to_collaboration: boolean
+          open_to_mentoring: boolean
+          open_to_opportunities: boolean
+          portfolio_url: string | null
+          programme: string | null
+          projects: string | null
+          seeking_mentor: boolean
+          skills: string[]
+          university: string | null
+          updated_at: string
+          user_id: string
+          visibility: string
+        }
+        Insert: {
+          bio?: string | null
+          country?: string | null
+          created_at?: string
+          display_name: string
+          field?: string | null
+          github_url?: string | null
+          graduation_year?: number | null
+          interests?: string[]
+          level?: string | null
+          linkedin_url?: string | null
+          open_to_collaboration?: boolean
+          open_to_mentoring?: boolean
+          open_to_opportunities?: boolean
+          portfolio_url?: string | null
+          programme?: string | null
+          projects?: string | null
+          seeking_mentor?: boolean
+          skills?: string[]
+          university?: string | null
+          updated_at?: string
+          user_id: string
+          visibility?: string
+        }
+        Update: {
+          bio?: string | null
+          country?: string | null
+          created_at?: string
+          display_name?: string
+          field?: string | null
+          github_url?: string | null
+          graduation_year?: number | null
+          interests?: string[]
+          level?: string | null
+          linkedin_url?: string | null
+          open_to_collaboration?: boolean
+          open_to_mentoring?: boolean
+          open_to_opportunities?: boolean
+          portfolio_url?: string | null
+          programme?: string | null
+          projects?: string | null
+          seeking_mentor?: boolean
+          skills?: string[]
+          university?: string | null
+          updated_at?: string
+          user_id?: string
+          visibility?: string
+        }
+        Relationships: []
+      }
+      directory_reports: {
+        Row: {
+          created_at: string
+          id: string
+          profile_user_id: string
+          reason: string
+          reporter_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          profile_user_id: string
+          reason: string
+          reporter_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          profile_user_id?: string
+          reason?: string
+          reporter_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "directory_reports_profile_user_id_fkey"
+            columns: ["profile_user_id"]
+            isOneToOne: false
+            referencedRelation: "directory_profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      embassies: {
+        Row: {
+          address: string | null
+          created_at: string | null
+          email: string | null
+          head_of_mission_name: string | null
+          head_of_mission_title: string | null
+          host_country: string
+          id: string
+          last_verified: string | null
+          latitude: number | null
+          longitude: number | null
+          mission_type: string | null
+          official_website: string | null
+          phone: string | null
+          represents_country: string
+          represents_country_code: string
+          visa_info_url: string | null
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string | null
+          email?: string | null
+          head_of_mission_name?: string | null
+          head_of_mission_title?: string | null
+          host_country?: string
+          id?: string
+          last_verified?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          mission_type?: string | null
+          official_website?: string | null
+          phone?: string | null
+          represents_country: string
+          represents_country_code: string
+          visa_info_url?: string | null
+        }
+        Update: {
+          address?: string | null
+          created_at?: string | null
+          email?: string | null
+          head_of_mission_name?: string | null
+          head_of_mission_title?: string | null
+          host_country?: string
+          id?: string
+          last_verified?: string | null
+          latitude?: number | null
+          longitude?: number | null
+          mission_type?: string | null
+          official_website?: string | null
+          phone?: string | null
+          represents_country?: string
+          represents_country_code?: string
+          visa_info_url?: string | null
+        }
+        Relationships: []
+      }
+      employee_profiles: {
+        Row: {
+          created_at: string
+          employer_name: string | null
+          professional_title: string | null
+          updated_at: string
+          user_id: string
+          years_experience: number | null
+        }
+        Insert: {
+          created_at?: string
+          employer_name?: string | null
+          professional_title?: string | null
+          updated_at?: string
+          user_id: string
+          years_experience?: number | null
+        }
+        Update: {
+          created_at?: string
+          employer_name?: string | null
+          professional_title?: string | null
+          updated_at?: string
+          user_id?: string
+          years_experience?: number | null
+        }
+        Relationships: []
+      }
+      employer_messages: {
+        Row: {
+          candidate_user_id: string
+          created_at: string
+          employer_id: string
+          id: string
+          message: string
+          read_at: string | null
+          sender_user_id: string
+        }
+        Insert: {
+          candidate_user_id: string
+          created_at?: string
+          employer_id: string
+          id?: string
+          message: string
+          read_at?: string | null
+          sender_user_id: string
+        }
+        Update: {
+          candidate_user_id?: string
+          created_at?: string
+          employer_id?: string
+          id?: string
+          message?: string
+          read_at?: string | null
+          sender_user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employer_messages_employer_id_fkey"
+            columns: ["employer_id"]
+            isOneToOne: false
+            referencedRelation: "employers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      employer_profiles: {
+        Row: {
+          created_at: string
+          hiring_focus: string[]
+          organization_name: string | null
+          organization_type: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          hiring_focus?: string[]
+          organization_name?: string | null
+          organization_type?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          hiring_focus?: string[]
+          organization_name?: string | null
+          organization_type?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      employer_users: {
+        Row: {
+          created_at: string
+          employer_id: string
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          employer_id: string
+          id?: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          employer_id?: string
+          id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employer_users_employer_id_fkey"
+            columns: ["employer_id"]
+            isOneToOne: false
+            referencedRelation: "employers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      employer_verifications: {
+        Row: {
+          created_at: string
+          employer_id: string
+          evidence: Json
+          id: string
+          reviewed_at: string | null
+          reviewer_user_id: string | null
+          status: string
+          submitted_by: string
+        }
+        Insert: {
+          created_at?: string
+          employer_id: string
+          evidence?: Json
+          id?: string
+          reviewed_at?: string | null
+          reviewer_user_id?: string | null
+          status?: string
+          submitted_by: string
+        }
+        Update: {
+          created_at?: string
+          employer_id?: string
+          evidence?: Json
+          id?: string
+          reviewed_at?: string | null
+          reviewer_user_id?: string | null
+          status?: string
+          submitted_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employer_verifications_employer_id_fkey"
+            columns: ["employer_id"]
+            isOneToOne: false
+            referencedRelation: "employers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      employers: {
+        Row: {
+          city: string | null
+          company_id: string | null
+          country_code: string | null
+          created_at: string
+          description: string | null
+          id: string
+          industry: string | null
+          logo_url: string | null
+          name: string
+          organization_type: string
+          updated_at: string
+          verification_source: string | null
+          verification_status: string
+          verified_at: string | null
+          website_url: string | null
+        }
+        Insert: {
+          city?: string | null
+          company_id?: string | null
+          country_code?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          industry?: string | null
+          logo_url?: string | null
+          name: string
+          organization_type?: string
+          updated_at?: string
+          verification_source?: string | null
+          verification_status?: string
+          verified_at?: string | null
+          website_url?: string | null
+        }
+        Update: {
+          city?: string | null
+          company_id?: string | null
+          country_code?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          industry?: string | null
+          logo_url?: string | null
+          name?: string
+          organization_type?: string
+          updated_at?: string
+          verification_source?: string | null
+          verification_status?: string
+          verified_at?: string | null
+          website_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "employers_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      faculties: {
+        Row: {
+          created_at: string
+          id: string
+          institution_id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          institution_id: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          institution_id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "faculties_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "universities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      feed_comments: {
+        Row: {
+          author_id: string
+          content: string
+          created_at: string
+          id: string
+          post_id: string
+        }
+        Insert: {
+          author_id: string
+          content: string
+          created_at?: string
+          id?: string
+          post_id: string
+        }
+        Update: {
+          author_id?: string
+          content?: string
+          created_at?: string
+          id?: string
+          post_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "feed_comments_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "feed_comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "feed_posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      feed_items: {
+        Row: {
+          category: string
+          description: string | null
+          id: string
+          published_at: string | null
+          source_name: string
+          source_url: string
+          title: string
+          verified_at: string
+          video_url: string | null
+        }
+        Insert: {
+          category: string
+          description?: string | null
+          id?: string
+          published_at?: string | null
+          source_name: string
+          source_url: string
+          title: string
+          verified_at?: string
+          video_url?: string | null
+        }
+        Update: {
+          category?: string
+          description?: string | null
+          id?: string
+          published_at?: string | null
+          source_name?: string
+          source_url?: string
+          title?: string
+          verified_at?: string
+          video_url?: string | null
+        }
+        Relationships: []
+      }
+      feed_likes: {
+        Row: {
+          created_at: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "feed_likes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "feed_posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "feed_likes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      feed_posts: {
+        Row: {
+          author_id: string
+          category: string
+          comments_count: number
+          created_at: string
+          description: string | null
+          id: string
+          is_published: boolean
+          likes_count: number
+          shares_count: number
+          tags: string[]
+          thumbnail_url: string | null
+          title: string | null
+          video_url: string | null
+          views_count: number
+          youtube_url: string | null
+        }
+        Insert: {
+          author_id: string
+          category?: string
+          comments_count?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_published?: boolean
+          likes_count?: number
+          shares_count?: number
+          tags?: string[]
+          thumbnail_url?: string | null
+          title?: string | null
+          video_url?: string | null
+          views_count?: number
+          youtube_url?: string | null
+        }
+        Update: {
+          author_id?: string
+          category?: string
+          comments_count?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_published?: boolean
+          likes_count?: number
+          shares_count?: number
+          tags?: string[]
+          thumbnail_url?: string | null
+          title?: string | null
+          video_url?: string | null
+          views_count?: number
+          youtube_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "feed_posts_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      founder_profiles: {
+        Row: {
+          created_at: string
+          pitch_url: string | null
+          sector: string | null
+          stage: string | null
+          startup_name: string | null
+          updated_at: string
+          user_id: string
+          website_url: string | null
+        }
+        Insert: {
+          created_at?: string
+          pitch_url?: string | null
+          sector?: string | null
+          stage?: string | null
+          startup_name?: string | null
+          updated_at?: string
+          user_id: string
+          website_url?: string | null
+        }
+        Update: {
+          created_at?: string
+          pitch_url?: string | null
+          sector?: string | null
+          stage?: string | null
+          startup_name?: string | null
+          updated_at?: string
+          user_id?: string
+          website_url?: string | null
+        }
+        Relationships: []
+      }
+      ghana_institution_guides: {
+        Row: {
+          admissions_url: string | null
+          application_url: string | null
+          id: string
+          institution_name: string
+          institution_type: string | null
+          international_url: string | null
+          last_verified_at: string | null
+          notes: string | null
+          scholarship_url: string | null
+          verification_status: string
+        }
+        Insert: {
+          admissions_url?: string | null
+          application_url?: string | null
+          id?: string
+          institution_name: string
+          institution_type?: string | null
+          international_url?: string | null
+          last_verified_at?: string | null
+          notes?: string | null
+          scholarship_url?: string | null
+          verification_status?: string
+        }
+        Update: {
+          admissions_url?: string | null
+          application_url?: string | null
+          id?: string
+          institution_name?: string
+          institution_type?: string | null
+          international_url?: string | null
+          last_verified_at?: string | null
+          notes?: string | null
+          scholarship_url?: string | null
+          verification_status?: string
+        }
+        Relationships: []
+      }
+      ghana_student_visa_guides: {
+        Row: {
+          country_code: string
+          destination_country: string
+          last_verified_at: string | null
+          required_documents: Json
+          source_url: string | null
+          steps: Json
+          title: string
+        }
+        Insert: {
+          country_code: string
+          destination_country?: string
+          last_verified_at?: string | null
+          required_documents?: Json
+          source_url?: string | null
+          steps?: Json
+          title: string
+        }
+        Update: {
+          country_code?: string
+          destination_country?: string
+          last_verified_at?: string | null
+          required_documents?: Json
+          source_url?: string | null
+          steps?: Json
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ghana_student_visa_guides_country_code_fkey"
+            columns: ["country_code"]
+            isOneToOne: true
+            referencedRelation: "africa_country_catalog"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
+      innovation_items: {
+        Row: {
+          category: string
+          description: string | null
+          id: string
+          media_url: string | null
+          published_at: string | null
+          source_name: string
+          source_url: string
+          title: string
+          verified_at: string
+        }
+        Insert: {
+          category: string
+          description?: string | null
+          id?: string
+          media_url?: string | null
+          published_at?: string | null
+          source_name: string
+          source_url: string
+          title: string
+          verified_at?: string
+        }
+        Update: {
+          category?: string
+          description?: string | null
+          id?: string
+          media_url?: string | null
+          published_at?: string | null
+          source_name?: string
+          source_url?: string
+          title?: string
+          verified_at?: string
+        }
+        Relationships: []
+      }
+      insight_comments: {
+        Row: {
+          author_label: string
+          body: string
+          created_at: string
+          id: string
+          insight_id: string
+          like_count: number
+          parent_id: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          author_label?: string
+          body: string
+          created_at?: string
+          id?: string
+          insight_id: string
+          like_count?: number
+          parent_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          author_label?: string
+          body?: string
+          created_at?: string
+          id?: string
+          insight_id?: string
+          like_count?: number
+          parent_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "insight_comments_insight_id_fkey"
+            columns: ["insight_id"]
+            isOneToOne: false
+            referencedRelation: "student_insights"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "insight_comments_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "insight_comments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      insight_helpful: {
+        Row: {
+          created_at: string
+          id: string
+          insight_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          insight_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          insight_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "insight_helpful_insight_id_fkey"
+            columns: ["insight_id"]
+            isOneToOne: false
+            referencedRelation: "student_insights"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      insight_reports: {
+        Row: {
+          created_at: string
+          details: string | null
+          id: string
+          insight_id: string
+          reason: string
+          reporter_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          details?: string | null
+          id?: string
+          insight_id: string
+          reason: string
+          reporter_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          details?: string | null
+          id?: string
+          insight_id?: string
+          reason?: string
+          reporter_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "insight_reports_insight_id_fkey"
+            columns: ["insight_id"]
+            isOneToOne: false
+            referencedRelation: "student_insights"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      institutions: {
+        Row: {
+          created_at: string
+          google_place_id: string | null
+          gtec_accreditation_status: string | null
+          id: string
+          institution_type: string
+          last_verified_at: string | null
+          logo_source_url: string | null
+          logo_verification_status: string
+          logo_verified_at: string | null
+          needs_review: boolean
+          official_name: string
+          region: string | null
+          short_description: string | null
+          social_links: Json
+          source_urls: string[]
+          town: string | null
+          university_id: string | null
+          updated_at: string
+          verification_method: string | null
+          verification_notes: string | null
+          verified_by: string | null
+          website_url: string | null
+        }
+        Insert: {
+          created_at?: string
+          google_place_id?: string | null
+          gtec_accreditation_status?: string | null
+          id?: string
+          institution_type: string
+          last_verified_at?: string | null
+          logo_source_url?: string | null
+          logo_verification_status?: string
+          logo_verified_at?: string | null
+          needs_review?: boolean
+          official_name: string
+          region?: string | null
+          short_description?: string | null
+          social_links?: Json
+          source_urls?: string[]
+          town?: string | null
+          university_id?: string | null
+          updated_at?: string
+          verification_method?: string | null
+          verification_notes?: string | null
+          verified_by?: string | null
+          website_url?: string | null
+        }
+        Update: {
+          created_at?: string
+          google_place_id?: string | null
+          gtec_accreditation_status?: string | null
+          id?: string
+          institution_type?: string
+          last_verified_at?: string | null
+          logo_source_url?: string | null
+          logo_verification_status?: string
+          logo_verified_at?: string | null
+          needs_review?: boolean
+          official_name?: string
+          region?: string | null
+          short_description?: string | null
+          social_links?: Json
+          source_urls?: string[]
+          town?: string | null
+          university_id?: string | null
+          updated_at?: string
+          verification_method?: string | null
+          verification_notes?: string | null
+          verified_by?: string | null
+          website_url?: string | null
+        }
+        Relationships: []
+      }
+      international_students: {
+        Row: {
+          academic_level: string | null
+          country_code: string | null
+          created_at: string | null
+          github_url: string | null
+          graduation_year: number | null
+          id: string
+          interests: string[] | null
+          is_discoverable: boolean | null
+          linkedin_url: string | null
+          looking_for_opportunities: boolean | null
+          open_to_collaboration: boolean | null
+          open_to_mentorship: boolean | null
+          portfolio_url: string | null
+          programme_name: string | null
+          projects: string[] | null
+          skills: string[] | null
+          university_name: string | null
+          updated_at: string | null
+          user_id: string
+          visible: boolean | null
+        }
+        Insert: {
+          academic_level?: string | null
+          country_code?: string | null
+          created_at?: string | null
+          github_url?: string | null
+          graduation_year?: number | null
+          id?: string
+          interests?: string[] | null
+          is_discoverable?: boolean | null
+          linkedin_url?: string | null
+          looking_for_opportunities?: boolean | null
+          open_to_collaboration?: boolean | null
+          open_to_mentorship?: boolean | null
+          portfolio_url?: string | null
+          programme_name?: string | null
+          projects?: string[] | null
+          skills?: string[] | null
+          university_name?: string | null
+          updated_at?: string | null
+          user_id: string
+          visible?: boolean | null
+        }
+        Update: {
+          academic_level?: string | null
+          country_code?: string | null
+          created_at?: string | null
+          github_url?: string | null
+          graduation_year?: number | null
+          id?: string
+          interests?: string[] | null
+          is_discoverable?: boolean | null
+          linkedin_url?: string | null
+          looking_for_opportunities?: boolean | null
+          open_to_collaboration?: boolean | null
+          open_to_mentorship?: boolean | null
+          portfolio_url?: string | null
+          programme_name?: string | null
+          projects?: string[] | null
+          skills?: string[] | null
+          university_name?: string | null
+          updated_at?: string | null
+          user_id?: string
+          visible?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "international_students_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      international_universities: {
+        Row: {
+          admissions_url: string | null
+          city: string | null
+          country_code: string
+          created_at: string | null
+          description: string | null
+          id: string
+          image_url: string | null
+          name: string
+          source_url: string | null
+          updated_at: string | null
+          verified: boolean | null
+          website_url: string | null
+        }
+        Insert: {
+          admissions_url?: string | null
+          city?: string | null
+          country_code: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          source_url?: string | null
+          updated_at?: string | null
+          verified?: boolean | null
+          website_url?: string | null
+        }
+        Update: {
+          admissions_url?: string | null
+          city?: string | null
+          country_code?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          source_url?: string | null
+          updated_at?: string | null
+          verified?: boolean | null
+          website_url?: string | null
+        }
+        Relationships: []
+      }
+      internship_providers: {
+        Row: {
+          application_url: string | null
+          created_at: string
+          id: string
+          last_verified_at: string | null
+          logo_source_url: string | null
+          name: string
+          needs_review: boolean
+          paid: boolean | null
+          programme_summary: string | null
+          provider_type: string | null
+          sector: string | null
+          social_links: Json
+          source_urls: string[]
+          updated_at: string
+          verification_method: string | null
+          verification_notes: string | null
+          verified_by: string | null
+          website_url: string | null
+        }
+        Insert: {
+          application_url?: string | null
+          created_at?: string
+          id?: string
+          last_verified_at?: string | null
+          logo_source_url?: string | null
+          name: string
+          needs_review?: boolean
+          paid?: boolean | null
+          programme_summary?: string | null
+          provider_type?: string | null
+          sector?: string | null
+          social_links?: Json
+          source_urls?: string[]
+          updated_at?: string
+          verification_method?: string | null
+          verification_notes?: string | null
+          verified_by?: string | null
+          website_url?: string | null
+        }
+        Update: {
+          application_url?: string | null
+          created_at?: string
+          id?: string
+          last_verified_at?: string | null
+          logo_source_url?: string | null
+          name?: string
+          needs_review?: boolean
+          paid?: boolean | null
+          programme_summary?: string | null
+          provider_type?: string | null
+          sector?: string | null
+          social_links?: Json
+          source_urls?: string[]
+          updated_at?: string
+          verification_method?: string | null
+          verification_notes?: string | null
+          verified_by?: string | null
+          website_url?: string | null
+        }
+        Relationships: []
+      }
+      internships: {
+        Row: {
+          application_url: string | null
+          careers: string[] | null
+          company_id: string
+          created_at: string
+          deadline_date: string | null
+          deadline_text: string | null
+          description: string | null
+          duration: string | null
+          eligibility: string | null
+          end_date: string | null
+          fields: string[] | null
+          id: string
+          last_verified_at: string | null
+          location: string | null
+          opportunity_type: string | null
+          paid: boolean | null
+          region: string | null
+          slug: string | null
+          source_url: string | null
+          start_date: string | null
+          stipend_text: string | null
+          title: string
+          updated_at: string
+          verified: boolean
+          work_mode: string | null
+        }
+        Insert: {
+          application_url?: string | null
+          careers?: string[] | null
+          company_id: string
+          created_at?: string
+          deadline_date?: string | null
+          deadline_text?: string | null
+          description?: string | null
+          duration?: string | null
+          eligibility?: string | null
+          end_date?: string | null
+          fields?: string[] | null
+          id?: string
+          last_verified_at?: string | null
+          location?: string | null
+          opportunity_type?: string | null
+          paid?: boolean | null
+          region?: string | null
+          slug?: string | null
+          source_url?: string | null
+          start_date?: string | null
+          stipend_text?: string | null
+          title: string
+          updated_at?: string
+          verified?: boolean
+          work_mode?: string | null
+        }
+        Update: {
+          application_url?: string | null
+          careers?: string[] | null
+          company_id?: string
+          created_at?: string
+          deadline_date?: string | null
+          deadline_text?: string | null
+          description?: string | null
+          duration?: string | null
+          eligibility?: string | null
+          end_date?: string | null
+          fields?: string[] | null
+          id?: string
+          last_verified_at?: string | null
+          location?: string | null
+          opportunity_type?: string | null
+          paid?: boolean | null
+          region?: string | null
+          slug?: string | null
+          source_url?: string | null
+          start_date?: string | null
+          stipend_text?: string | null
+          title?: string
+          updated_at?: string
+          verified?: boolean
+          work_mode?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "internships_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      investors: {
+        Row: {
+          country_code: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          name: string
+          sectors: string[] | null
+          source_url: string | null
+          stages: string[] | null
+          type: string | null
+          verified: boolean | null
+          website_url: string | null
+        }
+        Insert: {
+          country_code?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          sectors?: string[] | null
+          source_url?: string | null
+          stages?: string[] | null
+          type?: string | null
+          verified?: boolean | null
+          website_url?: string | null
+        }
+        Update: {
+          country_code?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          sectors?: string[] | null
+          source_url?: string | null
+          stages?: string[] | null
+          type?: string | null
+          verified?: boolean | null
+          website_url?: string | null
+        }
+        Relationships: []
+      }
+      learning_resources: {
+        Row: {
+          category: string | null
+          country_code: string | null
+          created_at: string | null
+          id: string
+          level: string | null
+          provider: string
+          skills: string[] | null
+          source_url: string | null
+          title: string
+          url: string
+        }
+        Insert: {
+          category?: string | null
+          country_code?: string | null
+          created_at?: string | null
+          id?: string
+          level?: string | null
+          provider: string
+          skills?: string[] | null
+          source_url?: string | null
+          title: string
+          url: string
+        }
+        Update: {
+          category?: string | null
+          country_code?: string | null
+          created_at?: string | null
+          id?: string
+          level?: string | null
+          provider?: string
+          skills?: string[] | null
+          source_url?: string | null
+          title?: string
+          url?: string
+        }
+        Relationships: []
+      }
+      life_path_items: {
+        Row: {
+          created_at: string
+          detail: string | null
+          id: string
+          stage: string
+          status: string
+          target_date: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          detail?: string | null
+          id?: string
+          stage: string
+          status?: string
+          target_date?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          detail?: string | null
+          id?: string
+          stage?: string
+          status?: string
+          target_date?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      logo_requests: {
+        Row: {
+          created_at: string
+          id: string
+          logo_url: string | null
+          note: string | null
+          organisation_name: string | null
+          requested_by: string
+          status: string
+          suggested_url: string | null
+          university_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          logo_url?: string | null
+          note?: string | null
+          organisation_name?: string | null
+          requested_by: string
+          status?: string
+          suggested_url?: string | null
+          university_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          logo_url?: string | null
+          note?: string | null
+          organisation_name?: string | null
+          requested_by?: string
+          status?: string
+          suggested_url?: string | null
+          university_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "logo_requests_university_id_fkey"
+            columns: ["university_id"]
+            isOneToOne: false
+            referencedRelation: "universities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      match_preferences: {
+        Row: {
+          created_at: string
+          field: string | null
+          funding_types: string[]
+          gender: string | null
+          id: string
+          level: string | null
+          min_coverage: string | null
+          need_based: boolean | null
+          preferred_locations: string | null
+          region: string | null
+          study_abroad: boolean | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          field?: string | null
+          funding_types?: string[]
+          gender?: string | null
+          id?: string
+          level?: string | null
+          min_coverage?: string | null
+          need_based?: boolean | null
+          preferred_locations?: string | null
+          region?: string | null
+          study_abroad?: boolean | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          field?: string | null
+          funding_types?: string[]
+          gender?: string | null
+          id?: string
+          level?: string | null
+          min_coverage?: string | null
+          need_based?: boolean | null
+          preferred_locations?: string | null
+          region?: string | null
+          study_abroad?: boolean | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      news_articles: {
+        Row: {
+          category: string | null
+          content_hash: string | null
+          country_code: string | null
+          created_at: string
+          excerpt: string | null
+          fetched_at: string
+          id: string
+          image_url: string | null
+          original_url: string
+          published_at: string | null
+          source_id: string | null
+          source_name: string | null
+          title: string
+        }
+        Insert: {
+          category?: string | null
+          content_hash?: string | null
+          country_code?: string | null
+          created_at?: string
+          excerpt?: string | null
+          fetched_at?: string
+          id?: string
+          image_url?: string | null
+          original_url: string
+          published_at?: string | null
+          source_id?: string | null
+          source_name?: string | null
+          title: string
+        }
+        Update: {
+          category?: string | null
+          content_hash?: string | null
+          country_code?: string | null
+          created_at?: string
+          excerpt?: string | null
+          fetched_at?: string
+          id?: string
+          image_url?: string | null
+          original_url?: string
+          published_at?: string | null
+          source_id?: string | null
+          source_name?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "news_articles_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "news_sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      news_sources: {
+        Row: {
+          active: boolean
+          category: string | null
+          country_code: string | null
+          created_at: string
+          id: string
+          last_error: string | null
+          last_fetched_at: string | null
+          last_success_at: string | null
+          name: string
+          refresh_interval_minutes: number
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          active?: boolean
+          category?: string | null
+          country_code?: string | null
+          created_at?: string
+          id?: string
+          last_error?: string | null
+          last_fetched_at?: string | null
+          last_success_at?: string | null
+          name: string
+          refresh_interval_minutes?: number
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          active?: boolean
+          category?: string | null
+          country_code?: string | null
+          created_at?: string
+          id?: string
+          last_error?: string | null
+          last_fetched_at?: string | null
+          last_success_at?: string | null
+          name?: string
+          refresh_interval_minutes?: number
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
+      notification_preferences: {
+        Row: {
+          employer_messages: boolean
+          internship_deadlines: boolean
+          job_matches: boolean
+          recommendations: boolean
+          scholarship_deadlines: boolean
+          startup_news: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          employer_messages?: boolean
+          internship_deadlines?: boolean
+          job_matches?: boolean
+          recommendations?: boolean
+          scholarship_deadlines?: boolean
+          startup_news?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          employer_messages?: boolean
+          internship_deadlines?: boolean
+          job_matches?: boolean
+          recommendations?: boolean
+          scholarship_deadlines?: boolean
+          startup_news?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          action_url: string | null
+          body: string | null
+          category: string | null
+          created_at: string
+          id: string
+          is_read: boolean | null
+          link: string | null
+          message: string
+          read: boolean
+          read_at: string | null
+          title: string | null
+          type: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          action_url?: string | null
+          body?: string | null
+          category?: string | null
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          link?: string | null
+          message: string
+          read?: boolean
+          read_at?: string | null
+          title?: string | null
+          type: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          action_url?: string | null
+          body?: string | null
+          category?: string | null
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          link?: string | null
+          message?: string
+          read?: boolean
+          read_at?: string | null
+          title?: string | null
+          type?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      occupation_salaries: {
+        Row: {
+          created_at: string
+          currency: string
+          data_source: string | null
+          experience_level: string | null
+          id: string
+          job_title: string
+          last_verified: string | null
+          max_salary: number | null
+          min_salary: number | null
+          occupation: string | null
+          salary_period: string | null
+          salary_range: string | null
+          source_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          currency?: string
+          data_source?: string | null
+          experience_level?: string | null
+          id?: string
+          job_title: string
+          last_verified?: string | null
+          max_salary?: number | null
+          min_salary?: number | null
+          occupation?: string | null
+          salary_period?: string | null
+          salary_range?: string | null
+          source_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          currency?: string
+          data_source?: string | null
+          experience_level?: string | null
+          id?: string
+          job_title?: string
+          last_verified?: string | null
+          max_salary?: number | null
+          min_salary?: number | null
+          occupation?: string | null
+          salary_period?: string | null
+          salary_range?: string | null
+          source_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      opportunities: {
+        Row: {
+          application_url: string | null
+          apply_url: string | null
+          availability: string | null
+          category: string | null
+          city: string | null
+          company_id: string | null
+          company_logo_url: string | null
+          company_name: string | null
+          compensation: string | null
+          country: string | null
+          country_code: string | null
+          created_at: string
+          deadline: string | null
+          deadline_date: string | null
+          description: string | null
+          eligibility: string | null
+          employment_type: string | null
+          fields: string[] | null
+          id: string
+          is_active: boolean | null
+          is_remote: boolean | null
+          last_verified_at: string | null
+          location: string | null
+          opportunity_type: string
+          organisation: string | null
+          posted_at: string | null
+          posted_by: string | null
+          published: boolean | null
+          remote: boolean
+          requirements: string | null
+          skills: string[]
+          skills_required: string[] | null
+          slug: string | null
+          source: string | null
+          source_id: string | null
+          source_name: string | null
+          source_url: string | null
+          status: string
+          title: string
+          type: string | null
+          updated_at: string
+          verified: boolean | null
+          views_count: number | null
+          work_mode: string | null
+        }
+        Insert: {
+          application_url?: string | null
+          apply_url?: string | null
+          availability?: string | null
+          category?: string | null
+          city?: string | null
+          company_id?: string | null
+          company_logo_url?: string | null
+          company_name?: string | null
+          compensation?: string | null
+          country?: string | null
+          country_code?: string | null
+          created_at?: string
+          deadline?: string | null
+          deadline_date?: string | null
+          description?: string | null
+          eligibility?: string | null
+          employment_type?: string | null
+          fields?: string[] | null
+          id?: string
+          is_active?: boolean | null
+          is_remote?: boolean | null
+          last_verified_at?: string | null
+          location?: string | null
+          opportunity_type?: string
+          organisation?: string | null
+          posted_at?: string | null
+          posted_by?: string | null
+          published?: boolean | null
+          remote?: boolean
+          requirements?: string | null
+          skills?: string[]
+          skills_required?: string[] | null
+          slug?: string | null
+          source?: string | null
+          source_id?: string | null
+          source_name?: string | null
+          source_url?: string | null
+          status?: string
+          title: string
+          type?: string | null
+          updated_at?: string
+          verified?: boolean | null
+          views_count?: number | null
+          work_mode?: string | null
+        }
+        Update: {
+          application_url?: string | null
+          apply_url?: string | null
+          availability?: string | null
+          category?: string | null
+          city?: string | null
+          company_id?: string | null
+          company_logo_url?: string | null
+          company_name?: string | null
+          compensation?: string | null
+          country?: string | null
+          country_code?: string | null
+          created_at?: string
+          deadline?: string | null
+          deadline_date?: string | null
+          description?: string | null
+          eligibility?: string | null
+          employment_type?: string | null
+          fields?: string[] | null
+          id?: string
+          is_active?: boolean | null
+          is_remote?: boolean | null
+          last_verified_at?: string | null
+          location?: string | null
+          opportunity_type?: string
+          organisation?: string | null
+          posted_at?: string | null
+          posted_by?: string | null
+          published?: boolean | null
+          remote?: boolean
+          requirements?: string | null
+          skills?: string[]
+          skills_required?: string[] | null
+          slug?: string | null
+          source?: string | null
+          source_id?: string | null
+          source_name?: string | null
+          source_url?: string | null
+          status?: string
+          title?: string
+          type?: string | null
+          updated_at?: string
+          verified?: boolean | null
+          views_count?: number | null
+          work_mode?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opportunities_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      opportunity_applications: {
+        Row: {
+          applied_at: string | null
+          created_at: string
+          id: string
+          notes: string | null
+          opportunity_id: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          applied_at?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          opportunity_id: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          applied_at?: string | null
+          created_at?: string
+          id?: string
+          notes?: string | null
+          opportunity_id?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opportunity_applications_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      opportunity_pipeline: {
+        Row: {
+          created_at: string
+          deadline_date: string | null
+          id: string
+          item_kind: string
+          item_ref: string | null
+          notes: string | null
+          organisation: string | null
+          stage: string
+          title: string
+          updated_at: string
+          url: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          deadline_date?: string | null
+          id?: string
+          item_kind: string
+          item_ref?: string | null
+          notes?: string | null
+          organisation?: string | null
+          stage?: string
+          title: string
+          updated_at?: string
+          url?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          deadline_date?: string | null
+          id?: string
+          item_kind?: string
+          item_ref?: string | null
+          notes?: string | null
+          organisation?: string | null
+          stage?: string
+          title?: string
+          updated_at?: string
+          url?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      parent_links: {
+        Row: {
+          created_at: string
+          id: string
+          invite_code: string
+          parent_email: string | null
+          parent_id: string | null
+          status: string
+          student_id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          invite_code: string
+          parent_email?: string | null
+          parent_id?: string | null
+          status?: string
+          student_id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          invite_code?: string
+          parent_email?: string | null
+          parent_id?: string | null
+          status?: string
+          student_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      platform_countries: {
+        Row: {
+          active: boolean
+          code: string
+          created_at: string
+          currency_code: string | null
+          name: string
+          region: string | null
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          code: string
+          created_at?: string
+          currency_code?: string | null
+          name: string
+          region?: string | null
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          code?: string
+          created_at?: string
+          currency_code?: string | null
+          name?: string
+          region?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      platform_events: {
+        Row: {
+          country: string | null
+          created_at: string | null
+          description: string | null
+          ends_at: string | null
+          id: string
+          is_virtual: boolean | null
+          location: string | null
+          registration_url: string | null
+          starts_at: string
+          title: string
+          type: string
+        }
+        Insert: {
+          country?: string | null
+          created_at?: string | null
+          description?: string | null
+          ends_at?: string | null
+          id?: string
+          is_virtual?: boolean | null
+          location?: string | null
+          registration_url?: string | null
+          starts_at: string
+          title: string
+          type: string
+        }
+        Update: {
+          country?: string | null
+          created_at?: string | null
+          description?: string | null
+          ends_at?: string | null
+          id?: string
+          is_virtual?: boolean | null
+          location?: string | null
+          registration_url?: string | null
+          starts_at?: string
+          title?: string
+          type?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          account_role: string
+          account_type: string
+          availability: string | null
+          avatar_url: string | null
+          bio: string | null
+          city: string | null
+          company: string | null
+          country_code: string | null
+          created_at: string
+          cv_visibility: string
+          discoverable_to_recruiters: boolean
+          education_level: string | null
+          email: string | null
+          full_name: string | null
+          github_url: string | null
+          graduation_year: number | null
+          id: string
+          interests: string[]
+          is_discoverable: boolean | null
+          job_title: string | null
+          linkedin_url: string | null
+          location: string | null
+          onboarded: boolean
+          onboarding_complete: boolean | null
+          pathways: string[]
+          phone: string | null
+          portfolio_url: string | null
+          preferred_industries: string[]
+          preferred_locations: string[]
+          preferred_opportunity_types: string[]
+          profile_visibility: string
+          program: string | null
+          region: string | null
+          role: string | null
+          school: string | null
+          skills: string[] | null
+          target_career: string | null
+          terms_accepted_at: string | null
+          terms_version: string | null
+          university: string | null
+          updated_at: string
+        }
+        Insert: {
+          account_role?: string
+          account_type?: string
+          availability?: string | null
+          avatar_url?: string | null
+          bio?: string | null
+          city?: string | null
+          company?: string | null
+          country_code?: string | null
+          created_at?: string
+          cv_visibility?: string
+          discoverable_to_recruiters?: boolean
+          education_level?: string | null
+          email?: string | null
+          full_name?: string | null
+          github_url?: string | null
+          graduation_year?: number | null
+          id: string
+          interests?: string[]
+          is_discoverable?: boolean | null
+          job_title?: string | null
+          linkedin_url?: string | null
+          location?: string | null
+          onboarded?: boolean
+          onboarding_complete?: boolean | null
+          pathways?: string[]
+          phone?: string | null
+          portfolio_url?: string | null
+          preferred_industries?: string[]
+          preferred_locations?: string[]
+          preferred_opportunity_types?: string[]
+          profile_visibility?: string
+          program?: string | null
+          region?: string | null
+          role?: string | null
+          school?: string | null
+          skills?: string[] | null
+          target_career?: string | null
+          terms_accepted_at?: string | null
+          terms_version?: string | null
+          university?: string | null
+          updated_at?: string
+        }
+        Update: {
+          account_role?: string
+          account_type?: string
+          availability?: string | null
+          avatar_url?: string | null
+          bio?: string | null
+          city?: string | null
+          company?: string | null
+          country_code?: string | null
+          created_at?: string
+          cv_visibility?: string
+          discoverable_to_recruiters?: boolean
+          education_level?: string | null
+          email?: string | null
+          full_name?: string | null
+          github_url?: string | null
+          graduation_year?: number | null
+          id?: string
+          interests?: string[]
+          is_discoverable?: boolean | null
+          job_title?: string | null
+          linkedin_url?: string | null
+          location?: string | null
+          onboarded?: boolean
+          onboarding_complete?: boolean | null
+          pathways?: string[]
+          phone?: string | null
+          portfolio_url?: string | null
+          preferred_industries?: string[]
+          preferred_locations?: string[]
+          preferred_opportunity_types?: string[]
+          profile_visibility?: string
+          program?: string | null
+          region?: string | null
+          role?: string | null
+          school?: string | null
+          skills?: string[] | null
+          target_career?: string | null
+          terms_accepted_at?: string | null
+          terms_version?: string | null
+          university?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      programme_admission_estimates: {
+        Row: {
+          confidence: number | null
+          confidence_level: string | null
+          created_at: string
+          estimate_high: number | null
+          estimate_low: number | null
+          estimated_cutoff: number | null
+          evidence: string | null
+          id: string
+          method: string | null
+          programme_id: string
+          sample_size: number | null
+          source_url: string | null
+          university_id: string
+          updated_at: string
+          year: number | null
+        }
+        Insert: {
+          confidence?: number | null
+          confidence_level?: string | null
+          created_at?: string
+          estimate_high?: number | null
+          estimate_low?: number | null
+          estimated_cutoff?: number | null
+          evidence?: string | null
+          id?: string
+          method?: string | null
+          programme_id: string
+          sample_size?: number | null
+          source_url?: string | null
+          university_id: string
+          updated_at?: string
+          year?: number | null
+        }
+        Update: {
+          confidence?: number | null
+          confidence_level?: string | null
+          created_at?: string
+          estimate_high?: number | null
+          estimate_low?: number | null
+          estimated_cutoff?: number | null
+          evidence?: string | null
+          id?: string
+          method?: string | null
+          programme_id?: string
+          sample_size?: number | null
+          source_url?: string | null
+          university_id?: string
+          updated_at?: string
+          year?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programme_admission_estimates_programme_id_fkey"
+            columns: ["programme_id"]
+            isOneToOne: false
+            referencedRelation: "programmes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "programme_admission_estimates_university_id_fkey"
+            columns: ["university_id"]
+            isOneToOne: false
+            referencedRelation: "universities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      programme_careers: {
+        Row: {
+          career: string
+          created_at: string
+          description: string | null
+          id: string
+          last_verified: string | null
+          licence_note: string | null
+          occupation: string | null
+          programme_id: string
+          salary_data_source: string | null
+          salary_experience_level: string | null
+          salary_period: string | null
+          salary_range: string | null
+          updated_at: string
+        }
+        Insert: {
+          career: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          last_verified?: string | null
+          licence_note?: string | null
+          occupation?: string | null
+          programme_id: string
+          salary_data_source?: string | null
+          salary_experience_level?: string | null
+          salary_period?: string | null
+          salary_range?: string | null
+          updated_at?: string
+        }
+        Update: {
+          career?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          last_verified?: string | null
+          licence_note?: string | null
+          occupation?: string | null
+          programme_id?: string
+          salary_data_source?: string | null
+          salary_experience_level?: string | null
+          salary_period?: string | null
+          salary_range?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programme_careers_programme_id_fkey"
+            columns: ["programme_id"]
+            isOneToOne: false
+            referencedRelation: "programmes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      programme_curriculum: {
+        Row: {
+          course_code: string | null
+          course_name: string
+          courses: string[] | null
+          created_at: string
+          id: string
+          note: string | null
+          position: number | null
+          programme_id: string
+          source: string | null
+          updated_at: string
+          year: number | null
+          year_label: string | null
+        }
+        Insert: {
+          course_code?: string | null
+          course_name: string
+          courses?: string[] | null
+          created_at?: string
+          id?: string
+          note?: string | null
+          position?: number | null
+          programme_id: string
+          source?: string | null
+          updated_at?: string
+          year?: number | null
+          year_label?: string | null
+        }
+        Update: {
+          course_code?: string | null
+          course_name?: string
+          courses?: string[] | null
+          created_at?: string
+          id?: string
+          note?: string | null
+          position?: number | null
+          programme_id?: string
+          source?: string | null
+          updated_at?: string
+          year?: number | null
+          year_label?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programme_curriculum_programme_id_fkey"
+            columns: ["programme_id"]
+            isOneToOne: false
+            referencedRelation: "programmes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      programme_cutoffs: {
+        Row: {
+          academic_year: string | null
+          admission_notes: string | null
+          applicant_category: string | null
+          created_at: string
+          cut_off_aggregate: number | null
+          cutoff: number | null
+          id: string
+          last_verified_at: string | null
+          minimum_grades: Json | null
+          official_source_url: string | null
+          programme_id: string
+          programme_name: string | null
+          source_name: string | null
+          source_type: string | null
+          source_url: string | null
+          subject_requirements: string | null
+          university_id: string
+          updated_at: string
+          verification_status: string | null
+          year: number | null
+        }
+        Insert: {
+          academic_year?: string | null
+          admission_notes?: string | null
+          applicant_category?: string | null
+          created_at?: string
+          cut_off_aggregate?: number | null
+          cutoff?: number | null
+          id?: string
+          last_verified_at?: string | null
+          minimum_grades?: Json | null
+          official_source_url?: string | null
+          programme_id: string
+          programme_name?: string | null
+          source_name?: string | null
+          source_type?: string | null
+          source_url?: string | null
+          subject_requirements?: string | null
+          university_id: string
+          updated_at?: string
+          verification_status?: string | null
+          year?: number | null
+        }
+        Update: {
+          academic_year?: string | null
+          admission_notes?: string | null
+          applicant_category?: string | null
+          created_at?: string
+          cut_off_aggregate?: number | null
+          cutoff?: number | null
+          id?: string
+          last_verified_at?: string | null
+          minimum_grades?: Json | null
+          official_source_url?: string | null
+          programme_id?: string
+          programme_name?: string | null
+          source_name?: string | null
+          source_type?: string | null
+          source_url?: string | null
+          subject_requirements?: string | null
+          university_id?: string
+          updated_at?: string
+          verification_status?: string | null
+          year?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programme_cutoffs_programme_id_fkey"
+            columns: ["programme_id"]
+            isOneToOne: false
+            referencedRelation: "programmes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "programme_cutoffs_university_id_fkey"
+            columns: ["university_id"]
+            isOneToOne: false
+            referencedRelation: "universities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      programme_feedback: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          programme_id: string
+          rating: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          programme_id: string
+          rating: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          programme_id?: string
+          rating?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programme_feedback_programme_id_fkey"
+            columns: ["programme_id"]
+            isOneToOne: false
+            referencedRelation: "programmes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      programme_field_library: {
+        Row: {
+          about: string | null
+          academic_difficulty: string | null
+          careers: Json | null
+          created_at: string
+          field: string
+          id: string
+          job_market: string | null
+          short_bio: string | null
+          study_areas: string[] | null
+          updated_at: string
+          why_choose: string | null
+        }
+        Insert: {
+          about?: string | null
+          academic_difficulty?: string | null
+          careers?: Json | null
+          created_at?: string
+          field: string
+          id?: string
+          job_market?: string | null
+          short_bio?: string | null
+          study_areas?: string[] | null
+          updated_at?: string
+          why_choose?: string | null
+        }
+        Update: {
+          about?: string | null
+          academic_difficulty?: string | null
+          careers?: Json | null
+          created_at?: string
+          field?: string
+          id?: string
+          job_market?: string | null
+          short_bio?: string | null
+          study_areas?: string[] | null
+          updated_at?: string
+          why_choose?: string | null
+        }
+        Relationships: []
+      }
+      programme_information: {
+        Row: {
+          academic_difficulty: string | null
+          average_salary: number | null
+          career_opportunities: string[] | null
+          content_scope: string | null
+          created_at: string
+          description: string | null
+          id: string
+          job_market: string | null
+          job_market_outlook: string | null
+          last_updated: string | null
+          programme_id: string
+          short_bio: string | null
+          source: string | null
+          study_areas: string[] | null
+          updated_at: string
+          why_choose: string | null
+        }
+        Insert: {
+          academic_difficulty?: string | null
+          average_salary?: number | null
+          career_opportunities?: string[] | null
+          content_scope?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          job_market?: string | null
+          job_market_outlook?: string | null
+          last_updated?: string | null
+          programme_id: string
+          short_bio?: string | null
+          source?: string | null
+          study_areas?: string[] | null
+          updated_at?: string
+          why_choose?: string | null
+        }
+        Update: {
+          academic_difficulty?: string | null
+          average_salary?: number | null
+          career_opportunities?: string[] | null
+          content_scope?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          job_market?: string | null
+          job_market_outlook?: string | null
+          last_updated?: string | null
+          programme_id?: string
+          short_bio?: string | null
+          source?: string | null
+          study_areas?: string[] | null
+          updated_at?: string
+          why_choose?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programme_information_programme_id_fkey"
+            columns: ["programme_id"]
+            isOneToOne: false
+            referencedRelation: "programmes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      programme_qualification_requirements: {
+        Row: {
+          created_at: string
+          id: string
+          last_verified_at: string | null
+          minimum_overall_score: number | null
+          minimum_score_operator: string | null
+          notes: string | null
+          programme_id: string
+          qualification_code: string
+          required_subjects: Json
+          source_url: string | null
+          updated_at: string
+          verification_status: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_verified_at?: string | null
+          minimum_overall_score?: number | null
+          minimum_score_operator?: string | null
+          notes?: string | null
+          programme_id: string
+          qualification_code: string
+          required_subjects?: Json
+          source_url?: string | null
+          updated_at?: string
+          verification_status?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_verified_at?: string | null
+          minimum_overall_score?: number | null
+          minimum_score_operator?: string | null
+          notes?: string | null
+          programme_id?: string
+          qualification_code?: string
+          required_subjects?: Json
+          source_url?: string | null
+          updated_at?: string
+          verification_status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programme_qualification_requirements_programme_id_fkey"
+            columns: ["programme_id"]
+            isOneToOne: false
+            referencedRelation: "programmes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "programme_qualification_requirements_qualification_code_fkey"
+            columns: ["qualification_code"]
+            isOneToOne: false
+            referencedRelation: "qualification_catalog"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
+      programme_requirements: {
+        Row: {
+          additional_requirement: string | null
+          aggregate_requirement: number | null
+          created_at: string
+          id: string
+          minimum_grade: string | null
+          programme_id: string
+          required_subject: string | null
+          requirement: string
+          source_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          additional_requirement?: string | null
+          aggregate_requirement?: number | null
+          created_at?: string
+          id?: string
+          minimum_grade?: string | null
+          programme_id: string
+          required_subject?: string | null
+          requirement: string
+          source_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          additional_requirement?: string | null
+          aggregate_requirement?: number | null
+          created_at?: string
+          id?: string
+          minimum_grade?: string | null
+          programme_id?: string
+          required_subject?: string | null
+          requirement?: string
+          source_url?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programme_requirements_programme_id_fkey"
+            columns: ["programme_id"]
+            isOneToOne: false
+            referencedRelation: "programmes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      programme_sources: {
+        Row: {
+          created_at: string
+          id: string
+          programme_id: string
+          source_name: string | null
+          source_type: string
+          source_url: string
+          updated_at: string
+          verification_status: string | null
+          verified_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          programme_id: string
+          source_name?: string | null
+          source_type: string
+          source_url: string
+          updated_at?: string
+          verification_status?: string | null
+          verified_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          programme_id?: string
+          source_name?: string | null
+          source_type?: string
+          source_url?: string
+          updated_at?: string
+          verification_status?: string | null
+          verified_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programme_sources_programme_id_fkey"
+            columns: ["programme_id"]
+            isOneToOne: false
+            referencedRelation: "programmes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      programmes: {
+        Row: {
+          academic_year: string | null
+          admission_summary: string | null
+          application_url: string | null
+          career_opportunities: string[]
+          created_at: string | null
+          degree_type: string | null
+          department: string | null
+          description: string | null
+          duration: string | null
+          entry_requirements: string | null
+          faculty_id: string | null
+          field: string | null
+          id: string
+          last_verified_at: string | null
+          mode: string | null
+          name: string
+          needs_review: boolean | null
+          programme_url: string | null
+          qualification: string | null
+          relevant_subjects: string[]
+          slug: string
+          source_url: string | null
+          source_urls: string[] | null
+          university_id: string | null
+          updated_at: string | null
+          verification_method: string | null
+          verification_notes: string | null
+          verification_status: string | null
+          verified: boolean
+          verified_by: string | null
+          wassce_requirements: string | null
+        }
+        Insert: {
+          academic_year?: string | null
+          admission_summary?: string | null
+          application_url?: string | null
+          career_opportunities?: string[]
+          created_at?: string | null
+          degree_type?: string | null
+          department?: string | null
+          description?: string | null
+          duration?: string | null
+          entry_requirements?: string | null
+          faculty_id?: string | null
+          field?: string | null
+          id?: string
+          last_verified_at?: string | null
+          mode?: string | null
+          name: string
+          needs_review?: boolean | null
+          programme_url?: string | null
+          qualification?: string | null
+          relevant_subjects?: string[]
+          slug: string
+          source_url?: string | null
+          source_urls?: string[] | null
+          university_id?: string | null
+          updated_at?: string | null
+          verification_method?: string | null
+          verification_notes?: string | null
+          verification_status?: string | null
+          verified?: boolean
+          verified_by?: string | null
+          wassce_requirements?: string | null
+        }
+        Update: {
+          academic_year?: string | null
+          admission_summary?: string | null
+          application_url?: string | null
+          career_opportunities?: string[]
+          created_at?: string | null
+          degree_type?: string | null
+          department?: string | null
+          description?: string | null
+          duration?: string | null
+          entry_requirements?: string | null
+          faculty_id?: string | null
+          field?: string | null
+          id?: string
+          last_verified_at?: string | null
+          mode?: string | null
+          name?: string
+          needs_review?: boolean | null
+          programme_url?: string | null
+          qualification?: string | null
+          relevant_subjects?: string[]
+          slug?: string
+          source_url?: string | null
+          source_urls?: string[] | null
+          university_id?: string | null
+          updated_at?: string | null
+          verification_method?: string | null
+          verification_notes?: string | null
+          verification_status?: string | null
+          verified?: boolean
+          verified_by?: string | null
+          wassce_requirements?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "programmes_faculty_id_fkey"
+            columns: ["faculty_id"]
+            isOneToOne: false
+            referencedRelation: "faculties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "programmes_university_id_fkey"
+            columns: ["university_id"]
+            isOneToOne: false
+            referencedRelation: "universities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      qualification_catalog: {
+        Row: {
+          code: string
+          country_code: string | null
+          created_at: string
+          enabled: boolean
+          family: string
+          grades: string[]
+          grading_scale: string | null
+          levels: string[]
+          metadata: Json
+          name: string
+          score_max: number | null
+          score_min: number | null
+          updated_at: string
+        }
+        Insert: {
+          code: string
+          country_code?: string | null
+          created_at?: string
+          enabled?: boolean
+          family: string
+          grades?: string[]
+          grading_scale?: string | null
+          levels?: string[]
+          metadata?: Json
+          name: string
+          score_max?: number | null
+          score_min?: number | null
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          country_code?: string | null
+          created_at?: string
+          enabled?: boolean
+          family?: string
+          grades?: string[]
+          grading_scale?: string | null
+          levels?: string[]
+          metadata?: Json
+          name?: string
+          score_max?: number | null
+          score_min?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      recommendation_items: {
+        Row: {
+          category: string | null
+          created_at: string
+          entity_id: string | null
+          evidence: Json
+          explanation: string | null
+          id: string
+          item_type: string
+          rank: number
+          run_id: string
+          score: number | null
+          user_id: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          entity_id?: string | null
+          evidence?: Json
+          explanation?: string | null
+          id?: string
+          item_type: string
+          rank: number
+          run_id: string
+          score?: number | null
+          user_id: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          entity_id?: string | null
+          evidence?: Json
+          explanation?: string | null
+          id?: string
+          item_type?: string
+          rank?: number
+          run_id?: string
+          score?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recommendation_items_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "recommendation_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      recommendation_runs: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          engine_version: string
+          error_message: string | null
+          id: string
+          input_snapshot: Json
+          result_count: number
+          run_type: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          engine_version?: string
+          error_message?: string | null
+          id?: string
+          input_snapshot?: Json
+          result_count?: number
+          run_type?: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          engine_version?: string
+          error_message?: string | null
+          id?: string
+          input_snapshot?: Json
+          result_count?: number
+          run_type?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      saved_candidates: {
+        Row: {
+          candidate_user_id: string
+          created_at: string
+          employer_id: string
+          id: string
+        }
+        Insert: {
+          candidate_user_id: string
+          created_at?: string
+          employer_id: string
+          id?: string
+        }
+        Update: {
+          candidate_user_id?: string
+          created_at?: string
+          employer_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_candidates_employer_id_fkey"
+            columns: ["employer_id"]
+            isOneToOne: false
+            referencedRelation: "employers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      saved_items: {
+        Row: {
+          created_at: string
+          id: string
+          item_key: string
+          item_type: string
+          metadata: Json
+          subtitle: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          item_key: string
+          item_type: string
+          metadata?: Json
+          subtitle?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          item_key?: string
+          item_type?: string
+          metadata?: Json
+          subtitle?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      saved_searches: {
+        Row: {
+          alerts_enabled: boolean
+          created_at: string
+          filters: Json
+          id: string
+          last_run_at: string | null
+          name: string
+          search_type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          alerts_enabled?: boolean
+          created_at?: string
+          filters?: Json
+          id?: string
+          last_run_at?: string | null
+          name: string
+          search_type: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          alerts_enabled?: boolean
+          created_at?: string
+          filters?: Json
+          id?: string
+          last_run_at?: string | null
+          name?: string
+          search_type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      scholarship_applications: {
+        Row: {
+          created_at: string
+          deadline: string | null
+          id: string
+          link: string | null
+          notes: string | null
+          provider: string | null
+          scholarship_id: string | null
+          scholarship_name: string | null
+          status: string
+          submitted_at: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          deadline?: string | null
+          id?: string
+          link?: string | null
+          notes?: string | null
+          provider?: string | null
+          scholarship_id?: string | null
+          scholarship_name?: string | null
+          status?: string
+          submitted_at?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          deadline?: string | null
+          id?: string
+          link?: string | null
+          notes?: string | null
+          provider?: string | null
+          scholarship_id?: string | null
+          scholarship_name?: string | null
+          status?: string
+          submitted_at?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      scholarships: {
+        Row: {
+          academic_requirements: string | null
+          application_url: string | null
+          coverage: string | null
+          created_at: string
+          deadline: string | null
+          deadline_date: string | null
+          deadline_text: string | null
+          description: string | null
+          eligibility: string | null
+          fields: string[] | null
+          funding_type: string | null
+          how_to_apply: string | null
+          id: string
+          last_verified_at: string | null
+          location: string | null
+          name: string | null
+          nationality_requirement: string | null
+          provider: string
+          slug: string | null
+          source_url: string | null
+          study_level: string | null
+          title: string
+          type: string
+          updated_at: string
+          verified: boolean
+          website_url: string | null
+        }
+        Insert: {
+          academic_requirements?: string | null
+          application_url?: string | null
+          coverage?: string | null
+          created_at?: string
+          deadline?: string | null
+          deadline_date?: string | null
+          deadline_text?: string | null
+          description?: string | null
+          eligibility?: string | null
+          fields?: string[] | null
+          funding_type?: string | null
+          how_to_apply?: string | null
+          id?: string
+          last_verified_at?: string | null
+          location?: string | null
+          name?: string | null
+          nationality_requirement?: string | null
+          provider: string
+          slug?: string | null
+          source_url?: string | null
+          study_level?: string | null
+          title: string
+          type?: string
+          updated_at?: string
+          verified?: boolean
+          website_url?: string | null
+        }
+        Update: {
+          academic_requirements?: string | null
+          application_url?: string | null
+          coverage?: string | null
+          created_at?: string
+          deadline?: string | null
+          deadline_date?: string | null
+          deadline_text?: string | null
+          description?: string | null
+          eligibility?: string | null
+          fields?: string[] | null
+          funding_type?: string | null
+          how_to_apply?: string | null
+          id?: string
+          last_verified_at?: string | null
+          location?: string | null
+          name?: string | null
+          nationality_requirement?: string | null
+          provider?: string
+          slug?: string | null
+          source_url?: string | null
+          study_level?: string | null
+          title?: string
+          type?: string
+          updated_at?: string
+          verified?: boolean
+          website_url?: string | null
+        }
+        Relationships: []
+      }
+      site_ratings: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          rating: number
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          rating: number
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          rating?: number
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      skill_providers: {
+        Row: {
+          application_url: string | null
+          certification_issued_by: string | null
+          cost: string | null
+          course_name: string | null
+          created_at: string
+          duration: string | null
+          format: string | null
+          id: string
+          last_verified_at: string | null
+          needs_review: boolean
+          provider_name: string
+          skill_area: string | null
+          source_urls: string[]
+          updated_at: string
+          verification_method: string | null
+          verification_notes: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          application_url?: string | null
+          certification_issued_by?: string | null
+          cost?: string | null
+          course_name?: string | null
+          created_at?: string
+          duration?: string | null
+          format?: string | null
+          id?: string
+          last_verified_at?: string | null
+          needs_review?: boolean
+          provider_name: string
+          skill_area?: string | null
+          source_urls?: string[]
+          updated_at?: string
+          verification_method?: string | null
+          verification_notes?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          application_url?: string | null
+          certification_issued_by?: string | null
+          cost?: string | null
+          course_name?: string | null
+          created_at?: string
+          duration?: string | null
+          format?: string | null
+          id?: string
+          last_verified_at?: string | null
+          needs_review?: boolean
+          provider_name?: string
+          skill_area?: string | null
+          source_urls?: string[]
+          updated_at?: string
+          verification_method?: string | null
+          verification_notes?: string | null
+          verified_by?: string | null
+        }
+        Relationships: []
+      }
+      skill_relationships: {
+        Row: {
+          from_skill_id: string
+          id: string
+          rationale: string | null
+          relationship_type: string
+          to_skill_id: string
+          weight: number
+        }
+        Insert: {
+          from_skill_id: string
+          id?: string
+          rationale?: string | null
+          relationship_type?: string
+          to_skill_id: string
+          weight?: number
+        }
+        Update: {
+          from_skill_id?: string
+          id?: string
+          rationale?: string | null
+          relationship_type?: string
+          to_skill_id?: string
+          weight?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "skill_relationships_from_skill_id_fkey"
+            columns: ["from_skill_id"]
+            isOneToOne: false
+            referencedRelation: "skills"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "skill_relationships_to_skill_id_fkey"
+            columns: ["to_skill_id"]
+            isOneToOne: false
+            referencedRelation: "skills"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      skills: {
+        Row: {
+          category: string
+          created_at: string
+          description: string | null
+          difficulty: string | null
+          id: string
+          learning_resources: Json
+          name: string
+          prerequisites: string[]
+          projects: Json
+          related_jobs: Json
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          description?: string | null
+          difficulty?: string | null
+          id?: string
+          learning_resources?: Json
+          name: string
+          prerequisites?: string[]
+          projects?: Json
+          related_jobs?: Json
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string | null
+          difficulty?: string | null
+          id?: string
+          learning_resources?: Json
+          name?: string
+          prerequisites?: string[]
+          projects?: Json
+          related_jobs?: Json
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      sms_sends: {
+        Row: {
+          campaign: string
+          created_at: string
+          error: string | null
+          id: string
+          phone: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          campaign: string
+          created_at?: string
+          error?: string | null
+          id?: string
+          phone: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          campaign?: string
+          created_at?: string
+          error?: string | null
+          id?: string
+          phone?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      source_registry: {
+        Row: {
+          canonical_url: string
+          category: string | null
+          country_code: string | null
+          created_at: string
+          description: string | null
+          id: string
+          last_checked_at: string
+          name: string
+          source_type: string
+          status: string
+          updated_at: string
+          verified_at: string
+        }
+        Insert: {
+          canonical_url: string
+          category?: string | null
+          country_code?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          last_checked_at?: string
+          name: string
+          source_type: string
+          status?: string
+          updated_at?: string
+          verified_at?: string
+        }
+        Update: {
+          canonical_url?: string
+          category?: string | null
+          country_code?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          last_checked_at?: string
+          name?: string
+          source_type?: string
+          status?: string
+          updated_at?: string
+          verified_at?: string
+        }
+        Relationships: []
+      }
+      student_insights: {
+        Row: {
+          advice: string | null
+          body: string
+          category: string | null
+          created_at: string
+          helpful_count: number
+          id: string
+          image_paths: string[] | null
+          programme: string | null
+          rating: number | null
+          status: string
+          student_status: string | null
+          title: string
+          university_id: string
+          updated_at: string
+          user_id: string
+          wish_i_knew: string | null
+          year_of_study: string | null
+        }
+        Insert: {
+          advice?: string | null
+          body: string
+          category?: string | null
+          created_at?: string
+          helpful_count?: number
+          id?: string
+          image_paths?: string[] | null
+          programme?: string | null
+          rating?: number | null
+          status?: string
+          student_status?: string | null
+          title: string
+          university_id: string
+          updated_at?: string
+          user_id: string
+          wish_i_knew?: string | null
+          year_of_study?: string | null
+        }
+        Update: {
+          advice?: string | null
+          body?: string
+          category?: string | null
+          created_at?: string
+          helpful_count?: number
+          id?: string
+          image_paths?: string[] | null
+          programme?: string | null
+          rating?: number | null
+          status?: string
+          student_status?: string | null
+          title?: string
+          university_id?: string
+          updated_at?: string
+          user_id?: string
+          wish_i_knew?: string | null
+          year_of_study?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_insights_university_id_fkey"
+            columns: ["university_id"]
+            isOneToOne: false
+            referencedRelation: "universities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      student_profiles: {
+        Row: {
+          created_at: string
+          education_stage: string | null
+          intended_country: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          education_stage?: string | null
+          intended_country?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          education_stage?: string | null
+          intended_country?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      student_qualification_results: {
+        Row: {
+          created_at: string
+          grade: string
+          id: string
+          level: string | null
+          qualification_id: string
+          subject: string
+          subject_code: string | null
+        }
+        Insert: {
+          created_at?: string
+          grade: string
+          id?: string
+          level?: string | null
+          qualification_id: string
+          subject: string
+          subject_code?: string | null
+        }
+        Update: {
+          created_at?: string
+          grade?: string
+          id?: string
+          level?: string | null
+          qualification_id?: string
+          subject?: string
+          subject_code?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_qualification_results_qualification_id_fkey"
+            columns: ["qualification_id"]
+            isOneToOne: false
+            referencedRelation: "student_qualifications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      student_qualifications: {
+        Row: {
+          country_code: string
+          created_at: string
+          grading_scale: string | null
+          id: string
+          metadata: Json
+          overall_score: string | null
+          qualification_code: string
+          qualification_name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          country_code?: string
+          created_at?: string
+          grading_scale?: string | null
+          id?: string
+          metadata?: Json
+          overall_score?: string | null
+          qualification_code: string
+          qualification_name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          country_code?: string
+          created_at?: string
+          grading_scale?: string | null
+          id?: string
+          metadata?: Json
+          overall_score?: string | null
+          qualification_code?: string
+          qualification_name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      talent_directory: {
+        Row: {
+          bio: string | null
+          city: string | null
+          discoverable: boolean
+          full_name: string | null
+          linkedin_url: string | null
+          preferred_industries: string[]
+          preferred_locations: string[]
+          professional_title: string | null
+          skills: string[]
+          updated_at: string
+          user_id: string
+          years_experience: number | null
+        }
+        Insert: {
+          bio?: string | null
+          city?: string | null
+          discoverable?: boolean
+          full_name?: string | null
+          linkedin_url?: string | null
+          preferred_industries?: string[]
+          preferred_locations?: string[]
+          professional_title?: string | null
+          skills?: string[]
+          updated_at?: string
+          user_id: string
+          years_experience?: number | null
+        }
+        Update: {
+          bio?: string | null
+          city?: string | null
+          discoverable?: boolean
+          full_name?: string | null
+          linkedin_url?: string | null
+          preferred_industries?: string[]
+          preferred_locations?: string[]
+          professional_title?: string | null
+          skills?: string[]
+          updated_at?: string
+          user_id?: string
+          years_experience?: number | null
+        }
+        Relationships: []
+      }
+      universities: {
+        Row: {
+          accreditation_expiry_date: string | null
+          accreditation_start_date: string | null
+          accreditation_status: string
+          address: string | null
+          admission_aggregate: string | null
+          admission_info: string | null
+          admissions_url: string | null
+          aliases: string[] | null
+          campus_vibe: string | null
+          category: string
+          city: string | null
+          country: string
+          created_at: string
+          delivery_mode: string
+          description: string | null
+          email: string | null
+          established_year: number | null
+          financial_aid_url: string | null
+          google_place_id: string | null
+          gtec_accreditation_status: string | null
+          gtec_category: string | null
+          id: string
+          institution_type: string | null
+          last_verified_at: string | null
+          location: string | null
+          logo_source_url: string | null
+          logo_url: string | null
+          logo_verification_status: string | null
+          logo_verified_at: string | null
+          name: string
+          needs_review: boolean | null
+          ownership: string | null
+          region: string | null
+          scholarship_info: string | null
+          short_description: string | null
+          short_name: string | null
+          slug: string
+          social_links: Json | null
+          source_type: string
+          source_url: string | null
+          source_urls: string[] | null
+          student_count: number | null
+          top_programmes: string[] | null
+          tuition_range: string | null
+          type: string
+          updated_at: string
+          verification_status: string
+          verified: boolean
+          website_url: string | null
+        }
+        Insert: {
+          accreditation_expiry_date?: string | null
+          accreditation_start_date?: string | null
+          accreditation_status?: string
+          address?: string | null
+          admission_aggregate?: string | null
+          admission_info?: string | null
+          admissions_url?: string | null
+          aliases?: string[] | null
+          campus_vibe?: string | null
+          category?: string
+          city?: string | null
+          country?: string
+          created_at?: string
+          delivery_mode?: string
+          description?: string | null
+          email?: string | null
+          established_year?: number | null
+          financial_aid_url?: string | null
+          google_place_id?: string | null
+          gtec_accreditation_status?: string | null
+          gtec_category?: string | null
+          id?: string
+          institution_type?: string | null
+          last_verified_at?: string | null
+          location?: string | null
+          logo_source_url?: string | null
+          logo_url?: string | null
+          logo_verification_status?: string | null
+          logo_verified_at?: string | null
+          name: string
+          needs_review?: boolean | null
+          ownership?: string | null
+          region?: string | null
+          scholarship_info?: string | null
+          short_description?: string | null
+          short_name?: string | null
+          slug: string
+          social_links?: Json | null
+          source_type?: string
+          source_url?: string | null
+          source_urls?: string[] | null
+          student_count?: number | null
+          top_programmes?: string[] | null
+          tuition_range?: string | null
+          type?: string
+          updated_at?: string
+          verification_status?: string
+          verified?: boolean
+          website_url?: string | null
+        }
+        Update: {
+          accreditation_expiry_date?: string | null
+          accreditation_start_date?: string | null
+          accreditation_status?: string
+          address?: string | null
+          admission_aggregate?: string | null
+          admission_info?: string | null
+          admissions_url?: string | null
+          aliases?: string[] | null
+          campus_vibe?: string | null
+          category?: string
+          city?: string | null
+          country?: string
+          created_at?: string
+          delivery_mode?: string
+          description?: string | null
+          email?: string | null
+          established_year?: number | null
+          financial_aid_url?: string | null
+          google_place_id?: string | null
+          gtec_accreditation_status?: string | null
+          gtec_category?: string | null
+          id?: string
+          institution_type?: string | null
+          last_verified_at?: string | null
+          location?: string | null
+          logo_source_url?: string | null
+          logo_url?: string | null
+          logo_verification_status?: string | null
+          logo_verified_at?: string | null
+          name?: string
+          needs_review?: boolean | null
+          ownership?: string | null
+          region?: string | null
+          scholarship_info?: string | null
+          short_description?: string | null
+          short_name?: string | null
+          slug?: string
+          social_links?: Json | null
+          source_type?: string
+          source_url?: string | null
+          source_urls?: string[] | null
+          student_count?: number | null
+          top_programmes?: string[] | null
+          tuition_range?: string | null
+          type?: string
+          updated_at?: string
+          verification_status?: string
+          verified?: boolean
+          website_url?: string | null
+        }
+        Relationships: []
+      }
+      usage_counters: {
+        Row: {
+          active_students: number
+          counter_key: string
+          counter_value: number
+          id: string | null
+          metric: string
+          recommendation_runs: number
+          students: number
+          updated_at: string
+          website_visits: number
+        }
+        Insert: {
+          active_students?: number
+          counter_key: string
+          counter_value?: number
+          id?: string | null
+          metric?: string
+          recommendation_runs?: number
+          students?: number
+          updated_at?: string
+          website_visits?: number
+        }
+        Update: {
+          active_students?: number
+          counter_key?: string
+          counter_value?: number
+          id?: string | null
+          metric?: string
+          recommendation_runs?: number
+          students?: number
+          updated_at?: string
+          website_visits?: number
+        }
+        Relationships: []
+      }
+      user_activity: {
+        Row: {
+          created_at: string
+          entity_id: string | null
+          entity_type: string | null
+          event_name: string
+          id: number
+          metadata: Json
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          event_name: string
+          id?: number
+          metadata?: Json
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          event_name?: string
+          id?: number
+          metadata?: Json
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      user_collections: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          updated_at: string
+          user_id: string
+          visibility: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          updated_at?: string
+          user_id: string
+          visibility?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          updated_at?: string
+          user_id?: string
+          visibility?: string
+        }
+        Relationships: []
+      }
+      user_documents: {
+        Row: {
+          created_at: string
+          document_type: string
+          file_name: string
+          file_size_bytes: number | null
+          id: string
+          metadata: Json
+          mime_type: string | null
+          status: string
+          storage_path: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          document_type: string
+          file_name: string
+          file_size_bytes?: number | null
+          id?: string
+          metadata?: Json
+          mime_type?: string | null
+          status?: string
+          storage_path: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          document_type?: string
+          file_name?: string
+          file_size_bytes?: number | null
+          id?: string
+          metadata?: Json
+          mime_type?: string | null
+          status?: string
+          storage_path?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_follows: {
+        Row: {
+          created_at: string
+          entity_key: string
+          entity_type: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          entity_key: string
+          entity_type: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          entity_key?: string
+          entity_type?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_skill_profiles: {
+        Row: {
+          created_at: string
+          evidence: Json
+          id: string
+          level: string | null
+          skill_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          evidence?: Json
+          id?: string
+          level?: string | null
+          skill_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          evidence?: Json
+          id?: string
+          level?: string | null
+          skill_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_skill_profiles_skill_id_fkey"
+            columns: ["skill_id"]
+            isOneToOne: false
+            referencedRelation: "skills"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wassce_results: {
+        Row: {
+          created_at: string
+          grade: string
+          id: string
+          subject: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          grade: string
+          id?: string
+          subject: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          grade?: string
+          id?: string
+          subject?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+    }
+    Views: {
+      startup_directory: {
+        Row: {
+          pitch_url: string | null
+          sector: string | null
+          stage: string | null
+          startup_name: string | null
+          website_url: string | null
+        }
+        Insert: {
+          pitch_url?: string | null
+          sector?: string | null
+          stage?: string | null
+          startup_name?: string | null
+          website_url?: string | null
+        }
+        Update: {
+          pitch_url?: string | null
+          sector?: string | null
+          stage?: string | null
+          startup_name?: string | null
+          website_url?: string | null
+        }
+        Relationships: []
+      }
+      university_platform_analytics: {
+        Row: {
+          internships_indexed: number | null
+          opportunities_indexed: number | null
+          programmes_indexed: number | null
+          scholarships_indexed: number | null
+          universities_indexed: number | null
+          university_countries_indexed: number | null
+        }
+        Relationships: []
+      }
+    }
+    Functions: {
+      accept_parent_invite: { Args: { _code: string }; Returns: string }
+      admin_analytics: { Args: never; Returns: Json }
+      find_duplicate_institution: {
+        Args: { _name: string }
+        Returns: {
+          id: string
+          name: string
+          similarity: number
+          slug: string
+        }[]
+      }
+      get_backend_content: {
+        Args: { p_keys?: string[]; p_language?: string }
+        Returns: Json[]
+      }
+      get_public_usage_stats: { Args: never; Returns: Json }
+      get_user_backend_snapshot: { Args: never; Returns: Json }
+      match_international_programmes: {
+        Args: { p_country_code?: string; p_qualification_code?: string }
+        Returns: {
+          admissions_url: string
+          match_status: string
+          minimum_overall_score: number
+          minimum_score_operator: string
+          notes: string
+          programme_id: string
+          programme_name: string
+          programme_url: string
+          qualification_code: string
+          required_subjects: Json
+          source_url: string
+          university_id: string
+          university_name: string
+          verification_status: string
+        }[]
+      }
+      platform_analytics: { Args: never; Returns: Json }
+      platform_stats: { Args: never; Returns: Json }
+      refresh_public_usage_counters: { Args: never; Returns: undefined }
+      resolve_gpf_backend: {
+        Args: { p_country_code?: string; p_language?: string }
+        Returns: {
+          country_code: string
+          direction: string
+          language_backend: string
+          language_code: string
+          locale: string
+        }[]
+      }
+      save_profile_bundle: {
+        Args: {
+          p_account_role?: string
+          p_country_code?: string
+          p_email?: string
+          p_full_name: string
+          p_grading_scale?: string
+          p_interests?: string[]
+          p_linkedin_url?: string
+          p_overall_score?: string
+          p_pathways?: string[]
+          p_qualification_code?: string
+          p_qualification_metadata?: Json
+          p_qualification_name?: string
+          p_qualification_results?: Json
+          p_region?: string
+          p_school?: string
+          p_target_career?: string
+          p_wassce_results?: Json
+          p_whatsapp_number?: string
+        }
+        Returns: Json
+      }
+      search_catalogue: {
+        Args: { _kind?: string; _limit?: number; _offset?: number; _q: string }
+        Returns: {
+          id: string
+          kind: string
+          meta: Json
+          score: number
+          slug: string
+          subtitle: string
+          title: string
+        }[]
+      }
+      site_rating_summary: { Args: never; Returns: Json }
+      toggle_comment_like: { Args: { _comment_id: string }; Returns: Json }
+      toggle_feed_like: { Args: { p_post_id: string }; Returns: boolean }
+      toggle_insight_helpful: { Args: { _insight_id: string }; Returns: Json }
+    }
+    Enums: {
+      app_role: "student" | "parent" | "admin"
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
+}
+
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
+
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
+
+export type Tables<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    : never) = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      Row: infer R
+    }
+    ? R
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
+    : never
+
+export type TablesInsert<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never) = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I
+    }
+    ? I
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
+    : never
+
+export type TablesUpdate<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never) = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Update: infer U
+    }
+    ? U
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
+    : never
+
+export type Enums<
+  DefaultSchemaEnumNameOrOptions extends
+    | keyof DefaultSchema["Enums"]
+    | { schema: keyof DatabaseWithoutInternals },
+  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    : never) = never,
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
+    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof DefaultSchema["CompositeTypes"]
+    | { schema: keyof DatabaseWithoutInternals },
+  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never) = never,
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never
+
+export const Constants = {
+  public: {
+    Enums: {
+      app_role: ["student", "parent", "admin"],
+    },
+  },
+} as const
