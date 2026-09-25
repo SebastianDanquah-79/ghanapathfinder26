@@ -94,7 +94,7 @@ const UniversityDirectory = () => {
               </div>
 
               <div className="flex items-center gap-1 text-muted-foreground text-sm mb-2"><MapPin className="h-3.5 w-3.5" /><span>{u.location}</span></div>
-              <div className="flex flex-wrap gap-1.5 mb-2">{u.top_programmes.slice(0, 3).map((p) => <span key={p} className="px-2 py-0.5 rounded-full bg-secondary text-xs text-muted-foreground">{p}</span>)}</div>
+              <div className="flex flex-wrap gap-1.5 mb-2">{(u.top_programmes ?? []).slice(0, 3).map((p) => <span key={p} className="px-2 py-0.5 rounded-full bg-secondary text-xs text-muted-foreground">{p}</span>)}</div>
               <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 gap-2 text-xs mb-2">
                 {u.admission_aggregate && <div className="flex items-center gap-1.5"><GraduationCap className="h-3.5 w-3.5 text-primary" /><span className="text-muted-foreground">Aggregate: {u.admission_aggregate}</span></div>}
                 {u.tuition_range && <div className="flex items-center gap-1.5"><Building2 className="h-3.5 w-3.5 text-primary" /><span className="text-muted-foreground">{u.tuition_range}</span></div>}
