@@ -22,7 +22,6 @@ import {
 
 const TABLES: ReviewTable[] = [
   "institutions",
-  "universities",
   "programmes",
   "internship_providers",
   "skill_providers",
