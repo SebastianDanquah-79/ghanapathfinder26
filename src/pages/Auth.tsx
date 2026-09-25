@@ -3,7 +3,7 @@ import { useNavigate, Link, useSearchParams } from "@/lib/router-compat";
 import { Loader2, BrandLogoIcon } from "@/lib/icons";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import type { Provider } from "@supabase/supabase-js";
+import { lovable } from "@/integrations/lovable";
 import { useAuth } from "@/hooks/useAuth";
 import { TERMS_VERSION } from "@/lib/legal";
 import { useEffect } from "react";
@@ -110,23 +110,18 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
     else toast.success("Password reset link sent , check your email.");
   };
 
-  const handleOAuth = async (provider: Extract<Provider, "google" | "linkedin_oidc">) => {
+  const handleOAuth = async () => {
     if (!acceptedTerms) {
       toast.error("Please accept the Terms & Conditions to continue.");
       return;
     }
     setLoading(true);
     localStorage.setItem("selectedRole", selectedRole);
-    const redirectTo = window.location.origin + "/auth/callback";
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider,
-      options: {
-        redirectTo,
-        ...(provider === "linkedin_oidc" ? { scopes: "openid profile email" } : {}),
-      },
+    const result = await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: window.location.origin + "/auth/callback",
     });
-    if (error) {
-      toast.error(error.message);
+    if (result?.error) {
+      toast.error(result.error instanceof Error ? result.error.message : String(result.error));
       setLoading(false);
     }
   };
@@ -182,19 +177,11 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
             </label>
 
             <button
-              onClick={() => handleOAuth("google")}
+              onClick={handleOAuth}
               disabled={loading || !acceptedTerms}
               className="w-full mb-5 px-4 py-3 rounded-lg border border-border bg-secondary text-foreground text-sm font-medium hover:bg-secondary/70 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Continue with Google
-            </button>
-
-            <button
-              onClick={() => handleOAuth("linkedin_oidc")}
-              disabled={loading || !acceptedTerms}
-              className="w-full mb-5 px-4 py-3 rounded-lg border border-border bg-secondary text-foreground text-sm font-medium hover:bg-secondary/70 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Continue with LinkedIn
             </button>
 
             <div className="flex items-center gap-3 mb-5">
