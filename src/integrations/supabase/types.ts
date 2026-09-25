@@ -461,6 +461,9 @@ export type Database = {
           entity_key: string
           entity_type: string
           id: string
+          item_key: string | null
+          item_type: string | null
+          note: string | null
           position: number
           subtitle: string | null
           title: string
@@ -471,6 +474,9 @@ export type Database = {
           entity_key: string
           entity_type: string
           id?: string
+          item_key?: string | null
+          item_type?: string | null
+          note?: string | null
           position?: number
           subtitle?: string | null
           title: string
@@ -481,6 +487,9 @@ export type Database = {
           entity_key?: string
           entity_type?: string
           id?: string
+          item_key?: string | null
+          item_type?: string | null
+          note?: string | null
           position?: number
           subtitle?: string | null
           title?: string
@@ -2227,6 +2236,7 @@ export type Database = {
       insight_reports: {
         Row: {
           created_at: string
+          details: string | null
           id: string
           insight_id: string
           reason: string
@@ -2236,6 +2246,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          details?: string | null
           id?: string
           insight_id: string
           reason: string
@@ -2245,6 +2256,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          details?: string | null
           id?: string
           insight_id?: string
           reason?: string
@@ -2261,6 +2273,81 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      institutions: {
+        Row: {
+          created_at: string
+          google_place_id: string | null
+          gtec_accreditation_status: string | null
+          id: string
+          institution_type: string
+          last_verified_at: string | null
+          logo_source_url: string | null
+          logo_verification_status: string
+          logo_verified_at: string | null
+          needs_review: boolean
+          official_name: string
+          region: string | null
+          short_description: string | null
+          social_links: Json
+          source_urls: string[]
+          town: string | null
+          university_id: string | null
+          updated_at: string
+          verification_method: string | null
+          verification_notes: string | null
+          verified_by: string | null
+          website_url: string | null
+        }
+        Insert: {
+          created_at?: string
+          google_place_id?: string | null
+          gtec_accreditation_status?: string | null
+          id?: string
+          institution_type: string
+          last_verified_at?: string | null
+          logo_source_url?: string | null
+          logo_verification_status?: string
+          logo_verified_at?: string | null
+          needs_review?: boolean
+          official_name: string
+          region?: string | null
+          short_description?: string | null
+          social_links?: Json
+          source_urls?: string[]
+          town?: string | null
+          university_id?: string | null
+          updated_at?: string
+          verification_method?: string | null
+          verification_notes?: string | null
+          verified_by?: string | null
+          website_url?: string | null
+        }
+        Update: {
+          created_at?: string
+          google_place_id?: string | null
+          gtec_accreditation_status?: string | null
+          id?: string
+          institution_type?: string
+          last_verified_at?: string | null
+          logo_source_url?: string | null
+          logo_verification_status?: string
+          logo_verified_at?: string | null
+          needs_review?: boolean
+          official_name?: string
+          region?: string | null
+          short_description?: string | null
+          social_links?: Json
+          source_urls?: string[]
+          town?: string | null
+          university_id?: string | null
+          updated_at?: string
+          verification_method?: string | null
+          verification_notes?: string | null
+          verified_by?: string | null
+          website_url?: string | null
+        }
+        Relationships: []
       }
       international_students: {
         Row: {
@@ -2380,6 +2467,69 @@ export type Database = {
           source_url?: string | null
           updated_at?: string | null
           verified?: boolean | null
+          website_url?: string | null
+        }
+        Relationships: []
+      }
+      internship_providers: {
+        Row: {
+          application_url: string | null
+          created_at: string
+          id: string
+          last_verified_at: string | null
+          logo_source_url: string | null
+          name: string
+          needs_review: boolean
+          paid: boolean | null
+          programme_summary: string | null
+          provider_type: string | null
+          sector: string | null
+          social_links: Json
+          source_urls: string[]
+          updated_at: string
+          verification_method: string | null
+          verification_notes: string | null
+          verified_by: string | null
+          website_url: string | null
+        }
+        Insert: {
+          application_url?: string | null
+          created_at?: string
+          id?: string
+          last_verified_at?: string | null
+          logo_source_url?: string | null
+          name: string
+          needs_review?: boolean
+          paid?: boolean | null
+          programme_summary?: string | null
+          provider_type?: string | null
+          sector?: string | null
+          social_links?: Json
+          source_urls?: string[]
+          updated_at?: string
+          verification_method?: string | null
+          verification_notes?: string | null
+          verified_by?: string | null
+          website_url?: string | null
+        }
+        Update: {
+          application_url?: string | null
+          created_at?: string
+          id?: string
+          last_verified_at?: string | null
+          logo_source_url?: string | null
+          name?: string
+          needs_review?: boolean
+          paid?: boolean | null
+          programme_summary?: string | null
+          provider_type?: string | null
+          sector?: string | null
+          social_links?: Json
+          source_urls?: string[]
+          updated_at?: string
+          verification_method?: string | null
+          verification_notes?: string | null
+          verified_by?: string | null
           website_url?: string | null
         }
         Relationships: []
@@ -2598,8 +2748,11 @@ export type Database = {
           created_at: string
           id: string
           logo_url: string | null
+          note: string | null
+          organisation_name: string | null
           requested_by: string
           status: string
+          suggested_url: string | null
           university_id: string
           updated_at: string
         }
@@ -2607,8 +2760,11 @@ export type Database = {
           created_at?: string
           id?: string
           logo_url?: string | null
+          note?: string | null
+          organisation_name?: string | null
           requested_by: string
           status?: string
+          suggested_url?: string | null
           university_id: string
           updated_at?: string
         }
@@ -2616,8 +2772,11 @@ export type Database = {
           created_at?: string
           id?: string
           logo_url?: string | null
+          note?: string | null
+          organisation_name?: string | null
           requested_by?: string
           status?: string
+          suggested_url?: string | null
           university_id?: string
           updated_at?: string
         }
@@ -2634,25 +2793,46 @@ export type Database = {
       match_preferences: {
         Row: {
           created_at: string
+          field: string | null
           funding_types: string[]
+          gender: string | null
           id: string
+          level: string | null
+          min_coverage: string | null
+          need_based: boolean | null
           preferred_locations: string | null
+          region: string | null
+          study_abroad: boolean | null
           updated_at: string
           user_id: string
         }
         Insert: {
           created_at?: string
+          field?: string | null
           funding_types?: string[]
+          gender?: string | null
           id?: string
+          level?: string | null
+          min_coverage?: string | null
+          need_based?: boolean | null
           preferred_locations?: string | null
+          region?: string | null
+          study_abroad?: boolean | null
           updated_at?: string
           user_id: string
         }
         Update: {
           created_at?: string
+          field?: string | null
           funding_types?: string[]
+          gender?: string | null
           id?: string
+          level?: string | null
+          min_coverage?: string | null
+          need_based?: boolean | null
           preferred_locations?: string | null
+          region?: string | null
+          study_abroad?: boolean | null
           updated_at?: string
           user_id?: string
         }
@@ -2671,6 +2851,7 @@ export type Database = {
           original_url: string
           published_at: string | null
           source_id: string | null
+          source_name: string | null
           title: string
         }
         Insert: {
@@ -2685,6 +2866,7 @@ export type Database = {
           original_url: string
           published_at?: string | null
           source_id?: string | null
+          source_name?: string | null
           title: string
         }
         Update: {
@@ -2699,6 +2881,7 @@ export type Database = {
           original_url?: string
           published_at?: string | null
           source_id?: string | null
+          source_name?: string | null
           title?: string
         }
         Relationships: [
@@ -2793,37 +2976,49 @@ export type Database = {
         Row: {
           action_url: string | null
           body: string | null
+          category: string | null
           created_at: string
           id: string
           is_read: boolean | null
+          link: string | null
           message: string
           read: boolean
+          read_at: string | null
           title: string | null
           type: string
+          updated_at: string | null
           user_id: string
         }
         Insert: {
           action_url?: string | null
           body?: string | null
+          category?: string | null
           created_at?: string
           id?: string
           is_read?: boolean | null
+          link?: string | null
           message: string
           read?: boolean
+          read_at?: string | null
           title?: string | null
           type: string
+          updated_at?: string | null
           user_id: string
         }
         Update: {
           action_url?: string | null
           body?: string | null
+          category?: string | null
           created_at?: string
           id?: string
           is_read?: boolean | null
+          link?: string | null
           message?: string
           read?: boolean
+          read_at?: string | null
           title?: string | null
           type?: string
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: []
@@ -2832,30 +3027,48 @@ export type Database = {
         Row: {
           created_at: string
           currency: string
+          data_source: string | null
+          experience_level: string | null
           id: string
           job_title: string
+          last_verified: string | null
           max_salary: number | null
           min_salary: number | null
+          occupation: string | null
+          salary_period: string | null
+          salary_range: string | null
           source_url: string | null
           updated_at: string
         }
         Insert: {
           created_at?: string
           currency?: string
+          data_source?: string | null
+          experience_level?: string | null
           id?: string
           job_title: string
+          last_verified?: string | null
           max_salary?: number | null
           min_salary?: number | null
+          occupation?: string | null
+          salary_period?: string | null
+          salary_range?: string | null
           source_url?: string | null
           updated_at?: string
         }
         Update: {
           created_at?: string
           currency?: string
+          data_source?: string | null
+          experience_level?: string | null
           id?: string
           job_title?: string
+          last_verified?: string | null
           max_salary?: number | null
           min_salary?: number | null
+          occupation?: string | null
+          salary_period?: string | null
+          salary_range?: string | null
           source_url?: string | null
           updated_at?: string
         }
@@ -3336,10 +3549,16 @@ export type Database = {
       programme_admission_estimates: {
         Row: {
           confidence: number | null
+          confidence_level: string | null
           created_at: string
+          estimate_high: number | null
+          estimate_low: number | null
           estimated_cutoff: number | null
+          evidence: string | null
           id: string
+          method: string | null
           programme_id: string
+          sample_size: number | null
           source_url: string | null
           university_id: string
           updated_at: string
@@ -3347,10 +3566,16 @@ export type Database = {
         }
         Insert: {
           confidence?: number | null
+          confidence_level?: string | null
           created_at?: string
+          estimate_high?: number | null
+          estimate_low?: number | null
           estimated_cutoff?: number | null
+          evidence?: string | null
           id?: string
+          method?: string | null
           programme_id: string
+          sample_size?: number | null
           source_url?: string | null
           university_id: string
           updated_at?: string
@@ -3358,10 +3583,16 @@ export type Database = {
         }
         Update: {
           confidence?: number | null
+          confidence_level?: string | null
           created_at?: string
+          estimate_high?: number | null
+          estimate_low?: number | null
           estimated_cutoff?: number | null
+          evidence?: string | null
           id?: string
+          method?: string | null
           programme_id?: string
+          sample_size?: number | null
           source_url?: string | null
           university_id?: string
           updated_at?: string
@@ -3447,9 +3678,13 @@ export type Database = {
           courses: string[] | null
           created_at: string
           id: string
+          note: string | null
+          position: number | null
           programme_id: string
+          source: string | null
           updated_at: string
           year: number | null
+          year_label: string | null
         }
         Insert: {
           course_code?: string | null
@@ -3457,9 +3692,13 @@ export type Database = {
           courses?: string[] | null
           created_at?: string
           id?: string
+          note?: string | null
+          position?: number | null
           programme_id: string
+          source?: string | null
           updated_at?: string
           year?: number | null
+          year_label?: string | null
         }
         Update: {
           course_code?: string | null
@@ -3467,9 +3706,13 @@ export type Database = {
           courses?: string[] | null
           created_at?: string
           id?: string
+          note?: string | null
+          position?: number | null
           programme_id?: string
+          source?: string | null
           updated_at?: string
           year?: number | null
+          year_label?: string | null
         }
         Relationships: [
           {
@@ -3605,25 +3848,43 @@ export type Database = {
       }
       programme_field_library: {
         Row: {
+          about: string | null
+          academic_difficulty: string | null
+          careers: Json | null
           created_at: string
           field: string
           id: string
+          job_market: string | null
+          short_bio: string | null
           study_areas: string[] | null
           updated_at: string
+          why_choose: string | null
         }
         Insert: {
+          about?: string | null
+          academic_difficulty?: string | null
+          careers?: Json | null
           created_at?: string
           field: string
           id?: string
+          job_market?: string | null
+          short_bio?: string | null
           study_areas?: string[] | null
           updated_at?: string
+          why_choose?: string | null
         }
         Update: {
+          about?: string | null
+          academic_difficulty?: string | null
+          careers?: Json | null
           created_at?: string
           field?: string
           id?: string
+          job_market?: string | null
+          short_bio?: string | null
           study_areas?: string[] | null
           updated_at?: string
+          why_choose?: string | null
         }
         Relationships: []
       }
@@ -3754,24 +4015,39 @@ export type Database = {
       }
       programme_requirements: {
         Row: {
+          additional_requirement: string | null
+          aggregate_requirement: number | null
           created_at: string
           id: string
+          minimum_grade: string | null
           programme_id: string
+          required_subject: string | null
           requirement: string
+          source_url: string | null
           updated_at: string
         }
         Insert: {
+          additional_requirement?: string | null
+          aggregate_requirement?: number | null
           created_at?: string
           id?: string
+          minimum_grade?: string | null
           programme_id: string
+          required_subject?: string | null
           requirement: string
+          source_url?: string | null
           updated_at?: string
         }
         Update: {
+          additional_requirement?: string | null
+          aggregate_requirement?: number | null
           created_at?: string
           id?: string
+          minimum_grade?: string | null
           programme_id?: string
+          required_subject?: string | null
           requirement?: string
+          source_url?: string | null
           updated_at?: string
         }
         Relationships: [
@@ -3831,10 +4107,12 @@ export type Database = {
       programmes: {
         Row: {
           academic_year: string | null
+          admission_summary: string | null
           application_url: string | null
           career_opportunities: string[] | null
           created_at: string | null
           degree_type: string | null
+          department: string | null
           description: string | null
           duration: string | null
           entry_requirements: string | null
@@ -3842,24 +4120,32 @@ export type Database = {
           field: string | null
           id: string
           last_verified_at: string | null
+          mode: string | null
           name: string | null
+          needs_review: boolean | null
           programme_url: string | null
           qualification: string | null
           relevant_subjects: string[] | null
           slug: string | null
           source_url: string | null
+          source_urls: string[] | null
           university_id: string | null
           updated_at: string | null
+          verification_method: string | null
+          verification_notes: string | null
           verification_status: string | null
           verified: boolean | null
+          verified_by: string | null
           wassce_requirements: string | null
         }
         Insert: {
           academic_year?: string | null
+          admission_summary?: string | null
           application_url?: string | null
           career_opportunities?: string[] | null
           created_at?: string | null
           degree_type?: string | null
+          department?: string | null
           description?: string | null
           duration?: string | null
           entry_requirements?: string | null
@@ -3867,24 +4153,32 @@ export type Database = {
           field?: string | null
           id?: string
           last_verified_at?: string | null
+          mode?: string | null
           name?: string | null
+          needs_review?: boolean | null
           programme_url?: string | null
           qualification?: string | null
           relevant_subjects?: string[] | null
           slug?: string | null
           source_url?: string | null
+          source_urls?: string[] | null
           university_id?: string | null
           updated_at?: string | null
+          verification_method?: string | null
+          verification_notes?: string | null
           verification_status?: string | null
           verified?: boolean | null
+          verified_by?: string | null
           wassce_requirements?: string | null
         }
         Update: {
           academic_year?: string | null
+          admission_summary?: string | null
           application_url?: string | null
           career_opportunities?: string[] | null
           created_at?: string | null
           degree_type?: string | null
+          department?: string | null
           description?: string | null
           duration?: string | null
           entry_requirements?: string | null
@@ -3892,16 +4186,22 @@ export type Database = {
           field?: string | null
           id?: string
           last_verified_at?: string | null
+          mode?: string | null
           name?: string | null
+          needs_review?: boolean | null
           programme_url?: string | null
           qualification?: string | null
           relevant_subjects?: string[] | null
           slug?: string | null
           source_url?: string | null
+          source_urls?: string[] | null
           university_id?: string | null
           updated_at?: string | null
+          verification_method?: string | null
+          verification_notes?: string | null
           verification_status?: string | null
           verified?: boolean | null
+          verified_by?: string | null
           wassce_requirements?: string | null
         }
         Relationships: [
@@ -4297,6 +4597,7 @@ export type Database = {
           created_at: string
           id: string
           rating: number
+          updated_at: string | null
           user_id: string
         }
         Insert: {
@@ -4304,6 +4605,7 @@ export type Database = {
           created_at?: string
           id?: string
           rating: number
+          updated_at?: string | null
           user_id: string
         }
         Update: {
@@ -4311,7 +4613,68 @@ export type Database = {
           created_at?: string
           id?: string
           rating?: number
+          updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      skill_providers: {
+        Row: {
+          application_url: string | null
+          certification_issued_by: string | null
+          cost: string | null
+          course_name: string | null
+          created_at: string
+          duration: string | null
+          format: string | null
+          id: string
+          last_verified_at: string | null
+          needs_review: boolean
+          provider_name: string
+          skill_area: string | null
+          source_urls: string[]
+          updated_at: string
+          verification_method: string | null
+          verification_notes: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          application_url?: string | null
+          certification_issued_by?: string | null
+          cost?: string | null
+          course_name?: string | null
+          created_at?: string
+          duration?: string | null
+          format?: string | null
+          id?: string
+          last_verified_at?: string | null
+          needs_review?: boolean
+          provider_name: string
+          skill_area?: string | null
+          source_urls?: string[]
+          updated_at?: string
+          verification_method?: string | null
+          verification_notes?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          application_url?: string | null
+          certification_issued_by?: string | null
+          cost?: string | null
+          course_name?: string | null
+          created_at?: string
+          duration?: string | null
+          format?: string | null
+          id?: string
+          last_verified_at?: string | null
+          needs_review?: boolean
+          provider_name?: string
+          skill_area?: string | null
+          source_urls?: string[]
+          updated_at?: string
+          verification_method?: string | null
+          verification_notes?: string | null
+          verified_by?: string | null
         }
         Relationships: []
       }
@@ -4399,6 +4762,36 @@ export type Database = {
           related_jobs?: Json
           slug?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      sms_sends: {
+        Row: {
+          campaign: string
+          created_at: string
+          error: string | null
+          id: string
+          phone: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          campaign: string
+          created_at?: string
+          error?: string | null
+          id?: string
+          phone: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          campaign?: string
+          created_at?: string
+          error?: string | null
+          id?: string
+          phone?: string
+          status?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -4777,6 +5170,7 @@ export type Database = {
           active_students: number
           counter_key: string
           counter_value: number
+          id: string | null
           metric: string
           recommendation_runs: number
           students: number
@@ -4787,6 +5181,7 @@ export type Database = {
           active_students?: number
           counter_key: string
           counter_value?: number
+          id?: string | null
           metric?: string
           recommendation_runs?: number
           students?: number
@@ -4797,6 +5192,7 @@ export type Database = {
           active_students?: number
           counter_key?: string
           counter_value?: number
+          id?: string | null
           metric?: string
           recommendation_runs?: number
           students?: number
