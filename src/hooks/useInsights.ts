@@ -95,6 +95,7 @@ export const useCreateInsight = () => {
     mutationFn: async (input: InsightInput) => {
       if (!user) throw new Error("Please sign in to share your experience.");
       const { error } = await supabase.from("student_insights").insert({
+        title: input.programme?.trim() || input.category,
         ...input,
         programme: input.programme || null,
         year_of_study: input.year_of_study || null,
