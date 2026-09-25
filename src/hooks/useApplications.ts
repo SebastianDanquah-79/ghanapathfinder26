@@ -75,7 +75,8 @@ export const useAddApplication = () => {
       const { error } = await supabase.from("scholarship_applications").upsert(
         {
           user_id: user.id,
-          scholarship_id: null,\n          scholarship_name: app.scholarship_name,
+          scholarship_id: null,
+          scholarship_name: app.scholarship_name,
           provider: app.provider ?? null,
           deadline: app.deadline ?? null,
           link: app.link ?? null,
