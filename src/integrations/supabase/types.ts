@@ -584,6 +584,45 @@ export type Database = {
         }
         Relationships: []
       }
+      corrections: {
+        Row: {
+          created_at: string
+          id: string
+          note: string
+          resolved: boolean
+          row_id: string | null
+          row_label: string | null
+          submitted_at: string
+          submitted_by: string | null
+          table_name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          note: string
+          resolved?: boolean
+          row_id?: string | null
+          row_label?: string | null
+          submitted_at?: string
+          submitted_by?: string | null
+          table_name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          note?: string
+          resolved?: boolean
+          row_id?: string | null
+          row_label?: string | null
+          submitted_at?: string
+          submitted_by?: string | null
+          table_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       country_catalog: {
         Row: {
           code: string
@@ -2351,48 +2390,81 @@ export type Database = {
           careers: string[] | null
           company_id: string
           created_at: string
+          deadline_date: string | null
+          deadline_text: string | null
           description: string | null
+          duration: string | null
+          eligibility: string | null
           end_date: string | null
           fields: string[] | null
           id: string
+          last_verified_at: string | null
           location: string | null
+          opportunity_type: string | null
+          paid: boolean | null
+          region: string | null
+          slug: string | null
           source_url: string | null
           start_date: string | null
+          stipend_text: string | null
           title: string
           updated_at: string
           verified: boolean
+          work_mode: string | null
         }
         Insert: {
           application_url?: string | null
           careers?: string[] | null
           company_id: string
           created_at?: string
+          deadline_date?: string | null
+          deadline_text?: string | null
           description?: string | null
+          duration?: string | null
+          eligibility?: string | null
           end_date?: string | null
           fields?: string[] | null
           id?: string
+          last_verified_at?: string | null
           location?: string | null
+          opportunity_type?: string | null
+          paid?: boolean | null
+          region?: string | null
+          slug?: string | null
           source_url?: string | null
           start_date?: string | null
+          stipend_text?: string | null
           title: string
           updated_at?: string
           verified?: boolean
+          work_mode?: string | null
         }
         Update: {
           application_url?: string | null
           careers?: string[] | null
           company_id?: string
           created_at?: string
+          deadline_date?: string | null
+          deadline_text?: string | null
           description?: string | null
+          duration?: string | null
+          eligibility?: string | null
           end_date?: string | null
           fields?: string[] | null
           id?: string
+          last_verified_at?: string | null
           location?: string | null
+          opportunity_type?: string | null
+          paid?: boolean | null
+          region?: string | null
+          slug?: string | null
           source_url?: string | null
           start_date?: string | null
+          stipend_text?: string | null
           title?: string
           updated_at?: string
           verified?: boolean
+          work_mode?: string | null
         }
         Relationships: [
           {
@@ -2794,28 +2866,36 @@ export type Database = {
           application_url: string | null
           apply_url: string | null
           availability: string | null
+          category: string | null
           city: string | null
           company_id: string | null
           company_logo_url: string | null
           company_name: string | null
+          compensation: string | null
           country: string | null
           country_code: string | null
           created_at: string
           deadline: string | null
+          deadline_date: string | null
           description: string | null
+          eligibility: string | null
           employment_type: string | null
+          fields: string[] | null
           id: string
           is_active: boolean | null
           is_remote: boolean | null
           last_verified_at: string | null
           location: string | null
           opportunity_type: string
+          organisation: string | null
           posted_at: string | null
           posted_by: string | null
+          published: boolean | null
           remote: boolean
           requirements: string | null
           skills: string[]
           skills_required: string[] | null
+          slug: string | null
           source: string | null
           source_id: string | null
           source_name: string | null
@@ -2824,34 +2904,44 @@ export type Database = {
           title: string
           type: string | null
           updated_at: string
+          verified: boolean | null
           views_count: number | null
+          work_mode: string | null
         }
         Insert: {
           application_url?: string | null
           apply_url?: string | null
           availability?: string | null
+          category?: string | null
           city?: string | null
           company_id?: string | null
           company_logo_url?: string | null
           company_name?: string | null
+          compensation?: string | null
           country?: string | null
           country_code?: string | null
           created_at?: string
           deadline?: string | null
+          deadline_date?: string | null
           description?: string | null
+          eligibility?: string | null
           employment_type?: string | null
+          fields?: string[] | null
           id?: string
           is_active?: boolean | null
           is_remote?: boolean | null
           last_verified_at?: string | null
           location?: string | null
           opportunity_type?: string
+          organisation?: string | null
           posted_at?: string | null
           posted_by?: string | null
+          published?: boolean | null
           remote?: boolean
           requirements?: string | null
           skills?: string[]
           skills_required?: string[] | null
+          slug?: string | null
           source?: string | null
           source_id?: string | null
           source_name?: string | null
@@ -2860,34 +2950,44 @@ export type Database = {
           title: string
           type?: string | null
           updated_at?: string
+          verified?: boolean | null
           views_count?: number | null
+          work_mode?: string | null
         }
         Update: {
           application_url?: string | null
           apply_url?: string | null
           availability?: string | null
+          category?: string | null
           city?: string | null
           company_id?: string | null
           company_logo_url?: string | null
           company_name?: string | null
+          compensation?: string | null
           country?: string | null
           country_code?: string | null
           created_at?: string
           deadline?: string | null
+          deadline_date?: string | null
           description?: string | null
+          eligibility?: string | null
           employment_type?: string | null
+          fields?: string[] | null
           id?: string
           is_active?: boolean | null
           is_remote?: boolean | null
           last_verified_at?: string | null
           location?: string | null
           opportunity_type?: string
+          organisation?: string | null
           posted_at?: string | null
           posted_by?: string | null
+          published?: boolean | null
           remote?: boolean
           requirements?: string | null
           skills?: string[]
           skills_required?: string[] | null
+          slug?: string | null
           source?: string | null
           source_id?: string | null
           source_name?: string | null
@@ -2896,7 +2996,9 @@ export type Database = {
           title?: string
           type?: string | null
           updated_at?: string
+          verified?: boolean | null
           views_count?: number | null
+          work_mode?: string | null
         }
         Relationships: [
           {
@@ -3286,22 +3388,46 @@ export type Database = {
         Row: {
           career: string
           created_at: string
+          description: string | null
           id: string
+          last_verified: string | null
+          licence_note: string | null
+          occupation: string | null
           programme_id: string
+          salary_data_source: string | null
+          salary_experience_level: string | null
+          salary_period: string | null
+          salary_range: string | null
           updated_at: string
         }
         Insert: {
           career: string
           created_at?: string
+          description?: string | null
           id?: string
+          last_verified?: string | null
+          licence_note?: string | null
+          occupation?: string | null
           programme_id: string
+          salary_data_source?: string | null
+          salary_experience_level?: string | null
+          salary_period?: string | null
+          salary_range?: string | null
           updated_at?: string
         }
         Update: {
           career?: string
           created_at?: string
+          description?: string | null
           id?: string
+          last_verified?: string | null
+          licence_note?: string | null
+          occupation?: string | null
           programme_id?: string
+          salary_data_source?: string | null
+          salary_experience_level?: string | null
+          salary_period?: string | null
+          salary_range?: string | null
           updated_at?: string
         }
         Relationships: [
@@ -3357,33 +3483,69 @@ export type Database = {
       }
       programme_cutoffs: {
         Row: {
+          academic_year: string | null
+          admission_notes: string | null
+          applicant_category: string | null
           created_at: string
+          cut_off_aggregate: number | null
           cutoff: number | null
           id: string
+          last_verified_at: string | null
+          minimum_grades: Json | null
+          official_source_url: string | null
           programme_id: string
+          programme_name: string | null
+          source_name: string | null
+          source_type: string | null
           source_url: string | null
+          subject_requirements: string | null
           university_id: string
           updated_at: string
+          verification_status: string | null
           year: number | null
         }
         Insert: {
+          academic_year?: string | null
+          admission_notes?: string | null
+          applicant_category?: string | null
           created_at?: string
+          cut_off_aggregate?: number | null
           cutoff?: number | null
           id?: string
+          last_verified_at?: string | null
+          minimum_grades?: Json | null
+          official_source_url?: string | null
           programme_id: string
+          programme_name?: string | null
+          source_name?: string | null
+          source_type?: string | null
           source_url?: string | null
+          subject_requirements?: string | null
           university_id: string
           updated_at?: string
+          verification_status?: string | null
           year?: number | null
         }
         Update: {
+          academic_year?: string | null
+          admission_notes?: string | null
+          applicant_category?: string | null
           created_at?: string
+          cut_off_aggregate?: number | null
           cutoff?: number | null
           id?: string
+          last_verified_at?: string | null
+          minimum_grades?: Json | null
+          official_source_url?: string | null
           programme_id?: string
+          programme_name?: string | null
+          source_name?: string | null
+          source_type?: string | null
           source_url?: string | null
+          subject_requirements?: string | null
           university_id?: string
           updated_at?: string
+          verification_status?: string | null
           year?: number | null
         }
         Relationships: [
@@ -3467,37 +3629,55 @@ export type Database = {
       }
       programme_information: {
         Row: {
+          academic_difficulty: string | null
           average_salary: number | null
           career_opportunities: string[] | null
+          content_scope: string | null
           created_at: string
           description: string | null
           id: string
+          job_market: string | null
           job_market_outlook: string | null
+          last_updated: string | null
           programme_id: string
+          short_bio: string | null
+          source: string | null
           study_areas: string[] | null
           updated_at: string
           why_choose: string | null
         }
         Insert: {
+          academic_difficulty?: string | null
           average_salary?: number | null
           career_opportunities?: string[] | null
+          content_scope?: string | null
           created_at?: string
           description?: string | null
           id?: string
+          job_market?: string | null
           job_market_outlook?: string | null
+          last_updated?: string | null
           programme_id: string
+          short_bio?: string | null
+          source?: string | null
           study_areas?: string[] | null
           updated_at?: string
           why_choose?: string | null
         }
         Update: {
+          academic_difficulty?: string | null
           average_salary?: number | null
           career_opportunities?: string[] | null
+          content_scope?: string | null
           created_at?: string
           description?: string | null
           id?: string
+          job_market?: string | null
           job_market_outlook?: string | null
+          last_updated?: string | null
           programme_id?: string
+          short_bio?: string | null
+          source?: string | null
           study_areas?: string[] | null
           updated_at?: string
           why_choose?: string | null
@@ -3610,24 +3790,33 @@ export type Database = {
           id: string
           programme_id: string
           source_name: string | null
+          source_type: string | null
           source_url: string
           updated_at: string
+          verification_status: string | null
+          verified_at: string | null
         }
         Insert: {
           created_at?: string
           id?: string
           programme_id: string
           source_name?: string | null
+          source_type?: string | null
           source_url: string
           updated_at?: string
+          verification_status?: string | null
+          verified_at?: string | null
         }
         Update: {
           created_at?: string
           id?: string
           programme_id?: string
           source_name?: string | null
+          source_type?: string | null
           source_url?: string
           updated_at?: string
+          verification_status?: string | null
+          verified_at?: string | null
         }
         Relationships: [
           {
@@ -3973,25 +4162,43 @@ export type Database = {
       scholarship_applications: {
         Row: {
           created_at: string
+          deadline: string | null
           id: string
+          link: string | null
+          notes: string | null
+          provider: string | null
           scholarship_id: string
+          scholarship_name: string | null
           status: string
+          submitted_at: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
           created_at?: string
+          deadline?: string | null
           id?: string
+          link?: string | null
+          notes?: string | null
+          provider?: string | null
           scholarship_id: string
+          scholarship_name?: string | null
           status?: string
+          submitted_at?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
           created_at?: string
+          deadline?: string | null
           id?: string
+          link?: string | null
+          notes?: string | null
+          provider?: string | null
           scholarship_id?: string
+          scholarship_name?: string | null
           status?: string
+          submitted_at?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -3999,49 +4206,88 @@ export type Database = {
       }
       scholarships: {
         Row: {
+          academic_requirements: string | null
           application_url: string | null
+          coverage: string | null
           created_at: string
           deadline: string | null
+          deadline_date: string | null
+          deadline_text: string | null
           description: string | null
           eligibility: string | null
           fields: string[] | null
+          funding_type: string | null
+          how_to_apply: string | null
           id: string
+          last_verified_at: string | null
+          location: string | null
+          name: string | null
+          nationality_requirement: string | null
           provider: string
+          slug: string | null
           source_url: string | null
+          study_level: string | null
           title: string
           type: string
           updated_at: string
           verified: boolean
+          website_url: string | null
         }
         Insert: {
+          academic_requirements?: string | null
           application_url?: string | null
+          coverage?: string | null
           created_at?: string
           deadline?: string | null
+          deadline_date?: string | null
+          deadline_text?: string | null
           description?: string | null
           eligibility?: string | null
           fields?: string[] | null
+          funding_type?: string | null
+          how_to_apply?: string | null
           id?: string
+          last_verified_at?: string | null
+          location?: string | null
+          name?: string | null
+          nationality_requirement?: string | null
           provider: string
+          slug?: string | null
           source_url?: string | null
+          study_level?: string | null
           title: string
           type?: string
           updated_at?: string
           verified?: boolean
+          website_url?: string | null
         }
         Update: {
+          academic_requirements?: string | null
           application_url?: string | null
+          coverage?: string | null
           created_at?: string
           deadline?: string | null
+          deadline_date?: string | null
+          deadline_text?: string | null
           description?: string | null
           eligibility?: string | null
           fields?: string[] | null
+          funding_type?: string | null
+          how_to_apply?: string | null
           id?: string
+          last_verified_at?: string | null
+          location?: string | null
+          name?: string | null
+          nationality_requirement?: string | null
           provider?: string
+          slug?: string | null
           source_url?: string | null
+          study_level?: string | null
           title?: string
           type?: string
           updated_at?: string
           verified?: boolean
+          website_url?: string | null
         }
         Relationships: []
       }
@@ -4158,40 +4404,61 @@ export type Database = {
       }
       student_insights: {
         Row: {
+          advice: string | null
           body: string
+          category: string | null
           created_at: string
           helpful_count: number
           id: string
           image_paths: string[] | null
+          programme: string | null
+          rating: number | null
           status: string
+          student_status: string | null
           title: string
           university_id: string
           updated_at: string
           user_id: string
+          wish_i_knew: string | null
+          year_of_study: string | null
         }
         Insert: {
+          advice?: string | null
           body: string
+          category?: string | null
           created_at?: string
           helpful_count?: number
           id?: string
           image_paths?: string[] | null
+          programme?: string | null
+          rating?: number | null
           status?: string
+          student_status?: string | null
           title: string
           university_id: string
           updated_at?: string
           user_id: string
+          wish_i_knew?: string | null
+          year_of_study?: string | null
         }
         Update: {
+          advice?: string | null
           body?: string
+          category?: string | null
           created_at?: string
           helpful_count?: number
           id?: string
           image_paths?: string[] | null
+          programme?: string | null
+          rating?: number | null
           status?: string
+          student_status?: string | null
           title?: string
           university_id?: string
           updated_at?: string
           user_id?: string
+          wish_i_knew?: string | null
+          year_of_study?: string | null
         }
         Relationships: [
           {
@@ -4369,19 +4636,29 @@ export type Database = {
           email: string | null
           established_year: number | null
           financial_aid_url: string | null
+          google_place_id: string | null
+          gtec_accreditation_status: string | null
           gtec_category: string | null
           id: string
+          institution_type: string | null
           last_verified_at: string | null
           location: string | null
+          logo_source_url: string | null
           logo_url: string | null
+          logo_verification_status: string | null
+          logo_verified_at: string | null
           name: string
+          needs_review: boolean | null
           ownership: string | null
           region: string | null
           scholarship_info: string | null
+          short_description: string | null
           short_name: string | null
           slug: string
+          social_links: Json | null
           source_type: string
           source_url: string | null
+          source_urls: string[] | null
           student_count: number | null
           top_programmes: string[] | null
           tuition_range: string | null
@@ -4410,19 +4687,29 @@ export type Database = {
           email?: string | null
           established_year?: number | null
           financial_aid_url?: string | null
+          google_place_id?: string | null
+          gtec_accreditation_status?: string | null
           gtec_category?: string | null
           id?: string
+          institution_type?: string | null
           last_verified_at?: string | null
           location?: string | null
+          logo_source_url?: string | null
           logo_url?: string | null
+          logo_verification_status?: string | null
+          logo_verified_at?: string | null
           name: string
+          needs_review?: boolean | null
           ownership?: string | null
           region?: string | null
           scholarship_info?: string | null
+          short_description?: string | null
           short_name?: string | null
           slug: string
+          social_links?: Json | null
           source_type?: string
           source_url?: string | null
+          source_urls?: string[] | null
           student_count?: number | null
           top_programmes?: string[] | null
           tuition_range?: string | null
@@ -4451,19 +4738,29 @@ export type Database = {
           email?: string | null
           established_year?: number | null
           financial_aid_url?: string | null
+          google_place_id?: string | null
+          gtec_accreditation_status?: string | null
           gtec_category?: string | null
           id?: string
+          institution_type?: string | null
           last_verified_at?: string | null
           location?: string | null
+          logo_source_url?: string | null
           logo_url?: string | null
+          logo_verification_status?: string | null
+          logo_verified_at?: string | null
           name?: string
+          needs_review?: boolean | null
           ownership?: string | null
           region?: string | null
           scholarship_info?: string | null
+          short_description?: string | null
           short_name?: string | null
           slug?: string
+          social_links?: Json | null
           source_type?: string
           source_url?: string | null
+          source_urls?: string[] | null
           student_count?: number | null
           top_programmes?: string[] | null
           tuition_range?: string | null
@@ -4759,7 +5056,17 @@ export type Database = {
       }
     }
     Functions: {
+      accept_parent_invite: { Args: { _code: string }; Returns: string }
       admin_analytics: { Args: never; Returns: Json }
+      find_duplicate_institution: {
+        Args: { _name: string }
+        Returns: {
+          id: string
+          name: string
+          similarity: number
+          slug: string
+        }[]
+      }
       get_backend_content: {
         Args: { p_keys?: string[]; p_language?: string }
         Returns: Json[]
@@ -4821,7 +5128,22 @@ export type Database = {
         }
         Returns: Json
       }
+      search_catalogue: {
+        Args: { _kind?: string; _limit?: number; _offset?: number; _q: string }
+        Returns: {
+          id: string
+          kind: string
+          meta: Json
+          score: number
+          slug: string
+          subtitle: string
+          title: string
+        }[]
+      }
+      site_rating_summary: { Args: never; Returns: Json }
+      toggle_comment_like: { Args: { _comment_id: string }; Returns: Json }
       toggle_feed_like: { Args: { p_post_id: string }; Returns: boolean }
+      toggle_insight_helpful: { Args: { _insight_id: string }; Returns: Json }
     }
     Enums: {
       app_role: "student" | "parent" | "admin"
