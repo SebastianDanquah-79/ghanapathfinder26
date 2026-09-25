@@ -7,7 +7,7 @@
     "dev": "vite dev",
     "build": "bun run typecheck && vite build && bun run dist:sync",
     "build:dev": "vite build --mode development && bun run dist:sync",
-    "dist:sync": "sh -c 'rm -rf dist && cp -r .output dist' dist-sync",
+    "dist:sync": "sh -c 'rm -rf dist && if [ -d .output ]; then cp -r .output dist; elif [ -d .vercel/output ]; then cp -r .vercel/output dist; else echo \"No build output directory found (.output or .vercel/output)\" >&2; exit 1; fi' dist-sync",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
