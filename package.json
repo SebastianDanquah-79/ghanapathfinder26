@@ -7,7 +7,7 @@
     "dev": "vite dev",
     "build": "bun run typecheck && vite build && bun run dist:sync",
     "build:dev": "vite build --mode development && bun run dist:sync",
-    "dist:sync": "rm -rf dist && cp -r .output dist",
+    "dist:sync": "sh -c 'rm -rf dist && cp -r .output dist' dist-sync",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest run",
