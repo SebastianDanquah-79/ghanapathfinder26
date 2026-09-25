@@ -55,7 +55,7 @@ export const programmeDetailQueryOptions = (slug: string) =>
         supabase
           .from("programme_cutoffs")
           .select("*")
-          .eq("university_id", row.university_id)
+          .eq("university_id", row.university_id ?? "")
           .or(`programme_id.eq.${row.id},programme_name.ilike.%${programmeName.replace(/^(BSc|BA|BEd|BCom|BTech|BFA|Diploma in|Certificate in)\s+/i, "").slice(0, 40)}%`)
           .order("academic_year", { ascending: false })
           .limit(5),
