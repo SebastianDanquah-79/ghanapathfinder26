@@ -67,14 +67,15 @@ function RootComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
-  console.error(error);
+function ErrorComponent({ error, reset }: { error: unknown; reset: () => void }) {
+  const normalizedError = error instanceof Error ? error : new Error(String(error));
+  console.error(normalizedError);
   const router = useRouter();
   useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
+    reportLovableError(normalizedError, { boundary: "tanstack_root_error_component" });
+  }, [normalizedError]);
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background text-foreground p-6">
+    <div className="min-h-dvh flex items-center justify-center bg-background text-foreground p-6">
       <div className="max-w-md w-full text-center space-y-4">
         <h1 className="text-xl font-semibold">This page didn't load</h1>
         <p className="text-muted-foreground">Something went wrong on our end. You can try again or head back home.</p>
