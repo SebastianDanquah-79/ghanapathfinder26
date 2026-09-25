@@ -85,8 +85,8 @@ const Community = () => {
     setEditing({
       id: i.id,
       university_id: i.university_id,
-      student_status: i.student_status,
-      category: i.category,
+      student_status: i.student_status ?? "Current student",
+      category: i.category ?? "General",
       programme: i.programme ?? "",
       body: i.body,
       image_paths: i.image_paths ?? [],
