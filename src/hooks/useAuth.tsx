@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 import type { Session, User } from "@supabase/supabase-js";
-import { supabase } from "@/integrations/supabase/client";
 
 interface AuthContextValue {
   user: User | null;
@@ -22,22 +21,43 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
-      setSession(s);
-      setUser(s?.user ?? null);
-      setLoading(false);
+    let active = true;
+    let unsubscribe = () => {};
+
+    void import("@/integrations/supabase/client").then(({ supabase }) => {
+      if (!active) return;
+
+      const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
+        if (!active) return;
+        setSession(s);
+        setUser(s?.user ?? null);
+        setLoading(false);
+      });
+
+      unsubscribe = () => sub.subscription.unsubscribe();
+
+      void supabase.auth.getSession().then(({ data }) => {
+        if (!active) return;
+        setSession(data.session);
+        setUser(data.session?.user ?? null);
+        setLoading(false);
+      }).catch((error) => {
+        console.error("Auth session initialization failed:", error);
+        if (active) setLoading(false);
+      });
+    }).catch((error) => {
+      console.error("Supabase client initialization failed:", error);
+      if (active) setLoading(false);
     });
 
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setUser(data.session?.user ?? null);
-      setLoading(false);
-    });
-
-    return () => sub.subscription.unsubscribe();
+    return () => {
+      active = false;
+      unsubscribe();
+    };
   }, []);
 
   const signOut = async () => {
+    const { supabase } = await import("@/integrations/supabase/client");
     await supabase.auth.signOut();
   };
 
