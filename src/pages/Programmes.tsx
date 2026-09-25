@@ -105,7 +105,7 @@ const ProgrammeCard = ({ p }: { p: DirectoryProgramme }) => (
         item={{
           item_type: "programme",
           item_key: p.slug,
-          title: p.name,
+          title: p.name ?? "Programme",
           subtitle: p.universities?.name ?? null,
           metadata: { field: p.field, qualification: p.qualification },
         }}
