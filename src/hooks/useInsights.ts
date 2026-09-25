@@ -72,7 +72,7 @@ export const useCommunityInsights = (limit = 30) =>
         .order("created_at", { ascending: false })
         .limit(limit);
       if (error) throw error;
-      return (data ?? []) as Array<
+      return (data ?? []) as unknown as Array<
         StudentInsight & {
           universities: {
             id: string;

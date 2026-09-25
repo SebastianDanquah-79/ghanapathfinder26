@@ -1,10 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import type { Tables } from "@/integrations/supabase/types";
-
-export type FollowEntityType = Tables<"user_follows">["entity_type"];
-export type UserFollow = Tables<"user_follows">;
+// Table added after the generated Supabase types; declared locally.
+export type FollowEntityType = string;
+export interface UserFollow {
+  id: string;
+  user_id: string;
+  entity_type: string;
+  entity_key: string;
+  created_at: string;
+}
 
 export function useUserFollows() {
   const { user } = useAuth();
