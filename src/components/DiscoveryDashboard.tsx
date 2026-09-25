@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@/lib/router-compat";
 import { supabase } from "@/integrations/supabase/client";
-import { ExternalLink, Building2, Newspaper, Users, CalendarDays, GraduationCap, Rocket } from "@/lib/icons";
+import { ExternalLink, Building2, Bookmark, Users, CalendarDays, GraduationCap, Rocket } from "@/lib/icons";
 
 type Item = { id: string; title: string; subtitle?: string | null; url?: string | null; kind: string };
 
@@ -94,7 +94,7 @@ export default function DiscoveryDashboard() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <Section title="Latest news" href="/news"><div className="flex items-center gap-2 mb-3 text-xs text-muted-foreground"><Newspaper className="h-4 w-4 text-primary" /> Publisher-linked updates</div>{news.length ? <ul className="space-y-2">{news.map((x) => <DiscoveryRow key={x.id} item={x} />)}</ul> : empty("News")}</Section>
+        <Section title="Latest news" href="/news"><div className="flex items-center gap-2 mb-3 text-xs text-muted-foreground"><Bookmark className="h-4 w-4 text-primary" /> Publisher-linked updates</div>{news.length ? <ul className="space-y-2">{news.map((x) => <DiscoveryRow key={x.id} item={x} />)}</ul> : empty("News")}</Section>
         <Section title="Companies to discover" href="/people"><div className="flex items-center gap-2 mb-3 text-xs text-muted-foreground"><Building2 className="h-4 w-4 text-primary" /> Verified company records</div>{companies.length ? <ul className="space-y-2">{companies.map((x) => <DiscoveryRow key={x.id} item={x} />)}</ul> : empty("Companies")}</Section>
         <Section title="African startups" href="/startups"><div className="flex items-center gap-2 mb-3 text-xs text-muted-foreground"><Rocket className="h-4 w-4 text-primary" /> Official startup destinations</div>{startups.length ? <ul className="space-y-2">{startups.map((x) => <DiscoveryRow key={x.id} item={x} />)}</ul> : empty("Startups")}</Section>
         <Section title="Universities" href="/search?kind=university"><div className="flex items-center gap-2 mb-3 text-xs text-muted-foreground"><GraduationCap className="h-4 w-4 text-primary" /> Existing university catalogue</div>{universities.length ? <ul className="space-y-2">{universities.map((x) => <DiscoveryRow key={x.id} item={x} />)}</ul> : empty("Universities")}</Section>
