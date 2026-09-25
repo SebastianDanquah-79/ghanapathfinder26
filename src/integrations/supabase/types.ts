@@ -217,6 +217,41 @@ export type Database = {
           },
         ]
       }
+      collection_items: {
+        Row: {
+          collection_id: string
+          created_at: string
+          id: string
+          item_key: string
+          item_type: string
+          note: string | null
+        }
+        Insert: {
+          collection_id: string
+          created_at?: string
+          id?: string
+          item_key: string
+          item_type: string
+          note?: string | null
+        }
+        Update: {
+          collection_id?: string
+          created_at?: string
+          id?: string
+          item_key?: string
+          item_type?: string
+          note?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "collection_items_collection_id_fkey"
+            columns: ["collection_id"]
+            isOneToOne: false
+            referencedRelation: "user_collections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       comment_likes: {
         Row: {
           comment_id: string
@@ -2735,6 +2770,60 @@ export type Database = {
           students?: number
           updated_at?: string
           website_visits?: number
+        }
+        Relationships: []
+      }
+      user_collections: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          updated_at: string
+          user_id: string
+          visibility: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          updated_at?: string
+          user_id: string
+          visibility?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          updated_at?: string
+          user_id?: string
+          visibility?: string
+        }
+        Relationships: []
+      }
+      user_follows: {
+        Row: {
+          created_at: string
+          entity_key: string
+          entity_type: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          entity_key: string
+          entity_type: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          entity_key?: string
+          entity_type?: string
+          id?: string
+          user_id?: string
         }
         Relationships: []
       }
