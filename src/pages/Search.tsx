@@ -327,7 +327,7 @@ const SearchPage = () => {
         title: u.name,
         subtitle: [u.location, u.region, u.category].filter(Boolean).join(" · "),
         meta: {
-          top_programmes: u.top_programmes,
+          top_programmes: u.top_programmes ?? [],
           website_url: u.website_url,
           accreditation_status: u.accreditation_status,
           delivery_mode: u.delivery_mode,
@@ -343,8 +343,8 @@ const SearchPage = () => {
       return (schs.data ?? []).map((s) => ({
         kind: "scholarship" as const,
         id: s.id,
-        slug: s.slug,
-        title: s.name,
+        slug: s.slug ?? s.id,
+        title: s.name ?? "Scholarship",
         subtitle: s.provider,
         meta: {
           eligibility: s.eligibility,
