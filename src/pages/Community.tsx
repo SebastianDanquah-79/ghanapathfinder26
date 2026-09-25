@@ -87,7 +87,7 @@ const Community = () => {
       university_id: i.university_id,
       student_status: i.student_status,
       category: i.category,
-      programme: i.programme,
+      programme: i.programme ?? "",
       body: i.body,
       image_paths: i.image_paths ?? [],
     });
