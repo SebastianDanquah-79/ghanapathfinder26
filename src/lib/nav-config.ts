@@ -37,6 +37,14 @@ export const navSections: NavSection[] = [
     {label:"Inspiration",href:"/inspiration",desc:"Meet people building big things"},
     {label:"For parents",href:"/parent",desc:"Support the journey"},
   ]},
+  { id:"discover", label:"Discover", icon:Globe, href:"/discover-ghana", items:[
+    {label:"Discover Africa",href:"/discover-ghana",desc:"Explore people, places and opportunity"},
+    {label:"People",href:"/people",desc:"Discover public professional profiles"},
+    {label:"Companies",href:"/people",desc:"Explore verified companies"},
+    {label:"Startups",href:"/startups",desc:"Explore African startups"},
+    {label:"Events",href:"/events",desc:"Find upcoming events"},
+    {label:"News",href:"/news",desc:"Follow publisher-linked news"},
+  ]},
   { id:"insights", label:"Insights", icon:Globe, href:"/insights", items:[
     {label:"Platform intelligence",href:"/insights",desc:"Live catalogue analytics"},
     {label:"Africa",href:"/leaders",desc:"People and countries"},
