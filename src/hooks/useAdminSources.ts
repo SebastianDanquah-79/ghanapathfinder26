@@ -38,15 +38,15 @@ export const useSourceTargets = (recordType: string, search: string, enabled: bo
           .limit(20);
         return (data ?? []).map((p) => {
           const uni = p.universities as unknown as { short_name: string | null; name: string } | null;
-          return { id: p.id, label: `${p.name}${uni ? ` , ${uni.short_name ?? uni.name}` : ""}` };
+          return { id: p.id, label: `${p.name ?? p.id}${uni ? ` , ${uni.short_name ?? uni.name}` : ""}` };
         });
       }
       if (recordType === "scholarship") {
         const { data } = await supabase.from("scholarships").select("id,name").ilike("name", q).limit(20);
-        return (data ?? []).map((s) => ({ id: s.id, label: s.name }));
+        return (data ?? []).map((s) => ({ id: s.id, label: s.name ?? s.id }));
       }
       const { data } = await supabase.from("universities").select("id,name").ilike("name", q).limit(20);
-      return (data ?? []).map((u) => ({ id: u.id, label: u.name }));
+      return (data ?? []).map((u) => ({ id: u.id, label: u.name ?? u.id }));
     },
   });
 
