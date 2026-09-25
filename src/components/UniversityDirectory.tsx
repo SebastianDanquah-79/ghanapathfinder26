@@ -1,5 +1,4 @@
 import BrandLogo from "@/components/BrandLogo";
-import UniversityCampusImage from "@/components/UniversityCampusImage";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "@/lib/router-compat";
@@ -80,8 +79,6 @@ const UniversityDirectory = () => {
         <div className="flex hscroll hscroll-bleed snap-x snap-mandatory scroll-smooth [&>*]:w-[17rem] [&>*]:shrink-0 [&>*]:snap-start md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:overflow-visible md:mx-0 md:px-0 md:[&>*]:w-auto gap-4">
           {rows.map((u, i) => (
             <motion.div key={u.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: Math.min(i, 6) * 0.05, duration: 0.4 }} className="bg-glass rounded-xl p-4 card-hover flex flex-col">
-              <UniversityCampusImage name={u.name} location={u.location} placeId={u.google_place_id} />
-
               <div className="flex items-start justify-between gap-2 mb-2">
                 <div className="flex min-w-0 items-start gap-2">
                   <BrandLogo name={u.name} websiteUrl={u.website_url} logoUrl={u.logo_source_url ?? u.logo_url} size={36} />
