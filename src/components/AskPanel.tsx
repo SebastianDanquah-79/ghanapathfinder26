@@ -26,7 +26,7 @@ const DEFAULT_GREETING: UIMessage = {
   parts: [
     {
       type: "text",
-      text: "Hi, I'm your Ghana Pathfinder assistant. How can I help you find your path today?",
+      text: "Akwaaba — I'm here to help you find your way through GhanaPathFinder: universities, scholarships, careers, or your next opportunity. What are you trying to figure out?",
     },
   ],
 };
