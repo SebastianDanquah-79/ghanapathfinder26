@@ -153,6 +153,30 @@ const ExploreAfrica = () => {
           </div>
         </section>
 
+        <section className="mb-8">
+          <div className="mb-3 flex items-center gap-2">
+            <Newspaper className="h-5 w-5 text-primary" />
+            <h2 className="font-display text-xl font-semibold text-foreground">Live web discovery</h2>
+          </div>
+          <p className="mb-4 max-w-3xl text-sm text-muted-foreground">
+            These source links open current public searches and publisher pages. GhanaPathFinder only promotes a record into its database when the source can be verified; search results themselves are labelled as discovery sources.
+          </p>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              ["LinkedIn jobs in Ghana","Current jobs, internships and hiring activity","https://gh.linkedin.com/jobs"],
+              ["LinkedIn African startups","Public company and startup updates","https://www.linkedin.com/search/results/companies/?keywords=African%20startup"],
+              ["Google News — Ghana technology","Current Ghana technology and startup reporting","https://news.google.com/search?q=Ghana%20technology%20startup"],
+              ["Disrupt Africa","African startup and funding reporting","https://disruptafrica.com/"],
+              ["MyJoyOnline — technology","Ghana technology and business reporting","https://www.myjoyonline.com/category/technology/"],
+              ["Graphic Online — technology","Ghana technology and innovation reporting","https://www.graphic.com.gh/news/general-news.html"]
+            ].map(([label,desc,url])=><a key={url} href={url} target="_blank" rel="noreferrer" className="rounded-xl border border-border bg-card p-4 transition hover:border-primary/50">
+              <h3 className="font-semibold text-foreground">{label}</h3>
+              <p className="mt-1 text-xs text-muted-foreground">{desc}</p>
+              <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-primary">Open source <ExternalLink className="h-3.5 w-3.5"/></span>
+            </a>)}
+          </div>
+        </section>
+
         <section>
           <div className="mb-3 flex items-center gap-2">
             <GraduationCap className="h-5 w-5 text-primary" />
