@@ -164,7 +164,7 @@ const Onboarding = () => {
       if(role==="employer"){
         const {error}=await supabase.from("employer_profiles").upsert({
           user_id:user.id,organization_name:company.trim()||fullName.trim()||null,
-          organization_type:jobTitle.trim()||null,hiring_focus:skills.trim()||career.trim()||null,
+          organization_type:jobTitle.trim()||null,hiring_focus:skillList,
         },{onConflict:"user_id"});
         if(error) throw new Error(`Employer profile could not be saved: ${error.message}`);
       }
