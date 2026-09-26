@@ -49,7 +49,11 @@ export type Database = {
           notable_achievements: string[] | null
           official_source_url: string | null
           photo_url: string | null
+          social_links: Json
+          source_urls: string[]
           title: string | null
+          verification_status: string
+          last_checked_at: string | null
           took_office: string | null
         }
         Insert: {
@@ -65,7 +69,11 @@ export type Database = {
           notable_achievements?: string[] | null
           official_source_url?: string | null
           photo_url?: string | null
+          social_links?: Json
+          source_urls?: string[]
           title?: string | null
+          verification_status?: string
+          last_checked_at?: string | null
           took_office?: string | null
         }
         Update: {
@@ -81,7 +89,11 @@ export type Database = {
           notable_achievements?: string[] | null
           official_source_url?: string | null
           photo_url?: string | null
+          social_links?: Json
+          source_urls?: string[]
           title?: string | null
+          verification_status?: string
+          last_checked_at?: string | null
           took_office?: string | null
         }
         Relationships: []
