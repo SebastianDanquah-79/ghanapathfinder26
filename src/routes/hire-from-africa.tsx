@@ -1,0 +1,1 @@
+import { createFileRoute } from "@tanstack/react-router"; import HireFromAfrica from "@/pages/HireFromAfrica"; export const Route=createFileRoute("/hire-from-africa")({component:HireFromAfrica});
