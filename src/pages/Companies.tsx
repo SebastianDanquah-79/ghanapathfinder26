@@ -1,0 +1,10 @@
+import { useQuery } from "@tanstack/react-query";
+import { ExternalLink, Search } from "lucide-react";
+import Navbar from "@/components/Navbar";
+import { supabase } from "@/integrations/supabase/client";
+
+const Companies = () => {
+ const {data:companies=[],isLoading}=useQuery({queryKey:["companies-directory"],queryFn:async()=>{const {data,error}=await supabase.from("companies").select("id,name,slug,sector,location,region,description,website_url,careers_url,source_url,verified,last_verified_at").eq("verified",true).order("name").limit(100);if(error)throw error;return data??[];}});
+ return <div className="min-h-screen bg-background pt-20 pb-24"><Navbar/><main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8"><header className="mb-7"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Africa graph</p><h1 className="mt-2 text-3xl font-bold">Companies</h1><p className="mt-2 max-w-2xl text-sm text-muted-foreground">Verified company records already held by GhanaPathFinder, with source links where available.</p></header>{isLoading?<p className="text-sm text-muted-foreground">Loading companies…</p>:<div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{companies.map(x=><article key={x.id} className="rounded-xl border border-border bg-card p-4"><h2 className="font-semibold">{x.name}</h2><p className="mt-1 text-xs text-muted-foreground">{x.sector} · {x.location||x.region||"Africa"}</p>{x.description&&<p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{x.description}</p>}<div className="mt-3 flex flex-wrap gap-3">{x.website_url&&<a href={x.website_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold text-primary">Website <ExternalLink className="h-3 w-3"/></a>}{x.careers_url&&<a href={x.careers_url} target="_blank" rel="noreferrer" className="text-xs font-semibold">Careers</a>}</div></article>)}</div>}{!isLoading&&!companies.length&&<div className="rounded-xl border border-border p-5 text-sm text-muted-foreground">No verified company records are available yet.</div>}</main></div>;
+};
+export default Companies;
