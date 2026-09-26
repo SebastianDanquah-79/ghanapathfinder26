@@ -1,7 +1,7 @@
 
 import { useEffect } from "react";
 import { useNavigate } from "@/lib/router-compat";
-import { ArrowRight, BriefcaseBusiness, Building2, GraduationCap, Rocket, Globe2, Loader2 } from "@/lib/icons";
+import { ArrowRight, Briefcase, Building2, GraduationCap, Rocket, Globe, Loader2 } from "@/lib/icons";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 
