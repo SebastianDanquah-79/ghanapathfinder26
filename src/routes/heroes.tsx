@@ -1,0 +1,1 @@
+import { createFileRoute } from "@tanstack/react-router"; import Heroes from "@/pages/Heroes"; export const Route=createFileRoute("/heroes")({component:Heroes});
