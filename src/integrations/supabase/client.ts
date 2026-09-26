@@ -2,8 +2,10 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-const SUPABASE_URL = import.meta.env['VITE_SUPABASE_URL'];
-const SUPABASE_PUBLISHABLE_KEY = import.meta.env['VITE_SUPABASE_PUBLISHABLE_KEY'];
+// Lovable/GitHub production fallback: keeps the client attached to the verified GhanaPathFinder Supabase project
+// if a stale preview environment is missing the Vite variables. These are the public Supabase URL/key.
+const SUPABASE_URL = import.meta.env['VITE_SUPABASE_URL'] || 'https://qcvypvvjzrooqylfvpza.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = import.meta.env['VITE_SUPABASE_PUBLISHABLE_KEY'] || 'sb_publishable_xAO66S4UghstoT-95nyTsA_qqcZM5Uq';
 
 
 function isNewSupabaseApiKey(value: string): boolean {
