@@ -90,13 +90,15 @@ const Onboarding = () => {
         if (avatarFile.size > 5 * 1024 * 1024) throw new Error("Profile photo must be 5 MB or smaller.");
         const extension = avatarFile.type === "image/png" ? "png" : avatarFile.type === "image/webp" ? "webp" : "jpg";
         const objectPath = `${user.id}/${crypto.randomUUID()}.${extension}`;
+        const bucketCheck = await supabase.storage.getBucket("avatars");
+        if (bucketCheck.error) throw new Error(`Avatar storage check failed: ${bucketCheck.error.message}`);
         const { error: uploadError } = await supabase.storage.from("avatars").upload(objectPath, avatarFile, {
           upsert:false, contentType:avatarFile.type, cacheControl:"3600",
         });
         if (uploadError) {
           console.error("Profile photo upload failed",uploadError);
           throw new Error(/bucket not found/i.test(uploadError.message)
-            ? "Profile photo storage is unavailable. Please try again later."
+            ? "Photo storage is unavailable for this app configuration. Please refresh and try again."
             : /row-level security|policy|unauthorized|403/i.test(uploadError.message)
               ? "You do not have permission to upload this photo. Please sign in again."
               : `Profile photo upload failed: ${uploadError.message}`);
