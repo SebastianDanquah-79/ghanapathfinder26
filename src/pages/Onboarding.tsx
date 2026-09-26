@@ -54,30 +54,56 @@ const Onboarding = () => {
     if (!user) return;
     setSaving(true);
     try {
-      const { error } = await supabase.from("profiles").upsert(
-        {
-          id: user.id,
-          email: user.email ?? null,
-          full_name: fullName.trim() || null,
-          school: school.trim() || null,
-          region: region || null,
-          target_career: career.trim() || null,
-          interests,
-          onboarded: true,
-        },
-        { onConflict: "id" },
-      );
-      if (error) throw error;
-
       const rows = results
         .filter((r) => r.subject.trim() && r.grade)
-        .map((r) => ({ user_id: user.id, subject: r.subject.trim(), grade: r.grade }));
+        .map((r) => ({ subject: r.subject.trim(), grade: r.grade }));
 
-      const { error: dErr } = await supabase.from("wassce_results").delete().eq("user_id", user.id);
-      if (dErr) throw dErr;
-      if (rows.length) {
-        const { error: rErr } = await supabase.from("wassce_results").insert(rows);
-        if (rErr) throw rErr;
+      const payload = {
+        p_full_name: fullName.trim() || null,
+        p_email: user.email ?? null,
+        p_school: school.trim() || null,
+        p_region: region || null,
+        p_country_code: "GH",
+        p_target_career: career.trim() || null,
+        p_interests: interests,
+        p_pathways: [] as string[],
+        p_account_role: "student",
+        p_wassce_results: rows,
+      };
+
+      // Atomic save: profile + WASSCE results in one transaction.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error: rpcError } = await (supabase.rpc as any)("save_profile_bundle", payload);
+
+      if (rpcError) {
+        console.error("save_profile_bundle failed", rpcError);
+        // Only fall back when the function is not installed on this backend.
+        const missing = rpcError.code === "PGRST202" || rpcError.code === "42883";
+        if (!missing) {
+          throw new Error(rpcError.message || "The server rejected your profile.");
+        }
+        const { error } = await supabase.from("profiles").upsert(
+          {
+            id: user.id,
+            email: user.email ?? null,
+            full_name: payload.p_full_name,
+            school: payload.p_school,
+            region: payload.p_region,
+            target_career: payload.p_target_career,
+            interests,
+            onboarded: true,
+          },
+          { onConflict: "id" },
+        );
+        if (error) throw error;
+        const { error: dErr } = await supabase.from("wassce_results").delete().eq("user_id", user.id);
+        if (dErr) throw dErr;
+        if (rows.length) {
+          const { error: rErr } = await supabase
+            .from("wassce_results")
+            .insert(rows.map((r) => ({ ...r, user_id: user.id })));
+          if (rErr) throw rErr;
+        }
       }
 
       toast.success("Profile saved");

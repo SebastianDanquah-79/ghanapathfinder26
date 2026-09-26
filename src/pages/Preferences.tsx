@@ -53,7 +53,16 @@ const Preferences = () => {
   }, [saved]);
 
   useEffect(() => {
-    if (user) setAvatarUrl((user.user_metadata?.["avatar_url"] as string | undefined) ?? null);
+    if (!user) return;
+    setAvatarUrl((user.user_metadata?.["avatar_url"] as string | undefined) ?? null);
+    supabase
+      .from("profiles")
+      .select("avatar_url")
+      .eq("id", user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data?.avatar_url) setAvatarUrl(data.avatar_url);
+      });
   }, [user]);
 
   const set = <K extends keyof MatchPreferences>(k: K, v: MatchPreferences[K]) =>
@@ -67,9 +76,27 @@ const Preferences = () => {
         : [...prefs.funding_types, t],
     );
 
+  const avatarPathFrom = (url: string | null): string | null => {
+    if (!url || !user) return null;
+    const marker = "/object/public/avatars/";
+    const idx = url.indexOf(marker);
+    if (idx === -1) return null;
+    const path = decodeURIComponent(url.slice(idx + marker.length).split("?")[0] ?? "");
+    return path.startsWith(`${user.id}/`) ? path : null;
+  };
+
+  const avatarErrorMessage = (error: unknown): string => {
+    const msg = error instanceof Error ? error.message : String(error ?? "");
+    if (/bucket not found/i.test(msg)) return "Photo storage is not set up yet. Please try again later.";
+    if (/row-level security|policy|unauthorized|403/i.test(msg)) return "You don't have permission to upload this photo. Please sign in again.";
+    if (/payload too large|size/i.test(msg)) return "That photo is too large. Use one under 5 MB.";
+    if (/mime|type/i.test(msg)) return "Use a JPG, PNG or WebP image.";
+    return msg || "Could not update your profile photo.";
+  };
+
   const uploadAvatar = async (file: File) => {
     if (!user) return;
-    if (!file.type.startsWith("image/") || !["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
       toast.error("Use a JPG, PNG or WebP image.");
       return;
     }
@@ -81,23 +108,34 @@ const Preferences = () => {
     setUploadingAvatar(true);
     try {
       const extension = file.type === "image/png" ? "png" : file.type === "image/webp" ? "webp" : "jpg";
-      const path = `${user.id}/avatar.${extension}`;
+      const path = `${user.id}/${crypto.randomUUID()}.${extension}`;
+      const previousPath = avatarPathFrom(avatarUrl);
       const { error: uploadError } = await supabase.storage
         .from("avatars")
-        .upload(path, file, { upsert: true, contentType: file.type, cacheControl: "3600" });
+        .upload(path, file, { upsert: false, contentType: file.type, cacheControl: "3600" });
       if (uploadError) throw uploadError;
 
       const { data } = supabase.storage.from("avatars").getPublicUrl(path);
-      const publicUrl = `${data.publicUrl}?v=${Date.now()}`;
-      const { error: authError } = await supabase.auth.updateUser({
-        data: { avatar_url: publicUrl },
-      });
-      if (authError) throw authError;
+      const publicUrl = data.publicUrl;
+
+      const { error: profileError } = await supabase
+        .from("profiles")
+        .update({ avatar_url: publicUrl })
+        .eq("id", user.id);
+      if (profileError) throw profileError;
+
+      // Display-only mirror so the navbar updates immediately (never used for authorization).
+      await supabase.auth.updateUser({ data: { avatar_url: publicUrl } });
+
+      if (previousPath && previousPath !== path) {
+        await supabase.storage.from("avatars").remove([previousPath]);
+      }
 
       setAvatarUrl(publicUrl);
       toast.success("Profile photo updated.");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Could not update your profile photo.");
+      console.error("Avatar upload failed", error);
+      toast.error(avatarErrorMessage(error));
     } finally {
       setUploadingAvatar(false);
     }
@@ -107,14 +145,20 @@ const Preferences = () => {
     if (!user || !avatarUrl) return;
     setUploadingAvatar(true);
     try {
-      const extensions = ["jpg", "png", "webp"];
-      await supabase.storage.from("avatars").remove(extensions.map((ext) => `${user.id}/avatar.${ext}`));
-      const { error } = await supabase.auth.updateUser({ data: { avatar_url: null } });
-      if (error) throw error;
+      const current = avatarPathFrom(avatarUrl);
+      const legacy = ["jpg", "png", "webp"].map((ext) => `${user.id}/avatar.${ext}`);
+      await supabase.storage.from("avatars").remove(current ? [current, ...legacy] : legacy);
+      const { error: profileError } = await supabase
+        .from("profiles")
+        .update({ avatar_url: null })
+        .eq("id", user.id);
+      if (profileError) throw profileError;
+      await supabase.auth.updateUser({ data: { avatar_url: null } });
       setAvatarUrl(null);
       toast.success("Profile photo removed.");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Could not remove your profile photo.");
+      console.error("Avatar removal failed", error);
+      toast.error(avatarErrorMessage(error));
     } finally {
       setUploadingAvatar(false);
     }
