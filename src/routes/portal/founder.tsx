@@ -1,0 +1,1 @@
+import { createFileRoute } from "@tanstack/react-router"; import FounderPortal from "@/pages/FounderPortal"; export const Route=createFileRoute("/portal/founder")({component:FounderPortal});
