@@ -149,7 +149,7 @@ const Onboarding = () => {
           program:program.trim()||null,graduation_year:graduationYear?Number(graduationYear):null,
           company:company.trim()||null,job_title:jobTitle.trim()||null,linkedin_url:linkedinUrl.trim()||null,
           avatar_url:nextAvatarUrl,interests,skills:skillList,is_discoverable:discoverable,
-          onboarding_complete:true,onboarded:true,pathways:pathways.length?pathways:[role],
+          onboarding_complete:true,onboarded:true,
         },{onConflict:"id"});
         if(error) throw new Error(`Profile update failed: ${error.message}`);
       }
