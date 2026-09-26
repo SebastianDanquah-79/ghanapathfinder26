@@ -1,0 +1,9 @@
+import { useQuery } from "@tanstack/react-query";
+import Navbar from "@/components/Navbar";
+import { supabase } from "@/integrations/supabase/client";
+
+const People = () => {
+ const {data:people=[],isLoading}=useQuery({queryKey:["people-directory"],queryFn:async()=>{const {data,error}=await supabase.from("talent_directory").select("user_id,full_name,professional_title,years_experience,city,preferred_locations,preferred_industries,skills,bio,discoverable,updated_at").eq("discoverable",true).order("updated_at",{ascending:false}).limit(100);if(error)throw error;return data??[];}});
+ return <div className="min-h-screen bg-background pt-20 pb-24"><Navbar/><main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8"><header className="mb-7"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Connect</p><h1 className="mt-2 text-3xl font-bold">People Building Africa</h1><p className="mt-2 max-w-2xl text-sm text-muted-foreground">Only professionals who have explicitly enabled discoverability are shown.</p></header>{isLoading?<p className="text-sm text-muted-foreground">Loading people…</p>:<div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{people.map(x=><article key={x.user_id} className="rounded-xl border border-border bg-card p-4"><h2 className="font-semibold">{x.full_name||"Professional"}</h2><p className="mt-1 text-xs text-muted-foreground">{x.professional_title||"Professional"}{x.city?" · "+x.city:""}{x.years_experience!=null?" · "+x.years_experience+" years experience":""}</p>{x.skills?.length>0&&<p className="mt-2 text-xs text-muted-foreground">{x.skills.slice(0,8).join(" · ")}</p>}{x.bio&&<p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{x.bio}</p>}</article>)}</div>}{!isLoading&&!people.length&&<div className="rounded-xl border border-border p-5 text-sm text-muted-foreground">No discoverable professional profiles are available yet.</div>}</main></div>;
+};
+export default People;
