@@ -7,10 +7,10 @@ import { useAuth } from "@/hooks/useAuth";
 
 const roles = [
   { key: "student", label: "Student", description: "Universities, scholarships, WASSCE matching, learning and deadlines.", icon: GraduationCap },
-  { key: "employee", label: "Job Seeker", description: "Jobs, internships, skills gaps, applications and matched opportunities.", icon: BriefcaseBusiness },
+  { key: "employee", label: "Job Seeker", description: "Jobs, internships, skills gaps, applications and matched opportunities.", icon: Briefcase },
   { key: "employer", label: "Employer", description: "Hire talent, publish opportunities and discover opted-in candidates.", icon: Building2 },
   { key: "startup_founder", label: "Startup Founder", description: "Funding, accelerators, investors, peers and founder resources.", icon: Rocket },
-  { key: "international_student", label: "International Student", description: "Study destinations, qualification matching, embassies and peer connections.", icon: Globe2 },
+  { key: "international_student", label: "International Student", description: "Study destinations, qualification matching, embassies and peer connections.", icon: Globe },
 ] as const;
 
 type Role = typeof roles[number]["key"];
