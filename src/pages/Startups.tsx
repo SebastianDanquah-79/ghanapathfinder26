@@ -1,0 +1,10 @@
+import { useQuery } from "@tanstack/react-query";
+import { ExternalLink } from "lucide-react";
+import Navbar from "@/components/Navbar";
+import { supabase } from "@/integrations/supabase/client";
+
+const Startups = () => {
+ const {data:startups=[],isLoading}=useQuery({queryKey:["startup-directory"],queryFn:async()=>{const {data,error}=await supabase.from("african_startups").select("id,company_name,country,city,sector,stage,official_url,source_url,source_name,last_verified_at,active_status").order("company_name").limit(150);if(error)throw error;return data??[];}});
+ return <div className="min-h-screen bg-background pt-20 pb-24"><Navbar/><main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8"><header className="mb-7"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Build in Africa</p><h1 className="mt-2 text-3xl font-bold">Startups</h1><p className="mt-2 max-w-2xl text-sm text-muted-foreground">Explore startup records with source and verification metadata already held by the platform.</p></header>{isLoading?<p className="text-sm text-muted-foreground">Loading startups…</p>:<div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{startups.map(x=><article key={x.id} className="rounded-xl border border-border bg-card p-4"><h2 className="font-semibold">{x.company_name}</h2><p className="mt-1 text-xs text-muted-foreground">{x.sector||"Sector unavailable"} · {x.country||"Africa"}{x.city?" · "+x.city:""}</p>{x.stage&&<p className="mt-2 text-xs text-muted-foreground">Stage: {x.stage}</p>}<div className="mt-3 flex gap-3">{(x.official_url||x.source_url)&&<a href={x.official_url||x.source_url||"#"} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold text-primary">Source <ExternalLink className="h-3 w-3"/></a>}</div></article>)}</div>}{!isLoading&&!startups.length&&<div className="rounded-xl border border-border p-5 text-sm text-muted-foreground">No startup records are available yet.</div>}</main></div>;
+};
+export default Startups;
