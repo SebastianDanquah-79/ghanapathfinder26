@@ -1,0 +1,1 @@
+import { createFileRoute } from "@tanstack/react-router"; import NewsHub from "@/pages/NewsHub"; export const Route=createFileRoute("/africa-now")({component:()=> <NewsHub title="Africa Now" />});
