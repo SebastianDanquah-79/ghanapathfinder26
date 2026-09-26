@@ -1,0 +1,1 @@
+import { createFileRoute } from "@tanstack/react-router"; import Hub from "@/pages/AfricaHub"; export const Route=createFileRoute("/build")({component:()=> <Hub mode="build"/>});
