@@ -72,7 +72,7 @@ export const useCommunityInsights = (limit = 30) =>
         .order("created_at", { ascending: false })
         .limit(limit);
       if (error) throw error;
-      return (data ?? []) as unknown as Array<
+      return (data ?? []) as Array<
         StudentInsight & {
           universities: {
             id: string;
@@ -95,7 +95,6 @@ export const useCreateInsight = () => {
     mutationFn: async (input: InsightInput) => {
       if (!user) throw new Error("Please sign in to share your experience.");
       const { error } = await supabase.from("student_insights").insert({
-        title: input.programme?.trim() || input.category,
         ...input,
         programme: input.programme || null,
         year_of_study: input.year_of_study || null,

@@ -55,9 +55,9 @@ export const useSourceDirectory = () =>
         supabase.from("programme_sources").select("source_url,source_type,verification_status,verified_at").limit(1000),
         supabase
           .from("programme_cutoffs")
-          .select("source_url")
+          .select("official_source_url,source_name,source_type,verification_status,last_verified_at")
           .limit(1000),
-        supabase.from("scholarships").select("title,provider,source_url,verified,updated_at").limit(500),
+        supabase.from("scholarships").select("name,provider,website_url,verified,last_verified_at").limit(500),
       ]);
 
       const map = new Map<string, SourceRecord>();
@@ -99,22 +99,22 @@ export const useSourceDirectory = () =>
       for (const c of cutoffs.data ?? [])
         push(
           map,
-          c.source_url,
-          "Official admissions source",
-          "admissions_portal",
+          c.official_source_url,
+          c.source_name ?? "Official admissions source",
+          c.source_type ?? "admissions_portal",
           "Admission requirements and cut-off points",
-          null,
-          "verified",
+          c.last_verified_at,
+          c.verification_status ?? "verified",
         );
 
       for (const s of scholarships.data ?? [])
         push(
           map,
-          s.source_url,
-          s.provider ?? s.title,
+          s.website_url,
+          s.provider ?? s.name,
           "scholarship_provider",
           "Scholarship details and deadlines",
-          s.updated_at,
+          s.last_verified_at,
           s.verified ? "verified" : "needs_review",
         );
 

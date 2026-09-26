@@ -12,57 +12,30 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdmissionMatchRouteImport } from './routes/admission-match'
-import { Route as AiRouteImport } from './routes/ai'
 import { Route as ApplicationsRouteImport } from './routes/applications'
-import { Route as AskAfricaRouteImport } from './routes/ask-africa'
 import { Route as AuthRouteImport } from './routes/auth'
-import { Route as BuildInAfricaRouteImport } from './routes/build-in-africa'
 import { Route as CareerPathRouteImport } from './routes/career-path'
-import { Route as CitiesRouteImport } from './routes/cities'
 import { Route as CommunityRouteImport } from './routes/community'
-import { Route as CompaniesRouteImport } from './routes/companies'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as CompareScholarshipsRouteImport } from './routes/compare-scholarships'
 import { Route as ContactRouteImport } from './routes/contact'
-import { Route as CountriesRouteImport } from './routes/countries'
 import { Route as CreditsRouteImport } from './routes/credits'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
-import { Route as DiscoverGhanaRouteImport } from './routes/discover-ghana'
-import { Route as EventsRouteImport } from './routes/events'
-import { Route as ExploreRouteImport } from './routes/explore'
 import { Route as FaqRouteImport } from './routes/faq'
-import { Route as FeedRouteImport } from './routes/feed'
-import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as InspirationRouteImport } from './routes/inspiration'
-import { Route as InternationalStudentsRouteImport } from './routes/international-students'
-import { Route as InternationalStudentsMeRouteImport } from './routes/international-students-me'
-import { Route as InternationalUniversitiesRouteImport } from './routes/international-universities'
-import { Route as JobsRouteImport } from './routes/jobs'
-import { Route as LeadersRouteImport } from './routes/leaders'
-import { Route as LifePathRouteImport } from './routes/life-path'
 import { Route as MatcherRouteImport } from './routes/matcher'
-import { Route as MyAfricaRouteImport } from './routes/my-africa'
 import { Route as MyPathRouteImport } from './routes/my-path'
-import { Route as NewsRouteImport } from './routes/news'
-import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
-import { Route as OpportunityRadarRouteImport } from './routes/opportunity-radar'
 import { Route as ParentRouteImport } from './routes/parent'
-import { Route as PeopleRouteImport } from './routes/people'
-import { Route as PipelineRouteImport } from './routes/pipeline'
 import { Route as PreferencesRouteImport } from './routes/preferences'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ProfessionalCouncilsRouteImport } from './routes/professional-councils'
-import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ReferencesRouteImport } from './routes/references'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SavedRouteImport } from './routes/saved'
 import { Route as SearchRouteImport } from './routes/search'
-import { Route as StartupsRouteImport } from './routes/startups'
-import { Route as StudentsRouteImport } from './routes/students'
 import { Route as TermsRouteImport } from './routes/terms'
-import { Route as TopicsRouteImport } from './routes/topics'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin/analytics'
 import { Route as AdminDataRouteImport } from './routes/admin/data'
 import { Route as AdminInsightsRouteImport } from './routes/admin/insights'
@@ -72,16 +45,10 @@ import { Route as ApiCareerPathRouteImport } from './routes/api/career-path'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as ApiInstitutionMediaRouteImport } from './routes/api/institution-media'
 import { Route as ApiInstitutionProgrammesRouteImport } from './routes/api/institution-programmes'
-import { Route as AuthCallbackRouteImport } from './routes/auth/callback'
 import { Route as CareersIndexRouteImport } from './routes/careers/index'
 import { Route as CareersSlugRouteImport } from './routes/careers/$slug'
-import { Route as DashboardEmployeeRouteImport } from './routes/dashboard/employee'
-import { Route as DashboardEmployerRouteImport } from './routes/dashboard/employer'
-import { Route as DashboardFounderRouteImport } from './routes/dashboard/founder'
 import { Route as InternshipsIndexRouteImport } from './routes/internships/index'
 import { Route as InternshipsIdRouteImport } from './routes/internships/$id'
-import { Route as OpportunitiesIndexRouteImport } from './routes/opportunities/index'
-import { Route as OpportunitiesSlugRouteImport } from './routes/opportunities/$slug'
 import { Route as ProgrammeSlugRouteImport } from './routes/programme/$slug'
 import { Route as ProgrammesIndexRouteImport } from './routes/programmes/index'
 import { Route as ProgrammesSlugRouteImport } from './routes/programmes/$slug'
@@ -89,7 +56,6 @@ import { Route as ScholarshipsIndexRouteImport } from './routes/scholarships/ind
 import { Route as ScholarshipsSlugRouteImport } from './routes/scholarships/$slug'
 import { Route as SkillsIndexRouteImport } from './routes/skills/index'
 import { Route as SkillsSlugRouteImport } from './routes/skills/$slug'
-import { Route as UniversitiesIndexRouteImport } from './routes/universities/index'
 import { Route as UniversitiesSlugRouteImport } from './routes/universities/$slug'
 import { Route as UniversitySlugRouteImport } from './routes/university/$slug'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
@@ -111,19 +77,9 @@ const AdmissionMatchRoute = AdmissionMatchRouteImport.update({
   path: '/admission-match',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AiRoute = AiRouteImport.update({
-  id: '/ai',
-  path: '/ai',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ApplicationsRoute = ApplicationsRouteImport.update({
   id: '/applications',
   path: '/applications',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AskAfricaRoute = AskAfricaRouteImport.update({
-  id: '/ask-africa',
-  path: '/ask-africa',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -131,29 +87,14 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BuildInAfricaRoute = BuildInAfricaRouteImport.update({
-  id: '/build-in-africa',
-  path: '/build-in-africa',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const CareerPathRoute = CareerPathRouteImport.update({
   id: '/career-path',
   path: '/career-path',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CitiesRoute = CitiesRouteImport.update({
-  id: '/cities',
-  path: '/cities',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const CommunityRoute = CommunityRouteImport.update({
   id: '/community',
   path: '/community',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CompaniesRoute = CompaniesRouteImport.update({
-  id: '/companies',
-  path: '/companies',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CompareRoute = CompareRouteImport.update({
@@ -171,11 +112,6 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CountriesRoute = CountriesRouteImport.update({
-  id: '/countries',
-  path: '/countries',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const CreditsRoute = CreditsRouteImport.update({
   id: '/credits',
   path: '/credits',
@@ -191,34 +127,9 @@ const DisclaimerRoute = DisclaimerRouteImport.update({
   path: '/disclaimer',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DiscoverGhanaRoute = DiscoverGhanaRouteImport.update({
-  id: '/discover-ghana',
-  path: '/discover-ghana',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EventsRoute = EventsRouteImport.update({
-  id: '/events',
-  path: '/events',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ExploreRoute = ExploreRouteImport.update({
-  id: '/explore',
-  path: '/explore',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FeedRoute = FeedRouteImport.update({
-  id: '/feed',
-  path: '/feed',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InsightsRoute = InsightsRouteImport.update({
-  id: '/insights',
-  path: '/insights',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InspirationRoute = InspirationRouteImport.update({
@@ -226,45 +137,9 @@ const InspirationRoute = InspirationRouteImport.update({
   path: '/inspiration',
   getParentRoute: () => rootRouteImport,
 } as any)
-const InternationalStudentsRoute = InternationalStudentsRouteImport.update({
-  id: '/international-students',
-  path: '/international-students',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InternationalStudentsMeRoute = InternationalStudentsMeRouteImport.update({
-  id: '/international-students-me',
-  path: '/international-students-me',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InternationalUniversitiesRoute =
-  InternationalUniversitiesRouteImport.update({
-    id: '/international-universities',
-    path: '/international-universities',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const JobsRoute = JobsRouteImport.update({
-  id: '/jobs',
-  path: '/jobs',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LeadersRoute = LeadersRouteImport.update({
-  id: '/leaders',
-  path: '/leaders',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LifePathRoute = LifePathRouteImport.update({
-  id: '/life-path',
-  path: '/life-path',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const MatcherRoute = MatcherRouteImport.update({
   id: '/matcher',
   path: '/matcher',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MyAfricaRoute = MyAfricaRouteImport.update({
-  id: '/my-africa',
-  path: '/my-africa',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MyPathRoute = MyPathRouteImport.update({
@@ -272,39 +147,14 @@ const MyPathRoute = MyPathRouteImport.update({
   path: '/my-path',
   getParentRoute: () => rootRouteImport,
 } as any)
-const NewsRoute = NewsRouteImport.update({
-  id: '/news',
-  path: '/news',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NotificationsRoute = NotificationsRouteImport.update({
-  id: '/notifications',
-  path: '/notifications',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OpportunityRadarRoute = OpportunityRadarRouteImport.update({
-  id: '/opportunity-radar',
-  path: '/opportunity-radar',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ParentRoute = ParentRouteImport.update({
   id: '/parent',
   path: '/parent',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PeopleRoute = PeopleRouteImport.update({
-  id: '/people',
-  path: '/people',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PipelineRoute = PipelineRouteImport.update({
-  id: '/pipeline',
-  path: '/pipeline',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PreferencesRoute = PreferencesRouteImport.update({
@@ -320,11 +170,6 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const ProfessionalCouncilsRoute = ProfessionalCouncilsRouteImport.update({
   id: '/professional-councils',
   path: '/professional-councils',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReferencesRoute = ReferencesRouteImport.update({
@@ -347,24 +192,9 @@ const SearchRoute = SearchRouteImport.update({
   path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
-const StartupsRoute = StartupsRouteImport.update({
-  id: '/startups',
-  path: '/startups',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const StudentsRoute = StudentsRouteImport.update({
-  id: '/students',
-  path: '/students',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TopicsRoute = TopicsRouteImport.update({
-  id: '/topics',
-  path: '/topics',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminAnalyticsRoute = AdminAnalyticsRouteImport.update({
@@ -413,11 +243,6 @@ const ApiInstitutionProgrammesRoute =
     path: '/api/institution-programmes',
     getParentRoute: () => rootRouteImport,
   } as any)
-const AuthCallbackRoute = AuthCallbackRouteImport.update({
-  id: '/callback',
-  path: '/callback',
-  getParentRoute: () => AuthRoute,
-} as any)
 const CareersIndexRoute = CareersIndexRouteImport.update({
   id: '/careers/',
   path: '/careers/',
@@ -428,21 +253,6 @@ const CareersSlugRoute = CareersSlugRouteImport.update({
   path: '/careers/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardEmployeeRoute = DashboardEmployeeRouteImport.update({
-  id: '/employee',
-  path: '/employee',
-  getParentRoute: () => DashboardRoute,
-} as any)
-const DashboardEmployerRoute = DashboardEmployerRouteImport.update({
-  id: '/employer',
-  path: '/employer',
-  getParentRoute: () => DashboardRoute,
-} as any)
-const DashboardFounderRoute = DashboardFounderRouteImport.update({
-  id: '/founder',
-  path: '/founder',
-  getParentRoute: () => DashboardRoute,
-} as any)
 const InternshipsIndexRoute = InternshipsIndexRouteImport.update({
   id: '/internships/',
   path: '/internships/',
@@ -451,16 +261,6 @@ const InternshipsIndexRoute = InternshipsIndexRouteImport.update({
 const InternshipsIdRoute = InternshipsIdRouteImport.update({
   id: '/internships/$id',
   path: '/internships/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OpportunitiesIndexRoute = OpportunitiesIndexRouteImport.update({
-  id: '/opportunities/',
-  path: '/opportunities/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OpportunitiesSlugRoute = OpportunitiesSlugRouteImport.update({
-  id: '/opportunities/$slug',
-  path: '/opportunities/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProgrammeSlugRoute = ProgrammeSlugRouteImport.update({
@@ -498,11 +298,6 @@ const SkillsSlugRoute = SkillsSlugRouteImport.update({
   path: '/skills/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const UniversitiesIndexRoute = UniversitiesIndexRouteImport.update({
-  id: '/universities/',
-  path: '/universities/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const UniversitiesSlugRoute = UniversitiesSlugRouteImport.update({
   id: '/universities/$slug',
   path: '/universities/$slug',
@@ -534,57 +329,30 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
-  '/ai': typeof AiRoute
   '/applications': typeof ApplicationsRoute
-  '/ask-africa': typeof AskAfricaRoute
-  '/auth': typeof AuthRouteWithChildren
-  '/build-in-africa': typeof BuildInAfricaRoute
+  '/auth': typeof AuthRoute
   '/career-path': typeof CareerPathRoute
-  '/cities': typeof CitiesRoute
   '/community': typeof CommunityRoute
-  '/companies': typeof CompaniesRoute
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
   '/contact': typeof ContactRoute
-  '/countries': typeof CountriesRoute
   '/credits': typeof CreditsRoute
-  '/dashboard': typeof DashboardRouteWithChildren
+  '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
-  '/discover-ghana': typeof DiscoverGhanaRoute
-  '/events': typeof EventsRoute
-  '/explore': typeof ExploreRoute
   '/faq': typeof FaqRoute
-  '/feed': typeof FeedRoute
-  '/insights': typeof InsightsRoute
   '/inspiration': typeof InspirationRoute
-  '/international-students': typeof InternationalStudentsRoute
-  '/international-students-me': typeof InternationalStudentsMeRoute
-  '/international-universities': typeof InternationalUniversitiesRoute
-  '/jobs': typeof JobsRoute
-  '/leaders': typeof LeadersRoute
-  '/life-path': typeof LifePathRoute
   '/matcher': typeof MatcherRoute
-  '/my-africa': typeof MyAfricaRoute
   '/my-path': typeof MyPathRoute
-  '/news': typeof NewsRoute
-  '/notifications': typeof NotificationsRoute
   '/onboarding': typeof OnboardingRoute
-  '/opportunity-radar': typeof OpportunityRadarRoute
   '/parent': typeof ParentRoute
-  '/people': typeof PeopleRoute
-  '/pipeline': typeof PipelineRoute
   '/preferences': typeof PreferencesRoute
   '/privacy': typeof PrivacyRoute
   '/professional-councils': typeof ProfessionalCouncilsRoute
-  '/profile': typeof ProfileRoute
   '/references': typeof ReferencesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
-  '/startups': typeof StartupsRoute
-  '/students': typeof StudentsRoute
   '/terms': typeof TermsRoute
-  '/topics': typeof TopicsRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
   '/admin/insights': typeof AdminInsightsRoute
@@ -594,13 +362,8 @@ export interface FileRoutesByFullPath {
   '/api/chat': typeof ApiChatRoute
   '/api/institution-media': typeof ApiInstitutionMediaRoute
   '/api/institution-programmes': typeof ApiInstitutionProgrammesRoute
-  '/auth/callback': typeof AuthCallbackRoute
   '/careers/$slug': typeof CareersSlugRoute
-  '/dashboard/employee': typeof DashboardEmployeeRoute
-  '/dashboard/employer': typeof DashboardEmployerRoute
-  '/dashboard/founder': typeof DashboardFounderRoute
   '/internships/$id': typeof InternshipsIdRoute
-  '/opportunities/$slug': typeof OpportunitiesSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/programmes/$slug': typeof ProgrammesSlugRoute
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
@@ -609,11 +372,9 @@ export interface FileRoutesByFullPath {
   '/university/$slug': typeof UniversitySlugRoute
   '/careers/': typeof CareersIndexRoute
   '/internships/': typeof InternshipsIndexRoute
-  '/opportunities/': typeof OpportunitiesIndexRoute
   '/programmes/': typeof ProgrammesIndexRoute
   '/scholarships/': typeof ScholarshipsIndexRoute
   '/skills/': typeof SkillsIndexRoute
-  '/universities/': typeof UniversitiesIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/functions/v1/mcp': typeof FunctionsV1McpRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -622,57 +383,30 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
-  '/ai': typeof AiRoute
   '/applications': typeof ApplicationsRoute
-  '/ask-africa': typeof AskAfricaRoute
-  '/auth': typeof AuthRouteWithChildren
-  '/build-in-africa': typeof BuildInAfricaRoute
+  '/auth': typeof AuthRoute
   '/career-path': typeof CareerPathRoute
-  '/cities': typeof CitiesRoute
   '/community': typeof CommunityRoute
-  '/companies': typeof CompaniesRoute
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
   '/contact': typeof ContactRoute
-  '/countries': typeof CountriesRoute
   '/credits': typeof CreditsRoute
-  '/dashboard': typeof DashboardRouteWithChildren
+  '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
-  '/discover-ghana': typeof DiscoverGhanaRoute
-  '/events': typeof EventsRoute
-  '/explore': typeof ExploreRoute
   '/faq': typeof FaqRoute
-  '/feed': typeof FeedRoute
-  '/insights': typeof InsightsRoute
   '/inspiration': typeof InspirationRoute
-  '/international-students': typeof InternationalStudentsRoute
-  '/international-students-me': typeof InternationalStudentsMeRoute
-  '/international-universities': typeof InternationalUniversitiesRoute
-  '/jobs': typeof JobsRoute
-  '/leaders': typeof LeadersRoute
-  '/life-path': typeof LifePathRoute
   '/matcher': typeof MatcherRoute
-  '/my-africa': typeof MyAfricaRoute
   '/my-path': typeof MyPathRoute
-  '/news': typeof NewsRoute
-  '/notifications': typeof NotificationsRoute
   '/onboarding': typeof OnboardingRoute
-  '/opportunity-radar': typeof OpportunityRadarRoute
   '/parent': typeof ParentRoute
-  '/people': typeof PeopleRoute
-  '/pipeline': typeof PipelineRoute
   '/preferences': typeof PreferencesRoute
   '/privacy': typeof PrivacyRoute
   '/professional-councils': typeof ProfessionalCouncilsRoute
-  '/profile': typeof ProfileRoute
   '/references': typeof ReferencesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
-  '/startups': typeof StartupsRoute
-  '/students': typeof StudentsRoute
   '/terms': typeof TermsRoute
-  '/topics': typeof TopicsRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
   '/admin/insights': typeof AdminInsightsRoute
@@ -682,13 +416,8 @@ export interface FileRoutesByTo {
   '/api/chat': typeof ApiChatRoute
   '/api/institution-media': typeof ApiInstitutionMediaRoute
   '/api/institution-programmes': typeof ApiInstitutionProgrammesRoute
-  '/auth/callback': typeof AuthCallbackRoute
   '/careers/$slug': typeof CareersSlugRoute
-  '/dashboard/employee': typeof DashboardEmployeeRoute
-  '/dashboard/employer': typeof DashboardEmployerRoute
-  '/dashboard/founder': typeof DashboardFounderRoute
   '/internships/$id': typeof InternshipsIdRoute
-  '/opportunities/$slug': typeof OpportunitiesSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/programmes/$slug': typeof ProgrammesSlugRoute
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
@@ -697,11 +426,9 @@ export interface FileRoutesByTo {
   '/university/$slug': typeof UniversitySlugRoute
   '/careers': typeof CareersIndexRoute
   '/internships': typeof InternshipsIndexRoute
-  '/opportunities': typeof OpportunitiesIndexRoute
   '/programmes': typeof ProgrammesIndexRoute
   '/scholarships': typeof ScholarshipsIndexRoute
   '/skills': typeof SkillsIndexRoute
-  '/universities': typeof UniversitiesIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/functions/v1/mcp': typeof FunctionsV1McpRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -711,57 +438,30 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
-  '/ai': typeof AiRoute
   '/applications': typeof ApplicationsRoute
-  '/ask-africa': typeof AskAfricaRoute
-  '/auth': typeof AuthRouteWithChildren
-  '/build-in-africa': typeof BuildInAfricaRoute
+  '/auth': typeof AuthRoute
   '/career-path': typeof CareerPathRoute
-  '/cities': typeof CitiesRoute
   '/community': typeof CommunityRoute
-  '/companies': typeof CompaniesRoute
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
   '/contact': typeof ContactRoute
-  '/countries': typeof CountriesRoute
   '/credits': typeof CreditsRoute
-  '/dashboard': typeof DashboardRouteWithChildren
+  '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
-  '/discover-ghana': typeof DiscoverGhanaRoute
-  '/events': typeof EventsRoute
-  '/explore': typeof ExploreRoute
   '/faq': typeof FaqRoute
-  '/feed': typeof FeedRoute
-  '/insights': typeof InsightsRoute
   '/inspiration': typeof InspirationRoute
-  '/international-students': typeof InternationalStudentsRoute
-  '/international-students-me': typeof InternationalStudentsMeRoute
-  '/international-universities': typeof InternationalUniversitiesRoute
-  '/jobs': typeof JobsRoute
-  '/leaders': typeof LeadersRoute
-  '/life-path': typeof LifePathRoute
   '/matcher': typeof MatcherRoute
-  '/my-africa': typeof MyAfricaRoute
   '/my-path': typeof MyPathRoute
-  '/news': typeof NewsRoute
-  '/notifications': typeof NotificationsRoute
   '/onboarding': typeof OnboardingRoute
-  '/opportunity-radar': typeof OpportunityRadarRoute
   '/parent': typeof ParentRoute
-  '/people': typeof PeopleRoute
-  '/pipeline': typeof PipelineRoute
   '/preferences': typeof PreferencesRoute
   '/privacy': typeof PrivacyRoute
   '/professional-councils': typeof ProfessionalCouncilsRoute
-  '/profile': typeof ProfileRoute
   '/references': typeof ReferencesRoute
   '/reset-password': typeof ResetPasswordRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
-  '/startups': typeof StartupsRoute
-  '/students': typeof StudentsRoute
   '/terms': typeof TermsRoute
-  '/topics': typeof TopicsRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
   '/admin/insights': typeof AdminInsightsRoute
@@ -771,13 +471,8 @@ export interface FileRoutesById {
   '/api/chat': typeof ApiChatRoute
   '/api/institution-media': typeof ApiInstitutionMediaRoute
   '/api/institution-programmes': typeof ApiInstitutionProgrammesRoute
-  '/auth/callback': typeof AuthCallbackRoute
   '/careers/$slug': typeof CareersSlugRoute
-  '/dashboard/employee': typeof DashboardEmployeeRoute
-  '/dashboard/employer': typeof DashboardEmployerRoute
-  '/dashboard/founder': typeof DashboardFounderRoute
   '/internships/$id': typeof InternshipsIdRoute
-  '/opportunities/$slug': typeof OpportunitiesSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/programmes/$slug': typeof ProgrammesSlugRoute
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
@@ -786,11 +481,9 @@ export interface FileRoutesById {
   '/university/$slug': typeof UniversitySlugRoute
   '/careers/': typeof CareersIndexRoute
   '/internships/': typeof InternshipsIndexRoute
-  '/opportunities/': typeof OpportunitiesIndexRoute
   '/programmes/': typeof ProgrammesIndexRoute
   '/scholarships/': typeof ScholarshipsIndexRoute
   '/skills/': typeof SkillsIndexRoute
-  '/universities/': typeof UniversitiesIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/functions/v1/mcp': typeof FunctionsV1McpRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -801,57 +494,30 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admission-match'
-    | '/ai'
     | '/applications'
-    | '/ask-africa'
     | '/auth'
-    | '/build-in-africa'
     | '/career-path'
-    | '/cities'
     | '/community'
-    | '/companies'
     | '/compare'
     | '/compare-scholarships'
     | '/contact'
-    | '/countries'
     | '/credits'
     | '/dashboard'
     | '/disclaimer'
-    | '/discover-ghana'
-    | '/events'
-    | '/explore'
     | '/faq'
-    | '/feed'
-    | '/insights'
     | '/inspiration'
-    | '/international-students'
-    | '/international-students-me'
-    | '/international-universities'
-    | '/jobs'
-    | '/leaders'
-    | '/life-path'
     | '/matcher'
-    | '/my-africa'
     | '/my-path'
-    | '/news'
-    | '/notifications'
     | '/onboarding'
-    | '/opportunity-radar'
     | '/parent'
-    | '/people'
-    | '/pipeline'
     | '/preferences'
     | '/privacy'
     | '/professional-councils'
-    | '/profile'
     | '/references'
     | '/reset-password'
     | '/saved'
     | '/search'
-    | '/startups'
-    | '/students'
     | '/terms'
-    | '/topics'
     | '/admin/analytics'
     | '/admin/data'
     | '/admin/insights'
@@ -861,13 +527,8 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/api/institution-media'
     | '/api/institution-programmes'
-    | '/auth/callback'
     | '/careers/$slug'
-    | '/dashboard/employee'
-    | '/dashboard/employer'
-    | '/dashboard/founder'
     | '/internships/$id'
-    | '/opportunities/$slug'
     | '/programme/$slug'
     | '/programmes/$slug'
     | '/scholarships/$slug'
@@ -876,11 +537,9 @@ export interface FileRouteTypes {
     | '/university/$slug'
     | '/careers/'
     | '/internships/'
-    | '/opportunities/'
     | '/programmes/'
     | '/scholarships/'
     | '/skills/'
-    | '/universities/'
     | '/.lovable/oauth/consent'
     | '/functions/v1/mcp'
     | '/lovable/email/transactional/preview'
@@ -889,57 +548,30 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admission-match'
-    | '/ai'
     | '/applications'
-    | '/ask-africa'
     | '/auth'
-    | '/build-in-africa'
     | '/career-path'
-    | '/cities'
     | '/community'
-    | '/companies'
     | '/compare'
     | '/compare-scholarships'
     | '/contact'
-    | '/countries'
     | '/credits'
     | '/dashboard'
     | '/disclaimer'
-    | '/discover-ghana'
-    | '/events'
-    | '/explore'
     | '/faq'
-    | '/feed'
-    | '/insights'
     | '/inspiration'
-    | '/international-students'
-    | '/international-students-me'
-    | '/international-universities'
-    | '/jobs'
-    | '/leaders'
-    | '/life-path'
     | '/matcher'
-    | '/my-africa'
     | '/my-path'
-    | '/news'
-    | '/notifications'
     | '/onboarding'
-    | '/opportunity-radar'
     | '/parent'
-    | '/people'
-    | '/pipeline'
     | '/preferences'
     | '/privacy'
     | '/professional-councils'
-    | '/profile'
     | '/references'
     | '/reset-password'
     | '/saved'
     | '/search'
-    | '/startups'
-    | '/students'
     | '/terms'
-    | '/topics'
     | '/admin/analytics'
     | '/admin/data'
     | '/admin/insights'
@@ -949,13 +581,8 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/api/institution-media'
     | '/api/institution-programmes'
-    | '/auth/callback'
     | '/careers/$slug'
-    | '/dashboard/employee'
-    | '/dashboard/employer'
-    | '/dashboard/founder'
     | '/internships/$id'
-    | '/opportunities/$slug'
     | '/programme/$slug'
     | '/programmes/$slug'
     | '/scholarships/$slug'
@@ -964,11 +591,9 @@ export interface FileRouteTypes {
     | '/university/$slug'
     | '/careers'
     | '/internships'
-    | '/opportunities'
     | '/programmes'
     | '/scholarships'
     | '/skills'
-    | '/universities'
     | '/.lovable/oauth/consent'
     | '/functions/v1/mcp'
     | '/lovable/email/transactional/preview'
@@ -977,57 +602,30 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admission-match'
-    | '/ai'
     | '/applications'
-    | '/ask-africa'
     | '/auth'
-    | '/build-in-africa'
     | '/career-path'
-    | '/cities'
     | '/community'
-    | '/companies'
     | '/compare'
     | '/compare-scholarships'
     | '/contact'
-    | '/countries'
     | '/credits'
     | '/dashboard'
     | '/disclaimer'
-    | '/discover-ghana'
-    | '/events'
-    | '/explore'
     | '/faq'
-    | '/feed'
-    | '/insights'
     | '/inspiration'
-    | '/international-students'
-    | '/international-students-me'
-    | '/international-universities'
-    | '/jobs'
-    | '/leaders'
-    | '/life-path'
     | '/matcher'
-    | '/my-africa'
     | '/my-path'
-    | '/news'
-    | '/notifications'
     | '/onboarding'
-    | '/opportunity-radar'
     | '/parent'
-    | '/people'
-    | '/pipeline'
     | '/preferences'
     | '/privacy'
     | '/professional-councils'
-    | '/profile'
     | '/references'
     | '/reset-password'
     | '/saved'
     | '/search'
-    | '/startups'
-    | '/students'
     | '/terms'
-    | '/topics'
     | '/admin/analytics'
     | '/admin/data'
     | '/admin/insights'
@@ -1037,13 +635,8 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/api/institution-media'
     | '/api/institution-programmes'
-    | '/auth/callback'
     | '/careers/$slug'
-    | '/dashboard/employee'
-    | '/dashboard/employer'
-    | '/dashboard/founder'
     | '/internships/$id'
-    | '/opportunities/$slug'
     | '/programme/$slug'
     | '/programmes/$slug'
     | '/scholarships/$slug'
@@ -1052,11 +645,9 @@ export interface FileRouteTypes {
     | '/university/$slug'
     | '/careers/'
     | '/internships/'
-    | '/opportunities/'
     | '/programmes/'
     | '/scholarships/'
     | '/skills/'
-    | '/universities/'
     | '/.lovable/oauth/consent'
     | '/functions/v1/mcp'
     | '/lovable/email/transactional/preview'
@@ -1066,57 +657,30 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AdmissionMatchRoute: typeof AdmissionMatchRoute
-  AiRoute: typeof AiRoute
   ApplicationsRoute: typeof ApplicationsRoute
-  AskAfricaRoute: typeof AskAfricaRoute
-  AuthRoute: typeof AuthRouteWithChildren
-  BuildInAfricaRoute: typeof BuildInAfricaRoute
+  AuthRoute: typeof AuthRoute
   CareerPathRoute: typeof CareerPathRoute
-  CitiesRoute: typeof CitiesRoute
   CommunityRoute: typeof CommunityRoute
-  CompaniesRoute: typeof CompaniesRoute
   CompareRoute: typeof CompareRoute
   CompareScholarshipsRoute: typeof CompareScholarshipsRoute
   ContactRoute: typeof ContactRoute
-  CountriesRoute: typeof CountriesRoute
   CreditsRoute: typeof CreditsRoute
-  DashboardRoute: typeof DashboardRouteWithChildren
+  DashboardRoute: typeof DashboardRoute
   DisclaimerRoute: typeof DisclaimerRoute
-  DiscoverGhanaRoute: typeof DiscoverGhanaRoute
-  EventsRoute: typeof EventsRoute
-  ExploreRoute: typeof ExploreRoute
   FaqRoute: typeof FaqRoute
-  FeedRoute: typeof FeedRoute
-  InsightsRoute: typeof InsightsRoute
   InspirationRoute: typeof InspirationRoute
-  InternationalStudentsRoute: typeof InternationalStudentsRoute
-  InternationalStudentsMeRoute: typeof InternationalStudentsMeRoute
-  InternationalUniversitiesRoute: typeof InternationalUniversitiesRoute
-  JobsRoute: typeof JobsRoute
-  LeadersRoute: typeof LeadersRoute
-  LifePathRoute: typeof LifePathRoute
   MatcherRoute: typeof MatcherRoute
-  MyAfricaRoute: typeof MyAfricaRoute
   MyPathRoute: typeof MyPathRoute
-  NewsRoute: typeof NewsRoute
-  NotificationsRoute: typeof NotificationsRoute
   OnboardingRoute: typeof OnboardingRoute
-  OpportunityRadarRoute: typeof OpportunityRadarRoute
   ParentRoute: typeof ParentRoute
-  PeopleRoute: typeof PeopleRoute
-  PipelineRoute: typeof PipelineRoute
   PreferencesRoute: typeof PreferencesRoute
   PrivacyRoute: typeof PrivacyRoute
   ProfessionalCouncilsRoute: typeof ProfessionalCouncilsRoute
-  ProfileRoute: typeof ProfileRoute
   ReferencesRoute: typeof ReferencesRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SavedRoute: typeof SavedRoute
   SearchRoute: typeof SearchRoute
-  StartupsRoute: typeof StartupsRoute
-  StudentsRoute: typeof StudentsRoute
   TermsRoute: typeof TermsRoute
-  TopicsRoute: typeof TopicsRoute
   AdminAnalyticsRoute: typeof AdminAnalyticsRoute
   AdminDataRoute: typeof AdminDataRoute
   AdminInsightsRoute: typeof AdminInsightsRoute
@@ -1128,7 +692,6 @@ export interface RootRouteChildren {
   ApiInstitutionProgrammesRoute: typeof ApiInstitutionProgrammesRoute
   CareersSlugRoute: typeof CareersSlugRoute
   InternshipsIdRoute: typeof InternshipsIdRoute
-  OpportunitiesSlugRoute: typeof OpportunitiesSlugRoute
   ProgrammeSlugRoute: typeof ProgrammeSlugRoute
   ProgrammesSlugRoute: typeof ProgrammesSlugRoute
   ScholarshipsSlugRoute: typeof ScholarshipsSlugRoute
@@ -1137,11 +700,9 @@ export interface RootRouteChildren {
   UniversitySlugRoute: typeof UniversitySlugRoute
   CareersIndexRoute: typeof CareersIndexRoute
   InternshipsIndexRoute: typeof InternshipsIndexRoute
-  OpportunitiesIndexRoute: typeof OpportunitiesIndexRoute
   ProgrammesIndexRoute: typeof ProgrammesIndexRoute
   ScholarshipsIndexRoute: typeof ScholarshipsIndexRoute
   SkillsIndexRoute: typeof SkillsIndexRoute
-  UniversitiesIndexRoute: typeof UniversitiesIndexRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   FunctionsV1McpRoute: typeof FunctionsV1McpRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
@@ -1170,25 +731,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdmissionMatchRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/ai': {
-      id: '/ai'
-      path: '/ai'
-      fullPath: '/ai'
-      preLoaderRoute: typeof AiRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/applications': {
       id: '/applications'
       path: '/applications'
       fullPath: '/applications'
       preLoaderRoute: typeof ApplicationsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/ask-africa': {
-      id: '/ask-africa'
-      path: '/ask-africa'
-      fullPath: '/ask-africa'
-      preLoaderRoute: typeof AskAfricaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -1198,13 +745,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/build-in-africa': {
-      id: '/build-in-africa'
-      path: '/build-in-africa'
-      fullPath: '/build-in-africa'
-      preLoaderRoute: typeof BuildInAfricaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/career-path': {
       id: '/career-path'
       path: '/career-path'
@@ -1212,25 +752,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CareerPathRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/cities': {
-      id: '/cities'
-      path: '/cities'
-      fullPath: '/cities'
-      preLoaderRoute: typeof CitiesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/community': {
       id: '/community'
       path: '/community'
       fullPath: '/community'
       preLoaderRoute: typeof CommunityRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/companies': {
-      id: '/companies'
-      path: '/companies'
-      fullPath: '/companies'
-      preLoaderRoute: typeof CompaniesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/compare': {
@@ -1254,13 +780,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/countries': {
-      id: '/countries'
-      path: '/countries'
-      fullPath: '/countries'
-      preLoaderRoute: typeof CountriesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/credits': {
       id: '/credits'
       path: '/credits'
@@ -1282,46 +801,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DisclaimerRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/discover-ghana': {
-      id: '/discover-ghana'
-      path: '/discover-ghana'
-      fullPath: '/discover-ghana'
-      preLoaderRoute: typeof DiscoverGhanaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/events': {
-      id: '/events'
-      path: '/events'
-      fullPath: '/events'
-      preLoaderRoute: typeof EventsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/explore': {
-      id: '/explore'
-      path: '/explore'
-      fullPath: '/explore'
-      preLoaderRoute: typeof ExploreRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/faq': {
       id: '/faq'
       path: '/faq'
       fullPath: '/faq'
       preLoaderRoute: typeof FaqRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/feed': {
-      id: '/feed'
-      path: '/feed'
-      fullPath: '/feed'
-      preLoaderRoute: typeof FeedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/insights': {
-      id: '/insights'
-      path: '/insights'
-      fullPath: '/insights'
-      preLoaderRoute: typeof InsightsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/inspiration': {
@@ -1331,60 +815,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InspirationRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/international-students': {
-      id: '/international-students'
-      path: '/international-students'
-      fullPath: '/international-students'
-      preLoaderRoute: typeof InternationalStudentsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/international-students-me': {
-      id: '/international-students-me'
-      path: '/international-students-me'
-      fullPath: '/international-students-me'
-      preLoaderRoute: typeof InternationalStudentsMeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/international-universities': {
-      id: '/international-universities'
-      path: '/international-universities'
-      fullPath: '/international-universities'
-      preLoaderRoute: typeof InternationalUniversitiesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/jobs': {
-      id: '/jobs'
-      path: '/jobs'
-      fullPath: '/jobs'
-      preLoaderRoute: typeof JobsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/leaders': {
-      id: '/leaders'
-      path: '/leaders'
-      fullPath: '/leaders'
-      preLoaderRoute: typeof LeadersRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/life-path': {
-      id: '/life-path'
-      path: '/life-path'
-      fullPath: '/life-path'
-      preLoaderRoute: typeof LifePathRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/matcher': {
       id: '/matcher'
       path: '/matcher'
       fullPath: '/matcher'
       preLoaderRoute: typeof MatcherRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/my-africa': {
-      id: '/my-africa'
-      path: '/my-africa'
-      fullPath: '/my-africa'
-      preLoaderRoute: typeof MyAfricaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/my-path': {
@@ -1394,20 +829,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MyPathRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/news': {
-      id: '/news'
-      path: '/news'
-      fullPath: '/news'
-      preLoaderRoute: typeof NewsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/notifications': {
-      id: '/notifications'
-      path: '/notifications'
-      fullPath: '/notifications'
-      preLoaderRoute: typeof NotificationsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/onboarding': {
       id: '/onboarding'
       path: '/onboarding'
@@ -1415,32 +836,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/opportunity-radar': {
-      id: '/opportunity-radar'
-      path: '/opportunity-radar'
-      fullPath: '/opportunity-radar'
-      preLoaderRoute: typeof OpportunityRadarRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/parent': {
       id: '/parent'
       path: '/parent'
       fullPath: '/parent'
       preLoaderRoute: typeof ParentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/people': {
-      id: '/people'
-      path: '/people'
-      fullPath: '/people'
-      preLoaderRoute: typeof PeopleRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/pipeline': {
-      id: '/pipeline'
-      path: '/pipeline'
-      fullPath: '/pipeline'
-      preLoaderRoute: typeof PipelineRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/preferences': {
@@ -1462,13 +862,6 @@ declare module '@tanstack/react-router' {
       path: '/professional-councils'
       fullPath: '/professional-councils'
       preLoaderRoute: typeof ProfessionalCouncilsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/references': {
@@ -1499,32 +892,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SearchRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/startups': {
-      id: '/startups'
-      path: '/startups'
-      fullPath: '/startups'
-      preLoaderRoute: typeof StartupsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/students': {
-      id: '/students'
-      path: '/students'
-      fullPath: '/students'
-      preLoaderRoute: typeof StudentsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/terms': {
       id: '/terms'
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/topics': {
-      id: '/topics'
-      path: '/topics'
-      fullPath: '/topics'
-      preLoaderRoute: typeof TopicsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/analytics': {
@@ -1590,13 +962,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiInstitutionProgrammesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth/callback': {
-      id: '/auth/callback'
-      path: '/callback'
-      fullPath: '/auth/callback'
-      preLoaderRoute: typeof AuthCallbackRouteImport
-      parentRoute: typeof AuthRoute
-    }
     '/careers/': {
       id: '/careers/'
       path: '/careers'
@@ -1611,27 +976,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CareersSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard/employee': {
-      id: '/dashboard/employee'
-      path: '/employee'
-      fullPath: '/dashboard/employee'
-      preLoaderRoute: typeof DashboardEmployeeRouteImport
-      parentRoute: typeof DashboardRoute
-    }
-    '/dashboard/employer': {
-      id: '/dashboard/employer'
-      path: '/employer'
-      fullPath: '/dashboard/employer'
-      preLoaderRoute: typeof DashboardEmployerRouteImport
-      parentRoute: typeof DashboardRoute
-    }
-    '/dashboard/founder': {
-      id: '/dashboard/founder'
-      path: '/founder'
-      fullPath: '/dashboard/founder'
-      preLoaderRoute: typeof DashboardFounderRouteImport
-      parentRoute: typeof DashboardRoute
-    }
     '/internships/': {
       id: '/internships/'
       path: '/internships'
@@ -1644,20 +988,6 @@ declare module '@tanstack/react-router' {
       path: '/internships/$id'
       fullPath: '/internships/$id'
       preLoaderRoute: typeof InternshipsIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/opportunities/': {
-      id: '/opportunities/'
-      path: '/opportunities'
-      fullPath: '/opportunities/'
-      preLoaderRoute: typeof OpportunitiesIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/opportunities/$slug': {
-      id: '/opportunities/$slug'
-      path: '/opportunities/$slug'
-      fullPath: '/opportunities/$slug'
-      preLoaderRoute: typeof OpportunitiesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/programme/$slug': {
@@ -1709,13 +1039,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SkillsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/universities/': {
-      id: '/universities/'
-      path: '/universities'
-      fullPath: '/universities/'
-      preLoaderRoute: typeof UniversitiesIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/universities/$slug': {
       id: '/universities/$slug'
       path: '/universities/$slug'
@@ -1754,87 +1077,34 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface AuthRouteChildren {
-  AuthCallbackRoute: typeof AuthCallbackRoute
-}
-
-const AuthRouteChildren: AuthRouteChildren = {
-  AuthCallbackRoute: AuthCallbackRoute,
-}
-
-const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
-
-interface DashboardRouteChildren {
-  DashboardEmployeeRoute: typeof DashboardEmployeeRoute
-  DashboardEmployerRoute: typeof DashboardEmployerRoute
-  DashboardFounderRoute: typeof DashboardFounderRoute
-}
-
-const DashboardRouteChildren: DashboardRouteChildren = {
-  DashboardEmployeeRoute: DashboardEmployeeRoute,
-  DashboardEmployerRoute: DashboardEmployerRoute,
-  DashboardFounderRoute: DashboardFounderRoute,
-}
-
-const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
-  DashboardRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AdmissionMatchRoute: AdmissionMatchRoute,
-  AiRoute: AiRoute,
   ApplicationsRoute: ApplicationsRoute,
-  AskAfricaRoute: AskAfricaRoute,
-  AuthRoute: AuthRouteWithChildren,
-  BuildInAfricaRoute: BuildInAfricaRoute,
+  AuthRoute: AuthRoute,
   CareerPathRoute: CareerPathRoute,
-  CitiesRoute: CitiesRoute,
   CommunityRoute: CommunityRoute,
-  CompaniesRoute: CompaniesRoute,
   CompareRoute: CompareRoute,
   CompareScholarshipsRoute: CompareScholarshipsRoute,
   ContactRoute: ContactRoute,
-  CountriesRoute: CountriesRoute,
   CreditsRoute: CreditsRoute,
-  DashboardRoute: DashboardRouteWithChildren,
+  DashboardRoute: DashboardRoute,
   DisclaimerRoute: DisclaimerRoute,
-  DiscoverGhanaRoute: DiscoverGhanaRoute,
-  EventsRoute: EventsRoute,
-  ExploreRoute: ExploreRoute,
   FaqRoute: FaqRoute,
-  FeedRoute: FeedRoute,
-  InsightsRoute: InsightsRoute,
   InspirationRoute: InspirationRoute,
-  InternationalStudentsRoute: InternationalStudentsRoute,
-  InternationalStudentsMeRoute: InternationalStudentsMeRoute,
-  InternationalUniversitiesRoute: InternationalUniversitiesRoute,
-  JobsRoute: JobsRoute,
-  LeadersRoute: LeadersRoute,
-  LifePathRoute: LifePathRoute,
   MatcherRoute: MatcherRoute,
-  MyAfricaRoute: MyAfricaRoute,
   MyPathRoute: MyPathRoute,
-  NewsRoute: NewsRoute,
-  NotificationsRoute: NotificationsRoute,
   OnboardingRoute: OnboardingRoute,
-  OpportunityRadarRoute: OpportunityRadarRoute,
   ParentRoute: ParentRoute,
-  PeopleRoute: PeopleRoute,
-  PipelineRoute: PipelineRoute,
   PreferencesRoute: PreferencesRoute,
   PrivacyRoute: PrivacyRoute,
   ProfessionalCouncilsRoute: ProfessionalCouncilsRoute,
-  ProfileRoute: ProfileRoute,
   ReferencesRoute: ReferencesRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SavedRoute: SavedRoute,
   SearchRoute: SearchRoute,
-  StartupsRoute: StartupsRoute,
-  StudentsRoute: StudentsRoute,
   TermsRoute: TermsRoute,
-  TopicsRoute: TopicsRoute,
   AdminAnalyticsRoute: AdminAnalyticsRoute,
   AdminDataRoute: AdminDataRoute,
   AdminInsightsRoute: AdminInsightsRoute,
@@ -1846,7 +1116,6 @@ const rootRouteChildren: RootRouteChildren = {
   ApiInstitutionProgrammesRoute: ApiInstitutionProgrammesRoute,
   CareersSlugRoute: CareersSlugRoute,
   InternshipsIdRoute: InternshipsIdRoute,
-  OpportunitiesSlugRoute: OpportunitiesSlugRoute,
   ProgrammeSlugRoute: ProgrammeSlugRoute,
   ProgrammesSlugRoute: ProgrammesSlugRoute,
   ScholarshipsSlugRoute: ScholarshipsSlugRoute,
@@ -1855,11 +1124,9 @@ const rootRouteChildren: RootRouteChildren = {
   UniversitySlugRoute: UniversitySlugRoute,
   CareersIndexRoute: CareersIndexRoute,
   InternshipsIndexRoute: InternshipsIndexRoute,
-  OpportunitiesIndexRoute: OpportunitiesIndexRoute,
   ProgrammesIndexRoute: ProgrammesIndexRoute,
   ScholarshipsIndexRoute: ScholarshipsIndexRoute,
   SkillsIndexRoute: SkillsIndexRoute,
-  UniversitiesIndexRoute: UniversitiesIndexRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   FunctionsV1McpRoute: FunctionsV1McpRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,

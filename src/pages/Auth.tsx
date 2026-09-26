@@ -3,7 +3,7 @@ import { useNavigate, Link, useSearchParams } from "@/lib/router-compat";
 import { Loader2, BrandLogoIcon } from "@/lib/icons";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
+import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/useAuth";
 import { TERMS_VERSION } from "@/lib/legal";
 import { useEffect } from "react";
@@ -23,7 +23,6 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
   const next = safeNext(params.get("next"));
   const [mode, setMode] = useState<Mode>(defaultMode);
   const [accountType, setAccountType] = useState<"student" | "parent">("student");
-  const [selectedRole, setSelectedRole] = useState<"student" | "employee" | "employer" | "startup_founder">("student");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -31,11 +30,6 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
   const [loading, setLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
-
-  useEffect(() => {
-    const role = params.get("role") ?? localStorage.getItem("selectedRole");
-    if (role === "student" || role === "employee" || role === "employer" || role === "startup_founder") setSelectedRole(role);
-  }, [params]);
 
   const recordAcceptance = async (userId: string) => {
     await supabase
@@ -66,8 +60,10 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
           email: email.trim(),
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/auth/callback`,
-            data: { full_name: fullName.trim(), account_type: accountType, role: selectedRole, phone: phone.trim() },
+            emailRedirectTo: next
+              ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
+              : window.location.origin,
+            data: { full_name: fullName.trim(), account_type: accountType, phone: phone.trim() },
           },
         });
         if (error) throw error;
@@ -79,7 +75,8 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
           await recordAcceptance(data.user.id);
           await supabase.from("profiles").update({ phone: phone.trim() }).eq("id", data.user.id);
         }
-        navigate("/auth/callback", { replace: true });
+        if (next) window.location.href = next;
+        else navigate("/onboarding", { replace: true });
       } else {
         const { data, error } = await supabase.auth.signInWithPassword({
           email: email.trim(),
@@ -87,7 +84,8 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
         });
         if (error) throw error;
         if (data.user) await recordAcceptance(data.user.id);
-        navigate("/auth/callback", { replace: true });
+        if (next) window.location.href = next;
+        else navigate("/dashboard", { replace: true });
       }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Something went wrong");
@@ -110,20 +108,26 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
     else toast.success("Password reset link sent , check your email.");
   };
 
-  const handleOAuth = async () => {
+  const handleGoogle = async () => {
     if (!acceptedTerms) {
       toast.error("Please accept the Terms & Conditions to continue.");
       return;
     }
+
     setLoading(true);
-    localStorage.setItem("selectedRole", selectedRole);
     const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin + "/auth/callback",
+      redirect_uri: next
+        ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
+        : window.location.origin,
     });
-    if (result?.error) {
-      toast.error(result.error instanceof Error ? result.error.message : String(result.error));
+    if (result.error) {
+      toast.error("Google sign-in failed. Please try again.");
       setLoading(false);
+      return;
     }
+    if (result.redirected) return;
+    if (next) window.location.href = next;
+    else navigate("/dashboard", { replace: true });
   };
 
   return (
@@ -177,7 +181,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
             </label>
 
             <button
-              onClick={handleOAuth}
+              onClick={handleGoogle}
               disabled={loading || !acceptedTerms}
               className="w-full mb-5 px-4 py-3 rounded-lg border border-border bg-secondary text-foreground text-sm font-medium hover:bg-secondary/70 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >

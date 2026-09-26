@@ -2,14 +2,9 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-const CANONICAL_SUPABASE_URL = 'https://qcvypvvjzrooqylfvpza.supabase.co';
-const CANONICAL_SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_xAO66S4UghstoT-95nyTsA_qqcZM5Uq';
+const SUPABASE_URL = import.meta.env['VITE_SUPABASE_URL'];
+const SUPABASE_PUBLISHABLE_KEY = import.meta.env['VITE_SUPABASE_PUBLISHABLE_KEY'];
 
-const configuredUrl = import.meta.env['VITE_SUPABASE_URL'];
-const SUPABASE_URL = configuredUrl?.includes('qcvypvvjzrooqylfvpza.supabase.co')
-  ? configuredUrl
-  : CANONICAL_SUPABASE_URL;
-const SUPABASE_PUBLISHABLE_KEY = CANONICAL_SUPABASE_PUBLISHABLE_KEY;
 
 function isNewSupabaseApiKey(value: string): boolean {
   return value.startsWith('sb_publishable_') || value.startsWith('sb_secret_');
@@ -20,19 +15,28 @@ function createSupabaseFetch(supabaseKey: string): typeof fetch {
     const headers = new Headers(
       typeof Request !== 'undefined' && input instanceof Request ? input.headers : undefined,
     );
+
     if (init?.headers) {
       new Headers(init.headers).forEach((value, key) => headers.set(key, value));
     }
+
+    // New Supabase API keys are opaque strings, not bearer JWTs.
     if (isNewSupabaseApiKey(supabaseKey) && headers.get('Authorization') === `Bearer ${supabaseKey}`) {
       headers.delete('Authorization');
     }
+
     headers.set('apikey', supabaseKey);
     return fetch(input, { ...init, headers });
   };
 }
 
+// Import the supabase client like this:
+// import { supabase } from "@/integrations/supabase/client";
+
 export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
-  global: { fetch: createSupabaseFetch(SUPABASE_PUBLISHABLE_KEY) },
+  global: {
+    fetch: createSupabaseFetch(SUPABASE_PUBLISHABLE_KEY),
+  },
   auth: {
     storage: typeof window !== "undefined" ? window.localStorage : undefined,
     persistSession: true,

@@ -1,4 +1,5 @@
 import BrandLogo from "@/components/BrandLogo";
+import UniversityCampusImage from "@/components/UniversityCampusImage";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "@/lib/router-compat";
@@ -79,6 +80,8 @@ const UniversityDirectory = () => {
         <div className="flex hscroll hscroll-bleed snap-x snap-mandatory scroll-smooth [&>*]:w-[17rem] [&>*]:shrink-0 [&>*]:snap-start md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:overflow-visible md:mx-0 md:px-0 md:[&>*]:w-auto gap-4">
           {rows.map((u, i) => (
             <motion.div key={u.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: Math.min(i, 6) * 0.05, duration: 0.4 }} className="bg-glass rounded-xl p-4 card-hover flex flex-col">
+              <UniversityCampusImage name={u.name} location={u.location} placeId={u.google_place_id} />
+
               <div className="flex items-start justify-between gap-2 mb-2">
                 <div className="flex min-w-0 items-start gap-2">
                   <BrandLogo name={u.name} websiteUrl={u.website_url} logoUrl={u.logo_source_url ?? u.logo_url} size={36} />
@@ -91,7 +94,7 @@ const UniversityDirectory = () => {
               </div>
 
               <div className="flex items-center gap-1 text-muted-foreground text-sm mb-2"><MapPin className="h-3.5 w-3.5" /><span>{u.location}</span></div>
-              <div className="flex flex-wrap gap-1.5 mb-2">{(u.top_programmes ?? []).slice(0, 3).map((p) => <span key={p} className="px-2 py-0.5 rounded-full bg-secondary text-xs text-muted-foreground">{p}</span>)}</div>
+              <div className="flex flex-wrap gap-1.5 mb-2">{u.top_programmes.slice(0, 3).map((p) => <span key={p} className="px-2 py-0.5 rounded-full bg-secondary text-xs text-muted-foreground">{p}</span>)}</div>
               <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 gap-2 text-xs mb-2">
                 {u.admission_aggregate && <div className="flex items-center gap-1.5"><GraduationCap className="h-3.5 w-3.5 text-primary" /><span className="text-muted-foreground">Aggregate: {u.admission_aggregate}</span></div>}
                 {u.tuition_range && <div className="flex items-center gap-1.5"><Building2 className="h-3.5 w-3.5 text-primary" /><span className="text-muted-foreground">{u.tuition_range}</span></div>}

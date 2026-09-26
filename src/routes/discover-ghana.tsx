@@ -1,1 +1,0 @@
-import { createFileRoute } from "@tanstack/react-router"; import GlobalDiscovery from "@/pages/GlobalDiscovery"; export const Route=createFileRoute("/discover-ghana")({component:()=> <GlobalDiscovery kind="ghana"/>});

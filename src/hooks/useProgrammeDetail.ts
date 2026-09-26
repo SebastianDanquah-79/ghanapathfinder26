@@ -46,8 +46,6 @@ export const programmeDetailQueryOptions = (slug: string) =>
         faculties: { name: string } | null;
       };
 
-      const programmeName = row.name ?? "Programme";
-
       const [info, careers, sources, cutoffs] = await Promise.all([
         supabase.from("programme_information").select("*").eq("programme_id", row.id).maybeSingle(),
         supabase.from("programme_careers").select("*").eq("programme_id", row.id).order("occupation"),
@@ -55,8 +53,8 @@ export const programmeDetailQueryOptions = (slug: string) =>
         supabase
           .from("programme_cutoffs")
           .select("*")
-          .eq("university_id", row.university_id ?? "")
-          .or(`programme_id.eq.${row.id},programme_name.ilike.%${programmeName.replace(/^(BSc|BA|BEd|BCom|BTech|BFA|Diploma in|Certificate in)\s+/i, "").slice(0, 40)}%`)
+          .eq("university_id", row.university_id)
+          .or(`programme_id.eq.${row.id},programme_name.ilike.%${row.name.replace(/^(BSc|BA|BEd|BCom|BTech|BFA|Diploma in|Certificate in)\s+/i, "").slice(0, 40)}%`)
           .order("academic_year", { ascending: false })
           .limit(5),
       ]);

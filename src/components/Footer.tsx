@@ -43,9 +43,18 @@ const Footer = () => (
         ))}
       </nav>
 
-      <p className="text-xs text-muted-foreground mt-4 max-w-3xl mx-auto">
-        Institution and company names and logos are trademarks of their respective owners, shown here for identification only.
-      </p>
+      <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 text-sm">
+        <p className="text-foreground">
+          <span className="text-primary font-medium">Twi:</span> Yɛda wo ase sɛ wode GhanaPathFinder adi dwuma
+        </p>
+        <p className="text-foreground">
+          <span className="text-primary font-medium">Ewe:</span> Akpe na wò be nèzã GhanaPathFinder
+        </p>
+        <p className="text-foreground">
+          <span className="text-primary font-medium">Ga:</span> Oyiwaladɔŋŋ akɛ okɛ GhanaPathFinder tsu nii
+        </p>
+      </div>
+
       <p className="text-xs text-muted-foreground mt-4 max-w-3xl mx-auto">
         Information on GhanaPathFinder is guidance only. Match confidence, estimated cut-off points, fees and other estimates are not guarantees or official institutional decisions. Always verify important information with the relevant institution.
       </p>
