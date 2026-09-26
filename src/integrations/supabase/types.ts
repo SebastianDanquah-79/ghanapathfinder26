@@ -3009,9 +3009,11 @@ export type Database = {
           job_matches: boolean
           recommendations: boolean
           scholarship_deadlines: boolean
+          sms_enabled: boolean
           startup_news: boolean
           updated_at: string
           user_id: string
+          whatsapp_enabled: boolean
         }
         Insert: {
           employer_messages?: boolean
@@ -3019,9 +3021,11 @@ export type Database = {
           job_matches?: boolean
           recommendations?: boolean
           scholarship_deadlines?: boolean
+          sms_enabled?: boolean
           startup_news?: boolean
           updated_at?: string
           user_id: string
+          whatsapp_enabled?: boolean
         }
         Update: {
           employer_messages?: boolean
@@ -3029,9 +3033,11 @@ export type Database = {
           job_matches?: boolean
           recommendations?: boolean
           scholarship_deadlines?: boolean
+          sms_enabled?: boolean
           startup_news?: boolean
           updated_at?: string
           user_id?: string
+          whatsapp_enabled?: boolean
         }
         Relationships: []
       }
