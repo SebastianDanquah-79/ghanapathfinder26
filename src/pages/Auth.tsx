@@ -85,7 +85,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
         if (error) throw error;
         if (data.user) await recordAcceptance(data.user.id);
         if (next) window.location.href = next;
-        else navigate("/dashboard", { replace: true });
+        else navigate("/onboarding", { replace: true });
       }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Something went wrong");
@@ -125,7 +125,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
     }
     if (result.redirected) return;
     if (next) window.location.href = next;
-    else navigate("/dashboard", { replace: true });
+    else navigate("/onboarding", { replace: true });
   };
 
   return (
