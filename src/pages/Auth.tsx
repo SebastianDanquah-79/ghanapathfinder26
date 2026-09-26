@@ -41,7 +41,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
   useEffect(() => {
     if (user) {
       if (next) window.location.href = next;
-      else navigate("/dashboard", { replace: true });
+      else navigate("/onboarding", { replace: true });
     }
   }, [user, navigate, next]);
 
@@ -116,9 +116,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
 
     setLoading(true);
     const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: next
-        ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
-        : window.location.origin,
+      redirect_uri: `${window.location.origin}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ""}`,
     });
     if (result.error) {
       toast.error("Google sign-in failed. Please try again.");
