@@ -36,6 +36,18 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SavedRouteImport } from './routes/saved'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as AskAfricaRouteImport } from './routes/ask-africa'
+import { Route as BuildRouteImport } from './routes/build'
+import { Route as CompaniesRouteImport } from './routes/companies'
+import { Route as ConnectRouteImport } from './routes/connect'
+import { Route as ExploreRouteImport } from './routes/explore'
+import { Route as ForYouRouteImport } from './routes/for-you'
+import { Route as MyAfricaRouteImport } from './routes/my-africa'
+import { Route as OpportunitiesRouteImport } from './routes/opportunities'
+import { Route as PeopleRouteImport } from './routes/people'
+import { Route as StartupsRouteImport } from './routes/startups'
+import { Route as TravelRouteImport } from './routes/travel'
+import { Route as WorkRouteImport } from './routes/work'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin/analytics'
 import { Route as AdminDataRouteImport } from './routes/admin/data'
 import { Route as AdminInsightsRouteImport } from './routes/admin/insights'
@@ -190,6 +202,66 @@ const SavedRoute = SavedRouteImport.update({
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AskAfricaRoute = AskAfricaRouteImport.update({
+  id: '/ask-africa',
+  path: '/ask-africa',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BuildRoute = BuildRouteImport.update({
+  id: '/build',
+  path: '/build',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompaniesRoute = CompaniesRouteImport.update({
+  id: '/companies',
+  path: '/companies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConnectRoute = ConnectRouteImport.update({
+  id: '/connect',
+  path: '/connect',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExploreRoute = ExploreRouteImport.update({
+  id: '/explore',
+  path: '/explore',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForYouRoute = ForYouRouteImport.update({
+  id: '/for-you',
+  path: '/for-you',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MyAfricaRoute = MyAfricaRouteImport.update({
+  id: '/my-africa',
+  path: '/my-africa',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OpportunitiesRoute = OpportunitiesRouteImport.update({
+  id: '/opportunities',
+  path: '/opportunities',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PeopleRoute = PeopleRouteImport.update({
+  id: '/people',
+  path: '/people',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StartupsRoute = StartupsRouteImport.update({
+  id: '/startups',
+  path: '/startups',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TravelRoute = TravelRouteImport.update({
+  id: '/travel',
+  path: '/travel',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkRoute = WorkRouteImport.update({
+  id: '/work',
+  path: '/work',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -1105,6 +1177,18 @@ const rootRouteChildren: RootRouteChildren = {
   SavedRoute: SavedRoute,
   SearchRoute: SearchRoute,
   TermsRoute: TermsRoute,
+  AskAfricaRoute: AskAfricaRoute,
+  BuildRoute: BuildRoute,
+  CompaniesRoute: CompaniesRoute,
+  ConnectRoute: ConnectRoute,
+  ExploreRoute: ExploreRoute,
+  ForYouRoute: ForYouRoute,
+  MyAfricaRoute: MyAfricaRoute,
+  OpportunitiesRoute: OpportunitiesRoute,
+  PeopleRoute: PeopleRoute,
+  StartupsRoute: StartupsRoute,
+  TravelRoute: TravelRoute,
+  WorkRoute: WorkRoute,
   AdminAnalyticsRoute: AdminAnalyticsRoute,
   AdminDataRoute: AdminDataRoute,
   AdminInsightsRoute: AdminInsightsRoute,
