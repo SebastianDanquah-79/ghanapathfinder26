@@ -50,7 +50,7 @@ const ExploreAfrica = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("africa_leaders")
-        .select("id,name,country_name,title,role,official_source_url,verified_at,is_current")
+        .select("id,name,country_name,title,role,official_source_url,verified_at,is_current,verification_status,source_urls,social_links,last_checked_at")
         .eq("is_current", true)
         .order("country_name")
         .limit(12);
@@ -158,19 +158,37 @@ const ExploreAfrica = () => {
             <GraduationCap className="h-5 w-5 text-primary" />
             <h2 className="font-display text-xl font-semibold text-foreground">Public information</h2>
           </div>
-          <p className="mb-3 text-xs text-muted-foreground">Current office-holder records are shown with their official source where available. This section is informational, not an endorsement.</p>
+          <p className="mb-2 text-xs text-muted-foreground">Public-office records are informational. A record is labelled verified only when its source has been checked. Social links are never inferred as official.</p>
+          <p className="mb-3 text-xs text-muted-foreground">Google, LinkedIn and TikTok discovery links help locate possible public profiles. A search result is not evidence that a profile belongs to the office-holder.</p>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {leaders.map((item) => (
-              <article key={item.id} className="rounded-xl border border-border bg-card p-4">
-                <h3 className="font-semibold text-foreground">{item.name}</h3>
-                <p className="mt-1 text-xs text-muted-foreground">{item.title || item.role || "Public official"} · {item.country_name || "Africa"}</p>
-                {item.official_source_url && (
-                  <a href={item.official_source_url} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-primary">
-                    Official source <ExternalLink className="h-3.5 w-3.5" />
-                  </a>
-                )}
-              </article>
-            ))}
+            {leaders.map((item) => {
+              const query = encodeURIComponent(`${item.name} ${item.title || item.role || "public official"} ${item.country_name || "Africa"}`);
+              const social = (item.social_links || {}) as Record<string, string>;
+              const status = item.verification_status || "needs_review";
+              return (
+                <article key={item.id} className="rounded-xl border border-border bg-card p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h3 className="font-semibold text-foreground">{item.name}</h3>
+                      <p className="mt-1 text-xs text-muted-foreground">{item.title || item.role || "Public official"} · {item.country_name || "Africa"}</p>
+                    </div>
+                    <span className={`shrink-0 text-[10px] font-semibold uppercase tracking-wide ${status === "verified" ? "text-primary" : "text-muted-foreground"}`}>
+                      {status === "verified" ? "Verified" : status === "stale" ? "Stale" : "Needs review"}
+                    </span>
+                  </div>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {item.official_source_url && <a href={item.official_source_url} target="_blank" rel="noreferrer" className="text-xs font-semibold text-primary">Official source</a>}
+                    {Array.isArray(item.source_urls) && item.source_urls.slice(0, 3).map((url) => <a key={url} href={url} target="_blank" rel="noreferrer" className="text-xs font-medium text-foreground underline">Source</a>)}
+                    {social.linkedin && <a href={social.linkedin} target="_blank" rel="noreferrer" className="text-xs font-medium text-foreground underline">LinkedIn</a>}
+                    {social.tiktok && <a href={social.tiktok} target="_blank" rel="noreferrer" className="text-xs font-medium text-foreground underline">TikTok</a>}
+                    <a href={`https://www.google.com/search?q=${query}`} target="_blank" rel="noreferrer" className="text-xs font-medium text-foreground underline">Google</a>
+                    <a href={`https://www.linkedin.com/search/results/all/?keywords=${query}`} target="_blank" rel="noreferrer" className="text-xs font-medium text-foreground underline">LinkedIn search</a>
+                    <a href={`https://www.tiktok.com/search?q=${query}`} target="_blank" rel="noreferrer" className="text-xs font-medium text-foreground underline">TikTok search</a>
+                  </div>
+                  {item.last_checked_at && <p className="mt-3 text-[11px] text-muted-foreground">Last checked: {new Date(item.last_checked_at).toLocaleDateString()}</p>}
+                </article>
+              );
+            })}
           </div>
         </section>
       </main>
