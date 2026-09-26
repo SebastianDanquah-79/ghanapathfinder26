@@ -87,7 +87,8 @@ const Preferences = () => {
 
   const avatarErrorMessage = (error: unknown): string => {
     const msg = error instanceof Error ? error.message : String(error ?? "");
-    if (/bucket not found/i.test(msg)) return "Photo storage is not set up yet. Please try again later.";
+    if (/bucket not found/i.test(msg)) return "Photo storage is unavailable for this app configuration. Please refresh and try again. If it persists, the Supabase project connection needs attention.";
+    if (/Avatar storage check failed/i.test(msg)) return msg.replace(/^Error:\s*/i, "");
     if (/row-level security|policy|unauthorized|403/i.test(msg)) return "You don't have permission to upload this photo. Please sign in again.";
     if (/payload too large|size/i.test(msg)) return "That photo is too large. Use one under 5 MB.";
     if (/mime|type/i.test(msg)) return "Use a JPG, PNG or WebP image.";
@@ -110,6 +111,10 @@ const Preferences = () => {
       const extension = file.type === "image/png" ? "png" : file.type === "image/webp" ? "webp" : "jpg";
       const path = `${user.id}/${crypto.randomUUID()}.${extension}`;
       const previousPath = avatarPathFrom(avatarUrl);
+      const bucketCheck = await supabase.storage.getBucket("avatars");
+      if (bucketCheck.error) {
+        throw new Error(`Avatar storage check failed: ${bucketCheck.error.message}`);
+      }
       const { error: uploadError } = await supabase.storage
         .from("avatars")
         .upload(path, file, { upsert: false, contentType: file.type, cacheControl: "3600" });
