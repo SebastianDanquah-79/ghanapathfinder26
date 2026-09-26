@@ -1,0 +1,1 @@
+import { createFileRoute } from "@tanstack/react-router"; import EmployeePortal from "@/pages/EmployeePortal"; export const Route=createFileRoute("/portal/employee")({component:EmployeePortal});
