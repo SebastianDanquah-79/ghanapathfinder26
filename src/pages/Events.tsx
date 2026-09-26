@@ -1,0 +1,11 @@
+
+import { useQuery } from "@tanstack/react-query";
+import Navbar from "@/components/Navbar";
+import Seo from "@/components/Seo";
+import { ExternalLink } from "@/lib/icons";
+import { supabase } from "@/integrations/supabase/client";
+
+export default function Events(){
+  const q=useQuery({queryKey:["platform-events"],queryFn:async function(){const r=await supabase.from("platform_events").select("*").gte("starts_at",new Date().toISOString()).order("starts_at").limit(100);if(r.error)throw r.error;return r.data||[];}});
+  return <div className="min-h-dvh bg-background"><Navbar/><main className="mx-auto max-w-5xl px-4 pb-24 pt-20 sm:px-6 lg:px-8"><Seo title="Events | GhanaPathFinder" description="Hackathons, career fairs, conferences and competitions." path="/events"/><header className="border-b border-border pb-7"><p className="text-sm font-semibold text-primary">Events</p><h1 className="mt-2 text-3xl font-bold">What is happening next.</h1><p className="mt-2 text-sm text-muted-foreground">A shared calendar for events beyond your personal deadlines.</p></header><div className="mt-7 space-y-3">{(q.data||[]).map(function(x){return <article key={x.id} className="border border-border bg-card p-5"><div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs font-semibold text-primary">{x.type.replace("_"," ")}</p><h2 className="mt-1 text-lg font-semibold">{x.title}</h2></div><p className="text-xs text-muted-foreground">{new Date(x.starts_at).toLocaleString("en-GH",{dateStyle:"medium",timeStyle:"short"})}</p></div>{x.description&&<p className="mt-3 text-sm leading-6 text-muted-foreground">{x.description}</p>}<div className="mt-4 flex flex-wrap gap-4 text-xs text-muted-foreground"><span>{x.location || (x.is_virtual ? "Online" : "Location to be announced")}</span>{x.registration_url&&<a href={x.registration_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-primary">Register <ExternalLink className="h-3.5 w-3.5"/></a>}</div></article>;})}</div>{!q.isLoading && !(q.data||[]).length&&<div className="mt-6 border border-dashed border-border p-6 text-sm text-muted-foreground">No future events have been imported yet.</div>}</main></div>
+}
