@@ -119,8 +119,34 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
         });
         if (error) throw error;
         if (data.user) await recordAcceptance(data.user.id);
-        if (next) window.location.href = next;
-        else navigate("/dashboard", { replace: true });
+        if (next) {
+          window.location.href = next;
+          return;
+        }
+
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("onboarding_complete,account_role,role")
+          .eq("id", data.user?.id ?? "")
+          .maybeSingle();
+
+        if (profileError) throw profileError;
+
+        if (!profile?.onboarding_complete) {
+          navigate("/onboarding", { replace: true });
+          return;
+        }
+
+        const role = profile.account_role ?? profile.role;
+        const destination =
+          role === "student" ? "/portal/student" :
+          role === "employee" ? "/portal/employee" :
+          role === "employer" ? "/portal/employer" :
+          role === "startup_founder" ? "/portal/founder" :
+          role === "international_student" ? "/portal/international-student" :
+          "/onboarding";
+
+        navigate(destination, { replace: true });
       }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Something went wrong");
