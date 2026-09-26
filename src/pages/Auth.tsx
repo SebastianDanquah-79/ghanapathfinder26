@@ -3,7 +3,6 @@ import { useNavigate, Link, useSearchParams } from "@/lib/router-compat";
 import { Loader2, BrandLogoIcon } from "@/lib/icons";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/useAuth";
 import { TERMS_VERSION } from "@/lib/legal";
 import { useEffect } from "react";
@@ -39,10 +38,48 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
   };
 
   useEffect(() => {
-    if (user) {
-      if (next) window.location.href = next;
-      else navigate("/dashboard", { replace: true });
-    }
+    if (!user) return;
+
+    let active = true;
+    void (async () => {
+      const { data: profile, error } = await supabase
+        .from("profiles")
+        .select("onboarding_complete,account_role,role")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (!active) return;
+
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+
+      if (next) {
+        window.location.href = next;
+        return;
+      }
+
+      if (!profile?.onboarding_complete) {
+        navigate("/onboarding", { replace: true });
+        return;
+      }
+
+      const role = profile.account_role ?? profile.role;
+      const destination =
+        role === "student" ? "/portal/student" :
+        role === "employee" ? "/portal/employee" :
+        role === "employer" ? "/portal/employer" :
+        role === "startup_founder" ? "/portal/founder" :
+        role === "international_student" ? "/portal/international-student" :
+        "/onboarding";
+
+      navigate(destination, { replace: true });
+    })();
+
+    return () => {
+      active = false;
+    };
   }, [user, navigate, next]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -60,9 +97,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
           email: email.trim(),
           password,
           options: {
-            emailRedirectTo: next
-              ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
-              : window.location.origin,
+            emailRedirectTo: `${import.meta.env.VITE_APP_URL || window.location.origin}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ""}`,
             data: { full_name: fullName.trim(), account_type: accountType, phone: phone.trim() },
           },
         });
@@ -115,19 +150,21 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
     }
 
     setLoading(true);
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: next
-        ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
-        : window.location.origin,
-    });
-    if (result.error) {
-      toast.error("Google sign-in failed. Please try again.");
+
+    try {
+      const appUrl = import.meta.env.VITE_APP_URL || window.location.origin;
+      const redirectTo = `${appUrl}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ""}`;
+
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo },
+      });
+
+      if (error) throw error;
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Google sign-in failed.");
       setLoading(false);
-      return;
     }
-    if (result.redirected) return;
-    if (next) window.location.href = next;
-    else navigate("/dashboard", { replace: true });
   };
 
   return (
