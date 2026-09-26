@@ -497,6 +497,7 @@ const Dashboard = () => {
                   { to: "/community", label: "Community", icon: Bookmark },
                   { to: "/programmes", label: "Programmes", icon: Sparkles },
                   { to: "/internships", label: "Internships", icon: CalendarClock },
+                  { to: "/explore", label: "Explore Africa", icon: Sparkles },
                 ].map(({ to, label, icon: Icon }) => (
                   <Link
                     key={to}
