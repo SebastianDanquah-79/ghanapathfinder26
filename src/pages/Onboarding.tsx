@@ -138,7 +138,7 @@ const Onboarding = () => {
           role,account_role:role,account_type:"student",bio:bio.trim()||null,location:location.trim()||null,
           university:university.trim()||null,program:program.trim()||null,graduation_year:graduationYear?Number(graduationYear):null,
           company:company.trim()||null,job_title:jobTitle.trim()||null,linkedin_url:linkedinUrl.trim()||null,
-          avatar_url:nextAvatarUrl,skills:skillList,is_discoverable:discoverable,onboarding_complete:true,onboarded:true,,
+          avatar_url:nextAvatarUrl,skills:skillList,is_discoverable:discoverable,onboarding_complete:true,onboarded:true,
         }).eq("id",user.id);
         if(error) throw new Error(`Profile details could not be saved: ${error.message}`);
       } else {
