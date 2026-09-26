@@ -178,7 +178,7 @@ const Onboarding = () => {
         const {error}=await supabase.from("international_students").upsert({
           user_id:user.id,university_name:university.trim()||null,programme_name:program.trim()||null,
           graduation_year:graduationYear?Number(graduationYear):null,skills:skillList,interests,
-          is_discoverable:discoverable,visible:discoverable,
+          visible:discoverable,
           open_to_collaboration:pathways.includes("Meet people")||pathways.includes("Build a business"),
           open_to_mentorship:pathways.includes("Meet people"),
           looking_for_opportunities:pathways.includes("Find a job")||pathways.includes("Find funding"),
