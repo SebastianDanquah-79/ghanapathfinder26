@@ -85,6 +85,19 @@ export const navSections: NavSection[] = [
     ],
   },
   {
+    id: "discover",
+    label: "Discover",
+    icon: Globe,
+    href: "/for-you",
+    items: [
+      { label: "For You", href: "/for-you", desc: "Your Africa discovery feed" },
+      { label: "Work", href: "/work", desc: "Jobs, internships and employers" },
+      { label: "Build", href: "/build", desc: "Startups and companies" },
+      { label: "Connect", href: "/connect", desc: "People and community" },
+      { label: "Travel & explore", href: "/travel", desc: "Explore African countries" },
+    ],
+  },
+  {
     id: "community",
     label: "Community",
     icon: Users,
