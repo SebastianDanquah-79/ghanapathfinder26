@@ -90,8 +90,6 @@ const Onboarding = () => {
         if (avatarFile.size > 5 * 1024 * 1024) throw new Error("Profile photo must be 5 MB or smaller.");
         const extension = avatarFile.type === "image/png" ? "png" : avatarFile.type === "image/webp" ? "webp" : "jpg";
         const objectPath = `${user.id}/${crypto.randomUUID()}.${extension}`;
-        const bucketCheck = await supabase.storage.getBucket("avatars");
-        if (bucketCheck.error) throw new Error(`Avatar storage check failed: ${bucketCheck.error.message}`);
         const { error: uploadError } = await supabase.storage.from("avatars").upload(objectPath, avatarFile, {
           upsert:false, contentType:avatarFile.type, cacheControl:"3600",
         });
