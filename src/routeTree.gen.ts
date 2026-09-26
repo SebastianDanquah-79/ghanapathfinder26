@@ -264,6 +264,56 @@ const WorkRoute = WorkRouteImport.update({
   path: '/work',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AfricaRoute = AfricaRouteImport.update({
+  id: '/africa',
+  path: '/africa',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AfricaNowRoute = AfricaNowRouteImport.update({
+  id: '/africa-now',
+  path: '/africa-now',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BuildInAfricaRoute = BuildInAfricaRouteImport.update({
+  id: '/build-in-africa',
+  path: '/build-in-africa',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CollectionsRoute = CollectionsRouteImport.update({
+  id: '/collections',
+  path: '/collections',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DailyDropRoute = DailyDropRouteImport.update({
+  id: '/daily-drop',
+  path: '/daily-drop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GhanaRoute = GhanaRouteImport.update({
+  id: '/ghana',
+  path: '/ghana',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HireFromAfricaRoute = HireFromAfricaRouteImport.update({
+  id: '/hire-from-africa',
+  path: '/hire-from-africa',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JobsRoute = JobsRouteImport.update({
+  id: '/jobs',
+  path: '/jobs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LiveAfricaRoute = LiveAfricaRouteImport.update({
+  id: '/live-africa',
+  path: '/live-africa',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StoriesRoute = StoriesRouteImport.update({
+  id: '/stories',
+  path: '/stories',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -1177,6 +1227,16 @@ const rootRouteChildren: RootRouteChildren = {
   SavedRoute: SavedRoute,
   SearchRoute: SearchRoute,
   TermsRoute: TermsRoute,
+  AfricaRoute: AfricaRoute,
+  AfricaNowRoute: AfricaNowRoute,
+  BuildInAfricaRoute: BuildInAfricaRoute,
+  CollectionsRoute: CollectionsRoute,
+  DailyDropRoute: DailyDropRoute,
+  GhanaRoute: GhanaRoute,
+  HireFromAfricaRoute: HireFromAfricaRoute,
+  JobsRoute: JobsRoute,
+  LiveAfricaRoute: LiveAfricaRoute,
+  StoriesRoute: StoriesRoute,
   AskAfricaRoute: AskAfricaRoute,
   BuildRoute: BuildRoute,
   CompaniesRoute: CompaniesRoute,
