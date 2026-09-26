@@ -1,0 +1,21 @@
+name: GhanaPathFinder quality
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.2.21"
+      - run: bun install --frozen-lockfile
+      - run: bunx tsc --noEmit
+      - run: bun run lint
+      - run: bun run test
+      - run: bun run build
