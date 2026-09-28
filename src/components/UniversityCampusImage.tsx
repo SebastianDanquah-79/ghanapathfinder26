@@ -302,11 +302,12 @@ const UniversityCampusImage = ({ name, location, placeId }: UniversityCampusImag
 
   return (
     <div className="relative mb-4 aspect-[16/9] overflow-hidden rounded-lg bg-secondary">
-      {images.length > 0 ? images.map((media, index) => (
+      <CampusIllustration name={name} location={location} />
+      {images.length > 0 && images.map((media, index) => (
         <a key={media.src} href={media.sourceUrl} target="_blank" rel="noreferrer" title={creditLabel} className={index === active ? "absolute inset-0 block opacity-100" : "absolute inset-0 block opacity-0 pointer-events-none"}>
           <img src={media.src} alt={`${name} ${media.kind === "logo" ? "institution logo" : "campus"} image`} loading={index === 0 ? "eager" : "lazy"} referrerPolicy="no-referrer" onError={() => handleImageError(media.src)} className="h-full w-full object-cover transition-opacity duration-700" />
         </a>
-      )) : <CampusIllustration name={name} location={location} />}
+      ))}
       {images.length > 0 && (
         <>
           <div className="absolute left-2 top-2 rounded-md bg-black/55 px-2 py-1 text-[10px] font-medium text-white backdrop-blur-sm">
