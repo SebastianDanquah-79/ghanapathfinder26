@@ -63,10 +63,6 @@ import {
   Linkedin,
   Quote,
   Lightbulb,
-  Heart,
-  Volume2,
-  VolumeX,
-  CheckCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ComponentPropsWithoutRef } from "react";
@@ -270,8 +266,4 @@ export {
   Linkedin,
   Quote,
   Lightbulb,
-  Heart,
-  Volume2,
-  VolumeX,
-  CheckCheck,
 };

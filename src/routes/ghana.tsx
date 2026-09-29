@@ -1,1 +1,0 @@
-import { createFileRoute } from "@tanstack/react-router"; import Ghana from "@/pages/Ghana"; export const Route=createFileRoute("/ghana")({component:Ghana});

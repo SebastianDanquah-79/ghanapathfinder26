@@ -36,28 +36,6 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SavedRouteImport } from './routes/saved'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as TermsRouteImport } from './routes/terms'
-import { Route as AfricaRouteImport } from './routes/africa'
-import { Route as AfricaNowRouteImport } from './routes/africa-now'
-import { Route as BuildInAfricaRouteImport } from './routes/build-in-africa'
-import { Route as CollectionsRouteImport } from './routes/collections'
-import { Route as DailyDropRouteImport } from './routes/daily-drop'
-import { Route as GhanaRouteImport } from './routes/ghana'
-import { Route as HireFromAfricaRouteImport } from './routes/hire-from-africa'
-import { Route as JobsRouteImport } from './routes/jobs'
-import { Route as LiveAfricaRouteImport } from './routes/live-africa'
-import { Route as StoriesRouteImport } from './routes/stories'
-import { Route as AskAfricaRouteImport } from './routes/ask-africa'
-import { Route as BuildRouteImport } from './routes/build'
-import { Route as CompaniesRouteImport } from './routes/companies'
-import { Route as ConnectRouteImport } from './routes/connect'
-import { Route as ExploreRouteImport } from './routes/explore'
-import { Route as ForYouRouteImport } from './routes/for-you'
-import { Route as MyAfricaRouteImport } from './routes/my-africa'
-import { Route as OpportunitiesRouteImport } from './routes/opportunities'
-import { Route as PeopleRouteImport } from './routes/people'
-import { Route as StartupsRouteImport } from './routes/startups'
-import { Route as TravelRouteImport } from './routes/travel'
-import { Route as WorkRouteImport } from './routes/work'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin/analytics'
 import { Route as AdminDataRouteImport } from './routes/admin/data'
 import { Route as AdminInsightsRouteImport } from './routes/admin/insights'
@@ -212,116 +190,6 @@ const SavedRoute = SavedRouteImport.update({
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AskAfricaRoute = AskAfricaRouteImport.update({
-  id: '/ask-africa',
-  path: '/ask-africa',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BuildRoute = BuildRouteImport.update({
-  id: '/build',
-  path: '/build',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CompaniesRoute = CompaniesRouteImport.update({
-  id: '/companies',
-  path: '/companies',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ConnectRoute = ConnectRouteImport.update({
-  id: '/connect',
-  path: '/connect',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ExploreRoute = ExploreRouteImport.update({
-  id: '/explore',
-  path: '/explore',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ForYouRoute = ForYouRouteImport.update({
-  id: '/for-you',
-  path: '/for-you',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MyAfricaRoute = MyAfricaRouteImport.update({
-  id: '/my-africa',
-  path: '/my-africa',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OpportunitiesRoute = OpportunitiesRouteImport.update({
-  id: '/opportunities',
-  path: '/opportunities',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PeopleRoute = PeopleRouteImport.update({
-  id: '/people',
-  path: '/people',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const StartupsRoute = StartupsRouteImport.update({
-  id: '/startups',
-  path: '/startups',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TravelRoute = TravelRouteImport.update({
-  id: '/travel',
-  path: '/travel',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const WorkRoute = WorkRouteImport.update({
-  id: '/work',
-  path: '/work',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AfricaRoute = AfricaRouteImport.update({
-  id: '/africa',
-  path: '/africa',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AfricaNowRoute = AfricaNowRouteImport.update({
-  id: '/africa-now',
-  path: '/africa-now',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BuildInAfricaRoute = BuildInAfricaRouteImport.update({
-  id: '/build-in-africa',
-  path: '/build-in-africa',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CollectionsRoute = CollectionsRouteImport.update({
-  id: '/collections',
-  path: '/collections',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DailyDropRoute = DailyDropRouteImport.update({
-  id: '/daily-drop',
-  path: '/daily-drop',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GhanaRoute = GhanaRouteImport.update({
-  id: '/ghana',
-  path: '/ghana',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HireFromAfricaRoute = HireFromAfricaRouteImport.update({
-  id: '/hire-from-africa',
-  path: '/hire-from-africa',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const JobsRoute = JobsRouteImport.update({
-  id: '/jobs',
-  path: '/jobs',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LiveAfricaRoute = LiveAfricaRouteImport.update({
-  id: '/live-africa',
-  path: '/live-africa',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const StoriesRoute = StoriesRouteImport.update({
-  id: '/stories',
-  path: '/stories',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -1237,28 +1105,6 @@ const rootRouteChildren: RootRouteChildren = {
   SavedRoute: SavedRoute,
   SearchRoute: SearchRoute,
   TermsRoute: TermsRoute,
-  AfricaRoute: AfricaRoute,
-  AfricaNowRoute: AfricaNowRoute,
-  BuildInAfricaRoute: BuildInAfricaRoute,
-  CollectionsRoute: CollectionsRoute,
-  DailyDropRoute: DailyDropRoute,
-  GhanaRoute: GhanaRoute,
-  HireFromAfricaRoute: HireFromAfricaRoute,
-  JobsRoute: JobsRoute,
-  LiveAfricaRoute: LiveAfricaRoute,
-  StoriesRoute: StoriesRoute,
-  AskAfricaRoute: AskAfricaRoute,
-  BuildRoute: BuildRoute,
-  CompaniesRoute: CompaniesRoute,
-  ConnectRoute: ConnectRoute,
-  ExploreRoute: ExploreRoute,
-  ForYouRoute: ForYouRoute,
-  MyAfricaRoute: MyAfricaRoute,
-  OpportunitiesRoute: OpportunitiesRoute,
-  PeopleRoute: PeopleRoute,
-  StartupsRoute: StartupsRoute,
-  TravelRoute: TravelRoute,
-  WorkRoute: WorkRoute,
   AdminAnalyticsRoute: AdminAnalyticsRoute,
   AdminDataRoute: AdminDataRoute,
   AdminInsightsRoute: AdminInsightsRoute,

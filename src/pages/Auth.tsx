@@ -41,7 +41,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
   useEffect(() => {
     if (user) {
       if (next) window.location.href = next;
-      else navigate("/onboarding", { replace: true });
+      else navigate("/dashboard", { replace: true });
     }
   }, [user, navigate, next]);
 
@@ -85,7 +85,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
         if (error) throw error;
         if (data.user) await recordAcceptance(data.user.id);
         if (next) window.location.href = next;
-        else navigate("/onboarding", { replace: true });
+        else navigate("/dashboard", { replace: true });
       }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Something went wrong");
@@ -116,7 +116,9 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
 
     setLoading(true);
     const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: `${window.location.origin}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ""}`,
+      redirect_uri: next
+        ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
+        : window.location.origin,
     });
     if (result.error) {
       toast.error("Google sign-in failed. Please try again.");
@@ -125,7 +127,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
     }
     if (result.redirected) return;
     if (next) window.location.href = next;
-    else navigate("/onboarding", { replace: true });
+    else navigate("/dashboard", { replace: true });
   };
 
   return (

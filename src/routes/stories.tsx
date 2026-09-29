@@ -1,1 +1,0 @@
-import { createFileRoute } from "@tanstack/react-router"; import NewsHub from "@/pages/NewsHub"; export const Route=createFileRoute("/stories")({component:()=> <NewsHub title="Stories" subtitle="Stories currently available in the platform's verified news catalogue." />});

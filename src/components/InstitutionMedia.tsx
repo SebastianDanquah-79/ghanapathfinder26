@@ -186,12 +186,7 @@ export default function InstitutionMedia({ websiteUrl, name, logoSourceUrl, goog
     </div>
   );
 
-  const CampusImage = ({ eager = false }: { eager?: boolean }) => (
-    <div className="relative h-full w-full">
-      {fallback}
-      {image && <img src={image} alt={`${name} campus`} className="absolute inset-0 h-full w-full object-cover" loading={eager ? "eager" : "lazy"} referrerPolicy="no-referrer" onError={() => setImageFailed(true)} />}
-    </div>
-  );
+  const CampusImage = ({ eager = false }: { eager?: boolean }) => image ? <img src={image} alt={`${name} campus`} className="h-full w-full object-cover" loading={eager ? "eager" : "lazy"} referrerPolicy="no-referrer" onError={() => setImageFailed(true)} /> : fallback;
 
   if (variant === "hero") {
     return (

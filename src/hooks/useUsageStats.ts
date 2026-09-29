@@ -50,7 +50,7 @@ const subscribeUsageCounters = (listener: Listener): (() => void) => {
       .channel("usage_counters_live")
       .on(
         "postgres_changes",
-        { event: "*", schema: "public", table: "usage_counters" },
+        { event: "*", schema: "public", table: "usage_counters", filter: "id=eq.global" },
         (payload) => {
           const row = payload.new as Partial<UsageCounterRow> | null;
           if (!row || Object.keys(row).length === 0) return;
@@ -74,7 +74,7 @@ const subscribeUsageCounters = (listener: Listener): (() => void) => {
 /**
  * Live usage counter.
  *
- * The snapshot row `usage_counters` is recomputed by database triggers
+ * The snapshot row `usage_counters.global` is recomputed by database triggers
  * whenever a visit, event or account is recorded, and streamed to every open
  * browser over the realtime WebSocket, so the number updates instantly for all
  * users without polling.
@@ -88,8 +88,7 @@ export const useUsageStats = () => {
       const { data, error } = await supabase
         .from("usage_counters" as never)
         .select("*")
-        .order("updated_at", { ascending: false })
-        .limit(1)
+        .eq("id" as never, "global" as never)
         .maybeSingle();
       if (error) throw error;
       return toStats(data as unknown as UsageCounterRow | null);
