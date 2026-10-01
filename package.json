@@ -124,7 +124,9 @@
   "version": "0.0.0",
   "overrides": {
     "@tanstack/start-client-core": "1.170.34",
-    "rolldown": "1.2.6"
+    "rolldown": "1.2.6",
+    "seroval": "1.6.8",
+    "seroval-plugins": "1.6.8"
   },
   "pnpm": {
     "overrides": {
