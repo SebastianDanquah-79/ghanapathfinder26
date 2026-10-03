@@ -899,6 +899,113 @@ export type Database = {
           },
         ]
       }
+      international_pathway_rules: {
+        Row: {
+          academic_level: string
+          created_at: string
+          english_proficiency_required: boolean
+          equivalency_required: boolean
+          id: string
+          institution_id: string
+          last_verified_at: string | null
+          minimum_overall_score: number | null
+          notes: string | null
+          qualification_code: string
+          required_subjects: Json
+          score_operator: string | null
+          source_url: string
+          updated_at: string
+          verification_status: string
+        }
+        Insert: {
+          academic_level?: string
+          created_at?: string
+          english_proficiency_required?: boolean
+          equivalency_required?: boolean
+          id?: string
+          institution_id: string
+          last_verified_at?: string | null
+          minimum_overall_score?: number | null
+          notes?: string | null
+          qualification_code: string
+          required_subjects?: Json
+          score_operator?: string | null
+          source_url: string
+          updated_at?: string
+          verification_status?: string
+        }
+        Update: {
+          academic_level?: string
+          created_at?: string
+          english_proficiency_required?: boolean
+          equivalency_required?: boolean
+          id?: string
+          institution_id?: string
+          last_verified_at?: string | null
+          minimum_overall_score?: number | null
+          notes?: string | null
+          qualification_code?: string
+          required_subjects?: Json
+          score_operator?: string | null
+          source_url?: string
+          updated_at?: string
+          verification_status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "international_pathway_rules_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "universities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      international_qualification_catalog: {
+        Row: {
+          country_code: string
+          country_name: string
+          created_at: string
+          id: string
+          last_verified_at: string | null
+          level: string
+          notes: string | null
+          qualification_code: string
+          qualification_name: string
+          source_url: string | null
+          updated_at: string
+          verification_status: string
+        }
+        Insert: {
+          country_code: string
+          country_name: string
+          created_at?: string
+          id?: string
+          last_verified_at?: string | null
+          level?: string
+          notes?: string | null
+          qualification_code: string
+          qualification_name: string
+          source_url?: string | null
+          updated_at?: string
+          verification_status?: string
+        }
+        Update: {
+          country_code?: string
+          country_name?: string
+          created_at?: string
+          id?: string
+          last_verified_at?: string | null
+          level?: string
+          notes?: string | null
+          qualification_code?: string
+          qualification_name?: string
+          source_url?: string | null
+          updated_at?: string
+          verification_status?: string
+        }
+        Relationships: []
+      }
       international_students: {
         Row: {
           academic_level: string | null
