@@ -44,7 +44,7 @@ const InternationalPathway=()=>{
      const ruleInstitutionId=p.university_id??p.institution_id;
      const r=rs.find(x=>x.institution_id===ruleInstitutionId);
      if(!r||r.minimum_overall_score==null||!r.score_operator)return true;
-     return r.score_operator==="<= "?n<=r.minimum_overall_score:n>=r.minimum_overall_score;
+     return r.score_operator==="<="?n<=r.minimum_overall_score:n>=r.minimum_overall_score;
    }):rows;
    setProgrammes(filtered);
  }catch(e){console.error(e);setMessage("We could not evaluate this pathway. Please try again.");}finally{setLoading(false);}};
