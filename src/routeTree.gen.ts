@@ -574,6 +574,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/career-marketplace'
+    | '/cv-builder'
     | '/'
     | '/about'
     | '/admission-match'
@@ -629,6 +630,7 @@ export interface FileRouteTypes {
     | '/lovable/email/transactional/preview'
   id:
     | '/career-marketplace'
+    | '/cv-builder'
     | '__root__'
     | '/'
     | '/about'
