@@ -20,6 +20,12 @@ export default defineConfig({
   },
   vite: {
     plugins: [mcpPlugin()],
-
+    optimizeDeps: {
+      exclude: [
+        "@tanstack/start-client-core",
+        "@tanstack/start-storage-context",
+        "@tanstack/react-start",
+      ],
+    },
   },
 });
