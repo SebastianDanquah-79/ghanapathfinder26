@@ -507,6 +507,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/career-marketplace'
     | '/'
     | '/about'
     | '/admission-match'
@@ -562,6 +563,7 @@ export interface FileRouteTypes {
     | '/lovable/email/transactional/preview'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/career-marketplace'
     | '/'
     | '/about'
     | '/admission-match'
@@ -616,6 +618,7 @@ export interface FileRouteTypes {
     | '/functions/v1/mcp'
     | '/lovable/email/transactional/preview'
   id:
+    | '/career-marketplace'
     | '__root__'
     | '/'
     | '/about'
@@ -1125,6 +1128,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   CreditsRoute: CreditsRoute,
   DashboardRoute: DashboardRoute,
+  CareerMarketplaceRoute: CareerMarketplaceRoute,
   DisclaimerRoute: DisclaimerRoute,
   FaqRoute: FaqRoute,
   InspirationRoute: InspirationRoute,
