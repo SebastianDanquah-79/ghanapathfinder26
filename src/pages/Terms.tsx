@@ -14,8 +14,12 @@ const points: { h: string; p: string }[] = [
     p: "You are responsible for verifying admission requirements, deadlines, fees and application procedures with the relevant institution, provider or official government source before applying or paying anything.",
   },
   {
-    h: "Estimated information",
-    p: "Where an official cut-off point or requirement is not published, GhanaPathFinder may show an estimate. Estimates are labelled as such and must never be treated as official institutional data.",
+    h: "Estimated pathway information",
+    p: "Where GhanaPathFinder does not have a verified pathway rule for a qualification, the platform may show an estimated pathway based on available published international qualification pathways and institutional/programme information. Estimated pathways are clearly labelled as estimates and are not official admissions requirements, equivalence decisions or guarantees of eligibility or admission.",
+  },
+  {
+    h: "International qualification verification",
+    p: "International qualification pathways can depend on equivalence, subject combinations, grades, language requirements, programme-specific rules and current institutional policy. You must confirm your exact eligibility, qualification recognition, deadlines, fees and application procedure directly with the relevant Ghanaian institution or official authority before applying or paying any fees.",
   },
   {
     h: "Your account",
