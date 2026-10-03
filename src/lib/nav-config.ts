@@ -43,6 +43,7 @@ export const navSections: NavSection[] = [
     items: [
       { label: "Universities", href: "/search?kind=university", desc: "Find where you belong" },
       { label: "Programmes", href: "/programmes", desc: "Choose your direction" },
+      { label: "International student pathway", href: "/international-pathway", desc: "Find your pathway to Ghana" },
       { label: "Compare institutions", href: "/compare", desc: "Compare what matters" },
       { label: "Explore & search", href: "/search", desc: "Discover your options" },
     ],
