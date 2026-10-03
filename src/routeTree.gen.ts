@@ -21,6 +21,7 @@ import { Route as CompareScholarshipsRouteImport } from './routes/compare-schola
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CreditsRouteImport } from './routes/credits'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as CareerMarketplaceRouteImport } from './routes/career-marketplace'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as InspirationRouteImport } from './routes/inspiration'
@@ -121,6 +122,11 @@ const CreditsRoute = CreditsRouteImport.update({
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CareerMarketplaceRoute = CareerMarketplaceRouteImport.update({
+  id: '/career-marketplace',
+  path: '/career-marketplace',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DisclaimerRoute = DisclaimerRouteImport.update({
@@ -344,6 +350,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/credits': typeof CreditsRoute
   '/dashboard': typeof DashboardRoute
+  '/career-marketplace': typeof CareerMarketplaceRoute
   '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
   '/inspiration': typeof InspirationRoute
@@ -678,6 +685,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   CreditsRoute: typeof CreditsRoute
   DashboardRoute: typeof DashboardRoute
+  CareerMarketplaceRoute: typeof CareerMarketplaceRoute
   DisclaimerRoute: typeof DisclaimerRoute
   FaqRoute: typeof FaqRoute
   InspirationRoute: typeof InspirationRoute
@@ -805,6 +813,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/career-marketplace': {
+      id: '/career-marketplace'
+      path: '/career-marketplace'
+      fullPath: '/career-marketplace'
+      preLoaderRoute: typeof CareerMarketplaceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/disclaimer': {
