@@ -335,6 +335,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
+  '/international-pathway': typeof InternationalPathwayRoute
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
   '/career-path': typeof CareerPathRoute
@@ -389,6 +390,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
+  '/international-pathway': typeof InternationalPathwayRoute
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
   '/career-path': typeof CareerPathRoute
@@ -444,6 +446,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
+  '/international-pathway': typeof InternationalPathwayRoute
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
   '/career-path': typeof CareerPathRoute
