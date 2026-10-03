@@ -22,6 +22,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CreditsRouteImport } from './routes/credits'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CareerMarketplaceRouteImport } from './routes/career-marketplace'
+import { Route as CvBuilderRouteImport } from './routes/cv-builder'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as InspirationRouteImport } from './routes/inspiration'
@@ -127,6 +128,11 @@ const DashboardRoute = DashboardRouteImport.update({
 const CareerMarketplaceRoute = CareerMarketplaceRouteImport.update({
   id: '/career-marketplace',
   path: '/career-marketplace',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CvBuilderRoute = CvBuilderRouteImport.update({
+  id: '/cv-builder',
+  path: '/cv-builder',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DisclaimerRoute = DisclaimerRouteImport.update({
@@ -351,6 +357,7 @@ export interface FileRoutesByFullPath {
   '/credits': typeof CreditsRoute
   '/dashboard': typeof DashboardRoute
   '/career-marketplace': typeof CareerMarketplaceRoute
+  '/cv-builder': typeof CvBuilderRoute
   '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
   '/inspiration': typeof InspirationRoute
@@ -1129,6 +1136,7 @@ const rootRouteChildren: RootRouteChildren = {
   CreditsRoute: CreditsRoute,
   DashboardRoute: DashboardRoute,
   CareerMarketplaceRoute: CareerMarketplaceRoute,
+  CvBuilderRoute: CvBuilderRoute,
   DisclaimerRoute: DisclaimerRoute,
   FaqRoute: FaqRoute,
   InspirationRoute: InspirationRoute,
