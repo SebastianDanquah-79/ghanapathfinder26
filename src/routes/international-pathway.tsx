@@ -5,6 +5,7 @@ const title = "International Student Pathway | GhanaPathFinder";
 const description = "Explore verified pathways from international qualifications into Ghanaian universities and programmes.";
 
 export const Route = createFileRoute("/international-pathway")({
+  ssr: false,
   head: () => ({
     meta: [
       { title },
