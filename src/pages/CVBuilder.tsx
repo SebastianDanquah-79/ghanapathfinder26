@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@/lib/router-compat";
 import { FileText, Plus, Trash2, Download, Save, ArrowLeft, Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -24,8 +24,6 @@ export default function CVBuilder() {
  const [content,setContent] = useState<CvContent>(blank);
  const [busy,setBusy] = useState(false);
  const [loadingCvs,setLoadingCvs] = useState(true);
- const editing = !!selected;
- const selectedCv = useMemo(()=>cvs.find(cv=>cv.id===selected),[cvs,selected]);
 
  const loadCvs = async () => {
   if(!user) { setCvs([]); setLoadingCvs(false); return; }
