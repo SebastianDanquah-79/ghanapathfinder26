@@ -58,14 +58,12 @@ create policy "Employer owners can delete company" on public.employers for delet
 drop policy if exists "Employer users manage own membership" on public.employer_users;
 drop policy if exists "Employer users read own employer members" on public.employer_users;
 drop policy if exists "Employer members read their memberships" on public.employers;
-create policy "Employer members read their memberships" on public.employer_users for select to authenticated using (user_id = (select auth.uid()) or exists (select 1 from public.employer_users eu where eu.employer_id = employer_users.employer_id and eu.user_id = (select auth.uid())));
-drop policy if exists "Employer owners add memberships" on public.employers;
-create policy "Employer owners add memberships" on public.employer_users for insert to authenticated with check (exists (select 1 from public.employers e where e.id = employer_users.employer_id and e.created_by = (select auth.uid())) or (user_id = (select auth.uid()) and exists (select 1 from public.employer_users eu where eu.employer_id = employer_users.employer_id and eu.user_id = (select auth.uid()))));
-drop policy if exists "Employer members update own membership" on public.employers;
+create policy "Employer members read their memberships" on public.employer_users for select to authenticated using (user_id = (select auth.uid()));
+drop policy if exists "Employer owners add memberships" on public.employer_users;
+create policy "Employer owners add memberships" on public.employer_users for insert to authenticated with check (exists (select 1 from public.employers e where e.id = employer_users.employer_id and e.created_by = (select auth.uid())));
 create policy "Employer members update own membership" on public.employer_users for update to authenticated using (user_id = (select auth.uid())) with check (user_id = (select auth.uid()));
 drop policy if exists "Employer owners remove memberships" on public.employers;
 create policy "Employer owners remove memberships" on public.employer_users for delete to authenticated using (user_id = (select auth.uid()) or exists (select 1 from public.employers e where e.id = employer_users.employer_id and e.created_by = (select auth.uid())));
-drop policy if exists "Employers read application workflow" on public.employer_application_reviews;
 create policy "Employers read application workflow" on public.employer_application_reviews for select to authenticated using (candidate_user_id = (select auth.uid()) or exists (select 1 from public.employer_users eu where eu.employer_id = employer_application_reviews.employer_id and eu.user_id = (select auth.uid())));
 drop policy if exists "Employers create application workflow" on public.employer_application_reviews;
 create policy "Employers create application workflow" on public.employer_application_reviews for insert to authenticated with check (updated_by = (select auth.uid()) and exists (select 1 from public.employer_users eu where eu.employer_id = employer_application_reviews.employer_id and eu.user_id = (select auth.uid())));
