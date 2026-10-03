@@ -70,6 +70,7 @@ export const navSections: NavSection[] = [
       { label: "Skills", href: "/skills", desc: "Build skills that pay off" },
       { label: "Internships", href: "/internships", desc: "Get experience that counts" },
       { label: "Career marketplace", href: "/career-marketplace", desc: "Connect with employers and opportunities" },
+      { label: "CV Builder", href: "/cv-builder", desc: "Create and download tailored CVs" },
       { label: "Professional councils", href: "/professional-councils", desc: "Know the rules before you choose" },
     ],
   },
