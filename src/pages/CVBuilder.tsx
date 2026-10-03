@@ -43,10 +43,12 @@ export default function CVBuilder() {
   setBusy(true);
   const payload={user_id:user.id,title:title.trim(),target_role:role.trim()||null,template,content,updated_at:new Date().toISOString()};
   const result=selected && selected!=="new"
-   ? await cvDb.from("candidate_cvs").update(payload).eq("id",selected).eq("user_id",user.id).select("id").maybeSingle()
-   : await cvDb.from("candidate_cvs").insert(payload).select("id").single();
-  if(result.error) toast.error("Could not save CV. Please try again.");
-  else {toast.success("CV saved");reset();await loadCvs();}
+   ? await cvDb.from("candidate_cvs").update(payload).eq("id",selected).eq("user_id",user.id)
+   : await cvDb.from("candidate_cvs").insert(payload);
+  if(result.error) {
+   console.error("CV save failed:", result.error);
+   toast.error(result.error.message || "Could not save CV. Please try again.");
+  } else {toast.success("CV saved");reset();await loadCvs();}
   setBusy(false);
  };
  const remove = async (id:string) => {
