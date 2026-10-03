@@ -14,17 +14,14 @@
 //
 // Bump CACHE_VERSION any time you want to force-invalidate old caches.
 
-const CACHE_VERSION = "gpf-v1";
+const CACHE_VERSION = "gpf-v2";
 const SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const OFFLINE_URL = "/offline.html";
 
 const APP_SHELL = [
   "/",
   "/manifest.webmanifest",
-  "/favicon.png",
-  "/app-icon-192.png",
-  "/app-icon-512.png",
-  "/apple-touch-icon.png",
+  "/placeholder.svg",
   OFFLINE_URL,
 ];
 
