@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdmissionMatchRouteImport } from './routes/admission-match'
+import { Route as InternationalPathwayRouteImport } from './routes/international-pathway'
 import { Route as ApplicationsRouteImport } from './routes/applications'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CareerPathRouteImport } from './routes/career-path'
@@ -75,6 +76,11 @@ const AboutRoute = AboutRouteImport.update({
 const AdmissionMatchRoute = AdmissionMatchRouteImport.update({
   id: '/admission-match',
   path: '/admission-match',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InternationalPathwayRoute = InternationalPathwayRouteImport.update({
+  id: '/international-pathway',
+  path: '/international-pathway',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApplicationsRoute = ApplicationsRouteImport.update({
@@ -495,6 +501,8 @@ export interface FileRouteTypes {
     | '/about'
     | '/admission-match'
     | '/applications'
+    | '/international-pathway'
+    | '/international-pathway'
     | '/auth'
     | '/career-path'
     | '/community'
@@ -657,6 +665,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AdmissionMatchRoute: typeof AdmissionMatchRoute
+  InternationalPathwayRoute: typeof InternationalPathwayRoute
   ApplicationsRoute: typeof ApplicationsRoute
   AuthRoute: typeof AuthRoute
   CareerPathRoute: typeof CareerPathRoute
@@ -729,6 +738,13 @@ declare module '@tanstack/react-router' {
       path: '/admission-match'
       fullPath: '/admission-match'
       preLoaderRoute: typeof AdmissionMatchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/international-pathway': {
+      id: '/international-pathway'
+      path: '/international-pathway'
+      fullPath: '/international-pathway'
+      preLoaderRoute: typeof InternationalPathwayRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/applications': {
@@ -1081,6 +1097,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AdmissionMatchRoute: AdmissionMatchRoute,
+  InternationalPathwayRoute: InternationalPathwayRoute,
   ApplicationsRoute: ApplicationsRoute,
   AuthRoute: AuthRoute,
   CareerPathRoute: CareerPathRoute,
