@@ -1,0 +1,13 @@
+create table if not exists public.international_qualification_catalog (id uuid primary key default gen_random_uuid(),country_code text not null,country_name text not null,qualification_code text not null,qualification_name text not null,level text not null default 'secondary',notes text,source_url text,verification_status text not null default 'verified',last_verified_at timestamptz,created_at timestamptz not null default now(),updated_at timestamptz not null default now(),unique(country_code,qualification_code));
+create table if not exists public.international_pathway_rules (id uuid primary key default gen_random_uuid(),institution_id uuid not null references public.universities(id) on delete cascade,qualification_code text not null,academic_level text not null default 'undergraduate',minimum_overall_score numeric,score_operator text,required_subjects jsonb not null default '[]'::jsonb,equivalency_required boolean not null default false,english_proficiency_required boolean not null default false,notes text,source_url text not null,verification_status text not null default 'verified',last_verified_at timestamptz,created_at timestamptz not null default now(),updated_at timestamptz not null default now(),unique(institution_id,qualification_code,academic_level));
+create index if not exists idx_intl_qualification_country on public.international_qualification_catalog(country_code);
+create index if not exists idx_intl_rule_qualification on public.international_pathway_rules(qualification_code);
+create index if not exists idx_intl_rule_institution on public.international_pathway_rules(institution_id);
+alter table public.international_qualification_catalog enable row level security;
+alter table public.international_pathway_rules enable row level security;
+drop policy if exists "public can read verified international qualifications" on public.international_qualification_catalog;
+create policy "public can read verified international qualifications" on public.international_qualification_catalog for select to anon,authenticated using(verification_status='verified');
+drop policy if exists "public can read verified international pathway rules" on public.international_pathway_rules;
+create policy "public can read verified international pathway rules" on public.international_pathway_rules for select to anon,authenticated using(verification_status='verified');
+grant select on public.international_qualification_catalog to anon,authenticated;
+grant select on public.international_pathway_rules to anon,authenticated;
