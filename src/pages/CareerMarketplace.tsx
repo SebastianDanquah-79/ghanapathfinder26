@@ -10,7 +10,7 @@ type Job = {
   id:string; title:string; opportunity_type:string; employment_type:string|null;
   location:string|null; remote:boolean; description:string|null; requirements:string|null;
   skills:string[]; application_url:string|null; apply_url:string|null; compensation:string|null;
-  organisation:string|null; company_name:string|null; employer_id:string|null;
+  organisation:string|null; company_name:string|null; employer_id:string|null; source_name:string|null; source:string|null; source_url:string|null; last_verified_at:string|null; posted_at:string|null; created_at:string|null; city:string|null;
 };
 type Applicant = {
   id:string; user_id:string; opportunity_id:string; status:string; applied_at:string|null;
@@ -27,7 +27,7 @@ export default function CareerMarketplace(){
   const [job,setJob]=useState({title:"",type:"job",employment_type:"full-time",location:"",description:"",requirements:"",skills:"",compensation:"",remote:false});
 
   const load=async()=>{
-    const {data}=await supabase.from("opportunities").select("id,title,opportunity_type,employment_type,location,remote,description,requirements,skills,application_url,apply_url,compensation,organisation,company_name,employer_id").eq("status","active").order("posted_at",{ascending:false}).limit(100);
+    const {data}=await supabase.from("opportunities").select("id,title,opportunity_type,employment_type,location,remote,description,requirements,skills,application_url,apply_url,compensation,organisation,company_name,employer_id,source_name,source,source_url,last_verified_at,posted_at,created_at,city").eq("status","active").order("posted_at",{ascending:false}).limit(100);
     const list=(data??[]) as Job[]; setJobs(list); if(!user)return;
     const {data:members}=await supabase.from("employer_users").select("employer_id").eq("user_id",user.id);
     const eid=members?.[0]?.employer_id??null; setEmployerId(eid); if(!eid)return;
@@ -55,7 +55,7 @@ export default function CareerMarketplace(){
     if(me){toast.error(me.message);setBusy(false);return;}
     await supabase.from("employer_profiles").upsert({user_id:user.id,organization_name:company.name,organization_type:"company",hiring_focus:company.industry?[company.industry]:[]});
     await supabase.from("profiles").update({account_role:"employer",account_type:"employer"}).eq("id",user.id);
-    toast.success("Employer workspace created");setEmployerId(e.id);setMode("employer");setBusy(false);await load();
+    toast.success("Employer workspace created");setEmployerId(e.id);setCompany(company);setMode("employer");setBusy(false);await load();
   };
 
   const post=async()=>{
