@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 type Qualification={country_code:string;country_name:string;qualification_code:string;qualification_name:string;level:string;notes:string|null;source_url:string|null};
 type GradingScale={qualification_code:string;scale_min:number;scale_max:number;pass_mark:number|null;grade_notes:string|null;ghana_interpretation:string;source_url:string|null;verification_status:string};
 type Rule={institution_id:string;minimum_overall_score:number|null;score_operator:string|null;equivalency_required:boolean;english_proficiency_required:boolean;notes:string|null;source_url:string;verification_status?:string;universities?:{name:string;short_name:string|null}|null};
-type Programme={id:string;name:string;slug:string;field:string|null;degree_type:string|null;entry_requirements:string|null;university_id:string;universities?:{name:string;short_name:string|null}|null};
+type Programme={id:string;name:string;slug:string;field:string|null;degree_type:string|null;entry_requirements:string|null;university_id:string|null;institution_id:string|null;verification_status:string|null;source_url:string|null;universities?:{name:string;short_name:string|null}|null};
 
 const InternationalPathway=()=>{
  const[country,setCountry]=useState("");const[qualificationCode,setQualificationCode]=useState("");const[field,setField]=useState("");const[score,setScore]=useState("");const[loading,setLoading]=useState(false);const[gradingScale,setGradingScale]=useState<GradingScale|null>(null);const[message,setMessage]=useState("");const[qualifications,setQualifications]=useState<Qualification[]>([]);const[rules,setRules]=useState<Rule[]>([]);const[programmes,setProgrammes]=useState<Programme[]>([]);const[estimated,setEstimated]=useState(false);const[submitted,setSubmitted]=useState(false);
@@ -29,11 +29,24 @@ const InternationalPathway=()=>{
    }
    setEstimated(isEstimated);setRules(rs);const ids=rs.map(r=>r.institution_id);
    if(!ids.length){setProgrammes([]);setMessage("We do not have a verified pathway rule for this qualification yet. You can still explore Ghanaian study options, but no estimate is available yet.");return;}
-   let q=supabase.from("programmes").select("id,name,slug,field,degree_type,entry_requirements,university_id,universities(name,short_name)").in("university_id",ids).limit(100);
-   if(field.trim())q=q.ilike("field","%"+field.trim()+"%");
-   const{data:rows,error}=await q;if(error)throw error;const n=Number(score);
-   const filtered=score.trim()&&Number.isFinite(n)?(rows??[]).filter(p=>{const r=rs.find(x=>x.institution_id===p.university_id);if(!r||r.minimum_overall_score==null||!r.score_operator)return true;return r.score_operator==="<="?n<=r.minimum_overall_score:n>=r.minimum_overall_score;}):(rows??[]);
-   setProgrammes(filtered as unknown as Programme[]);
+   const programmeSelect="id,name,slug,field,degree_type,entry_requirements,university_id,institution_id,verification_status,source_url,universities(name,short_name)";
+   const[{data:byUniversity,error:ue},{data:byInstitution,error:ie}]=await Promise.all([
+     supabase.from("programmes").select(programmeSelect).in("university_id",ids).limit(250),
+     supabase.from("programmes").select(programmeSelect).in("institution_id",ids).limit(250)
+   ]);
+   if(ue)throw ue;if(ie)throw ie;
+   const merged=new Map<string,unknown>();
+   [...(byUniversity??[]),...(byInstitution??[])].forEach(p=>merged.set((p as {id:string}).id,p));
+   let rows=[...merged.values()] as unknown as Programme[];
+   if(field.trim())rows=rows.filter(p=>(p.field??"").toLowerCase().includes(field.trim().toLowerCase()));
+   const n=Number(score);
+   const filtered=score.trim()&&Number.isFinite(n)?rows.filter(p=>{
+     const ruleInstitutionId=p.university_id??p.institution_id;
+     const r=rs.find(x=>x.institution_id===ruleInstitutionId);
+     if(!r||r.minimum_overall_score==null||!r.score_operator)return true;
+     return r.score_operator==="<= "?n<=r.minimum_overall_score:n>=r.minimum_overall_score;
+   }):rows;
+   setProgrammes(filtered);
  }catch(e){console.error(e);setMessage("We could not evaluate this pathway. Please try again.");}finally{setLoading(false);}};
  const input="w-full px-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm focus:outline-hidden focus:ring-2 focus:ring-primary/50";const card="bg-glass rounded-xl border border-border/60 p-5";
  return <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-20 pb-12"><Seo title="International Student Pathway | GhanaPathFinder" description="Explore verified pathways from international qualifications into Ghanaian universities and programmes." path="/international-pathway"/><Navbar/><div className="max-w-6xl mx-auto">
