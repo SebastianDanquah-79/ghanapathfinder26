@@ -12,7 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdmissionMatchRouteImport } from './routes/admission-match'
-import { Route as InternationalPathwayRouteImport } from './routes/international-pathway'
 import { Route as ApplicationsRouteImport } from './routes/applications'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CareerPathRouteImport } from './routes/career-path'
@@ -25,6 +24,7 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as InspirationRouteImport } from './routes/inspiration'
+import { Route as InternationalPathwayRouteImport } from './routes/international-pathway'
 import { Route as MatcherRouteImport } from './routes/matcher'
 import { Route as MyPathRouteImport } from './routes/my-path'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
@@ -76,11 +76,6 @@ const AboutRoute = AboutRouteImport.update({
 const AdmissionMatchRoute = AdmissionMatchRouteImport.update({
   id: '/admission-match',
   path: '/admission-match',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InternationalPathwayRoute = InternationalPathwayRouteImport.update({
-  id: '/international-pathway',
-  path: '/international-pathway',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApplicationsRoute = ApplicationsRouteImport.update({
@@ -141,6 +136,11 @@ const FaqRoute = FaqRouteImport.update({
 const InspirationRoute = InspirationRouteImport.update({
   id: '/inspiration',
   path: '/inspiration',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InternationalPathwayRoute = InternationalPathwayRouteImport.update({
+  id: '/international-pathway',
+  path: '/international-pathway',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MatcherRoute = MatcherRouteImport.update({
@@ -335,7 +335,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
-  '/international-pathway': typeof InternationalPathwayRoute
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
   '/career-path': typeof CareerPathRoute
@@ -348,6 +347,7 @@ export interface FileRoutesByFullPath {
   '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
   '/inspiration': typeof InspirationRoute
+  '/international-pathway': typeof InternationalPathwayRoute
   '/matcher': typeof MatcherRoute
   '/my-path': typeof MyPathRoute
   '/onboarding': typeof OnboardingRoute
@@ -390,7 +390,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
-  '/international-pathway': typeof InternationalPathwayRoute
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
   '/career-path': typeof CareerPathRoute
@@ -403,6 +402,7 @@ export interface FileRoutesByTo {
   '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
   '/inspiration': typeof InspirationRoute
+  '/international-pathway': typeof InternationalPathwayRoute
   '/matcher': typeof MatcherRoute
   '/my-path': typeof MyPathRoute
   '/onboarding': typeof OnboardingRoute
@@ -446,7 +446,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
-  '/international-pathway': typeof InternationalPathwayRoute
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
   '/career-path': typeof CareerPathRoute
@@ -459,6 +458,7 @@ export interface FileRoutesById {
   '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
   '/inspiration': typeof InspirationRoute
+  '/international-pathway': typeof InternationalPathwayRoute
   '/matcher': typeof MatcherRoute
   '/my-path': typeof MyPathRoute
   '/onboarding': typeof OnboardingRoute
@@ -504,7 +504,6 @@ export interface FileRouteTypes {
     | '/about'
     | '/admission-match'
     | '/applications'
-    | '/international-pathway'
     | '/auth'
     | '/career-path'
     | '/community'
@@ -516,6 +515,7 @@ export interface FileRouteTypes {
     | '/disclaimer'
     | '/faq'
     | '/inspiration'
+    | '/international-pathway'
     | '/matcher'
     | '/my-path'
     | '/onboarding'
@@ -558,7 +558,6 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admission-match'
-    | '/international-pathway'
     | '/applications'
     | '/auth'
     | '/career-path'
@@ -571,6 +570,7 @@ export interface FileRouteTypes {
     | '/disclaimer'
     | '/faq'
     | '/inspiration'
+    | '/international-pathway'
     | '/matcher'
     | '/my-path'
     | '/onboarding'
@@ -613,7 +613,6 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/admission-match'
-    | '/international-pathway'
     | '/applications'
     | '/auth'
     | '/career-path'
@@ -626,6 +625,7 @@ export interface FileRouteTypes {
     | '/disclaimer'
     | '/faq'
     | '/inspiration'
+    | '/international-pathway'
     | '/matcher'
     | '/my-path'
     | '/onboarding'
@@ -669,7 +669,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AdmissionMatchRoute: typeof AdmissionMatchRoute
-  InternationalPathwayRoute: typeof InternationalPathwayRoute
   ApplicationsRoute: typeof ApplicationsRoute
   AuthRoute: typeof AuthRoute
   CareerPathRoute: typeof CareerPathRoute
@@ -682,6 +681,7 @@ export interface RootRouteChildren {
   DisclaimerRoute: typeof DisclaimerRoute
   FaqRoute: typeof FaqRoute
   InspirationRoute: typeof InspirationRoute
+  InternationalPathwayRoute: typeof InternationalPathwayRoute
   MatcherRoute: typeof MatcherRoute
   MyPathRoute: typeof MyPathRoute
   OnboardingRoute: typeof OnboardingRoute
@@ -742,13 +742,6 @@ declare module '@tanstack/react-router' {
       path: '/admission-match'
       fullPath: '/admission-match'
       preLoaderRoute: typeof AdmissionMatchRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/international-pathway': {
-      id: '/international-pathway'
-      path: '/international-pathway'
-      fullPath: '/international-pathway'
-      preLoaderRoute: typeof InternationalPathwayRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/applications': {
@@ -833,6 +826,13 @@ declare module '@tanstack/react-router' {
       path: '/inspiration'
       fullPath: '/inspiration'
       preLoaderRoute: typeof InspirationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/international-pathway': {
+      id: '/international-pathway'
+      path: '/international-pathway'
+      fullPath: '/international-pathway'
+      preLoaderRoute: typeof InternationalPathwayRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/matcher': {
@@ -1101,7 +1101,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AdmissionMatchRoute: AdmissionMatchRoute,
-  InternationalPathwayRoute: InternationalPathwayRoute,
   ApplicationsRoute: ApplicationsRoute,
   AuthRoute: AuthRoute,
   CareerPathRoute: CareerPathRoute,
@@ -1114,6 +1113,7 @@ const rootRouteChildren: RootRouteChildren = {
   DisclaimerRoute: DisclaimerRoute,
   FaqRoute: FaqRoute,
   InspirationRoute: InspirationRoute,
+  InternationalPathwayRoute: InternationalPathwayRoute,
   MatcherRoute: MatcherRoute,
   MyPathRoute: MyPathRoute,
   OnboardingRoute: OnboardingRoute,

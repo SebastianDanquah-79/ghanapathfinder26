@@ -343,8 +343,8 @@ const SearchPage = () => {
       return (schs.data ?? []).map((s) => ({
         kind: "scholarship" as const,
         id: s.id,
-        slug: s.slug,
-        title: s.name,
+        slug: s.slug ?? s.id,
+        title: s.name ?? "",
         subtitle: s.provider,
         meta: {
           eligibility: s.eligibility,

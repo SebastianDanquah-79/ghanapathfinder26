@@ -1,5 +1,5 @@
 import { createStart, createMiddleware } from "@tanstack/react-start";
-import * as startClientCore from "@tanstack/start-client-core";
+import * as startClientCore from "@tanstack/react-start";
 
 import { renderErrorPage } from "./lib/error-page";
 
@@ -35,7 +35,7 @@ const csrfMiddleware =
 if (!csrfMiddleware) {
   console.error(
     new Error(
-      "createCsrfMiddleware unavailable from @tanstack/start-client-core; continuing without CSRF middleware",
+      "createCsrfMiddleware unavailable from @tanstack/react-start; continuing without CSRF middleware",
     ),
   );
 }
