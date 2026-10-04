@@ -9,6 +9,7 @@ import { TERMS_VERSION } from "@/lib/legal";
 import { useEffect } from "react";
 import SiteRating from "@/components/SiteRating";
 import { isValidPhone } from "@/components/ContactGate";
+import { track } from "@/lib/analytics";
 
 type Mode = "signin" | "signup";
 
@@ -67,6 +68,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
           },
         });
         if (error) throw error;
+        if (data.user) await track("sign_up");
         if (!data.session) {
           setEmailSent(true);
           return;
@@ -83,6 +85,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
           password,
         });
         if (error) throw error;
+        await track("sign_in");
         if (data.user) await recordAcceptance(data.user.id);
         if (next) window.location.href = next;
         else navigate("/dashboard", { replace: true });
