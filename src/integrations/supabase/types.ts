@@ -5964,6 +5964,7 @@ export type Database = {
     Functions: {
       accept_parent_invite: { Args: { _code: string }; Returns: string }
       admin_analytics: { Args: never; Returns: Json }
+      admin_traffic_sources: { Args: never; Returns: Json }
       find_duplicate_institution: {
         Args: { _name: string }
         Returns: {
