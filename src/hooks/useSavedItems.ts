@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "./useAuth";
+import { track } from "@/lib/analytics";
 
 export type SavedItemType = "university" | "scholarship" | "career" | "programme" | "skill";
 
@@ -45,6 +46,7 @@ export const useToggleSaved = () => {
           .eq("item_type", item.item_type)
           .eq("item_key", item.item_key);
         if (error) throw error;
+        await track("opportunity_removed", { refType: item.item_type });
         return "removed" as const;
       }
       const { error } = await supabase.from("saved_items").upsert(
@@ -59,6 +61,7 @@ export const useToggleSaved = () => {
         { onConflict: "user_id,item_type,item_key" },
       );
       if (error) throw error;
+      await track("opportunity_saved", { refType: item.item_type });
       return "saved" as const;
 
     },
