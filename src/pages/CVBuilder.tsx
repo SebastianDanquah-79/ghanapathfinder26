@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import { track } from "@/lib/analytics";
 
 type CvContent = { fullName:string; email:string; phone:string; location:string; linkedin:string; portfolio:string; summary:string; education:string; experience:string; skills:string; projects:string; certifications:string; };
 type CvRecord = { id:string; title:string; target_role:string|null; template:string; content:CvContent; updated_at:string };
@@ -48,7 +49,7 @@ export default function CVBuilder() {
   if(result.error) {
    console.error("CV save failed:", result.error);
    toast.error(result.error.message || "Could not save CV. Please try again.");
-  } else {toast.success("CV saved");reset();await loadCvs();}
+  } else {await track("cv_saved");toast.success("CV saved");reset();await loadCvs();}
   setBusy(false);
  };
  const remove = async (id:string) => {
@@ -59,6 +60,7 @@ export default function CVBuilder() {
  };
  const exportPdf = () => {
   if(!content.fullName.trim()) {toast.error("Add your name before exporting");return;}
+  void track("cv_exported", { refType: "pdf" });
   window.print();
  };
  if(loading) return <div className="min-h-screen bg-background"><Navbar/><div className="mx-auto max-w-5xl p-8 text-muted-foreground">Loading your account...</div></div>;
