@@ -8,6 +8,7 @@ import { useIsAdmin } from "@/hooks/useAdminData";
 import {
   PUBLIC_METRICS,
   useAdminAnalytics,
+  useAdminTrafficSources,
   useSetPublicMetric,
   useUsageStats,
   type PeriodMetrics,
@@ -48,6 +49,7 @@ const AdminAnalytics = () => {
   const { user, loading } = useAuth();
   const { data: isAdmin, isLoading: roleLoading } = useIsAdmin();
   const { data, isLoading } = useAdminAnalytics(!!isAdmin);
+  const { data: trafficSources } = useAdminTrafficSources(!!isAdmin);
   const { data: publicStats } = useUsageStats();
   const setMetric = useSetPublicMetric();
   const [metric, setMetricState] = useState<string | null>(null);
@@ -152,6 +154,24 @@ const AdminAnalytics = () => {
               </tbody>
             </table>
           </div>
+        )}
+        {trafficSources && (
+          <section className="mt-6 rounded-xl border border-border bg-card p-5">
+            <h2 className="font-semibold text-foreground">Traffic sources · last 30 days</h2>
+            <p className="mt-1 text-xs text-muted-foreground">UTM source when available, otherwise referring domain or direct visit. Only aggregate counts are shown.</p>
+            {Object.keys(trafficSources).length === 0 ? (
+              <p className="mt-4 text-sm text-muted-foreground">No attributed traffic has been recorded yet.</p>
+            ) : (
+              <div className="mt-4 space-y-3">
+                {Object.entries(trafficSources).sort((a, b) => b[1] - a[1]).map(([source, count]) => (
+                  <div key={source} className="flex items-center justify-between gap-4 text-sm">
+                    <span className="min-w-0 break-all text-muted-foreground">{source === "direct" ? "Direct / unknown" : source}</span>
+                    <span className="shrink-0 font-medium tabular-nums text-foreground">{Number(count).toLocaleString("en-GB")}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
         )}
       </div>
     </div>
