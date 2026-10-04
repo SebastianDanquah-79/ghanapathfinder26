@@ -284,33 +284,48 @@ export type Database = {
       analytics_events: {
         Row: {
           created_at: string
+          device_type: string | null
           event_type: string
           id: string
           path: string | null
           ref_id: string | null
           ref_type: string | null
+          referrer_host: string | null
           session_id: string
           user_id: string | null
+          utm_campaign: string | null
+          utm_medium: string | null
+          utm_source: string | null
         }
         Insert: {
           created_at?: string
+          device_type?: string | null
           event_type: string
           id?: string
           path?: string | null
           ref_id?: string | null
           ref_type?: string | null
+          referrer_host?: string | null
           session_id: string
           user_id?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
         }
         Update: {
           created_at?: string
+          device_type?: string | null
           event_type?: string
           id?: string
           path?: string | null
           ref_id?: string | null
           ref_type?: string | null
+          referrer_host?: string | null
           session_id?: string
           user_id?: string | null
+          utm_campaign?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
         }
         Relationships: []
       }
@@ -480,6 +495,39 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      candidate_cvs: {
+        Row: {
+          content: Json
+          created_at: string
+          id: string
+          target_role: string | null
+          template: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content?: Json
+          created_at?: string
+          id?: string
+          target_role?: string | null
+          template?: string
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: Json
+          created_at?: string
+          id?: string
+          target_role?: string | null
+          template?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       collection_items: {
         Row: {
