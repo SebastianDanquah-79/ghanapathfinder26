@@ -145,6 +145,17 @@ export const useAdminAnalytics = (enabled: boolean) =>
     },
   });
 
+export const useAdminTrafficSources = (enabled: boolean) =>
+  useQuery({
+    queryKey: ["admin_traffic_sources"],
+    enabled,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc("admin_traffic_sources" as never);
+      if (error) throw error;
+      return data as unknown as Record<string, number>;
+    },
+  });
+
 export const useSetPublicMetric = () => {
   const qc = useQueryClient();
   return useMutation({
