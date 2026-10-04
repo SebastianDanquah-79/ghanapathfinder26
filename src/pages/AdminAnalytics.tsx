@@ -33,6 +33,15 @@ const ROWS: Array<{ key: keyof PeriodMetrics; label: string }> = [
   { key: "saved_universities", label: "Saved universities" },
   { key: "saved_programmes", label: "Saved programmes" },
   { key: "saved_scholarships", label: "Saved scholarships" },
+  { key: "signups", label: "Sign-up events" },
+  { key: "onboarding_completions", label: "Onboarding completions" },
+  { key: "searches", label: "Searches performed" },
+  { key: "saved_opportunities", label: "Opportunities saved" },
+  { key: "cv_exports", label: "CV PDF exports" },
+  { key: "returning_users", label: "Returning signed-in users" },
+  { key: "mobile_events", label: "Mobile-tracked events" },
+  { key: "desktop_events", label: "Desktop-tracked events" },
+  { key: "tablet_events", label: "Tablet-tracked events" },
 ];
 
 const AdminAnalytics = () => {
