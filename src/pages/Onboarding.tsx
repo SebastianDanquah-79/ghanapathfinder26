@@ -4,6 +4,7 @@ import { Loader2, Plus, Trash2 } from "@/lib/icons";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { track } from "@/lib/analytics";
 
 const REGIONS = [
   "Greater Accra", "Ashanti", "Central", "Eastern", "Western", "Volta",
@@ -80,6 +81,7 @@ const Onboarding = () => {
         if (rErr) throw rErr;
       }
 
+      await track("onboarding_completed");
       toast.success("Profile saved");
       navigate("/dashboard", { replace: true });
     } catch (err) {
