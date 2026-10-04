@@ -121,6 +121,15 @@ export interface PeriodMetrics {
   saved_universities: number;
   saved_programmes: number;
   saved_scholarships: number;
+  signups: number;
+  onboarding_completions: number;
+  searches: number;
+  saved_opportunities: number;
+  cv_exports: number;
+  returning_users: number;
+  mobile_events: number;
+  desktop_events: number;
+  tablet_events: number;
 }
 
 export type AdminAnalytics = Record<string, PeriodMetrics>;
