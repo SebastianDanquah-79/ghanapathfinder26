@@ -90,7 +90,6 @@ const UniversityProfile = () => {
 
           {uni && (
             <>
-              <InstitutionMedia websiteUrl={uni.website_url} name={uni.name} logoSourceUrl={uni.logo_source_url} googlePlaceId={uni.google_place_id} variant="hero" />
 
               <header className="bg-glass rounded-xl p-5 mb-6 mt-4">
                 <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
