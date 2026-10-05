@@ -1,10 +1,8 @@
-import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-import { defineConfig } from "vite";
-import { nitro } from "nitro/vite";
-import viteReact from "@vitejs/plugin-react";
-import tailwindcss from "@tailwindcss/vite";
+// Lovable's wrapper wires TanStack Start, React, Tailwind and Nitro, and writes
+// the deployable build to dist/ (Lovable hosting). Nitro honours NITRO_PRESET,
+// so Vercel builds (vercel.json sets NITRO_PRESET=vercel) still work.
+import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
-  plugins: [tanstackStart(), nitro(), viteReact(), tailwindcss()],
-  build: { cssMinify: false },
+  vite: { build: { cssMinify: false } },
 });
