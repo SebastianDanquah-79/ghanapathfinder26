@@ -28,6 +28,11 @@ import { Route as FaqRouteImport } from './routes/faq'
 import { Route as InspirationRouteImport } from './routes/inspiration'
 import { Route as InternationalDirectoryRouteImport } from './routes/international-directory'
 import { Route as InternationalPathwayRouteImport } from './routes/international-pathway'
+import { Route as ForYouRouteImport } from './routes/for-you'
+import { Route as CareerSimulatorRouteImport } from './routes/career-simulator'
+import { Route as SkillPassportRouteImport } from './routes/skill-passport'
+import { Route as CareerReportRouteImport } from './routes/career-report'
+import { Route as CareerReportSlugRouteImport } from './routes/career-report.$slug'
 import { Route as MatcherRouteImport } from './routes/matcher'
 import { Route as MyPathRouteImport } from './routes/my-path'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
@@ -159,6 +164,31 @@ const InternationalDirectoryRoute = InternationalDirectoryRouteImport.update({
 const InternationalPathwayRoute = InternationalPathwayRouteImport.update({
   id: '/international-pathway',
   path: '/international-pathway',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForYouRoute = ForYouRouteImport.update({
+  id: '/for-you',
+  path: '/for-you',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CareerSimulatorRoute = CareerSimulatorRouteImport.update({
+  id: '/career-simulator',
+  path: '/career-simulator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SkillPassportRoute = SkillPassportRouteImport.update({
+  id: '/skill-passport',
+  path: '/skill-passport',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CareerReportRoute = CareerReportRouteImport.update({
+  id: '/career-report',
+  path: '/career-report',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CareerReportSlugRoute = CareerReportSlugRouteImport.update({
+  id: '/career-report/$slug',
+  path: '/career-report/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MatcherRoute = MatcherRouteImport.update({
@@ -369,6 +399,11 @@ export interface FileRoutesByFullPath {
   '/inspiration': typeof InspirationRoute
   '/international-directory': typeof InternationalDirectoryRoute
   '/international-pathway': typeof InternationalPathwayRoute
+  '/for-you': typeof ForYouRoute
+  '/career-simulator': typeof CareerSimulatorRoute
+  '/skill-passport': typeof SkillPassportRoute
+  '/career-report': typeof CareerReportRoute
+  '/career-report/$slug': typeof CareerReportSlugRoute
   '/matcher': typeof MatcherRoute
   '/my-path': typeof MyPathRoute
   '/onboarding': typeof OnboardingRoute
@@ -1177,6 +1212,11 @@ const rootRouteChildren: RootRouteChildren = {
   InspirationRoute: InspirationRoute,
   InternationalDirectoryRoute: InternationalDirectoryRoute,
   InternationalPathwayRoute: InternationalPathwayRoute,
+  ForYouRoute: ForYouRoute,
+  CareerSimulatorRoute: CareerSimulatorRoute,
+  SkillPassportRoute: SkillPassportRoute,
+  CareerReportRoute: CareerReportRoute,
+  CareerReportSlugRoute: CareerReportSlugRoute,
   MatcherRoute: MatcherRoute,
   MyPathRoute: MyPathRoute,
   OnboardingRoute: OnboardingRoute,
