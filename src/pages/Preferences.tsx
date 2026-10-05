@@ -124,7 +124,7 @@ const Preferences = () => {
   const initials = initialsFrom(name);
 
   return (
-    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-20 pb-12">
+    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-6 md:pt-20 pb-24 md:pb-12">
       <div className="hidden md:block"><Navbar /></div>
       <div className="max-w-4xl mx-auto">
         <Link to="/dashboard" className="hidden md:inline-flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
