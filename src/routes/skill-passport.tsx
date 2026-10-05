@@ -10,7 +10,7 @@ export const Route = createFileRoute("/skill-passport")({ ssr: false, component:
 
 function SkillPassport(){
  const {user,loading}=useAuth();
- const {data:profile}=useQuery({queryKey:["passport-profile",user?.id],enabled:!!user,queryFn:async()=>{const {data,error}=await supabase.from("profiles").select("full_name,target_career,university,program,education_level,github_url,linkedin_url,portfolio_url,bio").maybeSingle();if(error)throw error;return data;}});
+ const {data:profile}=useQuery({queryKey:["passport-profile",user?.id],enabled:!!user,queryFn:async()=>{const {data,error}=await supabase.from("profiles").select("full_name,target_career,university,program,education_level,github_url,linkedin_url,portfolio_url,bio").eq("id",user!.id).maybeSingle();if(error)throw error;return data;}});
  const {data:skills=[]}=useQuery({queryKey:["passport-skills",user?.id],enabled:!!user,queryFn:async()=>{const {data,error}=await supabase.from("user_skill_profiles").select("id,level,evidence,skills(name,category)").eq("user_id",user!.id).order("created_at",{ascending:false});if(error)throw error;return data??[];}});
  const {data:cvs=[]}=useQuery({queryKey:["passport-cvs",user?.id],enabled:!!user,queryFn:async()=>{const {data,error}=await supabase.from("candidate_cvs").select("id,title,target_role,updated_at").eq("user_id",user!.id).order("updated_at",{ascending:false});if(error)throw error;return data??[];}});
  if(loading)return <div className="min-h-screen bg-background pt-20"><Navbar/><main className="mx-auto max-w-5xl px-4 py-12 text-sm text-muted-foreground">Loading your passport...</main></div>;
