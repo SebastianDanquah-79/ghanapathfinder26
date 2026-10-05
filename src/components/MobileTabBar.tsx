@@ -1,14 +1,12 @@
 import { Link, useLocation } from "@/lib/router-compat";
-import { Home, Users, Building2, Award, Briefcase } from "@/lib/icons";
+import { Home, Bookmark, CalendarDays, SlidersHorizontal } from "@/lib/icons";
 import { useAuth } from "@/hooks/useAuth";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 const tabs = [
   { to: "/", label: "Home", icon: Home },
-  { to: "/search?kind=university", label: "Study", icon: Building2, match: "/search" },
-  { to: "/scholarships", label: "Funding", icon: Award },
-  { to: "/careers", label: "Careers", icon: Briefcase },
-  { to: "/community", label: "Community", icon: Users },
+  { to: "/saved", label: "Favorites", icon: Bookmark },
+  { to: "/applications", label: "Bookings", icon: CalendarDays },
 ];
 
 const hiddenOn = ["/auth", "/onboarding", "/reset-password", "/.lovable/oauth/consent"];
@@ -27,14 +25,14 @@ const MobileTabBar = () => {
   if (hiddenOn.some((p) => pathname.startsWith(p))) return null;
 
   const name = (user?.user_metadata?.["full_name"] as string | undefined) ?? user?.email ?? null;
-  const profileActive = pathname === "/dashboard" || pathname === "/saved";
+  const profileActive = pathname === "/preferences" || pathname === "/dashboard";
 
   return (
     <nav
       aria-label="Primary"
       className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border pb-[env(safe-area-inset-bottom)]"
     >
-      <ul className="grid grid-cols-6">
+      <ul className="grid grid-cols-4">
         {tabs.map(({ to, label, icon: Icon, match }) => {
           const base = match ?? to;
           const active = pathname === base || (base !== "/" && pathname.startsWith(`${base}/`));
@@ -63,9 +61,9 @@ const MobileTabBar = () => {
         })}
         <li>
           <Link
-            to={user ? "/dashboard" : "/auth"}
-            aria-label={user ? "Your dashboard" : "Sign in"}
-            title={user ? "Dashboard" : "Sign in"}
+            to={user ? "/preferences" : "/auth"}
+            aria-label={user ? "Your profile" : "Sign in"}
+            title={user ? "Profile" : "Sign in"}
             aria-current={profileActive ? "page" : undefined}
             className={`flex flex-col items-center justify-center gap-0.5 min-h-[58px] px-0.5 text-[10px] font-medium transition-colors ${
               profileActive ? "text-primary" : "text-muted-foreground active:text-foreground"
@@ -82,7 +80,7 @@ const MobileTabBar = () => {
                 </AvatarFallback>
               </Avatar>
             </span>
-            {user ? "You" : "Sign in"}
+            {user ? "Profile" : "Sign in"}
           </Link>
         </li>
       </ul>
