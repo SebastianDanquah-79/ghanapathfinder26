@@ -2,15 +2,19 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import Navbar from "@/components/Navbar";
 import { Link } from "@/lib/router-compat";
+import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { ArrowRight, ExternalLink } from "lucide-react";
 
-export const Route = createFileRoute("/skill-passport")({ component: SkillPassport });
+export const Route = createFileRoute("/skill-passport")({ ssr: false, component: SkillPassport });
 
 function SkillPassport(){
- const {data:profile}=useQuery({queryKey:["passport-profile"],queryFn:async()=>{const {data,error}=await supabase.from("profiles").select("full_name,target_career,university,program,education_level,github_url,linkedin_url,portfolio_url,bio").maybeSingle();if(error)throw error;return data;}});
- const {data:skills=[]}=useQuery({queryKey:["passport-skills"],queryFn:async()=>{const {data,error}=await supabase.from("user_skill_profiles").select("id,level,evidence,skills(name,category)").order("created_at",{ascending:false});if(error)throw error;return data??[];}});
- const {data:cvs=[]}=useQuery({queryKey:["passport-cvs"],queryFn:async()=>{const {data,error}=await supabase.from("candidate_cvs").select("id,title,target_role,updated_at").order("updated_at",{ascending:false});if(error)throw error;return data??[];}});
+ const {user,loading}=useAuth();
+ const {data:profile}=useQuery({queryKey:["passport-profile",user?.id],enabled:!!user,queryFn:async()=>{const {data,error}=await supabase.from("profiles").select("full_name,target_career,university,program,education_level,github_url,linkedin_url,portfolio_url,bio").maybeSingle();if(error)throw error;return data;}});
+ const {data:skills=[]}=useQuery({queryKey:["passport-skills",user?.id],enabled:!!user,queryFn:async()=>{const {data,error}=await supabase.from("user_skill_profiles").select("id,level,evidence,skills(name,category)").eq("user_id",user!.id).order("created_at",{ascending:false});if(error)throw error;return data??[];}});
+ const {data:cvs=[]}=useQuery({queryKey:["passport-cvs",user?.id],enabled:!!user,queryFn:async()=>{const {data,error}=await supabase.from("candidate_cvs").select("id,title,target_role,updated_at").eq("user_id",user!.id).order("updated_at",{ascending:false});if(error)throw error;return data??[];}});
+ if(loading)return <div className="min-h-screen bg-background pt-20"><Navbar/><main className="mx-auto max-w-5xl px-4 py-12 text-sm text-muted-foreground">Loading your passport...</main></div>;
+ if(!user)return <div className="min-h-screen bg-background pt-20"><Navbar/><main className="mx-auto max-w-5xl px-4 py-12"><h1 className="text-2xl font-bold">Sign in to view your Skill Passport</h1><Link to="/auth?next=/skill-passport" className="mt-4 inline-flex rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground">Sign in</Link></main></div>;
  return <div className="min-h-screen bg-background pt-20 pb-24"><Navbar/><main className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
   <section className="rounded-2xl border border-border bg-card p-6 sm:p-8"><p className="text-xs uppercase tracking-[0.18em] text-primary font-semibold">Skill Passport</p><h1 className="mt-2 text-3xl sm:text-4xl font-bold">{profile?.full_name||"Your professional profile"}</h1><p className="mt-2 max-w-2xl text-muted-foreground">{profile?.bio||"A portable profile of skills, education and evidence built through GhanaPathFinder."}</p><div className="mt-5 flex flex-wrap gap-2">{profile?.target_career&&<span className="rounded-full bg-secondary px-3 py-1.5 text-xs">{profile.target_career}</span>}{profile?.university&&<span className="rounded-full bg-secondary px-3 py-1.5 text-xs">{profile.university}</span>}{profile?.program&&<span className="rounded-full bg-secondary px-3 py-1.5 text-xs">{profile.program}</span>}</div>
    <div className="mt-6 flex flex-wrap gap-3">{profile?.github_url&&<a href={profile.github_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-sm text-primary">GitHub <ExternalLink className="h-3.5 w-3.5"/></a>}{profile?.linkedin_url&&<a href={profile.linkedin_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-sm text-primary">LinkedIn <ExternalLink className="h-3.5 w-3.5"/></a>}{profile?.portfolio_url&&<a href={profile.portfolio_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-sm text-primary">Portfolio <ExternalLink className="h-3.5 w-3.5"/></a>}</div>
