@@ -4,11 +4,12 @@ import Navbar from "@/components/Navbar";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useState } from "react";
+import { Link } from "@/lib/router-compat";
 import { nanoid } from "nanoid";
 import { toast } from "sonner";
 import { Copy, Share2 } from "lucide-react";
 
-export const Route = createFileRoute("/career-report")({ component: CareerReport });
+export const Route = createFileRoute("/career-report")({ ssr: false, component: CareerReport });
 
 function CareerReport(){
  const {user}=useAuth(); const [busy,setBusy]=useState(false); const [shareUrl,setShareUrl]=useState("");
