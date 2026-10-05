@@ -125,13 +125,20 @@ const Preferences = () => {
 
   return (
     <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-20 pb-12">
-      <Navbar />
+      <div className="hidden md:block"><Navbar /></div>
       <div className="max-w-4xl mx-auto">
         <Link to="/dashboard" className="hidden md:inline-flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
           <ArrowLeft className="h-4 w-4" /> Back to dashboard
         </Link>
 
-        <div className="mb-6">
+        <div className="mb-6 flex items-center justify-between gap-3 md:hidden">
+          <div className="min-w-0">
+            <h1 className="font-display text-[26px] font-bold text-foreground break-words">{name ?? "Your profile"}</h1>
+            <p className="mt-1 text-sm text-muted-foreground">Manage your account and preferences.</p>
+          </div>
+          <a href="#profile-edit" aria-label="Edit profile details" className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-foreground hover:bg-secondary"><SlidersHorizontal className="h-5 w-5" /></a>
+        </div>
+        <div className="mb-6 hidden md:block">
           <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-2">
             <SlidersHorizontal className="h-6 w-6 text-primary" /> Personalization
           </h1>
