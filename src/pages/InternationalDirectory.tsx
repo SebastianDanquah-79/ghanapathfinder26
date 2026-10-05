@@ -4,6 +4,9 @@ import { Link } from "@/lib/router-compat";
 import Navbar from "@/components/Navbar";
 import Seo from "@/components/Seo";
 import { supabase } from "@/integrations/supabase/client";
+import type { SupabaseClient } from "@supabase/supabase-js";
+// Some tables used here are not yet in the generated database types.
+const db = supabase as unknown as SupabaseClient;
 
 type Country = {
   country_code: string;
