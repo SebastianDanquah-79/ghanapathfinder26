@@ -6,7 +6,6 @@ import Footer from "@/components/Footer";
 import SaveButton from "@/components/SaveButton";
 import OfficialLink from "@/components/OfficialLink";
 import VerificationBadge from "@/components/VerificationBadge";
-import InstitutionMedia from "@/components/InstitutionMedia";
 import FlagListingButton from "@/components/FlagListingButton";
 import CampusMap from "@/components/CampusMap";
 import { formatVerified, useProgrammes, useUniversity } from "@/hooks/useCatalogue";
