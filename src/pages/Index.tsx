@@ -79,6 +79,17 @@ const MobileHome = () => {
         </div>
       </section>
 
+      <section className="mt-8 rounded-2xl border border-border bg-card p-5">
+        <div className="flex items-start gap-3">
+          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary"><Globe2 className="h-5 w-5" /></span>
+          <div className="min-w-0 flex-1">
+            <h2 className="font-display text-[22px] font-bold text-foreground">International Directory</h2>
+            <p className="mt-1 text-sm leading-5 text-muted-foreground">Explore every country and how to apply to universities there or in Ghana.</p>
+            <Link to="/international-directory" className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary">Explore the international directory <ArrowRight className="h-4 w-4" /></Link>
+          </div>
+        </div>
+      </section>
+
       <section className="mt-8">
         <div className="mb-4">
           <h2 className="font-display text-[22px] font-bold text-foreground">Your space</h2>
