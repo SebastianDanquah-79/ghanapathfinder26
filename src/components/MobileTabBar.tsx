@@ -1,7 +1,6 @@
 import { Link, useLocation } from "@/lib/router-compat";
 import { Home, Bookmark, CalendarDays, SlidersHorizontal } from "@/lib/icons";
 import { useAuth } from "@/hooks/useAuth";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 const tabs = [
   { to: "/", label: "Home", icon: Home },
@@ -11,20 +10,12 @@ const tabs = [
 
 const hiddenOn = ["/auth", "/onboarding", "/reset-password", "/.lovable/oauth/consent"];
 
-const initialsFrom = (value?: string | null) => {
-  const source = (value ?? "").trim();
-  if (!source) return "GP";
-  const parts = source.replace(/@.*$/, "").split(/[\s._-]+/).filter(Boolean);
-  return (parts.slice(0, 2).map((p) => p[0]).join("") || source[0]!).toUpperCase();
-};
-
 const MobileTabBar = () => {
   const { pathname } = useLocation();
   const { user } = useAuth();
 
   if (hiddenOn.some((p) => pathname.startsWith(p))) return null;
 
-  const name = (user?.user_metadata?.["full_name"] as string | undefined) ?? user?.email ?? null;
   const profileActive = pathname === "/preferences" || pathname === "/dashboard";
 
   return (
@@ -74,11 +65,7 @@ const MobileTabBar = () => {
                 profileActive ? "bg-primary/15" : ""
               }`}
             >
-              <Avatar className="h-[22px] w-[22px]">
-                <AvatarFallback className="bg-primary/15 text-primary text-[9px] font-semibold">
-                  {initialsFrom(name)}
-                </AvatarFallback>
-              </Avatar>
+              <SlidersHorizontal className="h-[20px] w-[20px]" />
             </span>
             {user ? "Profile" : "Sign in"}
           </Link>
