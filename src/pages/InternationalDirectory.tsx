@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowRight, ExternalLink, Globe, Search, ShieldCheck } from "@/lib/icons";
 import { Link } from "@/lib/router-compat";
 import Navbar from "@/components/Navbar";
@@ -27,7 +27,7 @@ const InternationalDirectory = () => {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(true);
 
-  useMemo(() => {
+  useEffect(() => {
     let active = true;
     supabase
       .from("international_country_directory")
