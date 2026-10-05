@@ -8,7 +8,7 @@ import Navbar from "@/components/Navbar";
 import { Check, Flame, ArrowRight, Sparkles, Target, Globe2 } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/for-you")({ component: ForYouPage });
+export const Route = createFileRoute("/for-you")({ ssr: false, component: ForYouPage });
 
 function ForYouPage() {
   const { user, loading } = useAuth();
