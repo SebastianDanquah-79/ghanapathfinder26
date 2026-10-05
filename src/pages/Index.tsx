@@ -12,6 +12,7 @@ import ExploreGrid from "@/components/ExploreGrid";
 import AnnouncementBanner from "@/components/AnnouncementBanner";
 import WhyGhanaPathFinder from "@/components/WhyGhanaPathFinder";
 import PathfinderDecisionHub from "@/components/PathfinderDecisionHub";
+import { Globe2 } from "@/lib/icons";
 
 const ImpactSection = lazy(() => import("@/components/ImpactSection"));
 const CareerSection = lazy(() => import("@/components/CareerSection"));
@@ -144,6 +145,7 @@ const Index = () => (
 
     <WhyGhanaPathFinder />
     <PathfinderDecisionHub />
+    <section className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-8 lg:px-12"><div className="rounded-2xl border border-border bg-card p-6 sm:p-8"><div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between"><div className="flex items-start gap-4"><span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary"><Globe2 className="h-6 w-6" /></span><div><p className="text-xs font-semibold uppercase tracking-[0.12em] text-primary">Global education</p><h2 className="mt-1 font-display text-2xl font-bold text-foreground">International Directory</h2><p className="mt-1 max-w-2xl text-sm leading-6 text-muted-foreground">Explore every country, how to apply there, and how applicants from each country can apply to Ghanaian universities.</p></div></div><Link to="/international-directory" className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground">Explore the directory <ArrowRight className="h-4 w-4" /></Link></div></div></section>
     <ExploreGrid />
     <CollegeRecommender />
     <UniversityDirectory />
