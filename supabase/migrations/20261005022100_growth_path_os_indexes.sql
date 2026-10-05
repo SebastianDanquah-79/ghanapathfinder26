@@ -1,0 +1,1 @@
+create index if not exists idx_shareable_reports_user_id on public.shareable_reports(user_id);
