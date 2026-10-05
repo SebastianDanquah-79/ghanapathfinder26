@@ -5,4 +5,5 @@ import viteReact from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [tanstackStart(), nitro(), viteReact()],
+  build: { cssMinify: false },
 });
