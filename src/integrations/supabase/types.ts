@@ -2556,6 +2556,60 @@ export type Database = {
         }
         Relationships: []
       }
+      international_country_directory: {
+        Row: {
+          country_code: string
+          country_name: string
+          created_at: string
+          ghana_application_steps: Json
+          ghana_application_summary: string
+          ghana_source_urls: string[]
+          last_verified_at: string | null
+          outbound_application_steps: Json
+          outbound_application_summary: string
+          outbound_official_portal_url: string | null
+          outbound_source_urls: string[]
+          qualification_examples: string[]
+          region: string
+          updated_at: string
+          verification_status: string
+        }
+        Insert: {
+          country_code: string
+          country_name: string
+          created_at?: string
+          ghana_application_steps?: Json
+          ghana_application_summary: string
+          ghana_source_urls?: string[]
+          last_verified_at?: string | null
+          outbound_application_steps?: Json
+          outbound_application_summary: string
+          outbound_official_portal_url?: string | null
+          outbound_source_urls?: string[]
+          qualification_examples?: string[]
+          region: string
+          updated_at?: string
+          verification_status?: string
+        }
+        Update: {
+          country_code?: string
+          country_name?: string
+          created_at?: string
+          ghana_application_steps?: Json
+          ghana_application_summary?: string
+          ghana_source_urls?: string[]
+          last_verified_at?: string | null
+          outbound_application_steps?: Json
+          outbound_application_summary?: string
+          outbound_official_portal_url?: string | null
+          outbound_source_urls?: string[]
+          qualification_examples?: string[]
+          region?: string
+          updated_at?: string
+          verification_status?: string
+        }
+        Relationships: []
+      }
       international_grading_scales: {
         Row: {
           country_code: string
