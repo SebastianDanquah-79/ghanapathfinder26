@@ -2,7 +2,7 @@ import { Suspense, lazy } from "react";
 import Navbar from "@/components/Navbar";
 import { Link } from "@/lib/router-compat";
 import { useAuth } from "@/hooks/useAuth";
-import { ArrowRight, Award, Bell, Bookmark, Briefcase, Building2, CalendarDays, Sparkles } from "@/lib/icons";
+import { ArrowRight, Award, Bell, Bookmark, Briefcase, Building2, CalendarDays, Sparkles, Globe } from "@/lib/icons";
 import Seo from "@/components/Seo";
 import HeroSection from "@/components/HeroSection";
 import CollegeRecommender from "@/components/CollegeRecommender";
@@ -12,7 +12,7 @@ import ExploreGrid from "@/components/ExploreGrid";
 import AnnouncementBanner from "@/components/AnnouncementBanner";
 import WhyGhanaPathFinder from "@/components/WhyGhanaPathFinder";
 import PathfinderDecisionHub from "@/components/PathfinderDecisionHub";
-import { Globe2 } from "@/lib/icons";
+
 
 const ImpactSection = lazy(() => import("@/components/ImpactSection"));
 const CareerSection = lazy(() => import("@/components/CareerSection"));
@@ -81,7 +81,7 @@ const MobileHome = () => {
 
       <section className="mt-8 rounded-2xl border border-border bg-card p-5">
         <div className="flex items-start gap-3">
-          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary"><Globe2 className="h-5 w-5" /></span>
+          <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary"><Globe className="h-5 w-5" /></span>
           <div className="min-w-0 flex-1">
             <h2 className="font-display text-[22px] font-bold text-foreground">International Directory</h2>
             <p className="mt-1 text-sm leading-5 text-muted-foreground">Explore every country and how to apply to universities there or in Ghana.</p>
