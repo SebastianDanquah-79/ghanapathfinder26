@@ -3774,6 +3774,122 @@ export type Database = {
         }
         Relationships: []
       }
+      path_actions: {
+        Row: {
+          action_type: string
+          completed_at: string | null
+          created_at: string
+          description: string | null
+          due_date: string | null
+          goal_id: string | null
+          id: string
+          position: number
+          priority: number
+          title: string
+          user_id: string
+        }
+        Insert: {
+          action_type?: string
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          goal_id?: string | null
+          id?: string
+          position?: number
+          priority?: number
+          title: string
+          user_id: string
+        }
+        Update: {
+          action_type?: string
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          goal_id?: string | null
+          id?: string
+          position?: number
+          priority?: number
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "path_actions_goal_id_fkey"
+            columns: ["goal_id"]
+            isOneToOne: false
+            referencedRelation: "path_goals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      path_goals: {
+        Row: {
+          created_at: string
+          id: string
+          metadata: Json
+          progress: number
+          status: string
+          target_key: string | null
+          target_type: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          metadata?: Json
+          progress?: number
+          status?: string
+          target_key?: string | null
+          target_type?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          metadata?: Json
+          progress?: number
+          status?: string
+          target_key?: string | null
+          target_type?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      path_streaks: {
+        Row: {
+          current_streak: number
+          last_action_date: string | null
+          longest_streak: number
+          total_actions: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          current_streak?: number
+          last_action_date?: string | null
+          longest_streak?: number
+          total_actions?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          current_streak?: number
+          last_action_date?: string | null
+          longest_streak?: number
+          total_actions?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       platform_countries: {
         Row: {
           active: boolean
@@ -5063,6 +5179,42 @@ export type Database = {
           updated_at?: string
           verified?: boolean
           website_url?: string | null
+        }
+        Relationships: []
+      }
+      shareable_reports: {
+        Row: {
+          created_at: string
+          expires_at: string | null
+          id: string
+          is_public: boolean
+          payload: Json
+          report_type: string
+          slug: string
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          is_public?: boolean
+          payload?: Json
+          report_type: string
+          slug: string
+          title: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          is_public?: boolean
+          payload?: Json
+          report_type?: string
+          slug?: string
+          title?: string
+          user_id?: string | null
         }
         Relationships: []
       }
