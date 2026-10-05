@@ -72,6 +72,8 @@ export const navSections: NavSection[] = [
       { label: "Career marketplace", href: "/career-marketplace", desc: "Connect with employers and opportunities" },
       { label: "Career simulator", href: "/career-simulator", desc: "Compare possible futures" },
       { label: "CV Builder", href: "/cv-builder", desc: "Create and download tailored CVs" },
+      { label: "Skill Passport", href: "/skill-passport", desc: "Show your skills and evidence" },
+      { label: "Career report", href: "/career-report", desc: "Create a shareable career snapshot" },
       { label: "Professional councils", href: "/professional-councils", desc: "Know the rules before you choose" },
     ],
   },
