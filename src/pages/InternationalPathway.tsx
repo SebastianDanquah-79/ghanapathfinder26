@@ -3,6 +3,9 @@ import { ExternalLink, Globe, GraduationCap, Search, ShieldCheck } from "@/lib/i
 import Navbar from "@/components/Navbar";
 import Seo from "@/components/Seo";
 import { supabase } from "@/integrations/supabase/client";
+import type { SupabaseClient } from "@supabase/supabase-js";
+// Some tables used here are not yet in the generated database types.
+const db = supabase as unknown as SupabaseClient;
 
 type Qualification={country_code:string;country_name:string;qualification_code:string;qualification_name:string;level:string;notes:string|null;source_url:string|null};
 type GradingScale={qualification_code:string;scale_min:number;scale_max:number;pass_mark:number|null;grade_notes:string|null;ghana_interpretation:string;source_url:string|null;verification_status:string};
@@ -11,17 +14,17 @@ type Programme={id:string;name:string;slug:string;field:string|null;degree_type:
 
 const InternationalPathway=()=>{
  const[country,setCountry]=useState("");const[qualificationCode,setQualificationCode]=useState("");const[field,setField]=useState("");const[score,setScore]=useState("");const[loading,setLoading]=useState(false);const[gradingScale,setGradingScale]=useState<GradingScale|null>(null);const[message,setMessage]=useState("");const[qualifications,setQualifications]=useState<Qualification[]>([]);const[rules,setRules]=useState<Rule[]>([]);const[programmes,setProgrammes]=useState<Programme[]>([]);const[estimated,setEstimated]=useState(false);const[submitted,setSubmitted]=useState(false);
- useEffect(()=>{supabase.from("international_qualification_catalog").select("country_code,country_name,qualification_code,qualification_name,level,notes,source_url").order("country_name").then(({data,error})=>{if(error){console.error(error);setMessage("We could not load qualification options. Please try again.");return;}setQualifications((data??[]) as Qualification[]);});},[]);
- useEffect(()=>{setGradingScale(null);if(!qualificationCode)return;supabase.from("international_grading_scales").select("qualification_code,scale_min,scale_max,pass_mark,grade_notes,ghana_interpretation,source_url,verification_status").eq("qualification_code",qualificationCode).maybeSingle().then(({data,error})=>{if(error){console.error(error);return;}setGradingScale((data??null) as GradingScale|null);});},[qualificationCode]);
+ useEffect(()=>{db.from("international_qualification_catalog").select("country_code,country_name,qualification_code,qualification_name,level,notes,source_url").order("country_name").then(({data,error})=>{if(error){console.error(error);setMessage("We could not load qualification options. Please try again.");return;}setQualifications((data??[]) as Qualification[]);});},[]);
+ useEffect(()=>{setGradingScale(null);if(!qualificationCode)return;db.from("international_grading_scales").select("qualification_code,scale_min,scale_max,pass_mark,grade_notes,ghana_interpretation,source_url,verification_status").eq("qualification_code",qualificationCode).maybeSingle().then(({data,error})=>{if(error){console.error(error);return;}setGradingScale((data??null) as GradingScale|null);});},[qualificationCode]);
  const countries=useMemo(()=>[...new Map(qualifications.map(q=>[q.country_code,q.country_name])).entries()],[qualifications]);
  const available=useMemo(()=>qualifications.filter(q=>q.country_code===country||q.country_code==="INT"),[qualifications,country]);
  const selected=qualifications.find(q=>q.qualification_code===qualificationCode);
  const evaluate=async()=>{if(!country||!qualificationCode){setMessage("Choose your country and qualification first.");return;}setLoading(true);setSubmitted(true);setMessage("");try{
-   const{data:rr,error:re}=await supabase.from("international_pathway_rules").select("institution_id,minimum_overall_score,score_operator,equivalency_required,english_proficiency_required,notes,source_url,universities(name,short_name)").eq("qualification_code",qualificationCode).eq("academic_level","undergraduate");if(re)throw re;
+   const{data:rr,error:re}=await db.from("international_pathway_rules").select("institution_id,minimum_overall_score,score_operator,equivalency_required,english_proficiency_required,notes,source_url,universities(name,short_name)").eq("qualification_code",qualificationCode).eq("academic_level","undergraduate");if(re)throw re;
    let rs=(rr??[]) as unknown as Rule[];
    let isEstimated=false;
    if(!rs.length){
-     const{data:fr,error:fe}=await supabase.from("international_pathway_rules").select("institution_id,minimum_overall_score,score_operator,equivalency_required,english_proficiency_required,notes,source_url,verification_status,universities(name,short_name)").eq("academic_level","undergraduate").limit(50);
+     const{data:fr,error:fe}=await db.from("international_pathway_rules").select("institution_id,minimum_overall_score,score_operator,equivalency_required,english_proficiency_required,notes,source_url,verification_status,universities(name,short_name)").eq("academic_level","undergraduate").limit(50);
      if(fe)throw fe;
      const fallback=(fr??[]) as unknown as Rule[];
      rs=fallback.map(r=>({...r,minimum_overall_score:null,score_operator:null,notes:r.notes?("Estimated from a published international qualification pathway. "+r.notes):"Estimated from a published international qualification pathway."}));
@@ -31,8 +34,8 @@ const InternationalPathway=()=>{
    if(!ids.length){setProgrammes([]);setMessage("We do not have a verified pathway rule for this qualification yet. You can still explore Ghanaian study options, but no estimate is available yet.");return;}
    const programmeSelect="id,name,slug,field,degree_type,entry_requirements,university_id,institution_id,verification_status,source_url,universities(name,short_name)";
    const[{data:byUniversity,error:ue},{data:byInstitution,error:ie}]=await Promise.all([
-     supabase.from("programmes").select(programmeSelect).in("university_id",ids).limit(250),
-     supabase.from("programmes").select(programmeSelect).in("institution_id",ids).limit(250)
+     db.from("programmes").select(programmeSelect).in("university_id",ids).limit(250),
+     db.from("programmes").select(programmeSelect).in("institution_id",ids).limit(250)
    ]);
    if(ue)throw ue;if(ie)throw ie;
    const merged=new Map<string,unknown>();

@@ -24,7 +24,8 @@ const MobileTabBar = () => {
       className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border pb-[env(safe-area-inset-bottom)]"
     >
       <ul className="grid grid-cols-4">
-        {tabs.map(({ to, label, icon: Icon, match }) => {
+        {tabs.map(({ to, label, icon: Icon, ...rest }) => {
+          const match = (rest as { match?: string }).match;
           const base = match ?? to;
           const active = pathname === base || (base !== "/" && pathname.startsWith(`${base}/`));
           return (

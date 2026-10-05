@@ -14,18 +14,19 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdmissionMatchRouteImport } from './routes/admission-match'
 import { Route as ApplicationsRouteImport } from './routes/applications'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as CareerMarketplaceRouteImport } from './routes/career-marketplace'
 import { Route as CareerPathRouteImport } from './routes/career-path'
 import { Route as CommunityRouteImport } from './routes/community'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as CompareScholarshipsRouteImport } from './routes/compare-scholarships'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CreditsRouteImport } from './routes/credits'
-import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as CareerMarketplaceRouteImport } from './routes/career-marketplace'
 import { Route as CvBuilderRouteImport } from './routes/cv-builder'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as InspirationRouteImport } from './routes/inspiration'
+import { Route as InternationalDirectoryRouteImport } from './routes/international-directory'
 import { Route as InternationalPathwayRouteImport } from './routes/international-pathway'
 import { Route as MatcherRouteImport } from './routes/matcher'
 import { Route as MyPathRouteImport } from './routes/my-path'
@@ -90,6 +91,11 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CareerMarketplaceRoute = CareerMarketplaceRouteImport.update({
+  id: '/career-marketplace',
+  path: '/career-marketplace',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CareerPathRoute = CareerPathRouteImport.update({
   id: '/career-path',
   path: '/career-path',
@@ -120,19 +126,14 @@ const CreditsRoute = CreditsRouteImport.update({
   path: '/credits',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CareerMarketplaceRoute = CareerMarketplaceRouteImport.update({
-  id: '/career-marketplace',
-  path: '/career-marketplace',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const CvBuilderRoute = CvBuilderRouteImport.update({
   id: '/cv-builder',
   path: '/cv-builder',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DisclaimerRoute = DisclaimerRouteImport.update({
@@ -148,6 +149,11 @@ const FaqRoute = FaqRouteImport.update({
 const InspirationRoute = InspirationRouteImport.update({
   id: '/inspiration',
   path: '/inspiration',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InternationalDirectoryRoute = InternationalDirectoryRouteImport.update({
+  id: '/international-directory',
+  path: '/international-directory',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InternationalPathwayRoute = InternationalPathwayRouteImport.update({
@@ -349,18 +355,19 @@ export interface FileRoutesByFullPath {
   '/admission-match': typeof AdmissionMatchRoute
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
+  '/career-marketplace': typeof CareerMarketplaceRoute
   '/career-path': typeof CareerPathRoute
   '/community': typeof CommunityRoute
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
   '/contact': typeof ContactRoute
   '/credits': typeof CreditsRoute
-  '/dashboard': typeof DashboardRoute
-  '/career-marketplace': typeof CareerMarketplaceRoute
   '/cv-builder': typeof CvBuilderRoute
+  '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
   '/inspiration': typeof InspirationRoute
+  '/international-directory': typeof InternationalDirectoryRoute
   '/international-pathway': typeof InternationalPathwayRoute
   '/matcher': typeof MatcherRoute
   '/my-path': typeof MyPathRoute
@@ -406,17 +413,19 @@ export interface FileRoutesByTo {
   '/admission-match': typeof AdmissionMatchRoute
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
+  '/career-marketplace': typeof CareerMarketplaceRoute
   '/career-path': typeof CareerPathRoute
   '/community': typeof CommunityRoute
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
   '/contact': typeof ContactRoute
   '/credits': typeof CreditsRoute
-  '/dashboard': typeof DashboardRoute
   '/cv-builder': typeof CvBuilderRoute
+  '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
   '/inspiration': typeof InspirationRoute
+  '/international-directory': typeof InternationalDirectoryRoute
   '/international-pathway': typeof InternationalPathwayRoute
   '/matcher': typeof MatcherRoute
   '/my-path': typeof MyPathRoute
@@ -463,17 +472,19 @@ export interface FileRoutesById {
   '/admission-match': typeof AdmissionMatchRoute
   '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
+  '/career-marketplace': typeof CareerMarketplaceRoute
   '/career-path': typeof CareerPathRoute
   '/community': typeof CommunityRoute
   '/compare': typeof CompareRoute
   '/compare-scholarships': typeof CompareScholarshipsRoute
   '/contact': typeof ContactRoute
   '/credits': typeof CreditsRoute
-  '/dashboard': typeof DashboardRoute
   '/cv-builder': typeof CvBuilderRoute
+  '/dashboard': typeof DashboardRoute
   '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
   '/inspiration': typeof InspirationRoute
+  '/international-directory': typeof InternationalDirectoryRoute
   '/international-pathway': typeof InternationalPathwayRoute
   '/matcher': typeof MatcherRoute
   '/my-path': typeof MyPathRoute
@@ -516,23 +527,24 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/career-marketplace'
-    | '/cv-builder'
     | '/'
     | '/about'
     | '/admission-match'
     | '/applications'
     | '/auth'
+    | '/career-marketplace'
     | '/career-path'
     | '/community'
     | '/compare'
     | '/compare-scholarships'
     | '/contact'
     | '/credits'
+    | '/cv-builder'
     | '/dashboard'
     | '/disclaimer'
     | '/faq'
     | '/inspiration'
+    | '/international-directory'
     | '/international-pathway'
     | '/matcher'
     | '/my-path'
@@ -573,23 +585,24 @@ export interface FileRouteTypes {
     | '/lovable/email/transactional/preview'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/career-marketplace'
-    | '/cv-builder'
     | '/'
     | '/about'
     | '/admission-match'
     | '/applications'
     | '/auth'
+    | '/career-marketplace'
     | '/career-path'
     | '/community'
     | '/compare'
     | '/compare-scholarships'
     | '/contact'
     | '/credits'
+    | '/cv-builder'
     | '/dashboard'
     | '/disclaimer'
     | '/faq'
     | '/inspiration'
+    | '/international-directory'
     | '/international-pathway'
     | '/matcher'
     | '/my-path'
@@ -629,24 +642,25 @@ export interface FileRouteTypes {
     | '/functions/v1/mcp'
     | '/lovable/email/transactional/preview'
   id:
-    | '/career-marketplace'
-    | '/cv-builder'
     | '__root__'
     | '/'
     | '/about'
     | '/admission-match'
     | '/applications'
     | '/auth'
+    | '/career-marketplace'
     | '/career-path'
     | '/community'
     | '/compare'
     | '/compare-scholarships'
     | '/contact'
     | '/credits'
+    | '/cv-builder'
     | '/dashboard'
     | '/disclaimer'
     | '/faq'
     | '/inspiration'
+    | '/international-directory'
     | '/international-pathway'
     | '/matcher'
     | '/my-path'
@@ -693,17 +707,19 @@ export interface RootRouteChildren {
   AdmissionMatchRoute: typeof AdmissionMatchRoute
   ApplicationsRoute: typeof ApplicationsRoute
   AuthRoute: typeof AuthRoute
+  CareerMarketplaceRoute: typeof CareerMarketplaceRoute
   CareerPathRoute: typeof CareerPathRoute
   CommunityRoute: typeof CommunityRoute
   CompareRoute: typeof CompareRoute
   CompareScholarshipsRoute: typeof CompareScholarshipsRoute
   ContactRoute: typeof ContactRoute
   CreditsRoute: typeof CreditsRoute
+  CvBuilderRoute: typeof CvBuilderRoute
   DashboardRoute: typeof DashboardRoute
-  CareerMarketplaceRoute: typeof CareerMarketplaceRoute
   DisclaimerRoute: typeof DisclaimerRoute
   FaqRoute: typeof FaqRoute
   InspirationRoute: typeof InspirationRoute
+  InternationalDirectoryRoute: typeof InternationalDirectoryRoute
   InternationalPathwayRoute: typeof InternationalPathwayRoute
   MatcherRoute: typeof MatcherRoute
   MyPathRoute: typeof MyPathRoute
@@ -781,6 +797,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/career-marketplace': {
+      id: '/career-marketplace'
+      path: '/career-marketplace'
+      fullPath: '/career-marketplace'
+      preLoaderRoute: typeof CareerMarketplaceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/career-path': {
       id: '/career-path'
       path: '/career-path'
@@ -823,18 +846,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreditsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cv-builder': {
+      id: '/cv-builder'
+      path: '/cv-builder'
+      fullPath: '/cv-builder'
+      preLoaderRoute: typeof CvBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/career-marketplace': {
-      id: '/career-marketplace'
-      path: '/career-marketplace'
-      fullPath: '/career-marketplace'
-      preLoaderRoute: typeof CareerMarketplaceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/disclaimer': {
@@ -856,6 +879,13 @@ declare module '@tanstack/react-router' {
       path: '/inspiration'
       fullPath: '/inspiration'
       preLoaderRoute: typeof InspirationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/international-directory': {
+      id: '/international-directory'
+      path: '/international-directory'
+      fullPath: '/international-directory'
+      preLoaderRoute: typeof InternationalDirectoryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/international-pathway': {
@@ -1133,18 +1163,19 @@ const rootRouteChildren: RootRouteChildren = {
   AdmissionMatchRoute: AdmissionMatchRoute,
   ApplicationsRoute: ApplicationsRoute,
   AuthRoute: AuthRoute,
+  CareerMarketplaceRoute: CareerMarketplaceRoute,
   CareerPathRoute: CareerPathRoute,
   CommunityRoute: CommunityRoute,
   CompareRoute: CompareRoute,
   CompareScholarshipsRoute: CompareScholarshipsRoute,
   ContactRoute: ContactRoute,
   CreditsRoute: CreditsRoute,
-  DashboardRoute: DashboardRoute,
-  CareerMarketplaceRoute: CareerMarketplaceRoute,
   CvBuilderRoute: CvBuilderRoute,
+  DashboardRoute: DashboardRoute,
   DisclaimerRoute: DisclaimerRoute,
   FaqRoute: FaqRoute,
   InspirationRoute: InspirationRoute,
+  InternationalDirectoryRoute: InternationalDirectoryRoute,
   InternationalPathwayRoute: InternationalPathwayRoute,
   MatcherRoute: MatcherRoute,
   MyPathRoute: MyPathRoute,
