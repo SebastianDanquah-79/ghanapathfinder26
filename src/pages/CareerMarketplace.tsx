@@ -43,7 +43,7 @@ export default function CareerMarketplace(){
       db.from("employer_application_reviews").select("application_id,stage").eq("employer_id",eid)
     ]);
     const pm=new Map((profiles??[]).map(p=>[p.id,p])); const rm=new Map((reviews??[]).map(r=>[r.application_id,r.stage]));
-    setApps(rows.map(a=>({...a,jobTitle:list.find(j=>j.id===a.opportunity_id)?.title,name:pm.get(a.user_id)?.full_name??"Candidate",email:pm.get(a.user_id)?.email??"",skills:pm.get(a.user_id)?.skills??[],stage:rm.get(a.id)??"new"})));
+    setApps(rows.map(a=>({...a,jobTitle:list.find(j=>j.id===a.opportunity_id)?.title??"",name:pm.get(a.user_id)?.full_name??"Candidate",email:pm.get(a.user_id)?.email??"",skills:pm.get(a.user_id)?.skills??[],stage:rm.get(a.id)??"new"})));
   };
   useEffect(()=>{if(!loading&&!user)navigate(`/auth?next=${encodeURIComponent("/career-marketplace")}`,{replace:true});},[loading,user,navigate]);
   useEffect(()=>{if(user)void load();},[user]);

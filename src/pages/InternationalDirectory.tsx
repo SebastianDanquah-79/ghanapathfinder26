@@ -32,7 +32,7 @@ const InternationalDirectory = () => {
 
   useEffect(() => {
     let active = true;
-    supabase
+    db
       .from("international_country_directory")
       .select("*")
       .order("country_name")
