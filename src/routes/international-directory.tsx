@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import InternationalDirectory from "@/pages/InternationalDirectory";
 
+// International directory is additive and does not alter existing routes.
+
 export const Route = createFileRoute("/international-directory")({
   head: () => ({
     meta: [
