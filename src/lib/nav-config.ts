@@ -69,11 +69,6 @@ export const navSections: NavSection[] = [
       { label: "Career Path", href: "/career-path", desc: "Turn ambition into a plan" },
       { label: "Skills", href: "/skills", desc: "Build skills that pay off" },
       { label: "Internships", href: "/internships", desc: "Get experience that counts" },
-      { label: "Career marketplace", href: "/career-marketplace", desc: "Connect with employers and opportunities" },
-      { label: "Career simulator", href: "/career-simulator", desc: "Compare possible futures" },
-      { label: "CV Builder", href: "/cv-builder", desc: "Create and download tailored CVs" },
-      { label: "Skill Passport", href: "/skill-passport", desc: "Show your skills and evidence" },
-      { label: "Career report", href: "/career-report", desc: "Create a shareable career snapshot" },
       { label: "Professional councils", href: "/professional-councils", desc: "Know the rules before you choose" },
     ],
   },
@@ -83,13 +78,11 @@ export const navSections: NavSection[] = [
     icon: Target,
     href: "/my-path",
     items: [
-      { label: "For You", href: "/for-you", desc: "Your daily opportunity and progress hub" },
       { label: "My Path", href: "/my-path", desc: "Turn your goal into a plan" },
       { label: "Admission match", href: "/admission-match", desc: "See what fits your results" },
       { label: "Applications & deadlines", href: "/applications", desc: "Never miss your next step" },
       { label: "Saved items", href: "/saved", desc: "Keep your best options close" },
       { label: "Match preferences", href: "/preferences", desc: "Make every match more personal" },
-      { label: "International directory", href: "/international-directory", desc: "Explore global education pathways" },
     ],
   },
   {
@@ -107,7 +100,6 @@ export const navSections: NavSection[] = [
 
 export const accountItems: NavItem[] = [
   { label: "Dashboard", href: "/dashboard" },
-  { label: "For You", href: "/for-you" },
   { label: "My Path", href: "/my-path" },
   { label: "Saved items", href: "/saved" },
   { label: "Applications", href: "/applications" },

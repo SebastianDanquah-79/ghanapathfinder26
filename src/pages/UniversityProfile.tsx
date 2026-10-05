@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import SaveButton from "@/components/SaveButton";
 import OfficialLink from "@/components/OfficialLink";
 import VerificationBadge from "@/components/VerificationBadge";
+import InstitutionMedia from "@/components/InstitutionMedia";
 import FlagListingButton from "@/components/FlagListingButton";
 import CampusMap from "@/components/CampusMap";
 import { formatVerified, useProgrammes, useUniversity } from "@/hooks/useCatalogue";
@@ -90,6 +91,7 @@ const UniversityProfile = () => {
 
           {uni && (
             <>
+              <InstitutionMedia websiteUrl={uni.website_url} name={uni.name} logoSourceUrl={uni.logo_source_url} googlePlaceId={uni.google_place_id} variant="hero" />
 
               <header className="bg-glass rounded-xl p-5 mb-6 mt-4">
                 <div className="flex flex-wrap items-start justify-between gap-3 mb-3">

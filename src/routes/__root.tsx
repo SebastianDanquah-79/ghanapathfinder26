@@ -107,20 +107,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "GhanaPathFinder | Your Ghanaian Life Decision Platform" },
       { property: "og:description", content: "Education. Careers. Skills. Opportunities. One path built around you." },
       { property: "og:url", content: "https://ghanapathfinder.com" },
-      
+      { property: "og:image", content: "https://ghanapathfinder.com/app-icon-512.png" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "GhanaPathFinder | Your Ghanaian Life Decision Platform" },
       { name: "twitter:description", content: "Education. Careers. Skills. Opportunities. One path built around you." },
-      
+      { name: "twitter:image", content: "https://ghanapathfinder.com/app-icon-512.png" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: appCss },
-      { rel: "icon", type: "image/svg+xml", href: "/placeholder.svg" },
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
       { rel: "manifest", href: "/manifest.webmanifest" },
-      
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
     ],
     scripts: [
       { children: "try{var t=localStorage.getItem('gpf-theme');if(t==='dark')document.documentElement.classList.add('dark');}catch(e){}" },

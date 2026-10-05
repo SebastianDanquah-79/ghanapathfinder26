@@ -7,8 +7,8 @@ import { scholarships, scholarshipSlug } from "../src/data/scholarships";
 
 const BASE_URL = "https://ghanapathfinder.com";
 
-const SUPABASE_URL = process.env["VITE_SUPABASE_URL"] || "https://qcvypvvjzrooqylfvpza.supabase.co";
-const SUPABASE_KEY = process.env["VITE_SUPABASE_PUBLISHABLE_KEY"] || "";
+const SUPABASE_URL = "https://hodvuidwrhlaildtcpww.supabase.co";
+const SUPABASE_KEY = "sb_publishable_wqp_iN83ecIrDOA3coovlA_mPt57xlX";
 
 interface SitemapEntry {
   path: string;
@@ -28,8 +28,6 @@ const staticEntries: SitemapEntry[] = [
   { path: "/careers", changefreq: "monthly", priority: "0.8" },
   { path: "/inspiration", changefreq: "monthly", priority: "0.6" },
   { path: "/career-path", changefreq: "monthly", priority: "0.8" },
-  { path: "/career-marketplace", changefreq: "weekly", priority: "0.8" },
-  { path: "/cv-builder", changefreq: "monthly", priority: "0.6" },
   { path: "/faq", changefreq: "monthly", priority: "0.7" },
   { path: "/auth", changefreq: "yearly", priority: "0.3" },
 ];
@@ -38,7 +36,6 @@ async function fetchRows(table: string): Promise<{ slug: string }[]> {
   const out: { slug: string }[] = [];
   const pageSize = 1000;
   for (let from = 0; ; from += pageSize) {
-    if (!SUPABASE_KEY) return out;
     const res = await fetch(
       `${SUPABASE_URL}/rest/v1/${table}?select=slug&order=slug.asc`,
       {
@@ -103,7 +100,7 @@ const entries: SitemapEntry[] = [
     priority: "0.8",
   })),
   ...programmes.map((p) => ({
-    path: `/programmes/${p.slug}`,
+    path: `/programme/${p.slug}`,
     changefreq: "monthly" as const,
     priority: "0.7",
   })),

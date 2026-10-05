@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "@/lib/router-compat";
-import { ArrowLeft, ArrowRight, BookOpen, Info, Loader2, LogOut, Phone, ShieldCheck, SlidersHorizontal } from "@/lib/icons";
+import { ArrowLeft, Loader2, SlidersHorizontal } from "@/lib/icons";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 import {
@@ -35,7 +35,7 @@ const initialsFrom = (value?: string | null) => {
 };
 
 const Preferences = () => {
-  const { user, loading, signOut } = useAuth();
+  const { user, loading } = useAuth();
   const navigate = useNavigate();
   const { data: saved } = useMatchPreferences();
   const savePrefs = useSavePreferences();
@@ -124,21 +124,14 @@ const Preferences = () => {
   const initials = initialsFrom(name);
 
   return (
-    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-6 md:pt-20 pb-24 md:pb-12">
-      <div className="hidden md:block"><Navbar /></div>
+    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-20 pb-12">
+      <Navbar />
       <div className="max-w-4xl mx-auto">
-        <Link to="/dashboard" className="hidden md:inline-flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
+        <Link to="/dashboard" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground mb-6">
           <ArrowLeft className="h-4 w-4" /> Back to dashboard
         </Link>
 
-        <div className="mb-6 flex items-center justify-between gap-3 md:hidden">
-          <div className="min-w-0">
-            <h1 className="font-display text-[26px] font-bold text-foreground break-words">{name ?? "Your profile"}</h1>
-            <p className="mt-1 text-sm text-muted-foreground">Manage your account and preferences.</p>
-          </div>
-          <a href="#profile-edit" aria-label="Edit profile details" className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-foreground hover:bg-secondary"><SlidersHorizontal className="h-5 w-5" /></a>
-        </div>
-        <div className="mb-6 hidden md:block">
+        <div className="mb-6">
           <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-2">
             <SlidersHorizontal className="h-6 w-6 text-primary" /> Personalization
           </h1>
@@ -147,7 +140,7 @@ const Preferences = () => {
           </p>
         </div>
 
-        <div id="profile-edit" className={`${card} mb-5`}>
+        <div className={`${card} mb-5`}>
           <div className="flex flex-col sm:flex-row sm:items-center gap-5">
             <div className="relative shrink-0">
               <div className="h-24 w-24 rounded-full overflow-hidden border border-border bg-primary/10 grid place-items-center">
@@ -201,33 +194,6 @@ const Preferences = () => {
           </div>
         </div>
 
-        <section className="mb-6 overflow-hidden rounded-[1.5rem] border border-border bg-card px-4 sm:px-5">
-          <Link to="/contact" className="flex items-center gap-4 border-b border-border py-5">
-            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary"><Phone className="h-5 w-5" /></span>
-            <span className="min-w-0 flex-1"><span className="block text-base font-semibold text-foreground">Contact & support</span><span className="mt-1 block text-sm text-muted-foreground">Get help, share feedback or ask a question.</span></span>
-            <ArrowRight className="h-5 w-5 text-muted-foreground" />
-          </Link>
-          <Link to="/terms" className="flex items-center gap-4 border-b border-border py-5">
-            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary"><BookOpen className="h-5 w-5" /></span>
-            <span className="min-w-0 flex-1"><span className="block text-base font-semibold text-foreground">Terms & conditions</span><span className="mt-1 block text-sm text-muted-foreground">Review the terms for using GhanaPathFinder.</span></span>
-            <ArrowRight className="h-5 w-5 text-muted-foreground" />
-          </Link>
-          <Link to="/privacy" className="flex items-center gap-4 border-b border-border py-5">
-            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary"><ShieldCheck className="h-5 w-5" /></span>
-            <span className="min-w-0 flex-1"><span className="block text-base font-semibold text-foreground">Privacy policy</span><span className="mt-1 block text-sm text-muted-foreground">Learn how your account information is handled.</span></span>
-            <ArrowRight className="h-5 w-5 text-muted-foreground" />
-          </Link>
-          <div className="flex items-center gap-4 border-b border-border py-5">
-            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary"><Info className="h-5 w-5" /></span>
-            <span className="min-w-0 flex-1"><span className="block text-base font-semibold text-foreground">App version</span><span className="mt-1 block text-sm text-muted-foreground">GhanaPathFinder</span></span>
-            <span className="text-sm text-muted-foreground">Current</span>
-          </div>
-          <button type="button" onClick={async () => { await signOut(); navigate("/"); }} className="flex w-full items-center gap-4 py-5 text-left">
-            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-destructive/10 text-destructive"><LogOut className="h-5 w-5" /></span>
-            <span className="min-w-0 flex-1"><span className="block text-base font-semibold text-destructive">Log out</span><span className="mt-1 block text-sm text-muted-foreground">Sign out of your account on this device.</span></span>
-            <ArrowRight className="h-5 w-5 text-destructive" />
-          </button>
-        </section>
         <div className="space-y-5">
           <div className={`${card} grid gap-4 sm:grid-cols-2`}>
             <label className="text-xs text-muted-foreground">

@@ -121,15 +121,6 @@ export interface PeriodMetrics {
   saved_universities: number;
   saved_programmes: number;
   saved_scholarships: number;
-  signups: number;
-  onboarding_completions: number;
-  searches: number;
-  saved_opportunities: number;
-  cv_exports: number;
-  returning_users: number;
-  mobile_events: number;
-  desktop_events: number;
-  tablet_events: number;
 }
 
 export type AdminAnalytics = Record<string, PeriodMetrics>;
@@ -142,17 +133,6 @@ export const useAdminAnalytics = (enabled: boolean) =>
       const { data, error } = await supabase.rpc("admin_analytics" as never);
       if (error) throw error;
       return data as unknown as AdminAnalytics;
-    },
-  });
-
-export const useAdminTrafficSources = (enabled: boolean) =>
-  useQuery({
-    queryKey: ["admin_traffic_sources"],
-    enabled,
-    queryFn: async () => {
-      const { data, error } = await supabase.rpc("admin_traffic_sources" as never);
-      if (error) throw error;
-      return data as unknown as Record<string, number>;
     },
   });
 

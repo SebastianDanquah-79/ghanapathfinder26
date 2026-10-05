@@ -24,7 +24,6 @@ import {
 import { searchGuide, type GuideResult } from "@/lib/guideSearch";
 import AskPanel from "@/components/AskPanel";
 import type { AskContextItem } from "@/lib/askContext";
-import { track } from "@/lib/analytics";
 
 type Kind = "all" | "university" | "programme" | "scholarship" | "career" | "skill" | "employer";
 
@@ -287,10 +286,6 @@ const SearchPage = () => {
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [term, kind]);
-
-  useEffect(() => {
-    if (debounced.trim()) void track("search_performed", { refType: kind });
-  }, [debounced, kind]);
 
   const filtersActive =
     (kind === "university" && (uniType !== "All" || !!region || !!category)) ||
