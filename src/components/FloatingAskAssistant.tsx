@@ -1,10 +1,25 @@
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import AskPanel from "@/components/AskPanel";
+import { OPEN_ADVISOR_EVENT, type AdvisorOpenDetail } from "@/components/AdvisorButton";
+
+const DEFAULT_TOPIC = "GhanaPathFinder general education, university, career and opportunity guidance";
 
 const FloatingAskAssistant = () => {
   const [open, setOpen] = useState(false);
   const [showPrompt, setShowPrompt] = useState(true);
+  const [topic, setTopic] = useState(DEFAULT_TOPIC);
+
+  useEffect(() => {
+    const onOpen = (e: Event) => {
+      const d = (e as CustomEvent<AdvisorOpenDetail>).detail;
+      setTopic(d?.topic ? `${d.topic}. ${DEFAULT_TOPIC}` : DEFAULT_TOPIC);
+      setShowPrompt(false);
+      setOpen(true);
+    };
+    window.addEventListener(OPEN_ADVISOR_EVENT, onOpen);
+    return () => window.removeEventListener(OPEN_ADVISOR_EVENT, onOpen);
+  }, []);
 
   useEffect(() => {
     if (open) return;
@@ -55,7 +70,7 @@ const FloatingAskAssistant = () => {
                 <X className="h-4 w-4" aria-hidden="true" />
               </button>
             </div>
-            <AskPanel query="GhanaPathFinder general education, university, career and opportunity guidance" items={[]} />
+            <AskPanel key={topic} query={topic} items={[]} />
           </div>
         </div>
       )}

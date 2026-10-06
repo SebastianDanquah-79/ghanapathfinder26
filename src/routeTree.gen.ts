@@ -50,6 +50,8 @@ import { Route as CareersIndexRouteImport } from './routes/careers/index'
 import { Route as CareersSlugRouteImport } from './routes/careers/$slug'
 import { Route as InternshipsIndexRouteImport } from './routes/internships/index'
 import { Route as InternshipsIdRouteImport } from './routes/internships/$id'
+import { Route as OpportunitiesIndexRouteImport } from './routes/opportunities/index'
+import { Route as OpportunitiesSlugRouteImport } from './routes/opportunities/$slug'
 import { Route as ProgrammeSlugRouteImport } from './routes/programme/$slug'
 import { Route as ProgrammesIndexRouteImport } from './routes/programmes/index'
 import { Route as ProgrammesSlugRouteImport } from './routes/programmes/$slug'
@@ -269,6 +271,16 @@ const InternshipsIdRoute = InternshipsIdRouteImport.update({
   path: '/internships/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OpportunitiesIndexRoute = OpportunitiesIndexRouteImport.update({
+  id: '/opportunities/',
+  path: '/opportunities/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OpportunitiesSlugRoute = OpportunitiesSlugRouteImport.update({
+  id: '/opportunities/$slug',
+  path: '/opportunities/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProgrammeSlugRoute = ProgrammeSlugRouteImport.update({
   id: '/programme/$slug',
   path: '/programme/$slug',
@@ -371,6 +383,7 @@ export interface FileRoutesByFullPath {
   '/api/institution-programmes': typeof ApiInstitutionProgrammesRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/internships/$id': typeof InternshipsIdRoute
+  '/opportunities/$slug': typeof OpportunitiesSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/programmes/$slug': typeof ProgrammesSlugRoute
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
@@ -379,6 +392,7 @@ export interface FileRoutesByFullPath {
   '/university/$slug': typeof UniversitySlugRoute
   '/careers/': typeof CareersIndexRoute
   '/internships/': typeof InternshipsIndexRoute
+  '/opportunities/': typeof OpportunitiesIndexRoute
   '/programmes/': typeof ProgrammesIndexRoute
   '/scholarships/': typeof ScholarshipsIndexRoute
   '/skills/': typeof SkillsIndexRoute
@@ -426,6 +440,7 @@ export interface FileRoutesByTo {
   '/api/institution-programmes': typeof ApiInstitutionProgrammesRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/internships/$id': typeof InternshipsIdRoute
+  '/opportunities/$slug': typeof OpportunitiesSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/programmes/$slug': typeof ProgrammesSlugRoute
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
@@ -434,6 +449,7 @@ export interface FileRoutesByTo {
   '/university/$slug': typeof UniversitySlugRoute
   '/careers': typeof CareersIndexRoute
   '/internships': typeof InternshipsIndexRoute
+  '/opportunities': typeof OpportunitiesIndexRoute
   '/programmes': typeof ProgrammesIndexRoute
   '/scholarships': typeof ScholarshipsIndexRoute
   '/skills': typeof SkillsIndexRoute
@@ -482,6 +498,7 @@ export interface FileRoutesById {
   '/api/institution-programmes': typeof ApiInstitutionProgrammesRoute
   '/careers/$slug': typeof CareersSlugRoute
   '/internships/$id': typeof InternshipsIdRoute
+  '/opportunities/$slug': typeof OpportunitiesSlugRoute
   '/programme/$slug': typeof ProgrammeSlugRoute
   '/programmes/$slug': typeof ProgrammesSlugRoute
   '/scholarships/$slug': typeof ScholarshipsSlugRoute
@@ -490,6 +507,7 @@ export interface FileRoutesById {
   '/university/$slug': typeof UniversitySlugRoute
   '/careers/': typeof CareersIndexRoute
   '/internships/': typeof InternshipsIndexRoute
+  '/opportunities/': typeof OpportunitiesIndexRoute
   '/programmes/': typeof ProgrammesIndexRoute
   '/scholarships/': typeof ScholarshipsIndexRoute
   '/skills/': typeof SkillsIndexRoute
@@ -539,6 +557,7 @@ export interface FileRouteTypes {
     | '/api/institution-programmes'
     | '/careers/$slug'
     | '/internships/$id'
+    | '/opportunities/$slug'
     | '/programme/$slug'
     | '/programmes/$slug'
     | '/scholarships/$slug'
@@ -547,6 +566,7 @@ export interface FileRouteTypes {
     | '/university/$slug'
     | '/careers/'
     | '/internships/'
+    | '/opportunities/'
     | '/programmes/'
     | '/scholarships/'
     | '/skills/'
@@ -594,6 +614,7 @@ export interface FileRouteTypes {
     | '/api/institution-programmes'
     | '/careers/$slug'
     | '/internships/$id'
+    | '/opportunities/$slug'
     | '/programme/$slug'
     | '/programmes/$slug'
     | '/scholarships/$slug'
@@ -602,6 +623,7 @@ export interface FileRouteTypes {
     | '/university/$slug'
     | '/careers'
     | '/internships'
+    | '/opportunities'
     | '/programmes'
     | '/scholarships'
     | '/skills'
@@ -649,6 +671,7 @@ export interface FileRouteTypes {
     | '/api/institution-programmes'
     | '/careers/$slug'
     | '/internships/$id'
+    | '/opportunities/$slug'
     | '/programme/$slug'
     | '/programmes/$slug'
     | '/scholarships/$slug'
@@ -657,6 +680,7 @@ export interface FileRouteTypes {
     | '/university/$slug'
     | '/careers/'
     | '/internships/'
+    | '/opportunities/'
     | '/programmes/'
     | '/scholarships/'
     | '/skills/'
@@ -705,6 +729,7 @@ export interface RootRouteChildren {
   ApiInstitutionProgrammesRoute: typeof ApiInstitutionProgrammesRoute
   CareersSlugRoute: typeof CareersSlugRoute
   InternshipsIdRoute: typeof InternshipsIdRoute
+  OpportunitiesSlugRoute: typeof OpportunitiesSlugRoute
   ProgrammeSlugRoute: typeof ProgrammeSlugRoute
   ProgrammesSlugRoute: typeof ProgrammesSlugRoute
   ScholarshipsSlugRoute: typeof ScholarshipsSlugRoute
@@ -713,6 +738,7 @@ export interface RootRouteChildren {
   UniversitySlugRoute: typeof UniversitySlugRoute
   CareersIndexRoute: typeof CareersIndexRoute
   InternshipsIndexRoute: typeof InternshipsIndexRoute
+  OpportunitiesIndexRoute: typeof OpportunitiesIndexRoute
   ProgrammesIndexRoute: typeof ProgrammesIndexRoute
   ScholarshipsIndexRoute: typeof ScholarshipsIndexRoute
   SkillsIndexRoute: typeof SkillsIndexRoute
@@ -1010,6 +1036,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InternshipsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/opportunities/': {
+      id: '/opportunities/'
+      path: '/opportunities'
+      fullPath: '/opportunities/'
+      preLoaderRoute: typeof OpportunitiesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/opportunities/$slug': {
+      id: '/opportunities/$slug'
+      path: '/opportunities/$slug'
+      fullPath: '/opportunities/$slug'
+      preLoaderRoute: typeof OpportunitiesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/programme/$slug': {
       id: '/programme/$slug'
       path: '/programme/$slug'
@@ -1137,6 +1177,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiInstitutionProgrammesRoute: ApiInstitutionProgrammesRoute,
   CareersSlugRoute: CareersSlugRoute,
   InternshipsIdRoute: InternshipsIdRoute,
+  OpportunitiesSlugRoute: OpportunitiesSlugRoute,
   ProgrammeSlugRoute: ProgrammeSlugRoute,
   ProgrammesSlugRoute: ProgrammesSlugRoute,
   ScholarshipsSlugRoute: ScholarshipsSlugRoute,
@@ -1145,6 +1186,7 @@ const rootRouteChildren: RootRouteChildren = {
   UniversitySlugRoute: UniversitySlugRoute,
   CareersIndexRoute: CareersIndexRoute,
   InternshipsIndexRoute: InternshipsIndexRoute,
+  OpportunitiesIndexRoute: OpportunitiesIndexRoute,
   ProgrammesIndexRoute: ProgrammesIndexRoute,
   ScholarshipsIndexRoute: ScholarshipsIndexRoute,
   SkillsIndexRoute: SkillsIndexRoute,

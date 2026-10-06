@@ -15,3 +15,11 @@
 - [x] Extend the verified review workflow to official programmes and institution logos in sourced batches (279 sourced programmes retained; 609 unsupported records queued; first 8 official logos approved).
 - [~] Add the next GTEC institution batch and verified campus media (9 exact matches approved; custom-domain Google Maps key still needs connection).
 - [x] Review the next official programme batch (16 Zenith and Family Health programmes approved with live official sources and verified campus media links).
+
+# Feature extension (Oct 2026)
+- [x] Advisor entry points opening the existing assistant with page context
+- [x] Public /opportunities feed and detail (published + active only, source/verification/deadline)
+- [x] Track jobs/internships/programmes via opportunity_pipeline inside /applications
+- [x] Career explorer: related opportunities, salaries, add steps to My Path
+- [x] My Path summary: profile completeness, tracking, deadlines
+- [x] Commit to GitHub (synced automatically)

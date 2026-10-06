@@ -68,6 +68,7 @@ export const navSections: NavSection[] = [
       { label: "Careers", href: "/careers", desc: "See where your path leads" },
       { label: "Career Path", href: "/career-path", desc: "Turn ambition into a plan" },
       { label: "Skills", href: "/skills", desc: "Build skills that pay off" },
+      { label: "Opportunities", href: "/opportunities", desc: "Verified openings with deadlines" },
       { label: "Internships", href: "/internships", desc: "Get experience that counts" },
       { label: "Professional councils", href: "/professional-councils", desc: "Know the rules before you choose" },
     ],

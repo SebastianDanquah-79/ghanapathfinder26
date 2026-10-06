@@ -1537,6 +1537,7 @@ export type Database = {
           status: string
           title: string
           updated_at: string
+          verification_status: string
           verified: boolean
           work_mode: string | null
         }
@@ -1574,6 +1575,7 @@ export type Database = {
           status?: string
           title: string
           updated_at?: string
+          verification_status?: string
           verified?: boolean
           work_mode?: string | null
         }
@@ -1611,6 +1613,7 @@ export type Database = {
           status?: string
           title?: string
           updated_at?: string
+          verification_status?: string
           verified?: boolean
           work_mode?: string | null
         }
