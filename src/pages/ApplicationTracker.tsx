@@ -16,6 +16,7 @@ import {
   useUpdateApplication,
 } from "@/hooks/useApplications";
 import Navbar from "@/components/Navbar";
+import PipelineTracker from "@/components/PipelineTracker";
 
 const card = "bg-glass rounded-xl p-5";
 const input =
@@ -282,6 +283,7 @@ const ApplicationTracker = () => {
             );
           })}
         </div>
+        <PipelineTracker />
       </div>
     </div>
   );

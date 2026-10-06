@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useAdmissionMatches } from "@/hooks/useAdmissionMatch";
 import Navbar from "@/components/Navbar";
+import MyPathSummary from "@/components/MyPathSummary";
 
 type PathItem = { id: string; label: string; hint: string; href: string; done: boolean };
 
@@ -117,6 +118,7 @@ const MyPath = () => {
     <div className="min-h-screen bg-background pt-20 pb-24 md:pb-12">
       <Navbar />
       <main className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
+        <MyPathSummary />
         <section className="rounded-2xl border border-border bg-glass p-5 sm:p-7">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
             <div className="max-w-2xl">

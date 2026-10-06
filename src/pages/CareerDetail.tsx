@@ -7,6 +7,7 @@ import SaveButton from "@/components/SaveButton";
 import CareerPathway, { type PathwayStep } from "@/components/CareerPathway";
 import SkillsMap from "@/components/SkillsMap";
 import EmployerMatches from "@/components/EmployerMatches";
+import CareerExplorerExtras from "@/components/CareerExplorerExtras";
 
 import { careerBySlug, careerSlug } from "@/data/careers";
 import { careerPathByMajor } from "@/data/careerPaths";
@@ -346,6 +347,9 @@ const CareerDetail = () => {
             </div>
           )}
 
+          <div className="mt-4">
+            <CareerExplorerExtras career={career.major} steps={steps} />
+          </div>
           <div className="flex flex-wrap gap-2 mt-4">
             <Link
               to={`/search?q=${encodeURIComponent(career.major)}`}
@@ -357,7 +361,7 @@ const CareerDetail = () => {
               to="/applications"
               className="px-4 py-2 rounded-lg bg-secondary text-muted-foreground text-sm font-medium"
             >
-              Add to My Path
+              Track applications
             </Link>
           </div>
         </div>
