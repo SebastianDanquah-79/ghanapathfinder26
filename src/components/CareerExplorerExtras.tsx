@@ -61,7 +61,7 @@ const CareerExplorerExtras = ({ career, steps }: { career: string; steps: { labe
           <ul className="text-sm space-y-1">
             {salaries.map((s, i) => (
               <li key={i} className="text-muted-foreground">
-                {String(s["occupation"] ?? "")}: {Object.entries(s).filter(([k]) => /salary|min|max|median/i.test(k) && s[k] != null).map(([k, v]) => `${k.replace(/_/g, " ")} ${v}`).join(", ")}
+                {String(s["occupation"] ?? "")} ({String(s["experience_level"] ?? "")}): {String(s["salary_range"] ?? "")} {String(s["salary_period"] ?? "")} · Source: {String(s["data_source"] ?? "")}
               </li>
             ))}
           </ul>
