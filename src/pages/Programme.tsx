@@ -15,6 +15,7 @@ import Navbar from "@/components/Navbar";
 import Seo, { breadcrumbLd } from "@/components/Seo";
 import Footer from "@/components/Footer";
 import SaveButton from "@/components/SaveButton";
+import TrackButton from "@/components/TrackButton";
 import OfficialLink from "@/components/OfficialLink";
 import ProgrammeEcosystem from "@/components/ProgrammeEcosystem";
 import VerificationBadge from "@/components/VerificationBadge";
@@ -173,6 +174,15 @@ const ProgrammePage = () => {
                       title: p.name,
                       subtitle: uni?.short_name ?? uni?.name ?? null,
                       metadata: { university: uni?.name, degree_type: p.degree_type },
+                    }}
+                  />
+                  <TrackButton
+                    item={{
+                      item_kind: "programme",
+                      item_ref: p.slug,
+                      title: p.name,
+                      organisation: uni?.name ?? null,
+                      url: p.programme_url || p.application_url || uni?.admissions_url || null,
                     }}
                   />
                   <OfficialLink

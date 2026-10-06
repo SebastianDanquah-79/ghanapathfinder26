@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo, { breadcrumbLd } from "@/components/Seo";
 import SaveButton from "@/components/SaveButton";
+import TrackButton from "@/components/TrackButton";
 import OfficialLink from "@/components/OfficialLink";
 import EmployerPhoto from "@/components/EmployerPhoto";
 import { ArrowLeft, Building, Briefcase, GraduationCap } from "@/lib/icons";
@@ -123,6 +124,15 @@ const InternshipDetail = () => {
 
           <div className="flex flex-wrap items-center gap-2 mb-6">
             <OfficialLink href={employer.url} label="Apply on official page" />
+            <TrackButton
+              item={{
+                item_kind: "internship",
+                item_ref: `employer:${employer.id}`,
+                title: `${employer.opportunities[0] ?? "Opportunity"} at ${employer.name}`,
+                organisation: employer.name,
+                url: employer.url ?? null,
+              }}
+            />
             <SaveButton
               item={{
                 item_type: "career",
