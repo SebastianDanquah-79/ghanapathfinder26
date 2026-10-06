@@ -46,7 +46,7 @@ export const Route = createFileRoute("/opportunities/")({
     ],
   }),
   component: OpportunitiesPage,
-  errorComponent: ({ error }) => <div role="alert" className="p-8">{error.message}</div>,
+  errorComponent: ({ error }) => <div role="alert" className="p-8">{(error as Error).message}</div>,
   notFoundComponent: () => <div className="p-8">No opportunities found.</div>,
 });
 

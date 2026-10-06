@@ -32,7 +32,7 @@ export const Route = createFileRoute("/opportunities/$slug")({
     };
   },
   component: OpportunityDetail,
-  errorComponent: ({ error }) => <div role="alert" className="p-8">{error.message}</div>,
+  errorComponent: ({ error }) => <div role="alert" className="p-8">{(error as Error).message}</div>,
   notFoundComponent: () => (
     <div className="p-8">
       This opportunity is no longer listed. <Link to="/opportunities" className="text-primary underline">See open opportunities</Link>
