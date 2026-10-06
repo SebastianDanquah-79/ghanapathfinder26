@@ -22,4 +22,4 @@
 - [x] Track jobs/internships/programmes via opportunity_pipeline inside /applications
 - [x] Career explorer: related opportunities, salaries, add steps to My Path
 - [x] My Path summary: profile completeness, tracking, deadlines
-- [ ] Commit to GitHub (sync is automatic from Lovable)
+- [x] Commit to GitHub (synced automatically)
