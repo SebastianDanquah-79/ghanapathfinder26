@@ -6,9 +6,14 @@ export const daysLeft = (date: string | null) => {
   return Math.ceil(ms / 86_400_000);
 };
 
-export const deadlineText = (o: Pick<PublicOpportunity, "deadline_date" | "deadline">) => {
+export const deadlineText = (
+  o: Pick<PublicOpportunity, "deadline_date" | "deadline">,
+) => {
   const d = daysLeft(o.deadline_date);
-  if (d === null) return o.deadline ? `Deadline: ${o.deadline}` : "Rolling / no fixed deadline";
+  if (d === null)
+    return o.deadline
+      ? `Deadline: ${o.deadline}`
+      : "Rolling / no fixed deadline";
   if (d < 0) return "Closed";
   if (d === 0) return "Closes today";
   return `${d} day${d === 1 ? "" : "s"} left`;
@@ -21,5 +26,6 @@ export const statusLabel: Record<string, string> = {
   needs_review: "Under review",
 };
 
-export const orgName = (o: Pick<PublicOpportunity, "organisation" | "company_name">) =>
-  o.organisation ?? o.company_name ?? "";
+export const orgName = (
+  o: Pick<PublicOpportunity, "organisation" | "company_name">,
+) => o.organisation ?? o.company_name ?? "";

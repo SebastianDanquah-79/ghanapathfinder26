@@ -34,9 +34,17 @@ export type PublicOpportunity = {
 };
 
 const publicClient = () =>
-  createClient<Database>(process.env["SUPABASE_URL"]!, process.env["SUPABASE_PUBLISHABLE_KEY"]!, {
-    auth: { storage: undefined, persistSession: false, autoRefreshToken: false },
-  });
+  createClient<Database>(
+    process.env["SUPABASE_URL"]!,
+    process.env["SUPABASE_PUBLISHABLE_KEY"]!,
+    {
+      auth: {
+        storage: undefined,
+        persistSession: false,
+        autoRefreshToken: false,
+      },
+    },
+  );
 
 const listInput = z.object({
   type: z.string().max(60).optional(),
@@ -49,37 +57,49 @@ const listInput = z.object({
 
 export const listOpportunities = createServerFn({ method: "GET" })
   .inputValidator((d) => listInput.parse(d ?? {}))
-  .handler(async ({ data }): Promise<{ items: PublicOpportunity[]; error: string | null }> => {
-    try {
-      let q = publicClient()
-        .from("opportunities")
-        .select(PUBLIC_COLUMNS)
-        .eq("published", true)
-        .eq("is_active", true)
-        .order("deadline_date", { ascending: true, nullsFirst: false })
-        .limit(data.limit ?? 120);
-      if (data.type) q = q.eq("opportunity_type", data.type);
-      if (data.country) q = q.ilike("country", data.country);
-      if (data.field) q = q.contains("fields", [data.field]);
-      if (data.verifiedOnly) q = q.eq("verification_status", "verified");
-      if (!data.includeExpired) {
-        const today = new Date().toISOString().slice(0, 10);
-        q = q.or(`deadline_date.is.null,deadline_date.gte.${today}`);
-      }
-      const { data: rows, error } = await q;
-      if (error) {
-        console.error("listOpportunities", error.message);
+  .handler(
+    async ({
+      data,
+    }): Promise<{ items: PublicOpportunity[]; error: string | null }> => {
+      try {
+        let q = publicClient()
+          .from("opportunities")
+          .select(PUBLIC_COLUMNS)
+          .eq("published", true)
+          .eq("is_active", true)
+          .order("deadline_date", { ascending: true, nullsFirst: false })
+          .limit(data.limit ?? 120);
+        if (data.type) q = q.eq("opportunity_type", data.type);
+        if (data.country) q = q.ilike("country", data.country);
+        if (data.field) q = q.contains("fields", [data.field]);
+        if (data.verifiedOnly) q = q.eq("verification_status", "verified");
+        if (!data.includeExpired) {
+          const today = new Date().toISOString().slice(0, 10);
+          q = q.or(`deadline_date.is.null,deadline_date.gte.${today}`);
+        }
+        const { data: rows, error } = await q;
+        if (error) {
+          console.error("listOpportunities", error.message);
+          return {
+            items: [],
+            error: "Opportunities are unavailable right now.",
+          };
+        }
+        return {
+          items: (rows ?? []) as unknown as PublicOpportunity[],
+          error: null,
+        };
+      } catch (e) {
+        console.error("listOpportunities", e);
         return { items: [], error: "Opportunities are unavailable right now." };
       }
-      return { items: (rows ?? []) as unknown as PublicOpportunity[], error: null };
-    } catch (e) {
-      console.error("listOpportunities", e);
-      return { items: [], error: "Opportunities are unavailable right now." };
-    }
-  });
+    },
+  );
 
 export const getOpportunity = createServerFn({ method: "GET" })
-  .inputValidator((d) => z.object({ slug: z.string().min(1).max(200) }).parse(d))
+  .inputValidator((d) =>
+    z.object({ slug: z.string().min(1).max(200) }).parse(d),
+  )
   .handler(async ({ data }): Promise<PublicOpportunity | null> => {
     const { data: row, error } = await publicClient()
       .from("opportunities")

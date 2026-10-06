@@ -3,7 +3,14 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "./useAuth";
 
-export const PIPELINE_STAGES = ["interested", "preparing", "applied", "interview", "offer", "rejected"] as const;
+export const PIPELINE_STAGES = [
+  "interested",
+  "preparing",
+  "applied",
+  "interview",
+  "offer",
+  "rejected",
+] as const;
 export type PipelineStage = (typeof PIPELINE_STAGES)[number];
 export const PIPELINE_LABEL: Record<PipelineStage, string> = {
   interested: "Interested",
@@ -71,7 +78,9 @@ export const useTrackOpportunity = () => {
     },
     onSuccess: (r) => {
       qc.invalidateQueries({ queryKey: ["opportunity_pipeline"] });
-      toast.success(r === "exists" ? "Already in your tracker" : "Added to your tracker");
+      toast.success(
+        r === "exists" ? "Already in your tracker" : "Added to your tracker",
+      );
     },
     onError: (e: Error) => toast.error(e.message),
   });
@@ -80,11 +89,25 @@ export const useTrackOpportunity = () => {
 export const useUpdatePipeline = () => {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async ({ id, patch }: { id: string; patch: { stage?: string; notes?: string | null; deadline_date?: string | null } }) => {
-      const { error } = await supabase.from("opportunity_pipeline").update(patch).eq("id", id);
+    mutationFn: async ({
+      id,
+      patch,
+    }: {
+      id: string;
+      patch: {
+        stage?: string;
+        notes?: string | null;
+        deadline_date?: string | null;
+      };
+    }) => {
+      const { error } = await supabase
+        .from("opportunity_pipeline")
+        .update(patch)
+        .eq("id", id);
       if (error) throw error;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["opportunity_pipeline"] }),
+    onSuccess: () =>
+      qc.invalidateQueries({ queryKey: ["opportunity_pipeline"] }),
     onError: (e: Error) => toast.error(e.message),
   });
 };
@@ -93,10 +116,14 @@ export const useDeletePipeline = () => {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("opportunity_pipeline").delete().eq("id", id);
+      const { error } = await supabase
+        .from("opportunity_pipeline")
+        .delete()
+        .eq("id", id);
       if (error) throw error;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["opportunity_pipeline"] }),
+    onSuccess: () =>
+      qc.invalidateQueries({ queryKey: ["opportunity_pipeline"] }),
     onError: (e: Error) => toast.error(e.message),
   });
 };

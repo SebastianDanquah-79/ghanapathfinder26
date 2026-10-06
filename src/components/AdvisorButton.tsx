@@ -9,10 +9,20 @@ export interface AdvisorOpenDetail {
 
 export const openAdvisor = (detail: AdvisorOpenDetail = {}) => {
   if (typeof window === "undefined") return;
-  window.dispatchEvent(new CustomEvent<AdvisorOpenDetail>(OPEN_ADVISOR_EVENT, { detail }));
+  window.dispatchEvent(
+    new CustomEvent<AdvisorOpenDetail>(OPEN_ADVISOR_EVENT, { detail }),
+  );
 };
 
-const AdvisorButton = ({ topic, label = "Ask an advisor", className }: { topic?: string; label?: string; className?: string }) => (
+const AdvisorButton = ({
+  topic,
+  label = "Ask an advisor",
+  className,
+}: {
+  topic?: string;
+  label?: string;
+  className?: string;
+}) => (
   <button
     type="button"
     onClick={() => openAdvisor(topic ? { topic } : {})}
