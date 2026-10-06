@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": null,
+  "framework": "tanstack-start",
   "buildCommand": "npm run build",
   "installCommand": "bun install --frozen-lockfile",
   "build": {
