@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import AskPanel from "@/components/AskPanel";
-import { OPEN_ADVISOR_EVENT, type AdvisorOpenDetail } from "@/components/AdvisorButton";
+import {
+  OPEN_ADVISOR_EVENT,
+  type AdvisorOpenDetail,
+} from "@/components/AdvisorButton";
 
-const DEFAULT_TOPIC = "GhanaPathFinder general education, university, career and opportunity guidance";
+const DEFAULT_TOPIC =
+  "GhanaPathFinder general education, university, career and opportunity guidance";
 
 const FloatingAskAssistant = () => {
   const [open, setOpen] = useState(false);
@@ -57,8 +61,12 @@ const FloatingAskAssistant = () => {
                   />
                 </span>
                 <div className="min-w-0">
-                  <p className="text-sm font-semibold leading-tight">Ask GhanaPathFinder</p>
-                  <p className="text-[11px] leading-tight text-black/70">Your guide to universities, careers and opportunities</p>
+                  <p className="text-sm font-semibold leading-tight">
+                    Ask GhanaPathFinder
+                  </p>
+                  <p className="text-[11px] leading-tight text-black/70">
+                    Your guide to universities, careers and opportunities
+                  </p>
                 </div>
               </div>
               <button
@@ -94,7 +102,9 @@ const FloatingAskAssistant = () => {
             {showPrompt && (
               <span className="pointer-events-none absolute bottom-1/2 right-[calc(100%+12px)] w-max max-w-[230px] translate-y-1/2 animate-in fade-in slide-in-from-right-2 rounded-xl border border-border bg-background px-3 py-2 text-left text-xs font-medium leading-5 text-foreground shadow-lg duration-300">
                 <span className="block">I&apos;m an AI agent.</span>
-                <span className="block font-semibold">Speak to GhanaPathFinder.</span>
+                <span className="block font-semibold">
+                  Speak to GhanaPathFinder.
+                </span>
               </span>
             )}
           </button>
