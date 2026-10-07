@@ -123,7 +123,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
       },
     });
     if (error) {
-      toast.error("Google sign-in failed. Please try again.");
+      toast.error(error.message || "Google sign-in failed. Please try again.");
       setLoading(false);
       return;
     }
