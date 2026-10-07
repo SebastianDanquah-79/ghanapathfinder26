@@ -24,6 +24,7 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as InspirationRouteImport } from './routes/inspiration'
+import { Route as InternationalDirectoryRouteImport } from './routes/international-directory'
 import { Route as InternationalPathwayRouteImport } from './routes/international-pathway'
 import { Route as MatcherRouteImport } from './routes/matcher'
 import { Route as MyPathRouteImport } from './routes/my-path'
@@ -36,6 +37,7 @@ import { Route as ReferencesRouteImport } from './routes/references'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SavedRouteImport } from './routes/saved'
 import { Route as SearchRouteImport } from './routes/search'
+import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AdminAnalyticsRouteImport } from './routes/admin/analytics'
 import { Route as AdminDataRouteImport } from './routes/admin/data'
@@ -140,6 +142,11 @@ const InspirationRoute = InspirationRouteImport.update({
   path: '/inspiration',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InternationalDirectoryRoute = InternationalDirectoryRouteImport.update({
+  id: '/international-directory',
+  path: '/international-directory',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InternationalPathwayRoute = InternationalPathwayRouteImport.update({
   id: '/international-pathway',
   path: '/international-pathway',
@@ -198,6 +205,11 @@ const SavedRoute = SavedRouteImport.update({
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignInRoute = SignInRouteImport.update({
+  id: '/sign-in',
+  path: '/sign-in',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -359,6 +371,7 @@ export interface FileRoutesByFullPath {
   '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
   '/inspiration': typeof InspirationRoute
+  '/international-directory': typeof InternationalDirectoryRoute
   '/international-pathway': typeof InternationalPathwayRoute
   '/matcher': typeof MatcherRoute
   '/my-path': typeof MyPathRoute
@@ -371,6 +384,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
+  '/sign-in': typeof SignInRoute
   '/terms': typeof TermsRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
@@ -416,6 +430,7 @@ export interface FileRoutesByTo {
   '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
   '/inspiration': typeof InspirationRoute
+  '/international-directory': typeof InternationalDirectoryRoute
   '/international-pathway': typeof InternationalPathwayRoute
   '/matcher': typeof MatcherRoute
   '/my-path': typeof MyPathRoute
@@ -428,6 +443,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
+  '/sign-in': typeof SignInRoute
   '/terms': typeof TermsRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
@@ -474,6 +490,7 @@ export interface FileRoutesById {
   '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
   '/inspiration': typeof InspirationRoute
+  '/international-directory': typeof InternationalDirectoryRoute
   '/international-pathway': typeof InternationalPathwayRoute
   '/matcher': typeof MatcherRoute
   '/my-path': typeof MyPathRoute
@@ -486,6 +503,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/saved': typeof SavedRoute
   '/search': typeof SearchRoute
+  '/sign-in': typeof SignInRoute
   '/terms': typeof TermsRoute
   '/admin/analytics': typeof AdminAnalyticsRoute
   '/admin/data': typeof AdminDataRoute
@@ -533,6 +551,7 @@ export interface FileRouteTypes {
     | '/disclaimer'
     | '/faq'
     | '/inspiration'
+    | '/international-directory'
     | '/international-pathway'
     | '/matcher'
     | '/my-path'
@@ -545,6 +564,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/saved'
     | '/search'
+    | '/sign-in'
     | '/terms'
     | '/admin/analytics'
     | '/admin/data'
@@ -590,6 +610,7 @@ export interface FileRouteTypes {
     | '/disclaimer'
     | '/faq'
     | '/inspiration'
+    | '/international-directory'
     | '/international-pathway'
     | '/matcher'
     | '/my-path'
@@ -602,6 +623,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/saved'
     | '/search'
+    | '/sign-in'
     | '/terms'
     | '/admin/analytics'
     | '/admin/data'
@@ -647,6 +669,7 @@ export interface FileRouteTypes {
     | '/disclaimer'
     | '/faq'
     | '/inspiration'
+    | '/international-directory'
     | '/international-pathway'
     | '/matcher'
     | '/my-path'
@@ -659,6 +682,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/saved'
     | '/search'
+    | '/sign-in'
     | '/terms'
     | '/admin/analytics'
     | '/admin/data'
@@ -705,6 +729,7 @@ export interface RootRouteChildren {
   DisclaimerRoute: typeof DisclaimerRoute
   FaqRoute: typeof FaqRoute
   InspirationRoute: typeof InspirationRoute
+  InternationalDirectoryRoute: typeof InternationalDirectoryRoute
   InternationalPathwayRoute: typeof InternationalPathwayRoute
   MatcherRoute: typeof MatcherRoute
   MyPathRoute: typeof MyPathRoute
@@ -717,6 +742,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   SavedRoute: typeof SavedRoute
   SearchRoute: typeof SearchRoute
+  SignInRoute: typeof SignInRoute
   TermsRoute: typeof TermsRoute
   AdminAnalyticsRoute: typeof AdminAnalyticsRoute
   AdminDataRoute: typeof AdminDataRoute
@@ -854,6 +880,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InspirationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/international-directory': {
+      id: '/international-directory'
+      path: '/international-directory'
+      fullPath: '/international-directory'
+      preLoaderRoute: typeof InternationalDirectoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/international-pathway': {
       id: '/international-pathway'
       path: '/international-pathway'
@@ -936,6 +969,13 @@ declare module '@tanstack/react-router' {
       path: '/search'
       fullPath: '/search'
       preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sign-in': {
+      id: '/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof SignInRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -1153,6 +1193,7 @@ const rootRouteChildren: RootRouteChildren = {
   DisclaimerRoute: DisclaimerRoute,
   FaqRoute: FaqRoute,
   InspirationRoute: InspirationRoute,
+  InternationalDirectoryRoute: InternationalDirectoryRoute,
   InternationalPathwayRoute: InternationalPathwayRoute,
   MatcherRoute: MatcherRoute,
   MyPathRoute: MyPathRoute,
@@ -1165,6 +1206,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   SavedRoute: SavedRoute,
   SearchRoute: SearchRoute,
+  SignInRoute: SignInRoute,
   TermsRoute: TermsRoute,
   AdminAnalyticsRoute: AdminAnalyticsRoute,
   AdminDataRoute: AdminDataRoute,
