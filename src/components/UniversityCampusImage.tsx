@@ -269,19 +269,19 @@ const UniversityCampusImage = ({ name, location, placeId, slug }: UniversityCamp
     const loadImages = async () => {
       try {
         const [placePhotos, official] = await Promise.all([
-          fetchPlacePhotos(key, location, placeId),
-          fetchCachedCampusImage(slug, key),
+          fetchPlacePhotos(displayName, location, placeId),
+          fetchCachedCampusImage(slug, displayName),
         ]);
-        const preferred = verifiedFor(key);
+        const preferred = verifiedFor(displayName);
         const reachable = (await Promise.all(preferred.map(async (src) => (await isImageReachable(src)) ? src : null)))
           .filter((src): src is string => Boolean(src));
         let media: CampusMedia[] = [
           ...placePhotos,
           ...official,
-          ...reachable.map((src) => ({ src, sourceUrl: src, title: key, credit: "GhanaPathFinder verified campus source", license: "Source verified", kind: "photo" as const })),
+          ...reachable.map((src) => ({ src, sourceUrl: src, title: displayName, credit: "GhanaPathFinder verified campus source", license: "Source verified", kind: "photo" as const })),
         ];
         // Logos are never shown as campus photos.
-        if (media.length < 3) media = [...media, ...(await fetchCommonsImages(key)).filter((m) => m.kind === "photo")];
+        if (media.length < 3) media = [...media, ...(await fetchCommonsImages(displayName)).filter((m) => m.kind === "photo")];
         const unique = new Map<string, CampusMedia>();
         for (const item of media) if (item.src && !unique.has(item.src)) unique.set(item.src, item);
 
