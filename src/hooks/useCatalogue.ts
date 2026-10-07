@@ -110,23 +110,41 @@ export const universitiesQueryOptions = (filters: UniversityFilters = {}) => {
   return queryOptions({
     queryKey: ["universities", search, type, region, category, group, page, pageSize],
     queryFn: async () => {
-      let q = supabase.from("universities").select("*", { count: "exact" }).order("name").range(page * pageSize, page * pageSize + pageSize - 1);
+      // Ghana's current directory is small enough for one public read (~228 records).
+      // Client-side filtering avoids fragile PostgREST range/count/or expressions.
+      const { data, error } = await supabase
+        .from("universities")
+        .select("*")
+        .order("name")
+        .limit(1000);
+
+      if (error) throw error;
+
+      let rows = ((data ?? []) as University[]).filter((u) => !isInstitutionGtecExpired2026(u));
+
       if (group !== "All") {
         const gf = groupFilter(group);
-        q = q.in("category", gf.categories);
-        if (gf.type) q = q.eq("type", gf.type);
+        rows = rows.filter((u) => gf.categories.includes(u.category) && (!gf.type || u.type === gf.type));
       }
-      if (type !== "All") q = q.eq("type", type);
-      if (region) q = q.eq("region", region);
-      if (category) q = q.eq("category", category);
-      if (search.trim()) {
-        const term = `%${search.trim()}%`;
-        q = q.or(`name.ilike.${term},short_name.ilike.${term},location.ilike.${term},region.ilike.${term},category.ilike.${term}`);
+
+      if (type !== "All") rows = rows.filter((u) => u.type === type);
+      if (region) rows = rows.filter((u) => u.region === region);
+      if (category) rows = rows.filter((u) => u.category === category);
+
+      const needle = search.trim().toLowerCase();
+      if (needle) {
+        rows = rows.filter((u) =>
+          [u.name, u.short_name, u.location, u.region, u.category]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase()
+            .includes(needle)
+        );
       }
-      const { data, error, count } = await q;
-      if (error) throw error;
-      const rows = ((data ?? []) as University[]).filter((u) => !isInstitutionGtecExpired2026(u));
-      return { rows, count: Math.max(0, (count ?? 0) - (((data ?? []) as University[]).length - rows.length)) };
+
+      const total = rows.length;
+      const startIndex = page * pageSize;
+      return { rows: rows.slice(startIndex, startIndex + pageSize), count: total };
     },
     staleTime: 60_000,
   });
