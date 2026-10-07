@@ -4,7 +4,7 @@ import { z } from "zod";
 import type { Database } from "@/integrations/supabase/types";
 
 const PUBLIC_COLUMNS =
-  "id, slug, title, organisation, company_name, opportunity_type, category, country, location, remote, work_mode, eligibility, description, deadline, deadline_date, application_url, source_name, source_url, verified, verification_status, last_verified_at, fields, skills, compensation";
+  "id, slug, title, organisation, company_name, opportunity_type, category, country, location, remote, work_mode, eligibility, description, deadline, deadline_date, application_url, source_name, source_url, verified, last_verified_at, fields, skills, compensation";
 
 export type PublicOpportunity = {
   id: string;
@@ -72,7 +72,7 @@ export const listOpportunities = createServerFn({ method: "GET" })
         if (data.type) q = q.eq("opportunity_type", data.type);
         if (data.country) q = q.ilike("country", data.country);
         if (data.field) q = q.contains("fields", [data.field]);
-        if (data.verifiedOnly) q = q.eq("verification_status", "verified");
+        if (data.verifiedOnly) q = q.eq("verified", true);
         if (!data.includeExpired) {
           const today = new Date().toISOString().slice(0, 10);
           q = q.or(`deadline_date.is.null,deadline_date.gte.${today}`);
@@ -86,7 +86,13 @@ export const listOpportunities = createServerFn({ method: "GET" })
           };
         }
         return {
-          items: (rows ?? []) as unknown as PublicOpportunity[],
+          items: (rows ?? []).map((row) => ({
+            ...(row as unknown as Omit<PublicOpportunity, "verification_status" | "fields" | "skills" | "deadline_date">),
+            verification_status: row.verified ? "verified" : "unverified",
+            fields: row.fields ?? [],
+            skills: row.skills ?? [],
+            deadline_date: row.deadline_date ?? null,
+          })),
           error: null,
         };
       } catch (e) {
@@ -112,5 +118,12 @@ export const getOpportunity = createServerFn({ method: "GET" })
       console.error("getOpportunity", error.message);
       return null;
     }
-    return (row ?? null) as unknown as PublicOpportunity | null;
+    if (!row) return null;
+    return {
+      ...(row as unknown as Omit<PublicOpportunity, "verification_status" | "fields" | "skills" | "deadline_date">),
+      verification_status: row.verified ? "verified" : "unverified",
+      fields: row.fields ?? [],
+      skills: row.skills ?? [],
+      deadline_date: row.deadline_date ?? null,
+    };
   });
