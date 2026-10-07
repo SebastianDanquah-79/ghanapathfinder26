@@ -25,7 +25,7 @@ export const getRouter = () => {
 
   // Dehydrates the query cache filled by route loaders on the server so the
   // client hydrates with the same data instead of refetching on mount.
-  setupRouterSsrQueryIntegration({ router, queryClient });
+  setupRouterSsrQueryIntegration({ router, queryClient, wrapQueryClient: false });
 
   return router;
 };
