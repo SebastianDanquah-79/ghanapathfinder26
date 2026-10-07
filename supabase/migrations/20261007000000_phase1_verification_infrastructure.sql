@@ -57,12 +57,100 @@ create table if not exists public.data_change_proposals (
   reviewed_by uuid references auth.users(id)
 );
 
+-- Canonical verification metadata. Existing legacy fields/values are preserved.
+alter table public.institutions
+  add column if not exists verification_status text,
+  add column if not exists verified_at timestamptz,
+  add column if not exists primary_source_url text,
+  add column if not exists source_tier text,
+  add column if not exists last_checked_at timestamptz,
+  add column if not exists notes text;
+
+alter table public.universities
+  add column if not exists verified_at timestamptz,
+  add column if not exists primary_source_url text,
+  add column if not exists source_tier text,
+  add column if not exists notes text;
+
+alter table public.programmes
+  add column if not exists verified_at timestamptz,
+  add column if not exists primary_source_url text,
+  add column if not exists source_tier text,
+  add column if not exists notes text;
+
+alter table public.skills
+  add column if not exists verification_status text,
+  add column if not exists verified_at timestamptz,
+  add column if not exists primary_source_url text,
+  add column if not exists source_tier text,
+  add column if not exists last_checked_at timestamptz,
+  add column if not exists notes text;
+
+alter table public.companies
+  add column if not exists verification_status text,
+  add column if not exists verified_at timestamptz,
+  add column if not exists primary_source_url text,
+  add column if not exists source_tier text,
+  add column if not exists notes text;
+
+-- The existing institutions/universities/programmes fields use legacy status
+-- vocabularies. They are intentionally not rewritten in this migration.
+-- Backfilling canonical values requires a verification run and audit log.
+
 alter table public.sources enable row level security;
 alter table public.entity_aliases enable row level security;
 alter table public.verification_runs enable row level security;
 alter table public.verification_log enable row level security;
 alter table public.data_change_proposals enable row level security;
 
--- Authorization policies will be added only after the existing admin
--- authorization model is verified. This avoids inventing an access-control
--- mechanism.
+-- Public readers need source/alias visibility for verification UI.
+create policy "Sources are publicly readable"
+  on public.sources for select
+  to anon, authenticated
+  using (true);
+
+create policy "Entity aliases are publicly readable"
+  on public.entity_aliases for select
+  to anon, authenticated
+  using (true);
+
+-- Administrators use the existing private.has_role(..., 'admin') authorization.
+create policy "Admins manage sources"
+  on public.sources for all
+  to authenticated
+  using (private.has_role(auth.uid(), 'admin'))
+  with check (private.has_role(auth.uid(), 'admin'));
+
+create policy "Admins manage entity aliases"
+  on public.entity_aliases for all
+  to authenticated
+  using (private.has_role(auth.uid(), 'admin'))
+  with check (private.has_role(auth.uid(), 'admin'));
+
+create policy "Admins manage verification runs"
+  on public.verification_runs for all
+  to authenticated
+  using (private.has_role(auth.uid(), 'admin'))
+  with check (private.has_role(auth.uid(), 'admin'));
+
+create policy "Admins manage verification log"
+  on public.verification_log for all
+  to authenticated
+  using (private.has_role(auth.uid(), 'admin'))
+  with check (private.has_role(auth.uid(), 'admin'));
+
+create policy "Authenticated users can report data changes"
+  on public.data_change_proposals for insert
+  to authenticated
+  with check (auth.uid() is not null);
+
+create policy "Users can read their own data change proposals"
+  on public.data_change_proposals for select
+  to authenticated
+  using (auth.uid() = reviewed_by);
+
+create policy "Admins manage data change proposals"
+  on public.data_change_proposals for all
+  to authenticated
+  using (private.has_role(auth.uid(), 'admin'))
+  with check (private.has_role(auth.uid(), 'admin'));
