@@ -61,7 +61,7 @@ export default function DreamJobOpportunities({ dreamJob }: { dreamJob: string }
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {data.universities.map((u) => (
               <Link key={u.id} to={`/universities/${u.slug}`} className="block rounded-xl border border-border bg-card overflow-hidden hover:border-primary/40">
-                <div className="aspect-[16/9] overflow-hidden"><UniversityCampusImage name={u.name} location={u.location ?? u.region} placeId={u.google_place_id} /></div>
+                <div className="aspect-[16/9] overflow-hidden"><UniversityCampusImage name={u.name} location={u.location ?? u.region} placeId={u.google_place_id} slug={u.slug} /></div>
                 <div className="p-3"><p className="text-sm font-semibold">{u.name}</p><p className="text-xs text-muted-foreground">{u.region ?? u.location ?? "Ghana"}</p></div>
               </Link>
             ))}

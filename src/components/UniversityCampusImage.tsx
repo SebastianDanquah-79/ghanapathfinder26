@@ -4,6 +4,7 @@ interface UniversityCampusImageProps {
   name: string;
   location?: string | null | undefined;
   placeId?: string | null | undefined;
+  slug?: string | null | undefined;
 }
 
 type CampusMedia = {
@@ -169,6 +170,19 @@ const fetchPlacePhotos = async (name: string, location?: string | null, placeId?
   }
 };
 
+const fetchCachedCampusImage = async (slug?: string | null, name = ""): Promise<CampusMedia[]> => {
+  if (!slug) return [];
+  try {
+    const response = await fetch(`/api/campus-image?slug=${encodeURIComponent(slug)}`);
+    if (!response.ok) return [];
+    const payload = (await response.json()) as { url?: string | null; source?: string | null };
+    if (!payload.url) return [];
+    return [{ src: payload.url, sourceUrl: payload.source ?? payload.url, title: `${name} campus`, credit: "Official institution website", license: "Official source", kind: "photo" }];
+  } catch {
+    return [];
+  }
+};
+
 const isImageReachable = (src: string) => new Promise<boolean>((resolve) => {
   const image = new Image();
   const timeout = window.setTimeout(() => { image.onload = null; image.onerror = null; resolve(false); }, 8000);
@@ -232,7 +246,7 @@ const CampusIllustration = ({ name, location }: UniversityCampusImageProps) => {
   );
 };
 
-const UniversityCampusImage = ({ name, location, placeId }: UniversityCampusImageProps) => {
+const UniversityCampusImage = ({ name, location, placeId, slug }: UniversityCampusImageProps) => {
   const key = name.trim();
   const [images, setImages] = useState<CampusMedia[]>(cache.get(key) ?? []);
   const [loaded, setLoaded] = useState(cache.has(key));
@@ -250,15 +264,20 @@ const UniversityCampusImage = ({ name, location, placeId }: UniversityCampusImag
 
     const loadImages = async () => {
       try {
-        const placePhotos = await fetchPlacePhotos(key, location, placeId);
+        const [placePhotos, official] = await Promise.all([
+          fetchPlacePhotos(key, location, placeId),
+          fetchCachedCampusImage(slug, key),
+        ]);
         const preferred = verifiedFor(key);
         const reachable = (await Promise.all(preferred.map(async (src) => (await isImageReachable(src)) ? src : null)))
           .filter((src): src is string => Boolean(src));
         let media: CampusMedia[] = [
           ...placePhotos,
+          ...official,
           ...reachable.map((src) => ({ src, sourceUrl: src, title: key, credit: "GhanaPathFinder verified campus source", license: "Source verified", kind: "photo" as const })),
         ];
-        if (media.length < 3) media = [...media, ...(await fetchCommonsImages(key))];
+        // Logos are never shown as campus photos.
+        if (media.length < 3) media = [...media, ...(await fetchCommonsImages(key)).filter((m) => m.kind === "photo")];
         const unique = new Map<string, CampusMedia>();
         for (const item of media) if (!unique.has(item.src)) unique.set(item.src, item);
         const sources = [...unique.values()].slice(0, 8);
@@ -276,7 +295,7 @@ const UniversityCampusImage = ({ name, location, placeId }: UniversityCampusImag
     };
     loadImages();
     return () => { cancelled = true; };
-  }, [key, location, placeId]);
+  }, [key, location, placeId, slug]);
 
   useEffect(() => {
     if (images.length < 2) return;

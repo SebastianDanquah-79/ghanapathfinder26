@@ -43,6 +43,7 @@ import { Route as AdminAnalyticsRouteImport } from './routes/admin/analytics'
 import { Route as AdminDataRouteImport } from './routes/admin/data'
 import { Route as AdminInsightsRouteImport } from './routes/admin/insights'
 import { Route as AdminReviewRouteImport } from './routes/admin/review'
+import { Route as ApiCampusImageRouteImport } from './routes/api/campus-image'
 import { Route as ApiCampusPhotosRouteImport } from './routes/api/campus-photos'
 import { Route as ApiCareerPathRouteImport } from './routes/api/career-path'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
@@ -237,6 +238,11 @@ const AdminReviewRoute = AdminReviewRouteImport.update({
   path: '/admin/review',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiCampusImageRoute = ApiCampusImageRouteImport.update({
+  id: '/api/campus-image',
+  path: '/api/campus-image',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiCampusPhotosRoute = ApiCampusPhotosRouteImport.update({
   id: '/api/campus-photos',
   path: '/api/campus-photos',
@@ -390,6 +396,7 @@ export interface FileRoutesByFullPath {
   '/admin/data': typeof AdminDataRoute
   '/admin/insights': typeof AdminInsightsRoute
   '/admin/review': typeof AdminReviewRoute
+  '/api/campus-image': typeof ApiCampusImageRoute
   '/api/campus-photos': typeof ApiCampusPhotosRoute
   '/api/career-path': typeof ApiCareerPathRoute
   '/api/chat': typeof ApiChatRoute
@@ -449,6 +456,7 @@ export interface FileRoutesByTo {
   '/admin/data': typeof AdminDataRoute
   '/admin/insights': typeof AdminInsightsRoute
   '/admin/review': typeof AdminReviewRoute
+  '/api/campus-image': typeof ApiCampusImageRoute
   '/api/campus-photos': typeof ApiCampusPhotosRoute
   '/api/career-path': typeof ApiCareerPathRoute
   '/api/chat': typeof ApiChatRoute
@@ -509,6 +517,7 @@ export interface FileRoutesById {
   '/admin/data': typeof AdminDataRoute
   '/admin/insights': typeof AdminInsightsRoute
   '/admin/review': typeof AdminReviewRoute
+  '/api/campus-image': typeof ApiCampusImageRoute
   '/api/campus-photos': typeof ApiCampusPhotosRoute
   '/api/career-path': typeof ApiCareerPathRoute
   '/api/chat': typeof ApiChatRoute
@@ -570,6 +579,7 @@ export interface FileRouteTypes {
     | '/admin/data'
     | '/admin/insights'
     | '/admin/review'
+    | '/api/campus-image'
     | '/api/campus-photos'
     | '/api/career-path'
     | '/api/chat'
@@ -629,6 +639,7 @@ export interface FileRouteTypes {
     | '/admin/data'
     | '/admin/insights'
     | '/admin/review'
+    | '/api/campus-image'
     | '/api/campus-photos'
     | '/api/career-path'
     | '/api/chat'
@@ -688,6 +699,7 @@ export interface FileRouteTypes {
     | '/admin/data'
     | '/admin/insights'
     | '/admin/review'
+    | '/api/campus-image'
     | '/api/campus-photos'
     | '/api/career-path'
     | '/api/chat'
@@ -748,6 +760,7 @@ export interface RootRouteChildren {
   AdminDataRoute: typeof AdminDataRoute
   AdminInsightsRoute: typeof AdminInsightsRoute
   AdminReviewRoute: typeof AdminReviewRoute
+  ApiCampusImageRoute: typeof ApiCampusImageRoute
   ApiCampusPhotosRoute: typeof ApiCampusPhotosRoute
   ApiCareerPathRoute: typeof ApiCareerPathRoute
   ApiChatRoute: typeof ApiChatRoute
@@ -1013,6 +1026,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminReviewRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/campus-image': {
+      id: '/api/campus-image'
+      path: '/api/campus-image'
+      fullPath: '/api/campus-image'
+      preLoaderRoute: typeof ApiCampusImageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/campus-photos': {
       id: '/api/campus-photos'
       path: '/api/campus-photos'
@@ -1212,6 +1232,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminDataRoute: AdminDataRoute,
   AdminInsightsRoute: AdminInsightsRoute,
   AdminReviewRoute: AdminReviewRoute,
+  ApiCampusImageRoute: ApiCampusImageRoute,
   ApiCampusPhotosRoute: ApiCampusPhotosRoute,
   ApiCareerPathRoute: ApiCareerPathRoute,
   ApiChatRoute: ApiChatRoute,
