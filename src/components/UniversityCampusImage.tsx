@@ -268,31 +268,24 @@ const UniversityCampusImage = ({ name, location, placeId, slug }: UniversityCamp
 
     const loadImages = async () => {
       try {
-        const [placePhotos, official] = await Promise.all([
-          fetchPlacePhotos(displayName, location, placeId),
-          fetchCachedCampusImage(slug, displayName),
-        ]);
+        const official = await fetchCachedCampusImage(slug, displayName);
         const preferred = verifiedFor(displayName);
-        const reachable = (await Promise.all(preferred.map(async (src) => (await isImageReachable(src)) ? src : null)))
-          .filter((src): src is string => Boolean(src));
-        let media: CampusMedia[] = [
-          ...placePhotos,
-          ...official,
-          ...reachable.map((src) => ({ src, sourceUrl: src, title: displayName, credit: "GhanaPathFinder verified campus source", license: "Source verified", kind: "photo" as const })),
-        ];
-        // Logos are never shown as campus photos.
-        if (media.length < 3) media = [...media, ...(await fetchCommonsImages(displayName)).filter((m) => m.kind === "photo")];
+        const preferredMedia: CampusMedia[] = preferred.map((src) => ({
+          src,
+          sourceUrl: src,
+          title: displayName,
+          credit: "Wikimedia Commons",
+          license: "Wikimedia Commons",
+          kind: "photo" as const,
+        }));
+        let media: CampusMedia[] = [...official, ...preferredMedia];
+        // Use Wikimedia Commons as the independent fallback for institutions
+        // without a verified image. Never depend on Lovable/Google connector routes.
+        media = [...media, ...(await fetchCommonsImages(displayName)).filter((m) => m.kind === "photo")];
         const unique = new Map<string, CampusMedia>();
         for (const item of media) if (item.src && !unique.has(item.src)) unique.set(item.src, item);
 
-        // Validate every remote source before rendering it. This prevents a broken
-        // URL from flashing a broken-image icon and guarantees a clean fallback.
-        const candidates = [...unique.values()].slice(0, 8);
-        const checked = await Promise.all(candidates.map(async (item) =>
-          (await isImageReachable(item.src)) ? item : null
-        ));
-        const sources = checked.filter((item): item is CampusMedia => Boolean(item));
-
+        const sources = [...unique.values()].slice(0, 8);
         if (cancelled) return;
         cache.set(key, sources);
         setImages(sources);
