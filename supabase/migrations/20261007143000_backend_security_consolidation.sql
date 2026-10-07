@@ -36,6 +36,33 @@ DROP POLICY IF EXISTS "Public can view approved skill providers" ON public.skill
 DROP POLICY IF EXISTS "public read universities" ON public.universities;
 DROP POLICY IF EXISTS "Users manage own WASSCE results" ON public.wassce_results;
 
+-- Normalize auth.uid() evaluation in RLS policies so it is initialized once per statement.
+DO $
+DECLARE r record;
+BEGIN
+  FOR r IN
+    SELECT schemaname, tablename, policyname, qual, with_check
+    FROM pg_policies
+    WHERE schemaname='public'
+      AND (
+        (qual IS NOT NULL AND qual ~ 'auth\\.uid\\(\\)' AND qual !~ '\\(select auth\\.uid\\(\\)\\)')
+        OR
+        (with_check IS NOT NULL AND with_check ~ 'auth\\.uid\\(\\)' AND with_check !~ '\\(select auth\\.uid\\(\\)\\)')
+      )
+  LOOP
+    IF r.qual IS NOT NULL AND r.qual ~ 'auth\\.uid\\(\\)' THEN
+      EXECUTE format('ALTER POLICY %I ON %I.%I USING (%s)',
+        r.policyname, r.schemaname, r.tablename,
+        regexp_replace(r.qual, 'auth\\.uid\\(\\)', '(select auth.uid())', 'g'));
+    END IF;
+    IF r.with_check IS NOT NULL AND r.with_check ~ 'auth\\.uid\\(\\)' THEN
+      EXECUTE format('ALTER POLICY %I ON %I.%I WITH CHECK (%s)',
+        r.policyname, r.schemaname, r.tablename,
+        regexp_replace(r.with_check, 'auth\\.uid\\(\\)', '(select auth.uid())', 'g'));
+    END IF;
+  END LOOP;
+END $;
+
 CREATE INDEX IF NOT EXISTS candidate_cvs_user_id_idx ON public.candidate_cvs(user_id);
 CREATE INDEX IF NOT EXISTS employer_application_reviews_updated_by_idx ON public.employer_application_reviews(updated_by);
 CREATE INDEX IF NOT EXISTS review_audit_reviewer_id_idx ON public.review_audit(reviewer_id);
