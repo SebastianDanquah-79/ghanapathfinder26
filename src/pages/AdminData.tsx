@@ -90,6 +90,9 @@ const AdminData = () => {
       <main className="pt-20 pb-12 px-4 sm:px-8 lg:px-12">
         <div className="max-w-7xl mx-auto space-y-5">
           <div className="flex flex-wrap gap-4">
+            <Link to="/admin/analytics" className="text-sm text-primary font-medium">
+              View usage analytics
+            </Link>
             <Link to="/admin/review" className="text-sm text-primary font-medium">
               Open review queue
             </Link>
