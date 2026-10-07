@@ -2,6 +2,7 @@ import { queryOptions, useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { groupFilter, type InstitutionGroup } from "@/lib/legal";
+import { scholarships as staticScholarships } from "@/data/scholarships";
 
 export type University = Tables<"universities">;
 export type Programme = Tables<"programmes">;
@@ -178,18 +179,62 @@ export const useProgramme = (slug?: string) =>
     },
   });
 
+const scholarshipTypeValues: Record<string, string[]> = {
+  Government: ["Government", "Government scholarship", "Local tertiary scholarship"],
+  University: ["University", "University scholarship", "University bursary"],
+  Private: ["Private", "Private scholarship", "NGO", "ngo"],
+  International: ["International", "Foreign scholarship", "Foreign scholarship and training"],
+};
+
+const scholarshipSlugFallback = (name: string) =>
+  name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+const staticScholarshipRecords = staticScholarships.map((s) => ({
+  id: scholarshipSlugFallback(s.name),
+  name: s.name,
+  provider: s.provider,
+  type: s.type,
+  coverage: s.coverage,
+  study_level: s.level,
+  eligibility: s.eligibility,
+  deadline_text: s.deadline,
+  deadline_date: null,
+  application_url: s.link ?? null,
+  website_url: s.link ?? null,
+  verified: false,
+  last_verified_at: s.lastVerified ? new Date(s.lastVerified).toISOString() : null,
+  academic_requirements: null,
+  created_at: new Date().toISOString(),
+  description: null,
+  fields: [],
+  funding_type: null,
+  how_to_apply: s.howToApply,
+  location: "Ghana / International",
+  nationality_requirement: "See official provider requirements",
+  slug: scholarshipSlugFallback(s.name),
+  updated_at: new Date().toISOString(),
+})) as unknown as ScholarshipRecord[];
+
 export const scholarshipRecordsQueryOptions = (search = "", type: string = "All") =>
   queryOptions({
     queryKey: ["scholarships_db", search, type],
     queryFn: async () => {
       let q = supabase.from("scholarships").select("*").order("name").limit(100);
-      if (type !== "All") q = q.eq("type", type);
+      const typeValues = scholarshipTypeValues[type];
+      if (typeValues?.length) q = q.in("type", typeValues);
       if (search.trim()) {
         const term = `%${search.trim()}%`;
-        q = q.or(`name.ilike.${term},provider.ilike.${term},eligibility.ilike.${term},study_level.ilike.${term}`);
+        q = q.or(`name.ilike.${term},provider.ilike.${term},eligibility.ilike.${term},study_level.ilike.${term},description.ilike.${term}`);
       }
       const { data, error } = await q;
-      if (error) throw error;
+      if (error) {
+        const needle = search.trim().toLowerCase();
+        return staticScholarshipRecords.filter((s) => {
+          const matchesType = !typeValues?.length || typeValues.includes(s.type);
+          const haystack = [s.name, s.provider, s.eligibility, s.study_level, s.description].join(" ").toLowerCase();
+          return matchesType && (!needle || haystack.includes(needle));
+        });
+      }
       return (data ?? []) as ScholarshipRecord[];
     },
     staleTime: 60_000,
