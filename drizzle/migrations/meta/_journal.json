@@ -15,6 +15,13 @@
       "when": 1791330218402,
       "tag": "0001_opportunity_feed_verification",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791336829025,
+      "tag": "0002_university_campus_image_cache",
+      "breakpoints": true
     }
   ]
 }
