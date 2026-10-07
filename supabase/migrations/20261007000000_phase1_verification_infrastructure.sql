@@ -52,6 +52,7 @@ create table if not exists public.data_change_proposals (
   source_id uuid references public.sources(id),
   reason text,
   status text not null default 'pending',
+  created_by uuid references auth.users(id) default auth.uid(),
   created_at timestamptz not null default now(),
   reviewed_at timestamptz,
   reviewed_by uuid references auth.users(id)
@@ -142,12 +143,12 @@ create policy "Admins manage verification log"
 create policy "Authenticated users can report data changes"
   on public.data_change_proposals for insert
   to authenticated
-  with check (auth.uid() is not null);
+  with check (auth.uid() = created_by);
 
 create policy "Users can read their own data change proposals"
   on public.data_change_proposals for select
   to authenticated
-  using (auth.uid() = reviewed_by);
+  using (auth.uid() = created_by);
 
 create policy "Admins manage data change proposals"
   on public.data_change_proposals for all
