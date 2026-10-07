@@ -93,6 +93,36 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
     }
   };
 
+  const handleMagicLink = async () => {
+    if (!email.trim()) {
+      toast.error("Enter your email address first.");
+      return;
+    }
+    if (!acceptedTerms) {
+      toast.error("Please accept the Terms & Conditions to continue.");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        email: email.trim(),
+        options: {
+          emailRedirectTo: next
+            ? `${window.location.origin}/auth?next=${encodeURIComponent(next)}`
+            : `${window.location.origin}/auth`,
+          shouldCreateUser: false,
+        },
+      });
+      if (error) throw error;
+      toast.success("Sign-in link sent. Check your email.");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not send the sign-in link.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleForgotPassword = async () => {
     if (!email.trim()) {
       toast.error("Enter your email address first, then tap “Forgot password”.");
@@ -264,6 +294,19 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
                 {mode === "signin" ? "Sign in" : "Create account"}
               </button>
             </form>
+
+            {mode === "signin" && (
+              <p className="text-center text-sm mt-3">
+                <button
+                  type="button"
+                  onClick={handleMagicLink}
+                  disabled={loading || !acceptedTerms}
+                  className="inline-flex items-center justify-center min-h-[44px] px-3 text-primary hover:underline disabled:opacity-50"
+                >
+                  Email me a sign-in link
+                </button>
+              </p>
+            )}
 
             {mode === "signin" && (
               <p className="text-center text-sm mt-3">
