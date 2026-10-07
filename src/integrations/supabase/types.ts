@@ -2721,6 +2721,9 @@ export type Database = {
           admission_info: string | null
           admissions_url: string | null
           aliases: string[]
+          campus_image_resolved_at: string | null
+          campus_image_source_url: string | null
+          campus_image_url: string | null
           campus_vibe: string | null
           category: string
           country: string
@@ -2767,6 +2770,9 @@ export type Database = {
           admission_info?: string | null
           admissions_url?: string | null
           aliases?: string[]
+          campus_image_resolved_at?: string | null
+          campus_image_source_url?: string | null
+          campus_image_url?: string | null
           campus_vibe?: string | null
           category?: string
           country?: string
@@ -2813,6 +2819,9 @@ export type Database = {
           admission_info?: string | null
           admissions_url?: string | null
           aliases?: string[]
+          campus_image_resolved_at?: string | null
+          campus_image_source_url?: string | null
+          campus_image_url?: string | null
           campus_vibe?: string | null
           category?: string
           country?: string
