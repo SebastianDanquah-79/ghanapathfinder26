@@ -6,10 +6,11 @@ import {
 } from "@/hooks/useCatalogue";
 
 export const Route = createFileRoute("/")({
-  // Prefetch the default (unfiltered) directory + scholarship views so the
-  // server-rendered HTML ships real content instead of loading placeholders.
+  // Prefetch public catalogue data when available, but never make the entire
+  // landing page fail because a backend prefetch is temporarily unavailable.
+  // The rendered components fetch the same data on the client and can retry.
   loader: async ({ context }) => {
-    await Promise.all([
+    const results = await Promise.allSettled([
       context.queryClient.ensureQueryData(
         universitiesQueryOptions({
           search: "",
@@ -20,8 +21,16 @@ export const Route = createFileRoute("/")({
           pageSize: 12,
         }),
       ),
-      context.queryClient.ensureQueryData(scholarshipRecordsQueryOptions("", "All")),
+      context.queryClient.ensureQueryData(
+        scholarshipRecordsQueryOptions("", "All"),
+      ),
     ]);
+
+    for (const result of results) {
+      if (result.status === "rejected") {
+        console.error("Homepage catalogue prefetch failed:", result.reason);
+      }
+    }
   },
   component: Home,
 });
