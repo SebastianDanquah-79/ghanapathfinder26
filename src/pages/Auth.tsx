@@ -46,7 +46,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!acceptedTerms) {
+    if (mode === "signup" && !acceptedTerms) {
       toast.error("Please accept the Terms & Conditions to continue.");
       return;
     }
@@ -300,7 +300,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
                 <button
                   type="button"
                   onClick={handleMagicLink}
-                  disabled={loading || !acceptedTerms}
+                  disabled={loading}
                   className="inline-flex items-center justify-center min-h-[44px] px-3 text-primary hover:underline disabled:opacity-50"
                 >
                   Email me a sign-in link
