@@ -247,20 +247,24 @@ const CampusIllustration = ({ name, location }: UniversityCampusImageProps) => {
 };
 
 const UniversityCampusImage = ({ name, location, placeId, slug }: UniversityCampusImageProps) => {
-  const key = name.trim();
-  const [images, setImages] = useState<CampusMedia[]>(cache.get(key) ?? []);
+  const key = `${name.trim()}|${location ?? ""}|${placeId ?? ""}|${slug ?? ""}`;
+  const displayName = name.trim();
+  const cachedImages = cache.get(key) ?? [];
+  const [images, setImages] = useState<CampusMedia[]>(cachedImages);
   const [loaded, setLoaded] = useState(cache.has(key));
   const [active, setActive] = useState(0);
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
-    if (!key) return;
-    if (cache.has(key)) {
-      setImages(cache.get(key) ?? []);
-      setLoaded(true);
-      return;
-    }
+    if (!displayName) return;
+
+    setImages(cache.get(key) ?? []);
+    setActive(0);
+    setFailed(false);
+    setLoaded(cache.has(key));
+
+    if (cache.has(key)) return;
 
     const loadImages = async () => {
       try {
@@ -279,8 +283,16 @@ const UniversityCampusImage = ({ name, location, placeId, slug }: UniversityCamp
         // Logos are never shown as campus photos.
         if (media.length < 3) media = [...media, ...(await fetchCommonsImages(key)).filter((m) => m.kind === "photo")];
         const unique = new Map<string, CampusMedia>();
-        for (const item of media) if (!unique.has(item.src)) unique.set(item.src, item);
-        const sources = [...unique.values()].slice(0, 8);
+        for (const item of media) if (item.src && !unique.has(item.src)) unique.set(item.src, item);
+
+        // Validate every remote source before rendering it. This prevents a broken
+        // URL from flashing a broken-image icon and guarantees a clean fallback.
+        const candidates = [...unique.values()].slice(0, 8);
+        const checked = await Promise.all(candidates.map(async (item) =>
+          (await isImageReachable(item.src)) ? item : null
+        ));
+        const sources = checked.filter((item): item is CampusMedia => Boolean(item));
+
         if (cancelled) return;
         cache.set(key, sources);
         setImages(sources);
@@ -312,6 +324,7 @@ const UniversityCampusImage = ({ name, location, placeId, slug }: UniversityCamp
     setImages((current) => {
       const next = current.filter((item) => item.src !== src);
       cache.set(key, next);
+      setActive((currentActive) => Math.min(currentActive, Math.max(0, next.length - 1)));
       if (!next.length) setFailed(true);
       return next;
     });
