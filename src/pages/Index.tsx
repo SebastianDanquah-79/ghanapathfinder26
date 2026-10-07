@@ -10,7 +10,6 @@ import AnnouncementBanner from "@/components/AnnouncementBanner";
 import WhyGhanaPathFinder from "@/components/WhyGhanaPathFinder";
 import PathfinderDecisionHub from "@/components/PathfinderDecisionHub";
 
-const ImpactSection = lazy(() => import("@/components/ImpactSection"));
 const CareerSection = lazy(() => import("@/components/CareerSection"));
 const CityGuide = lazy(() => import("@/components/CityGuide"));
 const StartupStories = lazy(() => import("@/components/StartupStories"));
@@ -57,7 +56,6 @@ const Index = () => (
     <UniversityDirectory />
     <ScholarshipSection />
     <Suspense fallback={<div className="h-24" />}>
-      <ImpactSection />
       <CareerSection />
       <CityGuide />
       <StartupStories />
