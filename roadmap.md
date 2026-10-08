@@ -17,6 +17,7 @@
 - [x] Review the next official programme batch (16 Zenith and Family Health programmes approved with live official sources and verified campus media links).
 
 # Feature extension (Oct 2026)
+- [x] Compare university logo cards and profile links against GitHub main; normalize optional logo props for strict TypeScript (full preview verification blocked by existing installation and unrelated type errors).
 - [x] Advisor entry points opening the existing assistant with page context
 - [x] Public /opportunities feed and detail (published + active only, source/verification/deadline)
 - [x] Track jobs/internships/programmes via opportunity_pipeline inside /applications
