@@ -15,6 +15,7 @@ import {
   useResolveCorrection,
   useReviewAction,
   useReviewCounts,
+  useFlagListing,
   useReviewQueue,
   type ReviewRow,
   type ReviewTable,
@@ -34,6 +35,7 @@ const ReviewCard = ({ table, row }: { table: ReviewTable; row: ReviewRow }) => {
   const [reason, setReason] = useState("");
   const action = useReviewAction();
   const reject = useRejectRow();
+  const flag = useFlagListing();
   const label = rowTitle(table, row);
   const fields = REVIEW_FIELDS[table];
   const changed = Object.keys(draft).length > 0;
@@ -92,26 +94,63 @@ const ReviewCard = ({ table, row }: { table: ReviewTable; row: ReviewRow }) => {
             );
           }
           return (
-            <label key={f.key} className="text-xs text-muted-foreground space-y-1">
-              <span>{f.label}</span>
-              {f.type === "textarea" ? (
-                <textarea
-                  value={value ?? ""}
-                  rows={3}
-                  onChange={(e) => set(f.key, e.target.value)}
-                  className="w-full rounded-lg bg-secondary border border-border p-2 text-sm text-foreground"
-                />
-              ) : (
-                <input
-                  value={value ?? ""}
-                  onChange={(e) => set(f.key, e.target.value)}
-                  className="w-full min-h-[38px] rounded-lg bg-secondary border border-border px-2 text-sm text-foreground"
-                />
-              )}
-            </label>
+            <div key={f.key} className="text-xs text-muted-foreground space-y-1">
+              <label className="block">
+                <span>{f.label}</span>
+                {f.type === "textarea" ? (
+                  <textarea
+                    value={value ?? ""}
+                    rows={3}
+                    onChange={(e) => set(f.key, e.target.value)}
+                    className="w-full rounded-lg bg-secondary border border-border p-2 text-sm text-foreground"
+                  />
+                ) : (
+                  <input
+                    value={value ?? ""}
+                    onChange={(e) => set(f.key, e.target.value)}
+                    className="w-full min-h-[38px] rounded-lg bg-secondary border border-border px-2 text-sm text-foreground"
+                  />
+                )}
+              </label>
+              <button
+                type="button"
+                onClick={() => flag.mutate({
+                  table,
+                  id: row["id"],
+                  label: label + " · " + f.label,
+                  note: "Field requires correction: " + f.label,
+                })}
+                disabled={flag.isPending}
+                className="text-[10px] text-destructive underline underline-offset-2 disabled:opacity-50"
+              >
+                Flag this field
+              </button>
+            </div>
           );
         })}
       </div>
+
+      {changed && (
+        <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-3 space-y-2">
+          <p className="text-xs font-semibold text-foreground">Pending changes</p>
+          {Object.entries(draft).map(([key, next]) => (
+            <div key={key} className="grid gap-1 sm:grid-cols-[140px_1fr_1fr] text-xs">
+              <span className="font-medium text-muted-foreground">{fields.find((f) => f.key === key)?.label ?? key}</span>
+              <span className="rounded border border-border p-2 text-muted-foreground break-words">
+                <span className="block text-[10px] uppercase tracking-wide mb-1">Current</span>
+                {String(row[key] ?? "—")}
+              </span>
+              <span className="rounded border border-primary/30 p-2 text-foreground break-words">
+                <span className="block text-[10px] uppercase tracking-wide mb-1">Proposed</span>
+                {String(next ?? "—")}
+              </span>
+            </div>
+          ))}
+          <p className="text-[11px] text-muted-foreground">
+            Approval writes the changes to the verification log. Concurrent edits are rejected rather than silently overwritten.
+          </p>
+        </div>
+      )}
 
       {sources.length > 0 && (
         <ul className="text-[11px] text-muted-foreground space-y-0.5">
