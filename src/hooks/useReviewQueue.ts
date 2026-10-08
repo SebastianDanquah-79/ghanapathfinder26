@@ -139,7 +139,10 @@ export const useReviewCounts = (enabled: boolean) =>
     },
   });
 
-/** Save edits and/or mark a row as reviewed. */
+/** Save edits and/or mark a row as reviewed.
+ * Every changed field is written to verification_log before the row is updated.
+ * Approved rows are published only after the update succeeds.
+ */
 export const useReviewAction = () => {
   const qc = useQueryClient();
   return useMutation({
@@ -154,16 +157,50 @@ export const useReviewAction = () => {
       patch?: Record<string, any>;
       approve?: boolean;
     }) => {
-      const body: Record<string, any> = { ...(patch ?? {}) };
+      const { data: current, error: readError } = await supabase
+        .from(table as any)
+        .select("*")
+        .eq("id", id)
+        .single();
+      if (readError) throw readError;
+
+      const changes = Object.entries(patch ?? {}).filter(
+        ([key, value]) => JSON.stringify((current as any)[key]) !== JSON.stringify(value),
+      );
+
+      if (changes.length === 0 && !approve) return;
+
+      const body: Record<string, any> = Object.fromEntries(changes);
+      const now = new Date().toISOString();
+
       if (approve) {
-        body["needs_review"] = false;
-        body["last_verified_at"] = new Date().toISOString();
+        body.needs_review = false;
+        body.last_verified_at = now;
+        body.verified_at = now;
+        body.verified_by = (await supabase.auth.getUser()).data.user?.id ?? null;
         if (table === "universities" || table === "programmes") {
-          body["verified"] = true;
-          body["verification_status"] = "verified";
+          body.verified = true;
+          body.verification_status = "verified";
         }
       }
-      const { error } = await supabase.from(table as any).update(body).eq("id", id);
+
+      if (changes.length > 0) {
+        const logRows = changes.map(([field, value]) => ({
+          entity_type: table,
+          entity_id: id,
+          field_name: field,
+          old_value: (current as any)[field] ?? null,
+          new_value: value ?? null,
+        }));
+        const { error: logError } = await supabase.from("verification_log").insert(logRows);
+        if (logError) throw logError;
+      }
+
+      const { error } = await supabase
+        .from(table as any)
+        .update(body)
+        .eq("id", id)
+        .eq("updated_at", (current as any).updated_at);
       if (error) throw error;
     },
     onSuccess: () => {
