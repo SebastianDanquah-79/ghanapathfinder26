@@ -26,7 +26,7 @@ export default function UniversityLogoCard({
 }: UniversityLogoCardProps) {
   return (
     <div className={`relative flex h-32 items-center justify-center rounded-lg bg-secondary/40 ${className}`}>
-      <BrandLogo name={name} websiteUrl={websiteUrl} logoUrl={logoUrl} size={logoSize} />
+      <BrandLogo name={name} websiteUrl={websiteUrl ?? null} logoUrl={logoUrl ?? null} size={logoSize} />
       {showMapLink && (
         <a
           href={mapsUrl(name, location)}
