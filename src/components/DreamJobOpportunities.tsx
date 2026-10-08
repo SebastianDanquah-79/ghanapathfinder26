@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { careerPaths } from "@/data/careerPaths";
 import { employersForMajor } from "@/data/employers";
 import { CATEGORY_ORDER, skillById, skillMapForMajor } from "@/data/skillsMap";
-import UniversityCampusImage from "@/components/UniversityCampusImage";
+import UniversityLogoCard from "@/components/UniversityLogoCard";
 import EmployerPhoto from "@/components/EmployerPhoto";
 import { isInstitutionGtecExpired2026 } from "@/hooks/useCatalogue";
 
@@ -34,7 +34,7 @@ export default function DreamJobOpportunities({ dreamJob }: { dreamJob: string }
       const { data: progs } = await supabase.from("programmes").select("id,slug,name,degree_type,university_id,verified").or(or).eq("verified", true).limit(60);
       const ids = Array.from(new Set((progs ?? []).map((p) => p.university_id).filter(Boolean))) as string[];
       const { data: unis } = ids.length
-        ? await supabase.from("universities").select("id,slug,name,location,region,google_place_id,accreditation_status").in("id", ids)
+        ? await supabase.from("universities").select("id,slug,name,location,region,google_place_id,accreditation_status,website_url,logo_source_url,logo_url").in("id", ids)
         : { data: [] };
       const accredited = (unis ?? []).filter((u) => !isInstitutionGtecExpired2026(u));
       const okIds = new Set(accredited.map((u) => u.id));
@@ -60,8 +60,8 @@ export default function DreamJobOpportunities({ dreamJob }: { dreamJob: string }
         {isLoading ? <p className="text-sm text-muted-foreground">Loading…</p> : data?.universities.length ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {data.universities.map((u) => (
-              <Link key={u.id} to={`/universities/${u.slug}`} className="block rounded-xl border border-border bg-card overflow-hidden hover:border-primary/40">
-                <div className="aspect-[16/9] overflow-hidden"><UniversityCampusImage name={u.name} location={u.location ?? u.region} placeId={u.google_place_id} slug={u.slug} /></div>
+              <Link key={u.id} to={`/university/${u.slug}`} className="block rounded-xl border border-border bg-card overflow-hidden hover:border-primary/40">
+                <UniversityLogoCard name={u.name} location={u.location ?? u.region} websiteUrl={u.website_url} logoUrl={u.logo_source_url ?? u.logo_url} showMapLink={false} className="rounded-none" />
                 <div className="p-3"><p className="text-sm font-semibold">{u.name}</p><p className="text-xs text-muted-foreground">{u.region ?? u.location ?? "Ghana"}</p></div>
               </Link>
             ))}
