@@ -6,7 +6,6 @@ import CollegeRecommender from "@/components/CollegeRecommender";
 import UniversityDirectory from "@/components/UniversityDirectory";
 import ScholarshipSection from "@/components/ScholarshipSection";
 import ExploreGrid from "@/components/ExploreGrid";
-import AnnouncementBanner from "@/components/AnnouncementBanner";
 import WhyGhanaPathFinder from "@/components/WhyGhanaPathFinder";
 import PathfinderDecisionHub from "@/components/PathfinderDecisionHub";
 import ImpactSection from "@/components/ImpactSection";
@@ -46,7 +45,6 @@ const Index = () => (
     />
     <Navbar />
     <div className="pt-14">
-      <AnnouncementBanner />
       <HeroSection />
     </div>
 
