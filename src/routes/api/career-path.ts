@@ -48,6 +48,10 @@ export const Route = createFileRoute("/api/career-path")({
             : "A valid JSON request is required.", { status: error instanceof Error && error.message === "BODY_TOO_LARGE" ? 413 : 400 });
         }
 
+        if (!body || typeof body !== "object" || Array.isArray(body)) {
+          return new Response("A valid career profile is required.", { status: 400 });
+        }
+
         const dreamJob = typeof body.dreamJob === "string" ? body.dreamJob.trim().slice(0, 200) : "";
         if (!dreamJob) return new Response("Dream job is required.", { status: 400 });
 
