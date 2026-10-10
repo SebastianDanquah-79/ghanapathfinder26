@@ -36,7 +36,7 @@ export const Route = createFileRoute("/api/chat")({
             : "A valid JSON request is required.", { status: error instanceof Error && error.message === "BODY_TOO_LARGE" ? 413 : 400 });
         }
 
-        if (!Array.isArray(body.messages) || body.messages.length === 0 || body.messages.length > 24) {
+        if (!body || typeof body !== "object" || !Array.isArray(body.messages) || body.messages.length === 0 || body.messages.length > 24) {
           return new Response("Send between 1 and 24 chat messages.", { status: 400 });
         }
 
