@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { checkApiRateLimit, readJsonBody, rateLimitResponse } from "@/lib/api-rate-limit";
 import { generateText } from "ai";
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 
@@ -35,11 +36,16 @@ export const Route = createFileRoute("/api/career-path")({
   server: {
     handlers: {
       POST: async ({ request }) => {
+        const rate = checkApiRateLimit(request, "career-path", 6, 60_000);
+        if (!rate.allowed) return rateLimitResponse(rate.retryAfterSeconds);
+
         let body: CareerPathRequest;
         try {
-          body = (await request.json()) as CareerPathRequest;
-        } catch {
-          return new Response("A valid JSON request is required.", { status: 400 });
+          body = (await readJsonBody(request, 16 * 1024)) as CareerPathRequest;
+        } catch (error) {
+          return new Response(error instanceof Error && error.message === "BODY_TOO_LARGE"
+            ? "Request is too large."
+            : "A valid JSON request is required.", { status: error instanceof Error && error.message === "BODY_TOO_LARGE" ? 413 : 400 });
         }
 
         const dreamJob = typeof body.dreamJob === "string" ? body.dreamJob.trim().slice(0, 200) : "";
@@ -61,7 +67,7 @@ export const Route = createFileRoute("/api/career-path")({
 
         try {
           const result = await generateText({
-            model: openai("gpt-6-luna"),
+            model: openai(process.env["OPENAI_MODEL"] || "gpt-6-luna"),
             system: SYSTEM,
             prompt: `Dream job: ${dreamJob}\n${profile || "No additional profile information was provided."}`,
             maxOutputTokens: 1800,
