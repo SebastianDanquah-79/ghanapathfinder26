@@ -3,7 +3,6 @@ import { useNavigate, Link, useSearchParams } from "@/lib/router-compat";
 import { Loader2, BrandLogoIcon } from "@/lib/icons";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/hooks/useAuth";
 import { TERMS_VERSION } from "@/lib/legal";
 import { useEffect } from "react";
@@ -115,17 +114,21 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
     }
 
     setLoading(true);
-    const result = await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: `${window.location.origin}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ""}`,
-    });
-    if (result.error) {
-      toast.error("Google sign-in failed. Please try again.");
+    try {
+      const redirectTo = `${window.location.origin}/auth/callback${next ? `?next=${encodeURIComponent(next)}` : ""}`;
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo,
+          queryParams: { prompt: "select_account" },
+        },
+      });
+      if (error) throw error;
+    } catch (error) {
+      console.error("Supabase Google sign-in failed", error);
+      toast.error("Google sign-in is not configured. Please try email and password, or contact support.");
       setLoading(false);
-      return;
     }
-    if (result.redirected) return;
-    if (next) window.location.href = next;
-    else navigate("/onboarding", { replace: true });
   };
 
   return (
