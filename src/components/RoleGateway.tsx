@@ -27,7 +27,7 @@ export default function RoleGateway() {
     void supabase.from("profiles").select("account_role,role,onboarding_complete").eq("id", user.id).maybeSingle().then(function(result) {
       const role = result.data?.account_role ?? result.data?.role;
       if (cancelled || !result.data || !result.data.onboarding_complete || !role) return;
-      const destination = role === "startup_founder" ? "/portal/founder" : role === "international_student" ? "/portal/international-student" : role === "student" || role === "employee" || role === "employer" ? "/portal/" + role : "/onboarding";
+      const destination = role === "startup_founder" || role === "founder" ? "/portal/founder" : role === "international_student" || role === "international-student" ? "/portal/international-student" : role === "student" || role === "employee" || role === "employer" ? "/portal/" + role : "/onboarding";
       navigate(destination, { replace: true });
     });
     return function() { cancelled = true; };
