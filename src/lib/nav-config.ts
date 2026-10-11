@@ -147,11 +147,12 @@ const portalNavSections: Record<string, NavSection[]> = {
     ]},
   ],
   international_student: [
-    { id: "study-destinations", label: "Study in Ghana", icon: Globe, href: "/international-community", items: [
-      { label: "Study destinations and community", href: "/international-community" },
-      { label: "Admission matching", href: "/admission-match" },
+    { id: "study-destinations", label: "Study in Ghana", icon: Globe, href: "/portal/study-destinations", items: [
+      { label: "Study destinations", href: "/portal/study-destinations" },
+      { label: "Qualification pathways", href: "/admission-match" },
       { label: "Programmes", href: "/programmes/" },
       { label: "Scholarships", href: "/scholarships/" },
+      { label: "Embassy and visa information", href: "/international-community" },
       { label: "Applications", href: "/applications" },
     ]},
   ],
