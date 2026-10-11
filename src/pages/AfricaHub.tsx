@@ -75,7 +75,7 @@ const Hub = ({mode}:{mode:Mode}) => {
         {x.source_url&&<a className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-primary" href={x.source_url} target="_blank" rel="noreferrer">Publisher / book reference <ExternalLink className="h-3.5 w-3.5"/></a>}
       </article>)}</div>
       {!books.length&&<div className={card+" text-sm text-muted-foreground"}>The catalogue is being prepared. Check the Learning Resources page while the book shelf loads.</div>}
-      <Link to="/learn" className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-primary">Explore learning resources <ExternalLink className="h-3.5 w-3.5"/></Link>
+      <Link to="/skills/" className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-primary">Explore learning resources <ExternalLink className="h-3.5 w-3.5"/></Link>
     </section>}
     {showTravel&&<section><div className="mb-3 flex items-center gap-2"><Map className="h-5 w-5 text-primary"/><h2 className="text-xl font-semibold">African countries</h2></div><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{countries.map(x=><article className={card} key={x.code}><h3 className="font-semibold">{x.name}</h3><p className="mt-1 text-xs text-muted-foreground">{x.region||"Africa"}</p>{x.official_languages?.length>0&&<p className="mt-2 text-xs text-muted-foreground">Official languages: {x.official_languages.join(", ")}</p>}</article>)}</div></section>}
 
