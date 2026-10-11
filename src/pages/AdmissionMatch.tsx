@@ -22,11 +22,18 @@ const CATEGORIES: MatchCategory[] = [
 const AdmissionMatch = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
-  const [search, setSearch] = useState(() => new URLSearchParams(window.location.search).get("interest") ?? "");
+  const [search, setSearch] = useState(() => typeof window === "undefined" ? "" : new URLSearchParams(window.location.search).get("interest") ?? "");
   const [universityId, setUniversityId] = useState("");
   const [category, setCategory] = useState<"All" | MatchCategory>("All");
   const [basis, setBasis] = useState<"all" | "official" | "estimated">("all");
   const [limit, setLimit] = useState(20);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const interest = new URLSearchParams(window.location.search).get("interest");
+      if (interest) setSearch(interest);
+    }
+  }, []);
 
   useEffect(() => {
     if (!loading && !user) navigate("/auth?next=/admission-match", { replace: true });
@@ -89,7 +96,7 @@ const AdmissionMatch = () => {
             <div>
               <p className="text-xs text-muted-foreground uppercase tracking-wide">Your WASSCE aggregate</p>
               <p className="font-display text-3xl font-bold text-foreground">
-                {breakdown.aggregate ?? ","}
+                {breakdown.aggregate ?? "Not calculated"}
               </p>
               {!!breakdown.usedSubjects.length && (
                 <p className="text-xs text-muted-foreground mt-1">
@@ -202,7 +209,7 @@ const AdmissionMatch = () => {
                   </p>
                   <p className="text-muted-foreground">
                     Your aggregate:{" "}
-                    <span className="text-foreground font-semibold">{breakdown.aggregate ?? ","}</span>
+                    <span className="text-foreground font-semibold">{breakdown.aggregate ?? "Not calculated"}</span>
                   </p>
                 </div>
 
