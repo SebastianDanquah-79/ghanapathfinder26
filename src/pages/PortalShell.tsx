@@ -147,9 +147,14 @@ export default function PortalShell(props: {role: PortalRole; children?: ReactNo
       <Seo title={currentMeta.title + " | GhanaPathFinder"} description={currentMeta.description} path={props.role === "founder" ? "/portal/founder" : "/portal/" + props.role} />
       <main className="mx-auto w-full max-w-6xl px-4 pb-24 pt-20 sm:px-6 lg:px-8">
         <header className="border-b border-border pb-7">
-          <p className="text-sm font-semibold text-primary">GhanaPathFinder</p>
-          <h1 className="mt-2 text-3xl font-bold">{currentMeta.title}</h1>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">{currentMeta.description}</p>
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <p className="text-sm font-semibold text-primary">GhanaPathFinder</p>
+              <h1 className="mt-2 text-3xl font-bold">{currentMeta.title}</h1>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">{currentMeta.description}</p>
+            </div>
+            <button type="button" onClick={function(){navigate("/?switchRole=1");}} className="border border-border px-3 py-2 text-sm font-medium hover:border-primary">Change portal</button>
+          </div>
         </header>
 
         {complete && <section className="mt-6 border border-border bg-card p-5">
