@@ -25,7 +25,7 @@ function usePortal(role: PortalRole, userId: string | undefined) {
     enabled: Boolean(userId),
     queryFn: async function() {
       if (!userId) throw new Error("Authentication required");
-      const profileResult = await supabase.from("profiles").select("full_name,account_role,role,onboarding_complete,bio,skills,interests,target_career,preferred_locations,preferred_industries,preferred_opportunity_types,school,region,university,program,graduation_year,company,job_title,location,linkedin_url,github_url,portfolio_url").eq("id", userId).single();
+      const profileResult = await supabase.from("profiles").select("full_name,account_role,role,onboarding_complete,bio,avatar_url,linkedin_url,github_url,portfolio_url").eq("id", userId).single();
       if (profileResult.error) throw profileResult.error;
       const profile = profileResult.data;
       const result: {profile: typeof profile; items: Array<Record<string, unknown>>; roleComplete: boolean; roleProfile: Record<string, unknown> | null} = { profile, items: [], roleComplete: Boolean(profile.onboarding_complete), roleProfile: null };
@@ -44,14 +44,20 @@ function usePortal(role: PortalRole, userId: string | undefined) {
 
       if (role === "employee") {
         const results = await Promise.all([
-          supabase.from("employee_profiles").select("user_id,professional_title,employer_name,years_experience").eq("user_id", userId).maybeSingle(),
+          supabase.from("employee_profiles").select("user_id,professional_title,employer_name,years_experience,bio,skills,education_level,university,graduation_year,location,linkedin_url,github_url,portfolio_url,cv_url,discoverable,availability,interests,preferred_locations,preferred_industries,preferred_opportunity_types").eq("user_id", userId).maybeSingle(),
           supabase.from("opportunities").select("id,title,description,skills,category,location,remote,opportunity_type,company_name,application_url,deadline,status").in("status", ["active","published"]).order("posted_at", {ascending:false}).limit(50)
         ]);
         if (results[0].error) throw results[0].error;
         if (results[1].error) throw results[1].error;
         result.roleProfile = results[0].data as Record<string, unknown> | null;
         result.roleComplete = result.roleComplete && Boolean(results[0].data && results[0].data.professional_title);
-        const terms = (profile.skills || []).concat(profile.interests || []).concat(profile.preferred_industries || []).map(function(x){return x.toLowerCase();});
+        const employeeProfile = results[0].data;
+        const terms = (employeeProfile?.skills || [])
+          .concat(employeeProfile?.interests || [])
+          .concat(employeeProfile?.preferred_industries || [])
+          .concat(employeeProfile?.preferred_locations || [])
+          .concat(employeeProfile?.preferred_opportunity_types || [])
+          .map(function(x){return x.toLowerCase();});
         result.items = (results[1].data || []).map(function(x){
           const text = [x.title,x.description || "",x.category || "",x.location || ""].concat(x.skills || []).join(" ").toLowerCase();
           const score = terms.reduce(function(total,term){return total + (text.indexOf(term) >= 0 ? 1 : 0);},0);
@@ -77,7 +83,7 @@ function usePortal(role: PortalRole, userId: string | undefined) {
 
       if (role === "founder") {
         const results = await Promise.all([
-          supabase.from("founder_profiles").select("user_id,startup_name,sector,stage,website_url,pitch_url").eq("user_id", userId).maybeSingle(),
+          supabase.from("founder_profiles").select("user_id,startup_name,sector,stage,website_url,pitch_url,description,problem_statement,solution_summary,target_market,business_model,team_size,founded_year,funding_stage,funding_needed,funding_currency,skills,interests").eq("user_id", userId).maybeSingle(),
           supabase.from("opportunities").select("id,title,description,opportunity_type,application_url,deadline,status").in("status",["active","published"]).in("opportunity_type",["grant","fellowship"]).order("deadline").limit(20)
         ]);
         if (results[0].error) throw results[0].error;
@@ -114,15 +120,19 @@ export default function PortalShell(props: {role: PortalRole; children?: ReactNo
   const currentMeta = meta[props.role];
   const complete = Boolean(q.data?.profile.onboarding_complete) && Boolean(q.data?.roleComplete);
   const profileKeys: Record<PortalRole, Array<[string, string]>> = {
-    student: [["School", "school"], ["Region", "region"], ["Target career", "target_career"]],
-    employee: [["Professional title", "professional_title"], ["Experience", "years_experience"], ["Current employer", "employer_name"]],
+    student: [["School", "school"], ["Region", "region"], ["Country", "country_code"], ["Target career", "target_career"], ["Interests", "interests"], ["Pathways", "pathways"]],
+    employee: [["Professional title", "professional_title"], ["Experience", "years_experience"], ["Current employer", "employer_name"], ["Education", "education_level"], ["University", "university"], ["Skills", "skills"], ["Interests", "interests"], ["Preferred locations", "preferred_locations"], ["Preferred industries", "preferred_industries"], ["Opportunity types", "preferred_opportunity_types"], ["Availability", "availability"], ["CV", "cv_url"]],
     employer: [["Organisation", "organization_name"], ["Organisation type", "organization_type"], ["Hiring focus", "hiring_focus"]],
-    founder: [["Startup", "startup_name"], ["Sector", "sector"], ["Stage", "stage"], ["Website", "website_url"], ["Pitch deck", "pitch_url"]],
-    "international-student": [["Country", "country_code"], ["University", "university_name"], ["Programme", "programme_name"], ["Academic level", "academic_level"], ["Graduation year", "graduation_year"]]
+    founder: [["Startup", "startup_name"], ["Sector", "sector"], ["Stage", "stage"], ["Funding stage", "funding_stage"], ["Funding sought", "funding_needed"], ["Funding currency", "funding_currency"], ["Team size", "team_size"], ["Year founded", "founded_year"], ["Description", "description"], ["Problem", "problem_statement"], ["Solution", "solution_summary"], ["Target market", "target_market"], ["Business model", "business_model"], ["Skills", "skills"], ["Interests", "interests"], ["Website", "website_url"], ["Pitch deck", "pitch_url"]],
+    "international-student": [["Country", "country_code"], ["University", "university_name"], ["Programme", "programme_name"], ["Academic level", "academic_level"], ["Graduation year", "graduation_year"], ["Skills", "skills"], ["Interests", "interests"], ["Projects", "projects"]]
   };
   const roleProfileFields = profileKeys[props.role].map(function(field) {
     const value = q.data?.roleProfile?.[field[1]];
-    const display = Array.isArray(value) ? value.join(", ") : value == null ? "" : String(value);
+    let display = Array.isArray(value) ? value.join(", ") : value == null ? "" : String(value);
+    if (field[1] === "funding_needed" && display) display = (q.data?.roleProfile?.funding_currency ? String(q.data.roleProfile.funding_currency) + " " : "") + display;
+    if (field[1] === "website_url" || field[1] === "pitch_url" || field[1] === "cv_url") {
+      display = display;
+    }
     return { label: field[0], value: display, key: field[1] };
   }).filter(function(field) { return Boolean(field.value); });
   const editRole = props.role === "founder" ? "startup_founder" : props.role === "international-student" ? "international_student" : props.role;
@@ -197,7 +207,7 @@ export default function PortalShell(props: {role: PortalRole; children?: ReactNo
 
               {q.data.items.length === 0 && <div className="mt-5 border border-dashed border-border p-6 text-sm text-muted-foreground">There are no matching records yet. Check the wider directory and return after the next verified sync.</div>}
             </div>
-            <aside className="border border-border bg-card p-4"><h2 className="font-semibold">Ask Africa</h2><p className="mt-1 text-xs text-muted-foreground">Ask about the records already on this portal.</p><div className="mt-4"><AskPanel query={currentMeta.title + ". Profile: " + JSON.stringify(q.data.profile) + ". Records: " + JSON.stringify(q.data.items.slice(0,8))} items={askItems} suggestions={["What should I do next?","Explain these matches","What is missing from my profile?"]} /></div></aside>
+            <aside className="border border-border bg-card p-4"><h2 className="font-semibold">Ask Africa</h2><p className="mt-1 text-xs text-muted-foreground">Ask about the records already on this portal.</p><div className="mt-4"><AskPanel query={currentMeta.title + ". Account name: " + (q.data.profile.full_name || "User") + ". Active role profile: " + JSON.stringify(q.data.roleProfile) + ". Records: " + JSON.stringify(q.data.items.slice(0,8))} items={askItems} suggestions={["What should I do next?","Explain these matches","What is missing from my profile?"]} /></div></aside>
           </section>
         )}
 
