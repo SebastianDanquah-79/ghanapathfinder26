@@ -528,7 +528,6 @@ export interface FileRoutesByFullPath {
   '/portal/study-destinations': typeof PortalStudyDestinationsRoute
   '/study-destinations': typeof StudyDestinationsRoute
   '/account': typeof AccountRoute
-  '/account': typeof AccountRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
   '/applications': typeof ApplicationsRoute
@@ -545,7 +544,6 @@ export interface FileRoutesByFullPath {
   '/inspiration': typeof InspirationRoute
   '/matcher': typeof MatcherRoute
   '/my-path': typeof MyPathRoute
-  '/notifications': typeof NotificationsRoute
   '/notifications': typeof NotificationsRoute
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
@@ -725,7 +723,6 @@ export interface FileRouteTypes {
     | '/portal/study-destinations'
     | '/study-destinations'
     | '/account'
-    | '/account'
     | '/about'
     | '/admission-match'
     | '/applications'
@@ -742,7 +739,6 @@ export interface FileRouteTypes {
     | '/inspiration'
     | '/matcher'
     | '/my-path'
-    | '/notifications'
     | '/notifications'
     | '/onboarding'
     | '/parent'
