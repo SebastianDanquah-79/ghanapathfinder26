@@ -528,6 +528,137 @@ export interface FileRoutesByFullPath {
   '/portal/study-destinations': typeof PortalStudyDestinationsRoute
   '/study-destinations': typeof StudyDestinationsRoute
   '/account': typeof AccountRoute
+  '/account': typeof AccountRoute
+  '/about': typeof AboutRoute
+  '/admission-match': typeof AdmissionMatchRoute
+  '/applications': typeof ApplicationsRoute
+  '/auth': typeof AuthRoute
+  '/career-path': typeof CareerPathRoute
+  '/community': typeof CommunityRoute
+  '/compare': typeof CompareRoute
+  '/compare-scholarships': typeof CompareScholarshipsRoute
+  '/contact': typeof ContactRoute
+  '/credits': typeof CreditsRoute
+  '/dashboard': typeof DashboardRoute
+  '/disclaimer': typeof DisclaimerRoute
+  '/faq': typeof FaqRoute
+  '/inspiration': typeof InspirationRoute
+  '/matcher': typeof MatcherRoute
+  '/my-path': typeof MyPathRoute
+  '/notifications': typeof NotificationsRoute
+  '/notifications': typeof NotificationsRoute
+  '/onboarding': typeof OnboardingRoute
+  '/parent': typeof ParentRoute
+  '/preferences': typeof PreferencesRoute
+  '/privacy': typeof PrivacyRoute
+  '/professional-councils': typeof ProfessionalCouncilsRoute
+  '/references': typeof ReferencesRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/saved': typeof SavedRoute
+  '/search': typeof SearchRoute
+  '/terms': typeof TermsRoute
+  '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/data': typeof AdminDataRoute
+  '/admin/insights': typeof AdminInsightsRoute
+  '/admin/review': typeof AdminReviewRoute
+  '/api/campus-photos': typeof ApiCampusPhotosRoute
+  '/api/career-path': typeof ApiCareerPathRoute
+  '/api/chat': typeof ApiChatRoute
+  '/api/institution-media': typeof ApiInstitutionMediaRoute
+  '/api/institution-programmes': typeof ApiInstitutionProgrammesRoute
+  '/careers/$slug': typeof CareersSlugRoute
+  '/internships/$id': typeof InternshipsIdRoute
+  '/programme/$slug': typeof ProgrammeSlugRoute
+  '/programmes/$slug': typeof ProgrammesSlugRoute
+  '/scholarships/$slug': typeof ScholarshipsSlugRoute
+  '/skills/$slug': typeof SkillsSlugRoute
+  '/universities/$slug': typeof UniversitiesSlugRoute
+  '/university/$slug': typeof UniversitySlugRoute
+  '/careers/': typeof CareersIndexRoute
+  '/internships/': typeof InternshipsIndexRoute
+  '/programmes/': typeof ProgrammesIndexRoute
+  '/scholarships/': typeof ScholarshipsIndexRoute
+  '/skills/': typeof SkillsIndexRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/functions/v1/mcp': typeof FunctionsV1McpRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
+}
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/international-community': typeof InternationalCommunityRoute
+  '/portal/employee': typeof PortalEmployeeRoute
+  '/portal/employer': typeof PortalEmployerRoute
+  '/portal/founder': typeof PortalFounderRoute
+  '/portal/international-student': typeof PortalInternationalStudentRoute
+  '/portal/student': typeof PortalStudentRoute
+  '/portal/study-destinations': typeof PortalStudyDestinationsRoute
+  '/study-destinations': typeof StudyDestinationsRoute
+  '/account': typeof AccountRoute
+  '/about': typeof AboutRoute
+  '/admission-match': typeof AdmissionMatchRoute
+  '/applications': typeof ApplicationsRoute
+  '/auth': typeof AuthRoute
+  '/career-path': typeof CareerPathRoute
+  '/community': typeof CommunityRoute
+  '/compare': typeof CompareRoute
+  '/compare-scholarships': typeof CompareScholarshipsRoute
+  '/contact': typeof ContactRoute
+  '/credits': typeof CreditsRoute
+  '/dashboard': typeof DashboardRoute
+  '/disclaimer': typeof DisclaimerRoute
+  '/faq': typeof FaqRoute
+  '/inspiration': typeof InspirationRoute
+  '/matcher': typeof MatcherRoute
+  '/my-path': typeof MyPathRoute
+  '/notifications': typeof NotificationsRoute
+  '/onboarding': typeof OnboardingRoute
+  '/parent': typeof ParentRoute
+  '/preferences': typeof PreferencesRoute
+  '/privacy': typeof PrivacyRoute
+  '/professional-councils': typeof ProfessionalCouncilsRoute
+  '/references': typeof ReferencesRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/saved': typeof SavedRoute
+  '/search': typeof SearchRoute
+  '/terms': typeof TermsRoute
+  '/admin/analytics': typeof AdminAnalyticsRoute
+  '/admin/data': typeof AdminDataRoute
+  '/admin/insights': typeof AdminInsightsRoute
+  '/admin/review': typeof AdminReviewRoute
+  '/api/campus-photos': typeof ApiCampusPhotosRoute
+  '/api/career-path': typeof ApiCareerPathRoute
+  '/api/chat': typeof ApiChatRoute
+  '/api/institution-media': typeof ApiInstitutionMediaRoute
+  '/api/institution-programmes': typeof ApiInstitutionProgrammesRoute
+  '/careers/$slug': typeof CareersSlugRoute
+  '/internships/$id': typeof InternshipsIdRoute
+  '/programme/$slug': typeof ProgrammeSlugRoute
+  '/programmes/$slug': typeof ProgrammesSlugRoute
+  '/scholarships/$slug': typeof ScholarshipsSlugRoute
+  '/skills/$slug': typeof SkillsSlugRoute
+  '/universities/$slug': typeof UniversitiesSlugRoute
+  '/university/$slug': typeof UniversitySlugRoute
+  '/careers': typeof CareersIndexRoute
+  '/internships': typeof InternshipsIndexRoute
+  '/programmes': typeof ProgrammesIndexRoute
+  '/scholarships': typeof ScholarshipsIndexRoute
+  '/skills': typeof SkillsIndexRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/functions/v1/mcp': typeof FunctionsV1McpRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
+}
+export interface FileRoutesById {
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/international-community': typeof InternationalCommunityRoute
+  '/portal/employee': typeof PortalEmployeeRoute
+  '/portal/employer': typeof PortalEmployerRoute
+  '/portal/founder': typeof PortalFounderRoute
+  '/portal/international-student': typeof PortalInternationalStudentRoute
+  '/portal/student': typeof PortalStudentRoute
+  '/portal/study-destinations': typeof PortalStudyDestinationsRoute
+  '/study-destinations': typeof StudyDestinationsRoute
+  '/account': typeof AccountRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
   '/applications': typeof ApplicationsRoute
@@ -581,134 +712,75 @@ export interface FileRoutesByFullPath {
   '/functions/v1/mcp': typeof FunctionsV1McpRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
-export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/international-community': typeof InternationalCommunityRoute
-  '/portal/employee': typeof PortalEmployeeRoute
-  '/portal/employer': typeof PortalEmployerRoute
-  '/portal/founder': typeof PortalFounderRoute
-  '/portal/international-student': typeof PortalInternationalStudentRoute
-  '/portal/student': typeof PortalStudentRoute
-  '/portal/study-destinations': typeof PortalStudyDestinationsRoute
-  '/study-destinations': typeof StudyDestinationsRoute
-  '/about': typeof AboutRoute
-  '/admission-match': typeof AdmissionMatchRoute
-  '/applications': typeof ApplicationsRoute
-  '/auth': typeof AuthRoute
-  '/career-path': typeof CareerPathRoute
-  '/community': typeof CommunityRoute
-  '/compare': typeof CompareRoute
-  '/compare-scholarships': typeof CompareScholarshipsRoute
-  '/contact': typeof ContactRoute
-  '/credits': typeof CreditsRoute
-  '/dashboard': typeof DashboardRoute
-  '/disclaimer': typeof DisclaimerRoute
-  '/faq': typeof FaqRoute
-  '/inspiration': typeof InspirationRoute
-  '/matcher': typeof MatcherRoute
-  '/my-path': typeof MyPathRoute
-  '/onboarding': typeof OnboardingRoute
-  '/parent': typeof ParentRoute
-  '/preferences': typeof PreferencesRoute
-  '/privacy': typeof PrivacyRoute
-  '/professional-councils': typeof ProfessionalCouncilsRoute
-  '/references': typeof ReferencesRoute
-  '/reset-password': typeof ResetPasswordRoute
-  '/saved': typeof SavedRoute
-  '/search': typeof SearchRoute
-  '/terms': typeof TermsRoute
-  '/admin/analytics': typeof AdminAnalyticsRoute
-  '/admin/data': typeof AdminDataRoute
-  '/admin/insights': typeof AdminInsightsRoute
-  '/admin/review': typeof AdminReviewRoute
-  '/api/campus-photos': typeof ApiCampusPhotosRoute
-  '/api/career-path': typeof ApiCareerPathRoute
-  '/api/chat': typeof ApiChatRoute
-  '/api/institution-media': typeof ApiInstitutionMediaRoute
-  '/api/institution-programmes': typeof ApiInstitutionProgrammesRoute
-  '/careers/$slug': typeof CareersSlugRoute
-  '/internships/$id': typeof InternshipsIdRoute
-  '/programme/$slug': typeof ProgrammeSlugRoute
-  '/programmes/$slug': typeof ProgrammesSlugRoute
-  '/scholarships/$slug': typeof ScholarshipsSlugRoute
-  '/skills/$slug': typeof SkillsSlugRoute
-  '/universities/$slug': typeof UniversitiesSlugRoute
-  '/university/$slug': typeof UniversitySlugRoute
-  '/careers': typeof CareersIndexRoute
-  '/internships': typeof InternshipsIndexRoute
-  '/programmes': typeof ProgrammesIndexRoute
-  '/scholarships': typeof ScholarshipsIndexRoute
-  '/skills': typeof SkillsIndexRoute
-  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
-  '/functions/v1/mcp': typeof FunctionsV1McpRoute
-  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
-}
-export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/international-community': typeof InternationalCommunityRoute
-  '/portal/employee': typeof PortalEmployeeRoute
-  '/portal/employer': typeof PortalEmployerRoute
-  '/portal/founder': typeof PortalFounderRoute
-  '/portal/international-student': typeof PortalInternationalStudentRoute
-  '/portal/student': typeof PortalStudentRoute
-  '/portal/study-destinations': typeof PortalStudyDestinationsRoute
-  '/study-destinations': typeof StudyDestinationsRoute
-  '/about': typeof AboutRoute
-  '/admission-match': typeof AdmissionMatchRoute
-  '/applications': typeof ApplicationsRoute
-  '/auth': typeof AuthRoute
-  '/career-path': typeof CareerPathRoute
-  '/community': typeof CommunityRoute
-  '/compare': typeof CompareRoute
-  '/compare-scholarships': typeof CompareScholarshipsRoute
-  '/contact': typeof ContactRoute
-  '/credits': typeof CreditsRoute
-  '/dashboard': typeof DashboardRoute
-  '/disclaimer': typeof DisclaimerRoute
-  '/faq': typeof FaqRoute
-  '/inspiration': typeof InspirationRoute
-  '/matcher': typeof MatcherRoute
-  '/my-path': typeof MyPathRoute
-  '/onboarding': typeof OnboardingRoute
-  '/parent': typeof ParentRoute
-  '/preferences': typeof PreferencesRoute
-  '/privacy': typeof PrivacyRoute
-  '/professional-councils': typeof ProfessionalCouncilsRoute
-  '/references': typeof ReferencesRoute
-  '/reset-password': typeof ResetPasswordRoute
-  '/saved': typeof SavedRoute
-  '/search': typeof SearchRoute
-  '/terms': typeof TermsRoute
-  '/admin/analytics': typeof AdminAnalyticsRoute
-  '/admin/data': typeof AdminDataRoute
-  '/admin/insights': typeof AdminInsightsRoute
-  '/admin/review': typeof AdminReviewRoute
-  '/api/campus-photos': typeof ApiCampusPhotosRoute
-  '/api/career-path': typeof ApiCareerPathRoute
-  '/api/chat': typeof ApiChatRoute
-  '/api/institution-media': typeof ApiInstitutionMediaRoute
-  '/api/institution-programmes': typeof ApiInstitutionProgrammesRoute
-  '/careers/$slug': typeof CareersSlugRoute
-  '/internships/$id': typeof InternshipsIdRoute
-  '/programme/$slug': typeof ProgrammeSlugRoute
-  '/programmes/$slug': typeof ProgrammesSlugRoute
-  '/scholarships/$slug': typeof ScholarshipsSlugRoute
-  '/skills/$slug': typeof SkillsSlugRoute
-  '/universities/$slug': typeof UniversitiesSlugRoute
-  '/university/$slug': typeof UniversitySlugRoute
-  '/careers/': typeof CareersIndexRoute
-  '/internships/': typeof InternshipsIndexRoute
-  '/programmes/': typeof ProgrammesIndexRoute
-  '/scholarships/': typeof ScholarshipsIndexRoute
-  '/skills/': typeof SkillsIndexRoute
-  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
-  '/functions/v1/mcp': typeof FunctionsV1McpRoute
-  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
-}
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
+    | '/international-community'
+    | '/portal/employee'
+    | '/portal/employer'
+    | '/portal/founder'
+    | '/portal/international-student'
+    | '/portal/student'
+    | '/portal/study-destinations'
+    | '/study-destinations'
+    | '/account'
+    | '/account'
+    | '/about'
+    | '/admission-match'
+    | '/applications'
+    | '/auth'
+    | '/career-path'
+    | '/community'
+    | '/compare'
+    | '/compare-scholarships'
+    | '/contact'
+    | '/credits'
+    | '/dashboard'
+    | '/disclaimer'
+    | '/faq'
+    | '/inspiration'
+    | '/matcher'
+    | '/my-path'
+    | '/notifications'
+    | '/notifications'
+    | '/onboarding'
+    | '/parent'
+    | '/preferences'
+    | '/privacy'
+    | '/professional-councils'
+    | '/references'
+    | '/reset-password'
+    | '/saved'
+    | '/search'
+    | '/terms'
+    | '/admin/analytics'
+    | '/admin/data'
+    | '/admin/insights'
+    | '/admin/review'
+    | '/api/campus-photos'
+    | '/api/career-path'
+    | '/api/chat'
+    | '/api/institution-media'
+    | '/api/institution-programmes'
+    | '/careers/$slug'
+    | '/internships/$id'
+    | '/programme/$slug'
+    | '/programmes/$slug'
+    | '/scholarships/$slug'
+    | '/skills/$slug'
+    | '/universities/$slug'
+    | '/university/$slug'
+    | '/careers/'
+    | '/internships/'
+    | '/programmes/'
+    | '/scholarships/'
+    | '/skills/'
+    | '/.lovable/oauth/consent'
+    | '/functions/v1/mcp'
+    | '/lovable/email/transactional/preview'
+  fileRoutesByTo: FileRoutesByTo
+  to:
     | '/'
     | '/international-community'
     | '/portal/employee'
@@ -763,68 +835,6 @@ export interface FileRouteTypes {
     | '/skills/$slug'
     | '/universities/$slug'
     | '/university/$slug'
-    | '/careers/'
-    | '/internships/'
-    | '/programmes/'
-    | '/scholarships/'
-    | '/skills/'
-    | '/.lovable/oauth/consent'
-    | '/functions/v1/mcp'
-    | '/lovable/email/transactional/preview'
-  fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/international-community'
-    | '/portal/employee'
-    | '/portal/employer'
-    | '/portal/founder'
-    | '/portal/international-student'
-    | '/portal/student'
-    | '/portal/study-destinations'
-    | '/study-destinations'
-    | '/about'
-    | '/admission-match'
-    | '/applications'
-    | '/auth'
-    | '/career-path'
-    | '/community'
-    | '/compare'
-    | '/compare-scholarships'
-    | '/contact'
-    | '/credits'
-    | '/dashboard'
-    | '/disclaimer'
-    | '/faq'
-    | '/inspiration'
-    | '/matcher'
-    | '/my-path'
-    | '/onboarding'
-    | '/parent'
-    | '/preferences'
-    | '/privacy'
-    | '/professional-councils'
-    | '/references'
-    | '/reset-password'
-    | '/saved'
-    | '/search'
-    | '/terms'
-    | '/admin/analytics'
-    | '/admin/data'
-    | '/admin/insights'
-    | '/admin/review'
-    | '/api/campus-photos'
-    | '/api/career-path'
-    | '/api/chat'
-    | '/api/institution-media'
-    | '/api/institution-programmes'
-    | '/careers/$slug'
-    | '/internships/$id'
-    | '/programme/$slug'
-    | '/programmes/$slug'
-    | '/scholarships/$slug'
-    | '/skills/$slug'
-    | '/universities/$slug'
-    | '/university/$slug'
     | '/careers'
     | '/internships'
     | '/programmes'
@@ -844,6 +854,7 @@ export interface FileRouteTypes {
     | '/portal/student'
     | '/portal/study-destinations'
     | '/study-destinations'
+    | '/account'
     | '/about'
     | '/admission-match'
     | '/applications'
@@ -860,6 +871,7 @@ export interface FileRouteTypes {
     | '/inspiration'
     | '/matcher'
     | '/my-path'
+    | '/notifications'
     | '/onboarding'
     | '/parent'
     | '/preferences'
