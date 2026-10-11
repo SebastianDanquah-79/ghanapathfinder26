@@ -37,6 +37,10 @@ const Onboarding = () => {
   const [graduationYear,setGraduationYear] = useState("");
   const [company,setCompany] = useState("");
   const [jobTitle,setJobTitle] = useState("");
+  const [startupSector,setStartupSector] = useState("");
+  const [startupStage,setStartupStage] = useState("Idea");
+  const [startupWebsite,setStartupWebsite] = useState("");
+  const [startupPitch,setStartupPitch] = useState("");
   const [linkedinUrl,setLinkedinUrl] = useState("");
   const [pathways,setPathways] = useState<string[]>([]);
   const [interests,setInterests] = useState<string[]>([]);
@@ -60,7 +64,7 @@ const Onboarding = () => {
     void supabase.from("profiles").select("full_name,role,account_role,bio,location,university,program,graduation_year,company,job_title,linkedin_url,skills,is_discoverable,avatar_url").eq("id",user.id).maybeSingle().then(({data}) => {
       if (!data) return;
       setFullName(data.full_name ?? "");
-      if (data.role === "student" || data.role === "employee" || data.role === "employer" || data.role === "startup_founder" || data.role === "international_student") setRole(data.role);
+      if (!params.get("role") && (data.role === "student" || data.role === "employee" || data.role === "employer" || data.role === "startup_founder" || data.role === "international_student")) setRole(data.role);
       setBio(data.bio ?? "");
       setLocation(data.location ?? "");
       setUniversity(data.university ?? "");
@@ -73,7 +77,29 @@ const Onboarding = () => {
       setDiscoverable(Boolean(data.is_discoverable));
       setAvatarUrl(data.avatar_url ?? null);
     });
-  }, [user]);
+  }, [user, params]);
+
+  useEffect(() => {
+    if (!user || role !== "startup_founder") return;
+    void supabase.from("founder_profiles").select("startup_name,sector,stage,website_url,pitch_url").eq("user_id", user.id).maybeSingle().then(({data}) => {
+      if (!data) return;
+      setCompany(data.startup_name ?? "");
+      setStartupSector(data.sector ?? "");
+      setStartupStage(data.stage ?? "Idea");
+      setStartupWebsite(data.website_url ?? "");
+      setStartupPitch(data.pitch_url ?? "");
+    });
+  }, [user, role]);
+
+  useEffect(() => {
+    if (!user || role !== "international_student") return;
+    void supabase.from("international_students").select("university_name,programme_name,graduation_year").eq("user_id", user.id).maybeSingle().then(({data}) => {
+      if (!data) return;
+      setUniversity(data.university_name ?? "");
+      setProgram(data.programme_name ?? "");
+      setGraduationYear(data.graduation_year ? String(data.graduation_year) : "");
+    });
+  }, [user, role]);
 
   const togglePathway = (pathway:string) => setPathways(current => current.includes(pathway) ? current.filter(x => x !== pathway) : [...current,pathway]);
   const toggleInterest = (interest:string) => setInterests(current => current.includes(interest) ? current.filter(x => x !== interest) : [...current,interest]);
@@ -163,15 +189,21 @@ const Onboarding = () => {
       if(role==="employer"){
         const {error}=await supabase.from("employer_profiles").upsert({
           user_id:user.id,organization_name:company.trim()||fullName.trim()||null,
-          organization_type:jobTitle.trim()||null,hiring_focus:skills.trim()||career.trim()||null,
+          organization_type:jobTitle.trim()||null,hiring_focus:skillList.length ? skillList : (career.trim() ? [career.trim()] : []),
         },{onConflict:"user_id"});
         if(error) throw new Error(`Employer profile could not be saved: ${error.message}`);
       }
       if(role==="startup_founder"){
+        if (!company.trim() || !startupSector.trim()) throw new Error("Add your startup name and sector to continue.");
         const {error}=await supabase.from("founder_profiles").upsert({
-          user_id:user.id,startup_name:company.trim()||null,sector:interests[0]||null,
+          user_id:user.id,
+          startup_name:company.trim(),
+          sector:startupSector.trim(),
+          stage:startupStage || "Idea",
+          website_url:startupWebsite.trim() || null,
+          pitch_url:startupPitch.trim() || null,
         },{onConflict:"user_id"});
-        if(error) throw new Error(`Founder profile could not be saved: ${error.message}`);
+        if(error) throw new Error(`Startup profile could not be saved: ${error.message}`);
       }
       if(role==="international_student"){
         const {error}=await supabase.from("international_students").upsert({
@@ -243,10 +275,27 @@ const Onboarding = () => {
             <select className={inputClass} value={region} onChange={e => setRegion(e.target.value)}><option value="">Select your region</option>{REGIONS.map(r => <option key={r} value={r}>{r}</option>)}</select>
             <input className={inputClass} placeholder="Target career" value={career} maxLength={100} onChange={e => setCareer(e.target.value)} />
           </>}
-          {(role === "employee" || role === "employer" || role === "startup_founder" || role === "international_student") && <>
-            <input className={inputClass} placeholder={role === "employee" || role === "international_student" ? "University" : "Company / organisation"} value={role === "employee" || role === "international_student" ? university : company} onChange={e => role === "employee" ? setUniversity(e.target.value) : setCompany(e.target.value)} />
-            <input className={inputClass} placeholder={role === "employee" || role === "international_student" ? "Programme" : "Job title / founder role"} value={role === "employee" || role === "international_student" ? program : jobTitle} onChange={e => role === "employee" ? setProgram(e.target.value) : setJobTitle(e.target.value)} />
+          {(role === "employee" || role === "employer") && <>
+            <input className={inputClass} placeholder={role === "employee" ? "University (optional)" : "Company / organisation"} value={role === "employee" ? university : company} onChange={e => role === "employee" ? setUniversity(e.target.value) : setCompany(e.target.value)} />
+            <input className={inputClass} placeholder={role === "employee" ? "Programme / qualification" : "Organisation type"} value={role === "employee" ? program : jobTitle} onChange={e => role === "employee" ? setProgram(e.target.value) : setJobTitle(e.target.value)} />
             <input className={inputClass} placeholder="Graduation year (optional)" inputMode="numeric" value={graduationYear} onChange={e => setGraduationYear(e.target.value.replace(/\\D/g,"").slice(0,4))} />
+          </>}
+          {role === "international_student" && <>
+            <input className={inputClass} placeholder="Home country" value={location} maxLength={120} onChange={e => setLocation(e.target.value)} />
+            <input className={inputClass} placeholder="Current university (optional)" value={university} onChange={e => setUniversity(e.target.value)} />
+            <input className={inputClass} placeholder="Qualification or programme you are applying with" value={program} onChange={e => setProgram(e.target.value)} />
+            <input className={inputClass} placeholder="Expected graduation year (optional)" inputMode="numeric" value={graduationYear} onChange={e => setGraduationYear(e.target.value.replace(/\\D/g,"").slice(0,4))} />
+          </>}
+          {role === "startup_founder" && <>
+            <input className={inputClass} placeholder="Startup name" value={company} maxLength={140} onChange={e => setCompany(e.target.value)} />
+            <input className={inputClass} placeholder="Startup sector (e.g. education, AI, agriculture)" value={startupSector} maxLength={120} onChange={e => setStartupSector(e.target.value)} />
+            <label className="block text-xs font-medium text-muted-foreground">Startup stage
+              <select className={inputClass + " mt-1"} value={startupStage} onChange={e => setStartupStage(e.target.value)}>
+                {["Idea","Building MVP","Testing with users","Early traction","Revenue-generating","Scaling"].map(stage => <option key={stage} value={stage}>{stage}</option>)}
+              </select>
+            </label>
+            <input className={inputClass} placeholder="Startup website (optional)" type="url" value={startupWebsite} onChange={e => setStartupWebsite(e.target.value)} />
+            <input className={inputClass} placeholder="Pitch deck link (optional)" type="url" value={startupPitch} onChange={e => setStartupPitch(e.target.value)} />
           </>}
           <input className={inputClass} placeholder="LinkedIn URL (optional)" value={linkedinUrl} onChange={e => setLinkedinUrl(e.target.value)} />
           <input className={inputClass} placeholder="Skills, separated by commas" value={skills} onChange={e => setSkills(e.target.value)} />
