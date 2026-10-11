@@ -859,6 +859,12 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  InternationalCommunityRoute: typeof InternationalCommunityRoute
+  PortalEmployeeRoute: typeof PortalEmployeeRoute
+  PortalEmployerRoute: typeof PortalEmployerRoute
+  PortalFounderRoute: typeof PortalFounderRoute
+  PortalInternationalStudentRoute: typeof PortalInternationalStudentRoute
+  PortalStudentRoute: typeof PortalStudentRoute
   AboutRoute: typeof AboutRoute
   AdmissionMatchRoute: typeof AdmissionMatchRoute
   ApplicationsRoute: typeof ApplicationsRoute
