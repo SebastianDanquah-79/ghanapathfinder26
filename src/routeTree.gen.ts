@@ -10,6 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AccountRouteImport } from './routes/account'
+import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as InternationalCommunityRouteImport } from './routes/international-community'
 import { Route as PortalEmployeeRouteImport } from './routes/portal/employee'
 import { Route as PortalEmployerRouteImport } from './routes/portal/employer'
@@ -137,6 +139,11 @@ const StudyDestinationsRoute = StudyDestinationsRouteImport.update({
   path: '/study-destinations',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountRoute = AccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -215,6 +222,11 @@ const MatcherRoute = MatcherRouteImport.update({
 const MyPathRoute = MyPathRouteImport.update({
   id: '/my-path',
   path: '/my-path',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingRoute = OnboardingRouteImport.update({
@@ -515,6 +527,7 @@ export interface FileRoutesByFullPath {
   '/portal/student': typeof PortalStudentRoute
   '/portal/study-destinations': typeof PortalStudyDestinationsRoute
   '/study-destinations': typeof StudyDestinationsRoute
+  '/account': typeof AccountRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
   '/applications': typeof ApplicationsRoute
@@ -531,6 +544,7 @@ export interface FileRoutesByFullPath {
   '/inspiration': typeof InspirationRoute
   '/matcher': typeof MatcherRoute
   '/my-path': typeof MyPathRoute
+  '/notifications': typeof NotificationsRoute
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
   '/preferences': typeof PreferencesRoute
@@ -577,6 +591,7 @@ export interface FileRoutesByTo {
   '/portal/student': typeof PortalStudentRoute
   '/portal/study-destinations': typeof PortalStudyDestinationsRoute
   '/study-destinations': typeof StudyDestinationsRoute
+  '/account': typeof AccountRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
   '/applications': typeof ApplicationsRoute
@@ -593,6 +608,7 @@ export interface FileRoutesByTo {
   '/inspiration': typeof InspirationRoute
   '/matcher': typeof MatcherRoute
   '/my-path': typeof MyPathRoute
+  '/notifications': typeof NotificationsRoute
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
   '/preferences': typeof PreferencesRoute
@@ -640,6 +656,7 @@ export interface FileRoutesById {
   '/portal/student': typeof PortalStudentRoute
   '/portal/study-destinations': typeof PortalStudyDestinationsRoute
   '/study-destinations': typeof StudyDestinationsRoute
+  '/account': typeof AccountRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
   '/applications': typeof ApplicationsRoute
@@ -656,6 +673,7 @@ export interface FileRoutesById {
   '/inspiration': typeof InspirationRoute
   '/matcher': typeof MatcherRoute
   '/my-path': typeof MyPathRoute
+  '/notifications': typeof NotificationsRoute
   '/onboarding': typeof OnboardingRoute
   '/parent': typeof ParentRoute
   '/preferences': typeof PreferencesRoute
@@ -704,6 +722,7 @@ export interface FileRouteTypes {
     | '/portal/student'
     | '/portal/study-destinations'
     | '/study-destinations'
+    | '/account'
     | '/about'
     | '/admission-match'
     | '/applications'
@@ -720,6 +739,7 @@ export interface FileRouteTypes {
     | '/inspiration'
     | '/matcher'
     | '/my-path'
+    | '/notifications'
     | '/onboarding'
     | '/parent'
     | '/preferences'
@@ -766,6 +786,7 @@ export interface FileRouteTypes {
     | '/portal/student'
     | '/portal/study-destinations'
     | '/study-destinations'
+    | '/account'
     | '/about'
     | '/admission-match'
     | '/applications'
@@ -782,6 +803,7 @@ export interface FileRouteTypes {
     | '/inspiration'
     | '/matcher'
     | '/my-path'
+    | '/notifications'
     | '/onboarding'
     | '/parent'
     | '/preferences'
@@ -828,6 +850,7 @@ export interface FileRouteTypes {
     | '/portal/student'
     | '/portal/study-destinations'
     | '/study-destinations'
+    | '/account'
     | '/about'
     | '/admission-match'
     | '/applications'
@@ -844,6 +867,7 @@ export interface FileRouteTypes {
     | '/inspiration'
     | '/matcher'
     | '/my-path'
+    | '/notifications'
     | '/onboarding'
     | '/parent'
     | '/preferences'
@@ -891,6 +915,7 @@ export interface RootRouteChildren {
   PortalStudentRoute: typeof PortalStudentRoute
   PortalStudyDestinationsRoute: typeof PortalStudyDestinationsRoute
   StudyDestinationsRoute: typeof StudyDestinationsRoute
+  AccountRoute: typeof AccountRoute
   AboutRoute: typeof AboutRoute
   AdmissionMatchRoute: typeof AdmissionMatchRoute
   ApplicationsRoute: typeof ApplicationsRoute
@@ -907,6 +932,7 @@ export interface RootRouteChildren {
   InspirationRoute: typeof InspirationRoute
   MatcherRoute: typeof MatcherRoute
   MyPathRoute: typeof MyPathRoute
+  NotificationsRoute: typeof NotificationsRoute
   OnboardingRoute: typeof OnboardingRoute
   ParentRoute: typeof ParentRoute
   PreferencesRoute: typeof PreferencesRoute
@@ -1007,6 +1033,13 @@ declare module '@tanstack/react-router' {
       path: '/study-destinations'
       fullPath: '/study-destinations'
       preLoaderRoute: typeof StudyDestinationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -1119,6 +1152,13 @@ declare module '@tanstack/react-router' {
       path: '/my-path'
       fullPath: '/my-path'
       preLoaderRoute: typeof MyPathRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/onboarding': {
@@ -1379,6 +1419,7 @@ const rootRouteChildren: RootRouteChildren = {
   PortalStudentRoute: PortalStudentRoute,
   PortalStudyDestinationsRoute: PortalStudyDestinationsRoute,
   StudyDestinationsRoute: StudyDestinationsRoute,
+  AccountRoute: AccountRoute,
   AboutRoute: AboutRoute,
   AdmissionMatchRoute: AdmissionMatchRoute,
   ApplicationsRoute: ApplicationsRoute,
@@ -1395,6 +1436,7 @@ const rootRouteChildren: RootRouteChildren = {
   InspirationRoute: InspirationRoute,
   MatcherRoute: MatcherRoute,
   MyPathRoute: MyPathRoute,
+  NotificationsRoute: NotificationsRoute,
   OnboardingRoute: OnboardingRoute,
   ParentRoute: ParentRoute,
   PreferencesRoute: PreferencesRoute,

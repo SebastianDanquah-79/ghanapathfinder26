@@ -1,9 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import AskPanel from "@/components/AskPanel";
+import StudyCoachPanel from "@/components/StudyCoachPanel";
+import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import { supabase } from "@/integrations/supabase/client";
 
 const AskAfrica = () => {
+  const [activeTool, setActiveTool] = useState<"study" | "africa">("study");
   const q = useQuery({
     queryKey: ["ask-africa-context"],
     queryFn: async () => {
@@ -36,7 +39,14 @@ const AskAfrica = () => {
   ];
   return <div className="min-h-screen bg-background pt-20 pb-24 md:pb-12"><Navbar/><main className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
     <header className="mb-7"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Study, plan and grow</p><h1 className="mt-2 text-3xl font-bold">Your AI study and path coach</h1><p className="mt-2 max-w-2xl text-sm text-muted-foreground">Learn difficult topics step by step, practise with quizzes, make revision plans, and explore admissions, scholarships, careers and African opportunities. Platform listings provide context, not a guarantee. Confirm important requirements with official sources.</p></header>
-    <AskPanel query="Study coach: explain school and university topics, computing and STEM concepts, revision planning, admissions, scholarships, careers and African opportunities" items={q.data??[]} suggestions={suggestions}/>
+    <div className="mb-5 flex flex-wrap gap-2 border-b border-border pb-3" role="tablist" aria-label="AI tools">
+      <button type="button" role="tab" aria-selected={activeTool === "study"} onClick={() => setActiveTool("study")} className={`border px-4 py-2.5 text-sm font-semibold ${activeTool === "study" ? "border-primary bg-primary/5 text-foreground" : "border-border text-muted-foreground"}`}>AI Study Coach</button>
+      <button type="button" role="tab" aria-selected={activeTool === "africa"} onClick={() => setActiveTool("africa")} className={`border px-4 py-2.5 text-sm font-semibold ${activeTool === "africa" ? "border-primary bg-primary/5 text-foreground" : "border-border text-muted-foreground"}`}>Ask Africa</button>
+    </div>
+    {activeTool === "study"
+      ? <StudyCoachPanel />
+      : <AskPanel query="Study coach: explain school and university topics, computing and STEM concepts, revision planning, admissions, scholarships, careers and African opportunities" items={q.data??[]} suggestions={suggestions}/>}
+
   </main></div>;
 };
 export default AskAfrica;
