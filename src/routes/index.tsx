@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import RoleGateway from "@/components/RoleGateway";
+import Home from "@/pages/Home";
 
 export const Route = createFileRoute("/")({
-  component: RoleGateway,
+  component: Home,
 });
