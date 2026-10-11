@@ -103,8 +103,20 @@ export const navSections: NavSection[] = [
     ],
   },
   {
+    id: "learning-studio",
+    label: "Learning Studio",
+    icon: BookOpen,
+    href: "/ask-africa",
+    items: [
+      { label: "AI study coach", href: "/ask-africa", desc: "Ask questions and get guided explanations from current platform information" },
+      { label: "Build my learning plan", href: "/my-path", desc: "Turn a goal into manageable study and career steps" },
+      { label: "Explore skills", href: "/skills/", desc: "Find skills and learning routes for your next step" },
+      { label: "Career pathways", href: "/careers/", desc: "Connect learning to possible careers" },
+    ],
+  },
+  {
     id: "ai-coach",
-    label: "AI Coach",
+    label: "AI & My Path",
     icon: Sparkles,
     href: "/ask-africa",
     items: [
