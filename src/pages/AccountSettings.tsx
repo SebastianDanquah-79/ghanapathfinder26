@@ -52,9 +52,18 @@ export default function AccountSettings() {
       const { data, error } = await supabase.functions.invoke("delete-account", {
         body: { confirmation: "DELETE" },
       });
-      if (error || data?.error) {
-        throw new Error("Your account could not be deleted. Nothing was confirmed as deleted. Please try again or contact support.");
+      if (error) {
+        const context = (error as { context?: Response }).context;
+        let message = "Account deletion did not complete. Uploaded media may already have been removed. Contact support before retrying so the account state can be checked.";
+        if (context) {
+          try {
+            const payload = await context.clone().json() as { error?: string };
+            if (payload.error) message = payload.error;
+          } catch { /* use the safe default */ }
+        }
+        throw new Error(message);
       }
+      if (data?.error) throw new Error(String(data.error));
       await supabase.auth.signOut({ scope: "local" });
       toast.success("Your account has been deleted.");
       navigate("/", { replace: true });
