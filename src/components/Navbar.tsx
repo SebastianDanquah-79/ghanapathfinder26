@@ -189,7 +189,7 @@ const Navbar = () => {
         {open && (
           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="md:hidden overflow-hidden bg-card border-b border-border max-h-[75vh] overflow-y-auto">
             <div className="px-4 py-3 space-y-4">
-              {navSections.map(({ id, label, icon: Icon, items }) => (
+              {visibleNavSections.map(({ id, label, icon: Icon, items }) => (
                 <div key={id}>
                   <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground"><Icon className="h-4 w-4" /> {label}</div>
                   <div className="mt-2 grid grid-cols-2 gap-2">
