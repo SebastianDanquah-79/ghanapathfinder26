@@ -76,9 +76,9 @@ const Navbar = () => {
               <DropdownMenu key={id}>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <DropdownMenuTrigger className={iconButton} aria-label={label}>
-                      <Icon className="h-[18px] w-[18px]" />
-                      <span className="sr-only">{label}</span>
+                    <DropdownMenuTrigger className="inline-flex h-10 items-center gap-2 rounded-full px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground data-[state=open]:bg-secondary data-[state=open]:text-primary" aria-label={label}>
+                      <Icon className="h-[17px] w-[17px] shrink-0" />
+                      <span>{label}</span>
                     </DropdownMenuTrigger>
                   </TooltipTrigger>
                   <TooltipContent>{label}</TooltipContent>
