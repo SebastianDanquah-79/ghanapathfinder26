@@ -186,6 +186,7 @@ const Onboarding = () => {
     setSaving(true);
     try {
       const skillList = skills.split(",").map((x) => x.trim()).filter(Boolean);
+      if (role === "employee" && discoverable && (!fullName.trim() || !jobTitle.trim())) throw new Error("Add your name and professional title before making your profile discoverable.");
       let nextAvatarUrl = avatarUrl;
 
       if (avatarFile) {
@@ -285,6 +286,31 @@ const Onboarding = () => {
           preferred_industries:interests,
         },{onConflict:"user_id"});
         if(error) throw new Error(`Employee profile could not be saved: ${error.message}`);
+
+        // Publish a minimal directory projection only when the employee explicitly opts in.
+        if (discoverable) {
+          const { error: directoryError } = await supabase.from("talent_directory").upsert({
+            user_id: user.id,
+            full_name: fullName.trim(),
+            professional_title: jobTitle.trim(),
+            linkedin_url: linkedinUrl.trim() || null,
+            city: location.trim() || null,
+            preferred_locations: location.trim() ? [location.trim()] : [],
+            preferred_industries: interests,
+            skills: skillList,
+            bio: bio.trim() || null,
+            discoverable: true,
+            updated_at: new Date().toISOString(),
+          }, { onConflict: "user_id" });
+          if (directoryError) throw new Error(`Public talent profile could not be updated: ${directoryError.message}`);
+        } else {
+          const { error: directoryError } = await supabase.from("talent_directory").delete().eq("user_id", user.id);
+          if (directoryError) throw new Error(`Public talent profile could not be removed: ${directoryError.message}`);
+        }
+      } else {
+        // A role change removes the employee-only public directory projection.
+        const { error: directoryError } = await supabase.from("talent_directory").delete().eq("user_id", user.id);
+        if (directoryError) throw new Error(`Public talent profile could not be removed: ${directoryError.message}`);
       }
       if(role==="employer"){
         const {error}=await supabase.from("employer_profiles").upsert({
