@@ -50,10 +50,10 @@ const Navbar = () => {
     return () => { cancelled = true; };
   }, [user?.id]);
 
-  const isPortal = pathname.startsWith("/portal/");
+  const isPortal = pathname.startsWith("/portal/") || pathname === "/dashboard";
   const visibleNavSections = isPortal ? getNavSectionsForRole(accountRole) : navSections;
   const visibleAccountItems = isPortal ? getAccountItemsForRole(accountRole) : accountItems;
-  const portalSearchTarget = accountRole === "startup_founder" ? "/startups" : accountRole === "international_student" ? "/admission-match" : accountRole === "employer" ? "/people" : accountRole === "employee" ? "/jobs" : "/search?kind=university";
+  const portalSearchTarget = accountRole === "startup_founder" || accountRole === "founder" ? "/startups" : accountRole === "international_student" || accountRole === "international-student" ? "/admission-match" : accountRole === "employer" ? "/people" : accountRole === "employee" ? "/jobs" : "/search?kind=university";
 
   const name =
     (user?.user_metadata?.["full_name"] as string | undefined) ?? user?.email ?? null;
