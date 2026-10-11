@@ -17,6 +17,8 @@ import {
   Globe,
   MessageCircle,
   GraduationCap,
+  Rocket,
+  Building2,
 } from "@/lib/icons";
 
 export interface NavItem {
@@ -97,6 +99,110 @@ export const navSections: NavSection[] = [
     ],
   },
 ];
+
+const portalNavSections: Record<string, NavSection[]> = {
+  student: [
+    { id: "study", label: "Study", icon: GraduationCap, href: "/admission-match", items: [
+      { label: "Admission matches", href: "/admission-match" },
+      { label: "University search", href: "/search?kind=university" },
+      { label: "Programmes", href: "/programmes/" },
+      { label: "Scholarships", href: "/scholarships/" },
+      { label: "Scholarship matcher", href: "/matcher" },
+    ]},
+    { id: "student-plan", label: "My Plan", icon: Target, href: "/my-path", items: [
+      { label: "My Path", href: "/my-path" },
+      { label: "Applications and deadlines", href: "/applications" },
+      { label: "Saved items", href: "/saved" },
+    ]},
+    { id: "student-career", label: "Careers", icon: Briefcase, href: "/careers", items: [
+      { label: "Career paths", href: "/careers/" },
+      { label: "Skills", href: "/skills/" },
+      { label: "Internships", href: "/internships/" },
+    ]},
+  ],
+  employee: [
+    { id: "work", label: "Work", icon: Briefcase, href: "/jobs", items: [
+      { label: "Find jobs", href: "/jobs" },
+      { label: "Opportunities", href: "/opportunities" },
+      { label: "Applications", href: "/applications" },
+      { label: "Skills", href: "/skills/" },
+      { label: "Career path", href: "/career-path" },
+    ]},
+  ],
+  employer: [
+    { id: "hiring", label: "Hiring", icon: Building2, href: "/opportunities", items: [
+      { label: "Opportunities", href: "/opportunities" },
+      { label: "Applicants and people", href: "/people" },
+      { label: "Applications", href: "/applications" },
+      { label: "Organisation community", href: "/community" },
+    ]},
+  ],
+  startup_founder: [
+    { id: "startup", label: "Startup", icon: Rocket, href: "/build", items: [
+      { label: "Build your startup", href: "/build" },
+      { label: "Startup directory", href: "/startups" },
+      { label: "Founder opportunities", href: "/opportunities" },
+      { label: "Founder community", href: "/community" },
+      { label: "Find collaborators", href: "/people" },
+    ]},
+  ],
+  international_student: [
+    { id: "study-destinations", label: "Study in Ghana", icon: Globe, href: "/international-community", items: [
+      { label: "Study destinations and community", href: "/international-community" },
+      { label: "Admission matching", href: "/admission-match" },
+      { label: "Programmes", href: "/programmes/" },
+      { label: "Scholarships", href: "/scholarships/" },
+      { label: "Applications", href: "/applications" },
+    ]},
+  ],
+};
+
+export function getNavSectionsForRole(role: string | null | undefined): NavSection[] {
+  return portalNavSections[role ?? ""] ?? [];
+}
+
+const portalAccountItems: Record<string, NavItem[]> = {
+  student: [
+    { label: "Student dashboard", href: "/dashboard" },
+    { label: "Student profile", href: "/onboarding?role=student" },
+    { label: "My Path", href: "/my-path" },
+    { label: "Saved items", href: "/saved" },
+    { label: "Applications", href: "/applications" },
+    { label: "Change portal", href: "/?switchRole=1" },
+  ],
+  employee: [
+    { label: "Career dashboard", href: "/dashboard" },
+    { label: "Professional profile", href: "/onboarding?role=employee" },
+    { label: "Find jobs", href: "/jobs" },
+    { label: "Applications", href: "/applications" },
+    { label: "Change portal", href: "/?switchRole=1" },
+  ],
+  employer: [
+    { label: "Employer dashboard", href: "/dashboard" },
+    { label: "Organisation profile", href: "/onboarding?role=employer" },
+    { label: "Opportunities", href: "/opportunities" },
+    { label: "Applicants", href: "/people" },
+    { label: "Change portal", href: "/?switchRole=1" },
+  ],
+  startup_founder: [
+    { label: "Startup Founder Dashboard", href: "/dashboard" },
+    { label: "Startup profile", href: "/onboarding?role=startup_founder" },
+    { label: "Build your startup", href: "/build" },
+    { label: "Founder opportunities", href: "/opportunities" },
+    { label: "Change portal", href: "/?switchRole=1" },
+  ],
+  international_student: [
+    { label: "International student dashboard", href: "/dashboard" },
+    { label: "Study profile", href: "/onboarding?role=international_student" },
+    { label: "Admission matching", href: "/admission-match" },
+    { label: "Applications", href: "/applications" },
+    { label: "Change portal", href: "/?switchRole=1" },
+  ],
+};
+
+export function getAccountItemsForRole(role: string | null | undefined): NavItem[] {
+  return portalAccountItems[role ?? ""] ?? accountItems;
+}
 
 export const accountItems: NavItem[] = [
   { label: "Dashboard", href: "/dashboard" },
