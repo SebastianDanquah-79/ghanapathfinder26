@@ -5022,23 +5022,41 @@ export type Database = {
       }
       student_profiles: {
         Row: {
+          country_code: string
           created_at: string
           education_stage: string | null
+          interests: string[]
           intended_country: string | null
+          pathways: string[]
+          region: string | null
+          school: string | null
+          target_career: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
+          country_code?: string
           created_at?: string
           education_stage?: string | null
+          interests?: string[]
           intended_country?: string | null
+          pathways?: string[]
+          region?: string | null
+          school?: string | null
+          target_career?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
+          country_code?: string
           created_at?: string
           education_stage?: string | null
+          interests?: string[]
           intended_country?: string | null
+          pathways?: string[]
+          region?: string | null
+          school?: string | null
+          target_career?: string | null
           updated_at?: string
           user_id?: string
         }
