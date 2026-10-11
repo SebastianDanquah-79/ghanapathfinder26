@@ -5,8 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 
-type AccountRole = "student" | "employee" | "employer" | "startup_founder" | "international_student";
-
 const portalFor = (role: string | null | undefined) => {
   switch (role) {
     case "student": return "/portal/student";
