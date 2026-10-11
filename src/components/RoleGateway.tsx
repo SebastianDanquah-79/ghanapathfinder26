@@ -9,7 +9,7 @@ const roles = [
   { key: "student", label: "Student", description: "Universities, scholarships, WASSCE matching, learning and deadlines.", icon: GraduationCap },
   { key: "employee", label: "Job Seeker", description: "Jobs, internships, skills gaps, applications and matched opportunities.", icon: Briefcase },
   { key: "employer", label: "Employer", description: "Hire talent, publish opportunities and discover opted-in candidates.", icon: Building2 },
-  { key: "startup_founder", label: "Startup Founder", description: "Funding, accelerators, investors, peers and founder resources.", icon: Rocket },
+  { key: "startup_founder", label: "Startup Founder", description: "Your startup profile, grants, accelerators, customers, collaborators and founder resources.", icon: Rocket },
   { key: "international_student", label: "International Student", description: "Study destinations, qualification matching, embassies and peer connections.", icon: Globe },
 ] as const;
 
