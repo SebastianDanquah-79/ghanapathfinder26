@@ -23,7 +23,8 @@ export default function InternationalStudentPortal() {
           </div>
         </div>
       </section>
-      <section className="mt-6 grid gap-3 sm:grid-cols-2">
+      <section className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <a className="border border-border bg-card p-4 hover:border-primary" href="/portal/study-destinations"><p className="font-semibold">Study destinations</p><p className="mt-1 text-xs text-muted-foreground">Compare country guidance and published qualification pathways into Ghana.</p></a>
         <a className="border border-border bg-card p-4 hover:border-primary" href="/international-community"><p className="font-semibold">Embassy and visa guidance</p><p className="mt-1 text-xs text-muted-foreground">Review official mission and visa information.</p></a>
         <a className="border border-border bg-card p-4 hover:border-primary" href="/admission-match"><p className="font-semibold">Qualification match</p><p className="mt-1 text-xs text-muted-foreground">Review possible matches from your saved results.</p></a>
       </section>
