@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import InternationalCommunity from "@/pages/InternationalCommunity";
+import StudyDestinations from "@/pages/StudyDestinations";
 
 export const Route = createFileRoute("/portal/study-destinations")({
-  component: InternationalCommunity,
+  component: StudyDestinations,
 });
