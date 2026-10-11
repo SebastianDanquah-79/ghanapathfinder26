@@ -1,9 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import StudyCoachPanel from "@/components/StudyCoachPanel";
 import AskPanel from "@/components/AskPanel";
 import Navbar from "@/components/Navbar";
 import { supabase } from "@/integrations/supabase/client";
 
 const AskAfrica = () => {
+  const [activeTool, setActiveTool] = useState<"study" | "africa">("study");
   const q = useQuery({
     queryKey: ["ask-africa-context"],
     queryFn: async () => {
@@ -34,8 +37,12 @@ const AskAfrica = () => {
     "Help me explore Ghana opportunities.",
   ];
   return <div className="min-h-screen bg-background pt-20 pb-24 md:pb-12"><Navbar/><main className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-    <header className="mb-7"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">AI discovery</p><h1 className="mt-2 text-3xl font-bold">Ask Africa</h1><p className="mt-2 max-w-2xl text-sm text-muted-foreground">Ask questions about African education, work, companies, startups, research and opportunities. The assistant receives current platform records as context and should not invent facts.</p></header>
-    <AskPanel query="Africa education, careers, startups, companies, research, opportunities, culture and discovery" items={q.data??[]} suggestions={suggestions}/>
+    <header className="mb-6"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Learn, connect and discover</p><h1 className="mt-2 text-3xl font-bold">AI Study Coach and Ask Africa</h1><p className="mt-2 max-w-2xl text-sm text-muted-foreground">Use guided learning and focus tracking, or ask questions about African education, work, companies, startups, research and opportunities. Answers can be wrong; confirm important facts with official sources.</p></header>
+    <div className="mb-5 flex flex-wrap gap-2 border-b border-border pb-3" role="tablist" aria-label="AI tools">
+      <button type="button" role="tab" aria-selected={activeTool === "study"} onClick={() => setActiveTool("study")} className={`border px-4 py-2.5 text-sm font-semibold ${activeTool === "study" ? "border-primary bg-primary/5 text-foreground" : "border-border text-muted-foreground"}`}>AI Study Coach</button>
+      <button type="button" role="tab" aria-selected={activeTool === "africa"} onClick={() => setActiveTool("africa")} className={`border px-4 py-2.5 text-sm font-semibold ${activeTool === "africa" ? "border-primary bg-primary/5 text-foreground" : "border-border text-muted-foreground"}`}>Ask Africa</button>
+    </div>
+    {activeTool === "study" ? <StudyCoachPanel /> : <AskPanel query="Africa education, careers, startups, companies, research, opportunities, culture and discovery" items={q.data??[]} suggestions={suggestions}/>} 
   </main></div>;
 };
 export default AskAfrica;
