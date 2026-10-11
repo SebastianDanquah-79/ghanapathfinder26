@@ -32,13 +32,14 @@ function usePortal(role: PortalRole, userId: string | undefined) {
 
       if (role === "student") {
         const results = await Promise.all([
+          supabase.from("student_profiles").select("user_id,school,region,country_code,target_career,interests,pathways").eq("user_id", userId).maybeSingle(),
           supabase.from("deadlines").select("id,title,due_date,category").eq("user_id", userId).order("due_date").limit(5),
           supabase.from("scholarships").select("id,name,provider,deadline,description,application_url").order("deadline").limit(8)
         ]);
-        if (results[0].error) throw results[0].error;
-        if (results[1].error) throw results[1].error;
-        result.roleProfile = { school: profile.school, region: profile.region, target_career: profile.target_career, interests: profile.interests };
-        result.items = (results[0].data || []).map(function(x){return {...x,kind:"deadline"};}).concat((results[1].data || []).map(function(x){return {...x,kind:"scholarship"};}));
+        for (const query of results) if (query.error) throw query.error;
+        result.roleProfile = results[0].data as Record<string, unknown> | null;
+        result.roleComplete = result.roleComplete && Boolean(results[0].data);
+        result.items = (results[1].data || []).map(function(x){return {...x,kind:"deadline"};}).concat((results[2].data || []).map(function(x){return {...x,kind:"scholarship"};}));
       }
 
       if (role === "employee") {
