@@ -228,9 +228,10 @@ export function getAccountItemsForRole(role: string | null | undefined): NavItem
   const roleItems = portalAccountItems[normalizePortalRole(role)] ?? accountItems;
   return [
     ...roleItems,
+    { label: "Change portal", href: "/?switchRole=1" },
     { label: "Notifications", href: "/notifications" },
     { label: "Account settings", href: "/account" },
-  ];
+  ].filter((item, index, list) => list.findIndex((candidate) => candidate.href === item.href) === index);
 }
 
 export const accountItems: NavItem[] = [
@@ -240,6 +241,8 @@ export const accountItems: NavItem[] = [
   { label: "Applications", href: "/applications" },
   { label: "Match preferences", href: "/preferences" },
   { label: "Change portal", href: "/?switchRole=1" },
+  { label: "Notifications", href: "/notifications" },
+  { label: "Account settings", href: "/account" },
 ];
 
 export const aboutItems: NavItem[] = [
