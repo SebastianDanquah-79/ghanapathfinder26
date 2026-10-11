@@ -206,7 +206,7 @@ export default function EmployerPortal() {
         </form>
       </section>
 
-      <section className="mt-6 border border-border bg-card p-5 sm:p-6">
+      <section id="your-submissions" className="mt-6 border border-border bg-card p-5 sm:p-6">
         <div className="flex items-start justify-between gap-3">
           <div>
             <h2 className="text-lg font-semibold">Your submissions</h2>
