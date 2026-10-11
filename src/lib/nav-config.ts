@@ -124,7 +124,7 @@ const portalNavSections: Record<string, NavSection[]> = {
     { id: "work", label: "Work", icon: Briefcase, href: "/jobs", items: [
       { label: "Find jobs", href: "/jobs" },
       { label: "Opportunities", href: "/opportunities" },
-      { label: "Applications", href: "/applications" },
+      { label: "Career profile", href: "/onboarding?role=employee" },
       { label: "Skills", href: "/skills/" },
       { label: "Career path", href: "/career-path" },
     ]},
@@ -133,7 +133,7 @@ const portalNavSections: Record<string, NavSection[]> = {
     { id: "hiring", label: "Hiring", icon: Building2, href: "/opportunities", items: [
       { label: "Opportunities", href: "/opportunities" },
       { label: "Applicants and people", href: "/people" },
-      { label: "Applications", href: "/applications" },
+      { label: "Organisation profile", href: "/onboarding?role=employer" },
       { label: "Organisation community", href: "/community" },
     ]},
   ],
@@ -175,7 +175,7 @@ const portalAccountItems: Record<string, NavItem[]> = {
     { label: "Career dashboard", href: "/dashboard" },
     { label: "Professional profile", href: "/onboarding?role=employee" },
     { label: "Find jobs", href: "/jobs" },
-    { label: "Applications", href: "/applications" },
+    { label: "Career opportunities", href: "/opportunities" },
     { label: "Change portal", href: "/?switchRole=1" },
   ],
   employer: [
