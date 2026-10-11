@@ -43,12 +43,9 @@ export default function AuthCallback() {
         return;
       }
       if (profile?.onboarding_complete && profile.account_role) {
-        navigate(
-          profile.account_role === "startup_founder"
-            ? "/portal/founder"
-            : "/portal/" + profile.account_role,
-          { replace: true },
-        );
+        const role = profile.account_role;
+        const destination = role === "startup_founder" ? "/portal/founder" : role === "international_student" ? "/portal/international-student" : role === "student" || role === "employee" || role === "employer" ? "/portal/" + role : "/onboarding";
+        navigate(destination, { replace: true });
       } else {
         navigate("/onboarding", { replace: true });
       }
