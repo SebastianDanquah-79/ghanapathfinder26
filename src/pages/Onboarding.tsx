@@ -167,6 +167,16 @@ const Onboarding = () => {
           avatar_url:nextAvatarUrl,skills:skillList,is_discoverable:discoverable,onboarding_complete:true,onboarded:true,
         }).eq("id",user.id);
         if(error) throw new Error(`Profile details could not be saved: ${error.message}`);
+        const {error: studentProfileError}=await supabase.from("student_profiles").upsert({
+          user_id:user.id,
+          school:school.trim()||null,
+          region:region||null,
+          country_code:"GH",
+          target_career:career.trim()||null,
+          interests,
+          pathways,
+        },{onConflict:"user_id"});
+        if(studentProfileError) throw new Error(`Student profile could not be saved: ${studentProfileError.message}`);
       } else {
         const {error}=await supabase.from("profiles").upsert({
           id:user.id,email:user.email??null,full_name:fullName.trim()||null,role,account_role:role,
