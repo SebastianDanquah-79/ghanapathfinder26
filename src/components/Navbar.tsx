@@ -5,7 +5,7 @@ import BrandMark from "@/components/BrandMark";
 import { Link, useLocation } from "@/lib/router-compat";
 import { useAuth } from "@/hooks/useAuth";
 import ThemeToggle from "@/components/ThemeToggle";
-import { navSections, accountItems, aboutItems, getNavSectionsForRole, getAccountItemsForRole } from "@/lib/nav-config";
+import { navSections, aboutItems, getNavSectionsForRole, getAccountItemsForRole } from "@/lib/nav-config";
 import { supabase } from "@/integrations/supabase/client";
 import {
   DropdownMenu,
@@ -78,7 +78,7 @@ const Navbar = () => {
       cancelled = true;
       void supabase.removeChannel(channel);
     };
-  }, [user?.id]);
+  }, [user?.id, pathname]);
 
   const isPortal = pathname.startsWith("/portal/") || pathname === "/dashboard";
   const visibleNavSections = isPortal ? getNavSectionsForRole(accountRole) : navSections;
