@@ -404,6 +404,10 @@ const Onboarding = () => {
             <input className={inputClass} placeholder="Expected graduation year (optional)" inputMode="numeric" value={graduationYear} onChange={e => setGraduationYear(e.target.value.replace(/\\D/g,"").slice(0,4))} />
           </>}
           {role === "startup_founder" && <>
+            <div className="sm:col-span-2 border-t border-border pt-4">
+              <p className="text-sm font-semibold">Your startup profile</p>
+              <p className="mt-1 text-xs leading-5 text-muted-foreground">These details belong to your startup profile and are used to shape founder resources and recommendations.</p>
+            </div>
             <input className={inputClass} placeholder="Startup name" value={company} maxLength={140} onChange={e => setCompany(e.target.value)} />
             <input className={inputClass} placeholder="Startup sector (e.g. education, AI, agriculture)" value={startupSector} maxLength={120} onChange={e => setStartupSector(e.target.value)} />
             <label className="block text-xs font-medium text-muted-foreground">Startup stage
@@ -411,12 +415,47 @@ const Onboarding = () => {
                 {["Idea","Building MVP","Testing with users","Early traction","Revenue-generating","Scaling"].map(stage => <option key={stage} value={stage}>{stage}</option>)}
               </select>
             </label>
+            <label className="block text-xs font-medium text-muted-foreground">Funding stage (optional)
+              <select className={inputClass + " mt-1"} value={startupFundingStage} onChange={e => setStartupFundingStage(e.target.value)}>
+                <option value="">Not currently fundraising / not set</option>
+                {["Bootstrapped","Grant-funded","Pre-seed","Seed","Series A or later"].map(stage => <option key={stage} value={stage}>{stage}</option>)}
+              </select>
+            </label>
+            <label className="block text-xs font-medium text-muted-foreground">Team size (optional)
+              <input className={inputClass + " mt-1"} type="number" min="1" max="100000" value={startupTeamSize} onChange={e => setStartupTeamSize(e.target.value.replace(/\\D/g,"").slice(0,6))} placeholder="e.g. 2" />
+            </label>
+            <label className="block text-xs font-medium text-muted-foreground">Year founded (optional)
+              <input className={inputClass + " mt-1"} type="number" min="1900" max={new Date().getFullYear()} value={startupFoundedYear} onChange={e => setStartupFoundedYear(e.target.value.replace(/\\D/g,"").slice(0,4))} placeholder="e.g. 2026" />
+            </label>
+            <label className="block text-xs font-medium text-muted-foreground">Funding sought (optional)
+              <input className={inputClass + " mt-1"} type="number" min="0" step="0.01" value={startupFundingNeeded} onChange={e => setStartupFundingNeeded(e.target.value)} placeholder="Amount" />
+            </label>
+            <label className="block text-xs font-medium text-muted-foreground">Funding currency
+              <select className={inputClass + " mt-1"} value={startupFundingCurrency} onChange={e => setStartupFundingCurrency(e.target.value)}>
+                {["GHS","USD","EUR","GBP"].map(currency => <option key={currency} value={currency}>{currency}</option>)}
+              </select>
+            </label>
             <input className={inputClass} placeholder="Startup website (optional)" type="url" value={startupWebsite} onChange={e => setStartupWebsite(e.target.value)} />
             <input className={inputClass} placeholder="Pitch deck link (optional)" type="url" value={startupPitch} onChange={e => setStartupPitch(e.target.value)} />
+            <label className="block text-xs font-medium text-muted-foreground sm:col-span-2">What does your startup do?
+              <textarea className={inputClass + " mt-1 min-h-20"} maxLength={2500} value={startupDescription} onChange={e => setStartupDescription(e.target.value)} placeholder="Describe your product or service in plain language." />
+            </label>
+            <label className="block text-xs font-medium text-muted-foreground sm:col-span-2">What problem are you solving?
+              <textarea className={inputClass + " mt-1 min-h-20"} maxLength={2500} value={startupProblem} onChange={e => setStartupProblem(e.target.value)} placeholder="Describe the problem and who experiences it." />
+            </label>
+            <label className="block text-xs font-medium text-muted-foreground sm:col-span-2">Your solution
+              <textarea className={inputClass + " mt-1 min-h-20"} maxLength={2500} value={startupSolution} onChange={e => setStartupSolution(e.target.value)} placeholder="Explain how your startup addresses the problem." />
+            </label>
+            <label className="block text-xs font-medium text-muted-foreground sm:col-span-2">Target customers or market
+              <input className={inputClass + " mt-1"} maxLength={500} value={startupTargetMarket} onChange={e => setStartupTargetMarket(e.target.value)} placeholder="Who will use or pay for this product?" />
+            </label>
+            <label className="block text-xs font-medium text-muted-foreground sm:col-span-2">Business model (optional)
+              <input className={inputClass + " mt-1"} maxLength={500} value={startupBusinessModel} onChange={e => setStartupBusinessModel(e.target.value)} placeholder="e.g. subscription, marketplace, service fees" />
+            </label>
           </>}
           <input className={inputClass} placeholder="LinkedIn URL (optional)" value={linkedinUrl} onChange={e => setLinkedinUrl(e.target.value)} />
           <input className={inputClass} placeholder="Skills, separated by commas" value={skills} onChange={e => setSkills(e.target.value)} />
-          <label className="flex items-center gap-3 text-sm text-muted-foreground"><input type="checkbox" checked={discoverable} onChange={e => setDiscoverable(e.target.checked)} /> Make my professional profile discoverable to opted-in employers</label>
+          {(role === "employee" || role === "international_student") && <label className="flex items-center gap-3 text-sm text-muted-foreground"><input type="checkbox" checked={discoverable} onChange={e => setDiscoverable(e.target.checked)} /> {role === "international_student" ? "Show my profile in the international student directory" : "Make my professional profile discoverable to opted-in employers"}</label>}
         </section>
 
         <section className="bg-glass rounded-xl p-5">
