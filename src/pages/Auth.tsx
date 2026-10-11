@@ -38,10 +38,18 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
   };
 
   useEffect(() => {
-    if (user) {
-      if (next) window.location.href = next;
-      else navigate("/onboarding", { replace: true });
-    }
+    if (!user) return;
+    let active = true;
+    void (async () => {
+      if (next) { window.location.replace(next); return; }
+      const { data: profile } = await supabase.from("profiles").select("onboarding_complete,account_role").eq("id", user.id).maybeSingle();
+      if (!active) return;
+      if (!profile?.onboarding_complete || !profile.account_role) { navigate("/onboarding", { replace: true }); return; }
+      const role = profile.account_role;
+      const destination = role === "startup_founder" ? "/portal/founder" : role === "international_student" ? "/portal/international-student" : role === "student" || role === "employee" || role === "employer" ? "/portal/" + role : "/onboarding";
+      navigate(destination, { replace: true });
+    })();
+    return () => { active = false; };
   }, [user, navigate, next]);
 
   const handleSubmit = async (e: React.FormEvent) => {
