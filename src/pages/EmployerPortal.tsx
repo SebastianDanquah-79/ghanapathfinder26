@@ -137,7 +137,7 @@ export default function EmployerPortal() {
 
   return (
     <PortalShell role="employer">
-      <section className="mt-6 border border-border bg-card p-5 sm:p-6">
+      <section id="post-opportunity" className="mt-6 border border-border bg-card p-5 sm:p-6">
         <div className="mb-5">
           <p className="text-xs font-semibold uppercase tracking-wider text-primary">Hiring workspace</p>
           <h2 className="mt-1 text-xl font-bold">Submit an opportunity</h2>
