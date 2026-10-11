@@ -284,14 +284,45 @@ const ForYou = () => {
         <header className="mb-6 flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">GhanaPathFinder · One connected platform</p>
-            <h1 className="mt-2 text-3xl font-bold text-foreground sm:text-4xl">Your next step starts here.</h1>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Study, work, build, follow Africa news and hear real student experiences in one source-aware feed.</p>
+            <h1 className="mt-2 text-3xl font-bold text-foreground sm:text-4xl">One place for your next step.</h1>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Learn, apply, find work, discover founders and follow trusted Africa stories in one connected feed.</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Link to="/ask-africa" className="inline-flex items-center gap-2 border border-border px-4 py-2.5 text-sm font-semibold hover:border-primary"><Sparkles className="h-4 w-4 text-primary" /> AI study & path coach</Link>
             <Link to="/onboarding" className="bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground">Personalise my feed</Link>
           </div>
         </header>
+
+        <section aria-label="Explore GhanaPathFinder" className="mb-6 border-b border-border pb-5">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <div>
+              <h2 className="text-sm font-semibold text-foreground">Explore your world</h2>
+              <p className="mt-1 text-xs text-muted-foreground">A quick route into the parts of GhanaPathFinder you care about.</p>
+            </div>
+            <Link to="/for-you" className="shrink-0 text-xs font-semibold text-primary">Explore all</Link>
+          </div>
+          <div className="flex gap-3 overflow-x-auto pb-2">
+            {[
+              { label: "AI Study", detail: "Learn and revise", href: "/ask-africa", icon: Sparkles },
+              { label: "Apply", detail: "Plan next steps", href: "/applications", icon: CalendarDays },
+              { label: "Community", detail: "Student voices", href: "/community", icon: Users },
+              { label: "Africa News", detail: "Stories and updates", href: "/stories", icon: Newspaper },
+              { label: "Startups", detail: "Ideas and founders", href: "/startups", icon: Rocket },
+              { label: "Careers", detail: "Skills and jobs", href: "/jobs", icon: BriefcaseBusiness },
+            ].map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link key={item.label} to={item.href as any} className="group flex w-[112px] shrink-0 flex-col items-center text-center">
+                  <span className="grid h-[68px] w-[68px] place-items-center rounded-full border-2 border-primary/70 bg-card transition group-hover:bg-primary/10">
+                    <Icon className="h-6 w-6 text-primary" />
+                  </span>
+                  <span className="mt-2 text-xs font-semibold text-foreground">{item.label}</span>
+                  <span className="mt-0.5 text-[11px] text-muted-foreground">{item.detail}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
 
         <section className="mb-6 border-y border-border py-4">
           <div className="mb-3 flex items-center justify-between gap-3">
@@ -311,7 +342,7 @@ const ForYou = () => {
 
         <section className="mb-6">
           <div className="mb-3 flex items-center justify-between gap-3">
-            <div><h2 className="text-sm font-semibold">Stories and quick reads</h2><p className="mt-1 text-xs text-muted-foreground">Source-aware reporting and updates from across Africa.</p></div>
+            <div><h2 className="text-sm font-semibold">Africa stories, made easy to explore</h2><p className="mt-1 text-xs text-muted-foreground">Source-aware reporting and updates from across Africa.</p></div>
           </div>
           <div className="grid grid-cols-3 gap-2">
             {[
