@@ -20,7 +20,7 @@ export default function RoleGateway() {
   const { user, loading } = useAuth();
 
   useEffect(() => {
-    if (!user || loading) return;
+    if (!user || loading || window.location.search.includes("switchRole=1")) return;
     let cancelled = false;
     void supabase.from("profiles").select("account_role,onboarding_complete").eq("id", user.id).maybeSingle().then(function(result) {
       if (cancelled || !result.data || !result.data.onboarding_complete || !result.data.account_role) return;
