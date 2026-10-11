@@ -96,33 +96,33 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const InternationalCommunityRoute = InternationalCommunityRouteImport.update({
-  id: './routes/international-community',
-  path: './routes/international-community',
+  id: '/international-community',
+  path: '/international-community',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PortalEmployeeRoute = PortalEmployeeRouteImport.update({
-  id: './routes/portal/employee',
-  path: './routes/portal/employee',
+  id: '/portal/employee',
+  path: '/portal/employee',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PortalEmployerRoute = PortalEmployerRouteImport.update({
-  id: './routes/portal/employer',
-  path: './routes/portal/employer',
+  id: '/portal/employer',
+  path: '/portal/employer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PortalFounderRoute = PortalFounderRouteImport.update({
-  id: './routes/portal/founder',
-  path: './routes/portal/founder',
+  id: '/portal/founder',
+  path: '/portal/founder',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PortalInternationalStudentRoute = PortalInternationalStudentRouteImport.update({
-  id: './routes/portal/international-student',
-  path: './routes/portal/international-student',
+  id: '/portal/international-student',
+  path: '/portal/international-student',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PortalStudentRoute = PortalStudentRouteImport.update({
-  id: './routes/portal/student',
-  path: './routes/portal/student',
+  id: '/portal/student',
+  path: '/portal/student',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -495,6 +495,12 @@ const LovableEmailTransactionalPreviewRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/international-community': typeof InternationalCommunityRoute
+  '/portal/employee': typeof PortalEmployeeRoute
+  '/portal/employer': typeof PortalEmployerRoute
+  '/portal/founder': typeof PortalFounderRoute
+  '/portal/international-student': typeof PortalInternationalStudentRoute
+  '/portal/student': typeof PortalStudentRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
   '/applications': typeof ApplicationsRoute
@@ -549,6 +555,12 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/international-community': typeof InternationalCommunityRoute
+  '/portal/employee': typeof PortalEmployeeRoute
+  '/portal/employer': typeof PortalEmployerRoute
+  '/portal/founder': typeof PortalFounderRoute
+  '/portal/international-student': typeof PortalInternationalStudentRoute
+  '/portal/student': typeof PortalStudentRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
   '/applications': typeof ApplicationsRoute
@@ -604,6 +616,12 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/international-community': typeof InternationalCommunityRoute
+  '/portal/employee': typeof PortalEmployeeRoute
+  '/portal/employer': typeof PortalEmployerRoute
+  '/portal/founder': typeof PortalFounderRoute
+  '/portal/international-student': typeof PortalInternationalStudentRoute
+  '/portal/student': typeof PortalStudentRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
   '/applications': typeof ApplicationsRoute
@@ -660,6 +678,12 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/international-community'
+    | '/portal/employee'
+    | '/portal/employer'
+    | '/portal/founder'
+    | '/portal/international-student'
+    | '/portal/student'
     | '/about'
     | '/admission-match'
     | '/applications'
@@ -714,6 +738,12 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/international-community'
+    | '/portal/employee'
+    | '/portal/employer'
+    | '/portal/founder'
+    | '/portal/international-student'
+    | '/portal/student'
     | '/about'
     | '/admission-match'
     | '/applications'
@@ -768,6 +798,12 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/international-community'
+    | '/portal/employee'
+    | '/portal/employer'
+    | '/portal/founder'
+    | '/portal/international-student'
+    | '/portal/student'
     | '/about'
     | '/admission-match'
     | '/applications'
@@ -885,45 +921,45 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    './routes/international-community': {
-      id: './routes/international-community'
-      path: './routes/international-community'
-      fullPath: './routes/international-community'
+    '/international-community': {
+      id: '/international-community'
+      path: '/international-community'
+      fullPath: '/international-community'
       preLoaderRoute: typeof InternationalCommunityRouteImport
       parentRoute: typeof rootRouteImport
     }
-    './routes/portal/employee': {
-      id: './routes/portal/employee'
-      path: './routes/portal/employee'
-      fullPath: './routes/portal/employee'
+    '/portal/employee': {
+      id: '/portal/employee'
+      path: '/portal/employee'
+      fullPath: '/portal/employee'
       preLoaderRoute: typeof PortalEmployeeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    './routes/portal/employer': {
-      id: './routes/portal/employer'
-      path: './routes/portal/employer'
-      fullPath: './routes/portal/employer'
+    '/portal/employer': {
+      id: '/portal/employer'
+      path: '/portal/employer'
+      fullPath: '/portal/employer'
       preLoaderRoute: typeof PortalEmployerRouteImport
       parentRoute: typeof rootRouteImport
     }
-    './routes/portal/founder': {
-      id: './routes/portal/founder'
-      path: './routes/portal/founder'
-      fullPath: './routes/portal/founder'
+    '/portal/founder': {
+      id: '/portal/founder'
+      path: '/portal/founder'
+      fullPath: '/portal/founder'
       preLoaderRoute: typeof PortalFounderRouteImport
       parentRoute: typeof rootRouteImport
     }
-    './routes/portal/international-student': {
-      id: './routes/portal/international-student'
-      path: './routes/portal/international-student'
-      fullPath: './routes/portal/international-student'
+    '/portal/international-student': {
+      id: '/portal/international-student'
+      path: '/portal/international-student'
+      fullPath: '/portal/international-student'
       preLoaderRoute: typeof PortalInternationalStudentRouteImport
       parentRoute: typeof rootRouteImport
     }
-    './routes/portal/student': {
-      id: './routes/portal/student'
-      path: './routes/portal/student'
-      fullPath: './routes/portal/student'
+    '/portal/student': {
+      id: '/portal/student'
+      path: '/portal/student'
+      fullPath: '/portal/student'
       preLoaderRoute: typeof PortalStudentRouteImport
       parentRoute: typeof rootRouteImport
     }
