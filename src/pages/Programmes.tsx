@@ -170,23 +170,28 @@ const Programmes = () => {
     <div className="min-h-screen bg-background">
       <Seo
         title="Programme Directory: Degrees in Ghana | GhanaPathFinder"
-        description="Every accredited degree, diploma and certificate programme recorded in GhanaPathFinder: filter by field, institution, region and WASSCE requirements."
+        description="Search the degree, diploma and certificate programme records currently catalogued in GhanaPathFinder. Filter by field, institution, region, qualification and WASSCE requirements."
         path="/programmes"
         jsonLd={[breadcrumbLd([{ name: "Home", path: "/" }, { name: "Programmes", path: "/programmes" }])]}
       />
       <Navbar />
       <main className="pt-20 pb-14 px-4 sm:px-8 lg:px-12">
         <div className="max-w-7xl mx-auto">
-          <header className="mb-4">
-            <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground flex items-center gap-2">
-              <GraduationCap className="h-6 w-6 lg:h-8 lg:w-8 text-primary" /> Programme Directory
+          <header className="mb-5 border-b border-border pb-5">
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">Search courses, degrees and diplomas</p>
+            <h1 className="font-display text-4xl sm:text-5xl font-bold tracking-tight text-foreground flex items-center gap-2">
+              <GraduationCap className="h-7 w-7 sm:h-9 sm:w-9 text-primary" /> Programme Directory
             </h1>
-            <p className="text-sm text-muted-foreground mt-1">
-              Each listing is a single course of study offered by one institution &mdash; its
-              qualification, duration, entry subjects and cut-off guidance &mdash; not the institution
-              as a whole. Search by subject, institution, region or qualification.{" "}
-              {total.toLocaleString()} programmes match your view.
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
+              Each result is a course of study linked to an institution, with qualification, duration,
+              entry-subject information and official source details when available. Search by programme,
+              institution, region or qualification. This count reflects current records, not a guarantee
+              of complete national coverage.
             </p>
+            <div className="mt-4 inline-flex flex-wrap items-center gap-2 border border-border bg-card px-4 py-3">
+              <span className="text-2xl font-bold tabular-nums text-foreground">{total.toLocaleString()}</span>
+              <span className="text-sm font-semibold text-muted-foreground">programmes match your current filters</span>
+            </div>
           </header>
 
           {/* Search */}
