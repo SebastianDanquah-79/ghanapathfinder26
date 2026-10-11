@@ -24,8 +24,6 @@ export default function RoleGateway() {
     let cancelled = false;
     void supabase.from("profiles").select("account_role,onboarding_complete").eq("id", user.id).maybeSingle().then(function(result) {
       if (cancelled || !result.data || !result.data.onboarding_complete || !result.data.account_role) return;
-      // Until every role-specific portal is present in the generated production route tree,
-      // send returning users to the stable dashboard instead of a route that can 404.
       const role = result.data.account_role;
       const destination = role === "startup_founder" ? "/portal/founder" : role === "international_student" ? "/portal/international-student" : role === "student" || role === "employee" || role === "employer" ? "/portal/" + role : "/onboarding";
       navigate(destination, { replace: true });
