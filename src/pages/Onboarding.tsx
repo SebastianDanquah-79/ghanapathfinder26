@@ -194,7 +194,17 @@ const Onboarding = () => {
 
       if(role==="employee"){
         const {error}=await supabase.from("employee_profiles").upsert({
-          user_id:user.id,professional_title:jobTitle.trim()||career.trim()||null,employer_name:company.trim()||null,
+          user_id:user.id,
+          professional_title:jobTitle.trim()||null,
+          employer_name:company.trim()||null,
+          bio:bio.trim()||null,
+          skills:skillList,
+          education_level:program.trim()||null,
+          university:university.trim()||null,
+          graduation_year:graduationYear?Number(graduationYear):null,
+          location:location.trim()||null,
+          linkedin_url:linkedinUrl.trim()||null,
+          discoverable,
         },{onConflict:"user_id"});
         if(error) throw new Error(`Employee profile could not be saved: ${error.message}`);
       }
@@ -287,10 +297,16 @@ const Onboarding = () => {
             <select className={inputClass} value={region} onChange={e => setRegion(e.target.value)}><option value="">Select your region</option>{REGIONS.map(r => <option key={r} value={r}>{r}</option>)}</select>
             <input className={inputClass} placeholder="Target career" value={career} maxLength={100} onChange={e => setCareer(e.target.value)} />
           </>}
-          {(role === "employee" || role === "employer") && <>
-            <input className={inputClass} placeholder={role === "employee" ? "University (optional)" : "Company / organisation"} value={role === "employee" ? university : company} onChange={e => role === "employee" ? setUniversity(e.target.value) : setCompany(e.target.value)} />
-            <input className={inputClass} placeholder={role === "employee" ? "Programme / qualification" : "Organisation type"} value={role === "employee" ? program : jobTitle} onChange={e => role === "employee" ? setProgram(e.target.value) : setJobTitle(e.target.value)} />
+          {role === "employee" && <>
+            <input className={inputClass} placeholder="Professional title (e.g. software engineer)" value={jobTitle} onChange={e => setJobTitle(e.target.value)} />
+            <input className={inputClass} placeholder="Current employer (optional)" value={company} onChange={e => setCompany(e.target.value)} />
+            <input className={inputClass} placeholder="University or training provider (optional)" value={university} onChange={e => setUniversity(e.target.value)} />
+            <input className={inputClass} placeholder="Qualification or education level" value={program} onChange={e => setProgram(e.target.value)} />
             <input className={inputClass} placeholder="Graduation year (optional)" inputMode="numeric" value={graduationYear} onChange={e => setGraduationYear(e.target.value.replace(/\\D/g,"").slice(0,4))} />
+          </>}
+          {role === "employer" && <>
+            <input className={inputClass} placeholder="Organisation name" value={company} onChange={e => setCompany(e.target.value)} />
+            <input className={inputClass} placeholder="Organisation type (e.g. startup, NGO, company)" value={jobTitle} onChange={e => setJobTitle(e.target.value)} />
           </>}
           {role === "international_student" && <>
             <input className={inputClass} placeholder="Home country code (e.g. GH, NG, SL)" value={countryCode} maxLength={2} onChange={e => setCountryCode(e.target.value.toUpperCase().replace(/[^A-Z]/g, ""))} />
