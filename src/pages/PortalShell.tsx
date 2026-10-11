@@ -12,11 +12,11 @@ import { useAuth } from "@/hooks/useAuth";
 export type PortalRole = "student" | "employee" | "employer" | "founder" | "international-student";
 
 const meta: Record<PortalRole, {title: string; description: string}> = {
-  student: { title: "Student Portal", description: "Universities, scholarships, learning and deadlines built around your path." },
-  employee: { title: "Job Seeker Portal", description: "Current work, skills and application tracking built around your profile." },
-  employer: { title: "Employer Portal", description: "Publish opportunities and discover opted-in candidates." },
-  founder: { title: "Founder Portal", description: "Funding, accelerators, investors and founder connections." },
-  "international-student": { title: "International Student Portal", description: "Study destinations, qualification pathways, embassies and peer connections." }
+  student: { title: "Student Dashboard", description: "Your academic profile, programme matches, scholarships and deadlines." },
+  employee: { title: "Job Seeker Dashboard", description: "Your professional profile, skills, applications and work opportunities." },
+  employer: { title: "Employer Dashboard", description: "Your organisation profile, hiring needs, opportunities and candidate matches." },
+  founder: { title: "Startup Founder Dashboard", description: "Your startup profile, growth resources, grants and founder opportunities." },
+  "international-student": { title: "International Student Dashboard", description: "Your qualifications, study destinations, programmes and admissions journey." }
 };
 
 function usePortal(role: PortalRole, userId: string | undefined) {
@@ -25,10 +25,10 @@ function usePortal(role: PortalRole, userId: string | undefined) {
     enabled: Boolean(userId),
     queryFn: async function() {
       if (!userId) throw new Error("Authentication required");
-      const profileResult = await supabase.from("profiles").select("full_name,account_role,onboarding_complete,bio,skills,interests,target_career,preferred_locations,preferred_industries,preferred_opportunity_types").eq("id", userId).single();
+      const profileResult = await supabase.from("profiles").select("full_name,account_role,onboarding_complete,bio,skills,interests,target_career,preferred_locations,preferred_industries,preferred_opportunity_types,school,region,university,program,graduation_year,company,job_title,location,linkedin_url,github_url,portfolio_url").eq("id", userId).single();
       if (profileResult.error) throw profileResult.error;
       const profile = profileResult.data;
-      const result: {profile: typeof profile; items: Array<Record<string, unknown>>; roleComplete: boolean} = { profile, items: [], roleComplete: Boolean(profile.onboarding_complete) };
+      const result: {profile: typeof profile; items: Array<Record<string, unknown>>; roleComplete: boolean; roleProfile: Record<string, unknown> | null} = { profile, items: [], roleComplete: Boolean(profile.onboarding_complete), roleProfile: null };
 
       if (role === "student") {
         const results = await Promise.all([
@@ -37,6 +37,7 @@ function usePortal(role: PortalRole, userId: string | undefined) {
         ]);
         if (results[0].error) throw results[0].error;
         if (results[1].error) throw results[1].error;
+        result.roleProfile = { school: profile.school, region: profile.region, target_career: profile.target_career, interests: profile.interests };
         result.items = (results[0].data || []).map(function(x){return {...x,kind:"deadline"};}).concat((results[1].data || []).map(function(x){return {...x,kind:"scholarship"};}));
       }
 
@@ -47,6 +48,7 @@ function usePortal(role: PortalRole, userId: string | undefined) {
         ]);
         if (results[0].error) throw results[0].error;
         if (results[1].error) throw results[1].error;
+        result.roleProfile = results[0].data as Record<string, unknown> | null;
         result.roleComplete = result.roleComplete && Boolean(results[0].data && results[0].data.professional_title);
         const terms = (profile.skills || []).concat(profile.interests || []).concat(profile.preferred_industries || []).map(function(x){return x.toLowerCase();});
         result.items = (results[1].data || []).map(function(x){
@@ -63,6 +65,7 @@ function usePortal(role: PortalRole, userId: string | undefined) {
         ]);
         if (results[0].error) throw results[0].error;
         if (results[1].error) throw results[1].error;
+        result.roleProfile = results[0].data as Record<string, unknown> | null;
         result.roleComplete = result.roleComplete && Boolean(results[0].data && results[0].data.organization_name);
         const needs = (results[0].data?.hiring_focus || []).map(function(x){return x.toLowerCase();});
         result.items = (results[1].data || []).map(function(x){
@@ -74,26 +77,27 @@ function usePortal(role: PortalRole, userId: string | undefined) {
       if (role === "founder") {
         const results = await Promise.all([
           supabase.from("founder_profiles").select("user_id,startup_name,sector,stage,website_url,pitch_url").eq("user_id", userId).maybeSingle(),
-          supabase.from("investors").select("*").limit(20),
           supabase.from("opportunities").select("id,title,description,opportunity_type,application_url,deadline,status").in("status",["active","published"]).in("opportunity_type",["grant","fellowship"]).order("deadline").limit(20)
         ]);
         if (results[0].error) throw results[0].error;
         if (results[1].error) throw results[1].error;
-        if (results[2].error) throw results[2].error;
+        result.roleProfile = results[0].data as Record<string, unknown> | null;
         result.roleComplete = result.roleComplete && Boolean(results[0].data && results[0].data.startup_name && results[0].data.sector);
-        result.items = (results[1].data || []).slice(0,6).map(function(x){return {...x,kind:"investor"};}).concat((results[2].data || []).slice(0,6).map(function(x){return {...x,kind:"funding"};}));
+        result.items = (results[1].data || []).slice(0,12).map(function(x){return {...x,kind:"funding"};});
       }
 
       if (role === "international-student") {
         const results = await Promise.all([
+          supabase.from("international_students").select("id,user_id,country_code,university_name,programme_name,academic_level,graduation_year,skills,interests,projects,portfolio_url,linkedin_url,github_url,open_to_collaboration,open_to_mentorship,looking_for_opportunities,visible").eq("user_id",userId).maybeSingle(),
           supabase.from("international_students").select("id,user_id,country_code,university_name,programme_name,academic_level,graduation_year,skills,interests,projects,portfolio_url,linkedin_url,github_url,open_to_collaboration,open_to_mentorship,looking_for_opportunities,visible").eq("visible",true).neq("user_id",userId).limit(20),
           supabase.from("international_universities").select("id,name,country_code,city,website_url,admissions_url,description,source_url,verified").eq("verified",true).limit(12),
           supabase.from("embassies").select("id,represents_country,represents_country_code,mission_type,address,official_website,visa_info_url").order("represents_country").limit(12)
         ]);
-        if (results[0].error) throw results[0].error;
-        if (results[1].error) throw results[1].error;
-        if (results[2].error) throw results[2].error;
-        result.items = (results[0].data || []).map(function(x){return {...x,kind:"peer"};}).concat((results[1].data || []).map(function(x){return {...x,kind:"university"};})).concat((results[2].data || []).map(function(x){return {...x,kind:"embassy"};}));
+        for (const query of results) if (query.error) throw query.error;
+        result.roleProfile = results[0].data as Record<string, unknown> | null;
+        result.items = (results[1].data || []).map(function(x){return {...x,kind:"peer"};})
+          .concat((results[2].data || []).map(function(x){return {...x,kind:"university"};}))
+          .concat((results[3].data || []).map(function(x){return {...x,kind:"embassy"};}));
       }
 
       return result;
@@ -107,6 +111,19 @@ export default function PortalShell(props: {role: PortalRole; children?: ReactNo
   const q = usePortal(props.role,user?.id);
   const currentMeta = meta[props.role];
   const complete = Boolean(q.data?.profile.onboarding_complete) && Boolean(q.data?.roleComplete);
+  const profileKeys: Record<PortalRole, Array<[string, string]>> = {
+    student: [["School", "school"], ["Region", "region"], ["Target career", "target_career"]],
+    employee: [["Professional title", "professional_title"], ["Experience", "years_experience"], ["Current employer", "employer_name"]],
+    employer: [["Organisation", "organization_name"], ["Organisation type", "organization_type"], ["Hiring focus", "hiring_focus"]],
+    founder: [["Startup", "startup_name"], ["Sector", "sector"], ["Stage", "stage"], ["Website", "website_url"], ["Pitch deck", "pitch_url"]],
+    "international-student": [["Country", "country_code"], ["University", "university_name"], ["Programme", "programme_name"], ["Academic level", "academic_level"], ["Graduation year", "graduation_year"]]
+  };
+  const roleProfileFields = profileKeys[props.role].map(function(field) {
+    const value = q.data?.roleProfile?.[field[1]];
+    const display = Array.isArray(value) ? value.join(", ") : value == null ? "" : String(value);
+    return { label: field[0], value: display, key: field[1] };
+  }).filter(function(field) { return Boolean(field.value); });
+  const editRole = props.role === "founder" ? "startup_founder" : props.role === "international-student" ? "international_student" : props.role;
   useEffect(() => {
     const role = q.data?.profile.account_role;
     if (!user || !role || q.isLoading) return;
@@ -134,6 +151,20 @@ export default function PortalShell(props: {role: PortalRole; children?: ReactNo
           <h1 className="mt-2 text-3xl font-bold">{currentMeta.title}</h1>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">{currentMeta.description}</p>
         </header>
+
+        {complete && <section className="mt-6 border border-border bg-card p-5">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p className="text-xs font-semibold text-primary">Your profile</p>
+              <h2 className="mt-1 text-lg font-semibold">{props.role === "founder" ? "Your startup" : props.role === "international-student" ? "Your study profile" : props.role === "employer" ? "Your organisation" : props.role === "employee" ? "Your professional profile" : "Your student profile"}</h2>
+              <p className="mt-1 text-sm text-muted-foreground">This profile shapes the data and recommendations shown in this portal.</p>
+            </div>
+            <button type="button" onClick={function(){navigate("/onboarding?role=" + editRole);}} className="border border-border px-3 py-2 text-sm font-medium hover:border-primary">Edit profile</button>
+          </div>
+          {roleProfileFields.length > 0 ? <dl className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {roleProfileFields.map(function(field){return <div key={field.key} className="min-w-0 border-t border-border pt-3"><dt className="text-xs text-muted-foreground">{field.label}</dt><dd className="mt-1 break-words text-sm font-medium">{field.key === "website_url" || field.key === "pitch_url" ? <a href={field.value} target="_blank" rel="noreferrer" className="text-primary underline">{field.value}</a> : field.value}</dd></div>;})}
+          </dl> : <p className="mt-4 text-sm text-muted-foreground">Add details to personalise this workspace.</p>}
+        </section>}
 
         {!complete ? (
           <section className="mt-7 border border-primary/30 bg-primary/[0.04] p-6">
