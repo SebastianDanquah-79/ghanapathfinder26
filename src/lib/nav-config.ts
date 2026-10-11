@@ -38,7 +38,7 @@ export interface NavSection {
 export const navSections: NavSection[] = [
   {
     id: "feed",
-    label: "Discover",
+    label: "Feed",
     icon: Home,
     href: "/for-you",
     items: [
@@ -51,7 +51,7 @@ export const navSections: NavSection[] = [
   },
   {
     id: "study",
-    label: "Study",
+    label: "Study & Apply",
     icon: GraduationCap,
     href: "/admission-match",
     items: [
@@ -65,7 +65,7 @@ export const navSections: NavSection[] = [
   },
   {
     id: "work",
-    label: "Work",
+    label: "Careers",
     icon: Briefcase,
     href: "/jobs",
     items: [
@@ -79,7 +79,7 @@ export const navSections: NavSection[] = [
   },
   {
     id: "build",
-    label: "Build",
+    label: "Startups",
     icon: Rocket,
     href: "/build",
     items: [
@@ -91,7 +91,7 @@ export const navSections: NavSection[] = [
   },
   {
     id: "network",
-    label: "Network",
+    label: "Community",
     icon: Users,
     href: "/community",
     items: [
@@ -104,14 +104,14 @@ export const navSections: NavSection[] = [
   },
   {
     id: "learning",
-    label: "Learn with AI",
+    label: "AI Study Coach",
     icon: BookOpen,
     href: "/ask-africa",
     items: [
       { label: "AI study coach", href: "/ask-africa", desc: "Explain topics, practise questions, plan revision and explore pathways" },
       { label: "My Path", href: "/my-path", desc: "Turn study and career goals into practical steps" },
       { label: "Scholarship matcher", href: "/matcher", desc: "Find funding options that fit your goals" },
-      { label: "Applications and deadlines", href: "/applications", desc: "Track applications and important dates" },
+      { label: "Application tracker", href: "/applications", desc: "Track applications and important dates" },
       { label: "Saved items", href: "/saved", desc: "Return to opportunities and resources you kept" },
     ],
   },
