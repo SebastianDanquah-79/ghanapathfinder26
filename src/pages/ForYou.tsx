@@ -20,6 +20,7 @@ import Navbar from "@/components/Navbar";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useCommunityInsights } from "@/hooks/useInsights";
+import { useSignedCommunityImages } from "@/hooks/useCommunityImages";
 import { toast } from "sonner";
 
 type FeedKind = "all" | "study" | "work" | "startups" | "news" | "community";
@@ -41,6 +42,7 @@ interface FeedItem {
   savedType: string;
   followType?: string;
   followKey?: string;
+  imagePaths?: string[];
 }
 
 const filters: Array<{ key: FeedKind; label: string }> = [
@@ -128,6 +130,11 @@ const ForYou = () => {
     },
   });
   const communityQuery = useCommunityInsights(10);
+  const communityImagePaths = useMemo(
+    () => (communityQuery.data ?? []).flatMap((item) => item.image_paths ?? []),
+    [communityQuery.data],
+  );
+  const { data: communityImageUrls } = useSignedCommunityImages(communityImagePaths);
 
   const countrySet = useMemo(
     () => new Set((prefs?.followed_countries ?? []).map((x: string) => x.toLowerCase())),
@@ -230,6 +237,7 @@ const ForYou = () => {
       actionExternal: false,
       sourceName: "Shared student experience",
       savedType: "student_insight",
+      imagePaths: item.image_paths ?? [],
     }));
     return [...opportunities, ...startups, ...companies, ...news, ...studentVoices]
       .sort((a, b) => dateValue(b.date) - dateValue(a.date));
@@ -370,6 +378,19 @@ const ForYou = () => {
                     </div>
                   </header>
                   {item.summary && <p className="mt-3 whitespace-pre-line text-sm leading-6 text-foreground/85 line-clamp-5">{item.summary}</p>}
+                  {item.imagePaths && item.imagePaths.length > 0 && (
+                    <div className={`mt-3 grid gap-2 ${item.imagePaths.length === 1 ? "grid-cols-1" : "grid-cols-2"}`}>
+                      {item.imagePaths.slice(0, 4).map((path) => {
+                        const imageUrl = communityImageUrls?.get(path);
+                        if (!imageUrl) return null;
+                        return (
+                          <a key={path} href={imageUrl} target="_blank" rel="noreferrer" className="block overflow-hidden border border-border bg-secondary">
+                            <img src={imageUrl} alt="Photo attached to a student experience" loading="lazy" className="max-h-96 w-full object-cover" />
+                          </a>
+                        );
+                      })}
+                    </div>
+                  )}
                   <footer className="mt-4 flex flex-wrap items-center gap-2 border-t border-border pt-3">
                     {item.actionHref && (isExternal
                       ? <a href={item.actionHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-2 py-1.5 text-xs font-semibold text-primary hover:underline">{item.actionLabel || "Open source"} <ExternalLink className="h-3.5 w-3.5" /></a>
