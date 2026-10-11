@@ -42,6 +42,16 @@ const Onboarding = () => {
   const [startupStage,setStartupStage] = useState("Idea");
   const [startupWebsite,setStartupWebsite] = useState("");
   const [startupPitch,setStartupPitch] = useState("");
+  const [startupDescription,setStartupDescription] = useState("");
+  const [startupProblem,setStartupProblem] = useState("");
+  const [startupSolution,setStartupSolution] = useState("");
+  const [startupTargetMarket,setStartupTargetMarket] = useState("");
+  const [startupBusinessModel,setStartupBusinessModel] = useState("");
+  const [startupTeamSize,setStartupTeamSize] = useState("");
+  const [startupFoundedYear,setStartupFoundedYear] = useState("");
+  const [startupFundingStage,setStartupFundingStage] = useState("");
+  const [startupFundingNeeded,setStartupFundingNeeded] = useState("");
+  const [startupFundingCurrency,setStartupFundingCurrency] = useState("GHS");
   const [linkedinUrl,setLinkedinUrl] = useState("");
   const [pathways,setPathways] = useState<string[]>([]);
   const [interests,setInterests] = useState<string[]>([]);
@@ -63,44 +73,107 @@ const Onboarding = () => {
 
   useEffect(() => {
     if (!user) return;
-    void supabase.from("profiles").select("full_name,role,account_role,bio,location,university,program,graduation_year,company,job_title,linkedin_url,skills,is_discoverable,avatar_url").eq("id",user.id).maybeSingle().then(({data}) => {
+    void supabase.from("profiles").select("full_name,role,account_role,bio,location,linkedin_url,avatar_url").eq("id",user.id).maybeSingle().then(({data}) => {
       if (!data) return;
       setFullName(data.full_name ?? "");
-      if (!params.get("role") && (data.role === "student" || data.role === "employee" || data.role === "employer" || data.role === "startup_founder" || data.role === "international_student")) setRole(data.role);
+      if (!params.get("role") && (data.account_role || data.role)) {
+        const savedRole = data.account_role || data.role;
+        if (savedRole === "student" || savedRole === "employee" || savedRole === "employer" || savedRole === "startup_founder" || savedRole === "international_student") setRole(savedRole);
+      }
       setBio(data.bio ?? "");
       setLocation(data.location ?? "");
-      setUniversity(data.university ?? "");
-      setProgram(data.program ?? "");
-      setGraduationYear(data.graduation_year ? String(data.graduation_year) : "");
-      setCompany(data.company ?? "");
-      setJobTitle(data.job_title ?? "");
       setLinkedinUrl(data.linkedin_url ?? "");
-      setSkills((data.skills ?? []).join(", "));
-      setDiscoverable(Boolean(data.is_discoverable));
       setAvatarUrl(data.avatar_url ?? null);
     });
   }, [user, params]);
 
   useEffect(() => {
+    if (!user || role !== "student") return;
+    void Promise.all([
+      supabase.from("student_profiles").select("school,region,country_code,target_career,interests,pathways").eq("user_id",user.id).maybeSingle(),
+      supabase.from("wassce_results").select("subject,grade").eq("user_id",user.id),
+    ]).then(([profileResult, gradesResult]) => {
+      if (profileResult.data) {
+        setSchool(profileResult.data.school ?? "");
+        setRegion(profileResult.data.region ?? "");
+        setCareer(profileResult.data.target_career ?? "");
+        setInterests(profileResult.data.interests ?? []);
+        setPathways(profileResult.data.pathways ?? []);
+      }
+      if (gradesResult.data?.length) {
+        const saved = new Map(gradesResult.data.map(row => [row.subject, row.grade]));
+        setResults(CORE_SUBJECTS.map(subject => ({subject, grade: saved.get(subject) ?? ""})));
+      }
+    });
+  }, [user, role]);
+
+  useEffect(() => {
+    if (!user || role !== "employee") return;
+    void supabase.from("employee_profiles").select("professional_title,employer_name,bio,skills,education_level,university,graduation_year,location,linkedin_url,discoverable,interests,preferred_locations,preferred_industries,preferred_opportunity_types").eq("user_id",user.id).maybeSingle().then(({data}) => {
+      if (!data) return;
+      setJobTitle(data.professional_title ?? "");
+      setCompany(data.employer_name ?? "");
+      setProgram(data.education_level ?? "");
+      setUniversity(data.university ?? "");
+      setGraduationYear(data.graduation_year ? String(data.graduation_year) : "");
+      setLocation(data.location ?? "");
+      setBio(data.bio ?? "");
+      setLinkedinUrl(data.linkedin_url ?? "");
+      setSkills((data.skills ?? []).join(", "));
+      setInterests(data.interests ?? []);
+      setDiscoverable(Boolean(data.discoverable));
+    });
+  }, [user, role]);
+
+  useEffect(() => {
+    if (!user || role !== "employer") return;
+    void supabase.from("employer_profiles").select("organization_name,organization_type,hiring_focus").eq("user_id",user.id).maybeSingle().then(({data}) => {
+      if (!data) return;
+      setCompany(data.organization_name ?? "");
+      setJobTitle(data.organization_type ?? "");
+      setSkills((data.hiring_focus ?? []).join(", "));
+    });
+  }, [user, role]);
+
+  useEffect(() => {
     if (!user || role !== "startup_founder") return;
-    void supabase.from("founder_profiles").select("startup_name,sector,stage,website_url,pitch_url").eq("user_id", user.id).maybeSingle().then(({data}) => {
+    void supabase.from("founder_profiles").select("startup_name,sector,stage,website_url,pitch_url,description,problem_statement,solution_summary,target_market,business_model,team_size,founded_year,funding_stage,funding_needed,funding_currency,skills,interests").eq("user_id", user.id).maybeSingle().then(({data}) => {
       if (!data) return;
       setCompany(data.startup_name ?? "");
       setStartupSector(data.sector ?? "");
       setStartupStage(data.stage ?? "Idea");
       setStartupWebsite(data.website_url ?? "");
       setStartupPitch(data.pitch_url ?? "");
+      setStartupDescription(data.description ?? "");
+      setStartupProblem(data.problem_statement ?? "");
+      setStartupSolution(data.solution_summary ?? "");
+      setStartupTargetMarket(data.target_market ?? "");
+      setStartupBusinessModel(data.business_model ?? "");
+      setStartupTeamSize(data.team_size == null ? "" : String(data.team_size));
+      setStartupFoundedYear(data.founded_year == null ? "" : String(data.founded_year));
+      setStartupFundingStage(data.funding_stage ?? "");
+      setStartupFundingNeeded(data.funding_needed == null ? "" : String(data.funding_needed));
+      setStartupFundingCurrency(data.funding_currency ?? "GHS");
+      setSkills((data.skills ?? []).join(", "));
+      setInterests(data.interests ?? []);
     });
   }, [user, role]);
 
   useEffect(() => {
     if (!user || role !== "international_student") return;
-    void supabase.from("international_students").select("country_code,university_name,programme_name,graduation_year").eq("user_id", user.id).maybeSingle().then(({data}) => {
+    void supabase.from("international_students").select("country_code,university_name,programme_name,graduation_year,skills,interests,visible,open_to_collaboration,open_to_mentorship,looking_for_opportunities").eq("user_id", user.id).maybeSingle().then(({data}) => {
       if (!data) return;
       setCountryCode(data.country_code ?? "");
       setUniversity(data.university_name ?? "");
       setProgram(data.programme_name ?? "");
       setGraduationYear(data.graduation_year ? String(data.graduation_year) : "");
+      setSkills((data.skills ?? []).join(", "));
+      setInterests(data.interests ?? []);
+      setDiscoverable(Boolean(data.visible));
+      const savedPathways = [];
+      if (data.open_to_collaboration) savedPathways.push("Meet people");
+      if (data.looking_for_opportunities) savedPathways.push("Find a job");
+      setPathways(savedPathways);
     });
   }, [user, role]);
 
