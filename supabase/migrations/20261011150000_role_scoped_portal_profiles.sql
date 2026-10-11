@@ -1,20 +1,24 @@
--- Separate student workspace data from the shared identity/profile record.
+-- Extend the existing student-specific backend without removing its pathway fields.
 create table if not exists public.student_profiles (
   user_id uuid primary key references auth.users(id) on delete cascade,
-  school text,
-  region text,
-  country_code text not null default 'GH',
-  target_career text,
-  interests text[] not null default '{}',
-  pathways text[] not null default '{}',
+  education_stage text,
+  intended_country text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
 
+alter table public.student_profiles
+  add column if not exists school text,
+  add column if not exists region text,
+  add column if not exists country_code text not null default 'GH',
+  add column if not exists target_career text,
+  add column if not exists interests text[] not null default '{}',
+  add column if not exists pathways text[] not null default '{}';
+
 alter table public.student_profiles enable row level security;
 grant select, insert, update, delete on table public.student_profiles to authenticated;
 
--- Preserve existing student details when moving them into the student-specific backend.
+-- Preserve existing student details when backfilling the student-specific backend.
 insert into public.student_profiles (user_id, school, region, country_code, target_career, interests, pathways)
 select
   p.id,
@@ -27,16 +31,15 @@ select
 from public.profiles p
 where coalesce(p.account_role, p.role) = 'student'
 on conflict (user_id) do update set
-  school = excluded.school,
-  region = excluded.region,
-  country_code = excluded.country_code,
-  target_career = excluded.target_career,
-  interests = excluded.interests,
-  pathways = excluded.pathways,
+  school = coalesce(excluded.school, public.student_profiles.school),
+  region = coalesce(excluded.region, public.student_profiles.region),
+  country_code = coalesce(excluded.country_code, public.student_profiles.country_code),
+  target_career = coalesce(excluded.target_career, public.student_profiles.target_career),
+  interests = coalesce(excluded.interests, public.student_profiles.interests),
+  pathways = coalesce(excluded.pathways, public.student_profiles.pathways),
   updated_at = now();
 
--- The role-specific tables are private to the active account type.
--- Remove previously generated owner-only policies before applying role-aware ones.
+-- Role-specific profile tables must belong to the account's active role.
 do $$
 declare
   p record;
@@ -55,139 +58,74 @@ create policy student_profiles_select_own_role
   on public.student_profiles for select to authenticated
   using (
     user_id = (select auth.uid())
-    and exists (
-      select 1 from public.profiles p
-      where p.id = (select auth.uid())
-        and coalesce(p.account_role, p.role) = 'student'
-    )
+    and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'student')
   );
 create policy student_profiles_insert_own_role
   on public.student_profiles for insert to authenticated
   with check (
     user_id = (select auth.uid())
-    and exists (
-      select 1 from public.profiles p
-      where p.id = (select auth.uid())
-        and coalesce(p.account_role, p.role) = 'student'
-    )
+    and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'student')
   );
 create policy student_profiles_update_own_role
   on public.student_profiles for update to authenticated
   using (
     user_id = (select auth.uid())
-    and exists (
-      select 1 from public.profiles p
-      where p.id = (select auth.uid())
-        and coalesce(p.account_role, p.role) = 'student'
-    )
+    and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'student')
   )
   with check (
     user_id = (select auth.uid())
-    and exists (
-      select 1 from public.profiles p
-      where p.id = (select auth.uid())
-        and coalesce(p.account_role, p.role) = 'student'
-    )
+    and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'student')
   );
 create policy student_profiles_delete_own_role
   on public.student_profiles for delete to authenticated
   using (
     user_id = (select auth.uid())
-    and exists (
-      select 1 from public.profiles p
-      where p.id = (select auth.uid())
-        and coalesce(p.account_role, p.role) = 'student'
-    )
+    and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'student')
   );
 
 create policy employee_profiles_select_own_role
   on public.employee_profiles for select to authenticated
-  using (
-    user_id = (select auth.uid())
-    and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'employee')
-  );
+  using (user_id = (select auth.uid()) and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'employee');
 create policy employee_profiles_insert_own_role
   on public.employee_profiles for insert to authenticated
-  with check (
-    user_id = (select auth.uid())
-    and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'employee')
-  );
+  with check (user_id = (select auth.uid()) and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'employee');
 create policy employee_profiles_update_own_role
   on public.employee_profiles for update to authenticated
-  using (
-    user_id = (select auth.uid())
-    and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'employee')
-  )
-  with check (
-    user_id = (select auth.uid())
-    and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'employee')
-  );
+  using (user_id = (select auth.uid()) and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'employee')
+  with check (user_id = (select auth.uid()) and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'employee');
 create policy employee_profiles_delete_own_role
   on public.employee_profiles for delete to authenticated
-  using (
-    user_id = (select auth.uid())
-    and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'employee')
-  );
+  using (user_id = (select auth.uid()) and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'employee');
 
 create policy employer_profiles_select_own_role
   on public.employer_profiles for select to authenticated
-  using (
-    user_id = (select auth.uid())
-    and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'employer')
-  );
+  using (user_id = (select auth.uid()) and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'employer');
 create policy employer_profiles_insert_own_role
   on public.employer_profiles for insert to authenticated
-  with check (
-    user_id = (select auth.uid())
-    and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'employer')
-  );
+  with check (user_id = (select auth.uid()) and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'employer');
 create policy employer_profiles_update_own_role
   on public.employer_profiles for update to authenticated
-  using (
-    user_id = (select auth.uid())
-    and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'employer')
-  )
-  with check (
-    user_id = (select auth.uid())
-    and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'employer')
-  );
+  using (user_id = (select auth.uid()) and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'employer')
+  with check (user_id = (select auth.uid()) and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'employer');
 create policy employer_profiles_delete_own_role
   on public.employer_profiles for delete to authenticated
-  using (
-    user_id = (select auth.uid())
-    and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'employer')
-  );
+  using (user_id = (select auth.uid()) and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'employer');
 
 create policy founder_profiles_select_own_role
   on public.founder_profiles for select to authenticated
-  using (
-    user_id = (select auth.uid())
-    and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'startup_founder')
-  );
+  using (user_id = (select auth.uid()) and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'startup_founder');
 create policy founder_profiles_insert_own_role
   on public.founder_profiles for insert to authenticated
-  with check (
-    user_id = (select auth.uid())
-    and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'startup_founder')
-  );
+  with check (user_id = (select auth.uid()) and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'startup_founder');
 create policy founder_profiles_update_own_role
   on public.founder_profiles for update to authenticated
-  using (
-    user_id = (select auth.uid())
-    and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'startup_founder')
-  )
-  with check (
-    user_id = (select auth.uid())
-    and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'startup_founder')
-  );
+  using (user_id = (select auth.uid()) and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'startup_founder')
+  with check (user_id = (select auth.uid()) and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'startup_founder');
 create policy founder_profiles_delete_own_role
   on public.founder_profiles for delete to authenticated
-  using (
-    user_id = (select auth.uid())
-    and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'startup_founder')
-  );
+  using (user_id = (select auth.uid()) and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'startup_founder');
 
--- Visible international-student cards remain discoverable; private writes and reads
+-- Visible international-student cards remain discoverable; private writes/reads
 -- are restricted to the active international-student account.
 create policy international_students_select_visible_or_own_role
   on public.international_students for select to anon, authenticated
@@ -200,23 +138,11 @@ create policy international_students_select_visible_or_own_role
   );
 create policy international_students_insert_own_role
   on public.international_students for insert to authenticated
-  with check (
-    user_id = (select auth.uid())
-    and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'international_student')
-  );
+  with check (user_id = (select auth.uid()) and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'international_student');
 create policy international_students_update_own_role
   on public.international_students for update to authenticated
-  using (
-    user_id = (select auth.uid())
-    and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'international_student')
-  )
-  with check (
-    user_id = (select auth.uid())
-    and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'international_student')
-  );
+  using (user_id = (select auth.uid()) and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'international_student')
+  with check (user_id = (select auth.uid()) and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'international_student');
 create policy international_students_delete_own_role
   on public.international_students for delete to authenticated
-  using (
-    user_id = (select auth.uid())
-    and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'international_student')
-  );
+  using (user_id = (select auth.uid()) and exists (select 1 from public.profiles p where p.id = (select auth.uid()) and coalesce(p.account_role, p.role) = 'international_student');
