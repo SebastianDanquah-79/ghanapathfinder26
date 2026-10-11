@@ -60,25 +60,17 @@ const Navbar = () => {
     }
     let cancelled = false;
     const refreshUnread = async () => {
-      const { data, error } = await supabase
-        .from("notifications")
-        .select("id,read,is_read")
-        .eq("user_id", user.id)
-        .or("is_read.eq.false,read.eq.false")
-        .limit(100);
-      if (!cancelled && !error) setUnreadNotifications(data?.length ?? 0);
+      const { data, error } = await supabase.from("notifications")
+        .select("id,read,is_read").eq("user_id", user.id).limit(100);
+      if (!cancelled && !error) {
+        setUnreadNotifications((data ?? []).filter((item) => !(item.is_read ?? item.read)).length);
+      }
     };
     void refreshUnread();
-    const channel = supabase
-      .channel("gpf-navbar-notifications-" + user.id)
-      .on("postgres_changes", { event: "*", schema: "public", table: "notifications", filter: "user_id=eq." + user.id }, () => {
-        void refreshUnread();
-      })
+    const channel = supabase.channel("gpf-navbar-notifications-" + user.id)
+      .on("postgres_changes", { event: "*", schema: "public", table: "notifications", filter: "user_id=eq." + user.id }, () => { void refreshUnread(); })
       .subscribe();
-    return () => {
-      cancelled = true;
-      void supabase.removeChannel(channel);
-    };
+    return () => { cancelled = true; void supabase.removeChannel(channel); };
   }, [user?.id, pathname]);
 
   async function leaveAccount() {
@@ -211,12 +203,11 @@ const Navbar = () => {
         </TooltipProvider>
 
         <div className="md:hidden flex min-w-0 items-center gap-1">
-          <Link to={isPortal ? portalSearchTarget : "/search"} aria-label="Search GhanaPathFinder" className="grid place-items-center h-10 w-10 rounded-full text-muted-foreground active:text-primary">
+          <Link to={isPortal ? portalSearchTarget : "/search"} aria-label="Search GhanaPathFinder" className="grid place-items-center h-11 w-11 rounded-full text-muted-foreground active:text-primary">
             <Search className="h-5 w-5" />
           </Link>
           {user && <Link to="/notifications" aria-label={unreadNotifications ? `Notifications, ${unreadNotifications} unread` : "Notifications"} className="relative grid place-items-center h-10 w-10 rounded-full text-muted-foreground active:text-primary">
-            <Bell className="h-5 w-5" />
-            {unreadNotifications > 0 && <span className="absolute right-0 top-0 min-w-4 rounded-full bg-destructive px-1 text-center text-[9px] leading-4 text-destructive-foreground">{unreadNotifications > 9 ? "9+" : unreadNotifications}</span>}
+            <Bell className="h-5 w-5" />{unreadNotifications > 0 && <span className="absolute right-0 top-0 min-w-4 rounded-full bg-destructive px-1 text-center text-[9px] leading-4 text-destructive-foreground">{unreadNotifications > 9 ? "9+" : unreadNotifications}</span>}
           </Link>}
           <ThemeToggle className="h-10 w-10" />
           {user ? (
@@ -252,9 +243,7 @@ const Navbar = () => {
                 <div className="mt-2 grid grid-cols-2 gap-2">
                   {visibleAccountItems.map((i) => <a key={i.href} href={i.href} onClick={() => setOpen(false)} className="block px-3 py-2.5 text-sm text-foreground rounded-lg border border-border bg-secondary/50 active:text-primary">{i.label}</a>)}
                 </div>
-                <button type="button" onClick={() => void leaveAccount()} className="mt-3 flex w-full items-center gap-2 border border-border px-3 py-2.5 text-sm font-semibold text-foreground hover:border-primary">
-                  <LogOut className="h-4 w-4" /> Sign out
-                </button>
+                <button type="button" onClick={() => void leaveAccount()} className="mt-3 flex w-full items-center gap-2 border border-border px-3 py-2.5 text-sm font-semibold text-foreground hover:border-primary"><LogOut className="h-4 w-4" /> Sign out</button>
               </div>}
               <div>
                 <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground"><Info className="h-4 w-4" /> About</div>
