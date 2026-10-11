@@ -158,8 +158,14 @@ const portalNavSections: Record<string, NavSection[]> = {
   ],
 };
 
+function normalizePortalRole(role: string | null | undefined): string {
+  if (role === "founder") return "startup_founder";
+  if (role === "international-student") return "international_student";
+  return role ?? "";
+}
+
 export function getNavSectionsForRole(role: string | null | undefined): NavSection[] {
-  return portalNavSections[role ?? ""] ?? [];
+  return portalNavSections[normalizePortalRole(role)] ?? [];
 }
 
 const portalAccountItems: Record<string, NavItem[]> = {
@@ -202,7 +208,7 @@ const portalAccountItems: Record<string, NavItem[]> = {
 };
 
 export function getAccountItemsForRole(role: string | null | undefined): NavItem[] {
-  return portalAccountItems[role ?? ""] ?? accountItems;
+  return portalAccountItems[normalizePortalRole(role)] ?? accountItems;
 }
 
 export const accountItems: NavItem[] = [
