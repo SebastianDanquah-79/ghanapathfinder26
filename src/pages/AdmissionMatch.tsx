@@ -22,7 +22,7 @@ const CATEGORIES: MatchCategory[] = [
 const AdmissionMatch = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
-  const [search, setSearch] = useState(() => typeof window === "undefined" ? "" : new URLSearchParams(window.location.search).get("interest") ?? "");
+  const [search, setSearch] = useState("");
   const [universityId, setUniversityId] = useState("");
   const [category, setCategory] = useState<"All" | MatchCategory>("All");
   const [basis, setBasis] = useState<"all" | "official" | "estimated">("all");
