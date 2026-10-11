@@ -20,6 +20,7 @@ import Navbar from "@/components/Navbar";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useCommunityInsights } from "@/hooks/useInsights";
+import ShortVideoFeed from "@/components/ShortVideoFeed";
 import { toast } from "sonner";
 
 type FeedKind = "all" | "study" | "work" | "startups" | "news" | "community";
@@ -311,6 +312,8 @@ const ForYou = () => {
             </div>
           </div>
         </section>
+
+        <ShortVideoFeed />
 
         <section aria-label="Explore GhanaPathFinder" className="mb-6 border-b border-border pb-5">
           <div className="mb-3 flex items-center justify-between gap-3">
