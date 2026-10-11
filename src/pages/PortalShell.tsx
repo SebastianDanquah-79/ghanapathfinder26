@@ -96,6 +96,7 @@ function usePortal(role: PortalRole, userId: string | undefined) {
         ]);
         for (const query of results) if (query.error) throw query.error;
         result.roleProfile = results[0].data as Record<string, unknown> | null;
+        result.roleComplete = result.roleComplete && Boolean(results[0].data);
         result.items = (results[1].data || []).map(function(x){return {...x,kind:"peer"};})
           .concat((results[2].data || []).map(function(x){return {...x,kind:"university"};}))
           .concat((results[3].data || []).map(function(x){return {...x,kind:"embassy"};}));
