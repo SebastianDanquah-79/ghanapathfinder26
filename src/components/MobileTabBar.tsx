@@ -34,7 +34,7 @@ const MobileTabBar = () => {
       aria-label="Primary"
       className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border pb-[env(safe-area-inset-bottom)]"
     >
-      <ul className="grid grid-cols-6">
+      <ul className="grid grid-cols-7">
         {tabs.map(({ to, label, icon: Icon }) => {
           const base = to;
           const active = pathname === base || (base !== "/" && pathname.startsWith(`${base}/`));
