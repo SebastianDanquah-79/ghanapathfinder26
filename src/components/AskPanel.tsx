@@ -20,17 +20,6 @@ import { buildAskContext, type AskContextItem } from "@/lib/askContext";
 const STORAGE_KEY = "gpf.ask.history.v1";
 const MAX_STORED = 40;
 
-const DEFAULT_GREETING: UIMessage = {
-  id: "gpf-welcome",
-  role: "assistant",
-  parts: [
-    {
-      type: "text",
-      text: "Akwaaba — I'm here to help you find your way through GhanaPathFinder: universities, scholarships, careers, or your next opportunity. What are you trying to figure out?",
-    },
-  ],
-};
-
 const textOf = (m: UIMessage) =>
   m.parts.map((p) => (p.type === "text" ? p.text : "")).join("");
 
@@ -38,14 +27,15 @@ const loadHistory = (): UIMessage[] => {
   if (typeof window === "undefined") return [];
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [DEFAULT_GREETING];
+    if (!raw) return [];
     const parsed = JSON.parse(raw) as UIMessage[];
-    if (!Array.isArray(parsed)) return [DEFAULT_GREETING];
-    return parsed.filter((m) => m && Array.isArray(m.parts)).length > 0
-      ? parsed.filter((m) => m && Array.isArray(m.parts))
-      : [DEFAULT_GREETING];
+    if (!Array.isArray(parsed)) return [];
+    const history = parsed.filter((m) => m && Array.isArray(m.parts));
+    // Older versions persisted the greeting as the only message, which hid the prompt ideas.
+    if (history.length === 1 && history[0]?.id === "gpf-welcome") return [];
+    return history;
   } catch {
-    return [DEFAULT_GREETING];
+    return [];
   }
 };
 
@@ -115,8 +105,8 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
         <ConversationContent className="gap-4 p-3">
           {messages.length === 0 ? (
             <ConversationEmptyState
-              title="Ask a question"
-              description="Compare universities, check WASSCE requirements or plan a scholarship application."
+              title="What would you like to work on?"
+              description="Understand a concept, practise with a quiz, plan revision, explore admissions, or map your next career step."
             >
               <div className="flex flex-wrap justify-center gap-2 pt-1">
                 {suggestions.map((s) => (
@@ -164,7 +154,7 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
           <PromptInputTextarea
             value={input}
             onChange={(e) => setInput(e.currentTarget.value)}
-            placeholder="e.g. Which universities fit an aggregate of 12 for nursing?"
+            placeholder="Teach me this topic step by step, quiz me, or help plan my next step…"
           />
           <PromptInputFooter className="justify-end">
             <PromptInputSubmit
@@ -215,7 +205,7 @@ const AskPanel = ({ query, items, suggestions }: AskPanelProps) => {
   return (
     <AskChat
       key={session}
-      initialMessages={session === 0 ? initialMessages : [DEFAULT_GREETING]}
+      initialMessages={session === 0 ? initialMessages : []}
       contextText={contextText}
       suggestions={suggestions ?? DEFAULT_SUGGESTIONS}
       onClear={() => {
