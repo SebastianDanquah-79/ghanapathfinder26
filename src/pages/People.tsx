@@ -42,8 +42,8 @@ const People = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("companies")
-        .select("id,name,sector,location,region,website_url,careers_url,source_url,verified,last_verified_at")
-        .eq("verified", true)
+        .select("id,name,sector,location,region,website_url,careers_url,source_url,primary_source_url,verified,verification_status,source_tier,last_verified_at")
+        .or("verified.eq.true,source_url.not.is.null,primary_source_url.not.is.null")
         .order("last_verified_at", { ascending: false })
         .limit(12);
       if (error) throw error;
@@ -165,9 +165,9 @@ const People = () => {
                 <article className={card} key={company.id}>
                   <h3 className="font-semibold">{company.name}</h3>
                   <p className="mt-1 text-xs text-muted-foreground">{company.sector} · {[company.location, company.region].filter(Boolean).join(", ") || "Africa"}</p>
-                  {company.verified && <p className="mt-2 text-[11px] font-medium text-primary">Verified record</p>}
+                  <p className={"mt-2 text-[11px] font-medium " + (company.verified ? "text-primary" : "text-muted-foreground")}>{company.verified ? "Verified record" : company.verification_status === "source_linked_needs_review" ? "Source linked · needs review" : "Needs verification"}</p>
                   <div className="mt-3 flex flex-wrap gap-3">
-                    {(company.website_url || company.source_url) && <a href={company.website_url || company.source_url || "#"} target="_blank" rel="noreferrer" className={externalLink}>Website / source <ArrowUpRight className="h-3.5 w-3.5" /></a>}
+                    {(company.website_url || company.primary_source_url || company.source_url) && <a href={company.website_url || company.primary_source_url || company.source_url || "#"} target="_blank" rel="noreferrer" className={externalLink}>Website / source <ArrowUpRight className="h-3.5 w-3.5" /></a>}
                     {company.careers_url && <a href={company.careers_url} target="_blank" rel="noreferrer" className={externalLink}>Careers <ArrowUpRight className="h-3.5 w-3.5" /></a>}
                   </div>
                 </article>
