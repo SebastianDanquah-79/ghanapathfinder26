@@ -1,6 +1,5 @@
 import {
   Home,
-  Building2,
   BookOpen,
   Award,
   Briefcase,
@@ -35,16 +34,6 @@ export interface NavSection {
 }
 
 export const navSections: NavSection[] = [
-  {
-    id: "study",
-    label: "Study",
-    icon: Building2,
-    href: "/search?kind=university",
-    items: [
-      { label: "Compare institutions", href: "/compare", desc: "Compare what matters" },
-      { label: "Explore & search", href: "/search", desc: "Discover your options" },
-    ],
-  },
   {
     id: "fund",
     label: "Funding",
