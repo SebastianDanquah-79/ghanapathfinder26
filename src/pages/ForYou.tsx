@@ -462,6 +462,26 @@ const ForYou = () => {
           </aside>
         </div>
       </main>
+
+      <nav aria-label="Quick navigation" className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 px-2 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
+        <div className="mx-auto grid max-w-lg grid-cols-5">
+          {[
+            { label: "Feed", href: "/for-you", icon: Globe2 },
+            { label: "Study", href: "/admission-match", icon: GraduationCap },
+            { label: "Community", href: "/community", icon: Users },
+            { label: "AI Coach", href: "/ask-africa", icon: Sparkles },
+            { label: "My portal", href: "/dashboard", icon: Building2 },
+          ].map((item) => {
+            const Icon = item.icon;
+            return (
+              <Link key={item.label} to={item.href as any} className="flex min-h-14 flex-col items-center justify-center gap-1 px-1 py-2 text-muted-foreground transition-colors hover:text-primary">
+                <Icon className="h-5 w-5" />
+                <span className="text-[10px] font-medium">{item.label}</span>
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
     </div>
   );
 };
