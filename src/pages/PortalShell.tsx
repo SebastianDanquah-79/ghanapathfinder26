@@ -107,6 +107,13 @@ export default function PortalShell(props: {role: PortalRole; children?: ReactNo
   const q = usePortal(props.role,user?.id);
   const currentMeta = meta[props.role];
   const complete = Boolean(q.data?.profile.onboarding_complete) && Boolean(q.data?.roleComplete);
+  useEffect(() => {
+    const role = q.data?.profile.account_role;
+    if (!user || !role || q.isLoading) return;
+    const expected = role === "startup_founder" ? "/portal/founder" : role === "international_student" ? "/portal/international-student" : role === "student" || role === "employee" || role === "employer" ? "/portal/" + role : null;
+    const current = props.role === "founder" ? "/portal/founder" : "/portal/" + props.role;
+    if (expected && expected !== current) navigate(expected, { replace: true });
+  }, [user, q.data?.profile.account_role, q.isLoading, props.role, navigate]);
   const askItems = useMemo(function(){
     return (q.data?.items || []).slice(0,8).map(function(item,index){
       return {id:String(item.id || item.user_id || index),title:String(item.title || item.name || item.display_name || "Record"),subtitle:String(item.description || item.company_name || item.university_name || ""),metadata:item};
