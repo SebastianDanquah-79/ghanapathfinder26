@@ -225,7 +225,12 @@ const portalAccountItems: Record<string, NavItem[]> = {
 };
 
 export function getAccountItemsForRole(role: string | null | undefined): NavItem[] {
-  return portalAccountItems[normalizePortalRole(role)] ?? accountItems;
+  const roleItems = portalAccountItems[normalizePortalRole(role)] ?? accountItems;
+  return [
+    ...roleItems,
+    { label: "Notifications", href: "/notifications" },
+    { label: "Account settings", href: "/account" },
+  ];
 }
 
 export const accountItems: NavItem[] = [
@@ -234,6 +239,7 @@ export const accountItems: NavItem[] = [
   { label: "Saved items", href: "/saved" },
   { label: "Applications", href: "/applications" },
   { label: "Match preferences", href: "/preferences" },
+  { label: "Change portal", href: "/?switchRole=1" },
 ];
 
 export const aboutItems: NavItem[] = [
