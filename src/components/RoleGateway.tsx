@@ -24,9 +24,9 @@ export default function RoleGateway() {
   useEffect(() => {
     if (!user || loading || window.location.search.includes("switchRole=1")) return;
     let cancelled = false;
-    void supabase.from("profiles").select("account_role,onboarding_complete").eq("id", user.id).maybeSingle().then(function(result) {
-      if (cancelled || !result.data || !result.data.onboarding_complete || !result.data.account_role) return;
-      const role = result.data.account_role;
+    void supabase.from("profiles").select("account_role,role,onboarding_complete").eq("id", user.id).maybeSingle().then(function(result) {
+      const role = result.data?.account_role ?? result.data?.role;
+      if (cancelled || !result.data || !result.data.onboarding_complete || !role) return;
       const destination = role === "startup_founder" ? "/portal/founder" : role === "international_student" ? "/portal/international-student" : role === "student" || role === "employee" || role === "employer" ? "/portal/" + role : "/onboarding";
       navigate(destination, { replace: true });
     });
