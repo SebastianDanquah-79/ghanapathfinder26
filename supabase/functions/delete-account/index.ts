@@ -97,7 +97,7 @@ Deno.serve(async (request: Request) => {
   } catch (error) {
     console.error("Safe account deletion failed", error);
     return json(500, {
-      error: "Your account could not be deleted safely. Please try again or contact support.",
+      error: "Account deletion did not complete. Uploaded media may already have been removed. Contact support before retrying so the account state can be checked.",
     }, headers);
   }
 });
