@@ -179,7 +179,7 @@ export default function PortalShell(props: {role: PortalRole; children?: ReactNo
             <button type="button" onClick={function(){navigate("/onboarding?role=" + editRole);}} className="border border-border px-3 py-2 text-sm font-medium hover:border-primary">Edit profile</button>
           </div>
           {roleProfileFields.length > 0 ? <dl className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {roleProfileFields.map(function(field){return <div key={field.key} className="min-w-0 border-t border-border pt-3"><dt className="text-xs text-muted-foreground">{field.label}</dt><dd className="mt-1 break-words text-sm font-medium">{field.key === "website_url" || field.key === "pitch_url" ? <a href={field.value} target="_blank" rel="noreferrer" className="text-primary underline">{field.value}</a> : field.value}</dd></div>;})}
+            {roleProfileFields.map(function(field){return <div key={field.key} className="min-w-0 border-t border-border pt-3"><dt className="text-xs text-muted-foreground">{field.label}</dt><dd className="mt-1 break-words text-sm font-medium">{field.key === "website_url" || field.key === "pitch_url" || field.key === "cv_url" || field.key === "portfolio_url" || field.key === "linkedin_url" || field.key === "github_url" ? <a href={field.value} target="_blank" rel="noreferrer" className="text-primary underline">{field.value}</a> : field.value}</dd></div>;})}
           </dl> : <p className="mt-4 text-sm text-muted-foreground">Add details to personalise this workspace.</p>}
         </section>}
 
