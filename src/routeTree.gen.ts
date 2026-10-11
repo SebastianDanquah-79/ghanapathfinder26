@@ -16,6 +16,8 @@ import { Route as PortalEmployerRouteImport } from './routes/portal/employer'
 import { Route as PortalFounderRouteImport } from './routes/portal/founder'
 import { Route as PortalInternationalStudentRouteImport } from './routes/portal/international-student'
 import { Route as PortalStudentRouteImport } from './routes/portal/student'
+import { Route as PortalStudyDestinationsRouteImport } from './routes/portal/study-destinations'
+import { Route as StudyDestinationsRouteImport } from './routes/study-destinations'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdmissionMatchRouteImport } from './routes/admission-match'
 import { Route as ApplicationsRouteImport } from './routes/applications'
@@ -123,6 +125,16 @@ const PortalInternationalStudentRoute = PortalInternationalStudentRouteImport.up
 const PortalStudentRoute = PortalStudentRouteImport.update({
   id: '/portal/student',
   path: '/portal/student',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortalStudyDestinationsRoute = PortalStudyDestinationsRouteImport.update({
+  id: '/portal/study-destinations',
+  path: '/portal/study-destinations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StudyDestinationsRoute = StudyDestinationsRouteImport.update({
+  id: '/study-destinations',
+  path: '/study-destinations',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -501,6 +513,8 @@ export interface FileRoutesByFullPath {
   '/portal/founder': typeof PortalFounderRoute
   '/portal/international-student': typeof PortalInternationalStudentRoute
   '/portal/student': typeof PortalStudentRoute
+  '/portal/study-destinations': typeof PortalStudyDestinationsRoute
+  '/study-destinations': typeof StudyDestinationsRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
   '/applications': typeof ApplicationsRoute
@@ -561,6 +575,8 @@ export interface FileRoutesByTo {
   '/portal/founder': typeof PortalFounderRoute
   '/portal/international-student': typeof PortalInternationalStudentRoute
   '/portal/student': typeof PortalStudentRoute
+  '/portal/study-destinations': typeof PortalStudyDestinationsRoute
+  '/study-destinations': typeof StudyDestinationsRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
   '/applications': typeof ApplicationsRoute
@@ -622,6 +638,8 @@ export interface FileRoutesById {
   '/portal/founder': typeof PortalFounderRoute
   '/portal/international-student': typeof PortalInternationalStudentRoute
   '/portal/student': typeof PortalStudentRoute
+  '/portal/study-destinations': typeof PortalStudyDestinationsRoute
+  '/study-destinations': typeof StudyDestinationsRoute
   '/about': typeof AboutRoute
   '/admission-match': typeof AdmissionMatchRoute
   '/applications': typeof ApplicationsRoute
@@ -684,6 +702,8 @@ export interface FileRouteTypes {
     | '/portal/founder'
     | '/portal/international-student'
     | '/portal/student'
+    | '/portal/study-destinations'
+    | '/study-destinations'
     | '/about'
     | '/admission-match'
     | '/applications'
@@ -744,6 +764,8 @@ export interface FileRouteTypes {
     | '/portal/founder'
     | '/portal/international-student'
     | '/portal/student'
+    | '/portal/study-destinations'
+    | '/study-destinations'
     | '/about'
     | '/admission-match'
     | '/applications'
@@ -804,6 +826,8 @@ export interface FileRouteTypes {
     | '/portal/founder'
     | '/portal/international-student'
     | '/portal/student'
+    | '/portal/study-destinations'
+    | '/study-destinations'
     | '/about'
     | '/admission-match'
     | '/applications'
@@ -865,6 +889,8 @@ export interface RootRouteChildren {
   PortalFounderRoute: typeof PortalFounderRoute
   PortalInternationalStudentRoute: typeof PortalInternationalStudentRoute
   PortalStudentRoute: typeof PortalStudentRoute
+  PortalStudyDestinationsRoute: typeof PortalStudyDestinationsRoute
+  StudyDestinationsRoute: typeof StudyDestinationsRoute
   AboutRoute: typeof AboutRoute
   AdmissionMatchRoute: typeof AdmissionMatchRoute
   ApplicationsRoute: typeof ApplicationsRoute
@@ -967,6 +993,20 @@ declare module '@tanstack/react-router' {
       path: '/portal/student'
       fullPath: '/portal/student'
       preLoaderRoute: typeof PortalStudentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portal/study-destinations': {
+      id: '/portal/study-destinations'
+      path: '/portal/study-destinations'
+      fullPath: '/portal/study-destinations'
+      preLoaderRoute: typeof PortalStudyDestinationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/study-destinations': {
+      id: '/study-destinations'
+      path: '/study-destinations'
+      fullPath: '/study-destinations'
+      preLoaderRoute: typeof StudyDestinationsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -1337,6 +1377,8 @@ const rootRouteChildren: RootRouteChildren = {
   PortalFounderRoute: PortalFounderRoute,
   PortalInternationalStudentRoute: PortalInternationalStudentRoute,
   PortalStudentRoute: PortalStudentRoute,
+  PortalStudyDestinationsRoute: PortalStudyDestinationsRoute,
+  StudyDestinationsRoute: StudyDestinationsRoute,
   AboutRoute: AboutRoute,
   AdmissionMatchRoute: AdmissionMatchRoute,
   ApplicationsRoute: ApplicationsRoute,
