@@ -10,6 +10,29 @@ const GRADES = ["A1","B2","B3","C4","C5","C6","D7","E8","F9"];
 const CORE_SUBJECTS = ["English Language","Mathematics","Integrated Science","Social Studies"];
 const PATHWAYS = ["Learn","Find a job","Build a business","Find funding","Explore Africa","Travel","Meet people","Research","Hire talent","Study in Africa","Discover African companies","Discover African culture"];
 const INTERESTS = ["AI","Robotics","Technology","Business","Startups","Education","Engineering","Science","Finance","Agriculture","Music","Fashion","Food","Tourism","History","Culture","Sports","Research","Careers","Entrepreneurship"];
+
+const normalizeSocialUrl = (raw: string, allowedHosts: string[]): string | null => {
+  const value = raw.trim();
+  if (!value) return null;
+  const withHttps = value.replace(/^http:\/\//i, "https://");
+  const candidate = /^https:\/\//i.test(withHttps) ? withHttps : `https://${withHttps}`;
+  try {
+    const parsed = new URL(candidate);
+    const host = parsed.hostname.toLowerCase();
+    if (parsed.protocol !== "https:" || parsed.username || parsed.password) return null;
+    if (!allowedHosts.some((allowed) => host === allowed || host.endsWith(`.${allowed}`))) return null;
+    return parsed.toString();
+  } catch {
+    return null;
+  }
+};
+
+const normalizeWhatsAppNumber = (raw: string): string | null => {
+  let digits = raw.replace(/\\D/g, "");
+  if (digits.length === 10 && digits.startsWith("0")) digits = `233${digits.slice(1)}`;
+  else if (digits.length === 9) digits = `233${digits}`;
+  return /^[1-9][0-9]{7,14}$/.test(digits) ? digits : null;
+};
 type Role = "student" | "employee" | "employer" | "startup_founder" | "international_student";
 
 const roleLabels: Record<Role,string> = {
@@ -53,6 +76,13 @@ const Onboarding = () => {
   const [startupFundingNeeded,setStartupFundingNeeded] = useState("");
   const [startupFundingCurrency,setStartupFundingCurrency] = useState("GHS");
   const [linkedinUrl,setLinkedinUrl] = useState("");
+  const [instagramUrl,setInstagramUrl] = useState("");
+  const [xUrl,setXUrl] = useState("");
+  const [whatsappNumber,setWhatsappNumber] = useState("");
+  const [isLinkedinPublic,setIsLinkedinPublic] = useState(false);
+  const [isInstagramPublic,setIsInstagramPublic] = useState(false);
+  const [isXPublic,setIsXPublic] = useState(false);
+  const [isWhatsappPublic,setIsWhatsappPublic] = useState(false);
   const [pathways,setPathways] = useState<string[]>([]);
   const [interests,setInterests] = useState<string[]>([]);
   const [skills,setSkills] = useState("");
@@ -73,7 +103,7 @@ const Onboarding = () => {
 
   useEffect(() => {
     if (!user) return;
-    void supabase.from("profiles").select("full_name,role,account_role,bio,location,linkedin_url,avatar_url").eq("id",user.id).maybeSingle().then(({data}) => {
+    void (supabase as any).from("profiles").select("full_name,role,account_role,bio,location,linkedin_url,avatar_url,instagram_url,x_url,whatsapp_number,is_linkedin_public,is_instagram_public,is_x_public,is_whatsapp_public,is_discoverable").eq("id",user.id).maybeSingle().then(({data}: { data: any }) => {
       if (!data) return;
       setFullName(data.full_name ?? "");
       if (!params.get("role") && (data.account_role || data.role)) {
@@ -84,6 +114,14 @@ const Onboarding = () => {
       setBio(data.bio ?? "");
       setLocation(data.location ?? "");
       setLinkedinUrl(data.linkedin_url ?? "");
+      setInstagramUrl(data.instagram_url ?? "");
+      setXUrl(data.x_url ?? "");
+      setWhatsappNumber(data.whatsapp_number ?? "");
+      setIsLinkedinPublic(Boolean(data.is_linkedin_public));
+      setIsInstagramPublic(Boolean(data.is_instagram_public));
+      setIsXPublic(Boolean(data.is_x_public));
+      setIsWhatsappPublic(Boolean(data.is_whatsapp_public));
+      setDiscoverable(Boolean(data.is_discoverable));
       setAvatarUrl(data.avatar_url ?? null);
     });
   }, [user, params]);
@@ -187,6 +225,26 @@ const Onboarding = () => {
     try {
       const skillList = skills.split(",").map((x) => x.trim()).filter(Boolean);
       if (role === "employee" && discoverable && (!fullName.trim() || !jobTitle.trim())) throw new Error("Add your name and professional title before making your profile discoverable.");
+
+      const safeLinkedinUrl = normalizeSocialUrl(linkedinUrl, ["linkedin.com"]);
+      const safeInstagramUrl = normalizeSocialUrl(instagramUrl, ["instagram.com"]);
+      const safeXUrl = normalizeSocialUrl(xUrl, ["x.com", "twitter.com"]);
+      const normalizedWhatsAppNumber = normalizeWhatsAppNumber(whatsappNumber);
+      if (linkedinUrl.trim() && !safeLinkedinUrl) throw new Error("Enter a valid LinkedIn profile URL.");
+      if (instagramUrl.trim() && !safeInstagramUrl) throw new Error("Enter a valid Instagram profile URL.");
+      if (xUrl.trim() && !safeXUrl) throw new Error("Enter a valid X profile URL.");
+      if (whatsappNumber.trim() && !normalizedWhatsAppNumber) throw new Error("Enter a valid international WhatsApp number, such as +233 24 123 4567.");
+
+      const socialProfileFields = {
+        linkedin_url: safeLinkedinUrl,
+        instagram_url: safeInstagramUrl,
+        x_url: safeXUrl,
+        whatsapp_number: normalizedWhatsAppNumber,
+        is_linkedin_public: isLinkedinPublic && Boolean(safeLinkedinUrl),
+        is_instagram_public: isInstagramPublic && Boolean(safeInstagramUrl),
+        is_x_public: isXPublic && Boolean(safeXUrl),
+        is_whatsapp_public: isWhatsappPublic && Boolean(normalizedWhatsAppNumber),
+      };
       let nextAvatarUrl = avatarUrl;
 
       if (avatarFile) {
@@ -221,12 +279,12 @@ const Onboarding = () => {
           console.error("save_profile_bundle failed",rpcError);
           const missing=rpcError.code==="PGRST202"||rpcError.code==="42883";
           if (!missing) throw new Error(`Profile save failed: ${rpcError.message}`);
-          const {error}=await supabase.from("profiles").upsert({
+          const {error}=await (supabase as any).from("profiles").upsert({
             id:user.id,email:user.email??null,full_name:fullName.trim()||null,role,account_role:role,
             account_type:"student",bio:bio.trim()||null,location:location.trim()||null,school:school.trim()||null,
             region:region||null,target_career:career.trim()||null,university:university.trim()||null,
             program:program.trim()||null,graduation_year:graduationYear?Number(graduationYear):null,
-            company:company.trim()||null,job_title:jobTitle.trim()||null,linkedin_url:linkedinUrl.trim()||null,
+            company:company.trim()||null,job_title:jobTitle.trim()||null,...socialProfileFields,
             avatar_url:nextAvatarUrl,interests,skills:skillList,is_discoverable:discoverable,
             onboarding_complete:true,onboarded:true,
           },{onConflict:"id"});
@@ -238,10 +296,10 @@ const Onboarding = () => {
             if(ie) throw new Error(`WASSCE results could not be saved: ${ie.message}`);
           }
         }
-        const {error}=await supabase.from("profiles").update({
+        const {error}=await (supabase as any).from("profiles").update({
           role,account_role:role,account_type:"student",bio:bio.trim()||null,location:location.trim()||null,
           university:university.trim()||null,program:program.trim()||null,graduation_year:graduationYear?Number(graduationYear):null,
-          company:company.trim()||null,job_title:jobTitle.trim()||null,linkedin_url:linkedinUrl.trim()||null,
+          company:company.trim()||null,job_title:jobTitle.trim()||null,...socialProfileFields,
           avatar_url:nextAvatarUrl,skills:skillList,is_discoverable:discoverable,onboarding_complete:true,onboarded:true,
         }).eq("id",user.id);
         if(error) throw new Error(`Profile details could not be saved: ${error.message}`);
@@ -256,12 +314,12 @@ const Onboarding = () => {
         },{onConflict:"user_id"});
         if(studentProfileError) throw new Error(`Student profile could not be saved: ${studentProfileError.message}`);
       } else {
-        const {error}=await supabase.from("profiles").upsert({
+        const {error}=await (supabase as any).from("profiles").upsert({
           id:user.id,email:user.email??null,full_name:fullName.trim()||null,role,account_role:role,
           account_type:role,bio:bio.trim()||null,location:location.trim()||null,school:school.trim()||null,
           region:region||null,target_career:career.trim()||null,university:university.trim()||null,
           program:program.trim()||null,graduation_year:graduationYear?Number(graduationYear):null,
-          company:company.trim()||null,job_title:jobTitle.trim()||null,linkedin_url:linkedinUrl.trim()||null,
+          company:company.trim()||null,job_title:jobTitle.trim()||null,...socialProfileFields,
           avatar_url:nextAvatarUrl,interests,skills:skillList,is_discoverable:discoverable,
           onboarding_complete:true,onboarded:true,
         },{onConflict:"id"});
@@ -480,9 +538,55 @@ const Onboarding = () => {
               <input className={inputClass + " mt-1"} maxLength={500} value={startupBusinessModel} onChange={e => setStartupBusinessModel(e.target.value)} placeholder="e.g. subscription, marketplace, service fees" />
             </label>
           </>}
-          <input className={inputClass} placeholder="LinkedIn URL (optional)" value={linkedinUrl} onChange={e => setLinkedinUrl(e.target.value)} />
-          <input className={inputClass} placeholder="Skills, separated by commas" value={skills} onChange={e => setSkills(e.target.value)} />
-          {(role === "employee" || role === "international_student") && <label className="flex items-center gap-3 text-sm text-muted-foreground"><input type="checkbox" checked={discoverable} onChange={e => setDiscoverable(e.target.checked)} /> {role === "international_student" ? "Show my profile in the international student directory" : "Make my professional profile discoverable to opted-in employers"}</label>}
+          <div className="sm:col-span-2 border-t border-border pt-4 space-y-4">
+            <div>
+              <h3 className="text-base font-semibold text-foreground">Profile links and discovery</h3>
+              <p className="mt-1 text-xs leading-5 text-muted-foreground">Choose which links other people can see when they discover your profile. Social links and WhatsApp stay private unless you turn on their separate visibility switches.</p>
+            </div>
+            <label className="flex items-center gap-3 text-sm text-foreground">
+              <input type="checkbox" checked={discoverable} onChange={e => setDiscoverable(e.target.checked)} />
+              Show my profile in People Discovery
+            </label>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="space-y-2">
+                <label className="block text-xs font-medium text-muted-foreground">LinkedIn profile URL
+                  <input className={inputClass + " mt-1"} type="url" placeholder="https://www.linkedin.com/in/your-profile" value={linkedinUrl} onChange={e => setLinkedinUrl(e.target.value)} />
+                </label>
+                <label className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <input type="checkbox" checked={isLinkedinPublic} disabled={!linkedinUrl.trim()} onChange={e => setIsLinkedinPublic(e.target.checked)} />
+                  Show LinkedIn publicly
+                </label>
+              </div>
+              <div className="space-y-2">
+                <label className="block text-xs font-medium text-muted-foreground">Instagram profile URL
+                  <input className={inputClass + " mt-1"} type="url" placeholder="https://www.instagram.com/your-profile" value={instagramUrl} onChange={e => setInstagramUrl(e.target.value)} />
+                </label>
+                <label className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <input type="checkbox" checked={isInstagramPublic} disabled={!instagramUrl.trim()} onChange={e => setIsInstagramPublic(e.target.checked)} />
+                  Show Instagram publicly
+                </label>
+              </div>
+              <div className="space-y-2">
+                <label className="block text-xs font-medium text-muted-foreground">X profile URL
+                  <input className={inputClass + " mt-1"} type="url" placeholder="https://x.com/your-profile" value={xUrl} onChange={e => setXUrl(e.target.value)} />
+                </label>
+                <label className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <input type="checkbox" checked={isXPublic} disabled={!xUrl.trim()} onChange={e => setIsXPublic(e.target.checked)} />
+                  Show X publicly
+                </label>
+              </div>
+              <div className="space-y-2">
+                <label className="block text-xs font-medium text-muted-foreground">WhatsApp number
+                  <input className={inputClass + " mt-1"} type="tel" placeholder="+233 24 123 4567" value={whatsappNumber} onChange={e => setWhatsappNumber(e.target.value)} />
+                </label>
+                <label className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <input type="checkbox" checked={isWhatsappPublic} disabled={!whatsappNumber.trim()} onChange={e => setIsWhatsappPublic(e.target.checked)} />
+                  Show WhatsApp contact link publicly
+                </label>
+              </div>
+            </div>
+          </div>
+          <input className={inputClass} placeholder="Skills, separated by commas" value={skills} onChange={e => setSkills(e.target.value)} />}
         </section>
 
         <section className="bg-glass rounded-xl p-5">
