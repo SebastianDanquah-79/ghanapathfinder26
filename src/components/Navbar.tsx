@@ -5,7 +5,8 @@ import BrandMark from "@/components/BrandMark";
 import { Link, useLocation } from "@/lib/router-compat";
 import { useAuth } from "@/hooks/useAuth";
 import ThemeToggle from "@/components/ThemeToggle";
-import { navSections, accountItems, aboutItems } from "@/lib/nav-config";
+import { navSections, accountItems, aboutItems, getNavSectionsForRole, getAccountItemsForRole } from "@/lib/nav-config";
+import { supabase } from "@/integrations/supabase/client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -31,10 +32,28 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { user, signOut } = useAuth();
   const { pathname } = useLocation();
+  const [accountRole, setAccountRole] = useState<string | null>(null);
 
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    if (!user) {
+      setAccountRole(null);
+      return;
+    }
+    let cancelled = false;
+    void supabase.from("profiles").select("account_role,role").eq("id", user.id).maybeSingle().then(({ data }) => {
+      if (!cancelled) setAccountRole(data?.account_role ?? data?.role ?? null);
+    });
+    return () => { cancelled = true; };
+  }, [user?.id]);
+
+  const isPortal = pathname.startsWith("/portal/");
+  const visibleNavSections = isPortal ? getNavSectionsForRole(accountRole) : navSections;
+  const visibleAccountItems = isPortal ? getAccountItemsForRole(accountRole) : accountItems;
+  const portalSearchTarget = accountRole === "startup_founder" ? "/startups" : accountRole === "international_student" ? "/admission-match" : accountRole === "employer" ? "/people" : accountRole === "employee" ? "/jobs" : "/search?kind=university";
 
   const name =
     (user?.user_metadata?.["full_name"] as string | undefined) ?? user?.email ?? null;
@@ -53,7 +72,7 @@ const Navbar = () => {
 
         <TooltipProvider delayDuration={120}>
           <div className="hidden md:flex items-center gap-1">
-            {navSections.map(({ id, label, icon: Icon, items }) => (
+            {visibleNavSections.map(({ id, label, icon: Icon, items }) => (
               <DropdownMenu key={id}>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -83,7 +102,7 @@ const Navbar = () => {
 
             <Tooltip>
               <TooltipTrigger asChild>
-                <Link to="/search" aria-label="Search" className={iconButton}>
+                <Link to={isPortal ? portalSearchTarget : "/search"} aria-label="Search" className={iconButton}>
                   <Search className="h-[18px] w-[18px]" />
                 </Link>
               </TooltipTrigger>
@@ -128,7 +147,7 @@ const Navbar = () => {
                 <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuLabel className="truncate">{name ?? "Your account"}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  {accountItems.map((i) => (
+                  {visibleAccountItems.map((i) => (
                     <DropdownMenuItem key={i.href} asChild>
                       <a href={i.href} className="cursor-pointer">{i.label}</a>
                     </DropdownMenuItem>
@@ -146,7 +165,7 @@ const Navbar = () => {
         </TooltipProvider>
 
         <div className="md:hidden flex min-w-0 items-center gap-1">
-          <Link to="/search" aria-label="Search GhanaPathFinder" className="grid place-items-center h-11 w-11 rounded-full text-muted-foreground active:text-primary">
+          <Link to={isPortal ? portalSearchTarget : "/search"} aria-label="Search GhanaPathFinder" className="grid place-items-center h-11 w-11 rounded-full text-muted-foreground active:text-primary">
             <Search className="h-5 w-5" />
           </Link>
           <ThemeToggle className="h-11 w-11" />
