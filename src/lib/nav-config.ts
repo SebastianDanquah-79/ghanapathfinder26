@@ -42,7 +42,7 @@ export const navSections: NavSection[] = [
     icon: Home,
     href: "/for-you",
     items: [
-      { label: "For You", href: "/for-you", desc: "Study, work, news and community in one feed" },
+      { label: "For You", href: "/for-you", desc: "Your personalised stream of learning, work and community" },
       { label: "Stories", href: "/stories", desc: "Read the latest stories in the platform" },
       { label: "Daily Drop", href: "/daily-drop", desc: "A quick view of new stories" },
       { label: "Africa Now", href: "/africa-now", desc: "Current Africa coverage" },
@@ -51,7 +51,7 @@ export const navSections: NavSection[] = [
   },
   {
     id: "study",
-    label: "Study",
+    label: "Study & Apply",
     icon: GraduationCap,
     href: "/admission-match",
     items: [
@@ -60,12 +60,12 @@ export const navSections: NavSection[] = [
       { label: "Admission match", href: "/admission-match", desc: "Check possible qualification pathways" },
       { label: "Study destinations", href: "/study-destinations", desc: "Explore routes into study" },
       { label: "Scholarships", href: "/scholarships/", desc: "Find funding opportunities" },
-      { label: "Applications and deadlines", href: "/applications", desc: "Keep your application pipeline organised" },
+      { label: "Application desk", href: "/applications", desc: "Track admissions, scholarships, deadlines and next steps in one place" },
     ],
   },
   {
     id: "work",
-    label: "Work",
+    label: "Careers",
     icon: Briefcase,
     href: "/jobs",
     items: [
@@ -79,7 +79,7 @@ export const navSections: NavSection[] = [
   },
   {
     id: "build",
-    label: "Build",
+    label: "Startups",
     icon: Rocket,
     href: "/build",
     items: [
@@ -91,7 +91,7 @@ export const navSections: NavSection[] = [
   },
   {
     id: "network",
-    label: "Network",
+    label: "Community",
     icon: Users,
     href: "/community",
     items: [
@@ -103,15 +103,16 @@ export const navSections: NavSection[] = [
     ],
   },
   {
-    id: "ai-coach",
-    label: "AI Coach",
-    icon: Sparkles,
+    id: "learning",
+    label: "AI Study Coach",
+    icon: BookOpen,
     href: "/ask-africa",
     items: [
-      { label: "Ask Africa AI", href: "/ask-africa", desc: "Explore education, careers, startups and opportunities with AI" },
-      { label: "My Path", href: "/my-path", desc: "Turn goals into practical next steps" },
-      { label: "Scholarship matcher", href: "/matcher", desc: "Narrow down funding options" },
-      { label: "Saved items", href: "/saved", desc: "Return to opportunities you kept" },
+      { label: "AI study coach", href: "/ask-africa", desc: "Explain topics, practise questions, plan revision and explore pathways" },
+      { label: "My Path", href: "/my-path", desc: "Turn study and career goals into practical steps" },
+      { label: "Scholarship matcher", href: "/matcher", desc: "Find funding options that fit your goals" },
+      { label: "Application tracker", href: "/applications", desc: "Track applications and important dates" },
+      { label: "Saved items", href: "/saved", desc: "Return to opportunities and resources you kept" },
     ],
   },
 ];

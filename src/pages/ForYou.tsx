@@ -20,7 +20,6 @@ import Navbar from "@/components/Navbar";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useCommunityInsights } from "@/hooks/useInsights";
-import { useSignedCommunityImages } from "@/hooks/useCommunityImages";
 import { toast } from "sonner";
 
 type FeedKind = "all" | "study" | "work" | "startups" | "news" | "community";
@@ -42,7 +41,6 @@ interface FeedItem {
   savedType: string;
   followType?: string;
   followKey?: string;
-  imagePaths?: string[];
 }
 
 const filters: Array<{ key: FeedKind; label: string }> = [
@@ -60,6 +58,7 @@ const quickDestinations = [
   { title: "Grow your career", detail: "Jobs, skills and internships", href: "/jobs", icon: BriefcaseBusiness },
   { title: "Build something", detail: "Startups and founder support", href: "/startups", icon: Rocket },
   { title: "Meet your people", detail: "Community and professionals", href: "/community", icon: Users },
+  { title: "Study with AI", detail: "Ask, practise and plan", href: "/ask-africa", icon: Sparkles },
 ];
 
 const dateValue = (date?: string | null) => {
@@ -130,11 +129,6 @@ const ForYou = () => {
     },
   });
   const communityQuery = useCommunityInsights(10);
-  const communityImagePaths = useMemo(
-    () => (communityQuery.data ?? []).flatMap((item) => item.image_paths ?? []),
-    [communityQuery.data],
-  );
-  const { data: communityImageUrls } = useSignedCommunityImages(communityImagePaths);
 
   const countrySet = useMemo(
     () => new Set((prefs?.followed_countries ?? []).map((x: string) => x.toLowerCase())),
@@ -237,7 +231,6 @@ const ForYou = () => {
       actionExternal: false,
       sourceName: "Shared student experience",
       savedType: "student_insight",
-      imagePaths: item.image_paths ?? [],
     }));
     return [...opportunities, ...startups, ...companies, ...news, ...studentVoices]
       .sort((a, b) => dateValue(b.date) - dateValue(a.date));
@@ -292,8 +285,8 @@ const ForYou = () => {
         <header className="mb-6 flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">GhanaPathFinder · One connected platform</p>
-            <h1 className="mt-2 text-3xl font-bold text-foreground sm:text-4xl">Your next step starts here.</h1>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Study, work, build, follow Africa news and hear real student experiences in one source-aware feed.</p>
+            <h1 className="mt-2 text-3xl font-bold text-foreground sm:text-4xl">{user ? `Welcome back${user.user_metadata?.full_name ? `, ${String(user.user_metadata.full_name).split(" ")[0]}` : ""}.` : "Your Africa. Your next step."}</h1>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">A professional network, study and application workspace, community feed, short-form discovery and source-aware Africa news, connected around your goals.</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Link to="/ask-africa" className="inline-flex items-center gap-2 border border-border px-4 py-2.5 text-sm font-semibold hover:border-primary"><Sparkles className="h-4 w-4 text-primary" /> AI study & path coach</Link>
@@ -301,12 +294,61 @@ const ForYou = () => {
           </div>
         </header>
 
+        
+        <section aria-label="Share and create" className="mb-6 border border-border bg-card p-4 sm:p-5">
+          <div className="flex items-start gap-3">
+            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary/10 text-sm font-bold text-primary">
+              {user ? String(user.user_metadata?.full_name ?? user.email ?? "You").slice(0, 1).toUpperCase() : "GP"}
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="font-semibold text-foreground">What are you working towards?</p>
+              <p className="mt-1 text-sm text-muted-foreground">Share a useful student experience, discover people building in Africa, or take the next step on an application.</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <Link to="/community" className="inline-flex items-center gap-2 border border-border px-3 py-2 text-xs font-semibold hover:border-primary"><Users className="h-4 w-4 text-primary" /> Share an experience</Link>
+                <Link to="/people" className="inline-flex items-center gap-2 border border-border px-3 py-2 text-xs font-semibold hover:border-primary"><Building2 className="h-4 w-4 text-primary" /> Find people</Link>
+                <Link to="/applications" className="inline-flex items-center gap-2 border border-border px-3 py-2 text-xs font-semibold hover:border-primary"><CalendarDays className="h-4 w-4 text-primary" /> My applications</Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section aria-label="Explore GhanaPathFinder" className="mb-6 border-b border-border pb-5">
+          <div className="mb-3 flex items-center justify-between gap-3">
+            <div>
+              <h2 className="text-sm font-semibold text-foreground">Explore your world</h2>
+              <p className="mt-1 text-xs text-muted-foreground">A quick route into the parts of GhanaPathFinder you care about.</p>
+            </div>
+            <Link to="/for-you" className="shrink-0 text-xs font-semibold text-primary">Explore all</Link>
+          </div>
+          <div className="flex gap-3 overflow-x-auto pb-2">
+            {[
+              { label: "AI Study", detail: "Learn and revise", href: "/ask-africa", icon: Sparkles },
+              { label: "Apply", detail: "Plan next steps", href: "/applications", icon: CalendarDays },
+              { label: "Community", detail: "Student voices", href: "/community", icon: Users },
+              { label: "Africa News", detail: "Stories and updates", href: "/stories", icon: Newspaper },
+              { label: "Startups", detail: "Ideas and founders", href: "/startups", icon: Rocket },
+              { label: "Careers", detail: "Skills and jobs", href: "/jobs", icon: BriefcaseBusiness },
+            ].map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link key={item.label} to={item.href as any} className="group flex w-[112px] shrink-0 flex-col items-center text-center">
+                  <span className="grid h-[68px] w-[68px] place-items-center rounded-full border-2 border-primary/70 bg-card transition group-hover:bg-primary/10">
+                    <Icon className="h-6 w-6 text-primary" />
+                  </span>
+                  <span className="mt-2 text-xs font-semibold text-foreground">{item.label}</span>
+                  <span className="mt-0.5 text-[11px] text-muted-foreground">{item.detail}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+
         <section className="mb-6 border-y border-border py-4">
           <div className="mb-3 flex items-center justify-between gap-3">
             <div><h2 className="text-sm font-semibold">Go straight to what matters</h2><p className="mt-1 text-xs text-muted-foreground">Your applications, career and community stay connected.</p></div>
             <Link to="/saved" className="shrink-0 text-xs font-semibold text-primary">Saved items <ArrowUpRight className="ml-1 inline h-3.5 w-3.5" /></Link>
           </div>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6">
             {quickDestinations.map((item) => {
               const Icon = item.icon;
               return <Link key={item.href} to={item.href as any} className="flex min-w-0 items-start gap-3 border border-border bg-background p-3 transition hover:border-primary">
@@ -319,7 +361,7 @@ const ForYou = () => {
 
         <section className="mb-6">
           <div className="mb-3 flex items-center justify-between gap-3">
-            <div><h2 className="text-sm font-semibold">Stories and quick reads</h2><p className="mt-1 text-xs text-muted-foreground">Source-aware reporting and updates from across Africa.</p></div>
+            <div><h2 className="text-sm font-semibold">Africa stories, made easy to explore</h2><p className="mt-1 text-xs text-muted-foreground">Source-aware reporting and updates from across Africa.</p></div>
           </div>
           <div className="grid grid-cols-3 gap-2">
             {[
@@ -344,7 +386,7 @@ const ForYou = () => {
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search study, jobs, startups, news…" className="w-full border border-border bg-card py-2.5 pl-9 pr-3 text-sm outline-none focus:border-primary" aria-label="Search your feed" />
               </label>
-              <Link to="/community" className="inline-flex items-center justify-center gap-2 border border-border px-4 py-2.5 text-sm font-medium hover:border-primary"><Users className="h-4 w-4" /> Share a student experience</Link>
+              <Link to="/community" className="inline-flex items-center justify-center gap-2 border border-border px-4 py-2.5 text-sm font-medium hover:border-primary"><Users className="h-4 w-4" /> Share a post</Link>
             </div>
 
             <div className="mb-4 flex gap-2 overflow-x-auto pb-1" role="tablist" aria-label="Feed categories">
@@ -378,19 +420,6 @@ const ForYou = () => {
                     </div>
                   </header>
                   {item.summary && <p className="mt-3 whitespace-pre-line text-sm leading-6 text-foreground/85 line-clamp-5">{item.summary}</p>}
-                  {item.imagePaths && item.imagePaths.length > 0 && (
-                    <div className={`mt-3 grid gap-2 ${item.imagePaths.length === 1 ? "grid-cols-1" : "grid-cols-2"}`}>
-                      {item.imagePaths.slice(0, 4).map((path) => {
-                        const imageUrl = communityImageUrls?.get(path);
-                        if (!imageUrl) return null;
-                        return (
-                          <a key={path} href={imageUrl} target="_blank" rel="noreferrer" className="block overflow-hidden border border-border bg-secondary">
-                            <img src={imageUrl} alt="Photo attached to a student experience" loading="lazy" className="max-h-96 w-full object-cover" />
-                          </a>
-                        );
-                      })}
-                    </div>
-                  )}
                   <footer className="mt-4 flex flex-wrap items-center gap-2 border-t border-border pt-3">
                     {item.actionHref && (isExternal
                       ? <a href={item.actionHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-2 py-1.5 text-xs font-semibold text-primary hover:underline">{item.actionLabel || "Open source"} <ExternalLink className="h-3.5 w-3.5" /></a>
@@ -434,6 +463,26 @@ const ForYou = () => {
           </aside>
         </div>
       </main>
+
+      <nav aria-label="Quick navigation" className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 px-2 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
+        <div className="mx-auto grid max-w-lg grid-cols-5">
+          {[
+            { label: "Feed", href: "/for-you", icon: Globe2 },
+            { label: "Study", href: "/admission-match", icon: GraduationCap },
+            { label: "Community", href: "/community", icon: Users },
+            { label: "AI Coach", href: "/ask-africa", icon: Sparkles },
+            { label: "My portal", href: "/dashboard", icon: Building2 },
+          ].map((item) => {
+            const Icon = item.icon;
+            return (
+              <Link key={item.label} to={item.href as any} className="flex min-h-14 flex-col items-center justify-center gap-1 px-1 py-2 text-muted-foreground transition-colors hover:text-primary">
+                <Icon className="h-5 w-5" />
+                <span className="text-[10px] font-medium">{item.label}</span>
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
     </div>
   );
 };
