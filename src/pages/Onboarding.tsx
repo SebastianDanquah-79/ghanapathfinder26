@@ -279,6 +279,9 @@ const Onboarding = () => {
           location:location.trim()||null,
           linkedin_url:linkedinUrl.trim()||null,
           discoverable,
+          interests,
+          preferred_locations:location.trim() ? [location.trim()] : [],
+          preferred_industries:interests,
         },{onConflict:"user_id"});
         if(error) throw new Error(`Employee profile could not be saved: ${error.message}`);
       }
@@ -298,6 +301,18 @@ const Onboarding = () => {
           stage:startupStage || "Idea",
           website_url:startupWebsite.trim() || null,
           pitch_url:startupPitch.trim() || null,
+          description:startupDescription.trim() || null,
+          problem_statement:startupProblem.trim() || null,
+          solution_summary:startupSolution.trim() || null,
+          target_market:startupTargetMarket.trim() || null,
+          business_model:startupBusinessModel.trim() || null,
+          team_size:startupTeamSize ? Number(startupTeamSize) : null,
+          founded_year:startupFoundedYear ? Number(startupFoundedYear) : null,
+          funding_stage:startupFundingStage || null,
+          funding_needed:startupFundingNeeded ? Number(startupFundingNeeded) : null,
+          funding_currency:startupFundingNeeded ? startupFundingCurrency : null,
+          skills:skillList,
+          interests,
         },{onConflict:"user_id"});
         if(error) throw new Error(`Startup profile could not be saved: ${error.message}`);
       }
