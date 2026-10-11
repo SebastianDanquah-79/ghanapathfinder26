@@ -26,7 +26,9 @@ export default function RoleGateway() {
       if (cancelled || !result.data || !result.data.onboarding_complete || !result.data.account_role) return;
       // Until every role-specific portal is present in the generated production route tree,
       // send returning users to the stable dashboard instead of a route that can 404.
-      navigate("/dashboard", { replace: true });
+      const role = result.data.account_role;
+      const destination = role === "startup_founder" ? "/portal/founder" : role === "international_student" ? "/portal/international-student" : role === "student" || role === "employee" || role === "employer" ? "/portal/" + role : "/onboarding";
+      navigate(destination, { replace: true });
     });
     return function() { cancelled = true; };
   }, [loading, user, navigate]);
