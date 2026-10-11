@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ExternalLink, Loader2, Plus } from "@/lib/icons";
 import { toast } from "sonner";
@@ -59,7 +59,7 @@ export default function EmployerPortal() {
     },
   });
 
-  const submitOpportunity = async (event: React.FormEvent<HTMLFormElement>) => {
+  const submitOpportunity = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!user) {
       toast.error("Sign in to submit an opportunity.");
@@ -83,6 +83,7 @@ export default function EmployerPortal() {
     }
 
     setSaving(true);
+    try {
     const deadlineIso = deadline ? new Date(deadline + "T23:59:59Z").toISOString() : null;
     const skillList = skills.split(",").map(value => value.trim()).filter(Boolean).slice(0, 30);
     const { error } = await supabase.from("opportunities").insert({
@@ -114,7 +115,6 @@ export default function EmployerPortal() {
       published: false,
       verified: false,
     });
-    setSaving(false);
     if (error) {
       console.error("Opportunity submission failed", error);
       toast.error(error.message.includes("row-level security") ? "Only an active employer account can submit opportunities." : "Your opportunity could not be submitted. Please check the fields and try again.");
@@ -133,6 +133,12 @@ export default function EmployerPortal() {
     setDeadline("");
     await qc.invalidateQueries({ queryKey: ["employer-own-opportunities", user.id] });
     await qc.invalidateQueries({ queryKey: ["opportunity-radar"] });
+    } catch (error) {
+      console.error("Opportunity submission failed unexpectedly", error);
+      toast.error("Your opportunity could not be submitted. Please try again.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
