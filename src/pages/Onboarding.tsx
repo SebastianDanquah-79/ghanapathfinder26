@@ -56,7 +56,8 @@ const Onboarding = () => {
   }, [loading,user,navigate]);
 
   useEffect(() => {
-    const raw = params.get("role") ?? localStorage.getItem("selectedRole");
+    const selected = params.get("role") ?? localStorage.getItem("selectedRole");
+    const raw = selected === "founder" ? "startup_founder" : selected === "international-student" ? "international_student" : selected;
     if (raw === "student" || raw === "employee" || raw === "employer" || raw === "startup_founder" || raw === "international_student") setRole(raw);
   }, [params]);
 
