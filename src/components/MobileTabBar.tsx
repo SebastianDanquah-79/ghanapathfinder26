@@ -1,14 +1,14 @@
 import { Link, useLocation } from "@/lib/router-compat";
-import { Home, Users, Building2, Award, Briefcase } from "@/lib/icons";
+import { BriefcaseBusiness, GraduationCap, Globe2, Sparkles, Users } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 const tabs = [
-  { to: "/", label: "Home", icon: Home },
-  { to: "/search?kind=university", label: "Study", icon: Building2, match: "/search" },
-  { to: "/scholarships", label: "Funding", icon: Award },
-  { to: "/careers", label: "Careers", icon: Briefcase },
+  { to: "/for-you", label: "Feed", icon: Globe2 },
+  { to: "/admission-match", label: "Study", icon: GraduationCap },
   { to: "/community", label: "Community", icon: Users },
+  { to: "/ask-africa", label: "AI Coach", icon: Sparkles },
+  { to: "/jobs", label: "Work", icon: BriefcaseBusiness },
 ];
 
 const hiddenOn = ["/auth", "/onboarding", "/reset-password", "/.lovable/oauth/consent"];
@@ -27,16 +27,16 @@ const MobileTabBar = () => {
   if (hiddenOn.some((p) => pathname.startsWith(p))) return null;
 
   const name = (user?.user_metadata?.["full_name"] as string | undefined) ?? user?.email ?? null;
-  const profileActive = pathname === "/dashboard" || pathname === "/saved";
+  const profileActive = pathname === "/dashboard" || pathname === "/saved" || pathname === "/account" || pathname === "/notifications" || pathname.startsWith("/portal/");
 
   return (
     <nav
       aria-label="Primary"
       className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border pb-[env(safe-area-inset-bottom)]"
     >
-      <ul className="grid grid-cols-6">
-        {tabs.map(({ to, label, icon: Icon, match }) => {
-          const base = match ?? to;
+      <ul className="grid grid-cols-7">
+        {tabs.map(({ to, label, icon: Icon }) => {
+          const base = to;
           const active = pathname === base || (base !== "/" && pathname.startsWith(`${base}/`));
           return (
             <li key={to}>

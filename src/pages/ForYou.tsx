@@ -20,6 +20,7 @@ import Navbar from "@/components/Navbar";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useCommunityInsights } from "@/hooks/useInsights";
+import ShortVideoFeed from "@/components/ShortVideoFeed";
 import { toast } from "sonner";
 
 type FeedKind = "all" | "study" | "work" | "startups" | "news" | "community";
@@ -54,7 +55,7 @@ const filters: Array<{ key: FeedKind; label: string }> = [
 
 const quickDestinations = [
   { title: "Find a course", detail: "Universities and programmes", href: "/search?kind=university", icon: GraduationCap },
-  { title: "Apply with a plan", detail: "Admissions and deadlines", href: "/admission-match", icon: CalendarDays },
+  { title: "Application desk", detail: "Admissions, scholarships and deadlines", href: "/applications", icon: CalendarDays },
   { title: "Grow your career", detail: "Jobs, skills and internships", href: "/jobs", icon: BriefcaseBusiness },
   { title: "Build something", detail: "Startups and founder support", href: "/startups", icon: Rocket },
   { title: "Meet your people", detail: "Community and professionals", href: "/community", icon: Users },
@@ -286,7 +287,7 @@ const ForYou = () => {
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">GhanaPathFinder · One connected platform</p>
             <h1 className="mt-2 text-3xl font-bold text-foreground sm:text-4xl">{user ? `Welcome back${user.user_metadata?.full_name ? `, ${String(user.user_metadata.full_name).split(" ")[0]}` : ""}.` : "Your Africa. Your next step."}</h1>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">A professional network, study and application workspace, community feed, short-form discovery and source-aware Africa news, connected around your goals.</p>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">One place to learn, apply, build your career, meet people, watch useful short videos and follow Africa news. Your feed connects the next step to the information and people that can help you take it.</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <Link to="/ask-africa" className="inline-flex items-center gap-2 border border-border px-4 py-2.5 text-sm font-semibold hover:border-primary"><Sparkles className="h-4 w-4 text-primary" /> AI study & path coach</Link>
@@ -312,11 +313,13 @@ const ForYou = () => {
           </div>
         </section>
 
+        <ShortVideoFeed />
+
         <section aria-label="Explore GhanaPathFinder" className="mb-6 border-b border-border pb-5">
           <div className="mb-3 flex items-center justify-between gap-3">
             <div>
-              <h2 className="text-sm font-semibold text-foreground">Explore your world</h2>
-              <p className="mt-1 text-xs text-muted-foreground">A quick route into the parts of GhanaPathFinder you care about.</p>
+              <h2 className="text-sm font-semibold text-foreground">One platform. Your next move.</h2>
+              <p className="mt-1 text-xs text-muted-foreground">Study, opportunities, community, news and AI learning work together here.</p>
             </div>
             <Link to="/for-you" className="shrink-0 text-xs font-semibold text-primary">Explore all</Link>
           </div>
@@ -464,25 +467,6 @@ const ForYou = () => {
         </div>
       </main>
 
-      <nav aria-label="Quick navigation" className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 px-2 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden">
-        <div className="mx-auto grid max-w-lg grid-cols-5">
-          {[
-            { label: "Feed", href: "/for-you", icon: Globe2 },
-            { label: "Study", href: "/admission-match", icon: GraduationCap },
-            { label: "Community", href: "/community", icon: Users },
-            { label: "AI Coach", href: "/ask-africa", icon: Sparkles },
-            { label: "My portal", href: "/dashboard", icon: Building2 },
-          ].map((item) => {
-            const Icon = item.icon;
-            return (
-              <Link key={item.label} to={item.href as any} className="flex min-h-14 flex-col items-center justify-center gap-1 px-1 py-2 text-muted-foreground transition-colors hover:text-primary">
-                <Icon className="h-5 w-5" />
-                <span className="text-[10px] font-medium">{item.label}</span>
-              </Link>
-            );
-          })}
-        </div>
-      </nav>
     </div>
   );
 };
