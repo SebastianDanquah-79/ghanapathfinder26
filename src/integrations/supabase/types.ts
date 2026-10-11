@@ -1604,25 +1604,73 @@ export type Database = {
       }
       employee_profiles: {
         Row: {
+          availability: string | null
+          bio: string | null
           created_at: string
+          cv_url: string | null
+          discoverable: boolean
+          education_level: string | null
           employer_name: string | null
+          graduation_year: number | null
+          github_url: string | null
+          interests: string[]
+          linkedin_url: string | null
+          location: string | null
+          portfolio_url: string | null
+          preferred_industries: string[]
+          preferred_locations: string[]
+          preferred_opportunity_types: string[]
           professional_title: string | null
+          skills: string[]
+          university: string | null
           updated_at: string
           user_id: string
           years_experience: number | null
         }
         Insert: {
+          availability?: string | null
+          bio?: string | null
           created_at?: string
+          cv_url?: string | null
+          discoverable?: boolean
+          education_level?: string | null
           employer_name?: string | null
+          graduation_year?: number | null
+          github_url?: string | null
+          interests?: string[]
+          linkedin_url?: string | null
+          location?: string | null
+          portfolio_url?: string | null
+          preferred_industries?: string[]
+          preferred_locations?: string[]
+          preferred_opportunity_types?: string[]
           professional_title?: string | null
+          skills?: string[]
+          university?: string | null
           updated_at?: string
           user_id: string
           years_experience?: number | null
         }
         Update: {
+          availability?: string | null
+          bio?: string | null
           created_at?: string
+          cv_url?: string | null
+          discoverable?: boolean
+          education_level?: string | null
           employer_name?: string | null
+          graduation_year?: number | null
+          github_url?: string | null
+          interests?: string[]
+          linkedin_url?: string | null
+          location?: string | null
+          portfolio_url?: string | null
+          preferred_industries?: string[]
+          preferred_locations?: string[]
+          preferred_opportunity_types?: string[]
           professional_title?: string | null
+          skills?: string[]
+          university?: string | null
           updated_at?: string
           user_id?: string
           years_experience?: number | null
@@ -2033,31 +2081,67 @@ export type Database = {
       }
       founder_profiles: {
         Row: {
+          business_model: string | null
           created_at: string
+          description: string | null
+          founded_year: number | null
+          funding_currency: string | null
+          funding_needed: number | null
+          funding_stage: string | null
+          interests: string[]
           pitch_url: string | null
+          problem_statement: string | null
           sector: string | null
+          skills: string[]
+          solution_summary: string | null
           stage: string | null
           startup_name: string | null
+          target_market: string | null
+          team_size: number | null
           updated_at: string
           user_id: string
           website_url: string | null
         }
         Insert: {
+          business_model?: string | null
           created_at?: string
+          description?: string | null
+          founded_year?: number | null
+          funding_currency?: string | null
+          funding_needed?: number | null
+          funding_stage?: string | null
+          interests?: string[]
           pitch_url?: string | null
+          problem_statement?: string | null
           sector?: string | null
+          skills?: string[]
+          solution_summary?: string | null
           stage?: string | null
           startup_name?: string | null
+          target_market?: string | null
+          team_size?: number | null
           updated_at?: string
           user_id: string
           website_url?: string | null
         }
         Update: {
+          business_model?: string | null
           created_at?: string
+          description?: string | null
+          founded_year?: number | null
+          funding_currency?: string | null
+          funding_needed?: number | null
+          funding_stage?: string | null
+          interests?: string[]
           pitch_url?: string | null
+          problem_statement?: string | null
           sector?: string | null
+          skills?: string[]
+          solution_summary?: string | null
           stage?: string | null
           startup_name?: string | null
+          target_market?: string | null
+          team_size?: number | null
           updated_at?: string
           user_id?: string
           website_url?: string | null
