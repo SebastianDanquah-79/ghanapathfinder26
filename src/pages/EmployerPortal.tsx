@@ -5,7 +5,7 @@ export default function EmployerPortal() {
     <PortalShell role="employer">
       <section className="mt-6 grid gap-3 sm:grid-cols-3">
         <a className="border border-border bg-card p-4 hover:border-primary" href="/opportunities"><p className="font-semibold">Post an opportunity</p><p className="mt-1 text-xs text-muted-foreground">Publish a job, internship or fellowship.</p></a>
-        <a className="border border-border bg-card p-4 hover:border-primary" href="/applications"><p className="font-semibold">Manage applications</p><p className="mt-1 text-xs text-muted-foreground">Keep track of your recruitment workflow.</p></a>
+        <a className="border border-border bg-card p-4 hover:border-primary" href="/people"><p className="font-semibold">Find candidates</p><p className="mt-1 text-xs text-muted-foreground">Discover candidates who have chosen to make their profiles visible.</p></a>
         <a className="border border-border bg-card p-4 hover:border-primary" href="/onboarding?role=employer"><p className="font-semibold">Company profile</p><p className="mt-1 text-xs text-muted-foreground">Keep your employer information current.</p></a>
       </section>
     </PortalShell>
