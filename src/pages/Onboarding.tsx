@@ -28,7 +28,7 @@ const normalizeSocialUrl = (raw: string, allowedHosts: string[]): string | null 
 };
 
 const normalizeWhatsAppNumber = (raw: string): string | null => {
-  let digits = raw.replace(/\\D/g, "");
+  let digits = raw.replace(/\D/g, "");
   if (digits.length === 10 && digits.startsWith("0")) digits = `233${digits.slice(1)}`;
   else if (digits.length === 9) digits = `233${digits}`;
   return /^[1-9][0-9]{7,14}$/.test(digits) ? digits : null;
