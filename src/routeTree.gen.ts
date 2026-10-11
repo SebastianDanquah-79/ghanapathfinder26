@@ -10,6 +10,12 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as InternationalCommunityRouteImport } from './routes/international-community'
+import { Route as PortalEmployeeRouteImport } from './routes/portal/employee'
+import { Route as PortalEmployerRouteImport } from './routes/portal/employer'
+import { Route as PortalFounderRouteImport } from './routes/portal/founder'
+import { Route as PortalInternationalStudentRouteImport } from './routes/portal/international-student'
+import { Route as PortalStudentRouteImport } from './routes/portal/student'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AdmissionMatchRouteImport } from './routes/admission-match'
 import { Route as ApplicationsRouteImport } from './routes/applications'
@@ -87,6 +93,36 @@ import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/l
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InternationalCommunityRoute = InternationalCommunityRouteImport.update({
+  id: './routes/international-community',
+  path: './routes/international-community',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortalEmployeeRoute = PortalEmployeeRouteImport.update({
+  id: './routes/portal/employee',
+  path: './routes/portal/employee',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortalEmployerRoute = PortalEmployerRouteImport.update({
+  id: './routes/portal/employer',
+  path: './routes/portal/employer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortalFounderRoute = PortalFounderRouteImport.update({
+  id: './routes/portal/founder',
+  path: './routes/portal/founder',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortalInternationalStudentRoute = PortalInternationalStudentRouteImport.update({
+  id: './routes/portal/international-student',
+  path: './routes/portal/international-student',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortalStudentRoute = PortalStudentRouteImport.update({
+  id: './routes/portal/student',
+  path: './routes/portal/student',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -849,6 +885,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    './routes/international-community': {
+      id: './routes/international-community'
+      path: './routes/international-community'
+      fullPath: './routes/international-community'
+      preLoaderRoute: typeof InternationalCommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    './routes/portal/employee': {
+      id: './routes/portal/employee'
+      path: './routes/portal/employee'
+      fullPath: './routes/portal/employee'
+      preLoaderRoute: typeof PortalEmployeeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    './routes/portal/employer': {
+      id: './routes/portal/employer'
+      path: './routes/portal/employer'
+      fullPath: './routes/portal/employer'
+      preLoaderRoute: typeof PortalEmployerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    './routes/portal/founder': {
+      id: './routes/portal/founder'
+      path: './routes/portal/founder'
+      fullPath: './routes/portal/founder'
+      preLoaderRoute: typeof PortalFounderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    './routes/portal/international-student': {
+      id: './routes/portal/international-student'
+      path: './routes/portal/international-student'
+      fullPath: './routes/portal/international-student'
+      preLoaderRoute: typeof PortalInternationalStudentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    './routes/portal/student': {
+      id: './routes/portal/student'
+      path: './routes/portal/student'
+      fullPath: './routes/portal/student'
+      preLoaderRoute: typeof PortalStudentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -1211,6 +1289,12 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  InternationalCommunityRoute: InternationalCommunityRoute,
+  PortalEmployeeRoute: PortalEmployeeRoute,
+  PortalEmployerRoute: PortalEmployerRoute,
+  PortalFounderRoute: PortalFounderRoute,
+  PortalInternationalStudentRoute: PortalInternationalStudentRoute,
+  PortalStudentRoute: PortalStudentRoute,
   AboutRoute: AboutRoute,
   AdmissionMatchRoute: AdmissionMatchRoute,
   ApplicationsRoute: ApplicationsRoute,
