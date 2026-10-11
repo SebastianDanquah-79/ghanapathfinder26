@@ -1,9 +1,10 @@
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "@/lib/router-compat";
 import { ArrowRight, Briefcase, Building2, GraduationCap, Rocket, Globe, Loader2 } from "@/lib/icons";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
 
 const roles = [
   { key: "student", label: "Student", description: "Universities, scholarships, WASSCE matching, learning and deadlines.", icon: GraduationCap },
@@ -18,6 +19,7 @@ type Role = typeof roles[number]["key"];
 export default function RoleGateway() {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
+  const [choosing, setChoosing] = useState<Role | null>(null);
 
   useEffect(() => {
     if (!user || loading || window.location.search.includes("switchRole=1")) return;
@@ -33,8 +35,20 @@ export default function RoleGateway() {
 
   if (loading) return <div className="min-h-dvh grid place-items-center bg-background"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
 
-  function chooseRole(role: Role) {
+  async function chooseRole(role: Role) {
+    setChoosing(role);
     localStorage.setItem("selectedRole", role);
+    if (user) {
+      const { error } = await supabase.from("profiles")
+        .update({ role, account_role: role, account_type: role })
+        .eq("id", user.id);
+      if (error) {
+        console.error("Could not activate selected portal role", error);
+        toast.error("Could not switch portal yet. Please try again.");
+        setChoosing(null);
+        return;
+      }
+    }
     navigate("/onboarding?role=" + role);
   }
 
@@ -50,12 +64,12 @@ export default function RoleGateway() {
           {roles.map(function(item) {
             const Icon = item.icon;
             return (
-              <button key={item.key} type="button" onClick={function(){chooseRole(item.key);}} className="group border border-border bg-card p-5 text-left transition hover:border-primary hover:bg-primary/[0.03] focus:outline-none focus:ring-2 focus:ring-primary">
+              <button key={item.key} type="button" disabled={choosing !== null} onClick={function(){void chooseRole(item.key);}} className="group border border-border bg-card p-5 text-left transition hover:border-primary hover:bg-primary/[0.03] focus:outline-none focus:ring-2 focus:ring-primary">
                 <div className="flex items-start justify-between gap-4">
                   <span className="grid h-11 w-11 place-items-center border border-border bg-background text-primary"><Icon className="h-5 w-5" aria-hidden="true" /></span>
                   <ArrowRight className="h-5 w-5 text-muted-foreground transition-transform group-hover:translate-x-1" aria-hidden="true" />
                 </div>
-                <h2 className="mt-6 text-lg font-semibold">{item.label}</h2>
+                <h2 className="mt-6 text-lg font-semibold">{choosing === item.key ? "Opening " + item.label + "…" : item.label}</h2>
                 <p className="mt-2 text-sm leading-6 text-muted-foreground">{item.description}</p>
               </button>
             );
