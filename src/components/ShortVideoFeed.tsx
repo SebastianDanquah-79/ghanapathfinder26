@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 import { Link } from "@/lib/router-compat";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Heart, Loader2, MessageCircle, Play, Send, Upload, Video } from "lucide-react";
@@ -97,9 +97,7 @@ export default function ShortVideoFeed() {
       const [profilesResult, commentsResult, likesResult] = await Promise.all([
         supabase.from("profiles").select("id,full_name,avatar_url").in("id", authorIds),
         supabase.from("feed_comments").select("id,post_id,author_id,content,created_at").in("post_id", ids).order("created_at", { ascending: true }).limit(60),
-        user
-          ? supabase.from("feed_likes").select("post_id").eq("user_id", user.id).in("post_id", ids)
-          : Promise.resolve({ data: [], error: null }),
+        supabase.from("feed_likes").select("post_id,user_id").in("post_id", ids),
       ]);
       if (commentsResult.error) throw commentsResult.error;
       if (likesResult.error) throw likesResult.error;
@@ -111,7 +109,7 @@ export default function ShortVideoFeed() {
         : { data: [], error: null };
       const authorMap = new Map((profiles ?? []).map((profile) => [profile.id, profile]));
       const commentAuthorMap = new Map((commentProfilesResult.data ?? []).map((profile) => [profile.id, profile.full_name]));
-      const likedIds = new Set((likesResult.data ?? []).map((like) => like.post_id));
+      const likedIds = new Set((likesResult.data ?? []).filter((like) => like.user_id === user?.id).map((like) => like.post_id));
       return posts.map((post) => ({
         ...post,
         tags: post.tags ?? [],
@@ -129,7 +127,7 @@ export default function ShortVideoFeed() {
 
   const clips = useMemo(() => clipsQuery.data ?? [], [clipsQuery.data]);
 
-  async function publishClip(event: React.FormEvent<HTMLFormElement>) {
+  async function publishClip(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!user) {
       toast.info("Sign in to share a clip.");
