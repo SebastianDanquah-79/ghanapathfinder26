@@ -177,7 +177,7 @@ export default function PortalShell(props: {role: PortalRole; children?: ReactNo
           <section className="mt-7 border border-primary/30 bg-primary/[0.04] p-6">
             <div className="flex gap-3">
               <ShieldCheck className="h-5 w-5 text-primary" />
-              <div><h2 className="font-semibold">Complete your profile before recommendations</h2><p className="mt-2 text-sm text-muted-foreground">Your role-specific profile is the input to matching.</p><button type="button" onClick={function(){navigate("/onboarding?role=" + (props.role === "founder" ? "startup_founder" : props.role));}} className="mt-4 inline-flex items-center gap-2 bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">Complete profile <ArrowRight className="h-4 w-4" /></button></div>
+              <div><h2 className="font-semibold">Complete your profile before recommendations</h2><p className="mt-2 text-sm text-muted-foreground">Your role-specific profile is the input to matching.</p><button type="button" onClick={function(){navigate("/onboarding?role=" + (props.role === "founder" ? "startup_founder" : props.role === "international-student" ? "international_student" : props.role));}} className="mt-4 inline-flex items-center gap-2 bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">Complete profile <ArrowRight className="h-4 w-4" /></button></div>
             </div>
           </section>
         ) : (
