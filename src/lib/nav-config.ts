@@ -41,8 +41,6 @@ export const navSections: NavSection[] = [
     icon: Building2,
     href: "/search?kind=university",
     items: [
-      { label: "Universities", href: "/search?kind=university", desc: "Find where you belong" },
-      { label: "Programmes", href: "/programmes", desc: "Choose your direction" },
       { label: "Compare institutions", href: "/compare", desc: "Compare what matters" },
       { label: "Explore & search", href: "/search", desc: "Discover your options" },
     ],
@@ -94,9 +92,6 @@ export const navSections: NavSection[] = [
       { label: "Opportunity Radar", href: "/opportunities", desc: "Jobs, scholarships and opportunities" },
       { label: "Africa", href: "/africa", desc: "Discover countries, news and opportunities" },
       { label: "Jobs", href: "/jobs", desc: "Work opportunities and careers" },
-      { label: "Companies", href: "/companies", desc: "Verified employers and organisations" },
-      { label: "Startups", href: "/startups", desc: "African startup ecosystem" },
-      { label: "People", href: "/people", desc: "Discoverable professionals" },
       { label: "My Africa", href: "/my-africa", desc: "Your personal Africa map" },
       { label: "Ask Africa", href: "/ask-africa", desc: "Ask the AI discovery assistant" },
     ],
