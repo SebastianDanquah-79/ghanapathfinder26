@@ -47,7 +47,11 @@ const UniversityDirectory = () => {
   return (
     <section id="universities" className="py-12 lg:py-28 px-4">
       <div className="max-w-7xl mx-auto">
-        <SectionHeader badge="Directory" title="Ghana University" highlight="Directory" description="Every accredited university, technical university, college of education and nursing or health training institution recorded in Ghana. Each listing shows the institution itself: its location, ownership, indicative fees, admission aggregate range and flagship programmes, with a link to its official admissions page." />
+        <SectionHeader badge="University & Tertiary Directory" title="Explore Ghana's" highlight="institutions" description="Search the institutions currently catalogued in GhanaPathFinder, from universities and technical universities to colleges and other tertiary providers. Check each institution's source and accreditation status before making an application decision." />
+        <div className="mb-5 flex flex-wrap items-center justify-between gap-3 border-y border-border py-4">
+          <div><p className="text-xs font-bold uppercase tracking-[0.14em] text-primary">Live directory results</p><p className="mt-1 text-2xl font-bold text-foreground">{total.toLocaleString()} institutions match your filters</p></div>
+          <p className="max-w-md text-xs leading-5 text-muted-foreground">Counts reflect records currently in the database, not a claim that every institution or programme in Ghana has been catalogued.</p>
+        </div>
 
         <div className="flex flex-col sm:flex-row gap-3 mb-3 max-w-3xl mx-auto">
           <div className="relative flex-1">
