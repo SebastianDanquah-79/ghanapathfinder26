@@ -153,7 +153,7 @@ const Navbar = () => {
                 </Link>
               </TooltipTrigger>
               <TooltipContent>Notifications{unreadNotifications > 0 ? ` (${unreadNotifications} unread)` : ""}</TooltipContent>
-            </Tooltip>
+            </Tooltip>}
 
             <DropdownMenu>
               <Tooltip>
