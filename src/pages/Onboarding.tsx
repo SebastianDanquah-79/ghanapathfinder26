@@ -32,6 +32,7 @@ const Onboarding = () => {
   const [career,setCareer] = useState("");
   const [bio,setBio] = useState("");
   const [location,setLocation] = useState("");
+  const [countryCode,setCountryCode] = useState("");
   const [university,setUniversity] = useState("");
   const [program,setProgram] = useState("");
   const [graduationYear,setGraduationYear] = useState("");
@@ -93,8 +94,9 @@ const Onboarding = () => {
 
   useEffect(() => {
     if (!user || role !== "international_student") return;
-    void supabase.from("international_students").select("university_name,programme_name,graduation_year").eq("user_id", user.id).maybeSingle().then(({data}) => {
+    void supabase.from("international_students").select("country_code,university_name,programme_name,graduation_year").eq("user_id", user.id).maybeSingle().then(({data}) => {
       if (!data) return;
+      setCountryCode(data.country_code ?? "");
       setUniversity(data.university_name ?? "");
       setProgram(data.programme_name ?? "");
       setGraduationYear(data.graduation_year ? String(data.graduation_year) : "");
@@ -217,7 +219,7 @@ const Onboarding = () => {
       }
       if(role==="international_student"){
         const {error}=await supabase.from("international_students").upsert({
-          user_id:user.id,university_name:university.trim()||null,programme_name:program.trim()||null,
+          user_id:user.id,country_code:countryCode.trim().toUpperCase()||null,university_name:university.trim()||null,programme_name:program.trim()||null,
           graduation_year:graduationYear?Number(graduationYear):null,skills:skillList,interests,
           visible:discoverable,
           open_to_collaboration:pathways.includes("Meet people")||pathways.includes("Build a business"),
@@ -291,7 +293,7 @@ const Onboarding = () => {
             <input className={inputClass} placeholder="Graduation year (optional)" inputMode="numeric" value={graduationYear} onChange={e => setGraduationYear(e.target.value.replace(/\\D/g,"").slice(0,4))} />
           </>}
           {role === "international_student" && <>
-            <input className={inputClass} placeholder="Home country" value={location} maxLength={120} onChange={e => setLocation(e.target.value)} />
+            <input className={inputClass} placeholder="Home country code (e.g. GH, NG, SL)" value={countryCode} maxLength={2} onChange={e => setCountryCode(e.target.value.toUpperCase().replace(/[^A-Z]/g, ""))} />
             <input className={inputClass} placeholder="Current university (optional)" value={university} onChange={e => setUniversity(e.target.value)} />
             <input className={inputClass} placeholder="Qualification or programme you are applying with" value={program} onChange={e => setProgram(e.target.value)} />
             <input className={inputClass} placeholder="Expected graduation year (optional)" inputMode="numeric" value={graduationYear} onChange={e => setGraduationYear(e.target.value.replace(/\\D/g,"").slice(0,4))} />
