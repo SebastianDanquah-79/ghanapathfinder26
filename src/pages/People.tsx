@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@/lib/router-compat";
-import { ArrowUpRight, BriefcaseBusiness, Building2, Rocket, Users } from "lucide-react";
+import { ArrowUpRight, BriefcaseBusiness, Building2, Instagram, Linkedin, MessageCircle, Rocket, Users } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -11,14 +11,29 @@ const People = () => {
   const people = useQuery({
     queryKey: ["people-directory"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("talent_directory")
-        .select("user_id,full_name,professional_title,years_experience,city,preferred_locations,preferred_industries,skills,bio,linkedin_url,discoverable,updated_at")
-        .eq("discoverable", true)
+      // This view exposes only profiles that explicitly opted into discovery. It
+      // never returns email addresses or raw phone numbers, and each social URL
+      // is present only when that user marked it public.
+      const { data, error } = await (supabase as any)
+        .from("public_people_directory")
+        .select("user_id,full_name,professional_title,city,skills,bio,avatar_url,linkedin_url,instagram_url,x_url,whatsapp_url,updated_at")
         .order("updated_at", { ascending: false })
         .limit(100);
       if (error) throw error;
-      return data ?? [];
+      return (data ?? []) as Array<{
+        user_id: string;
+        full_name: string;
+        professional_title: string | null;
+        city: string | null;
+        skills: string[];
+        bio: string | null;
+        avatar_url: string | null;
+        linkedin_url: string | null;
+        instagram_url: string | null;
+        x_url: string | null;
+        whatsapp_url: string | null;
+        updated_at: string;
+      }>;
     },
     staleTime: 30_000,
   });
@@ -58,7 +73,9 @@ const People = () => {
       const { data, error } = await supabase
         .from("opportunities")
         .select("id,title,company_name,organisation,country,city,work_mode,type,opportunity_type,category,apply_url,source_url,verified,deadline_date,posted_at")
-        .or("is_active.eq.true,published.eq.true")
+        .eq("is_active", true)
+        .eq("published", true)
+        .eq("verified", true)
         .order("posted_at", { ascending: false })
         .limit(8);
       if (error) throw error;
@@ -75,7 +92,7 @@ const People = () => {
       <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <header className="mb-8 border-b border-border pb-6">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Connect</p>
-          <h1 className="mt-2 text-3xl font-bold">People Building Africa</h1>
+          <h1 className="mt-2 text-4xl sm:text-5xl font-bold tracking-tight">People Building Africa</h1>
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
             Meet professionals who choose to be discoverable, explore African startups and companies, and find opportunities to contribute.
           </p>
@@ -105,16 +122,38 @@ const People = () => {
           ) : people.data?.length ? (
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {people.data.map((person) => (
-                <article key={person.user_id} className={card}>
-                  <h3 className="font-semibold">{person.full_name || "Professional"}</h3>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {person.professional_title || "Professional"}
-                    {person.city ? " · " + person.city : ""}
-                    {person.years_experience != null ? " · " + person.years_experience + " years experience" : ""}
-                  </p>
-                  {person.skills?.length > 0 && <p className="mt-3 text-xs leading-5 text-muted-foreground">{person.skills.slice(0, 8).join(" · ")}</p>}
-                  {person.bio && <p className="mt-3 line-clamp-3 text-sm leading-6 text-muted-foreground">{person.bio}</p>}
-                  {person.linkedin_url && <a href={person.linkedin_url} target="_blank" rel="noreferrer" className={externalLink + " mt-3"}>LinkedIn <ArrowUpRight className="h-3.5 w-3.5" /></a>}
+                <article key={person.user_id} className={card + " flex flex-col gap-3"}>
+                  <div className="flex items-start gap-3">
+                    <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border border-border bg-secondary flex items-center justify-center font-semibold text-foreground">
+                      <span aria-hidden="true">{person.full_name.trim().slice(0, 1).toUpperCase()}</span>
+                      {person.avatar_url && (
+                        <img
+                          src={person.avatar_url}
+                          alt={person.full_name + " profile"}
+                          loading="lazy"
+                          className="absolute inset-0 h-full w-full object-cover"
+                          onError={(event) => { event.currentTarget.style.display = "none"; }}
+                        />
+                      )}
+                    </div>
+                    <div className="min-w-0">
+                      <h3 className="font-semibold leading-snug">{person.full_name || "Professional"}</h3>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {person.professional_title || "Professional"}
+                        {person.city ? " · " + person.city : ""}
+                      </p>
+                    </div>
+                  </div>
+                  {person.skills?.length > 0 && <p className="text-xs leading-5 text-muted-foreground">{person.skills.slice(0, 8).join(" · ")}</p>}
+                  {person.bio && <p className="line-clamp-3 text-sm leading-6 text-muted-foreground">{person.bio}</p>}
+                  {(person.linkedin_url || person.instagram_url || person.x_url || person.whatsapp_url) && (
+                    <nav aria-label={person.full_name + " public social links"} className="mt-auto flex flex-wrap gap-x-4 gap-y-2 border-t border-border pt-3">
+                      {person.linkedin_url && <a href={person.linkedin_url} target="_blank" rel="noopener noreferrer" className={externalLink}><Linkedin className="h-3.5 w-3.5" /> LinkedIn <ArrowUpRight className="h-3.5 w-3.5" /></a>}
+                      {person.instagram_url && <a href={person.instagram_url} target="_blank" rel="noopener noreferrer" className={externalLink}><Instagram className="h-3.5 w-3.5" /> Instagram <ArrowUpRight className="h-3.5 w-3.5" /></a>}
+                      {person.x_url && <a href={person.x_url} target="_blank" rel="noopener noreferrer" className={externalLink}>X <ArrowUpRight className="h-3.5 w-3.5" /></a>}
+                      {person.whatsapp_url && <a href={person.whatsapp_url} target="_blank" rel="noopener noreferrer" className={externalLink}><MessageCircle className="h-3.5 w-3.5" /> WhatsApp <ArrowUpRight className="h-3.5 w-3.5" /></a>}
+                    </nav>
+                  )}
                 </article>
               ))}
             </div>
