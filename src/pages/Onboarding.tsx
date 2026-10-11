@@ -78,7 +78,8 @@ const Onboarding = () => {
       setFullName(data.full_name ?? "");
       if (!params.get("role") && (data.account_role || data.role)) {
         const savedRole = data.account_role || data.role;
-        if (savedRole === "student" || savedRole === "employee" || savedRole === "employer" || savedRole === "startup_founder" || savedRole === "international_student") setRole(savedRole);
+        const normalizedRole = savedRole === "founder" ? "startup_founder" : savedRole === "international-student" ? "international_student" : savedRole;
+        if (normalizedRole === "student" || normalizedRole === "employee" || normalizedRole === "employer" || normalizedRole === "startup_founder" || normalizedRole === "international_student") setRole(normalizedRole);
       }
       setBio(data.bio ?? "");
       setLocation(data.location ?? "");
