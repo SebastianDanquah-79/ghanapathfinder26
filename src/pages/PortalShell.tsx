@@ -1,5 +1,5 @@
 
-import { ReactNode, useMemo } from "react";
+import { ReactNode, useEffect, useMemo } from "react";
 import { Link, useNavigate } from "@/lib/router-compat";
 import { ArrowRight, CheckCircle2, Loader2, RefreshCw, ShieldCheck } from "@/lib/icons";
 import { useQuery } from "@tanstack/react-query";
