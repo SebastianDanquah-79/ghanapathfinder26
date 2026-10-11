@@ -60,7 +60,7 @@ export const navSections: NavSection[] = [
       { label: "Admission match", href: "/admission-match", desc: "Check possible qualification pathways" },
       { label: "Study destinations", href: "/study-destinations", desc: "Explore routes into study" },
       { label: "Scholarships", href: "/scholarships/", desc: "Find funding opportunities" },
-      { label: "Applications and deadlines", href: "/applications", desc: "Keep your application pipeline organised" },
+      { label: "Application desk", href: "/applications", desc: "Track admissions, scholarships, deadlines and next steps in one place" },
     ],
   },
   {
@@ -108,7 +108,7 @@ export const navSections: NavSection[] = [
     icon: BookOpen,
     href: "/ask-africa",
     items: [
-      { label: "AI study coach", href: "/ask-africa", desc: "Understand topics, practise questions and plan revision" },
+      { label: "AI study coach", href: "/ask-africa", desc: "Explain topics, practise questions, plan revision and explore pathways" },
       { label: "My Path", href: "/my-path", desc: "Turn study and career goals into practical steps" },
       { label: "Scholarship matcher", href: "/matcher", desc: "Find funding options that fit your goals" },
       { label: "Applications and deadlines", href: "/applications", desc: "Track applications and important dates" },
