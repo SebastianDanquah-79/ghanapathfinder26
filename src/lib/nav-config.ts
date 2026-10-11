@@ -130,11 +130,11 @@ const portalNavSections: Record<string, NavSection[]> = {
     ]},
   ],
   employer: [
-    { id: "hiring", label: "Hiring", icon: Building2, href: "/opportunities", items: [
-      { label: "Opportunities", href: "/opportunities" },
-      { label: "Applicants and people", href: "/people" },
+    { id: "hiring", label: "Hiring", icon: Building2, href: "/portal/employer#post-opportunity", items: [
+      { label: "Post an opportunity", href: "/portal/employer#post-opportunity" },
+      { label: "Review your submissions", href: "/portal/employer#your-submissions" },
+      { label: "Find candidates", href: "/people" },
       { label: "Organisation profile", href: "/onboarding?role=employer" },
-      { label: "Organisation community", href: "/community" },
     ]},
   ],
   startup_founder: [
@@ -181,7 +181,7 @@ const portalAccountItems: Record<string, NavItem[]> = {
   employer: [
     { label: "Employer dashboard", href: "/dashboard" },
     { label: "Organisation profile", href: "/onboarding?role=employer" },
-    { label: "Opportunities", href: "/opportunities" },
+    { label: "Post an opportunity", href: "/portal/employer#post-opportunity" },
     { label: "Applicants", href: "/people" },
     { label: "Change portal", href: "/?switchRole=1" },
   ],
