@@ -200,7 +200,7 @@ const Navbar = () => {
               <div>
                 <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground"><Info className="h-4 w-4" /> About</div>
                 <div className="mt-2 grid grid-cols-2 gap-2">
-                  {[...(user ? accountItems : []), ...aboutItems].map((i) => <a key={i.href} href={i.href} onClick={() => setOpen(false)} className="block px-3 py-2.5 text-sm text-foreground rounded-lg border border-border bg-secondary/50 active:text-primary">{i.label}</a>)}
+                  {[...(user ? visibleAccountItems : []), ...aboutItems].map((i) => <a key={i.href} href={i.href} onClick={() => setOpen(false)} className="block px-3 py-2.5 text-sm text-foreground rounded-lg border border-border bg-secondary/50 active:text-primary">{i.label}</a>)}
                 </div>
               </div>
             </div>
