@@ -51,7 +51,7 @@ export const navSections: NavSection[] = [
   },
   {
     id: "study",
-    label: "Study & Apply",
+    label: "Study & applications",
     icon: GraduationCap,
     href: "/admission-match",
     items: [
@@ -65,7 +65,7 @@ export const navSections: NavSection[] = [
   },
   {
     id: "work",
-    label: "Careers",
+    label: "Professional network",
     icon: Briefcase,
     href: "/jobs",
     items: [
@@ -79,7 +79,7 @@ export const navSections: NavSection[] = [
   },
   {
     id: "build",
-    label: "Startups",
+    label: "Build & startups",
     icon: Rocket,
     href: "/build",
     items: [
@@ -104,7 +104,7 @@ export const navSections: NavSection[] = [
   },
   {
     id: "learning",
-    label: "AI Study Coach",
+    label: "AI coach",
     icon: BookOpen,
     href: "/ask-africa",
     items: [
