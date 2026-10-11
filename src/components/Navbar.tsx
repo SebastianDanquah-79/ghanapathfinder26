@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Search, LogOut, Info } from "@/lib/icons";
 import BrandMark from "@/components/BrandMark";
-import { Link, useLocation } from "@/lib/router-compat";
+import { Link, useLocation, useNavigate } from "@/lib/router-compat";
 import { useAuth } from "@/hooks/useAuth";
 import ThemeToggle from "@/components/ThemeToggle";
 import { navSections, aboutItems, getNavSectionsForRole, getAccountItemsForRole } from "@/lib/nav-config";
@@ -33,6 +33,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { user, signOut } = useAuth();
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const [accountRole, setAccountRole] = useState<string | null>(null);
   const [unreadNotifications, setUnreadNotifications] = useState(0);
 
@@ -79,6 +80,12 @@ const Navbar = () => {
       void supabase.removeChannel(channel);
     };
   }, [user?.id, pathname]);
+
+  async function leaveAccount() {
+    await signOut();
+    setOpen(false);
+    navigate("/", { replace: true });
+  }
 
   const isPortal = pathname.startsWith("/portal/") || pathname === "/dashboard";
   const visibleNavSections = isPortal ? getNavSectionsForRole(accountRole) : navSections;
@@ -192,7 +199,7 @@ const Navbar = () => {
                     </DropdownMenuItem>
                   ))}
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onSelect={() => void signOut()} className="cursor-pointer">
+                  <DropdownMenuItem onSelect={() => void leaveAccount()} className="cursor-pointer">
                     <LogOut className="h-4 w-4" /> Sign out
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -245,7 +252,7 @@ const Navbar = () => {
                 <div className="mt-2 grid grid-cols-2 gap-2">
                   {visibleAccountItems.map((i) => <a key={i.href} href={i.href} onClick={() => setOpen(false)} className="block px-3 py-2.5 text-sm text-foreground rounded-lg border border-border bg-secondary/50 active:text-primary">{i.label}</a>)}
                 </div>
-                <button type="button" onClick={() => { setOpen(false); void signOut(); }} className="mt-3 flex w-full items-center gap-2 border border-border px-3 py-2.5 text-sm font-semibold text-foreground hover:border-primary">
+                <button type="button" onClick={() => void leaveAccount()} className="mt-3 flex w-full items-center gap-2 border border-border px-3 py-2.5 text-sm font-semibold text-foreground hover:border-primary">
                   <LogOut className="h-4 w-4" /> Sign out
                 </button>
               </div>}
