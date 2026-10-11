@@ -38,11 +38,11 @@ export interface NavSection {
 export const navSections: NavSection[] = [
   {
     id: "feed",
-    label: "Feed",
+    label: "Discover",
     icon: Home,
     href: "/for-you",
     items: [
-      { label: "For You", href: "/for-you", desc: "Study, work, news and community in one feed" },
+      { label: "For You", href: "/for-you", desc: "Your personalised stream of learning, work and community" },
       { label: "Stories", href: "/stories", desc: "Read the latest stories in the platform" },
       { label: "Daily Drop", href: "/daily-drop", desc: "A quick view of new stories" },
       { label: "Africa Now", href: "/africa-now", desc: "Current Africa coverage" },
@@ -108,7 +108,7 @@ export const navSections: NavSection[] = [
     icon: BookOpen,
     href: "/ask-africa",
     items: [
-      { label: "AI study coach", href: "/ask-africa", desc: "Ask questions and get guided explanations from current platform information" },
+      { label: "AI study coach", href: "/ask-africa", desc: "Understand topics, plan revision and explore trusted pathways" },
       { label: "Build my learning plan", href: "/my-path", desc: "Turn a goal into manageable study and career steps" },
       { label: "Explore skills", href: "/skills/", desc: "Find skills and learning routes for your next step" },
       { label: "Career pathways", href: "/careers/", desc: "Connect learning to possible careers" },
@@ -120,7 +120,8 @@ export const navSections: NavSection[] = [
     icon: Sparkles,
     href: "/ask-africa",
     items: [
-      { label: "Ask Africa AI", href: "/ask-africa", desc: "Explore education, careers, startups and opportunities with AI" },
+      { label: "Ask Africa AI", href: "/ask-africa", desc: "Get help with study, careers and applications" },
+      { label: "Revision and learning", href: "/ask-africa", desc: "Explain a topic, practise questions and make a study plan" },
       { label: "My Path", href: "/my-path", desc: "Turn goals into practical next steps" },
       { label: "Scholarship matcher", href: "/matcher", desc: "Narrow down funding options" },
       { label: "Saved items", href: "/saved", desc: "Return to opportunities you kept" },
