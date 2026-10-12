@@ -14,11 +14,12 @@ export default function NewsHub({title="Africa Now",subtitle="Current Africa sto
   const [category,setCategory]=useState("All");
   const [ghanaOnly,setGhanaOnly]=useState(false);
   const [newCount,setNewCount]=useState(0);
-  const [page,setPage]=useState(1);
+  const [page,setPage]=useState(5);
   const pageSize=40;
+  const initialArticleCount=200;
 
-  async function load(limit:number,replace=true){
-    let query=supabase.from("news_articles").select("id,title,excerpt,original_url,country_code,category,published_at,source_name").order("published_at",{ascending:false}).range(0,limit-1);
+  async function load(from:number,to:number,replace=true){
+    let query=supabase.from("news_articles").select("id,title,excerpt,original_url,country_code,category,published_at,source_name").order("published_at",{ascending:false}).range(from,to);
     if(category!=="All") query=query.ilike("category",category);
     if(ghanaOnly) query=query.eq("country_code","GH");
     const {data,error}=await query;
@@ -26,7 +27,7 @@ export default function NewsHub({title="Africa Now",subtitle="Current Africa sto
     setArticles(function(current){return replace ? (data||[]) as Article[] : current.concat((data||[]) as Article[]);});
   }
 
-  useEffect(function(){setPage(1);setNewCount(0);void load(pageSize,true);},[category,ghanaOnly]);
+  useEffect(function(){setPage(Math.ceil(initialArticleCount/pageSize));setNewCount(0);void load(0,initialArticleCount-1,true);},[category,ghanaOnly]);
   useEffect(function(){
     const channel=supabase.channel("gpf-news-live").on("postgres_changes",{event:"INSERT",schema:"public",table:"news_articles"},function(payload){
       const item=payload.new as Article;
@@ -45,7 +46,7 @@ export default function NewsHub({title="Africa Now",subtitle="Current Africa sto
 
   <div className="grid gap-3 md:grid-cols-2">{visible.slice(1).map(function(x){return <article key={x.id} className="border border-border bg-card p-4"><div className="flex items-center justify-between gap-3"><span className="text-xs font-semibold text-primary">{x.category||"Africa"}</span><span className="text-xs text-muted-foreground">{x.published_at?new Date(x.published_at).toLocaleDateString("en-GH"):""}</span></div><h2 className="mt-2 font-semibold">{x.title}</h2>{x.excerpt&&<p className="mt-2 text-sm text-muted-foreground line-clamp-3">{x.excerpt}</p>}<p className="mt-3 text-xs text-muted-foreground">{x.source_name||"Source"}{x.country_code?" · "+x.country_code:""}</p>{x.original_url&&<a href={x.original_url} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-primary">Read source <ExternalLink className="h-3.5 w-3.5"/></a>}</article>;})}</div>
 
-  {articles.length>=page*pageSize&&<div className="mt-6 flex justify-center"><button type="button" onClick={function(){const next=page+1;setPage(next);void load(next*pageSize,false);}} className="border border-border px-4 py-2 text-sm font-semibold">Load more</button></div>}
+  {articles.length>=page*pageSize&&<div className="mt-6 flex justify-center"><button type="button" onClick={function(){const next=page+1;setPage(next);void load(page*pageSize,(page+1)*pageSize-1,false);}} className="border border-border px-4 py-2 text-sm font-semibold">Load more</button></div>}
   {!articles.length&&<div className="border border-dashed border-border p-6 text-sm text-muted-foreground">No published news records match this view.</div>}
   </main></div>;
 }
