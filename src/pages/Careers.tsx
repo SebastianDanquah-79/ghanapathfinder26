@@ -9,7 +9,9 @@ import { careerPathByMajor } from "@/data/careerPaths";
 import { useCareerSuggestions } from "@/hooks/useCareerSuggestions";
 import { useAuth } from "@/hooks/useAuth";
 
-const careers = Object.values(mockCareerData);
+const careers = Object.values(mockCareerData).flatMap((career) =>
+  career.roles.map((careerName) => ({ ...career, careerName })),
+);
 
 const Careers = () => {
   const { user } = useAuth();
@@ -21,6 +23,7 @@ const Careers = () => {
     return careers.filter((career) => {
       const path = careerPathByMajor(career.major);
       const searchable = [
+        career.careerName,
         career.major,
         path?.career_name,
         path?.description,
@@ -130,19 +133,20 @@ const Careers = () => {
               const path = careerPathByMajor(c.major);
               return (
                 <Link
-                  key={c.major}
+                  key={`${c.major}-${c.careerName}`}
                   to={`/careers/${careerSlug(c.major)}`}
                   className="bg-glass rounded-xl p-4 card-hover block"
                 >
                   <div className="flex items-center gap-2 mb-1.5">
                     <Briefcase className="h-4 w-4 text-primary" />
                     <h2 className="font-display font-semibold text-foreground">
-                      {path?.career_name ?? c.major}
+                      {c.careerName}
                     </h2>
                   </div>
                   <p className="text-xs text-muted-foreground line-clamp-2">
                     {path?.description ?? c.roles.join(", ")}
                   </p>
+                  <p className="text-[11px] text-muted-foreground mt-1">{c.major} pathway</p>
                   <p className="text-xs text-primary mt-2">{c.salary}</p>
                 </Link>
               );
