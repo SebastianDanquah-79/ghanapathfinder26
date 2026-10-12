@@ -114,7 +114,7 @@ export const navSections: NavSection[] = [
       { label: "Application tracker", href: "/applications", desc: "Track applications and important dates" },
       { label: "Saved items", href: "/saved", desc: "Return to opportunities and resources you kept" },
     ],
-  },,
+  },
   {
     id: "settings",
     label: "Settings",
