@@ -49,7 +49,9 @@ WITH incoming(university_id,name,slug,field,qualification,degree_type,duration,s
 INSERT INTO public.programmes
 (university_id,name,slug,field,qualification,degree_type,duration,programme_url,source_url,primary_source_url,
  source_urls,source_tier,verification_status,verified,needs_review,verification_method,verification_notes,notes,field_sources)
-SELECT c.university_id,c.name,c.slug,c.field,c.qualification,c.degree_type,c.duration,c.source_url,c.source_url,c.source_url,
+SELECT c.university_id,c.name,c.slug,
+ regexp_replace(c.name,'^(Bachelor of Science in |Bachelor of Technology in |Bachelor of Engineering in |Bachelor of Arts in |Bachelor Of Science |BSc[.]? |BEng |BTech |BA |MSc[.]? |MPhil |PhD |Master of Technology in |Diploma in |MBA |MA )','','i'),
+ c.qualification,c.degree_type,c.duration,c.source_url,c.source_url,c.source_url,
  ARRAY[c.source_url],'official_institution_catalogue','source_linked_needs_individual_review',false,true,
  'Official programme / admissions listing','Official source confirms qualification category and programme or top-up availability; individual intake details still require review.',
  'Source-linked import; not independently verified.',jsonb_build_object('name',c.source_url,'qualification',c.source_url,'duration',c.source_url,'institution',c.source_url)
