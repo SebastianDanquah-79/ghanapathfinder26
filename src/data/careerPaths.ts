@@ -31,6 +31,8 @@ const UPDATED = "2026-08-20";
 
 const GTEC = { name: "Ghana Tertiary Education Commission", url: "https://gtec.edu.gh/" };
 
+import { additionalCareers } from "./additionalCareers";
+
 export const careerPaths: CareerPath[] = [
   {
     career_name: "Software & AI Engineer",
@@ -632,6 +634,35 @@ export const careerPaths: CareerPath[] = [
     last_updated: UPDATED,
   },
 ];
+
+
+
+// Additional occupation guides extend the original catalogue without asserting
+// institution-specific programme availability or inventing salary figures.
+careerPaths.push(...additionalCareers.map((c): CareerPath => ({
+  career_name: c.career_name,
+  major: c.major,
+  description: c.description,
+  what_they_do: [c.description, `Typical responsibilities depend on the employer and role.`, `Follow current professional, safety and privacy standards relevant to the work.`],
+  relevant_subjects: c.relevant_subjects,
+  recommended_programmes: c.recommended_programmes,
+  alternative_programmes: [],
+  skills: {
+    technical: c.technical_skills,
+    soft: ["Communication", "Problem solving", "Teamwork", "Professional ethics"],
+  },
+  certifications: ["Check current professional-body or employer requirements before paying for a certification."],
+  projects: [`Build a small portfolio project relevant to ${c.career_name} and document the methods and results.`, "Complete a supervised practical project or work sample where appropriate."],
+  internships: ["Look for supervised internships, attachments, trainee roles or volunteer projects relevant to this occupation."],
+  entry_level_roles: c.entry_level_roles,
+  industries: c.industries,
+  career_progression: [`Entry-level role in ${c.career_name}`, `Experienced ${c.career_name}`, "Senior specialist, team lead or manager where the role allows"],
+  related_careers: [],
+  alternative_routes: ["Compare current entry requirements and recognised training routes before choosing a programme.", "Build a portfolio and seek supervised practical experience where appropriate."],
+  further_education: ["Check institution catalogues and relevant professional-body requirements for recognised postgraduate or specialist study."],
+  sources: [GTEC],
+  last_updated: "2026-10-12",
+})));
 
 export const careerPathByMajor = (major: string) =>
   careerPaths.find((c) => c.major === major);
