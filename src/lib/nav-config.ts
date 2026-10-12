@@ -38,13 +38,15 @@ export interface NavSection {
 export const navSections: NavSection[] = [
   {
     id: "feed",
-    label: "Feed",
+    label: "Discover",
     icon: Home,
     href: "/for-you",
     items: [
       { label: "For You", href: "/for-you", desc: "Your personalised stream of learning, work and community" },
+      { label: "Short videos", href: "/for-you#clips", desc: "Quick lessons, campus life, career advice and founder stories" },
       { label: "Stories", href: "/stories", desc: "Read the latest stories in the platform" },
       { label: "Daily Drop", href: "/daily-drop", desc: "A quick view of new stories" },
+      { label: "Trusted news", href: "/stories", desc: "Read sourced reporting and follow the original publisher" },
       { label: "Africa Now", href: "/africa-now", desc: "Current Africa coverage" },
       { label: "Live Africa", href: "/live-africa", desc: "Explore live and current Africa updates" },
     ],
@@ -61,6 +63,7 @@ export const navSections: NavSection[] = [
       { label: "Study destinations", href: "/study-destinations", desc: "Explore routes into study" },
       { label: "Scholarships", href: "/scholarships/", desc: "Find funding opportunities" },
       { label: "Application desk", href: "/applications", desc: "Track admissions, scholarships, deadlines and next steps in one place" },
+      { label: "AI study coach", href: "/ask-africa", desc: "Learn step by step, practise questions and plan revision" },
     ],
   },
   {
@@ -75,6 +78,7 @@ export const navSections: NavSection[] = [
       { label: "Skills", href: "/skills/", desc: "Build job-relevant skills" },
       { label: "Companies", href: "/companies", desc: "Discover companies operating in Africa" },
       { label: "Professional profiles", href: "/people", desc: "Find people who opted into discovery" },
+      { label: "Application desk", href: "/applications", desc: "Track opportunities and next steps" },
     ],
   },
   {
