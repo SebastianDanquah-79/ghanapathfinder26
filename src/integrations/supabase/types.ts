@@ -4350,7 +4350,9 @@ export type Database = {
           name?: string
           needs_review?: boolean | null
           programme_url?: string | null
+          primary_source_url?: string | null
           qualification?: string | null
+          qualification_level?: string
           relevant_subjects?: string[]
           slug?: string
           source_url?: string | null
