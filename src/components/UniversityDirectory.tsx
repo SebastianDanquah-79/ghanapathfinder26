@@ -56,7 +56,7 @@ const UniversityDirectory = () => {
         <div className="flex flex-col sm:flex-row gap-3 mb-3 max-w-3xl mx-auto">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <input type="search" placeholder="Search universities, locations..." value={search} onChange={(e) => setSearch(e.target.value)} aria-label="Search universities" className="w-full pl-10 pr-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50" />
+            <input type="search" placeholder="Search institutions, locations..." value={search} onChange={(e) => setSearch(e.target.value)} aria-label="Search institutions" className="w-full pl-10 pr-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50" />
           </div>
           <select value={region} onChange={(e) => { setRegion(e.target.value); setPage(0); }} aria-label="Filter by region" className="rounded-lg bg-secondary border border-border px-3 py-3 text-sm text-foreground">
             <option value="">All regions</option>
@@ -77,9 +77,9 @@ const UniversityDirectory = () => {
           ))}
         </div>
 
-        {isLoading && <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground py-10"><Loader2 className="h-4 w-4 animate-spin" /> Loading universities…</div>}
+        {isLoading && <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground py-10"><Loader2 className="h-4 w-4 animate-spin" /> Loading institutions…</div>}
         {isError && <div className="text-center py-10"><p className="text-sm text-muted-foreground mb-3">Something went wrong loading this information. Please try again.</p><button onClick={() => refetch()} className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium">Retry</button></div>}
-        {!isLoading && !isError && rows.length === 0 && <p className="text-center py-10 text-muted-foreground">No universities match your filters.</p>}
+        {!isLoading && !isError && rows.length === 0 && <p className="text-center py-10 text-muted-foreground">No institutions match your filters.</p>}
 
         <div className="flex hscroll hscroll-bleed snap-x snap-mandatory scroll-smooth [&>*]:w-[17rem] [&>*]:shrink-0 [&>*]:snap-start md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:overflow-visible md:mx-0 md:px-0 md:[&>*]:w-auto gap-4">
           {rows.map((u, i) => (
