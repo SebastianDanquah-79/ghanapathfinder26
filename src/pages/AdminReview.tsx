@@ -21,6 +21,7 @@ import {
 } from "@/hooks/useReviewQueue";
 
 const TABLES: ReviewTable[] = [
+  "opportunities",
   "institutions",
   "universities",
   "programmes",
@@ -37,11 +38,45 @@ const ReviewCard = ({ table, row }: { table: ReviewTable; row: ReviewRow }) => {
   const label = rowTitle(table, row);
   const fields = REVIEW_FIELDS[table];
   const changed = Object.keys(draft).length > 0;
-  const sources: string[] = (row["source_urls"] as string[] | null) ?? [];
+  const sources: string[] =
+    (row["source_urls"] as string[] | null) ??
+    (row["source_url"] ? [String(row["source_url"])] : []);
 
   const set = (key: string, value: any) => setDraft((d) => ({ ...d, [key]: value }));
 
   const approve = async () => {
+    if (table === "opportunities") {
+      const candidate = { ...row, ...draft };
+      const isHttpUrl = (value: unknown) => {
+        if (typeof value !== "string" || !value.trim()) return false;
+        try {
+          const parsed = new URL(value);
+          return parsed.protocol === "https:" || parsed.protocol === "http:";
+        } catch {
+          return false;
+        }
+      };
+      if (!String(candidate["title"] ?? "").trim() || !String(candidate["company_name"] ?? "").trim()) {
+        toast.error("Add the role title and organisation before publishing.");
+        return;
+      }
+      if (!isHttpUrl(candidate["source_url"]) || !isHttpUrl(candidate["application_url"])) {
+        toast.error("A valid source URL and application URL are required before publishing.");
+        return;
+      }
+      const deadlineValue = candidate["deadline"] ?? candidate["deadline_date"];
+      if (deadlineValue) {
+        const deadlineMs = Date.parse(String(deadlineValue));
+        if (!Number.isFinite(deadlineMs)) {
+          toast.error("Enter a valid deadline date or leave it blank only when the official source has no fixed deadline.");
+          return;
+        }
+        if (deadlineMs < Date.now()) {
+          toast.error("This deadline has passed. Do not publish the listing.");
+          return;
+        }
+      }
+    }
     if (changed && !confirm(`Save ${Object.keys(draft).length} edit(s) and mark "${label}" as reviewed?`)) return;
     try {
       await action.mutateAsync({ table, id: row["id"], patch: changed ? draft : {}, approve: true });
