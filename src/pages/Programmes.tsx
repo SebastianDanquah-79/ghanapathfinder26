@@ -20,6 +20,7 @@ import {
   useProgrammeDirectory,
   useProgrammeFacets,
   type DirectoryProgramme,
+  type QualificationLevel,
 } from "@/hooks/useProgrammeDirectory";
 
 const POPULAR = [
@@ -33,6 +34,14 @@ const POPULAR = [
   "Accounting",
   "Architecture",
   "Data Science",
+];
+
+const QUALIFICATION_LEVELS: { value: QualificationLevel; label: string }[] = [
+  { value: "diploma_hnd_certificate", label: "Diploma / HND / Certificate" },
+  { value: "undergraduate", label: "Undergraduate" },
+  { value: "masters_postgraduate", label: "Master's / Postgraduate" },
+  { value: "doctoral_phd", label: "Doctoral / PhD" },
+  { value: "other_review", label: "Other / needs review" },
 ];
 
 const chip = (active: boolean) =>
@@ -124,6 +133,10 @@ const Programmes = () => {
   const field = params.get("field") ?? undefined;
   const region = params.get("region") ?? undefined;
   const qualification = params.get("qualification") ?? undefined;
+  const requestedLevel = params.get("level");
+  const qualificationLevel = QUALIFICATION_LEVELS.some((level) => level.value === requestedLevel)
+    ? (requestedLevel as QualificationLevel)
+    : undefined;
   const degreeType = params.get("degree") ?? undefined;
   const institution = params.get("institution") ?? undefined;
   const verifiedOnly = params.get("verified") === "1";
@@ -136,7 +149,7 @@ const Programmes = () => {
 
   useEffect(() => {
     setPage(0);
-  }, [debounced, field, region, qualification, degreeType, institution, verifiedOnly, sort]);
+  }, [debounced, field, region, qualification, qualificationLevel, degreeType, institution, verifiedOnly, sort]);
 
   const setParam = (key: string, value?: string) => {
     const next = new URLSearchParams(params);
@@ -151,6 +164,7 @@ const Programmes = () => {
     field,
     region,
     qualification,
+    qualificationLevel,
     degreeType,
     institution,
     verifiedOnly,
@@ -160,7 +174,7 @@ const Programmes = () => {
 
   const total = data?.count ?? 0;
   const pages = Math.max(1, Math.ceil(total / DIRECTORY_PAGE_SIZE));
-  const activeFilters = [field, region, qualification, degreeType, institution].filter(
+  const activeFilters = [field, region, qualification, qualificationLevel, degreeType, institution].filter(
     Boolean,
   ).length;
 
@@ -223,6 +237,16 @@ const Programmes = () => {
             {POPULAR.map((t) => (
               <button key={t} onClick={() => setSearch(t)} className={chip(search === t)}>
                 {t}
+              </button>
+            ))}
+          </div>
+
+          {/* Qualification-level filters */}
+          <div className="flex gap-2 [&>*]:shrink-0 hscroll hscroll-bleed py-2" aria-label="Filter by qualification level">
+            <button onClick={() => setParam("level")} className={chip(!qualificationLevel)}>All levels</button>
+            {QUALIFICATION_LEVELS.map((level) => (
+              <button key={level.value} onClick={() => setParam("level", qualificationLevel === level.value ? undefined : level.value)} className={chip(qualificationLevel === level.value)}>
+                {level.label}
               </button>
             ))}
           </div>
