@@ -7,6 +7,7 @@ import { mockCareerData, careerSlug } from "@/data/careers";
 import { careerPathByMajor } from "@/data/careerPaths";
 import { useCareerSuggestions } from "@/hooks/useCareerSuggestions";
 import { useAuth } from "@/hooks/useAuth";
+import { occupationCatalog, occupationSourceUrl } from "@/data/occupationCatalog";
 
 const careers = Object.values(mockCareerData);
 
@@ -102,6 +103,24 @@ const Careers = () => {
                 </Link>
               );
             })}
+
+          <section className="mt-10">
+            <div className="max-w-3xl mb-4">
+              <h2 className="font-display text-xl sm:text-2xl font-bold text-foreground mb-2">Explore 100+ career options</h2>
+              <p className="text-sm text-muted-foreground leading-6">Browse roles across technology, engineering, health, finance, education, business and public service. Study routes are starting points, not admission or licensing guarantees. Check Ghanaian regulators and employers for current requirements.</p>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {occupationCatalog.map((occupation) => (
+                <article key={occupation.title} className="bg-glass rounded-xl p-4 border border-border/60">
+                  <p className="text-[11px] font-medium text-primary mb-1">{occupation.cluster}</p>
+                  <h3 className="font-display font-semibold text-foreground mb-1">{occupation.title}</h3>
+                  <p className="text-xs text-muted-foreground leading-5 mb-3">{occupation.pathway}</p>
+                  <a href={`https://www.onetonline.org/find/quick?s=${encodeURIComponent(occupation.title)}`} target="_blank" rel="noreferrer" className="text-xs text-primary underline underline-offset-4">Explore occupation details</a>
+                </article>
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground mt-3">Occupation taxonomy reference: <a href={occupationSourceUrl} target="_blank" rel="noreferrer" className="underline underline-offset-4">O*NET OnLine</a>. It is a general reference; Ghana-specific licensing and hiring rules may differ.</p>
+          </section>
           </div>
         </div>
       </main>
