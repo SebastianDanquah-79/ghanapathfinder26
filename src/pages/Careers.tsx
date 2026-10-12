@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import { Link } from "@/lib/router-compat";
 import { Briefcase, Sparkles } from "@/lib/icons";
 import Navbar from "@/components/Navbar";
@@ -13,6 +14,27 @@ const careers = Object.values(mockCareerData);
 const Careers = () => {
   const { user } = useAuth();
   const { data: suggestions = [] } = useCareerSuggestions();
+  const [searchQuery, setSearchQuery] = useState("");
+  const filteredCareers = useMemo(() => {
+    const query = searchQuery.trim().toLocaleLowerCase();
+    if (!query) return careers;
+    return careers.filter((career) => {
+      const path = careerPathByMajor(career.major);
+      const searchable = [
+        career.major,
+        path?.career_name,
+        path?.description,
+        ...career.roles,
+        ...(path?.relevant_subjects ?? []),
+        ...(path?.industries ?? []),
+        ...(path?.recommended_programmes ?? []),
+      ]
+        .filter((value): value is string => typeof value === "string")
+        .join(" ")
+        .toLocaleLowerCase();
+      return searchable.includes(query);
+    });
+  }, [searchQuery]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -49,6 +71,23 @@ const Careers = () => {
             </p>
           </div>
 
+          <section className="mb-7">
+            <label htmlFor="career-directory-search" className="block text-sm font-medium text-foreground mb-2">
+              Search career paths
+            </label>
+            <input
+              id="career-directory-search"
+              type="search"
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+              placeholder="Search by career, skill, programme or industry"
+              className="w-full min-h-[48px] px-4 rounded-xl bg-secondary border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/40"
+            />
+            <p className="text-xs text-muted-foreground mt-2" aria-live="polite">
+              Showing {filteredCareers.length} of {careers.length} career paths
+            </p>
+          </section>
+
           {user && suggestions.length > 0 && (
             <section className="mb-8">
               <h2 className="flex items-center gap-2 font-display font-semibold text-foreground mb-1">
@@ -80,8 +119,14 @@ const Careers = () => {
             </section>
           )}
 
+          {filteredCareers.length === 0 ? (
+            <div className="border border-border p-6 text-center">
+              <h2 className="font-semibold text-foreground mb-1">No matching careers</h2>
+              <p className="text-sm text-muted-foreground">Try another title, skill, programme or industry.</p>
+            </div>
+          ) : (
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {careers.map((c) => {
+            {filteredCareers.map((c) => {
               const path = careerPathByMajor(c.major);
               return (
                 <Link
@@ -103,6 +148,7 @@ const Careers = () => {
               );
             })}
           </div>
+          )}
         </div>
       </main>
       <Footer />
