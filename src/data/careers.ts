@@ -1,3 +1,5 @@
+import { additionalCareers } from "./additionalCareers";
+
 export const popularMajors = [
   "Computer Science",
   "Medicine",
@@ -210,6 +212,19 @@ export const mockCareerData: Record<string, CareerData> = {
     linkedinTip: "Portfolio first , Behance/Instagram links. Search: 'Graphic Designer Ghana'.",
   },
 };
+
+
+
+for (const career of additionalCareers) {
+  mockCareerData[career.major] = {
+    major: career.major,
+    roles: career.entry_level_roles,
+    companies: ["Public-sector employers", "Private companies", "NGOs and development organisations"],
+    salary: "No single reliable range published here; check current vacancies and employer disclosures.",
+    remote: "Work mode varies by employer and role. Confirm whether a specific vacancy is on-site, hybrid or remote.",
+    linkedinTip: `Use the title "${career.career_name}" and include real projects, relevant skills and qualifications you actually hold.`,
+  };
+}
 
 export const careerSlug = (major: string) =>
   major

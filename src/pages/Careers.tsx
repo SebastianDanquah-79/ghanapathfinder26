@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import { Link } from "@/lib/router-compat";
 import { Briefcase, Sparkles } from "@/lib/icons";
 import Navbar from "@/components/Navbar";
@@ -9,11 +10,35 @@ import { useCareerSuggestions } from "@/hooks/useCareerSuggestions";
 import { useAuth } from "@/hooks/useAuth";
 import { occupationCatalog, occupationSourceUrl } from "@/data/occupationCatalog";
 
-const careers = Object.values(mockCareerData);
+const careers = Object.values(mockCareerData).flatMap((career) =>
+  career.roles.map((careerName) => ({ ...career, careerName })),
+);
 
 const Careers = () => {
   const { user } = useAuth();
   const { data: suggestions = [] } = useCareerSuggestions();
+  const [searchQuery, setSearchQuery] = useState("");
+  const filteredCareers = useMemo(() => {
+    const query = searchQuery.trim().toLocaleLowerCase();
+    if (!query) return careers;
+    return careers.filter((career) => {
+      const path = careerPathByMajor(career.major);
+      const searchable = [
+        career.careerName,
+        career.major,
+        path?.career_name,
+        path?.description,
+        ...career.roles,
+        ...(path?.relevant_subjects ?? []),
+        ...(path?.industries ?? []),
+        ...(path?.recommended_programmes ?? []),
+      ]
+        .filter((value): value is string => typeof value === "string")
+        .join(" ")
+        .toLocaleLowerCase();
+      return searchable.includes(query);
+    });
+  }, [searchQuery]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -50,6 +75,23 @@ const Careers = () => {
             </p>
           </div>
 
+          <section className="mb-7">
+            <label htmlFor="career-directory-search" className="block text-sm font-medium text-foreground mb-2">
+              Search career paths
+            </label>
+            <input
+              id="career-directory-search"
+              type="search"
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+              placeholder="Search by career, skill, programme or industry"
+              className="w-full min-h-[48px] px-4 rounded-xl bg-secondary border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/40"
+            />
+            <p className="text-xs text-muted-foreground mt-2" aria-live="polite">
+              Showing {filteredCareers.length} of {careers.length} career paths
+            </p>
+          </section>
+
           {user && suggestions.length > 0 && (
             <section className="mb-8">
               <h2 className="flex items-center gap-2 font-display font-semibold text-foreground mb-1">
@@ -81,24 +123,31 @@ const Careers = () => {
             </section>
           )}
 
+          {filteredCareers.length === 0 ? (
+            <div className="border border-border p-6 text-center">
+              <h2 className="font-semibold text-foreground mb-1">No matching careers</h2>
+              <p className="text-sm text-muted-foreground">Try another title, skill, programme or industry.</p>
+            </div>
+          ) : (
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {careers.map((c) => {
+            {filteredCareers.map((c) => {
               const path = careerPathByMajor(c.major);
               return (
                 <Link
-                  key={c.major}
+                  key={`${c.major}-${c.careerName}`}
                   to={`/careers/${careerSlug(c.major)}`}
                   className="bg-glass rounded-xl p-4 card-hover block"
                 >
                   <div className="flex items-center gap-2 mb-1.5">
                     <Briefcase className="h-4 w-4 text-primary" />
                     <h2 className="font-display font-semibold text-foreground">
-                      {path?.career_name ?? c.major}
+                      {c.careerName}
                     </h2>
                   </div>
                   <p className="text-xs text-muted-foreground line-clamp-2">
                     {path?.description ?? c.roles.join(", ")}
                   </p>
+                  <p className="text-[11px] text-muted-foreground mt-1">{c.major} pathway</p>
                   <p className="text-xs text-primary mt-2">{c.salary}</p>
                 </Link>
               );
@@ -122,6 +171,7 @@ const Careers = () => {
             <p className="text-xs text-muted-foreground mt-3">Occupation taxonomy reference: <a href={occupationSourceUrl} target="_blank" rel="noreferrer" className="underline underline-offset-4">O*NET OnLine</a>. It is a general reference; Ghana-specific licensing and hiring rules may differ.</p>
           </section>
           </div>
+          )}
         </div>
       </main>
       <Footer />
