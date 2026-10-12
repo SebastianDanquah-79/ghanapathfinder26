@@ -55,7 +55,7 @@ const normalizedHost = (raw?: string | null): string | null => {
   }
 };
 
-const hasInstitutionDomainSource = (p: DirectoryProgramme): boolean => {
+const institutionDomainSourceUrl = (p: DirectoryProgramme): string | null => {
   const officialHosts = [
     normalizedHost(p.universities?.website_url),
     normalizedHost(p.universities?.admissions_url),
@@ -67,12 +67,12 @@ const hasInstitutionDomainSource = (p: DirectoryProgramme): boolean => {
     ...(p.source_urls ?? []),
   ].filter((url): url is string => typeof url === "string" && /^https?:\/\//i.test(url));
 
-  return candidateUrls.some((raw) => {
+  return candidateUrls.find((raw) => {
     const sourceHost = normalizedHost(raw);
     return Boolean(sourceHost && officialHosts.some(
       (officialHost) => sourceHost === officialHost || sourceHost.endsWith("." + officialHost),
     ));
-  });
+  }) ?? null;
 };
 
 const chip = (active: boolean) =>
@@ -96,13 +96,13 @@ const ProgrammeCard = ({ p }: { p: DirectoryProgramme }) => (
     <VerificationBadge
       verified={p.verification_status === "verified" || p.verified}
       lastVerifiedAt={p.last_verified_at}
-      sourceUrl={p.source_url ?? p.programme_url ?? null}
+      sourceUrl={institutionDomainSourceUrl(p) ?? p.source_url ?? p.programme_url ?? null}
       subject={`${p.name}${p.universities?.name ? ` , ${p.universities.name}` : ""}`}
       whatVerified="Programme name, qualification, duration and published entry requirements were checked against the institution's official programme or admissions page."
     />
 
     <p className="text-[11px] text-muted-foreground">
-      {hasInstitutionDomainSource(p)
+      {institutionDomainSourceUrl(p)
         ? "Institution-domain source found. This checks the link's domain only; the programme details still require individual review."
         : (p.programme_url || p.primary_source_url || p.source_url || (p.source_urls?.length ?? 0) > 0)
           ? "Source link present, but its domain does not match the institution website. Confirm this programme with the institution."
