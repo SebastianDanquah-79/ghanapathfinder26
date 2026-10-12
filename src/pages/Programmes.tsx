@@ -20,6 +20,7 @@ import {
   useProgrammeDirectory,
   useProgrammeFacets,
   type DirectoryProgramme,
+  type QualificationLevel,
 } from "@/hooks/useProgrammeDirectory";
 
 const POPULAR = [
@@ -34,6 +35,45 @@ const POPULAR = [
   "Architecture",
   "Data Science",
 ];
+
+const QUALIFICATION_LEVELS: { value: QualificationLevel; label: string }[] = [
+  { value: "diploma_hnd_certificate", label: "Diploma / HND / Certificate" },
+  { value: "undergraduate", label: "Undergraduate" },
+  { value: "masters_postgraduate", label: "Master's / Postgraduate" },
+  { value: "doctoral_phd", label: "Doctoral / PhD" },
+  { value: "other_review", label: "Other / needs review" },
+];
+
+const normalizedHost = (raw?: string | null): string | null => {
+  if (!raw) return null;
+  try {
+    const url = new URL(raw);
+    if (url.protocol !== "https:" && url.protocol !== "http:") return null;
+    return url.hostname.toLowerCase().replace(/^www\./, "").replace(/\.$/, "");
+  } catch {
+    return null;
+  }
+};
+
+const institutionDomainSourceUrl = (p: DirectoryProgramme): string | null => {
+  const officialHosts = [
+    normalizedHost(p.universities?.website_url),
+    normalizedHost(p.universities?.admissions_url),
+  ].filter((host): host is string => Boolean(host));
+  const candidateUrls = [
+    p.programme_url,
+    p.primary_source_url,
+    p.source_url,
+    ...(p.source_urls ?? []),
+  ].filter((url): url is string => typeof url === "string" && /^https?:\/\//i.test(url));
+
+  return candidateUrls.find((raw) => {
+    const sourceHost = normalizedHost(raw);
+    return Boolean(sourceHost && officialHosts.some(
+      (officialHost) => sourceHost === officialHost || sourceHost.endsWith("." + officialHost),
+    ));
+  }) ?? null;
+};
 
 const chip = (active: boolean) =>
   `whitespace-nowrap px-3 min-h-[38px] inline-flex items-center rounded-full text-xs font-medium transition-colors ${
@@ -56,10 +96,18 @@ const ProgrammeCard = ({ p }: { p: DirectoryProgramme }) => (
     <VerificationBadge
       verified={p.verification_status === "verified" || p.verified}
       lastVerifiedAt={p.last_verified_at}
-      sourceUrl={p.source_url ?? p.programme_url ?? null}
+      sourceUrl={institutionDomainSourceUrl(p) ?? p.source_url ?? p.programme_url ?? null}
       subject={`${p.name}${p.universities?.name ? ` , ${p.universities.name}` : ""}`}
       whatVerified="Programme name, qualification, duration and published entry requirements were checked against the institution's official programme or admissions page."
     />
+
+    <p className="text-[11px] text-muted-foreground">
+      {institutionDomainSourceUrl(p)
+        ? "Institution-domain source found. This checks the link's domain only; the programme details still require individual review."
+        : (p.programme_url || p.primary_source_url || p.source_url || (p.source_urls?.length ?? 0) > 0)
+          ? "Source link present, but its domain does not match the institution website. Confirm this programme with the institution."
+          : "No programme-level source link recorded. Check the institution's official admissions page."}
+    </p>
 
 
     <p className="text-xs text-muted-foreground line-clamp-1">
@@ -124,6 +172,10 @@ const Programmes = () => {
   const field = params.get("field") ?? undefined;
   const region = params.get("region") ?? undefined;
   const qualification = params.get("qualification") ?? undefined;
+  const requestedLevel = params.get("level");
+  const qualificationLevel = QUALIFICATION_LEVELS.some((level) => level.value === requestedLevel)
+    ? (requestedLevel as QualificationLevel)
+    : undefined;
   const degreeType = params.get("degree") ?? undefined;
   const institution = params.get("institution") ?? undefined;
   const verifiedOnly = params.get("verified") === "1";
@@ -136,7 +188,7 @@ const Programmes = () => {
 
   useEffect(() => {
     setPage(0);
-  }, [debounced, field, region, qualification, degreeType, institution, verifiedOnly, sort]);
+  }, [debounced, field, region, qualification, qualificationLevel, degreeType, institution, verifiedOnly, sort]);
 
   const setParam = (key: string, value?: string) => {
     const next = new URLSearchParams(params);
@@ -151,6 +203,7 @@ const Programmes = () => {
     field,
     region,
     qualification,
+    qualificationLevel,
     degreeType,
     institution,
     verifiedOnly,
@@ -160,7 +213,7 @@ const Programmes = () => {
 
   const total = data?.count ?? 0;
   const pages = Math.max(1, Math.ceil(total / DIRECTORY_PAGE_SIZE));
-  const activeFilters = [field, region, qualification, degreeType, institution].filter(
+  const activeFilters = [field, region, qualification, qualificationLevel, degreeType, institution].filter(
     Boolean,
   ).length;
 
@@ -223,6 +276,16 @@ const Programmes = () => {
             {POPULAR.map((t) => (
               <button key={t} onClick={() => setSearch(t)} className={chip(search === t)}>
                 {t}
+              </button>
+            ))}
+          </div>
+
+          {/* Qualification-level filters */}
+          <div className="flex gap-2 [&>*]:shrink-0 hscroll hscroll-bleed py-2" aria-label="Filter by qualification level">
+            <button onClick={() => setParam("level")} className={chip(!qualificationLevel)}>All levels</button>
+            {QUALIFICATION_LEVELS.map((level) => (
+              <button key={level.value} onClick={() => setParam("level", qualificationLevel === level.value ? undefined : level.value)} className={chip(qualificationLevel === level.value)}>
+                {level.label}
               </button>
             ))}
           </div>

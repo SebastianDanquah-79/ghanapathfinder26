@@ -51,7 +51,9 @@ const Navbar = () => {
   }, [user?.id]);
 
   const isPortal = pathname.startsWith("/portal/") || pathname === "/dashboard";
-  const visibleNavSections = isPortal ? getNavSectionsForRole(accountRole) : navSections;
+  const visibleNavSections = isPortal
+    ? [...getNavSectionsForRole(accountRole), ...navSections.filter((section) => section.id === "settings")]
+    : navSections;
   const visibleAccountItems = isPortal ? getAccountItemsForRole(accountRole) : accountItems;
   const portalSearchTarget = accountRole === "startup_founder" || accountRole === "founder" ? "/startups" : accountRole === "international_student" || accountRole === "international-student" ? "/admission-match" : accountRole === "employer" ? "/people" : accountRole === "employee" ? "/jobs" : "/search?kind=university";
 

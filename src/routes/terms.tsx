@@ -8,7 +8,7 @@ export const Route = createFileRoute("/terms")({
       {
         name: "description",
         content:
-          "The terms that apply when using GhanaPathFinder: guidance-only information, verification responsibility, account rules and platform availability.",
+          "Terms for using GhanaPathFinder's education, career, AI guidance, public profile and opportunity features.",
       },
       { property: "og:title", content: "Terms & Conditions | GhanaPathFinder" },
       { property: "og:description", content: "Terms that apply when using GhanaPathFinder." },
