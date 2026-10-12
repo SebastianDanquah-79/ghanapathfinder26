@@ -114,7 +114,20 @@ export const navSections: NavSection[] = [
       { label: "Application tracker", href: "/applications", desc: "Track applications and important dates" },
       { label: "Saved items", href: "/saved", desc: "Return to opportunities and resources you kept" },
     ],
-  },
+  },,
+  {
+    id: "settings",
+    label: "Settings",
+    icon: SlidersHorizontal,
+    href: "/preferences",
+    items: [
+      { label: "Settings & preferences", href: "/preferences", desc: "Profile photo and academic matching preferences" },
+      { label: "My profile", href: "/profile", desc: "Review your profile" },
+      { label: "Saved items", href: "/saved", desc: "Manage saved resources" },
+      { label: "Privacy policy", href: "/privacy" },
+      { label: "Terms & Conditions", href: "/terms" },
+    ],
+  }
 ];
 
 const portalNavSections: Record<string, NavSection[]> = {
@@ -192,6 +205,7 @@ const portalAccountItems: Record<string, NavItem[]> = {
     { label: "My Path", href: "/my-path" },
     { label: "Saved items", href: "/saved" },
     { label: "Applications", href: "/applications" },
+    { label: "Settings", href: "/preferences" },
     { label: "Change portal", href: "/?switchRole=1" },
   ],
   employee: [
@@ -199,6 +213,7 @@ const portalAccountItems: Record<string, NavItem[]> = {
     { label: "Professional profile", href: "/onboarding?role=employee" },
     { label: "Find jobs", href: "/jobs" },
     { label: "Career opportunities", href: "/opportunities" },
+    { label: "Settings", href: "/preferences" },
     { label: "Change portal", href: "/?switchRole=1" },
   ],
   employer: [
@@ -206,6 +221,7 @@ const portalAccountItems: Record<string, NavItem[]> = {
     { label: "Organisation profile", href: "/onboarding?role=employer" },
     { label: "Post an opportunity", href: "/portal/employer#post-opportunity" },
     { label: "Applicants", href: "/people" },
+    { label: "Settings", href: "/preferences" },
     { label: "Change portal", href: "/?switchRole=1" },
   ],
   startup_founder: [
@@ -213,6 +229,7 @@ const portalAccountItems: Record<string, NavItem[]> = {
     { label: "Startup profile", href: "/onboarding?role=startup_founder" },
     { label: "Build your startup", href: "/build" },
     { label: "Founder opportunities", href: "/opportunities" },
+    { label: "Settings", href: "/preferences" },
     { label: "Change portal", href: "/?switchRole=1" },
   ],
   international_student: [
@@ -220,6 +237,7 @@ const portalAccountItems: Record<string, NavItem[]> = {
     { label: "Study profile", href: "/onboarding?role=international_student" },
     { label: "Admission matching", href: "/admission-match" },
     { label: "Applications", href: "/applications" },
+    { label: "Settings", href: "/preferences" },
     { label: "Change portal", href: "/?switchRole=1" },
   ],
 };
@@ -233,7 +251,7 @@ export const accountItems: NavItem[] = [
   { label: "My Path", href: "/my-path" },
   { label: "Saved items", href: "/saved" },
   { label: "Applications", href: "/applications" },
-  { label: "Match preferences", href: "/preferences" },
+  { label: "Settings", href: "/preferences" },
 ];
 
 export const aboutItems: NavItem[] = [
