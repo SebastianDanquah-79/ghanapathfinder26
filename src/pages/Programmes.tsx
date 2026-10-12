@@ -44,6 +44,37 @@ const QUALIFICATION_LEVELS: { value: QualificationLevel; label: string }[] = [
   { value: "other_review", label: "Other / needs review" },
 ];
 
+const normalizedHost = (raw?: string | null): string | null => {
+  if (!raw) return null;
+  try {
+    const url = new URL(raw);
+    if (url.protocol !== "https:" && url.protocol !== "http:") return null;
+    return url.hostname.toLowerCase().replace(/^www\./, "").replace(/\.$/, "");
+  } catch {
+    return null;
+  }
+};
+
+const hasInstitutionDomainSource = (p: DirectoryProgramme): boolean => {
+  const officialHosts = [
+    normalizedHost(p.universities?.website_url),
+    normalizedHost(p.universities?.admissions_url),
+  ].filter((host): host is string => Boolean(host));
+  const candidateUrls = [
+    p.programme_url,
+    p.primary_source_url,
+    p.source_url,
+    ...(p.source_urls ?? []),
+  ].filter((url): url is string => typeof url === "string" && /^https?:\/\//i.test(url));
+
+  return candidateUrls.some((raw) => {
+    const sourceHost = normalizedHost(raw);
+    return Boolean(sourceHost && officialHosts.some(
+      (officialHost) => sourceHost === officialHost || sourceHost.endsWith("." + officialHost),
+    ));
+  });
+};
+
 const chip = (active: boolean) =>
   `whitespace-nowrap px-3 min-h-[38px] inline-flex items-center rounded-full text-xs font-medium transition-colors ${
     active
@@ -69,6 +100,14 @@ const ProgrammeCard = ({ p }: { p: DirectoryProgramme }) => (
       subject={`${p.name}${p.universities?.name ? ` , ${p.universities.name}` : ""}`}
       whatVerified="Programme name, qualification, duration and published entry requirements were checked against the institution's official programme or admissions page."
     />
+
+    <p className="text-[11px] text-muted-foreground">
+      {hasInstitutionDomainSource(p)
+        ? "Institution-domain source found. This checks the link's domain only; the programme details still require individual review."
+        : (p.programme_url || p.primary_source_url || p.source_url || (p.source_urls?.length ?? 0) > 0)
+          ? "Source link present, but its domain does not match the institution website. Confirm this programme with the institution."
+          : "No programme-level source link recorded. Check the institution's official admissions page."}
+    </p>
 
 
     <p className="text-xs text-muted-foreground line-clamp-1">
