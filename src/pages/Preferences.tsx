@@ -180,7 +180,7 @@ const Preferences = () => {
             <SlidersHorizontal className="h-6 w-6 text-primary" /> Personalization
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Personalise your GhanaPathFinder account and scholarship matches.
+            Manage your profile photo, academic matching preferences and account privacy links.
           </p>
         </div>
 
@@ -299,6 +299,19 @@ const Preferences = () => {
               </label>
             ))}
           </div>
+
+          <section className={`${card} space-y-3`} aria-label="Account and privacy settings">
+            <div>
+              <h2 className="font-display font-semibold text-foreground">Account &amp; privacy</h2>
+              <p className="text-xs text-muted-foreground mt-1">Manage your public-facing profile and review the rules that explain how your information is handled.</p>
+            </div>
+            <div className="grid gap-2 sm:grid-cols-2">
+              <Link to="/profile" className="rounded-lg border border-border bg-secondary/50 p-3 text-sm font-medium text-foreground hover:text-primary">View profile</Link>
+              <Link to="/saved" className="rounded-lg border border-border bg-secondary/50 p-3 text-sm font-medium text-foreground hover:text-primary">Saved items</Link>
+              <Link to="/privacy" className="rounded-lg border border-border bg-secondary/50 p-3 text-sm font-medium text-foreground hover:text-primary">Privacy policy</Link>
+              <Link to="/terms" className="rounded-lg border border-border bg-secondary/50 p-3 text-sm font-medium text-foreground hover:text-primary">Terms &amp; Conditions</Link>
+            </div>
+          </section>
 
           <div className="flex flex-col sm:flex-row gap-3">
             <button onClick={() => savePrefs.mutate(prefs)} disabled={savePrefs.isPending} className="flex-1 px-4 py-3 rounded-lg bg-primary text-primary-foreground text-sm font-semibold inline-flex items-center justify-center gap-2">
