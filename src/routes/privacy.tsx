@@ -8,7 +8,7 @@ export const Route = createFileRoute("/privacy")({
       {
         name: "description",
         content:
-          "What GhanaPathFinder stores, why it is stored, how anonymous usage counts work and how students control their data.",
+          "How GhanaPathFinder handles account information, public talent profiles, AI prompts, education data and privacy requests.",
       },
       { property: "og:title", content: "Privacy Policy | GhanaPathFinder" },
       { property: "og:description", content: "How student data is handled on GhanaPathFinder." },
