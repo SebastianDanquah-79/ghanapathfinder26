@@ -4,11 +4,19 @@ import type { Programme, University } from "@/hooks/useCatalogue";
 
 export const DIRECTORY_PAGE_SIZE = 24;
 
+export type QualificationLevel =
+  | "diploma_hnd_certificate"
+  | "undergraduate"
+  | "masters_postgraduate"
+  | "doctoral_phd"
+  | "other_review";
+
 export interface DirectoryFilters {
   search?: string | undefined;
   field?: string | undefined;
   region?: string | undefined;
   qualification?: string | undefined;
+  qualificationLevel?: QualificationLevel | undefined;
   degreeType?: string | undefined;
   institution?: string | undefined;
   verifiedOnly?: boolean | undefined;
@@ -17,7 +25,7 @@ export interface DirectoryFilters {
 }
 
 export type DirectoryProgramme = Programme & {
-  universities: Pick<University, "id" | "name" | "slug" | "region" | "type" | "location"> | null;
+  universities: Pick<University, "id" | "name" | "slug" | "region" | "type" | "location" | "website_url" | "admissions_url"> | null;
 };
 
 /** Server-side filtered, paginated programme directory , never loads the whole catalogue. */
@@ -27,6 +35,7 @@ export const programmeDirectoryQueryOptions = (filters: DirectoryFilters = {}) =
     field,
     region,
     qualification,
+    qualificationLevel,
     degreeType,
     institution,
     verifiedOnly = false,
@@ -41,6 +50,7 @@ export const programmeDirectoryQueryOptions = (filters: DirectoryFilters = {}) =
       field,
       region,
       qualification,
+      qualificationLevel,
       degreeType,
       institution,
       verifiedOnly,
@@ -51,7 +61,7 @@ export const programmeDirectoryQueryOptions = (filters: DirectoryFilters = {}) =
       let q = supabase
         .from("programmes")
         .select(
-          "id, slug, name, field, degree_type, qualification, duration, description, wassce_requirements, verification_status, verified, last_verified_at, source_url, programme_url, created_at, university_id, universities!inner(id, name, slug, region, type, location)",
+          "id, slug, name, field, degree_type, qualification, qualification_level, duration, description, wassce_requirements, verification_status, verified, last_verified_at, source_url, primary_source_url, source_urls, programme_url, created_at, university_id, universities!inner(id, name, slug, region, type, location, website_url, admissions_url)",
           { count: "exact" },
         )
         .range(page * DIRECTORY_PAGE_SIZE, page * DIRECTORY_PAGE_SIZE + DIRECTORY_PAGE_SIZE - 1);
@@ -59,6 +69,7 @@ export const programmeDirectoryQueryOptions = (filters: DirectoryFilters = {}) =
       q = sort === "newest" ? q.order("created_at", { ascending: false }) : q.order("name");
 
       if (field) q = q.eq("field", field);
+      if (qualificationLevel) q = q.eq("qualification_level", qualificationLevel);
       if (qualification) q = q.eq("qualification", qualification);
       if (degreeType) q = q.eq("degree_type", degreeType);
       if (verifiedOnly) q = q.eq("verified", true);
