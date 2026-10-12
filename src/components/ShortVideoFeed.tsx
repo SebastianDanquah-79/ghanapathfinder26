@@ -242,7 +242,7 @@ export default function ShortVideoFeed() {
   }
 
   return (
-    <section className="mb-8 border-y border-border py-5" aria-label="Short videos and community clips">
+    <section id="clips" className="mb-8 scroll-mt-20 border-y border-border py-5" aria-label="Short videos and community clips">
       <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">Clips</p>
