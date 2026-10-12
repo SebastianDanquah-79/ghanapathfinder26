@@ -177,7 +177,7 @@ const Preferences = () => {
 
         <div className="mb-6">
           <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-2">
-            <SlidersHorizontal className="h-6 w-6 text-primary" /> Personalization
+            <SlidersHorizontal className="h-6 w-6 text-primary" /> Settings &amp; personalization
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
             Manage your profile photo, academic matching preferences and account privacy links.
