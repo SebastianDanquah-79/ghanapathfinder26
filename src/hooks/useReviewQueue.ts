@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
 export type ReviewTable =
+  | "opportunities"
   | "institutions"
   | "universities"
   | "programmes"
@@ -67,9 +68,26 @@ export const REVIEW_FIELDS: Record<ReviewTable, ReviewFieldSpec[]> = {
     { key: "certification_issued_by", label: "Certificate issued by" },
     { key: "application_url", label: "Application link", type: "url" },
   ],
+  opportunities: [
+    { key: "title", label: "Role or opportunity title" },
+    { key: "company_name", label: "Organisation" },
+    { key: "opportunity_type", label: "Listing type" },
+    { key: "category", label: "Category" },
+    { key: "location", label: "Location" },
+    { key: "employment_type", label: "Employment type" },
+    { key: "work_mode", label: "Work mode" },
+    { key: "remote", label: "Remote", type: "boolean" },
+    { key: "source_name", label: "Publisher" },
+    { key: "source_url", label: "Official source URL", type: "url" },
+    { key: "application_url", label: "Application URL", type: "url" },
+    { key: "deadline", label: "Deadline (ISO date/time)" },
+    { key: "description", label: "Description", type: "textarea" },
+    { key: "requirements", label: "Requirements", type: "textarea" },
+  ],
 };
 
 export const TABLE_LABELS: Record<ReviewTable, string> = {
+  opportunities: "Jobs & opportunities",
   institutions: "New institutions",
   universities: "Directory institutions",
   programmes: "Programmes",
@@ -80,7 +98,7 @@ export const TABLE_LABELS: Record<ReviewTable, string> = {
 export type ReviewRow = Record<string, any> & { id: string };
 
 const titleOf = (table: ReviewTable, row: ReviewRow) =>
-  (row["name"] ?? row["provider_name"] ?? row["official_name"] ?? "Untitled") as string;
+  (row["title"] ?? row["name"] ?? row["provider_name"] ?? row["official_name"] ?? row["company_name"] ?? "Untitled") as string;
 
 export const rowTitle = titleOf;
 
@@ -98,11 +116,12 @@ export const useReviewQueue = (table: ReviewTable, enabled: boolean) =>
           : table === "programmes"
             ? "id, name, qualification, department, duration, mode, admission_summary, programme_url, source_url, source_urls, verification_status, last_verified_at, needs_review, universities(name)"
             : "*";
-      const { data, error } = await supabase
-        .from(table as any)
-        .select(select)
-        .eq("needs_review", true)
-        .limit(300);
+      let query = supabase.from(table as any).select(select);
+      query =
+        table === "opportunities"
+          ? query.eq("status", "pending_review")
+          : query.eq("needs_review", true);
+      const { data, error } = await query.limit(300);
       if (error) throw error;
       const rows = ((data ?? []) as unknown as ReviewRow[]).slice();
       rows.sort((a, b) => {
@@ -119,6 +138,7 @@ export const useReviewCounts = (enabled: boolean) =>
     enabled,
     queryFn: async () => {
       const tables: ReviewTable[] = [
+        "opportunities",
         "institutions",
         "universities",
         "programmes",
@@ -127,10 +147,12 @@ export const useReviewCounts = (enabled: boolean) =>
       ];
       const entries = await Promise.all(
         tables.map(async (t) => {
-          const { count, error } = await supabase
-            .from(t as any)
-            .select("id", { count: "exact", head: true })
-            .eq("needs_review", true);
+          let query = supabase.from(t as any).select("id", { count: "exact", head: true });
+          query =
+            t === "opportunities"
+              ? query.eq("status", "pending_review")
+              : query.eq("needs_review", true);
+          const { count, error } = await query;
           if (error) throw error;
           return [t, count ?? 0] as const;
         }),
@@ -155,7 +177,14 @@ export const useReviewAction = () => {
       approve?: boolean;
     }) => {
       const body: Record<string, any> = { ...(patch ?? {}) };
-      if (approve) {
+      if (approve && table === "opportunities") {
+        // Publishing goes through the existing database admin-moderation trigger.
+        body["status"] = "active";
+        body["is_active"] = true;
+        body["published"] = true;
+        body["verified"] = true;
+        body["last_verified_at"] = new Date().toISOString();
+      } else if (approve) {
         body["needs_review"] = false;
         body["last_verified_at"] = new Date().toISOString();
         if (table === "universities" || table === "programmes") {
@@ -174,11 +203,18 @@ export const useReviewAction = () => {
   });
 };
 
-/** Reject: keep the row flagged and record why. */
+/** Reject: retain a correction note and remove opportunities from the pending queue. */
 export const useRejectRow = () => {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({ table, id, label, note }: { table: ReviewTable; id: string; label: string; note: string }) => {
+      if (table === "opportunities") {
+        const { error: statusError } = await supabase
+          .from("opportunities")
+          .update({ status: "rejected", is_active: false, published: false, verified: false })
+          .eq("id", id);
+        if (statusError) throw statusError;
+      }
       const { error } = await supabase.from("corrections").insert({
         table_name: table,
         row_id: id,
@@ -187,7 +223,11 @@ export const useRejectRow = () => {
       });
       if (error) throw error;
     },
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["corrections"] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["corrections"] });
+      qc.invalidateQueries({ queryKey: ["review_queue"] });
+      qc.invalidateQueries({ queryKey: ["review_counts"] });
+    },
   });
 };
 
