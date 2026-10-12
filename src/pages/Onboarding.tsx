@@ -586,7 +586,7 @@ const Onboarding = () => {
               </div>
             </div>
           </div>
-          <input className={inputClass} placeholder="Skills, separated by commas" value={skills} onChange={e => setSkills(e.target.value)} />}
+          <input className={inputClass} placeholder="Skills, separated by commas" value={skills} onChange={e => setSkills(e.target.value)} />
         </section>
 
         <section className="bg-glass rounded-xl p-5">
