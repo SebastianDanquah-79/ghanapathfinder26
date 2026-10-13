@@ -70,8 +70,8 @@ const BrandLogo = ({ name, websiteUrl, logoUrl, size = 40, className = "" }: Bra
     } catch {}
 
     const request = domain
-      ? `/api/institution-media?url=${encodeURIComponent(`https://${domain}`)}&name=${encodeURIComponent(name)}`
-      : `/api/institution-media?name=${encodeURIComponent(name)}`;
+      ? `/api/institution-media?url=${encodeURIComponent(`https://${domain}`)}&name=${encodeURIComponent(name)}&kind=logo`
+      : `/api/institution-media?name=${encodeURIComponent(name)}&kind=logo`;
 
     fetch(request)
       .then((response) => (response.ok ? response.json() : null))
