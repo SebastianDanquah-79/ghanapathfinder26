@@ -4,11 +4,10 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "@/lib/router-compat";
 import { Search, MapPin, GraduationCap, Building2, Loader2 } from "@/lib/icons";
-import VerificationBadge from "./VerificationBadge";
 import SectionHeader from "./SectionHeader";
 import SaveButton from "./SaveButton";
 import OfficialLink from "./OfficialLink";
-import { formatVerified, useUniversities } from "@/hooks/useCatalogue";
+import { useUniversities } from "@/hooks/useCatalogue";
 import { INSTITUTION_GROUPS, type InstitutionGroup } from "@/lib/legal";
 
 const PAGE_SIZE = 12;
@@ -110,9 +109,22 @@ const UniversityDirectory = () => {
                 <Link to={`/university/${u.slug}`} className="inline-flex items-center gap-1.5 px-3 py-2 min-h-[44px] sm:min-h-[40px] rounded-lg text-xs font-medium bg-secondary text-muted-foreground hover:text-foreground">Profile</Link>
                 <OfficialLink href={u.website_url} label="Official" variant="ghost" />
               </div>
-              <div className="mt-2">
-                <VerificationBadge verified={u.verification_status === "verified" || u.verified} lastVerifiedAt={u.last_verified_at} sourceUrl={u.source_url ?? u.website_url} sourceName={u.source_url ? null : `${u.name} official website`} subject={u.name} whatVerified="Institution name, accreditation status, location and listed programmes." />
-                <p className="text-[11px] text-muted-foreground mt-1">{formatVerified(u.last_verified_at)}</p>
+              <div className="mt-2 space-y-1">
+                {(u.source_url || u.website_url) && (
+                  <a
+                    href={u.source_url || u.website_url || undefined}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex min-h-9 items-center text-xs font-medium text-primary hover:underline"
+                  >
+                    Open institution source ↗
+                  </a>
+                )}
+                <p className="text-[11px] text-muted-foreground">
+                  {u.last_verified_at
+                    ? `Last checked ${new Date(u.last_verified_at).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}`
+                    : "Source review date not recorded"}
+                </p>
               </div>
             </motion.div>
           ))}
