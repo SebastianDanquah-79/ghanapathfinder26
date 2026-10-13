@@ -181,7 +181,7 @@ export default function InstitutionMedia({ websiteUrl, name, logoSourceUrl, goog
       <div className="max-w-xl">
         {logo ? <img src={logo} alt={`${name} logo`} className="mx-auto mb-3 h-16 w-16 object-contain" referrerPolicy="no-referrer" onError={() => setLogoFailed(true)} /> : <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-xl border border-white/40 bg-white/15 text-xl font-bold text-white">{initials}</div>}
         <p className="font-semibold text-white">{name}</p>
-        <p className="mt-1 text-xs text-white/85">Institutional media is being resolved from verified public sources.</p>
+        <p className="mt-1 text-xs text-white/85">Campus photo unavailable. Check the institution's official website or Maps for current location details.</p>
       </div>
     </div>
   );
