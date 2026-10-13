@@ -57,17 +57,30 @@ const BrandLogo = ({ name, websiteUrl, logoUrl, size = 40, className = "" }: Bra
   });
 
   useEffect(() => {
-    if (!domain || resolved) return;
+    if (resolved) return;
     let cancelled = false;
-    const site = `https://${domain}`;
-    fetch(`/api/institution-media?url=${encodeURIComponent(site)}&name=${encodeURIComponent(name)}`)
+    const cacheId = logoCacheKey(domain ?? `name:${name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`);
+
+    try {
+      const cached = window.localStorage.getItem(cacheId);
+      if (cached && !isGenericIcon(cached)) {
+        setResolved(cached);
+        return;
+      }
+    } catch {}
+
+    const request = domain
+      ? `/api/institution-media?url=${encodeURIComponent(`https://${domain}`)}&name=${encodeURIComponent(name)}`
+      : `/api/institution-media?name=${encodeURIComponent(name)}`;
+
+    fetch(request)
       .then((response) => (response.ok ? response.json() : null))
       .then((value: { logo?: string | null } | null) => {
         const logo = value?.logo;
         if (cancelled || !logo || isGenericIcon(logo)) return;
         setResolved(logo);
         try {
-          window.localStorage.setItem(logoCacheKey(domain), logo);
+          window.localStorage.setItem(cacheId, logo);
         } catch {}
       })
       .catch(() => {});
