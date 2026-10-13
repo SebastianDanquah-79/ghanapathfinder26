@@ -5,6 +5,10 @@ type Media = {
   logo: string | null;
   campusImage: string | null;
   source?: string | null;
+  logoSourceUrl?: string | null;
+  logoAttribution?: string | null;
+  logoLicense?: string | null;
+  campusSourceUrl?: string | null;
   campusAttribution?: string | null;
   campusLicense?: string | null;
 };
@@ -163,13 +167,14 @@ export default function InstitutionMedia({
   const [failedLogoSources, setFailedLogoSources] = useState<string[]>([]);
 
   const endpoint = useMemo(() => {
-    if (!websiteUrl) return null;
+    const nameFallback = `/api/institution-media?name=${encodeURIComponent(name)}`;
+    if (!websiteUrl) return nameFallback;
     try {
       const url = new URL(websiteUrl);
-      if (url.protocol !== "https:") return null;
+      if (url.protocol !== "https:") return nameFallback;
       return `/api/institution-media?url=${encodeURIComponent(url.toString())}&name=${encodeURIComponent(name)}`;
     } catch {
-      return null;
+      return nameFallback;
     }
   }, [websiteUrl, name]);
 
@@ -181,18 +186,23 @@ export default function InstitutionMedia({
   }, [name, websiteUrl, googlePlaceId]);
 
   useEffect(() => {
-    if (!endpoint || !websiteUrl) return;
+    if (!endpoint) return;
     let cancelled = false;
+    const storageKey = websiteUrl ? cacheKey(websiteUrl) : null;
     try {
-      const cached = window.localStorage.getItem(cacheKey(websiteUrl));
+      const cached = storageKey ? window.localStorage.getItem(storageKey) : null;
       if (cached) {
         const value = JSON.parse(cached) as Media;
         setMedia((current) => ({
           logo: value.logo ?? current.logo,
           campusImage: value.campusImage ?? current.campusImage,
           source: value.source ?? current.source ?? websiteUrl,
-          campusAttribution: value.campusImage ? "Institution website" : current.campusAttribution,
-          campusLicense: value.campusImage ? "Institution website asset" : current.campusLicense,
+          logoSourceUrl: value.logoSourceUrl ?? current.logoSourceUrl,
+          logoAttribution: value.logoAttribution ?? current.logoAttribution,
+          logoLicense: value.logoLicense ?? current.logoLicense,
+          campusSourceUrl: value.campusSourceUrl ?? current.campusSourceUrl,
+          campusAttribution: value.campusAttribution ?? current.campusAttribution,
+          campusLicense: value.campusLicense ?? current.campusLicense,
         }));
       }
     } catch {}
@@ -205,10 +215,14 @@ export default function InstitutionMedia({
           logo: value.logo ?? current.logo,
           campusImage: value.campusImage ?? current.campusImage,
           source: value.source ?? current.source ?? websiteUrl,
-          campusAttribution: value.campusImage ? "Institution website" : current.campusAttribution,
-          campusLicense: value.campusImage ? "Institution website asset" : current.campusLicense,
+          logoSourceUrl: value.logoSourceUrl ?? current.logoSourceUrl,
+          logoAttribution: value.logoAttribution ?? current.logoAttribution,
+          logoLicense: value.logoLicense ?? current.logoLicense,
+          campusSourceUrl: value.campusSourceUrl ?? current.campusSourceUrl,
+          campusAttribution: value.campusAttribution ?? current.campusAttribution ?? (value.campusImage ? "Institution website" : null),
+          campusLicense: value.campusLicense ?? current.campusLicense ?? (value.campusImage ? "Institution website asset" : null),
         }));
-        try { window.localStorage.setItem(cacheKey(websiteUrl), JSON.stringify(value)); } catch {}
+        try { if (storageKey) window.localStorage.setItem(storageKey, JSON.stringify(value)); } catch {}
       })
       .catch(() => {});
     return () => { cancelled = true; };
@@ -253,7 +267,7 @@ export default function InstitutionMedia({
       })),
       ...(media.campusImage ? [{
         url: media.campusImage,
-        sourceUrl: media.source ?? websiteUrl ?? null,
+        sourceUrl: media.campusSourceUrl ?? media.source ?? websiteUrl ?? null,
         attribution: media.campusAttribution ?? null,
         title: name,
         license: media.campusLicense ?? null,
@@ -264,7 +278,7 @@ export default function InstitutionMedia({
       if (candidate.url && !unique.has(candidate.url)) unique.set(candidate.url, candidate);
     }
     return [...unique.values()];
-  }, [campusPhotos, media.campusImage, media.source, media.campusAttribution, media.campusLicense, websiteUrl, name]);
+  }, [campusPhotos, media.campusImage, media.source, media.campusSourceUrl, media.campusAttribution, media.campusLicense, websiteUrl, name]);
 
   const logoCandidates = useMemo(() => {
     const domain = domainFromWebsite(websiteUrl) ?? FIRST_50_LOGO_DOMAINS[normalizedName];
@@ -317,10 +331,20 @@ export default function InstitutionMedia({
     return (
       <div className="relative overflow-hidden rounded-2xl border border-border bg-secondary">
         <div className="aspect-[16/8] min-h-[15rem] sm:aspect-[16/6] sm:min-h-48"><CampusImage eager /></div>
-        {image && activeCampus && (activeCampus.attribution || activeCampus.license) && (
-          <div className="absolute left-3 top-3 max-w-[calc(100%-1.5rem)] rounded-md bg-black/60 px-2 py-1 text-[10px] leading-snug text-white backdrop-blur-sm">
-            {activeCampus.license ? `${activeCampus.license}` : "Photo credit"}{activeCampus.attribution ? ` · ${activeCampus.attribution}` : ""}
-            {activeCampus.sourceUrl && <a href={activeCampus.sourceUrl} target="_blank" rel="noopener noreferrer" className="ml-1 underline underline-offset-2">Source</a>}
+        {((image && activeCampus && (activeCampus.attribution || activeCampus.license)) || (logo && media.logoAttribution)) && (
+          <div className="absolute inset-x-3 top-3 rounded-md bg-black/65 px-2 py-1.5 text-[9px] leading-snug text-white backdrop-blur-sm sm:text-[10px]">
+            {image && activeCampus && (activeCampus.attribution || activeCampus.license) && (
+              <div>
+                {activeCampus.license ? activeCampus.license : "Photo credit"}{activeCampus.attribution ? ` · ${activeCampus.attribution}` : ""}
+                {activeCampus.sourceUrl && <a href={activeCampus.sourceUrl} target="_blank" rel="noopener noreferrer" className="ml-1 underline underline-offset-2">Photo source</a>}
+              </div>
+            )}
+            {logo && media.logoAttribution && (
+              <div>
+                Logo credit: {media.logoAttribution}{media.logoLicense ? ` · ${media.logoLicense}` : ""}
+                {media.logoSourceUrl && <a href={media.logoSourceUrl} target="_blank" rel="noopener noreferrer" className="ml-1 underline underline-offset-2">Logo source</a>}
+              </div>
+            )}
           </div>
         )}
         <div className="absolute inset-x-3 bottom-3 flex flex-wrap items-center gap-2 sm:inset-x-4 sm:bottom-4">
@@ -336,10 +360,20 @@ export default function InstitutionMedia({
   return (
     <div className="relative overflow-hidden rounded-xl border border-border bg-secondary">
       <div className="aspect-[16/8]"><CampusImage /></div>
-      {image && activeCampus && (activeCampus.attribution || activeCampus.license) && (
-        <div className="absolute left-2 top-2 max-w-[calc(100%-1rem)] rounded-md bg-black/60 px-2 py-1 text-[9px] leading-snug text-white backdrop-blur-sm">
-          {activeCampus.license ? `${activeCampus.license}` : "Photo credit"}{activeCampus.attribution ? ` · ${activeCampus.attribution}` : ""}
-          {activeCampus.sourceUrl && <a href={activeCampus.sourceUrl} target="_blank" rel="noopener noreferrer" className="ml-1 underline underline-offset-2">Source</a>}
+      {((image && activeCampus && (activeCampus.attribution || activeCampus.license)) || (logo && media.logoAttribution)) && (
+        <div className="absolute inset-x-2 top-2 rounded-md bg-black/65 px-2 py-1 text-[8px] leading-snug text-white backdrop-blur-sm">
+          {image && activeCampus && (activeCampus.attribution || activeCampus.license) && (
+            <div>
+              {activeCampus.license ? activeCampus.license : "Photo credit"}{activeCampus.attribution ? ` · ${activeCampus.attribution}` : ""}
+              {activeCampus.sourceUrl && <a href={activeCampus.sourceUrl} target="_blank" rel="noopener noreferrer" className="ml-1 underline underline-offset-2">Photo source</a>}
+            </div>
+          )}
+          {logo && media.logoAttribution && (
+            <div>
+              Logo: {media.logoAttribution}{media.logoLicense ? ` · ${media.logoLicense}` : ""}
+              {media.logoSourceUrl && <a href={media.logoSourceUrl} target="_blank" rel="noopener noreferrer" className="ml-1 underline underline-offset-2">Source</a>}
+            </div>
+          )}
         </div>
       )}
       <div className="absolute left-3 bottom-3 flex h-12 w-12 items-center justify-center rounded-lg border border-border bg-background/95 p-1.5 shadow-sm">{logo ? <img src={logo} alt={`${name} logo`} className="max-h-full max-w-full object-contain" loading="lazy" referrerPolicy="no-referrer" onError={() => handleLogoError(logo)} /> : <span className="text-sm font-bold text-muted-foreground">{initials}</span>}</div>
