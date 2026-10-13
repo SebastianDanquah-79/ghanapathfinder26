@@ -156,7 +156,7 @@ async function findGooglePlacesPhotos(
   try {
     if (placeId) {
       const resource = placeId.startsWith("places/") ? placeId : `places/${placeId}`;
-      if (/^places\\/[A-Za-z0-9_-]+$/.test(resource)) {
+      if (new RegExp("^places/[A-Za-z0-9_-]+$").test(resource)) {
         const response = await fetch(`https://places.googleapis.com/v1/${resource}`, {
           headers: { "X-Goog-Api-Key": apiKey, "X-Goog-FieldMask": fieldMask },
         });
