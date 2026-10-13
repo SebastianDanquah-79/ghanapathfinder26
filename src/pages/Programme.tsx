@@ -219,29 +219,27 @@ const ProgrammePage = () => {
                 )}
               </Section>
 
-              <Section title="What you'll learn" collapsible>
+              <Section title="Curriculum and courses" icon={<BookOpen className="h-4 w-4 text-primary" />} collapsible>
                 {info?.study_areas?.length ? (
                   <>
-                    <p className="text-[11px] text-muted-foreground">Typical programme areas</p>
+                    <p className="text-[11px] text-muted-foreground">Typical study areas, not a confirmed semester-by-semester curriculum</p>
                     <Chips items={info.study_areas} />
-                    <p className="text-[11px] text-muted-foreground">
-                      Official programme curriculum:{" "}
-                      {p.programme_url ? (
-                        <a
-                          href={p.programme_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-primary hover:underline"
-                        >
-                          view on the institution's site
-                        </a>
-                      ) : (
-                        "Information unavailable , confirm with the institution."
-                      )}
-                    </p>
                   </>
+                ) : null}
+                <p className="text-sm text-muted-foreground">
+                  Official curriculum not found publicly in GhanaPathFinder's current sources. We do not invent course codes, semesters or credit hours.
+                </p>
+                {p.programme_url ? (
+                  <a
+                    href={p.programme_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex min-h-10 items-center text-sm font-medium text-primary hover:underline"
+                  >
+                    Official programme page
+                  </a>
                 ) : (
-                  <p className="text-sm text-muted-foreground">Information unavailable.</p>
+                  <p className="text-xs text-muted-foreground">No official programme URL is recorded yet. Confirm the course structure with the institution.</p>
                 )}
               </Section>
 

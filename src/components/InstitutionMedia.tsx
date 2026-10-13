@@ -111,6 +111,13 @@ const normalize = (value: string) => value.toLowerCase().replace(/&/g, "and").re
 const cacheKey = (url: string) => `ghanapathfinder:institution-media:v7:${url}`;
 
 const faviconForDomain = (domain?: string | null) => domain ? `https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=128` : null;
+const domainFromWebsite = (websiteUrl?: string | null) => {
+  try {
+    return websiteUrl ? new URL(websiteUrl).hostname.replace(/^www\\./, "") : null;
+  } catch {
+    return null;
+  }
+};
 
 export default function InstitutionMedia({ websiteUrl, name, logoSourceUrl, googlePlaceId, variant = "card" }: { websiteUrl?: string | null; name: string; logoSourceUrl?: string | null; googlePlaceId?: string | null; variant?: "card" | "hero" }) {
   const normalizedName = normalize(name);
@@ -173,15 +180,17 @@ export default function InstitutionMedia({ websiteUrl, name, logoSourceUrl, goog
 
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${name} Ghana`)}`;
   const image = imageFailed ? null : media.campusImage;
-  const logo = logoFailed ? null : (logoSourceUrl ?? media.logo ?? faviconForDomain(FIRST_50_LOGO_DOMAINS[normalizedName]));
+  const hasOfficialLogo = Boolean(logoSourceUrl ?? media.logo);
+  const logo = logoFailed ? null : (logoSourceUrl ?? media.logo ?? faviconForDomain(domainFromWebsite(websiteUrl) ?? FIRST_50_LOGO_DOMAINS[normalizedName]));
+  const logoAlt = hasOfficialLogo ? `${name} logo` : `${name} official website icon`;
 
   const initials = name.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join("").toUpperCase() || "GH";
   const fallback = (
     <div className="flex h-full w-full items-center justify-center bg-[#E77917] px-6 text-center">
       <div className="max-w-xl">
-        {logo ? <img src={logo} alt={`${name} logo`} className="mx-auto mb-3 h-16 w-16 object-contain" referrerPolicy="no-referrer" onError={() => setLogoFailed(true)} /> : <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-xl border border-white/40 bg-white/15 text-xl font-bold text-white">{initials}</div>}
+        {logo ? <img src={logo} alt={logoAlt} className="mx-auto mb-3 h-16 w-16 object-contain" referrerPolicy="no-referrer" onError={() => setLogoFailed(true)} /> : <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-xl border border-white/40 bg-white/15 text-xl font-bold text-white">{initials}</div>}
         <p className="font-semibold text-white">{name}</p>
-        <p className="mt-1 text-xs text-white/85">Institutional media is being resolved from verified public sources.</p>
+        <p className="mt-1 text-xs text-white/85">Campus photo unavailable. Check the institution's official website or Maps for current location details.</p>
       </div>
     </div>
   );

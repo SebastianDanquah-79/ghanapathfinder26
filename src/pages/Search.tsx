@@ -277,6 +277,18 @@ const SearchPage = () => {
   const [category, setCategory] = useState<string>("");
   const [schType, setSchType] = useState("All");
 
+  // Keep displayed search state in sync with URL navigation, including when
+  // the search route stays mounted while another category or query is selected.
+  useEffect(() => {
+    const nextTerm = params.get("q") ?? "";
+    const rawKind = params.get("kind") ?? "all";
+    const nextKind = tabs.some((tab) => tab.key === rawKind) ? (rawKind as Kind) : "all";
+    setTerm((current) => current === nextTerm ? current : nextTerm);
+    setDebounced((current) => current === nextTerm ? current : nextTerm);
+    setKind((current) => current === nextKind ? current : nextKind);
+    setPage(0);
+  }, [params]);
+
   useEffect(() => {
     const t = setTimeout(() => {
       setDebounced(term);

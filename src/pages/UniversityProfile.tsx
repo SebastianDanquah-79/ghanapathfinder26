@@ -1,15 +1,14 @@
 import { Link, useParams } from "@/lib/router-compat";
-import { ArrowLeft, Loader2, MapPin, ShieldCheck, Wallet, GraduationCap } from "@/lib/icons";
+import { ArrowLeft, Loader2, MapPin, Wallet, GraduationCap } from "@/lib/icons";
 import Navbar from "@/components/Navbar";
 import Seo, { breadcrumbLd } from "@/components/Seo";
 import Footer from "@/components/Footer";
 import SaveButton from "@/components/SaveButton";
 import OfficialLink from "@/components/OfficialLink";
-import VerificationBadge from "@/components/VerificationBadge";
 import InstitutionMedia from "@/components/InstitutionMedia";
 import FlagListingButton from "@/components/FlagListingButton";
 import CampusMap from "@/components/CampusMap";
-import { formatVerified, useProgrammes, useUniversity } from "@/hooks/useCatalogue";
+import { useProgrammes, useUniversity } from "@/hooks/useCatalogue";
 import { useTrackView } from "@/hooks/useTracking";
 import { useRecordRecent } from "@/hooks/useRecentlyViewed";
 
@@ -158,25 +157,14 @@ const UniversityProfile = () => {
                 </div>
 
                 <div className="mt-4 space-y-1">
-                  <VerificationBadge
-                    verified={uni.verification_status === "verified" || uni.verified}
-                    lastVerifiedAt={uni.last_verified_at}
-                    sourceUrl={uni.source_url ?? uni.website_url}
-                    sourceName={
-                      uni.source_url?.includes("nmc.gov.gh")
-                        ? "Nursing and Midwifery Council of Ghana"
-                        : uni.source_url?.includes("gtec.edu.gh")
-                          ? "Ghana Tertiary Education Commission (GTEC)"
-                          : `${uni.name} official website`
-                    }
-                    subject={uni.name}
-                    whatVerified="Institution name, accreditation status, location, tuition guidance and listed programmes."
-                  />
-                  <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-                    <ShieldCheck className="h-3.5 w-3.5 text-ghana-green" />
-                    {uni.accreditation_status ? `${uni.accreditation_status} · ` : ""}
-                    {formatVerified(uni.last_verified_at)}
-                  </p>
+                  {uni.accreditation_status && (
+                    <p className="text-xs text-muted-foreground">
+                      Accreditation status: {uni.accreditation_status}
+                      {uni.last_verified_at
+                        ? ` · Last checked ${new Date(uni.last_verified_at).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}`
+                        : ""}
+                    </p>
+                  )}
                   {uni.source_url && (
                     <p className="text-[11px] text-muted-foreground break-all">
                       Source:{" "}

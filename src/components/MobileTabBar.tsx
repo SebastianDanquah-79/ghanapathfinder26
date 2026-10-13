@@ -1,14 +1,14 @@
 import { Link, useLocation } from "@/lib/router-compat";
-import { Home, Users, Building2, Award, Briefcase } from "@/lib/icons";
+import { Home, Building2, GraduationCap, Award, Briefcase } from "@/lib/icons";
 import { useAuth } from "@/hooks/useAuth";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 const tabs = [
-  { to: "/", label: "Home", icon: Home },
-  { to: "/search?kind=university", label: "Study", icon: Building2, match: "/search" },
-  { to: "/scholarships", label: "Funding", icon: Award },
-  { to: "/careers", label: "Careers", icon: Briefcase },
-  { to: "/community", label: "Community", icon: Users },
+  { to: "/feed", label: "Feed", icon: Home },
+  { to: "/search?kind=university", label: "Universities", icon: Building2, match: "/search" },
+  { to: "/programmes", label: "Programmes", icon: GraduationCap, match: "/programmes" },
+  { to: "/scholarships", label: "Scholarships", icon: Award, match: "/scholarships" },
+  { to: "/careers", label: "Careers", icon: Briefcase, match: "/careers" },
 ];
 
 const hiddenOn = ["/auth", "/onboarding", "/reset-password", "/.lovable/oauth/consent"];
