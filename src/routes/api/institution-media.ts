@@ -129,44 +129,118 @@ const jsonLdImages = (html: string, base: string) => {
   return results;
 };
 
-const firstWikimedia = async (name: string, kind: "campus" | "logo") => {
+type WikimediaAsset = {
+  url: string;
+  sourceUrl: string;
+  title: string;
+  attribution: string;
+  license: string;
+};
+
+const hasReusableLicense = (value: string) => {
+  const license = value.toLowerCase().replace(/\\s+/g, " ").trim();
+  if (!license || /non.?commercial|\\bnc\\b|no.?derivatives|\\bnd\\b|all rights reserved|fair use|copyrighted|unknown/.test(license)) return false;
+  return /cc0|public domain|cc by(?:-sa)?(?:\\s|-)?[0-9]|creative commons attribution(?:-sharealike)?/.test(license);
+};
+
+const plainText = (value: string) => value.replace(/<[^>]*>/g, " ").replace(/&nbsp;/gi, " ").replace(/\\s+/g, " ").trim();
+
+const firstWikimedia = async (name: string, kind: "campus" | "logo"): Promise<WikimediaAsset | null> => {
   try {
     const queries = kind === "logo"
-      ? [`${name} logo`, `\"${name}\" logo`]
-      : [`${name} campus Ghana`, `\"${name}\" Ghana campus`, `${name} university Ghana`];
+      ? [`"${name}" logo crest`, `${name} emblem`]
+      : [`"${name}" campus Ghana`, `"${name}" Ghana campus`, `${name} university building Ghana`];
 
     for (const queryText of queries) {
-      const query = encodeURIComponent(queryText);
-      const response = await fetch(
-        `https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=${query}&gsrnamespace=6&gsrlimit=10&prop=imageinfo&iiprop=url|mime&iiurlwidth=1400&format=json`,
-        { headers: { Accept: "application/json", "User-Agent": "GhanaPathFinder/1.0 institutional-media" } },
-      );
+      const params = new URLSearchParams({
+        action: "query",
+        format: "json",
+        generator: "search",
+        gsrsearch: queryText,
+        gsrnamespace: "6",
+        gsrlimit: "20",
+        prop: "imageinfo",
+        iiprop: "url|mime|extmetadata",
+        iiurlwidth: "1400",
+        redirects: "1",
+      });
+      const response = await fetch(`https://commons.wikimedia.org/w/api.php?${params.toString()}`, {
+        headers: {
+          Accept: "application/json",
+          "User-Agent": "GhanaPathFinder/1.0 institutional-media",
+        },
+      });
       if (!response.ok) continue;
-      const json = (await response.json()) as {
-        query?: { pages?: Record<string, { title?: string; imageinfo?: Array<{ thumburl?: string; url?: string; mime?: string }> }> };
+      const json = await response.json() as {
+        query?: { pages?: Record<string, {
+          title?: string;
+          imageinfo?: Array<{
+            thumburl?: string;
+            url?: string;
+            mime?: string;
+            descriptionurl?: string;
+            extmetadata?: Record<string, { value?: string }>;
+          }>;
+        }> };
       };
       const pages = Object.values(json.query?.pages ?? {});
       const nameTokens = name.toLowerCase().split(/[^a-z0-9]+/).filter((token) => token.length > 3);
-      const ranked = pages
-        .map((page) => {
-          const title = (page.title ?? "").toLowerCase();
-          const image = page.imageinfo?.[0];
-          const url = image?.thumburl ?? image?.url;
-          if (!url || image?.mime?.startsWith("image/svg")) return null;
-          let score = kind === "logo" ? 0 : -2;
-          if (title.includes("campus")) score += 5;
-          if (title.includes("logo") || title.includes("crest") || title.includes("coat of arms")) score += kind === "logo" ? 7 : -4;
-          for (const token of nameTokens) if (title.includes(token)) score += 3;
-          return { url, score };
-        })
-        .filter(Boolean) as Array<{ url: string; score: number }>;
-      ranked.sort((a, b) => b.score - a.score);
-      if (ranked[0] && ranked[0].score >= (kind === "logo" ? 4 : 3)) return ranked[0].url;
+      const ranked = pages.flatMap((page) => {
+        const title = page.title ?? "";
+        const lowerTitle = title.toLowerCase();
+        const info = page.imageinfo?.[0];
+        const url = info?.thumburl ?? info?.url;
+        if (!info || !url || info.mime?.startsWith("image/svg")) return [];
+        if (kind === "logo" && !/(logo|crest|seal|emblem|coat of arms|insignia)/i.test(title)) return [];
+        if (kind === "campus" && /(logo|crest|seal|emblem|coat of arms|insignia)/i.test(title)) return [];
+        const metadata = info.extmetadata ?? {};
+        const license = plainText(metadata["LicenseShortName"]?.value ?? metadata["UsageTerms"]?.value ?? "");
+        if (!hasReusableLicense(license)) return [];
+
+        let score = 0;
+        if (kind === "logo" && /(logo|crest|seal|emblem|coat of arms|insignia)/i.test(title)) score += 7;
+        if (kind === "campus" && /(campus|administration|library|hostel|hall|building|gate|entrance|faculty|lecture)/i.test(title)) score += 5;
+        for (const token of nameTokens) if (lowerTitle.includes(token)) score += 3;
+        if (score < (kind === "logo" ? 4 : 3)) return [];
+
+        const rawArtist = metadata["Artist"]?.value ?? metadata["Credit"]?.value ?? "Wikimedia Commons contributor";
+        const attribution = plainText(rawArtist);
+        return [{
+          score,
+          asset: {
+            url,
+            sourceUrl: info.descriptionurl ?? `https://commons.wikimedia.org/wiki/${encodeURIComponent(title.replace(/^File:/i, "").replace(/ /g, "_"))}`,
+            title: title.replace(/^File:/i, ""),
+            attribution: attribution || "Wikimedia Commons contributor",
+            license,
+          } satisfies WikimediaAsset,
+        }];
+      }).sort((a, b) => b.score - a.score);
+      if (ranked[0]) return ranked[0].asset;
     }
   } catch {
-    // Public fallback only. Never make the institution page fail because media search failed.
+    // Image discovery is optional; failure must not break the institution profile.
   }
   return null;
+};
+
+const commonsFallback = async (name: string, source: string | null) => {
+  const [logo, campus] = await Promise.all([
+    firstWikimedia(name, "logo"),
+    firstWikimedia(name, "campus"),
+  ]);
+  return {
+    source,
+    logo: logo?.url ?? null,
+    logoSourceUrl: logo?.sourceUrl ?? null,
+    logoAttribution: logo?.attribution ?? null,
+    logoLicense: logo?.license ?? null,
+    campusImage: campus?.url ?? null,
+    campusSourceUrl: campus?.sourceUrl ?? null,
+    campusAttribution: campus?.attribution ?? null,
+    campusLicense: campus?.license ?? null,
+    fetchedAt: new Date().toISOString(),
+  };
 };
 
 export const Route = createFileRoute("/api/institution-media")({
@@ -175,8 +249,13 @@ export const Route = createFileRoute("/api/institution-media")({
       GET: async ({ request }) => {
         const requestUrl = new URL(request.url);
         const target = requestUrl.searchParams.get("url");
-        const name = requestUrl.searchParams.get("name") ?? "Ghanaian tertiary institution";
-        if (!target || !isSafeUrl(target)) {
+        const name = (requestUrl.searchParams.get("name") ?? "Ghanaian tertiary institution").trim().slice(0, 120);
+        if (!target) {
+          return Response.json(await commonsFallback(name, null), {
+            headers: { "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800" },
+          });
+        }
+        if (!isSafeUrl(target)) {
           return Response.json({ error: "A valid HTTPS institutional website is required." }, { status: 400 });
         }
 
@@ -192,11 +271,8 @@ export const Route = createFileRoute("/api/institution-media")({
           });
 
           if (!response.ok) {
-            return Response.json({
-              source: target,
-              logo: await firstWikimedia(name, "logo"),
-              campusImage: await firstWikimedia(name, "campus"),
-              fetchedAt: new Date().toISOString(),
+            return Response.json(await commonsFallback(name, target), {
+              headers: { "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800" },
             });
           }
 
@@ -218,14 +294,22 @@ export const Route = createFileRoute("/api/institution-media")({
             findImage(html, base, name);
           const campusImage = campusCandidate ? absolute(campusCandidate, base) : null;
 
-          const resolvedLogo = logo || (await firstWikimedia(name, "logo"));
-          const resolvedCampus = campusImage || (await firstWikimedia(name, "campus"));
+          const [wikiLogo, wikiCampus] = await Promise.all([
+            logo ? Promise.resolve(null) : firstWikimedia(name, "logo"),
+            campusImage ? Promise.resolve(null) : firstWikimedia(name, "campus"),
+          ]);
 
           return Response.json(
             {
               source: target,
-              logo: resolvedLogo || null,
-              campusImage: resolvedCampus || null,
+              logo: logo || wikiLogo?.url || null,
+              logoSourceUrl: wikiLogo?.sourceUrl ?? null,
+              logoAttribution: wikiLogo?.attribution ?? null,
+              logoLicense: wikiLogo?.license ?? null,
+              campusImage: campusImage || wikiCampus?.url || null,
+              campusSourceUrl: wikiCampus?.sourceUrl ?? null,
+              campusAttribution: wikiCampus?.attribution ?? null,
+              campusLicense: wikiCampus?.license ?? null,
               fetchedAt: new Date().toISOString(),
             },
             {
@@ -235,12 +319,9 @@ export const Route = createFileRoute("/api/institution-media")({
             },
           );
         } catch {
-          return Response.json({
-            source: target,
-            logo: await firstWikimedia(name, "logo"),
-            campusImage: await firstWikimedia(name, "campus"),
-            fetchedAt: new Date().toISOString(),
-          });
+            return Response.json(await commonsFallback(name, target), {
+              headers: { "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800" },
+            });
         } finally {
           clearTimeout(timer);
         }
