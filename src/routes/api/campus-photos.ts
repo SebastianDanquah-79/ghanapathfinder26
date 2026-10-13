@@ -156,11 +156,13 @@ async function findGooglePlacesPhotos(
   try {
     if (placeId) {
       const resource = placeId.startsWith("places/") ? placeId : `places/${placeId}`;
-      if (!/^places\/[A-Za-z0-9_-]+$/.test(resource)) return [];
-      const response = await fetch(`https://places.googleapis.com/v1/${resource}`, {
-        headers: { "X-Goog-Api-Key": apiKey, "X-Goog-FieldMask": fieldMask },
-      });
-      if (response.ok) places = [await response.json() as GooglePlace];
+      if (/^places\\/[A-Za-z0-9_-]+$/.test(resource)) {
+        const response = await fetch(`https://places.googleapis.com/v1/${resource}`, {
+          headers: { "X-Goog-Api-Key": apiKey, "X-Goog-FieldMask": fieldMask },
+        });
+        if (response.ok) places = [await response.json() as GooglePlace];
+      }
+      // If the stored ID is invalid or stale, continue with the institution name/location search below.
     }
 
     if (!places.length) {
