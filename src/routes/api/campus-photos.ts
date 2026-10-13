@@ -10,6 +10,7 @@ type Photo = {
   title: string;
   license: string;
   source?: "Google Places" | "Wikimedia Commons";
+  authorAttributions?: Array<{ displayName: string; uri: string | null }>;
 };
 type Entry = { photos: Photo[]; expires: number };
 type CommonsPage = {
@@ -196,6 +197,9 @@ async function findGooglePlacesPhotos(
       url: `/api/google-place-photo?name=${encodeURIComponent(photo.name)}`,
       attribution: authors.length ? authors.join(", ") : "Google Maps",
       attributionUrl: selected.googleMapsUri ?? null,
+      authorAttributions: (photo.authorAttributions ?? [])
+        .filter((author) => Boolean(author.displayName?.trim()))
+        .map((author) => ({ displayName: author.displayName!.trim(), uri: author.uri ?? null })),
       title: `${selected.displayName?.text ?? name} campus photo`,
       license: "Google Maps photo · attribution shown",
       source: "Google Places" as const,
