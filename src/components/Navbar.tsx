@@ -55,7 +55,6 @@ const Navbar = () => {
     ? [...getNavSectionsForRole(accountRole), ...navSections.filter((section) => section.id === "settings")]
     : navSections;
   const visibleAccountItems = isPortal ? getAccountItemsForRole(accountRole) : accountItems;
-  const portalSearchTarget = accountRole === "startup_founder" || accountRole === "founder" ? "/startups" : accountRole === "international_student" || accountRole === "international-student" ? "/admission-match" : accountRole === "employer" ? "/people" : accountRole === "employee" ? "/jobs" : "/search?kind=university";
 
   const name =
     (user?.user_metadata?.["full_name"] as string | undefined) ?? user?.email ?? null;
@@ -104,7 +103,7 @@ const Navbar = () => {
 
             <Tooltip>
               <TooltipTrigger asChild>
-                <Link to={isPortal ? portalSearchTarget : "/search"} aria-label="Search" className={iconButton}>
+                <Link to="/search" aria-label="Search all GhanaPathFinder" className={iconButton}>
                   <Search className="h-[18px] w-[18px]" />
                 </Link>
               </TooltipTrigger>
@@ -167,7 +166,7 @@ const Navbar = () => {
         </TooltipProvider>
 
         <div className="md:hidden flex min-w-0 items-center gap-1">
-          <Link to={isPortal ? portalSearchTarget : "/search"} aria-label="Search GhanaPathFinder" className="grid place-items-center h-11 w-11 rounded-full text-muted-foreground active:text-primary">
+          <Link to="/search" aria-label="Search GhanaPathFinder" className="grid place-items-center h-11 w-11 rounded-full text-muted-foreground active:text-primary">
             <Search className="h-5 w-5" />
           </Link>
           <ThemeToggle className="h-11 w-11" />
@@ -191,6 +190,16 @@ const Navbar = () => {
         {open && (
           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="md:hidden overflow-hidden bg-card border-b border-border max-h-[75vh] overflow-y-auto">
             <div className="px-4 py-3 space-y-4">
+              <Link
+                to="/search"
+                onClick={() => setOpen(false)}
+                aria-label="Search all GhanaPathFinder"
+                className="flex min-h-12 items-center gap-3 border border-border bg-secondary/50 px-3 py-3 text-sm font-medium text-foreground"
+              >
+                <Search className="h-4 w-4 text-primary" />
+                <span className="flex-1">Global search</span>
+                <span className="text-xs font-normal text-muted-foreground">Study, work and funding</span>
+              </Link>
               {visibleNavSections.map(({ id, label, icon: Icon, items }) => (
                 <div key={id}>
                   <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground"><Icon className="h-4 w-4" /> {label}</div>
