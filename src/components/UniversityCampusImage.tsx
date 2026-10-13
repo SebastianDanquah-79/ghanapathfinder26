@@ -13,7 +13,7 @@ type CampusMedia = {
   credit: string;
   license: string;
   kind: "photo" | "logo";
-  source?: "Google Places" | "Wikimedia Commons";
+  source?: "Google Places" | "Wikimedia Commons" | undefined;
 };
 
 const cache = new Map<string, CampusMedia[]>();
