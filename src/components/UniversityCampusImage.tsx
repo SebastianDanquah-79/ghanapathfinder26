@@ -161,7 +161,7 @@ const CampusIllustration = ({ name, location }: UniversityCampusImageProps) => {
       <div className="flex max-w-xs flex-col items-center">
         <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-xl border border-border bg-background text-lg font-bold text-muted-foreground">{initials}</div>
         <p className="break-words text-sm font-semibold text-foreground [overflow-wrap:anywhere]">{name}</p>
-        <p className="mt-1 text-xs text-muted-foreground">Verified campus photo not available yet.</p>
+        <p className="mt-1 text-xs text-muted-foreground">Campus photo not available yet.</p>
         <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="mt-3 text-xs font-medium text-primary underline underline-offset-4">View on Google Maps</a>
       </div>
     </div>
