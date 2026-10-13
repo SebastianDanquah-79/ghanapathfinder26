@@ -19,6 +19,7 @@ type CampusPhoto = {
   title?: string;
   license?: string;
   source?: string;
+  authorAttributions?: Array<{ displayName: string; uri: string | null }> | undefined;
 };
 type CampusCandidate = {
   url: string;
@@ -26,6 +27,7 @@ type CampusCandidate = {
   attribution?: string | null;
   title?: string | null;
   license?: string | null;
+  authorAttributions?: Array<{ displayName: string; uri: string | null }> | undefined;
 };
 
 const KNOWN_MEDIA: Record<string, Media> = {
@@ -264,6 +266,7 @@ export default function InstitutionMedia({
         attribution: photo.attribution ?? (photo.source === "Google Places" ? "Google Maps" : null),
         title: photo.title ?? null,
         license: photo.license ?? null,
+        authorAttributions: photo.authorAttributions,
       })),
       ...(media.campusImage ? [{
         url: media.campusImage,
