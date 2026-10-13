@@ -144,14 +144,6 @@ const fetchPlacePhotos = async (name: string, location?: string | null, placeId?
   }
 };
 
-const isImageReachable = (src: string) => new Promise<boolean>((resolve) => {
-  const image = new Image();
-  const timeout = window.setTimeout(() => { image.onload = null; image.onerror = null; resolve(false); }, 8000);
-  image.onload = () => { window.clearTimeout(timeout); resolve(true); };
-  image.onerror = () => { window.clearTimeout(timeout); resolve(false); };
-  image.src = src;
-});
-
 const initialsFor = (name: string) => {
   const words = normalize(name).split(/\s+/).filter((word) => word.length >= 2 && !stopWords.has(word));
   return (words.length >= 2 ? `${words[0]![0]}${words[1]![0]}` : words[0]?.slice(0, 2) ?? "GP").toUpperCase();
@@ -192,7 +184,6 @@ const UniversityCampusImage = ({ name, location, placeId }: UniversityCampusImag
 
     const loadImages = async () => {
       try {
-        const placePhotos = await fetchPlacePhotos(key, location, placeId);
         const placePhotos = await fetchPlacePhotos(name, location, placeId);
         const commonsPhotos = placePhotos.some((photo) => photo.source === "Google Places") ? [] : await fetchCommonsImages(name);
         const unique = new Map<string, CampusMedia>();
@@ -207,7 +198,7 @@ const UniversityCampusImage = ({ name, location, placeId }: UniversityCampusImag
         setLoaded(true);
       } catch {
         if (cancelled) return;
-        cache.set(key, []);
+        cache.delete(key);
         setImages([]);
         setLoaded(true);
       }
