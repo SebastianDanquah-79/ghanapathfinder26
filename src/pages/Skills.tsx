@@ -28,6 +28,8 @@ const categoryOfSkill = (id: string): SkillCategory | null => {
 const Skills = () => {
   const [q, setQ] = useState("");
   const [cat, setCat] = useState<SkillCategory | "All">("All");
+  const [page, setPage] = useState(0);
+  const pageSize = 36;
 
   const rows = useMemo(() => {
     const term = q.trim().toLowerCase();
@@ -41,6 +43,11 @@ const Skills = () => {
       );
     });
   }, [q, cat]);
+
+  const pageCount = Math.max(1, Math.ceil(rows.length / pageSize));
+  const pageRows = rows.slice(page * pageSize, (page + 1) * pageSize);
+  const firstResult = rows.length === 0 ? 0 : page * pageSize + 1;
+  const lastResult = Math.min((page + 1) * pageSize, rows.length);
 
   return (
     <div className="min-h-screen bg-background">
@@ -70,7 +77,7 @@ const Skills = () => {
             <input
               type="search"
               value={q}
-              onChange={(e) => setQ(e.target.value)}
+              onChange={(e) => { setQ(e.target.value); setPage(0); }}
               placeholder="Search skills, e.g. Python, epidemiology, negotiation"
               aria-label="Search skills"
               className="w-full pl-10 pr-4 py-3 rounded-lg bg-secondary border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50"
@@ -81,7 +88,7 @@ const Skills = () => {
             {(["All", ...CATEGORY_ORDER] as const).map((c) => (
               <button
                 key={c}
-                onClick={() => setCat(c as SkillCategory | "All")}
+                onClick={() => { setCat(c as SkillCategory | "All"); setPage(0); }}
                 className={`shrink-0 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
                   cat === c
                     ? "bg-primary text-primary-foreground"
@@ -93,12 +100,16 @@ const Skills = () => {
             ))}
           </div>
 
+          <p className="mb-3 text-center text-xs text-muted-foreground">
+            {SKILLS.length.toLocaleString()} skills in the catalogue · Showing {firstResult.toLocaleString()}–{lastResult.toLocaleString()} of {rows.length.toLocaleString()} matching results
+          </p>
+
           {rows.length === 0 && (
             <p className="text-center py-10 text-muted-foreground">No skills match that search.</p>
           )}
 
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {rows.map((s) => {
+            {pageRows.map((s) => {
               const majors = majorsUsingSkill(s.id);
               return (
                 <Link
@@ -116,6 +127,28 @@ const Skills = () => {
               );
             })}
           </div>
+
+          {rows.length > pageSize && (
+            <nav aria-label="Skill results pages" className="mt-6 flex items-center justify-center gap-3">
+              <button
+                type="button"
+                onClick={() => setPage((current) => Math.max(0, current - 1))}
+                disabled={page === 0}
+                className="min-h-10 rounded-lg border border-border px-4 text-sm text-foreground disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                Previous
+              </button>
+              <span className="text-xs text-muted-foreground">Page {page + 1} of {pageCount}</span>
+              <button
+                type="button"
+                onClick={() => setPage((current) => Math.min(pageCount - 1, current + 1))}
+                disabled={page + 1 >= pageCount}
+                className="min-h-10 rounded-lg border border-border px-4 text-sm text-foreground disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                Next
+              </button>
+            </nav>
+          )}
         </div>
       </main>
       <Footer />

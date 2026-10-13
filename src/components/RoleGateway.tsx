@@ -5,6 +5,7 @@ import { ArrowRight, Briefcase, Building2, GraduationCap, Rocket, Globe, Loader2
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
+import Feed from "@/pages/Feed";
 
 const roles = [
   { key: "student", label: "Student", description: "Universities, scholarships, WASSCE matching, learning and deadlines.", icon: GraduationCap },
@@ -51,6 +52,10 @@ export default function RoleGateway() {
     }
     navigate("/onboarding?role=" + role);
   }
+
+  // Public visitors land on the feed instead of a wall of role-direction cards.
+  // Signed-in users who still need onboarding can still choose a portal below.
+  if (!user) return <Feed />;
 
   return (
     <main className="min-h-dvh bg-background text-foreground">
