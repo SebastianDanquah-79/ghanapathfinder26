@@ -303,7 +303,7 @@ export default function InstitutionMedia({
   };
 
   const fallback = (
-    <div className="flex h-full w-full items-center justify-center bg-[#E77917] px-5 pb-28 pt-6 text-center sm:px-8">
+    <div className="flex h-full w-full items-center justify-center bg-[#E77917] px-5 pb-24 pt-6 text-center sm:px-8">
       <div className="max-w-xl min-w-0">
         {logo ? (
           <img src={logo} alt={logoAlt} className="mx-auto mb-3 h-14 w-14 object-contain" referrerPolicy="no-referrer" onError={() => handleLogoError(logo)} />
@@ -330,7 +330,7 @@ export default function InstitutionMedia({
   if (variant === "hero") {
     return (
       <div className="relative overflow-hidden rounded-2xl border border-border bg-secondary">
-        <div className="aspect-[16/8] min-h-[15rem] sm:aspect-[16/6] sm:min-h-48"><CampusImage eager /></div>
+        <div className="aspect-[16/8] min-h-[18rem] sm:aspect-[16/6] sm:min-h-48"><CampusImage eager /></div>
         {((image && activeCampus && (activeCampus.attribution || activeCampus.license)) || (logo && media.logoAttribution)) && (
           <div className="absolute inset-x-3 top-3 rounded-md bg-black/65 px-2 py-1.5 text-[9px] leading-snug text-white backdrop-blur-sm sm:text-[10px]">
             {image && activeCampus && (activeCampus.attribution || activeCampus.license) && (
