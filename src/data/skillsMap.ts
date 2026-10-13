@@ -16,6 +16,8 @@ export type ResourceType =
   | "Practice"
   | "Reading";
 
+import { EXPANDED_SKILLS } from "./expandedSkills";
+
 export interface LearningResource {
   title: string;
   provider: string;
@@ -824,7 +826,22 @@ const EXTRA_SKILLS: Skill[] = [
   { id: "portfolio-project-documentation", name: "Portfolio project documentation", category: "soft", summary: "Practical knowledge and repeatable methods for portfolio project documentation.", why: "Useful for learners building career-ready capability in portfolio project documentation.", resources: [{ title: "Portfolio project documentation learning reference", provider: "GitHub Open Source Guides", url: "https://opensource.guide/starting-a-project/", type: "Docs", cost: "Free" }] },
 ];
 
-export const SKILLS: Skill[] = [...SOFT, ...DOMAIN, ...EXTRA_SKILLS];
+const CORE_SKILLS: Skill[] = [...SOFT, ...DOMAIN, ...EXTRA_SKILLS];
+
+const coreSkillIds = new Set(CORE_SKILLS.map((item) => item.id.toLowerCase()));
+const coreSkillNames = new Set(CORE_SKILLS.map((item) => item.name.trim().toLowerCase()));
+
+export const SKILLS: Skill[] = [
+  ...CORE_SKILLS,
+  ...EXPANDED_SKILLS.filter((item) => {
+    const id = item.id.toLowerCase();
+    const name = item.name.trim().toLowerCase();
+    if (coreSkillIds.has(id) || coreSkillNames.has(name)) return false;
+    coreSkillIds.add(id);
+    coreSkillNames.add(name);
+    return true;
+  }),
+];
 
 export const skillById = (id: string): Skill | undefined => SKILLS.find((s) => s.id === id);
 
