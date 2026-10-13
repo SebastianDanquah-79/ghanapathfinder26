@@ -229,10 +229,10 @@ const UniversityCampusImage = ({ name, location, placeId }: UniversityCampusImag
     });
   };
 
-  if (!images.length && (loaded || failed)) return <div className="relative mb-4 aspect-[16/9] overflow-hidden rounded-lg bg-muted"><CampusIllustration name={name} location={location} /></div>;
+  if (!images.length && (loaded || failed)) return <div className="relative mb-4 min-h-[15rem] overflow-hidden rounded-lg bg-muted"><CampusIllustration name={name} location={location} /></div>;
 
   return (
-    <div className="relative mb-4 aspect-[16/9] overflow-hidden rounded-lg bg-secondary">
+    <div className={`relative mb-4 overflow-hidden rounded-lg bg-secondary ${images.length === 0 ? "min-h-[15rem]" : "aspect-[16/9]"}`}>
       {images.length > 0 ? images.map((media, index) => (
         <a key={media.src} href={media.sourceUrl} target="_blank" rel="noreferrer" title={creditLabel} className={index === active ? "absolute inset-0 block opacity-100" : "absolute inset-0 block opacity-0 pointer-events-none"}>
           <img src={media.src} alt={`${name} ${media.kind === "logo" ? "institution logo" : "campus"} image`} loading={index === 0 ? "eager" : "lazy"} referrerPolicy="no-referrer" onError={() => handleImageError(media.src)} className="h-full w-full object-cover transition-opacity duration-700" />
