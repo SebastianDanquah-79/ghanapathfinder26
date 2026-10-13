@@ -138,12 +138,12 @@ type WikimediaAsset = {
 };
 
 const hasReusableLicense = (value: string) => {
-  const license = value.toLowerCase().replace(/\\s+/g, " ").trim();
-  if (!license || /non.?commercial|\\bnc\\b|no.?derivatives|\\bnd\\b|all rights reserved|fair use|copyrighted|unknown/.test(license)) return false;
-  return /cc0|public domain|cc by(?:-sa)?(?:\\s|-)?[0-9]|creative commons attribution(?:-sharealike)?/.test(license);
+  const license = value.toLowerCase().replace(/\s+/g, " ").trim();
+  if (!license || /non.?commercial|\bnc\b|no.?derivatives|\bnd\b|all rights reserved|fair use|copyrighted|unknown/.test(license)) return false;
+  return /cc0|public domain|cc by(?:-sa)?(?:\s|-)?[0-9]|creative commons attribution(?:-sharealike)?/.test(license);
 };
 
-const plainText = (value: string) => value.replace(/<[^>]*>/g, " ").replace(/&nbsp;/gi, " ").replace(/\\s+/g, " ").trim();
+const plainText = (value: string) => value.replace(/<[^>]*>/g, " ").replace(/&nbsp;/gi, " ").replace(/\s+/g, " ").trim();
 
 const firstWikimedia = async (name: string, kind: "campus" | "logo"): Promise<WikimediaAsset | null> => {
   try {
