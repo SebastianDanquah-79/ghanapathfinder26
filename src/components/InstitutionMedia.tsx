@@ -1,7 +1,28 @@
 import { useEffect, useMemo, useState } from "react";
 import { ExternalLink, MapPinned } from "lucide-react";
 
-type Media = { logo: string | null; campusImage: string | null };
+type Media = {
+  logo: string | null;
+  campusImage: string | null;
+  source?: string | null;
+  campusAttribution?: string | null;
+  campusLicense?: string | null;
+};
+type CampusPhoto = {
+  url: string;
+  attribution?: string;
+  attributionUrl?: string | null;
+  title?: string;
+  license?: string;
+  source?: string;
+};
+type CampusCandidate = {
+  url: string;
+  sourceUrl?: string | null;
+  attribution?: string | null;
+  title?: string | null;
+  license?: string | null;
+};
 
 const KNOWN_MEDIA: Record<string, Media> = {
   "university-of-ghana": {
@@ -119,12 +140,27 @@ const domainFromWebsite = (websiteUrl?: string | null) => {
   }
 };
 
-export default function InstitutionMedia({ websiteUrl, name, logoSourceUrl, googlePlaceId, variant = "card" }: { websiteUrl?: string | null; name: string; logoSourceUrl?: string | null; googlePlaceId?: string | null; variant?: "card" | "hero" }) {
+export default function InstitutionMedia({
+  websiteUrl,
+  name,
+  location,
+  logoSourceUrl,
+  googlePlaceId,
+  variant = "card",
+}: {
+  websiteUrl?: string | null;
+  name: string;
+  location?: string | null;
+  logoSourceUrl?: string | null;
+  googlePlaceId?: string | null;
+  variant?: "card" | "hero";
+}) {
   const normalizedName = normalize(name);
   const known = KNOWN_MEDIA[normalizedName];
   const [media, setMedia] = useState<Media>(known ?? { logo: null, campusImage: null });
-  const [imageFailed, setImageFailed] = useState(false);
-  const [logoFailed, setLogoFailed] = useState(false);
+  const [campusPhotos, setCampusPhotos] = useState<CampusPhoto[]>([]);
+  const [imageIndex, setImageIndex] = useState(0);
+  const [failedLogoSources, setFailedLogoSources] = useState<string[]>([]);
 
   const endpoint = useMemo(() => {
     if (!websiteUrl) return null;
@@ -138,9 +174,11 @@ export default function InstitutionMedia({ websiteUrl, name, logoSourceUrl, goog
   }, [websiteUrl, name]);
 
   useEffect(() => {
-    setImageFailed(false);
-    setLogoFailed(false);
-  }, [name, websiteUrl]);
+    setImageIndex(0);
+    setFailedLogoSources([]);
+    setCampusPhotos([]);
+    setMedia(known ?? { logo: null, campusImage: null });
+  }, [name, websiteUrl, googlePlaceId]);
 
   useEffect(() => {
     if (!endpoint || !websiteUrl) return;
@@ -149,7 +187,13 @@ export default function InstitutionMedia({ websiteUrl, name, logoSourceUrl, goog
       const cached = window.localStorage.getItem(cacheKey(websiteUrl));
       if (cached) {
         const value = JSON.parse(cached) as Media;
-        setMedia((current) => ({ logo: current.logo ?? value.logo, campusImage: current.campusImage ?? value.campusImage }));
+        setMedia((current) => ({
+          logo: value.logo ?? current.logo,
+          campusImage: value.campusImage ?? current.campusImage,
+          source: value.source ?? current.source ?? websiteUrl,
+          campusAttribution: value.campusImage ? "Institution website" : current.campusAttribution,
+          campusLicense: value.campusImage ? "Institution website asset" : current.campusLicense,
+        }));
       }
     } catch {}
 
@@ -157,7 +201,13 @@ export default function InstitutionMedia({ websiteUrl, name, logoSourceUrl, goog
       .then((response) => (response.ok ? response.json() : null))
       .then((value: Media | null) => {
         if (cancelled || !value) return;
-        setMedia((current) => ({ logo: current.logo ?? value.logo, campusImage: current.campusImage ?? value.campusImage }));
+        setMedia((current) => ({
+          logo: value.logo ?? current.logo,
+          campusImage: value.campusImage ?? current.campusImage,
+          source: value.source ?? current.source ?? websiteUrl,
+          campusAttribution: value.campusImage ? "Institution website" : current.campusAttribution,
+          campusLicense: value.campusImage ? "Institution website asset" : current.campusLicense,
+        }));
         try { window.localStorage.setItem(cacheKey(websiteUrl), JSON.stringify(value)); } catch {}
       })
       .catch(() => {});
@@ -165,47 +215,119 @@ export default function InstitutionMedia({ websiteUrl, name, logoSourceUrl, goog
   }, [endpoint, websiteUrl]);
 
   useEffect(() => {
-    if (!googlePlaceId) return;
+    if (!name.trim()) return;
     let cancelled = false;
-    const params = new URLSearchParams({ name, placeId: googlePlaceId });
+    const params = new URLSearchParams({ name });
+    if (location) params.set("location", location);
+    if (googlePlaceId) params.set("placeId", googlePlaceId);
+
     fetch(`/api/campus-photos?${params.toString()}`)
       .then((response) => (response.ok ? response.json() : null))
-      .then((value: { photos?: Array<{ url?: string }> } | null) => {
-        const campusImage = value?.photos?.find((photo) => photo.url)?.url;
-        if (!cancelled && campusImage) setMedia((current) => ({ ...current, campusImage }));
+      .then((value: { photos?: CampusPhoto[] } | null) => {
+        if (cancelled) return;
+        const validPhotos = (value?.photos ?? []).filter(
+          (photo): photo is CampusPhoto & { url: string } =>
+            Boolean(photo.url && /^https?:\/\//.test(photo.url) || photo.url?.startsWith("/api/google-place-photo?")),
+        );
+        setCampusPhotos(validPhotos);
+        setImageIndex(0);
       })
-      .catch(() => {});
+      .catch(() => {
+        if (!cancelled) setCampusPhotos([]);
+      });
+
+    // Google Places photo resource names are deliberately not stored in localStorage or a client cache.
     return () => { cancelled = true; };
-  }, [googlePlaceId, name]);
+  }, [googlePlaceId, name, location]);
 
-  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${name} Ghana`)}`;
-  const image = imageFailed ? null : media.campusImage;
-  const hasOfficialLogo = Boolean(logoSourceUrl ?? media.logo);
-  const logo = logoFailed ? null : (logoSourceUrl ?? media.logo ?? faviconForDomain(domainFromWebsite(websiteUrl) ?? FIRST_50_LOGO_DOMAINS[normalizedName]));
-  const logoAlt = hasOfficialLogo ? `${name} logo` : `${name} official website icon`;
+  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([name, location, "Ghana"].filter(Boolean).join(", "))}`;
 
+  const campusCandidates = useMemo(() => {
+    const candidates: CampusCandidate[] = [
+      ...campusPhotos.map((photo) => ({
+        url: photo.url,
+        sourceUrl: photo.attributionUrl ?? photo.url,
+        attribution: photo.attribution ?? (photo.source === "Google Places" ? "Google Maps" : null),
+        title: photo.title ?? null,
+        license: photo.license ?? null,
+      })),
+      ...(media.campusImage ? [{
+        url: media.campusImage,
+        sourceUrl: media.source ?? websiteUrl ?? null,
+        attribution: media.campusAttribution ?? null,
+        title: name,
+        license: media.campusLicense ?? null,
+      }] : []),
+    ];
+    const unique = new Map<string, CampusCandidate>();
+    for (const candidate of candidates) {
+      if (candidate.url && !unique.has(candidate.url)) unique.set(candidate.url, candidate);
+    }
+    return [...unique.values()];
+  }, [campusPhotos, media.campusImage, media.source, media.campusAttribution, media.campusLicense, websiteUrl, name]);
+
+  const logoCandidates = useMemo(() => {
+    const domain = domainFromWebsite(websiteUrl) ?? FIRST_50_LOGO_DOMAINS[normalizedName];
+    return [...new Set([
+      logoSourceUrl,
+      media.logo,
+      domain ? `https://${domain}/favicon.ico` : null,
+      domain ? `https://${domain}/favicon.png` : null,
+      domain ? faviconForDomain(domain) : null,
+      domain ? `https://icons.duckduckgo.com/ip3/${domain}.ico` : null,
+    ].filter((candidate): candidate is string => Boolean(candidate && /^https:\/\//.test(candidate)))];
+  }, [logoSourceUrl, media.logo, websiteUrl, normalizedName]);
+
+  const activeCampus = campusCandidates[imageIndex] ?? null;
+  const image = activeCampus?.url ?? null;
+  const logo = logoCandidates.find((candidate) => !failedLogoSources.includes(candidate)) ?? null;
+  const logoAlt = logo && (logo === logoSourceUrl || logo === media.logo) ? `${name} logo` : `${name} official website icon`;
   const initials = name.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join("").toUpperCase() || "GH";
+
+  const handleLogoError = (source: string) => {
+    setFailedLogoSources((current) => current.includes(source) ? current : [...current, source]);
+  };
+
   const fallback = (
-    <div className="flex h-full w-full items-center justify-center bg-[#E77917] px-6 text-center">
-      <div className="max-w-xl">
-        {logo ? <img src={logo} alt={logoAlt} className="mx-auto mb-3 h-16 w-16 object-contain" referrerPolicy="no-referrer" onError={() => setLogoFailed(true)} /> : <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-xl border border-white/40 bg-white/15 text-xl font-bold text-white">{initials}</div>}
-        <p className="font-semibold text-white">{name}</p>
-        <p className="mt-1 text-xs text-white/85">Campus photo unavailable. Check the institution's official website or Maps for current location details.</p>
+    <div className="flex h-full w-full items-center justify-center bg-[#E77917] px-5 pb-28 pt-6 text-center sm:px-8">
+      <div className="max-w-xl min-w-0">
+        {logo ? (
+          <img src={logo} alt={logoAlt} className="mx-auto mb-3 h-14 w-14 object-contain" referrerPolicy="no-referrer" onError={() => handleLogoError(logo)} />
+        ) : (
+          <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-xl border border-white/40 bg-white/15 text-lg font-bold text-white">{initials}</div>
+        )}
+        <p className="break-words text-balance text-base font-semibold leading-snug text-white [overflow-wrap:anywhere] sm:text-lg">{name}</p>
+        <p className="mt-2 break-words text-xs leading-relaxed text-white/85">Campus photo unavailable. Open the institution's official website or Google Maps to view its location.</p>
       </div>
     </div>
   );
 
-  const CampusImage = ({ eager = false }: { eager?: boolean }) => image ? <img src={image} alt={`${name} campus`} className="h-full w-full object-cover" loading={eager ? "eager" : "lazy"} referrerPolicy="no-referrer" onError={() => setImageFailed(true)} /> : fallback;
+  const CampusImage = ({ eager = false }: { eager?: boolean }) => image ? (
+    <img
+      src={image}
+      alt={`${name} campus`}
+      className="h-full w-full object-cover"
+      loading={eager ? "eager" : "lazy"}
+      referrerPolicy="no-referrer"
+      onError={() => setImageIndex((current) => current + 1)}
+    />
+  ) : fallback;
 
   if (variant === "hero") {
     return (
       <div className="relative overflow-hidden rounded-2xl border border-border bg-secondary">
-        <div className="aspect-[16/6] min-h-48"><CampusImage eager /></div>
-        <div className="absolute inset-x-4 bottom-4 flex items-end gap-3">
-          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl border border-border bg-background/95 p-2 shadow-sm">
-            {logo ? <img src={logo} alt={`${name} logo`} className="max-h-full max-w-full object-contain" referrerPolicy="no-referrer" onError={() => setLogoFailed(true)} /> : <span className="text-lg font-bold text-muted-foreground">{initials}</span>}
+        <div className="aspect-[16/8] min-h-[15rem] sm:aspect-[16/6] sm:min-h-48"><CampusImage eager /></div>
+        {image && activeCampus && (activeCampus.attribution || activeCampus.license) && (
+          <div className="absolute left-3 top-3 max-w-[calc(100%-1.5rem)] rounded-md bg-black/60 px-2 py-1 text-[10px] leading-snug text-white backdrop-blur-sm">
+            {activeCampus.license ? `${activeCampus.license}` : "Photo credit"}{activeCampus.attribution ? ` · ${activeCampus.attribution}` : ""}
+            {activeCampus.sourceUrl && <a href={activeCampus.sourceUrl} target="_blank" rel="noopener noreferrer" className="ml-1 underline underline-offset-2">Source</a>}
           </div>
-          <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center gap-1.5 rounded-lg border border-border bg-background/90 px-3 text-xs font-medium text-foreground backdrop-blur"><MapPinned className="h-3.5 w-3.5" /> Campus map</a>
+        )}
+        <div className="absolute inset-x-3 bottom-3 flex flex-wrap items-center gap-2 sm:inset-x-4 sm:bottom-4">
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-border bg-background/95 p-2 shadow-sm sm:h-16 sm:w-16">
+            {logo ? <img src={logo} alt={`${name} logo`} className="max-h-full max-w-full object-contain" referrerPolicy="no-referrer" onError={() => handleLogoError(logo)} /> : <span className="text-base font-bold text-muted-foreground">{initials}</span>}
+          </div>
+          <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 max-w-full items-center gap-1.5 rounded-lg border border-border bg-background/95 px-3 text-xs font-medium text-foreground shadow-sm backdrop-blur"><MapPinned className="h-3.5 w-3.5 shrink-0" /> Campus map</a>
         </div>
       </div>
     );
@@ -214,7 +336,13 @@ export default function InstitutionMedia({ websiteUrl, name, logoSourceUrl, goog
   return (
     <div className="relative overflow-hidden rounded-xl border border-border bg-secondary">
       <div className="aspect-[16/8]"><CampusImage /></div>
-      <div className="absolute left-3 bottom-3 flex h-12 w-12 items-center justify-center rounded-lg border border-border bg-background/95 p-1.5 shadow-sm">{logo ? <img src={logo} alt={`${name} logo`} className="max-h-full max-w-full object-contain" loading="lazy" referrerPolicy="no-referrer" onError={() => setLogoFailed(true)} /> : <span className="text-sm font-bold text-muted-foreground">{initials}</span>}</div>
+      {image && activeCampus && (activeCampus.attribution || activeCampus.license) && (
+        <div className="absolute left-2 top-2 max-w-[calc(100%-1rem)] rounded-md bg-black/60 px-2 py-1 text-[9px] leading-snug text-white backdrop-blur-sm">
+          {activeCampus.license ? `${activeCampus.license}` : "Photo credit"}{activeCampus.attribution ? ` · ${activeCampus.attribution}` : ""}
+          {activeCampus.sourceUrl && <a href={activeCampus.sourceUrl} target="_blank" rel="noopener noreferrer" className="ml-1 underline underline-offset-2">Source</a>}
+        </div>
+      )}
+      <div className="absolute left-3 bottom-3 flex h-12 w-12 items-center justify-center rounded-lg border border-border bg-background/95 p-1.5 shadow-sm">{logo ? <img src={logo} alt={`${name} logo`} className="max-h-full max-w-full object-contain" loading="lazy" referrerPolicy="no-referrer" onError={() => handleLogoError(logo)} /> : <span className="text-sm font-bold text-muted-foreground">{initials}</span>}</div>
       <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="absolute right-3 bottom-3 inline-flex min-h-9 items-center gap-1.5 rounded-lg bg-background/90 px-2.5 text-[11px] font-medium text-foreground backdrop-blur"><ExternalLink className="h-3 w-3" /> Maps</a>
     </div>
   );
