@@ -15,6 +15,8 @@ import {
 } from "@/data/skillsMap";
 
 const categoryOfSkill = (id: string): SkillCategory | null => {
+  const explicitCategory = SKILLS.find((item) => item.id === id)?.category;
+  if (explicitCategory) return explicitCategory;
   for (const map of Object.values(SKILL_MAPS)) {
     for (const cat of CATEGORY_ORDER) {
       if (map[cat].includes(id)) return cat;
