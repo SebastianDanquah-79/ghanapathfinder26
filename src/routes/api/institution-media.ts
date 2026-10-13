@@ -224,10 +224,10 @@ const firstWikimedia = async (name: string, kind: "campus" | "logo"): Promise<Wi
   return null;
 };
 
-const commonsFallback = async (name: string, source: string | null) => {
+const commonsFallback = async (name: string, source: string | null, includeCampus = true) => {
   const [logo, campus] = await Promise.all([
     firstWikimedia(name, "logo"),
-    firstWikimedia(name, "campus"),
+    includeCampus ? firstWikimedia(name, "campus") : Promise.resolve(null),
   ]);
   return {
     source,
@@ -250,8 +250,9 @@ export const Route = createFileRoute("/api/institution-media")({
         const requestUrl = new URL(request.url);
         const target = requestUrl.searchParams.get("url");
         const name = (requestUrl.searchParams.get("name") ?? "Ghanaian tertiary institution").trim().slice(0, 120);
+        const logoOnly = requestUrl.searchParams.get("kind") === "logo";
         if (!target) {
-          return Response.json(await commonsFallback(name, null), {
+          return Response.json(await commonsFallback(name, null, !logoOnly), {
             headers: { "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800" },
           });
         }
@@ -271,7 +272,7 @@ export const Route = createFileRoute("/api/institution-media")({
           });
 
           if (!response.ok) {
-            return Response.json(await commonsFallback(name, target), {
+            return Response.json(await commonsFallback(name, target, !logoOnly), {
               headers: { "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800" },
             });
           }
@@ -296,7 +297,7 @@ export const Route = createFileRoute("/api/institution-media")({
 
           const [wikiLogo, wikiCampus] = await Promise.all([
             logo ? Promise.resolve(null) : firstWikimedia(name, "logo"),
-            campusImage ? Promise.resolve(null) : firstWikimedia(name, "campus"),
+            (logoOnly || campusImage) ? Promise.resolve(null) : firstWikimedia(name, "campus"),
           ]);
 
           return Response.json(
