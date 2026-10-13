@@ -14,6 +14,7 @@ type CampusMedia = {
   license: string;
   kind: "photo" | "logo";
   source?: "Google Places" | "Wikimedia Commons" | undefined;
+  authorAttributions?: Array<{ displayName: string; uri: string | null }> | undefined;
 };
 
 const cache = new Map<string, CampusMedia[]>();
@@ -126,10 +127,10 @@ const fetchPlacePhotos = async (name: string, location?: string | null, placeId?
     const response = await fetch(`/api/campus-photos?${params.toString()}`);
     if (!response.ok) return [];
     const payload = (await response.json()) as {
-      photos?: Array<{ url?: string; attribution?: string; attributionUrl?: string | null; title?: string; license?: string; source?: "Google Places" | "Wikimedia Commons" }>;
+      photos?: Array<{ url?: string; attribution?: string; attributionUrl?: string | null; title?: string; license?: string; source?: "Google Places" | "Wikimedia Commons"; authorAttributions?: Array<{ displayName: string; uri: string | null }> }>;
     };
     return (payload.photos ?? [])
-      .filter((photo): photo is { url: string; attribution?: string; attributionUrl?: string | null; title?: string; license?: string; source?: "Google Places" | "Wikimedia Commons" } => Boolean(photo.url))
+      .filter((photo): photo is { url: string; attribution?: string; attributionUrl?: string | null; title?: string; license?: string; source?: "Google Places" | "Wikimedia Commons"; authorAttributions?: Array<{ displayName: string; uri: string | null }> } => Boolean(photo.url))
       .map((photo) => ({
         src: photo.url,
         sourceUrl: photo.attributionUrl ?? photo.url,
@@ -138,6 +139,7 @@ const fetchPlacePhotos = async (name: string, location?: string | null, placeId?
         license: photo.license ?? (photo.source === "Google Places" ? "Google Maps photo · attribution shown" : "Wikimedia Commons"),
         kind: "photo" as const,
         source: photo.source,
+        authorAttributions: photo.authorAttributions,
       }));
   } catch {
     return [];
@@ -243,7 +245,7 @@ const UniversityCampusImage = ({ name, location, placeId }: UniversityCampusImag
           <div className="absolute left-2 top-2 rounded-md bg-black/55 px-2 py-1 text-[10px] font-medium text-white backdrop-blur-sm">
             {activeMedia?.kind === "logo" ? "Institution logo" : "Campus photo"}
           </div>
-          {activeMedia && <div className="absolute bottom-2 left-2 max-w-[75%] truncate rounded-md bg-black/55 px-2 py-1 text-[9px] text-white backdrop-blur-sm" title={creditLabel}>{activeMedia.license} · {activeMedia.credit}</div>}
+          {activeMedia && <div className="absolute bottom-2 left-2 max-w-[82%] rounded-md bg-black/60 px-2 py-1 text-[9px] leading-snug text-white backdrop-blur-sm" title={creditLabel}>{activeMedia.license} · {activeMedia.authorAttributions?.length ? activeMedia.authorAttributions.map((author) => author.uri ? <a key={author.displayName} href={author.uri} target="_blank" rel="noopener noreferrer" className="mr-1 underline underline-offset-2">{author.displayName}</a> : <span key={author.displayName} className="mr-1">{author.displayName}</span>) : activeMedia.credit}</div>}
           {images.length > 1 && <div className="absolute bottom-2 left-1/2 flex max-w-[90%] -translate-x-1/2 gap-1 overflow-hidden rounded-full bg-black/30 px-2 py-1 backdrop-blur-sm">{images.map((media, index) => <button key={media.src} type="button" aria-label={`Show university image ${index + 1}`} onClick={() => setActive(index)} className={`h-1.5 w-1.5 shrink-0 rounded-full ${index === active ? "bg-white" : "bg-white/45"}`} />)}</div>}
         </>
       )}
