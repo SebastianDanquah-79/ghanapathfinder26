@@ -334,11 +334,12 @@ export default function InstitutionMedia({
     return (
       <div className="relative overflow-hidden rounded-2xl border border-border bg-secondary">
         <div className="aspect-[16/8] min-h-[18rem] sm:aspect-[16/6] sm:min-h-48"><CampusImage eager /></div>
-        {((image && activeCampus && (activeCampus.attribution || activeCampus.license)) || (logo && media.logoAttribution)) && (
+        {((image && activeCampus && (activeCampus.attribution || activeCampus.license)) || (logo === media.logo && media.logoAttribution)) && (
           <div className="absolute inset-x-3 top-3 rounded-md bg-black/65 px-2 py-1.5 text-[9px] leading-snug text-white backdrop-blur-sm sm:text-[10px]">
             {image && activeCampus && (activeCampus.attribution || activeCampus.license) && (
               <div>
-                {activeCampus.license ? activeCampus.license : "Photo credit"}{activeCampus.attribution ? ` · ${activeCampus.attribution}` : ""}
+                {activeCampus.license ? activeCampus.license : "Photo credit"}
+                {activeCampus.authorAttributions?.length ? activeCampus.authorAttributions.map((author) => author.uri ? <a key={author.displayName} href={author.uri} target="_blank" rel="noopener noreferrer" className="ml-1 underline underline-offset-2">{author.displayName}</a> : <span key={author.displayName} className="ml-1">{author.displayName}</span>) : activeCampus.attribution ? ` · ${activeCampus.attribution}` : ""}
                 {activeCampus.sourceUrl && <a href={activeCampus.sourceUrl} target="_blank" rel="noopener noreferrer" className="ml-1 underline underline-offset-2">Photo source</a>}
               </div>
             )}
@@ -367,7 +368,8 @@ export default function InstitutionMedia({
         <div className="absolute inset-x-2 top-2 rounded-md bg-black/65 px-2 py-1 text-[8px] leading-snug text-white backdrop-blur-sm">
           {image && activeCampus && (activeCampus.attribution || activeCampus.license) && (
             <div>
-              {activeCampus.license ? activeCampus.license : "Photo credit"}{activeCampus.attribution ? ` · ${activeCampus.attribution}` : ""}
+              {activeCampus.license ? activeCampus.license : "Photo credit"}
+              {activeCampus.authorAttributions?.length ? activeCampus.authorAttributions.map((author) => author.uri ? <a key={author.displayName} href={author.uri} target="_blank" rel="noopener noreferrer" className="ml-1 underline underline-offset-2">{author.displayName}</a> : <span key={author.displayName} className="ml-1">{author.displayName}</span>) : activeCampus.attribution ? ` · ${activeCampus.attribution}` : ""}
               {activeCampus.sourceUrl && <a href={activeCampus.sourceUrl} target="_blank" rel="noopener noreferrer" className="ml-1 underline underline-offset-2">Photo source</a>}
             </div>
           )}
