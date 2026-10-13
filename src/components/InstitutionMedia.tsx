@@ -275,7 +275,7 @@ export default function InstitutionMedia({
       domain ? `https://${domain}/favicon.png` : null,
       domain ? faviconForDomain(domain) : null,
       domain ? `https://icons.duckduckgo.com/ip3/${domain}.ico` : null,
-    ].filter((candidate): candidate is string => Boolean(candidate && /^https:\/\//.test(candidate)))];
+    ].filter((candidate): candidate is string => Boolean(candidate && /^https:\/\//.test(candidate))))];
   }, [logoSourceUrl, media.logo, websiteUrl, normalizedName]);
 
   const activeCampus = campusCandidates[imageIndex] ?? null;
