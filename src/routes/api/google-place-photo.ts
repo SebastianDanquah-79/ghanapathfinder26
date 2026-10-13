@@ -1,9 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { checkApiRateLimit, rateLimitResponse } from "@/lib/api-rate-limit";
 
 export const Route = createFileRoute("/api/google-place-photo")({
   server: {
     handlers: {
       GET: async ({ request }) => {
+        const rate = checkApiRateLimit(request, "google-place-photo", 180, 60_000);
+        if (!rate.allowed) return rateLimitResponse(rate.retryAfterSeconds);
         const requestUrl = new URL(request.url);
         const photoName = (requestUrl.searchParams.get("name") ?? "").trim();
         const apiKey = process.env.GOOGLE_MAPS_API_KEY ?? process.env.GOOGLE_PLACES_API_KEY;
