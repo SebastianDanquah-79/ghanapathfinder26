@@ -4,13 +4,13 @@ import { ExternalLink, MapPinned } from "lucide-react";
 type Media = {
   logo: string | null;
   campusImage: string | null;
-  source?: string | null;
-  logoSourceUrl?: string | null;
-  logoAttribution?: string | null;
-  logoLicense?: string | null;
-  campusSourceUrl?: string | null;
-  campusAttribution?: string | null;
-  campusLicense?: string | null;
+  source?: string | null | undefined;
+  logoSourceUrl?: string | null | undefined;
+  logoAttribution?: string | null | undefined;
+  logoLicense?: string | null | undefined;
+  campusSourceUrl?: string | null | undefined;
+  campusAttribution?: string | null | undefined;
+  campusLicense?: string | null | undefined;
 };
 type CampusPhoto = {
   url: string;
@@ -155,7 +155,7 @@ export default function InstitutionMedia({
   websiteUrl?: string | null;
   name: string;
   location?: string | null;
-  logoSourceUrl?: string | null;
+  logoSourceUrl?: string | null | undefined;
   googlePlaceId?: string | null;
   variant?: "card" | "hero";
 }) {
