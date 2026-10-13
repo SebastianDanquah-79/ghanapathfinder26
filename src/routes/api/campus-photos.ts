@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { checkApiRateLimit, rateLimitResponse } from "@/lib/api-rate-limit";
 
 const MAX_PHOTOS = 4;
+const MAX_GOOGLE_PHOTOS = 2;
 const TTL_MS = 6 * 60 * 60 * 1000;
 
 type Photo = {
@@ -148,7 +150,7 @@ async function findGooglePlacesPhotos(
   placeId: string | null,
   apiKey: string,
 ): Promise<Photo[]> {
-  const fieldMask = "id,displayName,formattedAddress,photos,googleMapsUri";
+  const fieldMask = "id,displayName,photos,googleMapsUri";
   let places: GooglePlace[] = [];
 
   try {
@@ -188,7 +190,7 @@ async function findGooglePlacesPhotos(
 
   const selected = places.find((place) => (place.photos?.length ?? 0) > 0);
   if (!selected?.photos?.length) return [];
-  return selected.photos.slice(0, MAX_PHOTOS).flatMap((photo) => {
+  return selected.photos.slice(0, MAX_GOOGLE_PHOTOS).flatMap((photo) => {
     if (!photo.name) return [];
     const authors = (photo.authorAttributions ?? [])
       .map((author) => author.displayName?.trim())
@@ -211,6 +213,8 @@ export const Route = createFileRoute("/api/campus-photos")({
   server: {
     handlers: {
       GET: async ({ request }) => {
+        const rate = checkApiRateLimit(request, "campus-photos", 60, 60_000);
+        if (!rate.allowed) return rateLimitResponse(rate.retryAfterSeconds);
         const url = new URL(request.url);
         const name = (url.searchParams.get("name") ?? "").trim().slice(0, 120);
         const location = (url.searchParams.get("location") ?? "").trim().slice(0, 80);
