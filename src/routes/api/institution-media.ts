@@ -58,7 +58,7 @@ const firstIcon = (html: string, base: string) => {
     if (/favicon\.ico(?:$|\?)/i.test(url)) score -= 3;
     if (!best || score > best.score) best = { url, score };
   }
-  return best?.url ?? absolute("/favicon.ico", base);
+  return best?.url ?? null;
 };
 
 /** Site header logos are almost always an <img> whose markup mentions "logo". */
@@ -208,15 +208,15 @@ export const Route = createFileRoute("/api/institution-media")({
           const html = (await response.text()).slice(0, 2_500_000);
           const base = new URL(target).toString();
 
-          const logo = absolute(
-            firstMeta(html, ["og:logo"]) ?? findLogoImage(html, base) ?? firstIcon(html, base) ?? "",
-            base,
-          );
+          const logoCandidate =
+            firstMeta(html, ["og:logo"]) ?? findLogoImage(html, base) ?? firstIcon(html, base);
+          const logo = logoCandidate ? absolute(logoCandidate, base) : null;
           const jsonImages = jsonLdImages(html, base);
-          const campusImage = absolute(
-            firstMeta(html, ["og:image", "twitter:image", "twitter:image:src"]) ?? jsonImages[0] ?? findImage(html, base, name) ?? "",
-            base,
-          );
+          const campusCandidate =
+            firstMeta(html, ["og:image", "twitter:image", "twitter:image:src"]) ??
+            jsonImages[0] ??
+            findImage(html, base, name);
+          const campusImage = campusCandidate ? absolute(campusCandidate, base) : null;
 
           const resolvedLogo = logo || (await firstWikimedia(name, "logo"));
           const resolvedCampus = campusImage || (await firstWikimedia(name, "campus"));
