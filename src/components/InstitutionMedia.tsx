@@ -167,12 +167,12 @@ export default function InstitutionMedia({
   const [failedLogoSources, setFailedLogoSources] = useState<string[]>([]);
 
   const endpoint = useMemo(() => {
-    const nameFallback = `/api/institution-media?name=${encodeURIComponent(name)}`;
+    const nameFallback = `/api/institution-media?name=${encodeURIComponent(name)}&kind=logo`;
     if (!websiteUrl) return nameFallback;
     try {
       const url = new URL(websiteUrl);
       if (url.protocol !== "https:") return nameFallback;
-      return `/api/institution-media?url=${encodeURIComponent(url.toString())}&name=${encodeURIComponent(name)}`;
+      return `/api/institution-media?url=${encodeURIComponent(url.toString())}&name=${encodeURIComponent(name)}&kind=logo`;
     } catch {
       return nameFallback;
     }
