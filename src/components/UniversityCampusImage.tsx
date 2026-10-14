@@ -13,7 +13,7 @@ type CampusMedia = {
   credit: string;
   license: string;
   kind: "photo" | "logo";
-  source?: "Google Places" | "Wikimedia Commons" | undefined;
+  source?: "Wikimedia Commons" | "Openverse" | undefined;
   authorAttributions?: Array<{ displayName: string; uri: string | null }> | undefined;
 };
 
@@ -127,10 +127,10 @@ const fetchPlacePhotos = async (name: string, location?: string | null, placeId?
     const response = await fetch(`/api/campus-photos?${params.toString()}`);
     if (!response.ok) return [];
     const payload = (await response.json()) as {
-      photos?: Array<{ url?: string; attribution?: string; attributionUrl?: string | null; title?: string; license?: string; source?: "Google Places" | "Wikimedia Commons"; authorAttributions?: Array<{ displayName: string; uri: string | null }> }>;
+      photos?: Array<{ url?: string; attribution?: string; attributionUrl?: string | null; title?: string; license?: string; source?: "Wikimedia Commons" | "Openverse"; authorAttributions?: Array<{ displayName: string; uri: string | null }> }>;
     };
     return (payload.photos ?? [])
-      .filter((photo): photo is { url: string; attribution?: string; attributionUrl?: string | null; title?: string; license?: string; source?: "Google Places" | "Wikimedia Commons"; authorAttributions?: Array<{ displayName: string; uri: string | null }> } => Boolean(photo.url))
+      .filter((photo): photo is { url: string; attribution?: string; attributionUrl?: string | null; title?: string; license?: string; source?: "Wikimedia Commons" | "Openverse"; authorAttributions?: Array<{ displayName: string; uri: string | null }> } => Boolean(photo.url))
       .map((photo) => ({
         src: photo.url,
         sourceUrl: photo.attributionUrl ?? photo.url,
@@ -170,7 +170,7 @@ const CampusIllustration = ({ name, location }: UniversityCampusImageProps) => {
 
 const UniversityCampusImage = ({ name, location, placeId }: UniversityCampusImageProps) => {
   const key = `${name.trim()}|${location ?? ""}|${placeId ?? ""}`;
-  const [images, setImages] = useState<CampusMedia[]>((cache.get(key) ?? []).filter((item) => item.source !== "Google Places"));
+  const [images, setImages] = useState<CampusMedia[]>((cache.get(key) ?? []).filter((item) => true));
   const [loaded, setLoaded] = useState(cache.has(key));
   const [active, setActive] = useState(0);
   const [failed, setFailed] = useState(false);
@@ -179,7 +179,7 @@ const UniversityCampusImage = ({ name, location, placeId }: UniversityCampusImag
     let cancelled = false;
     if (!key) return;
     if (cache.has(key)) {
-      setImages((cache.get(key) ?? []).filter((item) => item.source !== "Google Places"));
+      setImages((cache.get(key) ?? []).filter((item) => true));
       setLoaded(true);
       return;
     }
@@ -192,7 +192,7 @@ const UniversityCampusImage = ({ name, location, placeId }: UniversityCampusImag
         for (const item of [...placePhotos, ...commonsPhotos]) if (!unique.has(item.src)) unique.set(item.src, item);
         const sources = [...unique.values()].slice(0, 8);
         if (cancelled) return;
-        const cacheable = sources.filter((item) => item.source !== "Google Places");
+        const cacheable = sources.filter((item) => true);
         if (cacheable.length) cache.set(key, cacheable);
         else cache.delete(key);
         setImages(sources);
@@ -223,7 +223,7 @@ const UniversityCampusImage = ({ name, location, placeId }: UniversityCampusImag
   const handleImageError = (src: string) => {
     setImages((current) => {
       const next = current.filter((item) => item.src !== src);
-      const cacheable = next.filter((item) => item.source !== "Google Places");
+      const cacheable = next.filter((item) => true);
       if (cacheable.length) cache.set(key, cacheable);
       else cache.delete(key);
       if (!next.length) setFailed(true);
