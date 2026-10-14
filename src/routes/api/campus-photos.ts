@@ -11,7 +11,7 @@ type Photo = {
   attributionUrl: string | null;
   title: string;
   license: string;
-  source?: "Google Places" | "Wikimedia Commons" | "Openverse";
+  source?: "Wikimedia Commons" | "Openverse";
   authorAttributions?: Array<{ displayName: string; uri: string | null }>;
 };
 type Entry = { photos: Photo[]; expires: number };
@@ -219,85 +219,6 @@ async function findOpenversePhotos(name: string, location: string): Promise<Phot
   return [...unique.values()].slice(0, MAX_PHOTOS).map((item) => item.photo);
 }
 
-type GooglePhoto = {
-  name?: string;
-  authorAttributions?: Array<{ displayName?: string; uri?: string }>;
-};
-type GooglePlace = {
-  id?: string;
-  displayName?: { text?: string };
-  formattedAddress?: string;
-  googleMapsUri?: string;
-  photos?: GooglePhoto[];
-};
-
-async function findGooglePlacesPhotos(
-  name: string,
-  location: string,
-  placeId: string | null,
-  apiKey: string,
-): Promise<Photo[]> {
-  const fieldMask = "id,displayName,photos,googleMapsUri";
-  let places: GooglePlace[] = [];
-
-  try {
-    if (placeId) {
-      const resource = placeId.startsWith("places/") ? placeId : `places/${placeId}`;
-      if (new RegExp("^places/[A-Za-z0-9_-]+$").test(resource)) {
-        const response = await fetch(`https://places.googleapis.com/v1/${resource}`, {
-          headers: { "X-Goog-Api-Key": apiKey, "X-Goog-FieldMask": fieldMask },
-        });
-        if (response.ok) places = [await response.json() as GooglePlace];
-      }
-      // If the stored ID is invalid or stale, continue with the institution name/location search below.
-    }
-
-    if (!places.length) {
-      const response = await fetch("https://places.googleapis.com/v1/places:searchText", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Goog-Api-Key": apiKey,
-          "X-Goog-FieldMask": `places.${fieldMask.split(",").join(",places.")}`,
-        },
-        body: JSON.stringify({
-          textQuery: [name, location, "Ghana"].filter(Boolean).join(", "),
-          languageCode: "en",
-          regionCode: "GH",
-          pageSize: 5,
-        }),
-      });
-      if (response.ok) {
-        const payload = await response.json() as { places?: GooglePlace[] };
-        places = payload.places ?? [];
-      }
-    }
-  } catch {
-    // Google Places is optional; the Commons fallback below remains available.
-    return [];
-  }
-
-  const selected = places.find((place) => (place.photos?.length ?? 0) > 0);
-  if (!selected?.photos?.length) return [];
-  return selected.photos.slice(0, MAX_GOOGLE_PHOTOS).flatMap((photo) => {
-    if (!photo.name) return [];
-    const authors = (photo.authorAttributions ?? [])
-      .map((author) => author.displayName?.trim())
-      .filter((value): value is string => Boolean(value));
-    return [{
-      url: `/api/google-place-photo?name=${encodeURIComponent(photo.name)}`,
-      attribution: authors.length ? authors.join(", ") : "Google Maps",
-      attributionUrl: selected.googleMapsUri ?? null,
-      authorAttributions: (photo.authorAttributions ?? [])
-        .filter((author) => Boolean(author.displayName?.trim()))
-        .map((author) => ({ displayName: author.displayName!.trim(), uri: author.uri ?? null })),
-      title: `${selected.displayName?.text ?? name} campus photo`,
-      license: "Google Maps photo · attribution shown",
-      source: "Google Places" as const,
-    }];
-  });
-}
-
 export const Route = createFileRoute("/api/campus-photos")({
   server: {
     handlers: {
@@ -307,21 +228,9 @@ export const Route = createFileRoute("/api/campus-photos")({
         const url = new URL(request.url);
         const name = (url.searchParams.get("name") ?? "").trim().slice(0, 120);
         const location = (url.searchParams.get("location") ?? "").trim().slice(0, 80);
-        const placeId = (url.searchParams.get("placeId") ?? "").trim().slice(0, 180) || null;
+        const placeId = null; // Campus images use keyless public sources; no Google Maps API is required.
         if (name.length < 3) {
           return Response.json({ error: "An institution name is required." }, { status: 400 });
-        }
-
-        // Google Places is used only when the server has a configured key. Photo resource
-        // names and resulting photo URLs are never cached or persisted.
-        const googleKey = process.env.GOOGLE_MAPS_API_KEY ?? process.env.GOOGLE_PLACES_API_KEY;
-        if (googleKey) {
-          const googlePhotos = await findGooglePlacesPhotos(name, location, placeId, googleKey);
-          if (googlePhotos.length) {
-            return Response.json({ placeId, photos: googlePhotos }, {
-              headers: { "Cache-Control": "no-store" },
-            });
-          }
         }
 
         const key = `${normalize(name)}|${normalize(location)}`;
