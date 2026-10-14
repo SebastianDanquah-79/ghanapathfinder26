@@ -179,7 +179,7 @@ const UniversityCampusImage = ({ name, location, placeId }: UniversityCampusImag
     let cancelled = false;
     if (!key) return;
     if (cache.has(key)) {
-      setImages((cache.get(key) ?? []).filter((item) => true));
+      setImages(cache.get(key) ?? []);
       setLoaded(true);
       return;
     }
