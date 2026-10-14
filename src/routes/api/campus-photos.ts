@@ -11,7 +11,7 @@ type Photo = {
   attributionUrl: string | null;
   title: string;
   license: string;
-  source?: "Google Places" | "Wikimedia Commons";
+  source?: "Google Places" | "Wikimedia Commons" | "Openverse";
   authorAttributions?: Array<{ displayName: string; uri: string | null }>;
 };
 type Entry = { photos: Photo[]; expires: number };
@@ -56,7 +56,8 @@ const scorePage = (page: CommonsPage, name: string) => {
   };
   const normalizedName = normalize(name);
   const aliasMatch = (aliases[normalizedName] ?? []).some((alias) => normalizedTitle.includes(normalize(alias)));
-  if (!aliasMatch && (tokens.length > 1 ? matched.length < 2 : matched.length < 1)) return -100;
+  // Allow one distinctive name token for small institutions (for example, Abetifi College of Education).
+  if (!aliasMatch && matched.length < 1) return -100;
   if (/logo|crest|seal|emblem|coat of arms|favicon|icon/i.test(title)) return -100;
   if (!/campus|hostel|dormitory|hall|residence|library|administration|block|building|gate|entrance|auditorium|laboratory|faculty|lecture|courtyard|grounds|sports|university|college|school|institute/i.test(title)) return -100;
   let score = matched.length * 3 + (aliasMatch ? 5 : 0);
@@ -131,6 +132,92 @@ async function findCommonsPhotos(name: string, location: string): Promise<Photo[
   return [...unique.values()].slice(0, MAX_PHOTOS).map((item) => item.photo);
 }
 
+
+
+type OpenverseResult = {
+  title?: string;
+  url?: string;
+  thumbnail?: string;
+  creator?: string | null;
+  license?: string;
+  license_version?: string | null;
+  foreign_landing_url?: string | null;
+  provider?: string | null;
+  source?: string | null;
+  tags?: Array<{ name?: string }>;
+  detail_url?: string | null;
+};
+
+const openverseLicenseAllowed = (license?: string) =>
+  Boolean(license && ["cc0", "pdm", "by", "by-sa"].includes(license.toLowerCase()));
+
+const openverseCampusScore = (item: OpenverseResult, name: string) => {
+  const title = item.title ?? "";
+  const searchable = normalize([title, ...(item.tags ?? []).map((tag) => tag.name ?? "")].join(" "));
+  const identityTokens = tokensFor(name);
+  const matchCount = identityTokens.filter((token) => searchable.includes(token)).length;
+  if (identityTokens.length && matchCount === 0) return -100;
+  if (/(logo|crest|seal|emblem|coat of arms|favicon|icon|portrait|headshot|wedding|hotel|restaurant|airport)/i.test(title)) return -100;
+
+  let score = matchCount * 5;
+  if (/(campus|university|college|school|education|library|hostel|hall|building|administration|lecture|faculty|entrance|gate)/i.test(title)) score += 4;
+  if (/(ghana|abetifi|kumasi|legon|cape coast|accra|winneba|tarkwa|sunyani|koforidua)/i.test(searchable)) score += 2;
+  if ((item.tags ?? []).some((tag) => /campus|university|college|school|education|building/i.test(tag.name ?? ""))) score += 2;
+  return score;
+};
+
+async function findOpenversePhotos(name: string, location: string): Promise<Photo[]> {
+  const queries = [
+    `"${name}" campus ${location} Ghana`,
+    `${name} college university buildings Ghana`,
+    `${name} ${location} institution campus`,
+  ];
+  const collected: Array<{ photo: Photo; score: number }> = [];
+
+  for (const queryText of queries) {
+    const params = new URLSearchParams({
+      q: queryText,
+      page_size: "20",
+      license: "cc0,pdm,by,by-sa",
+      mature: "false",
+    });
+    try {
+      const response = await fetch(`https://api.openverse.org/v1/images/?${params.toString()}`, {
+        headers: { Accept: "application/json", "User-Agent": "GhanaPathFinder/1.0" },
+      });
+      if (!response.ok) continue;
+      const payload = await response.json() as { results?: OpenverseResult[] };
+      for (const item of payload.results ?? []) {
+        const score = openverseCampusScore(item, name);
+        if (score < 5 || !openverseLicenseAllowed(item.license)) continue;
+        const imageUrl = item.thumbnail || item.url;
+        if (!imageUrl || !/^https?:\/\//i.test(imageUrl)) continue;
+        const licenseLabel = item.license_version
+          ? `${item.license?.toUpperCase()} ${item.license_version}`
+          : item.license?.toUpperCase() ?? "Open license";
+        collected.push({
+          score,
+          photo: {
+            url: imageUrl,
+            attribution: (item.creator ?? "").trim() || item.provider || item.source || "Openverse contributor",
+            attributionUrl: item.foreign_landing_url ?? item.detail_url ?? item.url ?? null,
+            title: item.title ?? `${name} campus photo`,
+            license: licenseLabel,
+            source: "Openverse",
+          },
+        });
+      }
+    } catch {
+      // Openverse is optional; keep searching other public sources.
+    }
+  }
+
+  const unique = new Map<string, { photo: Photo; score: number }>();
+  for (const item of collected.sort((a, b) => b.score - a.score)) {
+    if (!unique.has(item.photo.url)) unique.set(item.photo.url, item);
+  }
+  return [...unique.values()].slice(0, MAX_PHOTOS).map((item) => item.photo);
+}
 
 type GooglePhoto = {
   name?: string;
@@ -245,7 +332,8 @@ export const Route = createFileRoute("/api/campus-photos")({
           });
         }
 
-        const photos = await findCommonsPhotos(name, location);
+        let photos = await findCommonsPhotos(name, location);
+        if (photos.length === 0) photos = await findOpenversePhotos(name, location);
         cache.set(key, { photos, expires: Date.now() + TTL_MS });
         return Response.json({ placeId: null, photos }, {
           headers: { "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400" },
