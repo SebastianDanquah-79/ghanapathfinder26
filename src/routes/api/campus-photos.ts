@@ -228,7 +228,6 @@ export const Route = createFileRoute("/api/campus-photos")({
         const url = new URL(request.url);
         const name = (url.searchParams.get("name") ?? "").trim().slice(0, 120);
         const location = (url.searchParams.get("location") ?? "").trim().slice(0, 80);
-        const placeId = null; // Campus images use keyless public sources; no Google Maps API is required.
         if (name.length < 3) {
           return Response.json({ error: "An institution name is required." }, { status: 400 });
         }
@@ -236,7 +235,7 @@ export const Route = createFileRoute("/api/campus-photos")({
         const key = `${normalize(name)}|${normalize(location)}`;
         const cached = cache.get(key);
         if (cached && cached.expires > Date.now()) {
-          return Response.json({ placeId: null, photos: cached.photos }, {
+          return Response.json({ photos: cached.photos }, {
             headers: { "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400" },
           });
         }
@@ -244,7 +243,7 @@ export const Route = createFileRoute("/api/campus-photos")({
         let photos = await findCommonsPhotos(name, location);
         if (photos.length === 0) photos = await findOpenversePhotos(name, location);
         cache.set(key, { photos, expires: Date.now() + TTL_MS });
-        return Response.json({ placeId: null, photos }, {
+        return Response.json({ photos }, {
           headers: { "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400" },
         });
       },
