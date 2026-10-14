@@ -136,7 +136,7 @@ const fetchPlacePhotos = async (name: string, location?: string | null, placeId?
         sourceUrl: photo.attributionUrl ?? photo.url,
         title: photo.title ?? `${name} campus`,
         credit: photo.attribution ?? "Wikimedia Commons contributor",
-        license: photo.license ?? (photo.source === "Google Places" ? "Google Maps photo · attribution shown" : "Wikimedia Commons"),
+        license: photo.license ?? (photo.source === "Openverse" ? "Openverse" : "Wikimedia Commons"),
         kind: "photo" as const,
         source: photo.source,
         authorAttributions: photo.authorAttributions,
@@ -170,7 +170,7 @@ const CampusIllustration = ({ name, location }: UniversityCampusImageProps) => {
 
 const UniversityCampusImage = ({ name, location, placeId }: UniversityCampusImageProps) => {
   const key = `${name.trim()}|${location ?? ""}|${placeId ?? ""}`;
-  const [images, setImages] = useState<CampusMedia[]>((cache.get(key) ?? []).filter((item) => true));
+  const [images, setImages] = useState<CampusMedia[]>((cache.get(key) ?? []));
   const [loaded, setLoaded] = useState(cache.has(key));
   const [active, setActive] = useState(0);
   const [failed, setFailed] = useState(false);
@@ -187,12 +187,12 @@ const UniversityCampusImage = ({ name, location, placeId }: UniversityCampusImag
     const loadImages = async () => {
       try {
         const placePhotos = await fetchPlacePhotos(name, location, placeId);
-        const commonsPhotos = placePhotos.some((photo) => photo.source === "Google Places") ? [] : await fetchCommonsImages(name);
+        const commonsPhotos = await fetchCommonsImages(name);
         const unique = new Map<string, CampusMedia>();
         for (const item of [...placePhotos, ...commonsPhotos]) if (!unique.has(item.src)) unique.set(item.src, item);
         const sources = [...unique.values()].slice(0, 8);
         if (cancelled) return;
-        const cacheable = sources.filter((item) => true);
+        const cacheable = sources;
         if (cacheable.length) cache.set(key, cacheable);
         else cache.delete(key);
         setImages(sources);
@@ -223,7 +223,7 @@ const UniversityCampusImage = ({ name, location, placeId }: UniversityCampusImag
   const handleImageError = (src: string) => {
     setImages((current) => {
       const next = current.filter((item) => item.src !== src);
-      const cacheable = next.filter((item) => true);
+      const cacheable = next;
       if (cacheable.length) cache.set(key, cacheable);
       else cache.delete(key);
       if (!next.length) setFailed(true);
