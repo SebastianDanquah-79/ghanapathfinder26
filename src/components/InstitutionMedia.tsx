@@ -243,7 +243,7 @@ export default function InstitutionMedia({
         if (cancelled) return;
         const validPhotos = (value?.photos ?? []).filter(
           (photo): photo is CampusPhoto & { url: string } =>
-            Boolean(photo.url && /^https?:\/\//.test(photo.url) || photo.url?.startsWith("/api/google-place-photo?")),
+            Boolean(photo.url && /^https?:\/\//.test(photo.url)),
         );
         setCampusPhotos(validPhotos);
         setImageIndex(0);
@@ -252,7 +252,7 @@ export default function InstitutionMedia({
         if (!cancelled) setCampusPhotos([]);
       });
 
-    // Google Places photo resource names are deliberately not stored in localStorage or a client cache.
+    // Campus image discovery uses public, keyless, open-license sources.
     return () => { cancelled = true; };
   }, [googlePlaceId, name, location]);
 
@@ -263,7 +263,7 @@ export default function InstitutionMedia({
       ...campusPhotos.map((photo) => ({
         url: photo.url,
         sourceUrl: photo.attributionUrl ?? photo.url,
-        attribution: photo.attribution ?? (photo.source === "Google Places" ? "Google Maps" : null),
+        attribution: photo.attribution ?? null,
         title: photo.title ?? null,
         license: photo.license ?? null,
         authorAttributions: photo.authorAttributions,
