@@ -192,7 +192,7 @@ export default function Feed() {
           .select("id,youtube_id,title,description,channel_name,category,tags,thumbnail_url,published_at")
           .eq("is_active", true)
           .order("published_at", { ascending: false })
-          .limit(500),
+          .limit(1000),
         supabase.from("feed_posts")
           .select("id,title,description,video_url,youtube_url,thumbnail_url,tags,category,likes_count,comments_count,views_count,is_published,created_at")
           .eq("is_published", true)
