@@ -2854,6 +2854,57 @@ export type Database = {
         }
         Relationships: []
       }
+      life_game_runs: {
+        Row: {
+          created_at: string
+          current_round: number
+          decisions: Json
+          goal: string
+          game_type: string
+          id: string
+          metrics: Json
+          risk_profile: string
+          starting_stage: string
+          status: string
+          time_horizon_years: number
+          updated_at: string
+          user_id: string
+          weekly_hours: number
+        }
+        Insert: {
+          created_at?: string
+          current_round?: number
+          decisions?: Json
+          goal: string
+          game_type: string
+          id?: string
+          metrics?: Json
+          risk_profile?: string
+          starting_stage: string
+          status?: string
+          time_horizon_years?: number
+          updated_at?: string
+          user_id: string
+          weekly_hours?: number
+        }
+        Update: {
+          created_at?: string
+          current_round?: number
+          decisions?: Json
+          goal?: string
+          game_type?: string
+          id?: string
+          metrics?: Json
+          risk_profile?: string
+          starting_stage?: string
+          status?: string
+          time_horizon_years?: number
+          updated_at?: string
+          user_id?: string
+          weekly_hours?: number
+        }
+        Relationships: []
+      }
       life_path_items: {
         Row: {
           created_at: string

@@ -104,6 +104,15 @@ export const navSections: NavSection[] = [
     ],
   },
   {
+    id: "games",
+    label: "Games",
+    icon: Sparkles,
+    href: "/life-game",
+    items: [
+      { label: "Life Simulator", href: "/life-game", desc: "Play through life decisions, see trade-offs and turn your goal into a real-world mission" },
+    ],
+  },
+  {
     id: "learning",
     label: "AI Study Coach",
     icon: BookOpen,
