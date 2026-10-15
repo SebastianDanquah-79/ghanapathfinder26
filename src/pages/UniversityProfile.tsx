@@ -12,6 +12,18 @@ import { useProgrammes, useUniversity } from "@/hooks/useCatalogue";
 import { useTrackView } from "@/hooks/useTracking";
 import { useRecordRecent } from "@/hooks/useRecentlyViewed";
 
+const displayAccreditationStatus = (status: string | null | undefined, verified: boolean) => {
+  if (!status) return "Status not confirmed";
+  const normalized = status.trim().toLowerCase();
+  if (/needs verification|not verified|unverified|unknown|pending review/.test(normalized)) {
+    return "Status not confirmed";
+  }
+  if (/expired|suspended|revoked|unaccredited/.test(normalized)) {
+    return status + (verified ? "" : " · confirm current standing with the regulator");
+  }
+  return verified ? status : status + " · source-listed, current status not independently confirmed";
+};
+
 const UniversityProfile = () => {
   const { slug } = useParams<{ slug: string }>();
   const { data: uni, isLoading, isError, refetch } = useUniversity(slug);
@@ -159,7 +171,7 @@ const UniversityProfile = () => {
                 <div className="mt-4 space-y-1">
                   {uni.accreditation_status && (
                     <p className="text-xs text-muted-foreground">
-                      Accreditation status: {uni.accreditation_status}
+                      Accreditation status: {displayAccreditationStatus(uni.accreditation_status, uni.verified)}
                       {uni.last_verified_at
                         ? ` · Last checked ${new Date(uni.last_verified_at).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}`
                         : ""}
