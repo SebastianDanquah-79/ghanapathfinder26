@@ -41,7 +41,7 @@ const QUALIFICATION_LEVELS: { value: QualificationLevel; label: string }[] = [
   { value: "undergraduate", label: "Undergraduate" },
   { value: "masters_postgraduate", label: "Master's / Postgraduate" },
   { value: "doctoral_phd", label: "Doctoral / PhD" },
-  { value: "other_review", label: "Other / needs review" },
+  { value: "other_review", label: "Other qualifications" },
 ];
 
 const normalizedHost = (raw?: string | null): string | null => {
@@ -90,11 +90,11 @@ const ProgrammeCard = ({ p }: { p: DirectoryProgramme }) => (
           {p.name}
         </Link>
       </h3>
-      {p.verified && <BadgeCheck className="h-4 w-4 text-primary shrink-0" aria-label="Verified" />}
+      {p.verification_status === "verified" && p.verified && <BadgeCheck className="h-4 w-4 text-primary shrink-0" aria-label="Verified" />}
     </div>
 
     <VerificationBadge
-      verified={p.verification_status === "verified" || p.verified}
+      verified={p.verification_status === "verified" && p.verified}
       lastVerifiedAt={p.last_verified_at}
       sourceUrl={institutionDomainSourceUrl(p) ?? p.source_url ?? p.programme_url ?? null}
       subject={`${p.name}${p.universities?.name ? ` , ${p.universities.name}` : ""}`}
@@ -103,9 +103,9 @@ const ProgrammeCard = ({ p }: { p: DirectoryProgramme }) => (
 
     <p className="text-[11px] text-muted-foreground">
       {institutionDomainSourceUrl(p)
-        ? "Institution-domain source found. This checks the link's domain only; the programme details still require individual review."
+        ? "The source link uses the institution's domain. Open it to confirm current programme details."
         : (p.programme_url || p.primary_source_url || p.source_url || (p.source_urls?.length ?? 0) > 0)
-          ? "Source link present, but its domain does not match the institution website. Confirm this programme with the institution."
+          ? "A source link is available. Compare it with the institution's official page before applying."
           : "No programme-level source link recorded. Check the institution's official admissions page."}
     </p>
 
