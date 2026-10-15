@@ -364,7 +364,7 @@ const ProgrammePage = () => {
                 </h2>
                 <VerificationBadge
                   className="mb-2"
-                  verified={p.verification_status === "verified" || p.verified}
+                  verified={p.verification_status === "verified" && p.verified}
                   lastVerifiedAt={p.last_verified_at}
                   sourceUrl={p.source_url ?? p.programme_url ?? p.application_url}
                   sourceName={data?.sources?.[0]?.source_url ? `${p.name} official programme page` : null}
