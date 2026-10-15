@@ -72,7 +72,7 @@ export const programmeDirectoryQueryOptions = (filters: DirectoryFilters = {}) =
       if (qualificationLevel) q = q.eq("qualification_level", qualificationLevel);
       if (qualification) q = q.eq("qualification", qualification);
       if (degreeType) q = q.eq("degree_type", degreeType);
-      if (verifiedOnly) q = q.eq("verified", true);
+      if (verifiedOnly) q = q.eq("verified", true).eq("verification_status", "verified");
       if (region) q = q.eq("universities.region", region);
       if (institution) q = q.eq("universities.name", institution);
       if (search.trim()) {
