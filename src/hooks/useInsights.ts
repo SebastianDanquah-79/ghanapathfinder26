@@ -94,8 +94,15 @@ export const useCreateInsight = () => {
   return useMutation({
     mutationFn: async (input: InsightInput) => {
       if (!user) throw new Error("Please sign in to share your experience.");
+      // The database requires a non-null title, but the composer intentionally
+      // asks for a single body rather than a separate headline. Derive a short
+      // title from the user's text so normal community posts can be inserted.
+      const plainBody = input.body.trim().replace(/\\s+/g, " ");
+      const title = plainBody.slice(0, 120).trim() || "Student experience";
+
       const { error } = await supabase.from("student_insights").insert({
         ...input,
+        title,
         programme: input.programme || null,
         year_of_study: input.year_of_study || null,
         wish_i_knew: input.wish_i_knew || null,
