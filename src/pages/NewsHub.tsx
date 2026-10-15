@@ -119,6 +119,7 @@ export default function NewsHub({
   subtitle?: string;
 }) {
   const [articles, setArticles] = useState<Article[]>([]);
+  const [globalArticles, setGlobalArticles] = useState<Article[]>([]);
   const [category, setCategory] = useState("All");
   const [ghanaOnly, setGhanaOnly] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -129,13 +130,30 @@ export default function NewsHub({
   const lastUpdatedAt = useRef(0);
   const realtimeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const loadHighlights = useCallback(async (targetGhanaOnly = ghanaOnly) => {
+    try {
+      const { data, error } = await newsDb.rpc("gpf_news_feed", {
+        p_category: "All",
+        p_country_code: targetGhanaOnly ? "GH" : null,
+        p_limit: PAGE_SIZE,
+        p_offset: 0,
+      });
+      if (!error) setGlobalArticles(Array.isArray(data) ? data as Article[] : []);
+    } catch {
+      // Keep the last successful daily highlights visible if a refresh fails.
+    }
+  }, [ghanaOnly]);
+
   const load = useCallback(async (
     replace = true,
     targetCategory = category,
     targetGhanaOnly = ghanaOnly,
     requestedOffset = 0,
   ) => {
-    if (replace) setRefreshing(true);
+    if (replace) {
+      setRefreshing(true);
+      void loadHighlights(targetGhanaOnly);
+    }
     try {
       const { data, error } = await newsDb.rpc("gpf_news_feed", {
         p_category: targetCategory,
@@ -160,7 +178,7 @@ export default function NewsHub({
       setLoading(false);
       setRefreshing(false);
     }
-  }, [category, ghanaOnly]);
+  }, [category, ghanaOnly, loadHighlights]);
 
   useEffect(() => {
     setArticles([]);
@@ -203,13 +221,13 @@ export default function NewsHub({
   }, [load, category, ghanaOnly]);
 
   const breakingStory = useMemo(() => {
-    return articles
+    return globalArticles
       .filter(isBreaking)
       .sort((a, b) => headlineScore(b) - headlineScore(a) || articleTime(b) - articleTime(a))[0] ?? null;
-  }, [articles]);
+  }, [globalArticles]);
 
   const bigStoryToday = useMemo(() => {
-    const nonBreaking = articles.filter((item) => item.id !== breakingStory?.id);
+    const nonBreaking = globalArticles.filter((item) => item.id !== breakingStory?.id);
     const fresh = nonBreaking.filter((item) => {
       const published = articleTime(item);
       return published > 0 && published <= Date.now() + 5 * 60 * 1000 && Date.now() - published < 24 * HOUR;
@@ -217,7 +235,7 @@ export default function NewsHub({
     return [...(fresh.length ? fresh : nonBreaking)].sort(
       (a, b) => headlineScore(b) - headlineScore(a) || articleTime(b) - articleTime(a),
     )[0] ?? null;
-  }, [articles, breakingStory]);
+  }, [globalArticles, breakingStory]);
 
   const loadMore = async () => {
     await load(false, category, ghanaOnly, articles.length);
