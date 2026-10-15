@@ -32,6 +32,7 @@ import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as InspirationRouteImport } from './routes/inspiration'
+import { Route as LifeGameRouteImport } from './routes/life-game'
 import { Route as MatcherRouteImport } from './routes/matcher'
 import { Route as MyPathRouteImport } from './routes/my-path'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
@@ -205,6 +206,11 @@ const FaqRoute = FaqRouteImport.update({
 const InspirationRoute = InspirationRouteImport.update({
   id: '/inspiration',
   path: '/inspiration',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LifeGameRoute = LifeGameRouteImport.update({
+  id: '/life-game',
+  path: '/life-game',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MatcherRoute = MatcherRouteImport.update({
@@ -529,6 +535,7 @@ export interface FileRoutesByFullPath {
   '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
   '/inspiration': typeof InspirationRoute
+  '/life-game': typeof LifeGameRoute
   '/matcher': typeof MatcherRoute
   '/my-path': typeof MyPathRoute
   '/onboarding': typeof OnboardingRoute
@@ -591,6 +598,7 @@ export interface FileRoutesByTo {
   '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
   '/inspiration': typeof InspirationRoute
+  '/life-game': typeof LifeGameRoute
   '/matcher': typeof MatcherRoute
   '/my-path': typeof MyPathRoute
   '/onboarding': typeof OnboardingRoute
@@ -654,6 +662,7 @@ export interface FileRoutesById {
   '/disclaimer': typeof DisclaimerRoute
   '/faq': typeof FaqRoute
   '/inspiration': typeof InspirationRoute
+  '/life-game': typeof LifeGameRoute
   '/matcher': typeof MatcherRoute
   '/my-path': typeof MyPathRoute
   '/onboarding': typeof OnboardingRoute
@@ -718,6 +727,7 @@ export interface FileRouteTypes {
     | '/disclaimer'
     | '/faq'
     | '/inspiration'
+    | '/life-game'
     | '/matcher'
     | '/my-path'
     | '/onboarding'
@@ -780,6 +790,7 @@ export interface FileRouteTypes {
     | '/disclaimer'
     | '/faq'
     | '/inspiration'
+    | '/life-game'
     | '/matcher'
     | '/my-path'
     | '/onboarding'
@@ -842,6 +853,7 @@ export interface FileRouteTypes {
     | '/disclaimer'
     | '/faq'
     | '/inspiration'
+    | '/life-game'
     | '/matcher'
     | '/my-path'
     | '/onboarding'
@@ -905,6 +917,7 @@ export interface RootRouteChildren {
   DisclaimerRoute: typeof DisclaimerRoute
   FaqRoute: typeof FaqRoute
   InspirationRoute: typeof InspirationRoute
+  LifeGameRoute: typeof LifeGameRoute
   MatcherRoute: typeof MatcherRoute
   MyPathRoute: typeof MyPathRoute
   OnboardingRoute: typeof OnboardingRoute
@@ -1105,6 +1118,13 @@ declare module '@tanstack/react-router' {
       path: '/inspiration'
       fullPath: '/inspiration'
       preLoaderRoute: typeof InspirationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/life-game': {
+      id: '/life-game'
+      path: '/life-game'
+      fullPath: '/life-game'
+      preLoaderRoute: typeof LifeGameRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/matcher': {
@@ -1393,6 +1413,7 @@ const rootRouteChildren: RootRouteChildren = {
   DisclaimerRoute: DisclaimerRoute,
   FaqRoute: FaqRoute,
   InspirationRoute: InspirationRoute,
+  LifeGameRoute: LifeGameRoute,
   MatcherRoute: MatcherRoute,
   MyPathRoute: MyPathRoute,
   OnboardingRoute: OnboardingRoute,
