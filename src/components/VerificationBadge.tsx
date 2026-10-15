@@ -49,7 +49,7 @@ const VerificationBadge = ({
           }`}
         >
           {verified ? <ShieldCheck className="h-3.5 w-3.5" /> : <Shield className="h-3.5 w-3.5" />}
-          {verified ? "Verified" : "Not verified"}
+          {verified ? "Verified" : sourceUrl ? "Source linked" : "Source not listed"}
         </span>
         <button
           type="button"
@@ -60,7 +60,7 @@ const VerificationBadge = ({
           }}
           className="relative z-10 inline-flex items-center min-h-[36px] px-2.5 rounded-lg bg-secondary text-[11px] font-medium text-muted-foreground hover:text-foreground active:text-primary"
         >
-          {verified ? "Why verified?" : "What does this mean?"}
+          {verified ? "Verification details" : "Source details"}
         </button>
       </div>
 
@@ -68,7 +68,7 @@ const VerificationBadge = ({
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle className="text-base">
-              {verified ? "Verified information" : "Not verified"}
+              {verified ? "Verified information" : "Source details"}
             </DialogTitle>
           </DialogHeader>
 
@@ -121,14 +121,14 @@ const VerificationBadge = ({
             ) : (
               <>
                 <p>
-                  Not verified means GhanaPathFinder has not yet confirmed the information through a
-                  sufficiently reliable official or authoritative source. It does not automatically
-                  mean the information is incorrect.
+                  A source link may be available, but the information has not yet been independently
+                  confirmed against current official details. Open the source and check the institution's
+                  latest information before making an application decision.
                 </p>
                 <dl className="space-y-2 rounded-lg bg-secondary p-3 text-[13px]">
                   <div>
-                    <dt className="text-foreground">Reason</dt>
-                    <dd>{reason || "No official source has been recorded for this entry yet."}</dd>
+                    <dt className="text-foreground">Source status</dt>
+                    <dd>{reason || (sourceUrl ? "Source link available; current details are not independently confirmed." : "No source link has been recorded for this entry yet.")}</dd>
                   </div>
                 </dl>
               </>
@@ -143,7 +143,7 @@ const VerificationBadge = ({
                 className="inline-flex items-center gap-1.5 min-h-[44px] px-3 rounded-lg bg-primary text-primary-foreground text-xs font-medium"
               >
                 <ExternalLink className="h-3.5 w-3.5" />
-                {verified ? "Open source" : "Check official source"}
+                {verified ? "Open source" : "View source"}
               </a>
             )}
           </div>
