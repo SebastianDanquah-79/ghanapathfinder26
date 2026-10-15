@@ -64,7 +64,7 @@ function isBreaking(article: Article) {
   if (!published || Date.now() - published > 6 * HOUR || published > Date.now() + 5 * 60 * 1000) return false;
   const text = `${article.title} ${article.excerpt ?? ""}`.toLowerCase();
   return /\b(breaking|just in|developing story|live updates?|urgent)\b/.test(article.title.toLowerCase())
-    || /\b(coup|earthquake|major explosion|major fire|plane crash|state of emergency|mass casualty|terror attack|president has died|national emergency|outbreak declared)\b/.test(text);
+    || /\b(coup|earthquake|major explosion|major fire|plane crash|state of emergency|mass casualty|terror attack|president has died|national emergency|outbreak declared|president resigns|prime minister resigns|election results|election winner|war declared|invasion begins|parliament dissolved|supreme court rules|emergency declared|major cyberattack|school collapse|bridge collapse|tsunami warning|volcano erupts|massive flooding|flood emergency|military takeover)\b/.test(text);
 }
 
 function StoryImage({ article, className = "" }: { article: Article; className?: string }) {
@@ -135,7 +135,8 @@ export default function NewsHub({
       const { data, error } = await newsDb.rpc("gpf_news_feed", {
         p_category: "All",
         p_country_code: targetGhanaOnly ? "GH" : null,
-        p_limit: PAGE_SIZE,
+        // Use a wider pool for editorial highlights; the visible category feed remains paginated.
+        p_limit: 200,
         p_offset: 0,
       });
       if (!error) setGlobalArticles(Array.isArray(data) ? data as Article[] : []);
