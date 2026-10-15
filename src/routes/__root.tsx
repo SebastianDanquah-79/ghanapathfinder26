@@ -44,6 +44,86 @@ function RootComponent() {
     navigator.serviceWorker.register("/sw.js").catch((err) => console.error("SW registration failed:", err));
   }, []);
 
+  // Normalize HTML entities in visible text from imported feeds and database records.
+  // This safely changes text nodes only; it never interprets decoded text as HTML.
+  useEffect(() => {
+    if (typeof document === "undefined" || !document.body) return;
+
+    const decoder = document.createElement("textarea");
+    const entityPattern = /&(?:#(?:x[\\da-f]+|\\d+)|[a-z][a-z\\d]*);?/i;
+    const ignoredSelector = "script,style,textarea,pre,code,[data-preserve-entities]";
+    const attributeNames = ["alt", "aria-description", "aria-label", "placeholder", "title"] as const;
+
+    const decode = (value: string): string => {
+      if (!entityPattern.test(value)) return value;
+
+      let result = value;
+      // A few passes also handle content that was accidentally encoded more than once.
+      for (let pass = 0; pass < 3; pass += 1) {
+        decoder.innerHTML = result;
+        const next = decoder.value;
+        if (next === result) break;
+        result = next;
+      }
+      return result;
+    };
+
+    const processNode = (node: Node) => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const parent = node.parentElement;
+        if (parent?.closest(ignoredSelector)) return;
+
+        const value = node.nodeValue;
+        if (value) {
+          const decoded = decode(value);
+          if (decoded !== value) node.nodeValue = decoded;
+        }
+        return;
+      }
+
+      if (node.nodeType === Node.ELEMENT_NODE) {
+        const element = node as Element;
+        if (element.closest(ignoredSelector)) return;
+
+        for (const name of attributeNames) {
+          const value = element.getAttribute(name);
+          if (!value) continue;
+
+          const decoded = decode(value);
+          if (decoded !== value) element.setAttribute(name, decoded);
+        }
+      }
+    };
+
+    const decodeSubtree = (root: Node) => {
+      processNode(root);
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT);
+      while (walker.nextNode()) processNode(walker.currentNode);
+    };
+
+    decodeSubtree(document.body);
+
+    const observer = new MutationObserver((records) => {
+      for (const record of records) {
+        if (record.type === "characterData" || record.type === "attributes") {
+          processNode(record.target);
+        } else {
+          for (const addedNode of record.addedNodes) decodeSubtree(addedNode);
+        }
+      }
+    });
+
+    observer.observe(document.body, {
+      subtree: true,
+      childList: true,
+      characterData: true,
+      attributes: true,
+      attributeFilter: [...attributeNames],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
