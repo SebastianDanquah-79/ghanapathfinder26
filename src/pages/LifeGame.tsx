@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "@/lib/router-compat";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { ArrowRight, Award, BookOpen, Briefcase, CheckCircle2, Heart, Lightbulb, RefreshCw, Sparkles, Target, Users } from "@/lib/icons";
+import { ArrowRight, BookOpen, CheckCircle2, Heart, Lightbulb, RefreshCw, Sparkles, Target, Users } from "@/lib/icons";
 import Navbar from "@/components/Navbar";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
