@@ -97,7 +97,7 @@ export const useCreateInsight = () => {
       // The database requires a non-null title, but the composer intentionally
       // asks for a single body rather than a separate headline. Derive a short
       // title from the user's text so normal community posts can be inserted.
-      const plainBody = input.body.trim().replace(/\\s+/g, " ");
+      const plainBody = input.body.trim().replace(/\s+/g, " ");
       const title = plainBody.slice(0, 120).trim() || "Student experience";
 
       const { error } = await supabase.from("student_insights").insert({
