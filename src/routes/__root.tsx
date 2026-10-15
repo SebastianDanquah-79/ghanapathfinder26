@@ -50,7 +50,7 @@ function RootComponent() {
     if (typeof document === "undefined" || !document.body) return;
 
     const decoder = document.createElement("textarea");
-    const entityPattern = /&(?:#(?:x[\\da-f]+|\\d+)|[a-z][a-z\\d]*);?/i;
+    const entityPattern = /&(?:#(?:x[\da-f]+|\d+)|[a-z][a-z\d]*);?/i;
     const ignoredSelector = "script,style,textarea,pre,code,[data-preserve-entities]";
     const attributeNames = ["alt", "aria-description", "aria-label", "placeholder", "title"] as const;
 
