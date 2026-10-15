@@ -43,6 +43,7 @@ export const navSections: NavSection[] = [
     href: "/for-you",
     items: [
       { label: "For You", href: "/for-you", desc: "Your personalised stream of learning, work and community" },
+      { label: "Video Library", href: "/feed", desc: "Hundreds of videos across technology, science, mathematics, business, politics, culture and more" },
       { label: "Stories", href: "/stories", desc: "Read the latest stories in the platform" },
       { label: "Daily Drop", href: "/daily-drop", desc: "A quick view of new stories" },
       { label: "Africa Now", href: "/africa-now", desc: "Current Africa coverage" },
