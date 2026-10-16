@@ -228,30 +228,33 @@ const PostInsightDialog = ({ open, onClose, universityId, editing }: Props) => {
   const busy = create.isPending || update.isPending || uploading;
 
   return (
-    <div className="fixed inset-0 z-[80] flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4">
       <div className="absolute inset-0 bg-black/60" onClick={onClose} aria-hidden />
       <div
         role="dialog"
         aria-modal="true"
         aria-label={editing ? "Edit your post" : "Share your experience"}
-        className="relative w-full sm:max-w-lg max-h-[92vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl bg-card border border-border p-4 space-y-3"
+        className="relative flex w-full sm:max-w-lg max-h-[calc(100dvh-1rem)] sm:max-h-[92vh] flex-col overflow-hidden rounded-t-2xl sm:rounded-2xl bg-card border border-border"
       >
-        <div className="flex items-center justify-between">
-          <h2 className="font-display text-base font-bold text-foreground">
-            {editing ? "Edit your post" : "Share an experience"}
-          </h2>
-          <button
-            onClick={onClose}
-            aria-label="Close"
-            className="h-8 w-8 rounded-full text-muted-foreground hover:bg-secondary"
-          >
-            ✕
-          </button>
+        <div className="shrink-0 border-b border-border px-4 pt-4 pb-3">
+          <div className="flex items-center justify-between">
+            <h2 className="font-display text-base font-bold text-foreground">
+              {editing ? "Edit your post" : "Share an experience"}
+            </h2>
+            <button
+              onClick={onClose}
+              aria-label="Close"
+              className="h-8 w-8 rounded-full text-muted-foreground hover:bg-secondary"
+            >
+              ✕
+            </button>
+          </div>
+          <p className="mt-2 text-xs text-muted-foreground">
+            Posts appear anonymously. Share what you honestly experienced — no names, no abuse.
+          </p>
         </div>
-        <p className="text-xs text-muted-foreground">
-          Posts appear anonymously. Share what you honestly experienced — no names, no abuse.
-        </p>
 
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-3 space-y-3">
         {!editing && (
           <div className="space-y-1">
             <label className="text-xs font-medium text-foreground">Institution</label>
@@ -366,21 +369,25 @@ const PostInsightDialog = ({ open, onClose, universityId, editing }: Props) => {
           </p>
         </div>
 
-        <div className="flex items-center justify-between pt-1">
-          <span className="text-[11px] text-muted-foreground">{body.trim().length}/20 min</span>
-          <button
-            onClick={() => void submit()}
-            disabled={busy}
-            className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium disabled:opacity-60"
-          >
-            {uploading
-              ? "Uploading…"
-              : busy
-                ? "Saving…"
-                : editing
-                  ? "Save changes"
-                  : "Post"}
-          </button>
+        </div>
+        <div className="shrink-0 border-t border-border bg-card px-4 py-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)]">
+          <div className="flex items-center gap-3">
+            <span className="shrink-0 text-[11px] text-muted-foreground">{body.trim().length}/20 min</span>
+            <button
+              type="button"
+              onClick={() => void submit()}
+              disabled={busy}
+              className="min-h-11 flex-1 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60"
+            >
+              {uploading
+                ? "Uploading…"
+                : busy
+                  ? "Saving…"
+                  : editing
+                    ? "Save changes"
+                    : "Add post"}
+            </button>
+          </div>
         </div>
       </div>
     </div>
