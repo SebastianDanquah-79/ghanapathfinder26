@@ -234,7 +234,7 @@ const PostInsightDialog = ({ open, onClose, universityId, editing }: Props) => {
         role="dialog"
         aria-modal="true"
         aria-label={editing ? "Edit your post" : "Share your experience"}
-        className="relative flex w-full sm:max-w-lg max-h-[calc(100dvh-1rem)] sm:max-h-[92vh] flex-col overflow-hidden rounded-t-2xl sm:rounded-2xl bg-card border border-border"
+        className="relative grid h-[90dvh] w-full grid-rows-[auto_minmax(0,1fr)_auto] sm:h-auto sm:max-h-[92vh] sm:max-w-lg overflow-hidden rounded-t-2xl sm:rounded-2xl bg-card border border-border"
       >
         <div className="shrink-0 border-b border-border px-4 pt-4 pb-3">
           <div className="flex items-center justify-between">
@@ -254,7 +254,7 @@ const PostInsightDialog = ({ open, onClose, universityId, editing }: Props) => {
           </p>
         </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-3 space-y-3">
+        <div className="min-h-0 overflow-y-auto overscroll-contain px-4 py-3 space-y-3">
         {!editing && (
           <div className="space-y-1">
             <label className="text-xs font-medium text-foreground">Institution</label>
@@ -370,7 +370,7 @@ const PostInsightDialog = ({ open, onClose, universityId, editing }: Props) => {
         </div>
 
         </div>
-        <div className="shrink-0 border-t border-border bg-card px-4 py-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)]">
+        <div className="z-10 border-t border-border bg-card px-4 py-3 pb-[max(env(safe-area-inset-bottom),0.75rem)]">
           <div className="flex items-center gap-3">
             <span className="shrink-0 text-[11px] text-muted-foreground">{body.trim().length}/20 min</span>
             <button
