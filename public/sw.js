@@ -16,7 +16,7 @@
 // Bump CACHE_VERSION whenever cache behavior changes so old broken responses
 //    are discarded when the new service worker activates.
 
-const CACHE_VERSION = "gpf-v3";
+const CACHE_VERSION = "gpf-v4";
 const SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const OFFLINE_URL = "/offline.html";
 
