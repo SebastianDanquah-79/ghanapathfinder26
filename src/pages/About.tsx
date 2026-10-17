@@ -4,9 +4,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo, { breadcrumbLd } from "@/components/Seo";
 import { Link } from "@/lib/router-compat";
-import founderPhoto from "@/assets/founder-sebastian-2.png.asset.json";
-import cofounderPhoto from "@/assets/founder-som.jpg.asset.json";
-import seraphinePhoto from "@/assets/seraphine-kattah.jpg.asset.json";
 
 const expectations = [
   "Personalised path planning",
@@ -46,7 +43,7 @@ const founders: Founder[] = [
   {
     name: "Sebastian Danquah",
     role: "Founder, GhanaPathFinder",
-    photo: founderPhoto.url,
+    photo: "/team/sebastian-danquah.jpg",
     initials: "SD",
     bio: "Founder of GhanaPathFinder and a Computer Science student at Ghana Communication Technology University. Sebastian leads product direction and engineering, with a focus on AI, software, hardware and robotics. His earlier work includes building an open-source Tiny Tapeout microchip project, an adaptive traffic-light controller in Verilog, and student technology initiatives. He also has experience in IT, robotics leadership and technical project development.",
     responsibilities: ["Product and engineering", "Platform architecture", "Data and partnerships"],
@@ -58,7 +55,7 @@ const founders: Founder[] = [
     name: "Som Emmanuel Egyir",
     role: "Co-Founder | Aspiring Electrical Engineer",
     location: "Accra, Ghana",
-    photo: cofounderPhoto.url,
+    photo: "/team/emmanuel-som-egyir.jpg",
     initials: "SE",
     bio: "Som Emmanuel Egyir is an aspiring Electrical Engineer and Co-Founder of GhanaPathFinder, with interests in Electrical Engineering, Artificial Intelligence, software development, healthcare technology, education technology and entrepreneurship. He focuses on research, marketing, promotion and reviewing the platform to improve its value to users.",
     responsibilities: ["Research and content quality", "Marketing and promotion", "Platform review"],
@@ -71,7 +68,7 @@ const founders: Founder[] = [
     name: "Seraphine Enam Kattah",
     role: "Chief Communications & Research Officer (CCRO)",
     location: "Accra, Ghana",
-    photo: seraphinePhoto.url,
+    photo: "/team/seraphine-enam-kattah.jpg",
     initials: "SK",
     bio: "Seraphine Enam Kattah is an entrepreneur, youth advocate and Chief Communications & Research Officer at GhanaPathFinder. She leads communications and user research, helping ensure that product decisions are grounded in evidence and that the platform remains useful to young people across Ghana.",
     responsibilities: ["Communications strategy", "User research", "Youth advocacy & partnerships"],
@@ -82,11 +79,12 @@ const founders: Founder[] = [
 
 const FounderCard = ({ f }: { f: Founder }) => {
   const [expanded, setExpanded] = useState(false);
+  const [imageFailed, setImageFailed] = useState(false);
   const preview = f.bio.length > 220 ? f.bio.slice(0, 220).trimEnd() + "..." : f.bio;
   return (
     <article className="bg-glass rounded-2xl p-5 flex flex-col gap-4">
       <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-4">
-        {f.photo ? <img src={f.photo} alt={`${f.name}, ${f.role}`} loading="lazy" className="h-20 w-20 shrink-0 rounded-2xl object-cover object-top border border-border" /> : <div className="h-20 w-20 shrink-0 rounded-2xl grid place-items-center bg-secondary border border-border font-display text-xl font-bold text-primary">{f.initials}</div>}
+        {f.photo && !imageFailed ? <img src={f.photo} alt={`${f.name}, ${f.role}`} loading="lazy" decoding="async" onError={() => setImageFailed(true)} className="h-20 w-20 shrink-0 rounded-2xl object-cover object-top border border-border" /> : <div className="h-20 w-20 shrink-0 rounded-2xl grid place-items-center bg-secondary border border-border font-display text-xl font-bold text-primary">{f.initials}</div>}
         <div className="min-w-0">
           <h3 className="font-display font-semibold text-foreground text-base leading-tight">{f.name}</h3>
           <p className="text-sm text-primary mt-0.5">{f.role}</p>
