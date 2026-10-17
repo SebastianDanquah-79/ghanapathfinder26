@@ -41,7 +41,7 @@ function RootComponent() {
 
   useEffect(() => {
     if (typeof window === "undefined" || !("serviceWorker" in navigator) || !import.meta.env.PROD) return;
-    navigator.serviceWorker.register("/sw.js").catch((err) => console.error("SW registration failed:", err));
+    navigator.serviceWorker.register("/sw.js", { updateViaCache: "none" }).then((registration) => registration.update()).catch((err) => console.error("Service worker update failed:", err));
   }, []);
 
   // Normalize HTML entities in visible text from imported feeds and database records.
