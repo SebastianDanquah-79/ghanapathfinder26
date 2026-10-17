@@ -84,7 +84,7 @@ const FounderCard = ({ f }: { f: Founder }) => {
   return (
     <article className="bg-glass rounded-2xl p-5 flex flex-col gap-4">
       <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-4">
-        {f.photo && !imageFailed ? <img src={f.photo} alt={`${f.name}, ${f.role}`} loading="lazy" decoding="async" onError={() => setImageFailed(true)} className="h-20 w-20 shrink-0 rounded-2xl object-cover object-top border border-border" /> : <div className="h-20 w-20 shrink-0 rounded-2xl grid place-items-center bg-secondary border border-border font-display text-xl font-bold text-primary">{f.initials}</div>}
+        {f.photo && !imageFailed ? <img src={f.photo} alt={`${f.name}, ${f.role}`} loading="lazy" decoding="async" onError={() => setImageFailed(true)} className="h-36 w-28 sm:h-44 sm:w-36 shrink-0 rounded-2xl object-contain object-center bg-background border border-border" /> : <div className="h-20 w-20 shrink-0 rounded-2xl grid place-items-center bg-secondary border border-border font-display text-xl font-bold text-primary">{f.initials}</div>}
         <div className="min-w-0">
           <h3 className="font-display font-semibold text-foreground text-base leading-tight">{f.name}</h3>
           <p className="text-sm text-primary mt-0.5">{f.role}</p>
