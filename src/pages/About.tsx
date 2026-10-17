@@ -43,7 +43,7 @@ const founders: Founder[] = [
   {
     name: "Sebastian Danquah",
     role: "Founder, GhanaPathFinder",
-    photo: "/team/sebastian-danquah.webp",
+    photo: "/team/sebastian-danquah.jpg",
     initials: "SD",
     bio: "Founder of GhanaPathFinder and a Computer Science student at Ghana Communication Technology University. Sebastian leads product direction and engineering, with a focus on AI, software, hardware and robotics. His earlier work includes building an open-source Tiny Tapeout microchip project, an adaptive traffic-light controller in Verilog, and student technology initiatives. He also has experience in IT, robotics leadership and technical project development.",
     responsibilities: ["Product and engineering", "Platform architecture", "Data and partnerships"],
@@ -68,7 +68,7 @@ const founders: Founder[] = [
     name: "Seraphine Enam Kattah",
     role: "Chief Communications & Research Officer (CCRO)",
     location: "Accra, Ghana",
-    photo: "/team/seraphine-enam-kattah.webp",
+    photo: "/team/seraphine-enam-kattah.jpg",
     initials: "SK",
     bio: "Seraphine Enam Kattah is an entrepreneur, youth advocate and Chief Communications & Research Officer at GhanaPathFinder. She leads communications and user research, helping ensure that product decisions are grounded in evidence and that the platform remains useful to young people across Ghana.",
     responsibilities: ["Communications strategy", "User research", "Youth advocacy & partnerships"],
