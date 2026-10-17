@@ -16,7 +16,7 @@
 // Bump CACHE_VERSION whenever cache behavior changes so old broken responses
 //    are discarded when the new service worker activates.
 
-const CACHE_VERSION = "gpf-v2";
+const CACHE_VERSION = "gpf-v3";
 const SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const OFFLINE_URL = "/offline.html";
 
@@ -31,7 +31,7 @@ const APP_SHELL = [
 ];
 
 function isStaleCache(name) {
-  const isOldWorkbox = /(^|-)precache-v\\d+-|(^|-)runtime-|(^|-)googleAnalytics-/.test(name);
+  const isOldWorkbox = /(^|-)precache-v\d+-|(^|-)runtime-|(^|-)googleAnalytics-/.test(name);
   const isOldGpf = name.startsWith("gpf-") && !name.startsWith(CACHE_VERSION);
   return isOldWorkbox || isOldGpf;
 }
@@ -61,7 +61,7 @@ self.addEventListener("activate", (event) => {
 function isStaticAsset(request) {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return false;
-  return /\\.(?:png|jpg|jpeg|svg|webp|ico|css|js|woff2?)$/.test(url.pathname);
+  return /\.(?:png|jpg|jpeg|svg|webp|ico|css|js|woff2?)$/.test(url.pathname);
 }
 
 self.addEventListener("fetch", (event) => {
