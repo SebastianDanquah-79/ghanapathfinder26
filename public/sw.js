@@ -16,7 +16,7 @@
 // Bump CACHE_VERSION whenever cache behavior changes so old broken responses
 //    are discarded when the new service worker activates.
 
-const CACHE_VERSION = "gpf-v4";
+const CACHE_VERSION = "gpf-v5";
 const SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const OFFLINE_URL = "/offline.html";
 
@@ -134,6 +134,67 @@ self.addEventListener("fetch", (event) => {
       } catch {
         return (await cache.match(request)) || Response.error();
       }
+    })(),
+  );
+});
+
+
+// Display a system notification when the server sends a Web Push message.
+// This also runs when GhanaPathFinder is closed, provided the user has enabled push.
+self.addEventListener("push", (event) => {
+  let payload = {};
+  try {
+    payload = event.data ? event.data.json() : {};
+  } catch {
+    payload = { body: event.data ? event.data.text() : "You have a new GhanaPathFinder update." };
+  }
+
+  const title = typeof payload.title === "string" && payload.title.trim()
+    ? payload.title.slice(0, 120)
+    : "GhanaPathFinder";
+  const body = typeof payload.body === "string" && payload.body.trim()
+    ? payload.body.slice(0, 240)
+    : "Open GhanaPathFinder to see the latest update.";
+  const url = typeof payload.url === "string" ? payload.url : "/notifications";
+
+  event.waitUntil(
+    self.registration.showNotification(title, {
+      body,
+      icon: typeof payload.icon === "string" ? payload.icon : "/app-icon-192.png",
+      badge: typeof payload.badge === "string" ? payload.badge : "/favicon.png",
+      tag: typeof payload.tag === "string" ? payload.tag : undefined,
+      renotify: false,
+      data: { url },
+    }),
+  );
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const value = event.notification && event.notification.data
+    ? event.notification.data.url
+    : "/notifications";
+
+  let target;
+  try {
+    target = new URL(typeof value === "string" ? value : "/notifications", self.location.origin);
+  } catch {
+    target = new URL("/notifications", self.location.origin);
+  }
+  if (target.protocol !== "https:" && target.protocol !== "http:") return;
+
+  event.waitUntil(
+    (async () => {
+      const windows = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+      for (const client of windows) {
+        if (new URL(client.url).origin !== target.origin) continue;
+        if ("navigate" in client) {
+          const navigated = await client.navigate(target.href);
+          if (navigated) return navigated.focus();
+        }
+        return client.focus();
+      }
+      return self.clients.openWindow(target.href);
     })(),
   );
 });
