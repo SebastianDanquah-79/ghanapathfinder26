@@ -84,9 +84,9 @@ declare
 begin
   v_text := lower(concat_ws(' ', new.title, new.category, new.excerpt));
 
-  if v_text ~ '\\m(breaking|urgent|developing story|live updates|national emergency|state of emergency|earthquake|tsunami|coup|terror attack|major attack|war begins|invasion|election results|wins election|resigns|resignation|flood warning|storm warning|major outage|explosion)\\M' then
+  if v_text ~ '\m(breaking|urgent|developing story|live updates|national emergency|state of emergency|earthquake|tsunami|coup|terror attack|major attack|war begins|invasion|election results|wins election|resigns|resignation|flood warning|storm warning|major outage|explosion)\M' then
     v_category := 'breaking_news';
-  elsif v_text ~ '\\m(major breakthrough|historic|landmark ruling|first-ever|record-breaking|major deal|major agreement|major policy|new president|new prime minister|budget approved|launches national|national launch|wins major|sets a new record|major announcement)\\M' then
+  elsif v_text ~ '\m(major breakthrough|historic|landmark ruling|first-ever|record-breaking|major deal|major agreement|major policy|new president|new prime minister|budget approved|launches national|national launch|wins major|sets a new record|major announcement)\M' then
     v_category := 'top_stories';
   else
     return new;
