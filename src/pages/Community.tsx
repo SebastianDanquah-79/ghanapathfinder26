@@ -355,14 +355,17 @@ const Community = () => {
       </main>
 
       <button
+        type="button"
         onClick={() => {
           setEditing(null);
           setComposerOpen(true);
         }}
-        aria-label="Add a post"
-        className="fixed bottom-20 right-4 sm:bottom-8 sm:right-8 z-50 h-14 w-14 rounded-full bg-primary text-primary-foreground text-3xl font-bold leading-none shadow-lg hover:scale-105 transition-transform"
+        aria-label="Send post"
+        title="Create and send a community post"
+        className="fixed bottom-20 right-4 sm:bottom-8 sm:right-8 z-50 inline-flex min-h-12 items-center gap-2 rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-lg transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
       >
-        +
+        <span aria-hidden="true" className="text-xl leading-none">+</span>
+        <span>Send post</span>
       </button>
 
       <PostInsightDialog open={composerOpen} onClose={closeComposer} editing={editing} />
