@@ -56,7 +56,6 @@ const FloatingAskAssistant = () => {
               className="h-9 w-9 object-contain"
               aria-hidden="true"
             />
-
           </button>
         </div>
       )}
