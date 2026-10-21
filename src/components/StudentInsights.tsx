@@ -238,7 +238,8 @@ const StudentInsights = ({ universityId, universityName }: Props) => {
       </p>
 
       {open && (
-        <div className="bg-glass rounded-xl p-4 space-y-3 mb-5">
+        <div className="mb-5 overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+          <div className="max-h-[60dvh] overflow-y-auto p-4 pb-5 space-y-3">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <label className="text-xs text-muted-foreground space-y-1">
               <span>School / university (required)</span>
@@ -341,14 +342,20 @@ const StudentInsights = ({ universityId, universityName }: Props) => {
             {form.student_status}”. Harassment, misinformation and personal attacks are removed.
           </p>
 
-          <button
-            type="button"
-            onClick={submit}
-            disabled={create.isPending}
-            className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-semibold min-h-[44px] disabled:opacity-60"
-          >
-            {create.isPending ? "Sending…" : "Send post"}
-          </button>
+          </div>
+          <div className="flex items-center justify-between gap-3 border-t border-border bg-card px-4 py-3">
+            <p className="min-w-0 flex-1 text-xs leading-5 text-muted-foreground">
+              Your post will be shared anonymously.
+            </p>
+            <button
+              type="button"
+              onClick={submit}
+              disabled={create.isPending}
+              className="min-h-12 min-w-[132px] shrink-0 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {create.isPending ? "Sending…" : "Send post"}
+            </button>
+          </div>
         </div>
       )}
 
