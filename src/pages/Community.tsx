@@ -146,16 +146,25 @@ const Community = () => {
           </p>
 
           <button
+            type="button"
+            aria-label="Create a community post"
             onClick={() => {
               setEditing(null);
               setComposerOpen(true);
             }}
-            className="w-full mb-4 flex items-center gap-3 rounded-2xl bg-glass px-4 py-3 text-left hover:bg-secondary transition-colors"
+            className="w-full mb-4 flex items-center gap-3 rounded-xl border border-primary/25 bg-primary/5 px-4 py-3 text-left transition-colors hover:bg-primary/10"
           >
-            <span className="h-9 w-9 shrink-0 rounded-full bg-primary text-primary-foreground grid place-items-center text-lg font-bold leading-none">
+            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-primary text-lg font-bold leading-none text-primary-foreground">
               +
             </span>
-            <span className="text-sm text-muted-foreground">Share an experience with other students…</span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-sm font-semibold text-foreground">
+                Create a post
+              </span>
+              <span className="block text-xs text-muted-foreground">
+                Share an experience with other students
+              </span>
+            </span>
           </button>
 
           <div className="flex flex-col sm:flex-row gap-2 mb-5">

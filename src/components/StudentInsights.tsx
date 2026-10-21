@@ -345,9 +345,9 @@ const StudentInsights = ({ universityId, universityName }: Props) => {
             type="button"
             onClick={submit}
             disabled={create.isPending}
-            className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium min-h-[44px] disabled:opacity-60"
+            className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-semibold min-h-[44px] disabled:opacity-60"
           >
-            {create.isPending ? "Sharing…" : "Share anonymously"}
+            {create.isPending ? "Sending…" : "Send post"}
           </button>
         </div>
       )}
