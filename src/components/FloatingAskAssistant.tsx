@@ -1,30 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { X } from "lucide-react";
 import AskPanel from "@/components/AskPanel";
 
 const FloatingAskAssistant = () => {
   const [open, setOpen] = useState(false);
-  const [showPrompt, setShowPrompt] = useState(true);
 
-  useEffect(() => {
-    if (open) return;
-
-    const interval = window.setInterval(() => {
-      setShowPrompt(true);
-      window.setTimeout(() => setShowPrompt(false), 4200);
-    }, 7600);
-
-    const firstHide = window.setTimeout(() => setShowPrompt(false), 4200);
-    return () => {
-      window.clearInterval(interval);
-      window.clearTimeout(firstHide);
-    };
-  }, [open]);
-
-  const openChat = () => {
-    setShowPrompt(false);
-    setOpen(true);
-  };
+  const openChat = () => setOpen(true);
 
   return (
     <>
@@ -61,7 +42,7 @@ const FloatingAskAssistant = () => {
       )}
 
       {!open && (
-        <div className="fixed bottom-20 right-4 z-[79] md:bottom-6 md:right-6">
+        <div className="fixed bottom-36 right-4 z-[79] md:bottom-24 md:right-6">
           <button
             type="button"
             onClick={openChat}
@@ -76,12 +57,6 @@ const FloatingAskAssistant = () => {
               aria-hidden="true"
             />
 
-            {showPrompt && (
-              <span className="pointer-events-none absolute bottom-1/2 right-[calc(100%+12px)] w-max max-w-[230px] translate-y-1/2 animate-in fade-in slide-in-from-right-2 rounded-xl border border-border bg-background px-3 py-2 text-left text-xs font-medium leading-5 text-foreground shadow-lg duration-300">
-                <span className="block">I&apos;m an AI agent.</span>
-                <span className="block font-semibold">Speak to GhanaPathFinder.</span>
-              </span>
-            )}
           </button>
         </div>
       )}
