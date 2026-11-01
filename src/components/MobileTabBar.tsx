@@ -5,9 +5,9 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 const tabs = [
   { to: "/feed", label: "Feed", icon: Home },
-  { to: "/search?kind=university", label: "Universities", icon: Building2, match: "/search" },
-  { to: "/programmes", label: "Programmes", icon: GraduationCap, match: "/programmes" },
-  { to: "/scholarships", label: "Scholarships", icon: Award, match: "/scholarships" },
+  { to: "/search?kind=university", label: "Study", icon: Building2, match: "/search" },
+  { to: "/programmes", label: "Courses", icon: GraduationCap, match: "/programmes" },
+  { to: "/scholarships", label: "Funding", icon: Award, match: "/scholarships" },
   { to: "/careers", label: "Careers", icon: Briefcase, match: "/careers" },
 ];
 
@@ -32,9 +32,9 @@ const MobileTabBar = () => {
   return (
     <nav
       aria-label="Primary"
-      className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl border-t border-border pb-[env(safe-area-inset-bottom)]"
+      className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background pb-[env(safe-area-inset-bottom)] md:hidden"
     >
-      <ul className="grid grid-cols-6">
+      <ul className="mx-auto grid max-w-2xl grid-cols-6">
         {tabs.map(({ to, label, icon: Icon, match }) => {
           const base = match ?? to;
           const active = pathname === base || (base !== "/" && pathname.startsWith(`${base}/`));
@@ -44,13 +44,13 @@ const MobileTabBar = () => {
                 to={to}
                 aria-label={label}
                 title={label}
-                className={`flex flex-col items-center justify-center gap-0.5 min-h-[58px] px-0.5 text-[10px] font-medium transition-colors ${
+                className={`flex flex-col items-center justify-center gap-0.5 min-h-[62px] px-0.5 text-[11px] font-medium transition-colors ${
                   active ? "text-primary" : "text-muted-foreground active:text-foreground"
                 }`}
                 aria-current={active ? "page" : undefined}
               >
                 <span
-                  className={`grid place-items-center h-7 w-11 rounded-full transition-colors ${
+                  className={`grid place-items-center h-8 w-10 rounded-lg transition-colors ${
                     active ? "bg-primary/15" : ""
                   }`}
                 >
@@ -67,12 +67,12 @@ const MobileTabBar = () => {
             aria-label={user ? "Your dashboard" : "Sign in"}
             title={user ? "Dashboard" : "Sign in"}
             aria-current={profileActive ? "page" : undefined}
-            className={`flex flex-col items-center justify-center gap-0.5 min-h-[58px] px-0.5 text-[10px] font-medium transition-colors ${
+            className={`flex flex-col items-center justify-center gap-0.5 min-h-[62px] px-0.5 text-[11px] font-medium transition-colors ${
               profileActive ? "text-primary" : "text-muted-foreground active:text-foreground"
             }`}
           >
             <span
-              className={`grid place-items-center h-7 w-11 rounded-full transition-colors ${
+              className={`grid place-items-center h-8 w-10 rounded-lg transition-colors ${
                 profileActive ? "bg-primary/15" : ""
               }`}
             >
