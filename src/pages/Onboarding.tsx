@@ -429,7 +429,7 @@ const Onboarding = () => {
   };
 
 
-  const inputClass = "w-full px-4 py-3 rounded-lg bg-secondary border border-border text-foreground text-sm placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/50";
+  const inputClass = "w-full min-h-11 rounded-lg border border-border bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/40";
 
   return <div className="min-h-dvh bg-background px-4 py-8 pb-24">
     <div className="mx-auto max-w-3xl">
@@ -437,7 +437,7 @@ const Onboarding = () => {
       <h1 className="mt-2 font-display text-2xl sm:text-3xl font-bold text-foreground">Build your path</h1>
       <p className="mt-2 text-sm text-muted-foreground">Your profile powers matching across education, work, startups and international opportunities.</p>
 
-      <section className="mt-6 rounded-xl border border-border bg-card p-5">
+      <section className="mt-6 rounded-xl border border-border bg-card p-4 shadow-sm sm:p-6">
         <h2 className="font-display font-semibold text-foreground">What brings you here?</h2>
         <p className="mt-1 text-xs text-muted-foreground">Choose as many as you want. These choices shape your discovery experience.</p>
         <div className="mt-3 flex flex-wrap gap-2">{PATHWAYS.map(item => <button key={item} type="button" onClick={() => togglePathway(item)} aria-pressed={pathways.includes(item)} className={"rounded-full border px-3 py-2 text-xs font-medium " + (pathways.includes(item) ? "border-primary bg-primary text-primary-foreground" : "border-border bg-secondary text-muted-foreground")}>{item}</button>)}</div>
@@ -448,7 +448,7 @@ const Onboarding = () => {
       </div>
 
       <div className="mt-5 space-y-4">
-        <section className="bg-glass rounded-xl p-5 space-y-3">
+        <section className="rounded-xl border border-border bg-card p-4 shadow-sm space-y-3 sm:p-6">
           <h2 className="font-display font-semibold text-foreground">About you</h2>
           <div className="flex items-center gap-4 rounded-lg border border-border bg-secondary/40 p-4">
             <div className="h-16 w-16 shrink-0 overflow-hidden rounded-full border border-border bg-background grid place-items-center">
@@ -589,13 +589,13 @@ const Onboarding = () => {
           <input className={inputClass} placeholder="Skills, separated by commas" value={skills} onChange={e => setSkills(e.target.value)} />
         </section>
 
-        <section className="bg-glass rounded-xl p-5">
+        <section className="rounded-xl border border-border bg-card p-4 shadow-sm sm:p-6">
           <h2 className="font-display font-semibold text-foreground mb-1">What are you interested in?</h2>
           <p className="text-xs text-muted-foreground mb-3">Select multiple topics. You can change these later in Preferences.</p>
           <div className="flex flex-wrap gap-2">{INTERESTS.map(i => <button key={i} type="button" onClick={() => toggleInterest(i)} className={"px-3 py-1.5 rounded-full text-xs font-medium " + (interests.includes(i) ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground")}>{i}</button>)}</div>
         </section>
 
-        {role === "student" && <section className="bg-glass rounded-xl p-5">
+        {role === "student" && <section className="rounded-xl border border-border bg-card p-4 shadow-sm sm:p-6">
           <h2 className="font-display font-semibold text-foreground mb-1">WASSCE results</h2>
           <p className="text-xs text-muted-foreground mb-4">Add your subjects to power the existing admission and programme matching.</p>
           <div className="space-y-2">{results.map((r,index) => <div key={index} className="flex gap-2">
