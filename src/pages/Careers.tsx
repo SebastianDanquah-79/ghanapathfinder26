@@ -41,7 +41,7 @@ const Careers = () => {
   }, [searchQuery]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-dvh bg-background">
       <Seo
         title="Career Paths in Ghana: SHS to Profession, Programmes & Universities | GhanaPathFinder"
         description="Career paths for Ghanaian students: what each career involves, WASSCE subjects, recommended programmes, universities offering them, skills, internships and progression."
@@ -61,11 +61,11 @@ const Careers = () => {
         ]}
       />
       <Navbar />
-      <main className="pt-20 pb-12 px-4">
+      <main className="pt-24 pb-28 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
           <div className="max-w-3xl mb-7">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary mb-2">Career Intelligence</p>
-            <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-2">
+            <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-2">
               Career paths for Ghanaian students
             </h1>
             <p className="text-sm text-muted-foreground leading-6">
@@ -85,7 +85,7 @@ const Careers = () => {
               value={searchQuery}
               onChange={(event) => setSearchQuery(event.target.value)}
               placeholder="Search by career, skill, programme or industry"
-              className="w-full min-h-[48px] px-4 rounded-xl bg-secondary border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/40"
+              className="w-full min-h-[48px] px-4 rounded-lg bg-card border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/40"
             />
             <p className="text-xs text-muted-foreground mt-2" aria-live="polite">
               Showing {filteredCareers.length} of {careers.length} career paths
@@ -106,7 +106,7 @@ const Careers = () => {
                   <Link
                     key={s.path.major}
                     to={`/careers/${careerSlug(s.path.major)}`}
-                    className="bg-glass rounded-xl p-4 card-hover block border border-primary/20"
+                    className="rounded-xl border border-primary/20 bg-card p-4 shadow-sm card-hover block"
                   >
                     <h3 className="font-display font-semibold text-foreground mb-1.5">
                       {s.path.career_name}
@@ -124,7 +124,7 @@ const Careers = () => {
           )}
 
           {filteredCareers.length === 0 ? (
-            <div className="border border-border p-6 text-center">
+            <div className="rounded-xl border border-border bg-card p-6 text-center shadow-sm">
               <h2 className="font-semibold text-foreground mb-1">No matching careers</h2>
               <p className="text-sm text-muted-foreground">Try another title, skill, programme or industry.</p>
             </div>
@@ -136,7 +136,7 @@ const Careers = () => {
                 <Link
                   key={`${c.major}-${c.careerName}`}
                   to={`/careers/${careerSlug(c.major)}`}
-                  className="bg-glass rounded-xl p-4 card-hover block"
+                  className="rounded-xl border border-border bg-card p-4 shadow-sm card-hover block"
                 >
                   <div className="flex items-center gap-2 mb-1.5">
                     <Briefcase className="h-4 w-4 text-primary" />
@@ -160,7 +160,7 @@ const Careers = () => {
             </div>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {occupationCatalog.map((occupation) => (
-                <article key={occupation.title} className="bg-glass rounded-xl p-4 border border-border/60">
+                <article key={occupation.title} className="rounded-xl border border-border bg-card p-4 shadow-sm">
                   <p className="text-[11px] font-medium text-primary mb-1">{occupation.cluster}</p>
                   <h3 className="font-display font-semibold text-foreground mb-1">{occupation.title}</h3>
                   <p className="text-xs text-muted-foreground leading-5 mb-3">{occupation.pathway}</p>
