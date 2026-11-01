@@ -228,11 +228,11 @@ const Programmes = () => {
         jsonLd={[breadcrumbLd([{ name: "Home", path: "/" }, { name: "Programmes", path: "/programmes" }])]}
       />
       <Navbar />
-      <main className="pt-20 pb-14 px-4 sm:px-8 lg:px-12">
+      <main className="pt-24 pb-28 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <header className="mb-5 border-b border-border pb-5">
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">Search courses, degrees and diplomas</p>
-            <h1 className="font-display text-4xl sm:text-5xl font-bold tracking-tight text-foreground flex items-center gap-2">
+            <h1 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground flex items-center gap-2">
               <GraduationCap className="h-7 w-7 sm:h-9 sm:w-9 text-primary" /> Programme Directory
             </h1>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
@@ -241,7 +241,7 @@ const Programmes = () => {
               institution, region or qualification. This count reflects current records, not a guarantee
               of complete national coverage.
             </p>
-            <div className="mt-4 inline-flex flex-wrap items-center gap-2 border border-border bg-card px-4 py-3">
+            <div className="mt-4 inline-flex flex-wrap items-center gap-2 rounded-lg border border-border bg-card px-4 py-3">
               <span className="text-2xl font-bold tabular-nums text-foreground">{total.toLocaleString()}</span>
               <span className="text-sm font-semibold text-muted-foreground">programmes match your current filters</span>
             </div>
@@ -255,7 +255,7 @@ const Programmes = () => {
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search Mechatronics, Artificial Intelligence, Nursing…"
               aria-label="Search programmes"
-              className="w-full min-h-[48px] pl-10 pr-10 rounded-xl bg-glass border border-border/60 text-base sm:text-sm text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/40"
+              className="w-full min-h-[48px] pl-10 pr-10 rounded-lg bg-card border border-border text-base sm:text-sm text-foreground placeholder:text-muted-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/40"
             />
             {search && (
               <button
@@ -341,7 +341,7 @@ const Programmes = () => {
           <div className="lg:grid lg:grid-cols-[240px,1fr] lg:gap-6">
             {/* Filters , sidebar on desktop, collapsible on mobile */}
             <aside className={`${showFilters ? "block" : "hidden"} lg:block mb-4 lg:mb-0`}>
-              <div className="bg-glass rounded-xl p-4 space-y-4 lg:sticky lg:top-20">
+              <div className="rounded-xl border border-border bg-card p-4 shadow-sm space-y-4 lg:sticky lg:top-20">
                 {[
                   { label: "Institution", key: "institution", options: facets?.institutions },
                   { label: "Region", key: "region", options: facets?.regions },
@@ -386,7 +386,7 @@ const Programmes = () => {
                 </p>
               )}
               {!isLoading && !isError && total === 0 && (
-                <div className="bg-glass rounded-xl p-6 text-center">
+                <div className="rounded-xl border border-border bg-card p-6 text-center shadow-sm">
                   <p className="text-foreground font-medium mb-1">No programmes match that.</p>
                   <p className="text-sm text-muted-foreground">
                     Try a broader search term or clear a filter.
