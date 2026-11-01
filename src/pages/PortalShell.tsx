@@ -157,26 +157,26 @@ export default function PortalShell(props: {role: PortalRole; children?: ReactNo
     <div className="min-h-dvh bg-background">
       <Navbar />
       <Seo title={currentMeta.title + " | GhanaPathFinder"} description={currentMeta.description} path={props.role === "founder" ? "/portal/founder" : "/portal/" + props.role} />
-      <main className="mx-auto w-full max-w-6xl px-4 pb-24 pt-20 sm:px-6 lg:px-8">
-        <header className="border-b border-border pb-7">
-          <div className="flex flex-wrap items-start justify-between gap-4">
+      <main className="mx-auto w-full max-w-7xl px-4 pb-28 pt-24 sm:px-6 lg:px-8">
+        <header className="border-b border-border pb-6 sm:pb-8">
+          <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
             <div>
-              <p className="text-sm font-semibold text-primary">GhanaPathFinder</p>
-              <h1 className="mt-2 text-3xl font-bold">{currentMeta.title}</h1>
+              <p className="text-xs font-semibold uppercase tracking-[.16em] text-primary">GhanaPathFinder</p>
+              <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">{currentMeta.title}</h1>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">{currentMeta.description}</p>
             </div>
-            <button type="button" onClick={function(){navigate("/?switchRole=1");}} className="border border-border px-3 py-2 text-sm font-medium hover:border-primary">Change portal</button>
+            <button type="button" onClick={function(){navigate("/?switchRole=1");}} className="inline-flex min-h-10 items-center justify-center rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium transition-colors hover:border-primary">Change portal</button>
           </div>
         </header>
 
-        {complete && <section className="mt-6 border border-border bg-card p-5">
+        {complete && <section className="mt-6 rounded-xl border border-border bg-card p-4 shadow-sm sm:p-6">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
               <p className="text-xs font-semibold text-primary">Your profile</p>
               <h2 className="mt-1 text-lg font-semibold">{props.role === "founder" ? "Your startup" : props.role === "international-student" ? "Your study profile" : props.role === "employer" ? "Your organisation" : props.role === "employee" ? "Your professional profile" : "Your student profile"}</h2>
               <p className="mt-1 text-sm text-muted-foreground">This profile shapes the data and recommendations shown in this portal.</p>
             </div>
-            <button type="button" onClick={function(){navigate("/onboarding?role=" + editRole);}} className="border border-border px-3 py-2 text-sm font-medium hover:border-primary">Edit profile</button>
+            <button type="button" onClick={function(){navigate("/onboarding?role=" + editRole);}} className="inline-flex min-h-10 items-center justify-center rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium transition-colors hover:border-primary">Edit profile</button>
           </div>
           {roleProfileFields.length > 0 ? <dl className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {roleProfileFields.map(function(field){return <div key={field.key} className="min-w-0 border-t border-border pt-3"><dt className="text-xs text-muted-foreground">{field.label}</dt><dd className="mt-1 break-words text-sm font-medium">{field.key === "website_url" || field.key === "pitch_url" || field.key === "cv_url" || field.key === "portfolio_url" || field.key === "linkedin_url" || field.key === "github_url" ? <a href={field.value} target="_blank" rel="noreferrer" className="text-primary underline">{field.value}</a> : field.value}</dd></div>;})}
@@ -184,30 +184,30 @@ export default function PortalShell(props: {role: PortalRole; children?: ReactNo
         </section>}
 
         {!complete ? (
-          <section className="mt-7 border border-primary/30 bg-primary/[0.04] p-6">
+          <section className="mt-7 rounded-xl border border-primary/20 bg-card p-5 shadow-sm sm:p-6">
             <div className="flex gap-3">
               <ShieldCheck className="h-5 w-5 text-primary" />
               <div><h2 className="font-semibold">Complete your profile before recommendations</h2><p className="mt-2 text-sm text-muted-foreground">Your role-specific profile is the input to matching.</p><button type="button" onClick={function(){navigate("/onboarding?role=" + (props.role === "founder" ? "startup_founder" : props.role === "international-student" ? "international_student" : props.role));}} className="mt-4 inline-flex items-center gap-2 bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">Complete profile <ArrowRight className="h-4 w-4" /></button></div>
             </div>
           </section>
         ) : (
-          <section className="mt-7 grid gap-5 lg:grid-cols-[1.35fr_0.65fr]">
-            <div className="border border-border bg-card p-5">
+          <section className="mt-7 grid min-w-0 gap-5 xl:grid-cols-[minmax(0,1.4fr)_minmax(18rem,.6fr)]">
+            <div className="min-w-0 rounded-xl border border-border bg-card p-4 shadow-sm sm:p-6">
               <div className="flex items-center justify-between"><div><p className="text-xs font-semibold text-primary">Your workspace</p><h2 className="mt-1 text-xl font-semibold">Next useful actions</h2></div><CheckCircle2 className="h-5 w-5 text-primary"/></div>
 
-              {props.role === "student" && <div className="mt-5 grid gap-3 sm:grid-cols-2"><Link to="/matcher" className="border border-border p-4 hover:border-primary"><p className="font-semibold">University matcher</p><p className="mt-1 text-xs text-muted-foreground">Run your admission match.</p></Link><Link to="/scholarships" className="border border-border p-4 hover:border-primary"><p className="font-semibold">Scholarships</p><p className="mt-1 text-xs text-muted-foreground">Find funding and track applications.</p></Link></div>}
+              {props.role === "student" && <div className="mt-5 grid min-w-0 gap-3 sm:grid-cols-2"><Link to="/matcher" className="border border-border p-4 hover:border-primary"><p className="font-semibold">University matcher</p><p className="mt-1 text-xs text-muted-foreground">Run your admission match.</p></Link><Link to="/scholarships" className="border border-border p-4 hover:border-primary"><p className="font-semibold">Scholarships</p><p className="mt-1 text-xs text-muted-foreground">Find funding and track applications.</p></Link></div>}
 
-              {props.role === "employee" && <div className="mt-5 grid gap-3 sm:grid-cols-2">{q.data.items.map(function(item){return <a key={String(item.id)} href={item.application_url ? String(item.application_url) : "#"} target={item.application_url ? "_blank" : undefined} rel="noreferrer" className="border border-border p-4 hover:border-primary"><p className="font-semibold">{String(item.title)}</p><p className="mt-1 text-xs text-muted-foreground">{String(item.company_name || "")}</p><p className="mt-2 text-xs text-primary">Profile match {String(item.score || 0)}</p></a>;})}</div>}
+              {props.role === "employee" && <div className="mt-5 grid min-w-0 gap-3 sm:grid-cols-2">{q.data.items.map(function(item){return <a key={String(item.id)} href={item.application_url ? String(item.application_url) : "#"} target={item.application_url ? "_blank" : undefined} rel="noreferrer" className="border border-border p-4 hover:border-primary"><p className="font-semibold">{String(item.title)}</p><p className="mt-1 text-xs text-muted-foreground">{String(item.company_name || "")}</p><p className="mt-2 text-xs text-primary">Profile match {String(item.score || 0)}</p></a>;})}</div>}
 
-              {props.role === "employer" && <div className="mt-5 grid gap-3 sm:grid-cols-2">{q.data.items.map(function(item){return <Link key={String(item.user_id)} to="/people" className="border border-border p-4 hover:border-primary"><p className="font-semibold">{String(item.display_name)}</p><p className="mt-1 text-xs text-muted-foreground">{String(item.field || item.programme || "Candidate")}</p><p className="mt-2 text-xs text-primary">Skill fit {String(item.score || 0)}</p></Link>;})}</div>}
+              {props.role === "employer" && <div className="mt-5 grid min-w-0 gap-3 sm:grid-cols-2">{q.data.items.map(function(item){return <Link key={String(item.user_id)} to="/people" className="border border-border p-4 hover:border-primary"><p className="font-semibold">{String(item.display_name)}</p><p className="mt-1 text-xs text-muted-foreground">{String(item.field || item.programme || "Candidate")}</p><p className="mt-2 text-xs text-primary">Skill fit {String(item.score || 0)}</p></Link>;})}</div>}
 
-              {props.role === "founder" && <div className="mt-5 grid gap-3 sm:grid-cols-2">{q.data.items.map(function(item,index){return <a key={String(item.id || index)} href={item.website_url ? String(item.website_url) : item.application_url ? String(item.application_url) : "#"} target="_blank" rel="noreferrer" className="border border-border p-4 hover:border-primary"><p className="font-semibold">{String(item.name || item.title || "Founder resource")}</p><p className="mt-1 text-xs text-muted-foreground">{String(item.kind || "")}</p></a>;})}</div>}
+              {props.role === "founder" && <div className="mt-5 grid min-w-0 gap-3 sm:grid-cols-2">{q.data.items.map(function(item,index){return <a key={String(item.id || index)} href={item.website_url ? String(item.website_url) : item.application_url ? String(item.application_url) : "#"} target="_blank" rel="noreferrer" className="border border-border p-4 hover:border-primary"><p className="font-semibold">{String(item.name || item.title || "Founder resource")}</p><p className="mt-1 text-xs text-muted-foreground">{String(item.kind || "")}</p></a>;})}</div>}
 
-              {props.role === "international-student" && <div className="mt-5 grid gap-3 sm:grid-cols-2">{q.data.items.filter(function(item){return item.kind !== "embassy";}).slice(0,10).map(function(item,index){return <div key={String(item.id || index)} className="border border-border p-4"><p className="font-semibold">{String(item.name || item.university_name || "International connection")}</p><p className="mt-1 text-xs text-muted-foreground">{String(item.country_code || item.programme_name || "")}</p></div>;})}</div>}
+              {props.role === "international-student" && <div className="mt-5 grid min-w-0 gap-3 sm:grid-cols-2">{q.data.items.filter(function(item){return item.kind !== "embassy";}).slice(0,10).map(function(item,index){return <div key={String(item.id || index)} className="border border-border p-4"><p className="font-semibold">{String(item.name || item.university_name || "International connection")}</p><p className="mt-1 text-xs text-muted-foreground">{String(item.country_code || item.programme_name || "")}</p></div>;})}</div>}
 
               {q.data.items.length === 0 && <div className="mt-5 border border-dashed border-border p-6 text-sm text-muted-foreground">There are no matching records yet. Check the wider directory and return after the next verified sync.</div>}
             </div>
-            <aside className="border border-border bg-card p-4"><h2 className="font-semibold">Ask Africa</h2><p className="mt-1 text-xs text-muted-foreground">Ask about the records already on this portal.</p><div className="mt-4"><AskPanel query={currentMeta.title + ". Account name: " + (q.data.profile.full_name || "User") + ". Active role profile: " + JSON.stringify(q.data.roleProfile) + ". Records: " + JSON.stringify(q.data.items.slice(0,8))} items={askItems} suggestions={["What should I do next?","Explain these matches","What is missing from my profile?"]} /></div></aside>
+            <aside className="min-w-0 rounded-xl border border-border bg-card p-4 shadow-sm"><h2 className="font-semibold">Ask Africa</h2><p className="mt-1 text-xs text-muted-foreground">Ask about the records already on this portal.</p><div className="mt-4"><AskPanel query={currentMeta.title + ". Account name: " + (q.data.profile.full_name || "User") + ". Active role profile: " + JSON.stringify(q.data.roleProfile) + ". Records: " + JSON.stringify(q.data.items.slice(0,8))} items={askItems} suggestions={["What should I do next?","Explain these matches","What is missing from my profile?"]} /></div></aside>
           </section>
         )}
 
