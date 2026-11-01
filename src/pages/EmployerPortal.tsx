@@ -8,7 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 type OpportunityType = "job" | "internship" | "apprenticeship" | "fellowship" | "grant";
 
-const inputClass = "w-full min-h-11 border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40";
+const inputClass = "w-full min-h-11 rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40";
 const labelClass = "block text-xs font-medium text-muted-foreground";
 
 export default function EmployerPortal() {
@@ -143,7 +143,7 @@ export default function EmployerPortal() {
 
   return (
     <PortalShell role="employer">
-      <section id="post-opportunity" className="mt-6 border border-border bg-card p-5 sm:p-6">
+      <section id="post-opportunity" className="mt-6 rounded-xl border border-border bg-card p-4 shadow-sm sm:p-6">
         <div className="mb-5">
           <p className="text-xs font-semibold uppercase tracking-wider text-primary">Hiring workspace</p>
           <h2 className="mt-1 text-xl font-bold">Submit an opportunity</h2>
@@ -189,7 +189,7 @@ export default function EmployerPortal() {
           <label className={labelClass}>Application link (optional)
             <input className={inputClass + " mt-1"} type="url" maxLength={500} value={applicationUrl} onChange={event => setApplicationUrl(event.target.value)} placeholder="https://..." />
           </label>
-          <label className="sm:col-span-2 flex min-h-11 items-center gap-3 border border-border px-3 py-2 text-sm">
+          <label className="sm:col-span-2 flex min-h-11 items-center gap-3 rounded-lg border border-border px-3 py-2 text-sm">
             <input type="checkbox" checked={remote} onChange={event => setRemote(event.target.checked)} className="h-4 w-4" />
             Remote opportunity
           </label>
@@ -204,7 +204,7 @@ export default function EmployerPortal() {
           </label>
           <div className="sm:col-span-2 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4">
             <p className="max-w-xl text-xs leading-5 text-muted-foreground">Posting is subject to review. Submissions are not marked as verified and are not public until approved.</p>
-            <button type="submit" disabled={saving} className="inline-flex min-h-11 items-center gap-2 bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60">
+            <button type="submit" disabled={saving} className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60">
               {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
               {saving ? "Submitting…" : "Submit for review"}
             </button>
@@ -212,13 +212,13 @@ export default function EmployerPortal() {
         </form>
       </section>
 
-      <section id="your-submissions" className="mt-6 border border-border bg-card p-5 sm:p-6">
+      <section id="your-submissions" className="mt-6 rounded-xl border border-border bg-card p-4 shadow-sm sm:p-6">
         <div className="flex items-start justify-between gap-3">
           <div>
             <h2 className="text-lg font-semibold">Your submissions</h2>
             <p className="mt-1 text-sm text-muted-foreground">Review your own posts and their publication status.</p>
           </div>
-          <button type="button" onClick={() => void ownOpportunities.refetch()} className="border border-border px-3 py-2 text-xs font-medium">Refresh</button>
+          <button type="button" onClick={() => void ownOpportunities.refetch()} className="min-h-10 rounded-lg border border-border px-3 py-2 text-xs font-medium">Refresh</button>
         </div>
         {ownOpportunities.isLoading ? <p className="mt-4 text-sm text-muted-foreground">Loading your submissions…</p>
         : ownOpportunities.isError ? <p className="mt-4 text-sm text-destructive">Your submissions could not be loaded. Try refreshing.</p>
@@ -239,8 +239,8 @@ export default function EmployerPortal() {
       </section>
 
       <section className="mt-6 grid gap-3 sm:grid-cols-2">
-        <a className="border border-border bg-card p-4 hover:border-primary" href="/people"><p className="font-semibold">Find candidates</p><p className="mt-1 text-xs text-muted-foreground">Discover candidates who have chosen to make their profiles visible.</p></a>
-        <a className="border border-border bg-card p-4 hover:border-primary" href="/onboarding?role=employer"><p className="font-semibold">Organisation profile</p><p className="mt-1 text-xs text-muted-foreground">Keep your employer information current.</p></a>
+        <a className="rounded-xl border border-border bg-card p-4 shadow-sm transition-colors hover:border-primary" href="/people"><p className="font-semibold">Find candidates</p><p className="mt-1 text-xs text-muted-foreground">Discover candidates who have chosen to make their profiles visible.</p></a>
+        <a className="rounded-xl border border-border bg-card p-4 shadow-sm transition-colors hover:border-primary" href="/onboarding?role=employer"><p className="font-semibold">Organisation profile</p><p className="mt-1 text-xs text-muted-foreground">Keep your employer information current.</p></a>
       </section>
     </PortalShell>
   );
