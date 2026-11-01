@@ -1,7 +1,7 @@
 
 import { useEffect, useState, type FormEvent } from "react";
 import { useNavigate, Link } from "@/lib/router-compat";
-import { ArrowRight, Award, Briefcase, Building2, CheckCircle2, GraduationCap, Globe, Loader2, Rocket, Search, Sparkles } from "@/lib/icons";
+import { ArrowRight, Award, BookOpen, Briefcase, Building2, CheckCircle2, GraduationCap, Globe, Loader2, Rocket, Search, Sparkles } from "@/lib/icons";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
@@ -18,6 +18,11 @@ const roles = [
 
 type Role = typeof roles[number]["key"];
 
+const resourceLinks = [
+  { href: "/feed", label: "Video library", detail: "Learn through the platform’s existing video collection", icon: BookOpen },
+  { href: "/skills/", label: "Skills library", detail: "Explore practical skills and learning references", icon: GraduationCap },
+  { href: "/my-path", label: "My Path", detail: "Turn a goal into organised next steps", icon: Sparkles },
+];
 const discoveryLinks = [
   { href: "/search?kind=university", label: "Universities", detail: "Compare institutions and study options", icon: Building2 },
   { href: "/programmes/", label: "Programmes", detail: "Explore courses across qualification levels", icon: GraduationCap },
@@ -95,6 +100,26 @@ export default function RoleGateway() {
         <section className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between"><div><p className="text-xs font-semibold uppercase tracking-[.16em] text-primary">Start exploring</p><h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">Opportunities that move you forward</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Go straight to the areas students and young professionals use most.</p></div><Link to="/search" className="mt-2 inline-flex min-h-10 items-center gap-2 text-sm font-semibold text-primary hover:underline sm:mt-0">Explore everything <ArrowRight className="h-4 w-4" /></Link></div>
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{discoveryLinks.map(({href,label,detail,icon:Icon}) => <Link key={href} to={href} className="group flex min-w-0 items-start gap-3 rounded-xl border border-border bg-card p-4 transition-colors hover:border-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-secondary text-primary"><Icon className="h-5 w-5" /></span><span className="min-w-0"><span className="block font-semibold text-foreground">{label}</span><span className="mt-1 block text-sm leading-5 text-muted-foreground">{detail}</span></span><ArrowRight className="ml-auto mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-1" /></Link>)}</div>
+        </section>
+
+
+        <section className="border-y border-border bg-secondary/25">
+          <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+            <div className="max-w-2xl">
+              <p className="text-xs font-semibold uppercase tracking-[.16em] text-primary">Learn and plan</p>
+              <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">Resources for your next step</h2>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">Use the learning and planning tools already available across GhanaPathFinder.</p>
+            </div>
+            <div className="mt-6 grid gap-3 sm:grid-cols-3">
+              {resourceLinks.map(({href,label,detail,icon:Icon}) => (
+                <Link key={href} to={href} className="group flex min-w-0 items-start gap-3 rounded-xl border border-border bg-card p-4 shadow-sm transition-colors hover:border-primary">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-secondary text-primary"><Icon className="h-5 w-5" /></span>
+                  <span className="min-w-0"><span className="block font-semibold text-foreground">{label}</span><span className="mt-1 block text-sm leading-5 text-muted-foreground">{detail}</span></span>
+                  <ArrowRight className="ml-auto mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-1" />
+                </Link>
+              ))}
+            </div>
+          </div>
         </section>
 
         <section className="border-y border-border bg-secondary/35"><div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[.8fr_1.2fr] lg:px-8 lg:py-14"><div><p className="text-xs font-semibold uppercase tracking-[.16em] text-primary">Your next step</p><h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">One platform. Five paths.</h2><p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">Choose the workspace that matches your goal. Your portal will show relevant tools and opportunities for your account type.</p></div><div className="grid gap-3 sm:grid-cols-2">{roles.map(function(item) {const Icon = item.icon;return <button key={item.key} type="button" disabled={choosing !== null} onClick={function(){void chooseRole(item.key);}} className="group flex min-h-[116px] items-start gap-3 rounded-xl border border-border bg-card p-4 text-left transition hover:border-primary hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-wait disabled:opacity-60"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-secondary text-primary"><Icon className="h-5 w-5" /></span><span className="min-w-0 flex-1"><span className="block font-semibold">{choosing === item.key ? "Opening " + item.label + "…" : item.label}</span><span className="mt-1 block text-sm leading-5 text-muted-foreground">{item.description}</span></span><ArrowRight className="mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-1" /></button>;})}</div><p className="text-xs leading-5 text-muted-foreground lg:col-start-2">You can update your profile and return to your portal at any time. Your account permissions determine which tools are available.</p></div></section>
