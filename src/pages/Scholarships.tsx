@@ -203,11 +203,11 @@ const Scholarships = () => {
     toast.success("Plan downloaded");
   };
 
-  const card = "bg-glass rounded-xl p-5";
+  const card = "rounded-xl border border-border bg-card p-5 shadow-sm";
   const scholarshipDeadlines = deadlines.filter((d) => d.category === "scholarship");
 
   return (
-    <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-20 pb-12">
+    <div className="min-h-dvh bg-background px-4 sm:px-6 lg:px-8 pt-24 pb-28">
       <Seo
         title="Scholarships for Ghanaian Students | GhanaPathFinder"
         description="Browse and track scholarships open to Ghanaian students, with deadlines, eligibility checks and personalised matches based on your profile."
@@ -233,25 +233,25 @@ const Scholarships = () => {
           <div className="flex flex-wrap gap-2">
             <Link
               to="/applications"
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-secondary text-sm text-muted-foreground hover:text-foreground"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-border bg-card text-sm text-muted-foreground transition-colors hover:border-primary hover:text-foreground"
             >
               <ClipboardList className="h-4 w-4" /> Tracker
             </Link>
             <Link
               to="/preferences"
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-secondary text-sm text-muted-foreground hover:text-foreground"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-border bg-card text-sm text-muted-foreground transition-colors hover:border-primary hover:text-foreground"
             >
               <SlidersHorizontal className="h-4 w-4" /> Preferences
             </Link>
             <Link
               to="/compare-scholarships"
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-secondary text-sm text-muted-foreground hover:text-foreground"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-border bg-card text-sm text-muted-foreground transition-colors hover:border-primary hover:text-foreground"
             >
               <Scale className="h-4 w-4" /> Compare
             </Link>
             <button
               onClick={exportPlan}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-semibold transition hover:opacity-90"
             >
               <Download className="h-4 w-4" /> Export my plan
             </button>
@@ -268,7 +268,7 @@ const Scholarships = () => {
               <button
                 onClick={runAi}
                 disabled={busy}
-                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium disabled:opacity-60"
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-semibold transition hover:opacity-90 disabled:opacity-60"
               >
                 <Sparkles className="h-4 w-4" /> {busy ? "Thinking..." : "Generate my matches"}
               </button>
