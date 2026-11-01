@@ -72,7 +72,7 @@ export default function RoleGateway() {
   }
 
   return (
-    <div className="min-h-dvh bg-background text-foreground">
+    <div className="min-h-dvh bg-background pb-20 text-foreground md:pb-0">
       <Navbar />
       <main className="pt-16">
         <section className="border-b border-border bg-secondary/35">
