@@ -1,0 +1,1 @@
+Temporary baseline-only CI probe. Safe to remove after diagnostics.
