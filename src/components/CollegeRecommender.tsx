@@ -325,6 +325,11 @@ const CollegeRecommender = () => {
             </div>
           </motion.div>
         )}
+        {submitted && recommendationError && (
+          <p className="mt-4 text-sm text-destructive" role="alert">
+            We could not load the programme reference data. Please retry or clear the search filter.
+          </p>
+        )}
         {submitted && (
           <div className="mt-8">
             <CareerOpportunityRecommendations
