@@ -15,7 +15,7 @@ const OpportunityRadar = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("opportunities")
-        .select("id,title,description,requirements,eligibility,company_name,organisation,country,city,location,work_mode,remote,employment_type,opportunity_type,type,category,source_name,source_url,application_url,apply_url,compensation,deadline,deadline_date,last_verified_at,status,verified,is_active,published,posted_at")
+        .select("id,title,description,requirements,eligibility,company_name,organisation,country,city,location,work_mode,remote,employment_type,opportunity_type,type,category,source_name,source_url,application_url,apply_url,compensation,deadline,deadline_date,last_verified_at,status,verified,is_active,published,posted_at,source")
         .eq("is_active", true)
         .eq("published", true)
         .eq("verified", true)
@@ -60,7 +60,7 @@ const OpportunityRadar = () => {
           <h3 className="text-base font-bold leading-snug text-foreground">{x.title}</h3>
           <p className="mt-1 text-sm font-medium text-muted-foreground">{x.company_name || x.organisation || "Organisation"} · {x.city || x.location || x.country || "Location in source listing"}</p>
         </div>
-        <span className="shrink-0 border border-border px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-primary">Verified</span>
+        <span className="shrink-0 border border-border px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-primary">{x.source ? "Source-checked" : "Reviewed"}</span>
       </div>
       <div className="flex flex-wrap gap-2 text-xs">
         <span className="bg-secondary px-2 py-1 font-medium text-foreground">{x.category || x.employment_type || x.type || x.opportunity_type || "Opportunity"}</span>
@@ -71,7 +71,7 @@ const OpportunityRadar = () => {
       {x.eligibility && <p className="text-xs leading-5 text-muted-foreground"><span className="font-semibold text-foreground">Eligibility: </span>{x.eligibility}</p>}
       {x.compensation && <p className="text-xs leading-5 text-muted-foreground"><span className="font-semibold text-foreground">Compensation: </span>{x.compensation}</p>}
       <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-border pt-3">
-        <span className="text-[11px] text-muted-foreground">Source: {x.source_name || "Linked source"}{x.last_verified_at ? " · Checked " + new Date(x.last_verified_at).toLocaleDateString("en-GB") : ""}</span>
+        <span className="text-[11px] text-muted-foreground">Source: {x.source_name || "Platform review"}{x.last_verified_at ? " · Checked " + new Date(x.last_verified_at).toLocaleDateString("en-GB") : ""}</span>
         {applyUrl && <a href={applyUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-xs font-bold text-primary">Review and apply <ExternalLink className="h-3.5 w-3.5" /></a>}
       </div>
     </article>;
@@ -80,8 +80,8 @@ const OpportunityRadar = () => {
     <header className="mb-7 border-b border-border pb-6">
       <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Opportunity Radar</p>
       <h1 className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">Find opportunities worth acting on.</h1>
-      <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Browse current, source-linked opportunities. Closed, expired, unverified and archived records are excluded from this feed.</p>
-      <p className="mt-4 text-sm font-semibold text-foreground">{items.length} verified opportunities match your filters <span className="font-normal text-muted-foreground">· {allItems.length} active verified listings in the directory</span></p>
+      <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Browse current opportunities with a recorded source or review status. Closed, expired, unverified and archived records are excluded from this feed.</p>
+      <p className="mt-4 text-sm font-semibold text-foreground">{items.length} current opportunities match your filters <span className="font-normal text-muted-foreground">· {allItems.length} active source-checked or reviewed listings</span></p>
     </header>
     <section className="mb-7 border border-border bg-card p-4 sm:p-5">
       <div className="mb-3 flex items-center gap-2"><Filter className="h-4 w-4 text-primary" /><span className="text-sm font-bold">Search and filters</span></div>
@@ -92,7 +92,7 @@ const OpportunityRadar = () => {
         <label className="flex min-h-11 items-center gap-2 border border-border bg-secondary px-3 py-2.5 text-sm"><input type="checkbox" checked={remote} onChange={e => setRemote(e.target.checked)} /> Remote only</label>
       </div>
     </section>
-    {isLoading ? <p className="text-sm text-muted-foreground">Loading opportunities…</p> : error ? <div className={card + " text-sm text-destructive"}>We could not load opportunities. Try again.</div> : <>{closingToday.length > 0 && <section className="mb-7"><div className="mb-3 flex items-center gap-2"><CalendarClock className="h-5 w-5 text-primary" /><h2 className="text-xl font-semibold">Closing today</h2></div>{render(closingToday)}</section>}<section><h2 className="mb-3 text-xl font-semibold">{closingWeek.length ? "Closing this week" : "Current opportunities"}</h2>{render(closingWeek.length ? closingWeek : items)}</section>{!items.length && <div className={card + " mt-4 text-sm text-muted-foreground"}>No current verified opportunities match these filters right now. <Link to="/for-you" className="font-semibold text-primary">Explore your feed</Link>.</div>}</>}
+    {isLoading ? <p className="text-sm text-muted-foreground">Loading opportunities…</p> : error ? <div className={card + " text-sm text-destructive"}>We could not load opportunities. Try again.</div> : <>{closingToday.length > 0 && <section className="mb-7"><div className="mb-3 flex items-center gap-2"><CalendarClock className="h-5 w-5 text-primary" /><h2 className="text-xl font-semibold">Closing today</h2></div>{render(closingToday)}</section>}<section><h2 className="mb-3 text-xl font-semibold">{closingWeek.length ? "Closing this week" : "Current opportunities"}</h2>{render(closingWeek.length ? closingWeek : items)}</section>{!items.length && <div className={card + " mt-4 text-sm text-muted-foreground"}>No current source-checked or reviewed opportunities match these filters right now. <Link to="/for-you" className="font-semibold text-primary">Explore your feed</Link>.</div>}</>}
   </main></div>;
 };
 export default OpportunityRadar;
