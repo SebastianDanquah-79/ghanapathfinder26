@@ -1,12 +1,12 @@
 import { Link, useParams } from "@/lib/router-compat";
-import { ArrowLeft, Briefcase, Building, DollarSign, Globe, GraduationCap, Loader2 } from "@/lib/icons";
+import { ArrowLeft, Briefcase, Building, Globe, GraduationCap, Loader2 } from "@/lib/icons";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo, { breadcrumbLd } from "@/components/Seo";
 import SaveButton from "@/components/SaveButton";
 import CareerPathway, { type PathwayStep } from "@/components/CareerPathway";
 import SkillsMap from "@/components/SkillsMap";
-import EmployerMatches from "@/components/EmployerMatches";
+import CareerIntelligenceAdvisor from "@/components/CareerIntelligenceAdvisor";
 
 import { careerBySlug, careerSlug } from "@/data/careers";
 import { careerPathByMajor } from "@/data/careerPaths";
@@ -77,7 +77,7 @@ const CareerDetail = () => {
     path?.description ??
     `${career.major} careers in Ghana: typical roles (${career.roles
       .slice(0, 3)
-      .join(", ")}), employers hiring locally and reported salary range ${career.salary}.`;
+      .join(", ")}), relevant programmes, skills and possible industries.`;
 
   const universities = Array.from(
     new Map(
@@ -166,7 +166,7 @@ const CareerDetail = () => {
                 item_type: "career",
                 item_key: careerSlug(career.major),
                 title: `${career.major} career path`,
-                subtitle: career.salary,
+                subtitle: career.major,
                 metadata: { roles: career.roles },
               }}
             />
@@ -242,7 +242,7 @@ const CareerDetail = () => {
 
               <SkillsMap major={career.major} />
 
-              <EmployerMatches major={career.major} />
+              <CareerIntelligenceAdvisor initialGoal={path?.career_name ?? career.major} />
 
             </>
           )}
@@ -301,16 +301,14 @@ const CareerDetail = () => {
             <Section title="Common roles" icon={<Briefcase className="h-4 w-4 text-primary" />}>
               <Chips items={career.roles} />
             </Section>
-            <Section title="Employers hiring in Ghana" icon={<Building className="h-4 w-4 text-primary" />}>
+            <Section title="Examples of employers in this field" icon={<Building className="h-4 w-4 text-primary" />}>
               <Chips items={career.companies} />
-            </Section>
-            <Section title="Reported salary range" icon={<DollarSign className="h-4 w-4 text-primary" />}>
-              <p className="text-sm text-muted-foreground">{career.salary}</p>
-              <p className="mt-1 text-[11px] text-muted-foreground">
-                Ranges are indicative market reports, not guaranteed pay.
+              <p className="mt-2 text-[11px] text-muted-foreground">
+                These are sector examples, not confirmation that the organisations are currently hiring.
+                Use the AI company and internship recommendations above to check the live directory.
               </p>
             </Section>
-            <Section title="Remote & international potential" icon={<Globe className="h-4 w-4 text-primary" />}>
+            <Section title="Remote & international pathways" icon={<Globe className="h-4 w-4 text-primary" />}>
               <p className="text-sm text-muted-foreground mb-2">{career.remote}</p>
               <p className="text-sm text-muted-foreground">{career.linkedinTip}</p>
             </Section>

@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { checkApiRateLimit, rateLimitResponse, readJsonBody } from "@/lib/api-rate-limit";
 import { convertToModelMessages, streamText, type UIMessage } from "ai";
 import { createOpenAIResponsesModel } from "@/lib/openai.server";
-import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 
 type ChatRequestBody = {
   messages?: unknown;
@@ -171,33 +170,15 @@ export const Route = createFileRoute("/api/chat")({
           return new Response("This conversation is too long. Start a new chat to continue.", { status: 413 });
         }
 
-        // Keep provider secrets on the server only. Never expose them through VITE_ variables.
-        // Prefer OpenAI when configured; use DeepSeek only when no OpenAI key is present.
-        const openaiKey = process.env["OPENAI_API_KEY"];
-        const deepseekKey = process.env["DEEPSEEK_API_KEY"];
-        const useOpenAI = Boolean(openaiKey);
-        const apiKey = openaiKey || deepseekKey;
-        if (!apiKey) {
-          return new Response("AI is not configured. Add OPENAI_API_KEY or DEEPSEEK_API_KEY to the Vercel project environment variables.", { status: 503 });
-        }
-        if (hasAttachments && !useOpenAI) {
-          return new Response("PDF and image analysis requires OPENAI_API_KEY to be configured.", { status: 503 });
+        // Keep provider secrets on the server only. Every GhanaPathFinder AI page
+        // uses the same production OpenAI key and Responses API.
+        if (!process.env["OPENAI_API_KEY"]) {
+          return new Response("AI is not configured. Add OPENAI_API_KEY to the Vercel project environment variables.", { status: 503 });
         }
 
-        const modelName = useOpenAI
-          ? process.env["OPENAI_MODEL"] || "gpt-6-luna"
-          : process.env["DEEPSEEK_MODEL"] || "deepseek-chat";
+        const modelName = process.env["OPENAI_MODEL"] || "gpt-6-luna";
         const context = typeof body.context === "string" ? body.context.slice(0, 8_000) : "";
-
-        // The official OpenAI Responses provider handles image inputs and PDF
-        // input_file parts. DeepSeek remains available for text-only fallback.
-        const model = useOpenAI
-          ? createOpenAIResponsesModel(modelName)
-          : createOpenAICompatible({
-              name: "deepseek",
-              baseURL: "https://api.deepseek.com",
-              apiKey,
-            })(modelName);
+        const model = createOpenAIResponsesModel(modelName);
 
         try {
           const result = streamText({

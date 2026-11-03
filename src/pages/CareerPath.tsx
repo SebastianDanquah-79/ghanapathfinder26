@@ -14,7 +14,28 @@ const fields = [
 
 const CareerPath = () => {
   const [dreamJob, setDreamJob] = useState(""); const [profile, setProfile] = useState<Record<string, string>>({}); const [plan, setPlan] = useState<CareerPlan | null>(null); const [loading, setLoading] = useState(false); const [error, setError] = useState(""); const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const buildPath = async () => { if (!dreamJob.trim()) return; setLoading(true); setError(""); try { const response = await fetch("/api/career-path", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ dreamJob, ...profile }) }); if (!response.ok) throw new Error(await response.text()); setPlan(await response.json()); window.scrollTo({ top: 0, behavior: "smooth" }); } catch { setError("We could not build your path right now. Please try again."); } finally { setLoading(false); } };
+  const buildPath = async () => {
+    if (!dreamJob.trim()) return;
+    setLoading(true);
+    setError("");
+    try {
+      const response = await fetch("/api/career-path", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ dreamJob, ...profile }),
+      });
+      if (!response.ok) {
+        const message = await response.text();
+        throw new Error(message || "Career Path could not be built. Please try again.");
+      }
+      setPlan(await response.json());
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Career Path is temporarily unavailable.");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="min-h-screen bg-background"><Seo title="Career Path | GhanaPathFinder" description="Build a practical path from where you are today to the career you want." path="/career-path" jsonLd={[breadcrumbLd([{ name: "Home", path: "/" }, { name: "Career Path", path: "/career-path" }])]} /><Navbar /><main className="pt-20 pb-14 px-4"><div className="max-w-5xl mx-auto">
       <div className="max-w-3xl mb-8"><p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary mb-2">Career Intelligence</p><h1 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-foreground mb-3">Turn your dream job into a practical path.</h1><p className="text-sm sm:text-base text-muted-foreground leading-6">Build a clear route from where you are now to where you want to go, using education, skills, projects, experience and real opportunities.</p></div>
