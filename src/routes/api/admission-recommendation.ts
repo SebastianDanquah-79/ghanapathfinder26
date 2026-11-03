@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { generateText } from "ai";
+import { generateText, Output } from "ai";
+import { z } from "zod";
 import { checkApiRateLimit, readJsonBody, rateLimitResponse } from "@/lib/api-rate-limit";
 import { createOpenAIResponsesModel } from "@/lib/openai.server";
 
@@ -27,11 +28,13 @@ type RequestBody = {
   matches?: unknown;
 };
 
-function parseJsonObject(value: string): unknown {
-  const cleaned = value.trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "");
-  return JSON.parse(cleaned);
-}
-
+const admissionRecommendationOutputSchema = z.object({
+  summary: z.string(),
+  strongest_option: z.string(),
+  priorities: z.array(z.string()).max(3),
+  next_steps: z.array(z.string()).max(3),
+  caution: z.string(),
+});
 function short(value: unknown, max = 240): string {
   return typeof value === "string" ? value.trim().slice(0, max) : "";
 }
@@ -93,6 +96,7 @@ export const Route = createFileRoute("/api/admission-recommendation")({
         try {
           const result = await generateText({
             model: createOpenAIResponsesModel(),
+            output: Output.object({ schema: admissionRecommendationOutputSchema }),
             system: `You are GhanaPathFinder's admissions decision assistant. Explain and prioritise only the programme matches and student data supplied. Never change the rule-based match category or confidence. Never invent admission requirements, cut-offs, official sources, deadlines, fees, eligibility or probabilities. Clearly distinguish official cut-offs, estimates and cases where no benchmark is available. Do not treat the AI summary as an admissions decision. Return a valid JSON object only.`,
             prompt: `STUDENT PROFILE
 ${JSON.stringify(profile)}
@@ -111,7 +115,8 @@ Return JSON in exactly this shape:
             maxOutputTokens: 1000,
           });
 
-          const parsed = parseJsonObject(result.text) as Record<string, unknown>;
+          const parsed = result.output;
+          if (!parsed) throw new Error("The admissions recommendation did not return a complete structured result.");
           const list = (value: unknown) =>
             Array.isArray(value) ? value.slice(0, 3).map((item) => short(item, 260)).filter(Boolean) : [];
           return Response.json({
