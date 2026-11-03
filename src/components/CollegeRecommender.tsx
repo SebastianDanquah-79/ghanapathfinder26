@@ -27,13 +27,23 @@ const CollegeRecommender = () => {
     science: "" as WASSCEGrade | "",
   });
   const [submitted, setSubmitted] = useState<typeof form | null>(null);
+  const submittedSubjects = useMemo(
+    () => submitted
+      ? [
+          { subject: "English Language", grade: submitted.english },
+          { subject: "Core Mathematics", grade: submitted.mathematics },
+          { subject: "Integrated Science", grade: submitted.science },
+        ].filter((item): item is { subject: string; grade: WASSCEGrade } => item.grade !== "")
+      : [],
+    [submitted],
+  );
   const [aiAdvice, setAiAdvice] = useState<{ summary: string; strongestOption: string; priorities: string[]; nextSteps: string[]; caution: string } | null>(null);
   const [aiAdviceLoading, setAiAdviceLoading] = useState(false);
   const [aiAdviceError, setAiAdviceError] = useState<string | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
 
   const aggregate = submitted && Number.isFinite(Number(submitted.aggregate)) ? Number(submitted.aggregate) : null;
-  const { matches, isLoading, error: recommendationError } = useAggregateRecommendations(aggregate, submitted?.major ?? "", !!submitted);
+  const { matches, isLoading, error: recommendationError } = useAggregateRecommendations(aggregate, submitted?.major ?? "", !!submitted, submittedSubjects);
 
   const ranked = useMemo(() => {
     if (!submitted) return [];
