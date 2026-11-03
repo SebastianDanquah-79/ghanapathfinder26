@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { checkApiRateLimit, rateLimitResponse, readJsonBody } from "@/lib/api-rate-limit";
 import { convertToModelMessages, streamText, type UIMessage } from "ai";
-import { createOpenAI } from "@ai-sdk/openai";
+import { createOpenAIResponsesModel } from "@/lib/openai.server";
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 
 type ChatRequestBody = {
@@ -192,7 +192,7 @@ export const Route = createFileRoute("/api/chat")({
         // The official OpenAI Responses provider handles image inputs and PDF
         // input_file parts. DeepSeek remains available for text-only fallback.
         const model = useOpenAI
-          ? createOpenAI({ apiKey }).responses(modelName)
+          ? createOpenAIResponsesModel(modelName)
           : createOpenAICompatible({
               name: "deepseek",
               baseURL: "https://api.deepseek.com",
