@@ -101,7 +101,7 @@ const emptyCopy: Record<Kind, string> = {
 };
 
 const GuideCard = ({ r }: { r: GuideResult }) => (
-  <div className="bg-glass rounded-xl p-4 flex flex-col gap-2">
+  <div className="rounded-xl border border-border bg-card p-4 shadow-sm flex flex-col gap-2">
     <div className="min-w-0">
       <span className="text-[10px] uppercase tracking-wide text-primary font-semibold">{r.kind}</span>
       <h2 className="font-display font-semibold text-base text-foreground break-words">
@@ -135,7 +135,7 @@ const ResultCard = ({ r }: { r: SearchResult }) => {
   const str = (k: string) => (typeof meta[k] === "string" ? (meta[k] as string) : null);
 
   return (
-    <div className="bg-glass rounded-xl p-4 flex flex-col gap-2">
+    <div className="rounded-xl border border-border bg-card p-4 shadow-sm flex flex-col gap-2">
       <div className="min-w-0">
         <span className="text-[10px] uppercase tracking-wide text-primary font-semibold">{r.kind}</span>
         <h2 className="font-display font-semibold text-base text-foreground break-words">
@@ -412,14 +412,14 @@ const SearchPage = () => {
     }`;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-dvh bg-background">
       <Seo
         title="Search Universities & Programmes in Ghana | GhanaPathFinder"
         description="Search accredited Ghanaian universities, degree programmes and scholarships in one place, with WASSCE requirements and verified official links."
         path="/search"
       />
       <Navbar />
-      <main className="pt-20 pb-12 px-4 sm:px-8 lg:px-12">
+      <main className="pt-24 pb-28 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl xl:max-w-7xl mx-auto">
           <div className="max-w-3xl mb-5">
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary mb-2">University Directory</p>
@@ -431,7 +431,7 @@ const SearchPage = () => {
             </p>
           </div>
 
-          <div className="sticky top-16 z-30 -mx-4 px-4 py-2 bg-background/95 backdrop-blur-sm">
+          <div className="sticky top-16 z-30 -mx-4 px-4 py-2 bg-background">
             <div className="relative">
               <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <input
@@ -471,7 +471,7 @@ const SearchPage = () => {
             </div>
 
             {showFilters && kind === "university" && (
-              <div className="bg-glass rounded-xl p-3 mb-2 space-y-3">
+              <div className="rounded-xl border border-border bg-card p-3 mb-2 space-y-3 shadow-sm">
                 <div>
                   <p className="text-[11px] uppercase tracking-wide text-muted-foreground mb-1.5">Type</p>
                   <div className="flex gap-2 [&>*]:shrink-0 hscroll pb-1">
@@ -543,7 +543,7 @@ const SearchPage = () => {
             )}
 
             {showFilters && kind === "scholarship" && (
-              <div className="bg-glass rounded-xl p-3 mb-2">
+              <div className="rounded-xl border border-border bg-card p-3 mb-2 shadow-sm">
                 <p className="text-[11px] uppercase tracking-wide text-muted-foreground mb-1.5">Funding type</p>
                 <div className="flex gap-2 [&>*]:shrink-0 hscroll hscroll-bleed pb-1">
                   {SCHOLARSHIP_TYPES.map((t) => (

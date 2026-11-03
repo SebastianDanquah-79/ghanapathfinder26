@@ -82,7 +82,7 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
   );
 
   return (
-    <div className="rounded-xl border border-border bg-glass overflow-hidden flex flex-col">
+    <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden flex flex-col">
       <div className="flex items-center justify-between gap-2 px-3 py-2 border-b border-border">
         <div className="min-w-0">
           <p className="text-sm font-semibold text-foreground">Ask GhanaPathFinder</p>
@@ -94,7 +94,7 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
           <button
             type="button"
             onClick={onClear}
-            className="text-[11px] px-2 py-1 rounded-md border border-border text-muted-foreground hover:text-foreground"
+            className="min-h-9 text-[11px] px-3 py-1.5 rounded-lg border border-border text-muted-foreground hover:text-foreground"
           >
             New chat
           </button>
@@ -114,7 +114,7 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
                     key={s}
                     type="button"
                     onClick={() => ask(s)}
-                    className="text-[11px] px-2.5 py-1.5 rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-primary/50"
+                    className="min-h-10 text-[11px] px-3 py-2 rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-primary/50"
                   >
                     {s}
                   </button>
@@ -196,7 +196,7 @@ const AskPanel = ({ query, items, suggestions }: AskPanelProps) => {
 
   if (initialMessages === null) {
     return (
-      <div className="rounded-xl border border-border bg-glass p-4 text-xs text-muted-foreground">
+      <div className="rounded-xl border border-border bg-card p-4 text-xs text-muted-foreground shadow-sm">
         Loading Ask GhanaPathFinder…
       </div>
     );

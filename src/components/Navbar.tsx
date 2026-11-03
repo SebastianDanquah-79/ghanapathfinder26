@@ -62,11 +62,11 @@ const Navbar = () => {
   const initials = initialsFrom(name);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-xl border-b border-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-14 gap-3">
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/95">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
         <Link to="/" className="flex items-center gap-2 shrink-0" aria-label="GhanaPathFinder home">
           <BrandMark className="h-7 w-7" priority />
-          <span className="font-display font-bold text-lg sm:text-xl text-foreground">
+          <span className="font-display text-lg font-bold tracking-tight text-foreground sm:text-xl">
             Ghana<span className="text-primary">PathFinder</span>
           </span>
         </Link>
@@ -165,7 +165,7 @@ const Navbar = () => {
           </div>
         </TooltipProvider>
 
-        <div className="md:hidden flex min-w-0 items-center gap-1">
+        <div className="flex min-w-0 items-center gap-1 md:hidden">
           <Link to="/search" aria-label="Search GhanaPathFinder" className="grid place-items-center h-11 w-11 rounded-full text-muted-foreground active:text-primary">
             <Search className="h-5 w-5" />
           </Link>
@@ -188,13 +188,13 @@ const Navbar = () => {
 
       <AnimatePresence>
         {open && (
-          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="md:hidden overflow-hidden bg-card border-b border-border max-h-[75vh] overflow-y-auto">
-            <div className="px-4 py-3 space-y-4">
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="max-h-[75dvh] overflow-y-auto border-b border-border bg-card md:hidden">
+            <div className="space-y-4 px-4 py-4">
               <Link
                 to="/search"
                 onClick={() => setOpen(false)}
                 aria-label="Search all GhanaPathFinder"
-                className="flex min-h-12 items-center gap-3 border border-border bg-secondary/50 px-3 py-3 text-sm font-medium text-foreground"
+                className="flex min-h-12 items-center gap-3 rounded-lg border border-border bg-background px-3 py-3 text-sm font-medium text-foreground"
               >
                 <Search className="h-4 w-4 text-primary" />
                 <span className="flex-1">Global search</span>
@@ -203,8 +203,8 @@ const Navbar = () => {
               {visibleNavSections.map(({ id, label, icon: Icon, items }) => (
                 <div key={id}>
                   <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground"><Icon className="h-4 w-4" /> {label}</div>
-                  <div className="mt-2 grid grid-cols-2 gap-2">
-                    {items.map((i) => <a key={i.href} href={i.href} onClick={() => setOpen(false)} className="block px-3 py-2.5 text-sm text-foreground rounded-lg border border-border bg-secondary/50 active:text-primary">{i.label}</a>)}
+                  <div className="mt-2 grid grid-cols-2 gap-2.5">
+                    {items.map((i) => <a key={i.href} href={i.href} onClick={() => setOpen(false)} className="flex min-h-11 items-center rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground transition-colors hover:border-primary active:text-primary">{i.label}</a>)}
                   </div>
                 </div>
               ))}

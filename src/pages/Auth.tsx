@@ -140,7 +140,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 py-8">
+    <div className="flex min-h-dvh flex-col items-center justify-center bg-background px-4 py-10">
       <Link to="/" className="flex items-center gap-2 mb-6">
         <BrandLogoIcon className="h-7 w-7 text-primary" />
         <span className="font-display font-bold text-xl text-foreground">
@@ -148,7 +148,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
         </span>
       </Link>
 
-      <div className="w-full max-w-md bg-glass rounded-2xl p-5 sm:p-6">
+      <div className="w-full max-w-md rounded-xl border border-border bg-card p-5 shadow-sm sm:p-7">
         {emailSent ? (
           <div className="text-center space-y-3">
             <h1 className="font-display text-xl font-bold text-foreground">Check your email</h1>
@@ -159,7 +159,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
           </div>
         ) : (
           <>
-            <h1 className="font-display text-2xl font-bold text-foreground mb-1">
+            <h1 className="mb-1 font-display text-2xl font-bold tracking-tight text-foreground">
               {mode === "signin" ? "Welcome back" : "Create your account"}
             </h1>
             <p className="text-sm text-muted-foreground mb-6">
@@ -168,7 +168,7 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
                 : "Save recommendations, scholarships and deadlines in one place."}
             </p>
 
-            <label className="flex items-start gap-3 mb-4 p-3 rounded-xl border border-border bg-secondary/50 cursor-pointer">
+            <label className="mb-4 flex cursor-pointer items-start gap-3 rounded-lg border border-border bg-secondary/60 p-3">
               <input
                 type="checkbox"
                 checked={acceptedTerms}

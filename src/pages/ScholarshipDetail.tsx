@@ -11,7 +11,7 @@ const ScholarshipDetail = () => {
 
   if (!s) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-dvh bg-background">
         <Navbar />
         <main className="pt-24 px-4 text-center">
           <h1 className="font-display text-xl font-semibold text-foreground mb-2">
@@ -52,7 +52,7 @@ const ScholarshipDetail = () => {
         ]}
       />
       <Navbar />
-      <main className="pt-20 pb-12 px-4">
+      <main className="pt-24 pb-28 px-4 sm:px-6">
         <div className="max-w-3xl mx-auto">
           <Link
             to="/scholarships"
@@ -73,29 +73,29 @@ const ScholarshipDetail = () => {
           <p className="text-sm text-muted-foreground mb-7">Offered by {s.provider}</p>
 
           <div className="grid gap-3 sm:grid-cols-2 mb-4">
-            <div className="bg-glass rounded-xl p-4">
+            <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
               <h2 className="font-display font-semibold text-foreground mb-1">Coverage</h2>
               <p className="text-sm text-muted-foreground">{s.coverage}</p>
             </div>
-            <div className="bg-glass rounded-xl p-4">
+            <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
               <h2 className="font-display font-semibold text-foreground mb-1">Study level</h2>
               <p className="text-sm text-muted-foreground">{s.level}</p>
             </div>
           </div>
 
-          <section className="bg-glass rounded-xl p-4 mb-4">
+          <section className="rounded-xl border border-border bg-card p-4 shadow-sm mb-4">
             <h2 className="font-display font-semibold text-foreground mb-1">Who can apply</h2>
             <p className="text-sm text-muted-foreground">{s.eligibility}</p>
           </section>
 
-          <section className="bg-glass rounded-xl p-4 mb-4">
+          <section className="rounded-xl border border-border bg-card p-4 shadow-sm mb-4">
             <h2 className="flex items-center gap-2 font-display font-semibold text-foreground mb-1">
               <CalendarClock className="h-4 w-4 text-primary" /> Deadline
             </h2>
             <p className="text-sm text-muted-foreground">{s.deadline}</p>
           </section>
 
-          <section className="bg-glass rounded-xl p-4 mb-4">
+          <section className="rounded-xl border border-border bg-card p-4 shadow-sm mb-4">
             <h2 className="font-display font-semibold text-foreground mb-1">How to apply</h2>
             <p className="text-sm text-muted-foreground">{s.howToApply}</p>
           </section>
@@ -105,7 +105,7 @@ const ScholarshipDetail = () => {
               href={s.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium"
+              className="inline-flex min-h-11 items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-semibold transition hover:opacity-90"
             >
               Official page <ExternalLink className="h-4 w-4" />
             </a>

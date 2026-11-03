@@ -34,8 +34,8 @@ const AskAfrica = () => {
     "Help me compare university and scholarship options using official sources.",
     "Help me plan my next application steps and deadlines.",
   ];
-  return <div className="min-h-screen bg-background pt-20 pb-24 md:pb-12"><Navbar/><main className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-    <header className="mb-7"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Study, plan and grow</p><h1 className="mt-2 text-3xl font-bold">Your AI study and path coach</h1><p className="mt-2 max-w-2xl text-sm text-muted-foreground">Learn difficult topics step by step, practise with quizzes, make revision plans, and explore admissions, scholarships, careers and African opportunities. Platform listings provide context, not a guarantee. Confirm important requirements with official sources.</p></header>
+  return <div className="min-h-dvh bg-background pb-28 pt-24"><Navbar/><main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <header className="mb-7 max-w-3xl"><p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Study, plan and grow</p><h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Your AI study and path coach</h1><p className="mt-2 max-w-2xl text-sm text-muted-foreground">Learn difficult topics step by step, practise with quizzes, make revision plans, and explore admissions, scholarships, careers and African opportunities. Platform listings provide context, not a guarantee. Confirm important requirements with official sources.</p></header>
     <AskPanel query="Study coach: explain school and university topics, computing and STEM concepts, revision planning, admissions, scholarships, careers and African opportunities" items={q.data??[]} suggestions={suggestions}/>
   </main></div>;
 };

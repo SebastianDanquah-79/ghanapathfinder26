@@ -131,7 +131,7 @@
   --border: 220 16% 88%;
   --input: 220 16% 88%;
   --ring: 40 92% 46%;
-  --radius: 0.875rem;
+  --radius: 0.75rem;
 
   --ghana-gold: 40 92% 46%;
   --ghana-gold-light: 43 96% 62%;
@@ -296,6 +296,7 @@
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
   }
   html,
   body {
@@ -314,6 +315,7 @@
   }
 
   body {
+    min-width: 320px;
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
@@ -336,6 +338,8 @@
   canvas {
     max-width: 100%;
   }
+  :focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
   /* Prevent iOS zoom-on-focus for form controls on small screens */
   @media (max-width: 767px) {
     input,
