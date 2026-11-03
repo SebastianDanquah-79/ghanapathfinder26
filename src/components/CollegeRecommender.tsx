@@ -10,6 +10,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { CATEGORY_STYLES, diversify, formatVerifiedDate } from "@/lib/admissionEngine";
 import { buildAlternativePathways, pathwaySignal, type WASSCEGrade } from "@/lib/pathwayEngine";
 import { track } from "@/lib/analytics";
+import CareerOpportunityRecommendations from "@/components/CareerOpportunityRecommendations";
 
 const preferences = ["No Preference", "Public Only", "Private Only"] as const;
 const grades: Array<WASSCEGrade | ""> = ["", "A1", "B2", "B3", "C4", "C5", "C6", "D7", "E8", "F9"];
@@ -280,7 +281,7 @@ const CollegeRecommender = () => {
 
             <div className="bg-glass rounded-2xl p-5 sm:p-6">
               <h3 className="font-display font-semibold text-lg text-foreground mb-1">Direct-entry matches for {submitted.name}</h3>
-              <p className="text-xs text-muted-foreground mb-5">Aggregate {submitted.aggregate} · ranked against published cut-offs and evidence-based estimated ranges.</p>
+              <p className="text-xs text-muted-foreground mb-5">Aggregate {submitted.aggregate} · scored using available programme and institution evidence. Estimated fit is not an admission probability.</p>
 
               {ranked.length === 0 ? (
                 <div className="rounded-xl border border-border bg-background/40 p-4">
@@ -293,7 +294,7 @@ const CollegeRecommender = () => {
                     <div key={r.programme_id} className="rounded-xl border border-border bg-background/40 p-4">
                       <div className="flex flex-wrap items-start justify-between gap-2">
                         <div className="min-w-0"><p className="font-medium text-foreground text-sm">{r.programme_name}</p><p className="text-xs text-muted-foreground">{r.university_name} · {r.university_category} · {r.region ?? "Ghana"}</p></div>
-                        <span className={`shrink-0 px-2.5 py-1 rounded-full border text-xs font-medium ${CATEGORY_STYLES[category]}`}>{category}{confidence != null ? ` · ${confidence}%` : ""}</span>
+                        <span className={`shrink-0 px-2.5 py-1 rounded-full border text-xs font-medium ${CATEGORY_STYLES[category]}`}>{category}{confidence != null ? ` · ${confidence}% estimated fit` : ""}</span>
                       </div>
                       <dl className="grid grid-cols-2 gap-x-4 gap-y-1 mt-3 text-xs"><div><dt className="text-muted-foreground">Your aggregate</dt><dd className="text-foreground font-semibold">{submitted.aggregate}</dd></div><div><dt className="text-muted-foreground">{benchmarkKind}</dt><dd className="text-foreground font-semibold">{benchmarkLabel}</dd></div></dl>
                       <p className="text-xs text-muted-foreground mt-2">{why}</p>
@@ -313,6 +314,14 @@ const CollegeRecommender = () => {
               {ranked.length > 0 && <div className="mt-6 pt-6 border-t border-border"><ShareButtons studentName={submitted.name} resultRef={resultRef} /></div>}
             </div>
           </motion.div>
+        )}
+        {submitted && (
+          <div className="mt-8">
+            <CareerOpportunityRecommendations
+              career={submitted.major || "Career exploration"}
+              programme={ranked[0]?.reference.programme_name || ""}
+            />
+          </div>
         )}
       </div>
     </section>
