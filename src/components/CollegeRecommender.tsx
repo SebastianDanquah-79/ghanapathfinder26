@@ -48,12 +48,12 @@ const CollegeRecommender = () => {
   const ranked = useMemo(() => {
     if (!submitted) return [];
     const filtered = matches.filter((m) => {
-      if (m.category === "Not Eligible" || m.category === "Insufficient Data") return false;
+      if (m.category === "Not Eligible") return false;
       if (submitted.preference === "Public Only") return m.reference.university_type === "Public";
       if (submitted.preference === "Private Only") return m.reference.university_type === "Private";
       return true;
     });
-    return diversify(filtered, 2, 12);
+    return diversify(filtered, 2, 24);
   }, [matches, submitted]);
 
   const pathways = submitted ? buildAlternativePathways({
@@ -290,8 +290,8 @@ const CollegeRecommender = () => {
             )}
 
             <div className="bg-glass rounded-2xl p-5 sm:p-6">
-              <h3 className="font-display font-semibold text-lg text-foreground mb-1">Direct-entry matches for {submitted.name}</h3>
-              <p className="text-xs text-muted-foreground mb-5">Aggregate {submitted.aggregate} · scored using available programme and institution evidence. Estimated fit is not an admission probability.</p>
+              <h3 className="font-display font-semibold text-lg text-foreground mb-1">Programmes and universities to explore for {submitted.name}</h3>
+              <p className="text-xs text-muted-foreground mb-5">Aggregate {submitted.aggregate} · programme listings are shown even when an admission benchmark is unavailable. No score is assigned without evidence.</p>
 
               {ranked.length === 0 ? (
                 <div className="rounded-xl border border-border bg-background/40 p-4">
@@ -304,7 +304,7 @@ const CollegeRecommender = () => {
                     <div key={r.programme_id} className="rounded-xl border border-border bg-background/40 p-4">
                       <div className="flex flex-wrap items-start justify-between gap-2">
                         <div className="min-w-0"><p className="font-medium text-foreground text-sm">{r.programme_name}</p><p className="text-xs text-muted-foreground">{r.university_name} · {r.university_category} · {r.region ?? "Ghana"}</p></div>
-                        <span className={`shrink-0 px-2.5 py-1 rounded-full border text-xs font-medium ${CATEGORY_STYLES[category]}`}>{category}{confidence != null ? ` · ${confidence}% estimated fit` : ""}</span>
+                        <span className={`shrink-0 px-2.5 py-1 rounded-full border text-xs font-medium ${r.basis === "none" ? "border-border bg-muted text-muted-foreground" : CATEGORY_STYLES[category]}`}>{r.basis === "none" ? "Programme listed · no admission benchmark" : category}{r.basis !== "none" && confidence != null ? ` · ${confidence}% estimated fit` : ""}</span>
                       </div>
                       <dl className="grid grid-cols-2 gap-x-4 gap-y-1 mt-3 text-xs"><div><dt className="text-muted-foreground">Your aggregate</dt><dd className="text-foreground font-semibold">{submitted.aggregate}</dd></div><div><dt className="text-muted-foreground">{benchmarkKind}</dt><dd className="text-foreground font-semibold">{benchmarkLabel}</dd></div></dl>
                       <p className="text-xs text-muted-foreground mt-2">{why}</p>
