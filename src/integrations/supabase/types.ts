@@ -5335,6 +5335,9 @@ export type Database = {
           admission_info: string | null
           admissions_url: string | null
           aliases: string[] | null
+          achievements: Json
+          biography: string | null
+          biography_source_url: string | null
           campus_vibe: string | null
           category: string
           city: string | null
@@ -5364,6 +5367,8 @@ export type Database = {
           short_description: string | null
           short_name: string | null
           slug: string
+          slug_aliases?: string[]
+          slug_aliases: string[]
           social_links: Json | null
           source_type: string
           source_url: string | null
@@ -5385,7 +5390,10 @@ export type Database = {
           admission_aggregate?: string | null
           admission_info?: string | null
           admissions_url?: string | null
+          achievements?: Json
           aliases?: string[] | null
+          biography?: string | null
+          biography_source_url?: string | null
           campus_vibe?: string | null
           category?: string
           city?: string | null
@@ -5436,7 +5444,10 @@ export type Database = {
           admission_aggregate?: string | null
           admission_info?: string | null
           admissions_url?: string | null
+          achievements?: Json
           aliases?: string[] | null
+          biography?: string | null
+          biography_source_url?: string | null
           campus_vibe?: string | null
           category?: string
           city?: string | null
@@ -5466,6 +5477,7 @@ export type Database = {
           short_description?: string | null
           short_name?: string | null
           slug?: string
+          slug_aliases?: string[]
           social_links?: Json | null
           source_type?: string
           source_url?: string | null
