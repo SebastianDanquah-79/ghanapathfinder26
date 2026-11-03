@@ -75,19 +75,20 @@ export const Route = createFileRoute("/api/chat")({
         }
 
         // Keep provider secrets on the server only. Never expose them through VITE_ variables.
-        // Production currently supplies DEEPSEEK_API_KEY. OPENAI_API_KEY remains a supported fallback.
-        const deepseekKey = process.env["DEEPSEEK_API_KEY"];
+        // Prefer OpenAI when configured; use DeepSeek only when no OpenAI key is present.
         const openaiKey = process.env["OPENAI_API_KEY"];
-        const apiKey = deepseekKey || openaiKey;
+        const deepseekKey = process.env["DEEPSEEK_API_KEY"];
+        const useOpenAI = Boolean(openaiKey);
+        const apiKey = openaiKey || deepseekKey;
         if (!apiKey) {
-          return new Response("AI is not configured. Add DEEPSEEK_API_KEY or OPENAI_API_KEY to the Vercel project environment variables.", { status: 503 });
+          return new Response("AI is not configured. Add OPENAI_API_KEY or DEEPSEEK_API_KEY to the Vercel project environment variables.", { status: 503 });
         }
 
-        const providerName = deepseekKey ? "deepseek" : "openai";
-        const baseURL = deepseekKey ? "https://api.deepseek.com" : "https://api.openai.com/v1";
-        const modelName = deepseekKey
-          ? process.env["DEEPSEEK_MODEL"] || "deepseek-chat"
-          : process.env["OPENAI_MODEL"] || "gpt-6-luna";
+        const providerName = useOpenAI ? "openai" : "deepseek";
+        const baseURL = useOpenAI ? "https://api.openai.com/v1" : "https://api.deepseek.com";
+        const modelName = useOpenAI
+          ? process.env["OPENAI_MODEL"] || "gpt-6-luna"
+          : process.env["DEEPSEEK_MODEL"] || "deepseek-chat";
         const context = typeof body.context === "string" ? body.context.slice(0, 8000) : "";
         const provider = createOpenAICompatible({
           name: providerName,
