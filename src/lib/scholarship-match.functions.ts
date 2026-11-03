@@ -1,4 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
+import { generateText } from "ai";
+import { createOpenAIResponsesModel } from "@/lib/openai.server";
 
 type MatchInput = {
   profile: Record<string, unknown>;
@@ -16,59 +18,88 @@ export type ScholarshipMatchResult = {
   summary: string;
 };
 
+function parseJsonObject(value: string): unknown {
+  const cleaned = value
+    .trim()
+    .replace(/^```(?:json)?\s*/i, "")
+    .replace(/\s*```$/i, "")
+    .trim();
+  return JSON.parse(cleaned);
+}
+
 export const scholarshipMatch = createServerFn({ method: "POST" })
   .inputValidator((input: unknown): MatchInput => {
     const value = input as Partial<MatchInput> | null;
-    if (!value || typeof value !== "object" || typeof value.profile !== "object" || !Array.isArray(value.scholarships)) {
+    if (
+      !value ||
+      typeof value !== "object" ||
+      !value.profile ||
+      typeof value.profile !== "object" ||
+      Array.isArray(value.profile) ||
+      !Array.isArray(value.scholarships)
+    ) {
       throw new Error("Invalid input: expected { profile, scholarships }");
     }
-    return { profile: value.profile as Record<string, unknown>, scholarships: value.scholarships };
+    if (value.scholarships.length > 100) {
+      throw new Error("Too many scholarships to analyse at once.");
+    }
+    return {
+      profile: value.profile as Record<string, unknown>,
+      scholarships: value.scholarships as Array<Record<string, unknown>>,
+    };
   })
   .handler(async ({ data }): Promise<ScholarshipMatchResult> => {
-    const apiKey = process.env['LOVABLE_API_KEY'];
-    if (!apiKey) throw new Error("Missing LOVABLE_API_KEY");
-
     const { profile, scholarships } = data;
+    if (scholarships.length === 0) {
+      return { matches: [], summary: "There are no scholarship listings to compare yet." };
+    }
 
-    const prompt = `You are a Ghanaian scholarship advisor helping an SHS/tertiary student.
-
-STUDENT PROFILE:
+    const prompt = `STUDENT PROFILE:
 ${JSON.stringify(profile, null, 2)}
 
 AVAILABLE SCHOLARSHIPS:
 ${JSON.stringify(scholarships, null, 2)}
 
-Rank the 6 best-fitting scholarships for this student. Be honest about gaps.
-Return ONLY JSON of shape:
-{"matches":[{"name":"exact scholarship name","score":0-100,"why":"1-2 sentences, personal and specific","gaps":["short gap"],"nextStep":"one concrete action this week"}],"summary":"2 sentence overall funding strategy"}`;
+Rank up to six of the listed scholarships by fit for this student's profile.
+Use only scholarship names that appear in the supplied list. Do not invent deadlines,
+eligibility rules, providers, fees or scholarship benefits. Be honest about missing
+information and eligibility gaps. A score is a prioritisation aid, not a probability
+of winning an award.
 
-    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Lovable-API-Key": apiKey,
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          { role: "system", content: "You are a precise scholarship advisor. Reply with json only." },
-          { role: "user", content: prompt },
-        ],
-        response_format: { type: "json_object" },
-      }),
-    });
+Return ONLY a JSON object with this shape:
+{"matches":[{"name":"exact scholarship name from the list","score":0,"why":"1-2 specific sentences","gaps":["short evidence-based gap"],"nextStep":"one practical action"}],"summary":"two-sentence funding strategy"} `;
 
-    if (!res.ok) {
-      const details = await res.text();
-      console.error(`AI gateway error [${res.status}]: ${details}`);
-      throw new Error(`AI request failed [${res.status}]: ${details}`);
-    }
-
-    const payload = (await res.json()) as { choices?: Array<{ message?: { content?: string } }> };
-    const content = payload.choices?.[0]?.message?.content ?? "{}";
     try {
-      return JSON.parse(content) as ScholarshipMatchResult;
-    } catch {
-      return { matches: [], summary: content };
+      const result = await generateText({
+        model: createOpenAIResponsesModel(),
+        system: "You are a precise scholarship advisor for GhanaPathFinder. Analyse only the supplied records. Return valid JSON without Markdown fences.",
+        prompt,
+        maxOutputTokens: 1400,
+      });
+
+      const parsed = parseJsonObject(result.text) as Partial<ScholarshipMatchResult>;
+      const allowedNames = new Set(
+        scholarships.map((item) => String(item.name ?? "")).filter(Boolean),
+      );
+      const matches = Array.isArray(parsed.matches)
+        ? parsed.matches
+            .filter((item) => item && allowedNames.has(String(item.name ?? "")))
+            .slice(0, 6)
+            .map((item) => ({
+              name: String(item.name),
+              score: Math.max(0, Math.min(100, Math.round(Number(item.score) || 0))),
+              why: String(item.why ?? "").slice(0, 700),
+              gaps: Array.isArray(item.gaps) ? item.gaps.map(String).slice(0, 6) : [],
+              nextStep: String(item.nextStep ?? "").slice(0, 400),
+            }))
+        : [];
+
+      return {
+        matches,
+        summary: String(parsed.summary ?? "Review the eligibility details and official sources for the strongest matches."),
+      };
+    } catch (error) {
+      console.error("OpenAI scholarship matching failed", error);
+      throw new Error("Scholarship matching could not be completed. Check the OpenAI API key, model access and billing, then try again.");
     }
   });
