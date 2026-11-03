@@ -33,7 +33,14 @@ export const useAdmissionReference = (
       if (error) throw error;
       return (data ?? []) as unknown as AdmissionReference[];
     },
-    staleTime: 5 * 60_000,
+    // Always revalidate after a previous schema-cache/network failure. The
+    // admission catalogue is used for decisions, so an old error should not
+    // remain on screen after the RPC has recovered.
+    staleTime: 0,
+    retry: 2,
+    retryDelay: (attempt) => Math.min(1_000 * 2 ** attempt, 5_000),
+    refetchOnMount: "always",
+    refetchOnWindowFocus: true,
   });
 
 /** Score a raw self-reported aggregate against the whole database. */
@@ -63,7 +70,13 @@ export const useAggregateRecommendations = (
 /** Score the signed-in student's full WASSCE results against the whole database. */
 export const useReferenceMatches = (search = "", universityId?: string) => {
   const { data: results = [], isLoading: loadingResults } = useWassceResults();
-  const { data: references = [], isLoading, error } = useAdmissionReference(search, universityId);
+  const {
+    data: references = [],
+    isLoading,
+    isFetching,
+    error,
+    refetch,
+  } = useAdmissionReference(search, universityId);
 
   const breakdown = useMemo(() => computeAggregate(results), [results]);
 
@@ -75,5 +88,13 @@ export const useReferenceMatches = (search = "", universityId?: string) => {
     [references, breakdown.aggregate, results],
   );
 
-  return { matches, breakdown, results, isLoading: isLoading || loadingResults, error };
+  return {
+    matches,
+    breakdown,
+    results,
+    isLoading: isLoading || loadingResults,
+    error,
+    refetch,
+    isFetching,
+  };
 };
