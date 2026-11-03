@@ -153,7 +153,9 @@ const Careers = () => {
                     {path?.description ?? c.roles.join(", ")}
                   </p>
                   <p className="text-[11px] text-muted-foreground mt-1">{c.major} pathway</p>
-                  <p className="text-xs text-primary mt-2">{c.salary}</p>
+                  <p className="mt-2 text-xs text-primary">
+                    {path?.industries.slice(0, 2).join(" · ") || "Explore study and skill pathways"}
+                  </p>
                 </Link>
               );
             })}
