@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { generateText } from "ai";
+import { generateText, Output } from "ai";
+import { z } from "zod";
 import { checkApiRateLimit, readJsonBody, rateLimitResponse } from "@/lib/api-rate-limit";
 import { createOpenAIResponsesModel } from "@/lib/openai.server";
 
@@ -31,11 +32,13 @@ const GAME_TYPES = new Set<GameType>([
   "general-strategist",
 ]);
 
-function parseJsonObject(value: string): unknown {
-  const cleaned = value.trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "");
-  return JSON.parse(cleaned);
-}
-
+const lifeGameAdviceSchema = z.object({
+  overview: z.string(),
+  firstFocus: z.string(),
+  tradeoff: z.string(),
+  weeklyPlan: z.array(z.string()).min(1).max(3),
+  checkIn: z.string(),
+});
 function safeText(value: unknown, max: number) {
   return typeof value === "string" ? value.trim().slice(0, max) : "";
 }
@@ -77,6 +80,7 @@ export const Route = createFileRoute("/api/life-game-advice")({
         try {
           const result = await generateText({
             model: createOpenAIResponsesModel(),
+            output: Output.object({ schema: lifeGameAdviceSchema }),
             system: `You are the GhanaPathFinder Life Simulator's strategy coach. Give grounded, practical advice, not promises. Respect that users have real study, work, health, family and financial responsibilities. Never recommend sleep deprivation, unsafe financial risk, or abandoning school/work based on a hypothetical simulation. Do not treat game metrics as measurements of real human worth. The scenario choice and score remain controlled by the simulator; you only explain the selected game and suggest a realistic way to approach it. Return valid JSON only.`,
             prompt: `GOAL: ${goal}
 RECOMMENDED SIMULATION: ${gameType}
@@ -96,7 +100,8 @@ Return JSON in exactly this shape:
             maxOutputTokens: 850,
           });
 
-          const parsed = parseJsonObject(result.text) as Record<string, unknown>;
+          const parsed = result.output;
+          if (!parsed) throw new Error("Life Simulator advice did not return a complete structured result.");
           const list = Array.isArray(parsed.weeklyPlan)
             ? parsed.weeklyPlan.slice(0, 3).map((item) => safeText(item, 240)).filter(Boolean)
             : [];
