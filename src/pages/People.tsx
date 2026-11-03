@@ -72,7 +72,7 @@ const People = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("opportunities")
-        .select("id,title,company_name,organisation,country,city,work_mode,type,opportunity_type,category,apply_url,source_url,verified,deadline_date,posted_at")
+        .select("id,title,company_name,organisation,country,city,work_mode,type,opportunity_type,category,apply_url,source_url,source_name,source,verified,deadline_date,posted_at")
         .eq("is_active", true)
         .eq("published", true)
         .eq("verified", true)
@@ -228,7 +228,7 @@ const People = () => {
                   <h3 className="font-semibold">{item.title}</h3>
                   <p className="mt-1 text-xs text-muted-foreground">{item.company_name || item.organisation || "Organisation"} · {[item.city, item.country].filter(Boolean).join(", ") || "Africa"}</p>
                   <p className="mt-2 text-xs text-muted-foreground">{item.work_mode || item.type || item.opportunity_type || item.category || "Opportunity"}{item.deadline_date ? " · Deadline " + new Date(item.deadline_date).toLocaleDateString() : ""}</p>
-                  {item.verified && <p className="mt-2 text-[11px] font-medium text-primary">Verified source</p>}
+                  {item.verified && <p className="mt-2 text-[11px] font-medium text-primary">{item.source ? "Source-checked listing" : "Reviewed source"}</p>}
                   {(item.apply_url || item.source_url) && <a href={item.apply_url || item.source_url || "#"} target="_blank" rel="noreferrer" className={externalLink + " mt-3"}>View opportunity <ArrowUpRight className="h-3.5 w-3.5" /></a>}
                 </article>
               ))}
