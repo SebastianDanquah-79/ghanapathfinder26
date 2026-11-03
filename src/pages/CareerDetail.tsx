@@ -6,8 +6,7 @@ import Seo, { breadcrumbLd } from "@/components/Seo";
 import SaveButton from "@/components/SaveButton";
 import CareerPathway, { type PathwayStep } from "@/components/CareerPathway";
 import SkillsMap from "@/components/SkillsMap";
-import EmployerMatches from "@/components/EmployerMatches";
-import CareerOpportunityRecommendations from "@/components/CareerOpportunityRecommendations";
+import CareerIntelligenceAdvisor from "@/components/CareerIntelligenceAdvisor";
 
 import { careerBySlug, careerSlug } from "@/data/careers";
 import { careerPathByMajor } from "@/data/careerPaths";
@@ -243,13 +242,7 @@ const CareerDetail = () => {
 
               <SkillsMap major={career.major} />
 
-              <EmployerMatches major={career.major} />
-              <div className="mt-6">
-                <CareerOpportunityRecommendations
-                  career={path?.career_name ?? career.major}
-                  programme={path?.recommended_programmes[0] ?? ""}
-                />
-              </div>
+              <CareerIntelligenceAdvisor initialGoal={path?.career_name ?? career.major} />
 
             </>
           )}
