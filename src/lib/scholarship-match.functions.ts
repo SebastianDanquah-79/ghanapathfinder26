@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
-import { generateText } from "ai";
+import { generateText, Output } from "ai";
+import { z } from "zod";
 import { createOpenAIResponsesModel } from "@/lib/openai.server";
 
 type MatchInput = {
@@ -18,15 +19,16 @@ export type ScholarshipMatchResult = {
   summary: string;
 };
 
-function parseJsonObject(value: string): unknown {
-  const cleaned = value
-    .trim()
-    .replace(/^```(?:json)?\s*/i, "")
-    .replace(/\s*```$/i, "")
-    .trim();
-  return JSON.parse(cleaned);
-}
-
+const scholarshipMatchOutputSchema = z.object({
+  matches: z.array(z.object({
+    name: z.string(),
+    score: z.number().min(0).max(100),
+    why: z.string(),
+    gaps: z.array(z.string()).max(6),
+    nextStep: z.string(),
+  })).max(6),
+  summary: z.string(),
+});
 export const scholarshipMatch = createServerFn({ method: "POST" })
   .inputValidator((input: unknown): MatchInput => {
     const value = input as Partial<MatchInput> | null;
@@ -72,12 +74,14 @@ Return ONLY a JSON object with this shape:
     try {
       const result = await generateText({
         model: createOpenAIResponsesModel(),
+        output: Output.object({ schema: scholarshipMatchOutputSchema }),
         system: "You are a precise scholarship advisor for GhanaPathFinder. Analyse only the supplied records. Return valid JSON without Markdown fences.",
         prompt,
         maxOutputTokens: 1400,
       });
 
-      const parsed = parseJsonObject(result.text) as Partial<ScholarshipMatchResult>;
+      const parsed = result.output;
+      if (!parsed) throw new Error("Scholarship matching did not return a complete structured result.");
       const allowedNames = new Set(
         scholarships.map((item) => String(item.name ?? "")).filter(Boolean),
       );
