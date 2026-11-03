@@ -9,7 +9,6 @@ import {
   CheckCircle2,
   GraduationCap,
   Globe,
-  Loader2,
   Rocket,
   Search,
   Sparkles,
@@ -148,13 +147,6 @@ export default function RoleGateway() {
     };
   }, [loading, user, navigate]);
 
-  if (loading) {
-    return (
-      <div className="grid min-h-dvh place-items-center bg-background">
-        <Loader2 className="h-6 w-6 animate-spin text-primary" />
-      </div>
-    );
-  }
 
   async function chooseRole(role: Role) {
     setChoosing(role);
