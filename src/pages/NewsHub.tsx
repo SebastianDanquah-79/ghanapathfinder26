@@ -111,15 +111,20 @@ function StoryLink({ article, label = "Read full story" }: { article: Article; l
   );
 }
 
+type NewsHubMode = "stories" | "africa" | "daily" | "global";
+
 export default function NewsHub({
   title = "Africa Now",
   subtitle = "Breaking developments, daily headlines and reporting from sources across Ghana and Africa.",
+  mode = "stories",
 }: {
   title?: string;
   subtitle?: string;
+  mode?: NewsHubMode;
 }) {
   const [articles, setArticles] = useState<Article[]>([]);
   const [globalArticles, setGlobalArticles] = useState<Article[]>([]);
+  const [sectionArticles, setSectionArticles] = useState<Article[]>([]);
   const [category, setCategory] = useState("All");
   const [ghanaOnly, setGhanaOnly] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -130,20 +135,47 @@ export default function NewsHub({
   const lastUpdatedAt = useRef(0);
   const realtimeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const loadHighlights = useCallback(async (targetGhanaOnly = ghanaOnly) => {
+  const getNewsScope = (targetGhanaOnly: boolean) => {
+    if (targetGhanaOnly) return "GH";
+    if (mode === "africa" || mode === "daily") return "AFRICA";
+    if (mode === "global") return "GLOBAL";
+    return null;
+  };
+
+  const getPublishedAfter = () =>
+    mode === "daily" ? new Date(Date.now() - 24 * HOUR).toISOString() : null;
+
+  const loadHighlights = useCallback(async (
+    targetCategory = category,
+    targetGhanaOnly = ghanaOnly,
+  ) => {
     try {
-      const { data, error } = await newsDb.rpc("gpf_news_feed", {
-        p_category: "All",
-        p_country_code: targetGhanaOnly ? "GH" : null,
-        // Use a wider pool for editorial highlights; the visible category feed remains paginated.
-        p_limit: 200,
-        p_offset: 0,
-      });
-      if (!error) setGlobalArticles(Array.isArray(data) ? data as Article[] : []);
+      const countryCode = getNewsScope(targetGhanaOnly);
+      const publishedAfter = getPublishedAfter();
+      const requests = await Promise.all([
+        newsDb.rpc("gpf_news_feed_v2", {
+          p_category: "All",
+          p_country_code: countryCode,
+          p_published_after: publishedAfter,
+          p_limit: 200,
+          p_offset: 0,
+        }),
+        targetCategory === "All"
+          ? Promise.resolve({ data: [], error: null })
+          : newsDb.rpc("gpf_news_feed_v2", {
+              p_category: targetCategory,
+              p_country_code: countryCode,
+              p_published_after: publishedAfter,
+              p_limit: 160,
+              p_offset: 0,
+            }),
+      ]);
+      if (!requests[0].error) setGlobalArticles(Array.isArray(requests[0].data) ? requests[0].data as Article[] : []);
+      if (!requests[1].error) setSectionArticles(Array.isArray(requests[1].data) ? requests[1].data as Article[] : []);
     } catch {
-      // Keep the last successful daily highlights visible if a refresh fails.
+      // Preserve the last successful headlines if a refresh fails.
     }
-  }, [ghanaOnly]);
+  }, [category, ghanaOnly, mode]);
 
   const load = useCallback(async (
     replace = true,
@@ -153,12 +185,13 @@ export default function NewsHub({
   ) => {
     if (replace) {
       setRefreshing(true);
-      void loadHighlights(targetGhanaOnly);
+      void loadHighlights(targetCategory, targetGhanaOnly);
     }
     try {
-      const { data, error } = await newsDb.rpc("gpf_news_feed", {
+      const { data, error } = await newsDb.rpc("gpf_news_feed_v2", {
         p_category: targetCategory,
-        p_country_code: targetGhanaOnly ? "GH" : null,
+        p_country_code: getNewsScope(targetGhanaOnly),
+        p_published_after: getPublishedAfter(),
         p_limit: PAGE_SIZE,
         p_offset: requestedOffset,
       });
@@ -179,7 +212,7 @@ export default function NewsHub({
       setLoading(false);
       setRefreshing(false);
     }
-  }, [category, ghanaOnly, loadHighlights]);
+  }, [category, ghanaOnly, loadHighlights, mode]);
 
   useEffect(() => {
     setArticles([]);
