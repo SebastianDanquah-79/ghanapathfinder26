@@ -87,7 +87,7 @@ const Compare = () => {
     <div className="min-h-screen bg-background px-4 sm:px-8 lg:px-12 pt-20 pb-12">
       <Seo
         title="Compare Universities in Ghana Side by Side | GhanaPathFinder"
-        description="Compare up to three accredited Ghanaian universities on location, type, tuition, admission aggregate and top programmes using verified GTEC data."
+        description="Compare up to three Ghanaian universities and tertiary institutions on location, type, tuition, admission aggregate and programmes using source-linked directory data."
         path="/compare"
       />
       <Navbar />
@@ -101,7 +101,7 @@ const Compare = () => {
           <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground">Compare universities</h1>
         </div>
         <p className="text-sm text-muted-foreground mb-4">
-          Search the accredited institution register and pick up to three schools to see them side by side.
+          Search the university and tertiary-institution directory and pick up to three schools to compare side by side.
         </p>
 
         <div className="relative mb-4 max-w-md">
