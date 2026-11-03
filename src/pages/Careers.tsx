@@ -9,6 +9,7 @@ import { careerPathByMajor } from "@/data/careerPaths";
 import { useCareerSuggestions } from "@/hooks/useCareerSuggestions";
 import { useAuth } from "@/hooks/useAuth";
 import { occupationCatalog, occupationSourceUrl } from "@/data/occupationCatalog";
+import CareerIntelligenceAdvisor from "@/components/CareerIntelligenceAdvisor";
 
 const careers = Object.values(mockCareerData).flatMap((career) =>
   career.roles.map((careerName) => ({ ...career, careerName })),
@@ -73,6 +74,10 @@ const Careers = () => {
               training routes into it, the skills and licences it needs, and where it can lead over
               time. Open one to see its full path, or build a route to any job you name.
             </p>
+          </div>
+
+          <div className="mb-8">
+            <CareerIntelligenceAdvisor />
           </div>
 
           <section className="mb-7">
