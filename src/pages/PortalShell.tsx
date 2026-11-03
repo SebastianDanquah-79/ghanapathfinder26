@@ -165,7 +165,7 @@ export default function PortalShell(props: {role: PortalRole; children?: ReactNo
               <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">{currentMeta.title}</h1>
               <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">{currentMeta.description}</p>
             </div>
-            <button type="button" onClick={function(){navigate("/?switchRole=1");}} className="inline-flex min-h-10 items-center justify-center rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium transition-colors hover:border-primary">Change portal</button>
+            <button type="button" onClick={function(){navigate("/");}} className="inline-flex min-h-10 items-center justify-center rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium transition-colors hover:border-primary">Change portal</button>
           </div>
         </header>
 
