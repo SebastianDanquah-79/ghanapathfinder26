@@ -31,11 +31,9 @@ const useUniversitySearch = (search: string) =>
   useQuery({
     queryKey: ["compare_universities", search],
     queryFn: async () => {
-      let q = supabase.from("universities").select(FIELDS).order("name").limit(60);
+      let q = supabase.from("universities").select(FIELDS).order("name").limit(500);
       const term = search.trim();
       if (term) q = q.or(`name.ilike.%${term}%,short_name.ilike.%${term}%,location.ilike.%${term}%`);
-      // With no search, surface the institutions that have full comparable profiles.
-      else q = q.not("campus_vibe", "is", null);
       const { data, error } = await q;
       if (error) throw error;
       return (data ?? []) as unknown as UniversityRow[];
