@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { ArrowRight } from "@/lib/icons";
 import { toast } from "sonner";
 import { useNavigate } from "@/lib/router-compat";
 import { supabase } from "@/integrations/supabase/client";
@@ -373,20 +374,18 @@ const PostInsightDialog = ({ open, onClose, universityId, editing }: Props) => {
         <div className="z-20 shrink-0 border-t border-border bg-card px-4 py-3 pb-[max(env(safe-area-inset-bottom),0.75rem)] shadow-[0_-8px_20px_rgba(0,0,0,0.08)]">
           <div className="flex items-center gap-3">
             <span className="shrink-0 text-[11px] text-muted-foreground">{body.trim().length}/20 min</span>
+            <span className="ml-auto text-xs text-muted-foreground" role="status" aria-live="polite">
+              {uploading ? "Uploading…" : busy ? "Sending…" : editing ? "Save changes" : "Send post"}
+            </span>
             <button
               type="button"
               onClick={() => void submit()}
-              disabled={busy}
+              disabled={!canPost || busy}
               aria-label={editing ? "Save post changes" : "Send post"}
-              className="min-h-12 flex-1 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+              title={editing ? "Save post changes" : "Send post"}
+              className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {uploading
-                ? "Uploading…"
-                : busy
-                  ? "Saving…"
-                  : editing
-                    ? "Save changes"
-                    : "Send post"}
+              <ArrowRight className="h-5 w-5" />
             </button>
           </div>
         </div>
