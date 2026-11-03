@@ -260,6 +260,13 @@ export default function NewsHub({
       .sort((a, b) => headlineScore(b) - headlineScore(a) || articleTime(b) - articleTime(a))[0] ?? null;
   }, [globalArticles]);
 
+  const categoryBreakingStory = useMemo(() => {
+    if (category === "All") return null;
+    return sectionArticles
+      .filter((article) => article.id !== breakingStory?.id && isBreaking(article))
+      .sort((a, b) => headlineScore(b) - headlineScore(a) || articleTime(b) - articleTime(a))[0] ?? null;
+  }, [sectionArticles, category, breakingStory]);
+
   const bigStoryToday = useMemo(() => {
     const nonBreaking = globalArticles.filter((item) => item.id !== breakingStory?.id);
     const fresh = nonBreaking.filter((item) => {
@@ -279,7 +286,11 @@ export default function NewsHub({
     <div className="min-h-dvh bg-background pb-24 pt-20">
       <Navbar />
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <Seo title={title + " | GhanaPathFinder"} description={subtitle} path="/news" />
+        <Seo
+          title={title + " | GhanaPathFinder"}
+          description={subtitle}
+          path={mode === "africa" ? "/africa-now" : mode === "daily" ? "/daily-drop" : mode === "global" ? "/global-news" : "/stories"}
+        />
 
         <header className="mb-6 border-b border-border pb-5">
           <p className="text-sm font-semibold text-primary">GhanaPathFinder · Newsroom</p>
@@ -322,15 +333,17 @@ export default function NewsHub({
                 {item}
               </button>
             ))}
-            <button
-              type="button"
-              aria-pressed={ghanaOnly}
-              onClick={() => setGhanaOnly((value) => !value)}
-              className={"shrink-0 border px-3.5 py-2 text-xs font-semibold " +
-                (ghanaOnly ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card")}
-            >
-              Ghana focus
-            </button>
+            {mode === "stories" && (
+              <button
+                type="button"
+                aria-pressed={ghanaOnly}
+                onClick={() => setGhanaOnly((value) => !value)}
+                className={"shrink-0 border px-3.5 py-2 text-xs font-semibold " +
+                  (ghanaOnly ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card")}
+              >
+                Ghana focus
+              </button>
+            )}
           </div>
         </nav>
 
@@ -349,6 +362,24 @@ export default function NewsHub({
                 <h2 className="mt-3 text-2xl font-extrabold leading-tight sm:text-3xl">{breakingStory.title}</h2>
                 {breakingStory.excerpt && <p className="mt-3 text-sm leading-6 text-white/80">{breakingStory.excerpt}</p>}
                 <StoryLink article={breakingStory} label="Follow breaking story" />
+              </div>
+            </div>
+          </section>
+        )}
+
+        {categoryBreakingStory && (
+          <section aria-label={"Breaking news in " + category} className="mb-6 overflow-hidden border border-border bg-card shadow-sm">
+            <div className="flex items-center gap-2 border-b border-border px-4 py-2.5 text-xs font-bold uppercase tracking-[0.14em]">
+              <Flame className="h-4 w-4 text-primary" /> Breaking in {category}
+              <span className="ml-auto font-medium normal-case tracking-normal text-muted-foreground">{ageLabel(categoryBreakingStory)}</span>
+            </div>
+            <div className="grid md:grid-cols-[0.8fr_1.2fr]">
+              <div className="min-h-40 md:min-h-56"><StoryImage article={categoryBreakingStory} /></div>
+              <div className="flex flex-col justify-center p-5">
+                <SourceLine article={categoryBreakingStory} />
+                <h2 className="mt-2 text-xl font-bold leading-tight">{categoryBreakingStory.title}</h2>
+                {categoryBreakingStory.excerpt && <p className="mt-2 text-sm leading-6 text-muted-foreground">{categoryBreakingStory.excerpt}</p>}
+                <StoryLink article={categoryBreakingStory} label={"Follow " + category + " update"} />
               </div>
             </div>
           </section>
