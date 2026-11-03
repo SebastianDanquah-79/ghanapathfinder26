@@ -7,6 +7,7 @@ import {
   evaluateReference,
   type AdmissionReference,
   type ReferenceMatch,
+  type SubjectResult,
 } from "@/lib/admissionEngine";
 
 /**
@@ -40,6 +41,7 @@ export const useAggregateRecommendations = (
   aggregate: number | null,
   search = "",
   enabled = true,
+  results: SubjectResult[] = [],
 ) => {
   const { data: references = [], isLoading, error } = useAdmissionReference(
     search,
@@ -51,9 +53,9 @@ export const useAggregateRecommendations = (
   const matches = useMemo<ReferenceMatch[]>(() => {
     if (aggregate == null) return [];
     return references
-      .map((r) => evaluateReference(r, aggregate))
+      .map((r) => evaluateReference(r, aggregate, results))
       .sort((a, b) => a.rank - b.rank || (b.confidence ?? -1) - (a.confidence ?? -1));
-  }, [references, aggregate]);
+  }, [references, aggregate, results]);
 
   return { matches, isLoading, error };
 };

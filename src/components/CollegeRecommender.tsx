@@ -10,6 +10,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { CATEGORY_STYLES, diversify, formatVerifiedDate } from "@/lib/admissionEngine";
 import { buildAlternativePathways, pathwaySignal, type WASSCEGrade } from "@/lib/pathwayEngine";
 import { track } from "@/lib/analytics";
+import CareerOpportunityRecommendations from "@/components/CareerOpportunityRecommendations";
 
 const preferences = ["No Preference", "Public Only", "Private Only"] as const;
 const grades: Array<WASSCEGrade | ""> = ["", "A1", "B2", "B3", "C4", "C5", "C6", "D7", "E8", "F9"];
@@ -26,10 +27,23 @@ const CollegeRecommender = () => {
     science: "" as WASSCEGrade | "",
   });
   const [submitted, setSubmitted] = useState<typeof form | null>(null);
+  const submittedSubjects = useMemo(
+    () => submitted
+      ? [
+          { subject: "English Language", grade: submitted.english },
+          { subject: "Core Mathematics", grade: submitted.mathematics },
+          { subject: "Integrated Science", grade: submitted.science },
+        ].filter((item): item is { subject: string; grade: WASSCEGrade } => item.grade !== "")
+      : [],
+    [submitted],
+  );
+  const [aiAdvice, setAiAdvice] = useState<{ summary: string; strongestOption: string; priorities: string[]; nextSteps: string[]; caution: string } | null>(null);
+  const [aiAdviceLoading, setAiAdviceLoading] = useState(false);
+  const [aiAdviceError, setAiAdviceError] = useState<string | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
 
   const aggregate = submitted && Number.isFinite(Number(submitted.aggregate)) ? Number(submitted.aggregate) : null;
-  const { matches, isLoading } = useAggregateRecommendations(aggregate, submitted?.major ?? "", !!submitted);
+  const { matches, isLoading, error: recommendationError } = useAggregateRecommendations(aggregate, submitted?.major ?? "", !!submitted, submittedSubjects);
 
   const ranked = useMemo(() => {
     if (!submitted) return [];
@@ -59,6 +73,74 @@ const CollegeRecommender = () => {
   useEffect(() => {
     if (submitted && !isLoading) void track("recommendation_run");
   }, [submitted, isLoading]);
+
+  useEffect(() => {
+    if (!submitted || isLoading) return;
+
+    if (ranked.length === 0) {
+      setAiAdvice(null);
+      setAiAdviceError(null);
+      setAiAdviceLoading(false);
+      return;
+    }
+
+    const controller = new AbortController();
+    setAiAdvice(null);
+    setAiAdviceError(null);
+    setAiAdviceLoading(true);
+
+    void fetch("/api/admission-recommendation", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      signal: controller.signal,
+      body: JSON.stringify({
+        profile: {
+          studentName: submitted.name,
+          major: submitted.major,
+          aggregate: Number(submitted.aggregate),
+          preference: submitted.preference,
+          english: submitted.english,
+          mathematics: submitted.mathematics,
+          science: submitted.science,
+        },
+        matches: ranked.slice(0, 6).map(({ reference, category, confidence, why, benchmarkKind, benchmarkLabel, gaps }) => ({
+          programme: reference.programme_name,
+          university: reference.university_name,
+          category,
+          confidence,
+          benchmarkKind,
+          benchmarkLabel,
+          explanation: why,
+          gaps,
+        })),
+      }),
+    })
+      .then(async (response) => {
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(typeof payload?.error === "string" ? payload.error : "AI guidance is unavailable.");
+        return payload;
+      })
+      .then((payload) => {
+        if (controller.signal.aborted) return;
+        setAiAdvice({
+          summary: String(payload.summary ?? ""),
+          strongestOption: String(payload.strongestOption ?? ""),
+          priorities: Array.isArray(payload.priorities) ? payload.priorities.map(String).slice(0, 3) : [],
+          nextSteps: Array.isArray(payload.nextSteps) ? payload.nextSteps.map(String).slice(0, 3) : [],
+          caution: String(payload.caution ?? ""),
+        });
+      })
+      .catch((error) => {
+        if (controller.signal.aborted) return;
+        console.error("Admission recommendation AI guidance failed", error);
+        setAiAdviceError("AI guidance is temporarily unavailable. Your evidence-based rankings remain available below.");
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setAiAdviceLoading(false);
+      });
+
+    return () => controller.abort();
+  }, [submitted, isLoading, ranked]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -175,9 +257,41 @@ const CollegeRecommender = () => {
               </div>
             )}
 
+            {(aiAdviceLoading || aiAdvice || aiAdviceError) && (
+              <section className="bg-glass rounded-2xl border border-primary/20 p-5 sm:p-6" aria-live="polite">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="h-4 w-4 text-primary" />
+                  <h3 className="font-semibold text-foreground">AI admissions guidance</h3>
+                  {aiAdviceLoading && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />}
+                </div>
+                {aiAdviceLoading && <p className="mt-3 text-sm text-muted-foreground">Reviewing your supplied profile and the ranked programme evidence…</p>}
+                {aiAdviceError && <p className="mt-3 text-sm text-muted-foreground">{aiAdviceError}</p>}
+                {aiAdvice && (
+                  <>
+                    <p className="mt-3 text-sm leading-6 text-foreground">{aiAdvice.summary}</p>
+                    {aiAdvice.strongestOption && <p className="mt-3 text-sm"><strong>Option to examine first:</strong> {aiAdvice.strongestOption}</p>}
+                    {!!aiAdvice.priorities.length && (
+                      <div className="mt-4">
+                        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Priorities</p>
+                        <ul className="mt-2 space-y-1.5">{aiAdvice.priorities.map((item, index) => <li key={index} className="flex gap-2 text-sm text-muted-foreground"><span className="text-primary">{index + 1}.</span>{item}</li>)}</ul>
+                      </div>
+                    )}
+                    {!!aiAdvice.nextSteps.length && (
+                      <div className="mt-4">
+                        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Next steps</p>
+                        <ul className="mt-2 space-y-1.5">{aiAdvice.nextSteps.map((item, index) => <li key={index} className="flex gap-2 text-sm text-muted-foreground"><span className="text-primary">•</span>{item}</li>)}</ul>
+                      </div>
+                    )}
+                    {aiAdvice.caution && <p className="mt-4 border-t border-border pt-3 text-xs text-muted-foreground">{aiAdvice.caution}</p>}
+                  </>
+                )}
+                <p className="mt-4 text-[11px] text-muted-foreground">AI guidance explains the supplied results. It does not change match scores or replace official university requirements.</p>
+              </section>
+            )}
+
             <div className="bg-glass rounded-2xl p-5 sm:p-6">
               <h3 className="font-display font-semibold text-lg text-foreground mb-1">Direct-entry matches for {submitted.name}</h3>
-              <p className="text-xs text-muted-foreground mb-5">Aggregate {submitted.aggregate} · ranked against published cut-offs and evidence-based estimated ranges.</p>
+              <p className="text-xs text-muted-foreground mb-5">Aggregate {submitted.aggregate} · scored using available programme and institution evidence. Estimated fit is not an admission probability.</p>
 
               {ranked.length === 0 ? (
                 <div className="rounded-xl border border-border bg-background/40 p-4">
@@ -190,7 +304,7 @@ const CollegeRecommender = () => {
                     <div key={r.programme_id} className="rounded-xl border border-border bg-background/40 p-4">
                       <div className="flex flex-wrap items-start justify-between gap-2">
                         <div className="min-w-0"><p className="font-medium text-foreground text-sm">{r.programme_name}</p><p className="text-xs text-muted-foreground">{r.university_name} · {r.university_category} · {r.region ?? "Ghana"}</p></div>
-                        <span className={`shrink-0 px-2.5 py-1 rounded-full border text-xs font-medium ${CATEGORY_STYLES[category]}`}>{category}{confidence != null ? ` · ${confidence}%` : ""}</span>
+                        <span className={`shrink-0 px-2.5 py-1 rounded-full border text-xs font-medium ${CATEGORY_STYLES[category]}`}>{category}{confidence != null ? ` · ${confidence}% estimated fit` : ""}</span>
                       </div>
                       <dl className="grid grid-cols-2 gap-x-4 gap-y-1 mt-3 text-xs"><div><dt className="text-muted-foreground">Your aggregate</dt><dd className="text-foreground font-semibold">{submitted.aggregate}</dd></div><div><dt className="text-muted-foreground">{benchmarkKind}</dt><dd className="text-foreground font-semibold">{benchmarkLabel}</dd></div></dl>
                       <p className="text-xs text-muted-foreground mt-2">{why}</p>
@@ -210,6 +324,19 @@ const CollegeRecommender = () => {
               {ranked.length > 0 && <div className="mt-6 pt-6 border-t border-border"><ShareButtons studentName={submitted.name} resultRef={resultRef} /></div>}
             </div>
           </motion.div>
+        )}
+        {submitted && recommendationError && (
+          <p className="mt-4 text-sm text-destructive" role="alert">
+            We could not load the programme reference data. Please retry or clear the search filter.
+          </p>
+        )}
+        {submitted && (
+          <div className="mt-8">
+            <CareerOpportunityRecommendations
+              career={submitted.major || "Career exploration"}
+              programme={ranked[0]?.reference.programme_name || ""}
+            />
+          </div>
         )}
       </div>
     </section>

@@ -440,20 +440,34 @@ export interface AdmissionReference {
   estimate_evidence: string | null;
   estimate_confidence: string | null;
   entry_requirements: string | null;
+  relevant_subjects?: string[] | null;
+  university_established_year?: number | null;
+  university_student_count?: number | null;
+  university_top_programmes?: string[] | null;
+  university_admission_aggregate?: string | null;
+  university_admission_info?: string | null;
+  university_accreditation_status?: string | null;
+  institution_gtec_status?: string | null;
+  institution_type?: string | null;
 }
 
 export interface ReferenceMatch {
   reference: AdmissionReference;
   category: MatchCategory;
+  /** Estimated academic/institutional fit score (0-100), not an admission probability. */
   confidence: number | null;
-  /** e.g. "Official cut-off: 7" or "Estimated range: 14–19" */
   benchmarkLabel: string;
-  /** "Officially published" | "Estimated , not officially published" | "Official cut-off unavailable" */
   benchmarkKind: string;
   why: string;
   requirementChecks: RequirementCheck[];
   gaps: string[];
   rank: number;
+  evidenceLevel: "strong" | "moderate" | "limited";
+  evidenceBreakdown: {
+    academic: number | null;
+    subject: number | null;
+    institution: number | null;
+  };
 }
 
 const RANK: Record<MatchCategory, number> = {
@@ -470,10 +484,87 @@ const RANK: Record<MatchCategory, number> = {
 
 export const categoryRank = (c: MatchCategory) => RANK[c] ?? 9;
 
+const clampScore = (value: number) => Math.max(0, Math.min(100, Math.round(value)));
+
+const GRADE_ACHIEVEMENT: Record<string, number> = {
+  A1: 100,
+  B2: 94,
+  B3: 88,
+  C4: 80,
+  C5: 74,
+  C6: 68,
+  D7: 45,
+  E8: 20,
+  F9: 0,
+};
+
+const scoreGradeEvidence = (reference: AdmissionReference, results: SubjectResult[]) => {
+  const subjects = reference.relevant_subjects ?? [];
+  const relevantGrades = subjects
+    .map((subject) => findGrade(results, subject))
+    .filter((value): value is SubjectResult => value !== null);
+
+  // If programme-specific subject mappings are not yet in the catalogue,
+  // use the student's recorded WASSCE grades as a general achievement signal.
+  const grades = relevantGrades.length > 0 ? relevantGrades : results;
+  if (grades.length === 0) return null;
+
+  return clampScore(
+    grades.reduce((sum, item) => sum + (GRADE_ACHIEVEMENT[item.grade] ?? 0), 0) / grades.length,
+  );
+};
+
+const parseStoredAggregate = (value: string | null | undefined): number | null => {
+  if (!value) return null;
+  const match = value.match(/\b([6-9]|[12]\d|3[0-6])\b/);
+  if (!match) return null;
+  const parsed = Number(match[1]);
+  return Number.isFinite(parsed) ? parsed : null;
+};
+
+const getInstitutionProfileScore = (reference: AdmissionReference, yearNow: number) => {
+  const signals: number[] = [];
+  const founded = reference.university_established_year;
+  if (founded && founded >= 1800 && founded <= yearNow) {
+    const years = yearNow - founded;
+    // Historical presence is a modest institutional-context signal, not proof of quality.
+    signals.push(clampScore((years / 60) * 100));
+  }
+
+  const achievements = reference.university_top_programmes ?? [];
+  if (achievements.length > 0) {
+    const target = normalise(reference.programme_name);
+    const field = normalise(reference.field ?? "");
+    const aligned = achievements.some((item) => {
+      const value = normalise(item);
+      return value && (value.includes(target) || target.includes(value) || (field && value.includes(field)));
+    });
+    signals.push(aligned ? 100 : 60);
+  }
+
+  if (reference.university_student_count != null && reference.university_student_count > 0) {
+    // Enrolment is treated only as evidence of a populated institutional profile,
+    // not as a direct measure of teaching quality or admission selectivity.
+    signals.push(70);
+  }
+
+  const accreditation = [
+    reference.institution_gtec_status,
+    reference.university_accreditation_status,
+  ].filter(Boolean).join(" ").toLowerCase();
+  if (/active|accredited|chartered/.test(accreditation)) signals.push(90);
+  else if (/unverified|needs verification/.test(accreditation)) signals.push(50);
+
+  return signals.length
+    ? { score: clampScore(signals.reduce((sum, item) => sum + item, 0) / signals.length), signals: signals.length }
+    : null;
+};
+
 /**
- * Score a student's aggregate against one programme, using an official cut-off
- * when one exists and an evidence-based estimated range otherwise.
- * Career goals, interests and chosen major never raise the score.
+ * Score the student's academic alignment against programme and institution evidence.
+ * The score is an estimate for comparing options, not the probability of receiving an offer.
+ * Priority order: official cut-off, programme estimate, historical institution benchmark,
+ * then available WASSCE and institution-profile signals.
  */
 export function evaluateReference(
   reference: AdmissionReference,
@@ -482,69 +573,91 @@ export function evaluateReference(
 ): ReferenceMatch {
   const requirementChecks = checkSubjectRequirements(reference.subject_requirements, results);
   const gaps: string[] = [];
+  const yearNow = new Date().getFullYear();
 
+  const official = reference.official_cutoff;
   const low = reference.estimate_low;
   const high = reference.estimate_high;
-  const official = reference.official_cutoff;
+  const historicalAggregate = parseStoredAggregate(reference.university_admission_aggregate);
 
-  const benchmarkKind =
-    reference.basis === "official"
-      ? "Officially published"
-      : reference.basis === "estimated"
-        ? "Estimated , not officially published"
-        : "Official cut-off unavailable";
-
-  const benchmarkLabel =
-    reference.basis === "official"
-      ? `Official cut-off: ${official}`
-      : reference.basis === "estimated"
-        ? `Estimated range: ${low}–${high}`
-        : "Official cut-off unavailable";
+  const subjectScore = scoreGradeEvidence(reference, results);
+  const institutionProfile = getInstitutionProfileScore(reference, yearNow);
+  const aggregateScore =
+    aggregate != null && Number.isFinite(aggregate) && aggregate >= 6
+      ? clampScore(100 - ((aggregate - 6) / 30) * 65)
+      : null;
 
   const out = (
     category: MatchCategory,
     confidence: number | null,
     why: string,
+    benchmarkKind: string,
+    benchmarkLabel: string,
+    evidenceLevel: ReferenceMatch["evidenceLevel"],
+    evidenceBreakdown: ReferenceMatch["evidenceBreakdown"],
   ): ReferenceMatch => ({
     reference,
     category,
-    confidence: confidence == null ? null : Math.max(1, Math.min(92, Math.round(confidence))),
+    confidence: confidence == null ? null : clampScore(confidence),
     benchmarkLabel,
     benchmarkKind,
     why,
     requirementChecks,
     gaps,
     rank: categoryRank(category),
+    evidenceLevel,
+    evidenceBreakdown,
   });
 
-  if (aggregate == null || !Number.isFinite(aggregate))
-    return out("Insufficient Data", null, "Enter your WASSCE results to be scored.");
-
-  if (reference.basis === "none")
+  if (aggregateScore == null) {
     return out(
       "Insufficient Data",
       null,
-      "This institution has not published a cut-off and there is not enough evidence for a fair estimate, so GhanaPathFinder will not invent one.",
+      "Enter your WASSCE aggregate or subject grades to receive an academic-fit estimate.",
+      "Estimated academic fit",
+      "More WASSCE data required",
+      "limited",
+      { academic: null, subject: subjectScore, institution: institutionProfile?.score ?? null },
     );
-
-  const failedReq = requirementChecks.filter((c) => c.status === "failed");
-  if (failedReq.length) {
-    failedReq.forEach((c) => gaps.push(c.note));
-    return out("Not Eligible", 0, "You do not meet a required subject grade for this programme.");
   }
+
+  const failedReq = requirementChecks.filter((item) => item.status === "failed");
+  if (failedReq.length) {
+    failedReq.forEach((item) => gaps.push(item.note));
+    return out(
+      "Not Eligible",
+      0,
+      "One or more recorded subject grades do not meet the supplied programme requirement. Confirm the requirement with the institution.",
+      reference.basis === "official" ? "Official requirement check" : "Programme requirement check",
+      "Recorded subject requirement not met",
+      "strong",
+      { academic: aggregateScore, subject: subjectScore, institution: institutionProfile?.score ?? null },
+    );
+  }
+
   requirementChecks
-    .filter((c) => c.status === "unknown" || c.status === "manual")
-    .forEach((c) => gaps.push(c.note));
+    .filter((item) => item.status === "unknown" || item.status === "manual")
+    .forEach((item) => gaps.push(item.note));
 
-  if (aggregate > 36)
-    return out("Not Eligible", 0, "An aggregate above 36 is below the minimum for tertiary entry.");
+  if (aggregate > 36) {
+    return out(
+      "Not Eligible",
+      0,
+      "The supplied aggregate is above the general WASSCE degree-entry maximum used by this comparison. Check the institution's own route and qualification rules.",
+      "Academic eligibility check",
+      "Aggregate outside general degree-entry range",
+      "moderate",
+      { academic: aggregateScore, subject: subjectScore, institution: institutionProfile?.score ?? null },
+    );
+  }
 
-  let category: MatchCategory;
-  let confidence: number;
-  let why: string;
-
+  // Official published programme cut-offs remain the strongest admission benchmark.
   if (reference.basis === "official" && official != null) {
     const margin = official - aggregate;
+    let category: MatchCategory;
+    let confidence: number;
+    let why: string;
+
     if (margin >= 3) {
       category = "Strong Match";
       confidence = Math.min(90, 80 + margin);
@@ -556,7 +669,7 @@ export function evaluateReference(
     } else if (margin >= -1) {
       category = "Possible";
       confidence = 50 + margin * 6;
-      why = `Your aggregate of ${aggregate} sits on the published cut-off of ${official}, and cut-offs move each year.`;
+      why = `Your aggregate of ${aggregate} sits on the published cut-off of ${official}, and cut-offs can change each year.`;
     } else if (margin >= -4) {
       category = "Reach";
       confidence = 34 + margin * 4;
@@ -570,51 +683,150 @@ export function evaluateReference(
         "Not Eligible",
         0,
         `The published cut-off is ${official}; an aggregate of ${aggregate} is far outside it.`,
+        "Officially published",
+        `Official cut-off: ${official}`,
+        "strong",
+        { academic: aggregateScore, subject: subjectScore, institution: institutionProfile?.score ?? null },
       );
     }
-    if (official <= 10 && confidence > 78) confidence -= 6; // heavily contested programmes
-    if (reference.applicant_category === "Full-Fee Paying")
-      gaps.push("This is the full-fee-paying cut-off, which costs more.");
-  } else {
-    const lo = low ?? 36;
-    const hi = high ?? 36;
-    const mid = (lo + hi) / 2;
-    if (aggregate <= lo - 2) {
+
+    if (official <= 10 && confidence > 78) confidence -= 6;
+    if (reference.applicant_category === "Full-Fee Paying") gaps.push("This is the full-fee-paying cut-off; compare the total cost before applying.");
+
+    return out(
+      category,
+      confidence,
+      why,
+      "Officially published",
+      `Official cut-off: ${official}`,
+      "strong",
+      { academic: aggregateScore, subject: subjectScore, institution: institutionProfile?.score ?? null },
+    );
+  }
+
+  // Existing programme estimate, if present, is next in priority.
+  if (reference.basis === "estimated" && low != null && high != null) {
+    const mid = (low + high) / 2;
+    let category: MatchCategory;
+    let confidence: number;
+    let why: string;
+
+    if (aggregate <= low - 2) {
       category = "Strong Match";
-      confidence = Math.min(78, 68 + (lo - aggregate));
-      why = `Your aggregate of ${aggregate} is better than the whole estimated admission range of ${lo}–${hi}.`;
+      confidence = Math.min(78, 68 + (low - aggregate));
+      why = `Your aggregate of ${aggregate} is better than the whole recorded estimate range of ${low}–${high}.`;
     } else if (aggregate <= mid) {
       category = "Good Match";
       confidence = 64;
-      why = `Your aggregate of ${aggregate} falls inside the estimated admission range of ${lo}–${hi}.`;
-    } else if (aggregate <= hi) {
+      why = `Your aggregate of ${aggregate} falls inside the recorded estimate range of ${low}–${high}.`;
+    } else if (aggregate <= high) {
       category = "Possible";
       confidence = 50;
-      why = `Your aggregate of ${aggregate} is at the weaker end of the estimated admission range of ${lo}–${hi}.`;
-    } else if (aggregate <= hi + 3) {
+      why = `Your aggregate of ${aggregate} is at the weaker end of the recorded estimate range of ${low}–${high}.`;
+    } else if (aggregate <= high + 3) {
       category = "Reach";
       confidence = 30;
-      why = `Your aggregate of ${aggregate} is just outside the estimated admission range of ${lo}–${hi}.`;
-    } else if (aggregate <= hi + 8) {
+      why = `Your aggregate of ${aggregate} is just outside the recorded estimate range of ${low}–${high}.`;
+    } else if (aggregate <= high + 8) {
       category = "Low Match";
       confidence = 14;
-      why = `Your aggregate of ${aggregate} is outside the estimated admission range of ${lo}–${hi}.`;
+      why = `Your aggregate of ${aggregate} is outside the recorded estimate range of ${low}–${high}.`;
     } else {
-      return out(
-        "Not Eligible",
-        0,
-        `The estimated admission range is ${lo}–${hi}; an aggregate of ${aggregate} is far outside it.`,
-      );
+      category = "Not Eligible";
+      confidence = 0;
+      why = `The recorded estimate range is ${low}–${high}; your aggregate of ${aggregate} is well outside it.`;
     }
-    // Estimates are never as certain as published figures.
+
     confidence *= reference.estimate_confidence === "low" ? 0.85 : 0.95;
-    gaps.push("This range is an estimate, not an officially published cut-off. Confirm with the institution.");
+    gaps.push("The recorded range is an estimate, not an official cut-off. Confirm with the institution.");
+    return out(
+      category,
+      confidence,
+      why,
+      "Recorded programme estimate",
+      `Estimated range: ${low}–${high}`,
+      "moderate",
+      { academic: aggregateScore, subject: subjectScore, institution: institutionProfile?.score ?? null },
+    );
   }
 
-  if (requirementChecks.some((c) => c.status === "unknown" || c.status === "manual"))
-    confidence *= 0.85;
+  // If the university has a stored admission aggregate, use it as a weaker
+  // institutional-level reference. It is never presented as a programme cut-off.
+  if (historicalAggregate != null) {
+    const margin = historicalAggregate - aggregate;
+    const historicalFit = clampScore(50 + margin * 5);
+    const academic = subjectScore == null
+      ? aggregateScore
+      : clampScore(aggregateScore * 0.7 + subjectScore * 0.3);
+    const fit = clampScore(academic * 0.8 + historicalFit * 0.2);
+    gaps.push("This uses an institution-level admission aggregate, not a programme-specific cut-off.");
+    if (!institutionProfile) gaps.push("Institution heritage and programme-achievement fields are not populated in the current record.");
+    const category: MatchCategory = fit >= 80 ? "Strong Match" : fit >= 65 ? "Good Match" : fit >= 50 ? "Possible" : fit >= 35 ? "Reach" : "Low Match";
+    return out(
+      category,
+      fit,
+      `Your academic profile scores ${academic}% on the available WASSCE evidence. The institution record contains an aggregate reference of ${historicalAggregate}; this is a broad institutional signal, not a confirmed programme cut-off.`,
+      "Institution-recorded historical aggregate",
+      `Institution reference: ${historicalAggregate}`,
+      "moderate",
+      { academic, subject: subjectScore, institution: historicalFit },
+    );
+  }
 
-  return out(category, confidence, why);
+  // No programme cut-off or estimate: calculate an academic-fit score from
+  // the student's WASSCE aggregate and programme-specific subject achievement.
+  let academic = aggregateScore;
+  if (subjectScore != null) academic = clampScore(aggregateScore * 0.68 + subjectScore * 0.32);
+
+  // Use institutional legacy/achievement only where the university record
+  // actually contains it. Missing fields are omitted and called out, never guessed.
+  const institutionScore = institutionProfile?.score ?? null;
+  let fit = academic;
+  if (institutionScore != null) fit = clampScore(academic * 0.9 + institutionScore * 0.1);
+
+  const evidenceLevel: ReferenceMatch["evidenceLevel"] =
+    subjectScore != null && institutionScore != null ? "moderate" :
+    subjectScore != null || institutionScore != null ? "moderate" : "limited";
+
+  const reasons = [
+    `WASSCE aggregate ${aggregate} gives an academic baseline of ${aggregateScore}% on GhanaPathFinder's comparison scale.`,
+  ];
+  if (subjectScore != null) {
+    if (reference.relevant_subjects?.length) {
+      reasons.push("Your grades in the programme's recorded relevant subjects give a subject-achievement score of " + subjectScore + "%.");
+    } else {
+      reasons.push("Your recorded WASSCE subject grades give a general achievement score of " + subjectScore + "%; this is not yet programme-specific because subject mappings are missing from the catalogue.");
+    }
+  } else {
+    gaps.push("No subject-grade details were supplied, so the subject-achievement component could not be scored.");
+  }
+  if (historicalAggregate == null) gaps.push("No stored institutional admission aggregate or historical programme cut-off is available for this record.");
+  if (institutionProfile != null) {
+    reasons.push(`Available institutional legacy/accreditation signals give a context score of ${institutionScore}%.`);
+  } else {
+    gaps.push("The institution's founding-year and programme-achievement fields are not populated, so those legacy signals were not included.");
+  }
+  if (!reference.subject_requirements && !(reference.relevant_subjects?.length)) {
+    gaps.push("No programme-specific WASSCE subject requirements are recorded.");
+  }
+
+  const category: MatchCategory =
+    fit >= 85 ? "Excellent Match" :
+    fit >= 75 ? "Strong Match" :
+    fit >= 65 ? "Good Match" :
+    fit >= 50 ? "Possible" :
+    fit >= 38 ? "Reach" :
+    "Low Match";
+
+  return out(
+    category,
+    fit,
+    `${reasons.join(" ")} This is an estimated academic/institutional fit score, not a probability of admission.`,
+    "Estimated academic fit (not admission probability)",
+    `Estimated fit: ${fit}%`,
+    evidenceLevel,
+    { academic, subject: subjectScore, institution: institutionScore },
+  );
 }
 
 /** Keep the shortlist broad: at most `perUniversity` programmes from any one institution. */

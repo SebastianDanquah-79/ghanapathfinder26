@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { checkApiRateLimit, readJsonBody, rateLimitResponse } from "@/lib/api-rate-limit";
 import { generateText } from "ai";
-import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
+import { createOpenAIResponsesModel } from "@/lib/openai.server";
 
 type CareerPathRequest = {
   dreamJob?: string;
@@ -63,15 +63,11 @@ export const Route = createFileRoute("/api/career-path")({
           .map(([key, value]) => `${key}: ${String(value).trim().slice(0, 1200)}`)
           .join("\n");
 
-        const openai = createOpenAICompatible({
-          name: "openai",
-          baseURL: "https://api.openai.com/v1",
-          apiKey,
-        });
+        const model = createOpenAIResponsesModel();
 
         try {
           const result = await generateText({
-            model: openai(process.env["OPENAI_MODEL"] || "gpt-6-luna"),
+            model,
             system: SYSTEM,
             prompt: `Dream job: ${dreamJob}\n${profile || "No additional profile information was provided."}`,
             maxOutputTokens: 1800,

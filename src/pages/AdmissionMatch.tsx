@@ -8,8 +8,10 @@ import { CATEGORY_STYLES, formatVerifiedDate, type MatchCategory } from "@/lib/a
 import SaveButton from "@/components/SaveButton";
 import Navbar from "@/components/Navbar";
 import Seo from "@/components/Seo";
+import CareerOpportunityRecommendations from "@/components/CareerOpportunityRecommendations";
 
 const CATEGORIES: MatchCategory[] = [
+  "Excellent Match",
   "Strong Match",
   "Good Match",
   "Possible",
@@ -47,7 +49,7 @@ const AdmissionMatch = () => {
       matches.filter(
         (m) =>
           (category === "All" || m.category === category) &&
-          (basis === "all" || m.reference.basis === basis),
+          (basis === "all" || (basis === "official" ? m.reference.basis === "official" : m.reference.basis !== "official")),
       ),
     [matches, category, basis],
   );
@@ -85,9 +87,9 @@ const AdmissionMatch = () => {
           <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground">Admission Match</h1>
         </div>
         <p className="text-sm text-muted-foreground mb-6 max-w-3xl">
-          Scored across {institutions} accredited Ghanaian institutions. Where an institution publishes
-          a cut-off we use it. Where it does not, we show a clearly-labelled estimated range built from
-          published evidence , and where there is not enough evidence, we say so instead of guessing.
+          Comparing programmes across {institutions} institution records. Published programme cut-offs take priority;
+          otherwise, GhanaPathFinder estimates academic fit from your WASSCE aggregate, relevant subject grades and
+          available institution profile data. Estimated fit is not a probability of admission.
         </p>
 
         {/* Aggregate summary */}
@@ -152,9 +154,9 @@ const AdmissionMatch = () => {
             ))}
           </select>
           <select className={input} value={basis} onChange={(e) => setBasis(e.target.value as typeof basis)}>
-            <option value="all">Official cut-offs and estimates</option>
+            <option value="all">Official cut-offs and estimated fit scores</option>
             <option value="official">Official cut-offs only</option>
-            <option value="estimated">Estimated ranges only</option>
+            <option value="estimated">Estimated fit scores</option>
           </select>
         </div>
 
@@ -197,7 +199,7 @@ const AdmissionMatch = () => {
                       {m.category}
                     </span>
                     {m.confidence != null && (
-                      <p className="text-xs text-muted-foreground mt-1">{m.confidence}% confidence</p>
+                      <p className="text-xs text-muted-foreground mt-1">{m.reference.basis === "official" ? "Match score" : "Estimated fit"}: {m.confidence}%</p>
                     )}
                   </div>
                 </div>
@@ -214,6 +216,14 @@ const AdmissionMatch = () => {
                 </div>
 
                 <p className="text-sm text-foreground mb-3">{m.why}</p>
+
+                {m.reference.basis === "none" && (
+                  <div className="mb-3 grid gap-2 rounded-lg border border-border bg-background/40 p-3 text-xs sm:grid-cols-3">
+                    <div><p className="text-muted-foreground">WASSCE achievement</p><p className="mt-1 font-semibold text-foreground">{m.evidenceBreakdown.academic == null ? "Not available" : `${m.evidenceBreakdown.academic}%`}</p></div>
+                    <div><p className="text-muted-foreground">Relevant subject grades</p><p className="mt-1 font-semibold text-foreground">{m.evidenceBreakdown.subject == null ? "Not recorded" : `${m.evidenceBreakdown.subject}%`}</p></div>
+                    <div><p className="text-muted-foreground">Institution profile / legacy</p><p className="mt-1 font-semibold text-foreground">{m.evidenceBreakdown.institution == null ? "Not recorded" : `${m.evidenceBreakdown.institution}%`}</p></div>
+                  </div>
+                )}
 
                 {r.basis === "estimated" && (
                   <p className="text-xs text-muted-foreground flex gap-1.5 mb-3">
@@ -296,10 +306,16 @@ const AdmissionMatch = () => {
         )}
 
         <p className="mt-6 text-xs text-muted-foreground">
-          Cut-off points change every year with the number of applicants and available places. Estimated
-          ranges are GhanaPathFinder's own evidence-based working, not official figures. Always confirm with the
-          institution before applying.
+          An estimated fit score compares the academic and institution information available in GhanaPathFinder's
+          records. It is not an acceptance probability or an official cut-off. Missing school-history or achievement
+          data is shown as unavailable rather than invented. Confirm current requirements with the institution.
         </p>
+        <div className="mt-8">
+          <CareerOpportunityRecommendations
+            career={search || matches[0]?.reference.field || "Career exploration"}
+            programme={matches[0]?.reference.programme_name || ""}
+          />
+        </div>
       </div>
     </div>
   );
