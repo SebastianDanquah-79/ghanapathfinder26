@@ -285,7 +285,7 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
             <AskAttachmentControls disabled={isLoading} />
             <PromptInputSubmit
               status={status}
-              disabled={!input.trim() && !isLoading}
+              disabled={isLoading}
               onStop={stop}
             />
           </PromptInputFooter>
