@@ -11,6 +11,7 @@ import Seo from "@/components/Seo";
 import CareerOpportunityRecommendations from "@/components/CareerOpportunityRecommendations";
 
 const CATEGORIES: MatchCategory[] = [
+  "Excellent Match",
   "Strong Match",
   "Good Match",
   "Possible",
