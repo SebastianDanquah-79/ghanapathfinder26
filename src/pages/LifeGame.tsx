@@ -478,6 +478,9 @@ const LifeGame = () => {
   const [storageReady, setStorageReady] = useState(false);
   const [saving, setSaving] = useState(false);
   const [selectedOutcome, setSelectedOutcome] = useState<DecisionRecord | null>(null);
+  const [aiGameAdvice, setAiGameAdvice] = useState<{ overview: string; firstFocus: string; tradeoff: string; weeklyPlan: string[]; checkIn: string } | null>(null);
+  const [aiGameAdviceLoading, setAiGameAdviceLoading] = useState(false);
+  const [aiGameAdviceError, setAiGameAdviceError] = useState<string | null>(null);
 
   const cloudRun = useQuery({
     queryKey: ["life-game-latest-run", user?.id],
@@ -510,6 +513,54 @@ const LifeGame = () => {
 
   const recommendedType = useMemo(() => inferGameType(goal.trim()), [goal]);
   const recommendedGame = gameMeta[recommendedType];
+
+  useEffect(() => {
+    if (screen !== "recommendation" || goal.trim().length < 5) return;
+
+    const controller = new AbortController();
+    setAiGameAdvice(null);
+    setAiGameAdviceError(null);
+    setAiGameAdviceLoading(true);
+
+    void fetch("/api/life-game-advice", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      signal: controller.signal,
+      body: JSON.stringify({
+        goal: goal.trim(),
+        gameType: recommendedType,
+        startingStage: stage,
+        weeklyHours,
+        riskProfile,
+        horizonYears,
+      }),
+    })
+      .then(async (response) => {
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(typeof payload?.error === "string" ? payload.error : "AI strategy advice is unavailable.");
+        return payload;
+      })
+      .then((payload) => {
+        if (controller.signal.aborted) return;
+        setAiGameAdvice({
+          overview: String(payload.overview ?? ""),
+          firstFocus: String(payload.firstFocus ?? ""),
+          tradeoff: String(payload.tradeoff ?? ""),
+          weeklyPlan: Array.isArray(payload.weeklyPlan) ? payload.weeklyPlan.map(String).slice(0, 3) : [],
+          checkIn: String(payload.checkIn ?? ""),
+        });
+      })
+      .catch((error) => {
+        if (controller.signal.aborted) return;
+        console.error("Life Simulator AI advice failed", error);
+        setAiGameAdviceError("AI strategy advice is temporarily unavailable. The scenario-based simulator still works.");
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setAiGameAdviceLoading(false);
+      });
+
+    return () => controller.abort();
+  }, [screen, goal, recommendedType, stage, weeklyHours, riskProfile, horizonYears]);
   const activeSession = session;
   const activeScenarios = activeSession ? scenarios[activeSession.gameType] : [];
   const currentScenario = activeSession && activeSession.currentRound < ROUNDS ? activeScenarios[activeSession.currentRound] : null;
@@ -733,6 +784,30 @@ const LifeGame = () => {
               <p className="text-xs uppercase tracking-wide text-muted-foreground">Your game brief</p>
               <p className="mt-2 text-lg font-semibold text-foreground">{goal.trim()}</p>
               <p className="mt-2 text-sm text-muted-foreground">{stage} · {weeklyHours} hours per week · {riskProfile === "low" ? "stability-first risk" : riskProfile === "high" ? "higher risk tolerance" : "balanced risk"} · {horizonYears}-year scenario</p>
+            </div>
+            <div className="mt-4 rounded-xl border border-primary/25 bg-primary/[0.035] p-4 sm:p-5" aria-live="polite">
+              <div className="flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-primary" />
+                <h3 className="text-sm font-semibold text-foreground">AI strategy coach</h3>
+                {aiGameAdviceLoading && <RefreshCw className="h-4 w-4 animate-spin text-muted-foreground" />}
+              </div>
+              {aiGameAdviceLoading && <p className="mt-3 text-sm text-muted-foreground">Building a practical strategy around your goal, time and risk preference…</p>}
+              {aiGameAdviceError && <p className="mt-3 text-sm text-muted-foreground">{aiGameAdviceError}</p>}
+              {aiGameAdvice && (
+                <>
+                  <p className="mt-3 text-sm leading-6 text-foreground">{aiGameAdvice.overview}</p>
+                  {aiGameAdvice.firstFocus && <p className="mt-3 text-sm text-foreground"><strong>First focus:</strong> {aiGameAdvice.firstFocus}</p>}
+                  {aiGameAdvice.tradeoff && <p className="mt-2 text-sm text-muted-foreground"><strong className="text-foreground">Trade-off to watch:</strong> {aiGameAdvice.tradeoff}</p>}
+                  {!!aiGameAdvice.weeklyPlan.length && (
+                    <div className="mt-4">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">A realistic weekly approach</p>
+                      <ol className="mt-2 space-y-1.5">{aiGameAdvice.weeklyPlan.map((item, index) => <li key={index} className="flex gap-2 text-sm text-muted-foreground"><span className="text-primary">{index + 1}.</span>{item}</li>)}</ol>
+                    </div>
+                  )}
+                  {aiGameAdvice.checkIn && <p className="mt-4 border-t border-border pt-3 text-sm text-muted-foreground"><strong className="text-foreground">Question to revisit:</strong> {aiGameAdvice.checkIn}</p>}
+                </>
+              )}
+              <p className="mt-4 text-[11px] text-muted-foreground">AI advice is a planning aid. The simulation's scenarios and scores remain separate, and real-world decisions should account for your health, studies, finances and responsibilities.</p>
             </div>
             <div className="mt-5 grid gap-3 sm:grid-cols-2">
               <div className="rounded-xl border border-border p-4"><p className="text-sm font-semibold">What you will practise</p><div className="mt-3 flex flex-wrap gap-2">{recommendedGame.skills.map((skill) => <span key={skill} className="rounded-full bg-secondary px-3 py-1.5 text-xs text-foreground">{skill}</span>)}</div></div>
