@@ -5,7 +5,7 @@ export const Route = createFileRoute("/global-news")({
   component: () => (
     <NewsHub
       title="Global News"
-      subtitle="International reporting outside the African regional feed, separated from Africa Now and Ghana coverage."
+      subtitle="Ghanaian and international reporting from across the world, including the latest news from Ghana."
       mode="global"
     />
   ),
