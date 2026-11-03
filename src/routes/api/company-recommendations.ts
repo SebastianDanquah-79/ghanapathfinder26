@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { generateText } from "ai";
+import { generateText, Output } from "ai";
+import { z } from "zod";
 import { checkApiRateLimit, readJsonBody, rateLimitResponse } from "@/lib/api-rate-limit";
 import { createOpenAIResponsesModel } from "@/lib/openai.server";
 
@@ -47,14 +48,18 @@ type RequestBody = {
 const safe = (value: unknown, max = 400) =>
   typeof value === "string" ? value.trim().slice(0, max) : "";
 
-const parseObject = (value: string): Record<string, unknown> => {
-  const cleaned = value.trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "");
-  const parsed = JSON.parse(cleaned);
-  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
-    throw new Error("The recommendation response was not a JSON object.");
-  }
-  return parsed as Record<string, unknown>;
-};
+const companyRecommendationsOutputSchema = z.object({
+  companies: z.array(z.object({
+    id: z.string(),
+    why: z.string(),
+    preparation: z.array(z.string()).max(3),
+  })).max(5),
+  providers: z.array(z.object({
+    name: z.string(),
+    why: z.string(),
+  })).max(4),
+  internship_note: z.string(),
+});
 
 export const Route = createFileRoute("/api/company-recommendations")({
   server: {
@@ -140,6 +145,7 @@ export const Route = createFileRoute("/api/company-recommendations")({
         try {
           const result = await generateText({
             model: createOpenAIResponsesModel(),
+            output: Output.object({ schema: companyRecommendationsOutputSchema }),
             system: `You are GhanaPathFinder's company and early-career opportunity adviser. Match a learner's programme and career goal to the supplied company directory and internship records. Select only supplied IDs and names. Never claim a company is hiring unless a current internship/job record supplied here confirms it. Career-page links are routes to investigate, not proof of a vacancy. Internship providers marked needsReview are unverified directory leads, not confirmed placements. Be practical and Ghana/Africa-aware. Return valid JSON only.`,
             prompt: `CAREER GOAL: ${career || "Not specified"}
 PROGRAMME: ${programme || "Not specified"}
@@ -163,7 +169,8 @@ Return at most five companies, four providers and three preparation actions per 
             maxOutputTokens: 1400,
           });
 
-          const payload = parseObject(result.text);
+          const payload = result.output;
+          if (!payload) throw new Error("Company recommendations did not return a complete structured result.");
           const companyById = new Map(companies.map((item) => [item.id, item]));
           const providerByName = new Map(providers.map((item) => [item.name, item]));
           const rankedCompanies = Array.isArray(payload.companies)
