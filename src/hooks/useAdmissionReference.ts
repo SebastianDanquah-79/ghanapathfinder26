@@ -7,6 +7,7 @@ import {
   evaluateReference,
   type AdmissionReference,
   type ReferenceMatch,
+  type SubjectResult,
 } from "@/lib/admissionEngine";
 
 /**
