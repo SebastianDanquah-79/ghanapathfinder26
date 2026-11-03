@@ -47,6 +47,7 @@ export const navSections: NavSection[] = [
       { label: "Stories", href: "/stories", desc: "Read the latest stories in the platform" },
       { label: "Daily Drop", href: "/daily-drop", desc: "A quick view of new stories" },
       { label: "Africa Now", href: "/africa-now", desc: "Current Africa coverage" },
+      { label: "Global News", href: "/global-news", desc: "Reporting beyond Africa" },
       { label: "Live Africa", href: "/live-africa", desc: "Explore live and current Africa updates" },
     ],
   },
