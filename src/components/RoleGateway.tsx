@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "@/lib/router-compat";
 import {
   ArrowRight,
@@ -15,7 +15,6 @@ import {
 } from "@/lib/icons";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 
@@ -104,48 +103,10 @@ const discoveryLinks = [
 
 export default function RoleGateway() {
   const navigate = useNavigate();
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
   const [choosing, setChoosing] = useState<Role | null>(null);
   const [search, setSearch] = useState("");
 
-  useEffect(() => {
-    if (!user || loading || window.location.search.includes("switchRole=1")) return;
-
-    let cancelled = false;
-
-    void supabase
-      .from("profiles")
-      .select("account_role,role,onboarding_complete")
-      .eq("id", user.id)
-      .maybeSingle()
-      .then(function (result) {
-        const role = result.data?.account_role ?? result.data?.role;
-
-        if (
-          cancelled ||
-          !result.data ||
-          !result.data.onboarding_complete ||
-          !role
-        ) {
-          return;
-        }
-
-        const destination =
-          role === "startup_founder" || role === "founder"
-            ? "/portal/founder"
-            : role === "international_student" || role === "international-student"
-              ? "/portal/international-student"
-              : role === "student" || role === "employee" || role === "employer"
-                ? "/portal/" + role
-                : "/onboarding";
-
-        navigate(destination, { replace: true });
-      });
-
-    return function () {
-      cancelled = true;
-    };
-  }, [loading, user, navigate]);
 
 
   async function chooseRole(role: Role) {
