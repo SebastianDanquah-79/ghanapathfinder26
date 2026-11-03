@@ -138,7 +138,7 @@ export default function NewsHub({
   const getNewsScope = (targetGhanaOnly: boolean) => {
     if (targetGhanaOnly) return "GH";
     if (mode === "africa" || mode === "daily") return "AFRICA";
-    if (mode === "global") return "GLOBAL";
+    // Global News includes Ghana and international stories; country filters still work by category.
     return null;
   };
 
