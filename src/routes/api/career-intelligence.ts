@@ -53,7 +53,7 @@ export const Route = createFileRoute("/api/career-intelligence")({
 
         let body: RequestBody;
         try {
-          body = (await readJsonBody(request, 64 * 1024)) as RequestBody;
+          body = (await readJsonBody(request, 48 * 1024)) as RequestBody;
         } catch (error) {
           const tooLarge = error instanceof Error && error.message === "BODY_TOO_LARGE";
           return new Response(
@@ -94,8 +94,8 @@ export const Route = createFileRoute("/api/career-intelligence")({
           );
         }
 
-        if (!Array.isArray(body?.candidates) || body.candidates.length < 1 || body.candidates.length > 100) {
-          return new Response("A valid career catalogue of up to 100 options is required.", { status: 400 });
+        if (!Array.isArray(body?.candidates) || body.candidates.length < 1 || body.candidates.length > 60) {
+          return new Response("A valid career catalogue of up to 60 options is required.", { status: 400 });
         }
 
         const candidates: Candidate[] = body.candidates
