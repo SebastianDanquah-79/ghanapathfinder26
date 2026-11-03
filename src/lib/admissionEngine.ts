@@ -583,7 +583,7 @@ export function evaluateReference(
   const subjectScore = scoreGradeEvidence(reference, results);
   const institutionProfile = getInstitutionProfileScore(reference, yearNow);
   const aggregateScore =
-    aggregate != null && Number.isFinite(aggregate) && aggregate >= 6 && aggregate <= 36
+    aggregate != null && Number.isFinite(aggregate) && aggregate >= 6
       ? clampScore(100 - ((aggregate - 6) / 30) * 65)
       : null;
 
