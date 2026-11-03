@@ -1,7 +1,9 @@
--- Restore the admission reference RPC used by Admission Match and university recommendations.
--- The live schema stores aggregates and estimates as numeric, so cast them explicitly
--- to the integer return type consumed by the application.
-CREATE OR REPLACE FUNCTION public.admission_reference(
+-- Restore and enrich the admission reference RPC used by Admission Match and recommendations.
+-- Existing programme and university records are used first. Historical, institutional
+-- and achievement fields are returned only when actually populated; nothing is fabricated.
+DROP FUNCTION IF EXISTS public.admission_reference(text, uuid, integer);
+
+CREATE FUNCTION public.admission_reference(
   _q text DEFAULT '',
   _university_id uuid DEFAULT NULL,
   _limit integer DEFAULT 300
@@ -32,7 +34,16 @@ RETURNS TABLE(
   estimate_method text,
   estimate_evidence text,
   estimate_confidence text,
-  entry_requirements text
+  entry_requirements text,
+  relevant_subjects text[],
+  university_established_year integer,
+  university_student_count integer,
+  university_top_programmes text[],
+  university_admission_aggregate text,
+  university_admission_info text,
+  university_accreditation_status text,
+  institution_gtec_status text,
+  institution_type text
 )
 LANGUAGE sql
 STABLE
@@ -88,11 +99,30 @@ AS $fn$
     e.method,
     e.evidence,
     e.confidence_level,
-    p.entry_requirements
+    p.entry_requirements,
+    p.relevant_subjects,
+    u.established_year,
+    u.student_count,
+    u.top_programmes,
+    u.admission_aggregate,
+    u.admission_info,
+    u.accreditation_status,
+    inst.gtec_accreditation_status,
+    inst.institution_type
   FROM public.programmes AS p
   JOIN public.universities AS u ON u.id = p.university_id
   LEFT JOIN off AS o ON o.programme_id = p.id
   LEFT JOIN public.programme_admission_estimates AS e ON e.programme_id = p.id
+  LEFT JOIN LATERAL (
+    SELECT i.gtec_accreditation_status, i.institution_type
+    FROM public.institutions AS i
+    WHERE i.id = p.institution_id OR i.university_id = u.id
+    ORDER BY
+      (i.id = p.institution_id) DESC,
+      (i.gtec_accreditation_status = 'active') DESC,
+      i.last_verified_at DESC NULLS LAST
+    LIMIT 1
+  ) AS inst ON TRUE
   WHERE (_university_id IS NULL OR p.university_id = _university_id)
     AND (
       COALESCE(TRIM(_q), '') = ''
