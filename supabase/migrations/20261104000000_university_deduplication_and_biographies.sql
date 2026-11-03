@@ -72,6 +72,8 @@ BEGIN
           AND d.name = 'St. Louis College of Education, Kumasi')
         OR (b.name = 'St. Theresa’s College of Education'
           AND d.name = 'St. Teresa''s College of Education, Hohoe')
+        OR (b.name = 'Assinman Nursing and Midwifery Training College'
+          AND d.name = 'Assinman Nursing and Midwifrey Training College, Assin Fosu')
       )
     ),
     pairs AS (
