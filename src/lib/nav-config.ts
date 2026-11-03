@@ -217,7 +217,7 @@ const portalAccountItems: Record<string, NavItem[]> = {
     { label: "Saved items", href: "/saved" },
     { label: "Applications", href: "/applications" },
     { label: "Settings", href: "/preferences" },
-    { label: "Change portal", href: "/?switchRole=1" },
+    { label: "Change portal", href: "/" },
   ],
   employee: [
     { label: "Career dashboard", href: "/dashboard" },
@@ -225,7 +225,7 @@ const portalAccountItems: Record<string, NavItem[]> = {
     { label: "Find jobs", href: "/jobs" },
     { label: "Career opportunities", href: "/opportunities" },
     { label: "Settings", href: "/preferences" },
-    { label: "Change portal", href: "/?switchRole=1" },
+    { label: "Change portal", href: "/" },
   ],
   employer: [
     { label: "Employer dashboard", href: "/dashboard" },
@@ -233,7 +233,7 @@ const portalAccountItems: Record<string, NavItem[]> = {
     { label: "Post an opportunity", href: "/portal/employer#post-opportunity" },
     { label: "Applicants", href: "/people" },
     { label: "Settings", href: "/preferences" },
-    { label: "Change portal", href: "/?switchRole=1" },
+    { label: "Change portal", href: "/" },
   ],
   startup_founder: [
     { label: "Startup Founder Dashboard", href: "/dashboard" },
@@ -241,7 +241,7 @@ const portalAccountItems: Record<string, NavItem[]> = {
     { label: "Build your startup", href: "/build" },
     { label: "Founder opportunities", href: "/opportunities" },
     { label: "Settings", href: "/preferences" },
-    { label: "Change portal", href: "/?switchRole=1" },
+    { label: "Change portal", href: "/" },
   ],
   international_student: [
     { label: "International student dashboard", href: "/dashboard" },
@@ -249,7 +249,7 @@ const portalAccountItems: Record<string, NavItem[]> = {
     { label: "Admission matching", href: "/admission-match" },
     { label: "Applications", href: "/applications" },
     { label: "Settings", href: "/preferences" },
-    { label: "Change portal", href: "/?switchRole=1" },
+    { label: "Change portal", href: "/" },
   ],
 };
 
