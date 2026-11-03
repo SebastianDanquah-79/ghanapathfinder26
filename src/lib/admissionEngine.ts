@@ -500,10 +500,15 @@ const GRADE_ACHIEVEMENT: Record<string, number> = {
 
 const scoreGradeEvidence = (reference: AdmissionReference, results: SubjectResult[]) => {
   const subjects = reference.relevant_subjects ?? [];
-  const grades = subjects
+  const relevantGrades = subjects
     .map((subject) => findGrade(results, subject))
     .filter((value): value is SubjectResult => value !== null);
+
+  // If programme-specific subject mappings are not yet in the catalogue,
+  // use the student's recorded WASSCE grades as a general achievement signal.
+  const grades = relevantGrades.length > 0 ? relevantGrades : results;
   if (grades.length === 0) return null;
+
   return clampScore(
     grades.reduce((sum, item) => sum + (GRADE_ACHIEVEMENT[item.grade] ?? 0), 0) / grades.length,
   );
@@ -579,7 +584,7 @@ export function evaluateReference(
   const institutionProfile = getInstitutionProfileScore(reference, yearNow);
   const aggregateScore =
     aggregate != null && Number.isFinite(aggregate) && aggregate >= 6 && aggregate <= 36
-      ? clampScore(100 - ((aggregate - 6) / 30) * 100)
+      ? clampScore(100 - ((aggregate - 6) / 30) * 65)
       : null;
 
   const out = (
@@ -787,9 +792,13 @@ export function evaluateReference(
     `WASSCE aggregate ${aggregate} gives an academic baseline of ${aggregateScore}% on GhanaPathFinder's comparison scale.`,
   ];
   if (subjectScore != null) {
-    reasons.push(`Your grades in the programme's recorded relevant subjects give a subject-achievement score of ${subjectScore}%.`);
+    if (reference.relevant_subjects?.length) {
+      reasons.push("Your grades in the programme's recorded relevant subjects give a subject-achievement score of " + subjectScore + "%.");
+    } else {
+      reasons.push("Your recorded WASSCE subject grades give a general achievement score of " + subjectScore + "%; this is not yet programme-specific because subject mappings are missing from the catalogue.");
+    }
   } else {
-    gaps.push("The programme's relevant-subject list or your matching subject grades are missing, so the subject-specific component could not be scored.");
+    gaps.push("No subject-grade details were supplied, so the subject-achievement component could not be scored.");
   }
   if (historicalAggregate == null) gaps.push("No stored institutional admission aggregate or historical programme cut-off is available for this record.");
   if (institutionProfile != null) {
