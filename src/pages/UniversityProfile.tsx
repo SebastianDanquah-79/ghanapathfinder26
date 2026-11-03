@@ -176,7 +176,7 @@ const UniversityProfile = () => {
                 </section>
 
                 <section className="mt-4 border-t border-border pt-4">
-                  <h2 className="mb-2 text-sm font-semibold text-foreground">Achievements</h2>
+                  <h2 className="mb-2 text-sm font-semibold text-foreground">Achievements &amp; recognitions</h2>
                   {verifiedAchievements.length > 0 ? (
                     <div className="grid gap-3 sm:grid-cols-2">
                       {verifiedAchievements.map((achievement, index) => (
@@ -194,7 +194,7 @@ const UniversityProfile = () => {
                     </div>
                   ) : (
                     <p className="text-sm leading-relaxed text-muted-foreground">
-                      No independently verified achievements have been added to this profile yet. GhanaPathFinder only publishes achievement highlights when they can be supported by a reliable institutional or regulator source.
+                      No independently verified awards, milestones or recognitions have been published for this institution yet. GhanaPathFinder only lists achievement highlights when they are supported by a reliable institutional or regulator source.
                     </p>
                   )}
                 </section>
