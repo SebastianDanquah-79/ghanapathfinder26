@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Search, LogOut, Info } from "@/lib/icons";
+import { Menu, X, Search, LogOut, Info, Home } from "@/lib/icons";
 import BrandMark from "@/components/BrandMark";
 import { Link, useLocation } from "@/lib/router-compat";
 import { useAuth } from "@/hooks/useAuth";
@@ -70,6 +70,12 @@ const Navbar = () => {
             Ghana<span className="text-primary">PathFinder</span>
           </span>
         </Link>
+        {isPortal && (
+          <Link to="/?switchRole=1" aria-label="Go to home and switch portal" className="hidden shrink-0 items-center gap-2 rounded-full border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-primary hover:bg-secondary hover:text-foreground md:inline-flex">
+            <Home className="h-4 w-4" />
+            <span>Home / Switch portal</span>
+          </Link>
+        )}
 
         <TooltipProvider delayDuration={120}>
           <div className="hidden md:flex items-center gap-1">
@@ -169,6 +175,11 @@ const Navbar = () => {
           <Link to="/search" aria-label="Search GhanaPathFinder" className="grid place-items-center h-11 w-11 rounded-full text-muted-foreground active:text-primary">
             <Search className="h-5 w-5" />
           </Link>
+          {isPortal && (
+            <Link to="/?switchRole=1" aria-label="Go to home and switch portal" className="grid place-items-center h-11 w-11 rounded-full text-muted-foreground active:text-primary">
+              <Home className="h-5 w-5" />
+            </Link>
+          )}
           <ThemeToggle className="h-11 w-11" />
           {user ? (
             <Link to="/dashboard" aria-label="Your dashboard" className="grid place-items-center h-11 w-11">
