@@ -1,1 +1,1 @@
-import { createFileRoute } from "@tanstack/react-router"; import NewsHub from "@/pages/NewsHub"; export const Route=createFileRoute("/stories")({component:()=> <NewsHub title="Stories" subtitle="Latest source-linked reporting from Ghana and across Africa, refreshed automatically." />});
+import { createFileRoute } from "@tanstack/react-router"; import NewsHub from "@/pages/NewsHub"; export const Route=createFileRoute("/stories")({component:()=> <NewsHub title="Stories" subtitle="Latest source-linked stories across regions and topics." mode="stories" />});
