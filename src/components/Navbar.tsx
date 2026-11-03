@@ -71,7 +71,7 @@ const Navbar = () => {
           </span>
         </Link>
         {isPortal && (
-          <Link to="/?switchRole=1" aria-label="Go to home and switch portal" className="hidden shrink-0 items-center gap-2 rounded-full border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-primary hover:bg-secondary hover:text-foreground md:inline-flex">
+          <Link to="/" aria-label="Go to home and switch portal" className="hidden shrink-0 items-center gap-2 rounded-full border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-primary hover:bg-secondary hover:text-foreground md:inline-flex">
             <Home className="h-4 w-4" />
             <span>Home / Switch portal</span>
           </Link>
@@ -176,7 +176,7 @@ const Navbar = () => {
             <Search className="h-5 w-5" />
           </Link>
           {isPortal && (
-            <Link to="/?switchRole=1" aria-label="Go to home and switch portal" className="grid place-items-center h-11 w-11 rounded-full text-muted-foreground active:text-primary">
+            <Link to="/" aria-label="Go to home and switch portal" className="grid place-items-center h-11 w-11 rounded-full text-muted-foreground active:text-primary">
               <Home className="h-5 w-5" />
             </Link>
           )}
