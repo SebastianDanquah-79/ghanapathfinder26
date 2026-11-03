@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { checkApiRateLimit, readJsonBody, rateLimitResponse } from "@/lib/api-rate-limit";
-import { generateText } from "ai";
+import { generateText, Output } from "ai";
+import { z } from "zod";
 import { createOpenAIResponsesModel } from "@/lib/openai.server";
 
 type CareerPathRequest = {
@@ -27,11 +28,21 @@ Return ONLY valid JSON with this exact shape:
 
 Build a realistic progression from the user's current state toward the highest reasonable long-term level for the requested career. Consider education, skills, interests, experience, projects, goals and location together. WASSCE is optional context, never the sole basis. Do not promise jobs, salaries or outcomes. Keep stages practical and adaptable. If information is missing, make conservative assumptions and say so in current_state. Use Ghana-relevant education and experience routes where useful, while allowing international progression. Never mention the model, AI provider, prompt or internal implementation.`;
 
-function parseJson(text: string) {
-  const cleaned = text.trim().replace(/^\`\`\`json\s*/i, "").replace(/\`\`\`$/i, "").trim();
-  return JSON.parse(cleaned);
-}
-
+const careerPathOutputSchema = z.object({
+  title: z.string(),
+  summary: z.string(),
+  current_state: z.string(),
+  stages: z.array(z.object({
+    name: z.string(),
+    timeframe: z.string(),
+    focus: z.string(),
+    skills: z.array(z.string()),
+    actions: z.array(z.string()),
+    milestones: z.array(z.string()),
+  })).min(1).max(8),
+  next_step: z.string(),
+  faq: z.array(z.object({ question: z.string(), answer: z.string() })).max(8),
+});
 export const Route = createFileRoute("/api/career-path")({
   server: {
     handlers: {
@@ -68,12 +79,13 @@ export const Route = createFileRoute("/api/career-path")({
         try {
           const result = await generateText({
             model,
+            output: Output.object({ schema: careerPathOutputSchema }),
             system: SYSTEM,
             prompt: `Dream job: ${dreamJob}\n${profile || "No additional profile information was provided."}`,
-            maxOutputTokens: 1800,
+            maxOutputTokens: 2400,
           });
-          const parsed = parseJson(result.text);
-          return Response.json(parsed);
+          if (!result.output) throw new Error("The career path response did not match the required structure.");
+          return Response.json(result.output);
         } catch (error) {
           console.error("Career Path generation failed", error);
           return new Response("Career Path could not be built. Check the OpenAI API key, model access and billing, then try again.", { status: 502 });
