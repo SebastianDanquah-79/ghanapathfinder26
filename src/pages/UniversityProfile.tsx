@@ -34,6 +34,8 @@ const UniversityProfile = () => {
   );
   const { data: programmes, isLoading: loadingProgrammes } = useProgrammes(uni?.id);
   const supportingSources = (uni?.source_urls ?? []).filter((url) => Boolean(url) && url !== uni?.source_url).slice(0, 3);
+  const gtecSourceUrl = (uni?.source_urls ?? []).find((url) => url.includes("gtec.edu.gh"));
+  const gtecRegistryStatus = uni?.gtec_accreditation_status?.match(/^(Active|Expired) per GTEC/)?.[1] ?? null;
 
   return (
     <div className="min-h-screen bg-background">
@@ -200,6 +202,19 @@ const UniversityProfile = () => {
                 </div>
 
                 <div className="mt-4 space-y-1">
+                  {gtecRegistryStatus && (
+                    <p className="text-xs text-muted-foreground">
+                      GTEC institution-register listing: <span className="font-semibold text-foreground">{gtecRegistryStatus}</span>
+                      {gtecSourceUrl && (
+                        <>
+                          {" · "}
+                          <a href={gtecSourceUrl} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                            View GTEC source
+                          </a>
+                        </>
+                      )}
+                    </p>
+                  )}
                   {uni.accreditation_status && (
                     <p className="text-xs text-muted-foreground">
                       Accreditation status: {displayAccreditationStatus(uni.accreditation_status, uni.verified)}
