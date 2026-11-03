@@ -52,6 +52,26 @@ BEGIN
           AND d.name = 'Academic City College')
         OR (b.name = 'University of Health and Allied Sciences'
           AND d.name = 'University of Health and Allied Science')
+        OR (b.name = 'Berekum College of Education'
+          AND d.name = 'Berekum College of Education, Berekum')
+        OR (b.name = 'Gbewaa College of Education'
+          AND d.name = 'Gbewaa College of Education, Gbewaa')
+        OR (b.name = 'Lancaster University'
+          AND d.name = 'Lancaster University, Ghana Campus')
+        OR (b.name = 'Mampong Technical College of Education'
+          AND d.name = 'Mampong Technical College of Education, Ashanti Mampong')
+        OR (b.name = 'Pharmtrust Professional College'
+          AND d.name = 'Pharmatrust Professional College, Accra')
+        OR (b.name = 'Presbyterian Women’s College of Education'
+          AND d.name = 'Presbyterian Women''s College of Education, Aburi')
+        OR (b.name = 'Saviour Church Nursing and Midwifery Training College'
+          AND d.name = 'Saviour Church Nursing and Training College')
+        OR (b.name = 'St. Joseph’s College of Education'
+          AND d.name = 'St. Joseph''s College of Education, Bechem')
+        OR (b.name = 'St Louis College of Education'
+          AND d.name = 'St. Louis College of Education, Kumasi')
+        OR (b.name = 'St. Theresa’s College of Education'
+          AND d.name = 'St. Teresa''s College of Education, Hohoe')
       )
     ),
     pairs AS (
