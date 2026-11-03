@@ -1,4 +1,7 @@
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import { Loader2, Sparkles } from "@/lib/icons";
 import { careerPaths } from "@/data/careerPaths";
 import { useWassceResults } from "@/hooks/useAdmissionMatch";
@@ -52,7 +55,29 @@ export default function CareerIntelligenceAdvisor({
   const [analysis, setAnalysis] = useState<CareerAnalysis | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const { user } = useAuth();
+  const { data: savedProfile } = useQuery({
+    queryKey: ["career-intelligence-profile", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("target_career,interests,region")
+        .eq("id", user!.id)
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+    staleTime: 5 * 60_000,
+  });
   const { data: wassceResults = [], isLoading: loadingResults } = useWassceResults();
+
+  useEffect(() => {
+    if (!savedProfile) return;
+    setTargetCareer((current) => current.trim() ? current : savedProfile.target_career ?? "");
+    setInterests((current) => current.trim() ? current : (savedProfile.interests ?? []).join(", "));
+    setLocation((current) => current === "Ghana" && savedProfile.region ? savedProfile.region : current);
+  }, [savedProfile]);
 
   const candidates = useMemo<Candidate[]>(
     () =>
