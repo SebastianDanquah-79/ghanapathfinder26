@@ -179,31 +179,38 @@ BEGIN
 END
 $merge$;
 
+
 UPDATE public.universities u
 SET
   biography = coalesce(
     nullif(trim(u.biography), ''),
     nullif(trim(u.description), ''),
     nullif(trim(u.short_description), ''),
-    concat(
-      u.name,
-      ' is listed in GhanaPathFinder’s tertiary institution directory as ',
-      CASE WHEN lower(coalesce(u.type, '')) = 'public' THEN 'a public' ELSE 'a ' || lower(coalesce(u.type, 'tertiary')) END,
-      ' ',
-      lower(coalesce(nullif(u.category, ''), 'tertiary education')),
-      ' institution',
+    u.name || ' is a ' ||
+      CASE lower(coalesce(u.type, ''))
+        WHEN 'public' THEN 'public'
+        WHEN 'private' THEN 'private'
+        WHEN 'regional' THEN 'regional'
+        ELSE 'tertiary'
+      END || ' tertiary education institution' ||
+      CASE lower(coalesce(u.category, ''))
+        WHEN 'university' THEN ' providing university-level higher education.'
+        WHEN 'technical university' THEN ' focused on technical and applied higher education.'
+        WHEN 'college of education' THEN ' focused on teacher education and professional preparation.'
+        WHEN 'private college of education' THEN ' focused on teacher education and professional preparation.'
+        WHEN 'nursing/health training' THEN ' focused on nursing and health-professions training.'
+        WHEN 'nursing and midwifery training college' THEN ' focused on nursing and midwifery education.'
+        WHEN 'tutorial college' THEN ' providing tutorial and academic preparation.'
+        WHEN 'professional institution' THEN ' providing professional and tertiary-level education.'
+        WHEN 'private tertiary institution' THEN ' providing tertiary-level education and training.'
+        ELSE ' listed in Ghana’s tertiary education directory.'
+      END ||
       CASE
         WHEN nullif(trim(coalesce(u.city, u.location, '')), '') IS NOT NULL
-          THEN ' based in ' || trim(coalesce(u.city, u.location, ''))
-        ELSE ''
-      END,
-      CASE
-        WHEN nullif(trim(u.region), '') IS NOT NULL AND lower(trim(u.region)) <> 'ghana'
-          THEN ', in the ' || trim(u.region) || ' Region'
-        ELSE ''
-      END,
-      ', Ghana. This profile records the institution’s available directory details and links to its official or regulator source where available. A verified founding history and documented institutional achievements have not yet been supplied for this entry.'
-    )
+          THEN ' It is located in ' || trim(coalesce(u.city, u.location, '')) || ', Ghana.'
+        ELSE ' It is listed in Ghana, although a more precise campus location is not currently recorded.'
+      END ||
+      ' GhanaPathFinder links this profile to the Ghana Tertiary Education Commission (GTEC) institution register for reference. A detailed founding history and notable institutional achievements are published only when they can be confirmed from official institutional or regulator sources.'
   ),
   biography_source_url = coalesce(
     nullif(trim(u.biography_source_url), ''),
@@ -216,5 +223,32 @@ SET
   updated_at = now()
 WHERE u.biography IS NULL OR trim(u.biography) = ''
    OR u.achievements IS NULL;
+
+UPDATE public.universities u
+SET achievements = jsonb_build_array(
+  jsonb_build_object(
+    'title', 'Regulatory recognition: active on the GTEC register',
+    'description', 'The Ghana Tertiary Education Commission institution-register record lists this institution as active. This is a regulatory standing, not an award, ranking or performance claim.',
+    'year', null,
+    'source_url', coalesce(
+      (SELECT s FROM unnest(coalesce(u.source_urls, '{}'::text[])) s WHERE s ILIKE '%gtec.edu.gh%' ORDER BY s LIMIT 1),
+      nullif(u.source_url, ''),
+      nullif(u.primary_source_url, '')
+    ),
+    'source_name', 'Ghana Tertiary Education Commission',
+    'verified', true
+  )
+),
+updated_at = now()
+WHERE lower(coalesce(u.gtec_accreditation_status, '')) LIKE '%active%'
+  AND (
+    u.source_url ILIKE '%gtec.edu.gh%'
+    OR u.primary_source_url ILIKE '%gtec.edu.gh%'
+    OR EXISTS (
+      SELECT 1 FROM unnest(coalesce(u.source_urls, '{}'::text[])) s
+      WHERE s ILIKE '%gtec.edu.gh%'
+    )
+  )
+  AND jsonb_array_length(coalesce(u.achievements, '[]'::jsonb)) = 0;
 
 COMMIT;
