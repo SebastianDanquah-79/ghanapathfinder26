@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { generateText } from "ai";
+import { generateText, Output } from "ai";
+import { z } from "zod";
 import { checkApiRateLimit, readJsonBody, rateLimitResponse } from "@/lib/api-rate-limit";
 import { createOpenAIResponsesModel } from "@/lib/openai.server";
 
@@ -35,15 +36,24 @@ const list = (value: unknown, maxItems = 10, maxLength = 120): string[] =>
     ? value.slice(0, maxItems).map((item) => text(item, maxLength)).filter(Boolean)
     : [];
 
-function parseObject(value: string): Record<string, unknown> {
-  const cleaned = value.trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "");
-  const parsed = JSON.parse(cleaned);
-  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
-    throw new Error("The career analysis response was not a JSON object.");
-  }
-  return parsed as Record<string, unknown>;
-}
-
+const careerIntelligenceOutputSchema = z.object({
+  summary: z.string(),
+  recommendations: z.array(z.object({
+    id: z.string(),
+    relevance: z.number(),
+    reason: z.string(),
+    matchingEvidence: z.array(z.string()),
+    skillsToDevelop: z.array(z.string()),
+    starterProjects: z.array(z.string()),
+    nextActions: z.array(z.string()),
+  })).max(4),
+  next90Days: z.array(z.object({
+    period: z.string(),
+    focus: z.string(),
+    actions: z.array(z.string()),
+  })).max(3),
+  evidenceNote: z.string(),
+});
 export const Route = createFileRoute("/api/career-intelligence")({
   server: {
     handlers: {
@@ -120,6 +130,7 @@ export const Route = createFileRoute("/api/career-intelligence")({
         try {
           const result = await generateText({
             model: createOpenAIResponsesModel(),
+            output: Output.object({ schema: careerIntelligenceOutputSchema }),
             system: `You are GhanaPathFinder's Career Intelligence adviser. Give balanced, practical career guidance using the student's supplied profile, WASSCE results and career catalogue.
 
 Rules:
@@ -163,10 +174,11 @@ Return JSON in exactly this shape:
 }
 
 Return at most four recommendations. Relevance is an advisory ranking signal, not a probability or guarantee. Do not recommend every career simply to fill the list.`,
-            maxOutputTokens: 1900,
+            maxOutputTokens: 2800,
           });
 
-          const parsed = parseObject(result.text);
+          const parsed = result.output;
+          if (!parsed) throw new Error("Career Intelligence did not return a complete structured result.");
           const allowed = new Map(candidates.map((candidate) => [candidate.id, candidate]));
           const recommendations = Array.isArray(parsed.recommendations)
             ? parsed.recommendations.slice(0, 4).flatMap((item) => {
