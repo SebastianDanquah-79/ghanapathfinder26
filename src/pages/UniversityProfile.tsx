@@ -34,6 +34,9 @@ const UniversityProfile = () => {
   );
   const { data: programmes, isLoading: loadingProgrammes } = useProgrammes(uni?.id);
   const supportingSources = (uni?.source_urls ?? []).filter((url) => Boolean(url) && url !== uni?.source_url).slice(0, 3);
+  const verifiedAchievements = Array.isArray(uni?.achievements)
+    ? uni.achievements.filter((achievement) => achievement.verified && Boolean(achievement.title?.trim()) && Boolean(achievement.source_url?.trim()))
+    : [];
   const gtecSourceUrl = (uni?.source_urls ?? []).find((url) => url.includes("gtec.edu.gh"));
   const gtecRegistryStatus = uni?.gtec_accreditation_status?.match(/^(Active|Expired) per GTEC/)?.[1] ?? null;
 
@@ -151,32 +154,50 @@ const UniversityProfile = () => {
                   )}
                 </div>
 
-                {(uni.short_description || uni.description) && (
-                  <section className="mt-4 border-t border-border pt-4">
-                    <h2 className="mb-2 text-sm font-semibold text-foreground">About this institution</h2>
-                    {uni.short_description && (
-                      <p className="text-sm text-muted-foreground leading-relaxed">{uni.short_description}</p>
-                    )}
-                    {uni.description && (
-                      <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{uni.description}</p>
-                    )}
-                    {supportingSources.length > 0 && (
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        {supportingSources.map((url) => (
-                          <a
-                            key={url}
-                            href={url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex min-h-9 items-center rounded-lg border border-border bg-secondary px-3 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
-                          >
-                            Read supporting source
+                <section className="mt-4 border-t border-border pt-4">
+                  <h2 className="mb-2 text-sm font-semibold text-foreground">Biography</h2>
+                  <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
+                    {uni.biography || uni.description || uni.short_description || (uni.name + " is listed in GhanaPathFinder’s tertiary institution directory. This profile will be expanded as additional institutional history is confirmed from reliable sources.")}
+                  </p>
+                  {(uni.biography_source_url || supportingSources.length > 0) && (
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {uni.biography_source_url && (
+                        <a href={uni.biography_source_url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-9 items-center rounded-lg border border-border bg-secondary px-3 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground">
+                          Biography source
+                        </a>
+                      )}
+                      {supportingSources.map((url) => (
+                        <a key={url} href={url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-9 items-center rounded-lg border border-border bg-secondary px-3 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground">
+                          Read supporting source
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </section>
+
+                <section className="mt-4 border-t border-border pt-4">
+                  <h2 className="mb-2 text-sm font-semibold text-foreground">Achievements</h2>
+                  {verifiedAchievements.length > 0 ? (
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      {verifiedAchievements.map((achievement, index) => (
+                        <article key={achievement.title + "-" + achievement.source_url + "-" + index} className="border border-border bg-background/50 p-3">
+                          <div className="flex items-start justify-between gap-2">
+                            <h3 className="text-sm font-semibold text-foreground">{achievement.title}</h3>
+                            {achievement.year && <span className="shrink-0 text-xs text-muted-foreground">{achievement.year}</span>}
+                          </div>
+                          {achievement.description && <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{achievement.description}</p>}
+                          <a href={achievement.source_url} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex text-xs font-semibold text-primary hover:underline">
+                            {achievement.source_name || "View source"}
                           </a>
-                        ))}
-                      </div>
-                    )}
-                  </section>
-                )}
+                        </article>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm leading-relaxed text-muted-foreground">
+                      No independently verified achievements have been added to this profile yet. GhanaPathFinder only publishes achievement highlights when they can be supported by a reliable institutional or regulator source.
+                    </p>
+                  )}
+                </section>
                 {uni.campus_vibe && (
                   <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{uni.campus_vibe}</p>
                 )}
