@@ -3,7 +3,21 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { groupFilter, type InstitutionGroup } from "@/lib/legal";
 
-export type University = Tables<"universities">;
+export interface UniversityAchievement {
+  title: string;
+  description?: string | null;
+  year?: number | null;
+  source_url: string;
+  source_name?: string | null;
+  verified: boolean;
+}
+
+export type University = Omit<Tables<"universities">, "biography" | "biography_source_url" | "achievements" | "slug_aliases"> & {
+  biography: string | null;
+  biography_source_url: string | null;
+  achievements: UniversityAchievement[];
+  slug_aliases: string[];
+};
 export type Programme = Tables<"programmes">;
 export type ScholarshipRecord = Tables<"scholarships">;
 
@@ -137,9 +151,22 @@ export const universityQueryOptions = (slug: string) =>
   queryOptions({
     queryKey: ["university", slug],
     queryFn: async () => {
-      const { data, error } = await supabase.from("universities").select("*").eq("slug", slug).maybeSingle();
+      const { data: exactMatch, error } = await supabase.from("universities").select("*").eq("slug", slug).maybeSingle();
       if (error) throw error;
-      const university = data as University | null;
+
+      // Old duplicate profile URLs remain valid after records are consolidated.
+      let row = exactMatch;
+      if (!row) {
+        const { data: aliasMatch, error: aliasError } = await supabase
+          .from("universities")
+          .select("*")
+          .contains("slug_aliases", [slug])
+          .maybeSingle();
+        if (aliasError) throw aliasError;
+        row = aliasMatch;
+      }
+
+      const university = row as University | null;
       return university && !isInstitutionGtecExpired2026(university) ? university : null;
     },
     staleTime: 60_000,
