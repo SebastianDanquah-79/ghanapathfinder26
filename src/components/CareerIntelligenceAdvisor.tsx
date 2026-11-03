@@ -81,16 +81,16 @@ export default function CareerIntelligenceAdvisor({
 
   const candidates = useMemo<Candidate[]>(
     () =>
-      careerPaths.slice(0, 100).map((path) => ({
+      careerPaths.slice(0, 60).map((path) => ({
         id: `${path.major}::${path.career_name}`,
         careerName: path.career_name,
         major: path.major,
-        description: path.description.slice(0, 420),
-        relevantSubjects: path.relevant_subjects.slice(0, 8),
-        recommendedProgrammes: path.recommended_programmes.slice(0, 8),
-        skills: [...path.skills.technical, ...path.skills.soft].slice(0, 10),
-        entryLevelRoles: path.entry_level_roles.slice(0, 8),
-        industries: path.industries.slice(0, 8),
+        description: path.description.slice(0, 220),
+        relevantSubjects: path.relevant_subjects.slice(0, 6),
+        recommendedProgrammes: path.recommended_programmes.slice(0, 5),
+        skills: [...path.skills.technical, ...path.skills.soft].slice(0, 6),
+        entryLevelRoles: path.entry_level_roles.slice(0, 5),
+        industries: path.industries.slice(0, 5),
       })),
     [],
   );
