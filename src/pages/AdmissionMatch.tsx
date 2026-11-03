@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "@/lib/router-compat";
-import { ArrowLeft, ExternalLink, Info, Loader2, Target } from "@/lib/icons";
+import { ArrowLeft, ExternalLink, Info, Loader2, RefreshCw, Target } from "@/lib/icons";
 import { useAuth } from "@/hooks/useAuth";
 import { useReferenceMatches } from "@/hooks/useAdmissionReference";
 import { useUniversities } from "@/hooks/useCatalogue";
@@ -42,7 +42,11 @@ const AdmissionMatch = () => {
   }, [loading, user, navigate]);
 
   const { data: unis } = useUniversities({ pageSize: 100 });
-  const { matches, breakdown, isLoading, error } = useReferenceMatches(search, universityId || undefined);
+  const { matches, breakdown, isLoading, error, refetch, isFetching } = useReferenceMatches(search, universityId || undefined);
+  const admissionErrorMessage =
+    error && typeof error === "object" && "message" in error && typeof error.message === "string"
+      ? error.message
+      : "The admission reference request failed. Retry the database request or refresh this page.";
 
   const filtered = useMemo(
     () =>
@@ -166,9 +170,36 @@ const AdmissionMatch = () => {
           </div>
         )}
         {error && (
-          <p className="text-sm text-destructive py-6">
-            We could not load admission data. Please check your connection and try again.
-          </p>
+          <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-4 my-5" role="alert">
+            <p className="text-sm font-semibold text-foreground">
+              Admission data could not be refreshed.
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              The programme database request failed. Your saved WASSCE results have not been changed.
+            </p>
+            <details className="mt-2">
+              <summary className="cursor-pointer text-xs font-medium text-muted-foreground">Technical detail</summary>
+              <p className="mt-2 break-words text-xs text-muted-foreground">{admissionErrorMessage}</p>
+            </details>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => void refetch()}
+                disabled={isFetching}
+                className="inline-flex min-h-10 items-center gap-2 rounded-lg bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground disabled:opacity-60"
+              >
+                <RefreshCw className={`h-3.5 w-3.5 ${isFetching ? "animate-spin" : ""}`} />
+                {isFetching ? "Retrying…" : "Retry admission data"}
+              </button>
+              <button
+                type="button"
+                onClick={() => window.location.reload()}
+                className="min-h-10 rounded-lg border border-border px-4 py-2 text-xs font-semibold text-foreground"
+              >
+                Refresh page
+              </button>
+            </div>
+          </div>
         )}
 
         {!isLoading && !error && !filtered.length && (
