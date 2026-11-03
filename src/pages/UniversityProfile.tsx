@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import SaveButton from "@/components/SaveButton";
 import OfficialLink from "@/components/OfficialLink";
 import InstitutionMedia from "@/components/InstitutionMedia";
+import UniversityCampusImage from "@/components/UniversityCampusImage";
 import FlagListingButton from "@/components/FlagListingButton";
 import CampusMap from "@/components/CampusMap";
 import { useProgrammes, useUniversity } from "@/hooks/useCatalogue";
@@ -32,6 +33,7 @@ const UniversityProfile = () => {
     uni ? { kind: "university" as const, title: uni.name, subtitle: uni.location ?? undefined, path: `/university/${uni.slug}` } : null,
   );
   const { data: programmes, isLoading: loadingProgrammes } = useProgrammes(uni?.id);
+  const supportingSources = (uni?.source_urls ?? []).filter((url) => Boolean(url) && url !== uni?.source_url).slice(0, 3);
 
   return (
     <div className="min-h-screen bg-background">
@@ -102,7 +104,13 @@ const UniversityProfile = () => {
 
           {uni && (
             <>
-              <InstitutionMedia websiteUrl={uni.website_url} name={uni.name} logoSourceUrl={uni.logo_source_url} googlePlaceId={uni.google_place_id} variant="hero" />
+              <section aria-label="University campus and identity media" className="mb-5">
+                <h2 className="mb-3 text-sm font-semibold text-foreground">Campus, logo and university photographs</h2>
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <InstitutionMedia websiteUrl={uni.website_url} name={uni.name} logoSourceUrl={uni.logo_source_url} googlePlaceId={uni.google_place_id} variant="card" />
+                  <UniversityCampusImage name={uni.name} location={uni.location} placeId={uni.google_place_id} />
+                </div>
+              </section>
 
               <header className="bg-glass rounded-xl p-5 mb-6 mt-4">
                 <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
@@ -141,11 +149,34 @@ const UniversityProfile = () => {
                   )}
                 </div>
 
-                {uni.description && (
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-2">{uni.description}</p>
+                {(uni.short_description || uni.description) && (
+                  <section className="mt-4 border-t border-border pt-4">
+                    <h2 className="mb-2 text-sm font-semibold text-foreground">About this institution</h2>
+                    {uni.short_description && (
+                      <p className="text-sm text-muted-foreground leading-relaxed">{uni.short_description}</p>
+                    )}
+                    {uni.description && (
+                      <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{uni.description}</p>
+                    )}
+                    {supportingSources.length > 0 && (
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {supportingSources.map((url) => (
+                          <a
+                            key={url}
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex min-h-9 items-center rounded-lg border border-border bg-secondary px-3 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground"
+                          >
+                            Read supporting source
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </section>
                 )}
                 {uni.campus_vibe && (
-                  <p className="text-sm text-muted-foreground leading-relaxed">{uni.campus_vibe}</p>
+                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{uni.campus_vibe}</p>
                 )}
 
                 <div className="flex flex-wrap items-center gap-2 mt-5">
