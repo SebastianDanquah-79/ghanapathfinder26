@@ -152,10 +152,10 @@ const CollegeRecommender = () => {
     <section id="recommender" className="py-12 lg:py-28 px-4">
       <div className="max-w-5xl mx-auto">
         <SectionHeader
-          badge="Every accredited institution"
+          badge="Explore listed institutions"
           title="Find Your Realistic"
           highlight="University Match"
-          description="Grades are one part of the picture. We show direct-entry matches, then help you find alternative routes when a particular grade blocks the first door."
+          description="Explore programmes across listed institutions. Where official cut-offs or reliable estimates exist, we label them. When no admission benchmark is available, we still show the programme without presenting it as an admission match."
         />
 
         <div className="flex justify-center mb-6"><UsageCounter /></div>
