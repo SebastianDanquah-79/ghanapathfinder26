@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type FileUIPart, type UIMessage } from "ai";
-import { Download, FileText, Image as ImageIcon, ImagePlus, Paperclip, RotateCcw, X } from "lucide-react";
+import { Check, ClipboardCopy, ExternalLink, FileText, Image as ImageIcon, ImagePlus, Paperclip, RotateCcw, X } from "lucide-react";
 import {
   Conversation,
   ConversationContent,
@@ -24,13 +24,30 @@ const STORAGE_KEY = "gpf.ask.history.v1";
 const MAX_STORED = 40;
 const MAX_ATTACHMENT_BYTES = 2 * 1024 * 1024;
 
-interface GeneratedImagePreview {
-  dataUrl: string;
-  prompt: string;
-}
-
 const textOf = (message: UIMessage) =>
   message.parts.map((part) => (part.type === "text" ? part.text : "")).join("");
+
+const IMAGE_PROMPT_PREFIX = "IMAGE PROMPT:\n";
+
+const enhanceImagePrompt = (prompt: string) =>
+  [
+    "Create an original image based on this request:",
+    prompt,
+    "",
+    "Visual guidance:",
+    "- Use a clear focal subject and a balanced composition.",
+    "- Apply cohesive colours, intentional lighting, and crisp details.",
+    "- Keep the scene coherent and avoid unnecessary clutter.",
+    "- Preserve any exact text requested. Do not invent extra wording, logos, or watermarks.",
+  ].join("\n");
+
+const imagePromptOf = (message: UIMessage): string | null => {
+  if (message.role !== "assistant") return null;
+  const content = textOf(message);
+  return content.startsWith(IMAGE_PROMPT_PREFIX)
+    ? content.slice(IMAGE_PROMPT_PREFIX.length).trim()
+    : null;
+};
 
 const historyWithoutBinaryFiles = (messages: UIMessage[]): UIMessage[] =>
   messages.slice(-MAX_STORED).map((message) => ({
@@ -110,8 +127,7 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
   const [input, setInput] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [imageMode, setImageMode] = useState(false);
-  const [isGeneratingImage, setIsGeneratingImage] = useState(false);
-  const [generatedImages, setGeneratedImages] = useState<Record<string, GeneratedImagePreview>>({});
+  const [copiedPromptId, setCopiedPromptId] = useState<string | null>(null);
   const contextRef = useRef(contextText);
   contextRef.current = contextText;
 
@@ -130,25 +146,11 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
-      // Keep image bytes out of local storage. Preserve a clear note in history
-      // so learners know generated previews are temporary in this chat session.
-      const historyMessages = messages.map((message) => {
-        const generated = generatedImages[message.id];
-        return generated
-          ? {
-              ...message,
-              parts: [{
-                type: "text" as const,
-                text: `Generated image preview is not saved after this browser session. Prompt: ${generated.prompt}`,
-              }],
-            }
-          : message;
-      });
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(historyWithoutBinaryFiles(historyMessages)));
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(historyWithoutBinaryFiles(messages)));
     } catch {
       /* storage full or unavailable — history is best-effort */
     }
-  }, [messages, generatedImages]);
+  }, [messages]);
 
   const ask = useCallback(
     async (text: string, files: FileUIPart[] = []) => {
@@ -187,66 +189,36 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
   );
 
   const createImage = useCallback(
-    async (text: string, files: FileUIPart[] = []) => {
+    (text: string, files: FileUIPart[] = []) => {
       const trimmed = text.trim();
-      if (!trimmed || isLoading || isGeneratingImage) return;
+      if ((!trimmed && files.length === 0) || isLoading) return;
 
       if (files.length > 0) {
-        setError("Remove the attached file before creating an image.");
+        setError("Remove the attached file before preparing an image prompt.");
+        return;
+      }
+      if (!trimmed) {
+        setError("Describe the image you want to create.");
         return;
       }
 
       setError(null);
+      setInput("");
+
       const userMessage: UIMessage = {
         id: crypto.randomUUID(),
         role: "user",
         parts: [{ type: "text", text: trimmed }],
       };
-      setMessages((current) => [...current, userMessage]);
-      setIsGeneratingImage(true);
+      const assistantMessage: UIMessage = {
+        id: crypto.randomUUID(),
+        role: "assistant",
+        parts: [{ type: "text", text: `${IMAGE_PROMPT_PREFIX}${enhanceImagePrompt(trimmed)}` }],
+      };
 
-      try {
-        const response = await fetch("/api/images/generate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt: trimmed }),
-        });
-        const payload = (await response.json().catch(() => ({}))) as {
-          image?: unknown;
-          error?: unknown;
-        };
-
-        if (!response.ok || typeof payload.image !== "string") {
-          throw new Error(
-            typeof payload.error === "string"
-              ? payload.error
-              : "The image could not be generated. Please try again.",
-          );
-        }
-
-        const assistantMessage: UIMessage = {
-          id: crypto.randomUUID(),
-          role: "assistant",
-          parts: [{ type: "text", text: "Here is the image I generated for you." }],
-        };
-        setMessages((current) => [...current, assistantMessage]);
-        setGeneratedImages((current) => ({
-          ...current,
-          [assistantMessage.id]: { dataUrl: payload.image as string, prompt: trimmed },
-        }));
-        setInput("");
-      } catch (generationError) {
-        console.error("GhanaPathFinder image generation failed", generationError);
-        setError(
-          generationError instanceof Error
-            ? generationError.message
-            : "The image could not be generated. Please try again.",
-        );
-      } finally {
-        setIsGeneratingImage(false);
-      }
+      setMessages((current) => [...current, userMessage, assistantMessage]);
     },
-    [isGeneratingImage, isLoading, setMessages],
+    [isLoading, setMessages],
   );
 
   return (
@@ -294,29 +266,58 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
               <Message from={message.role} key={message.id}>
                 <MessageContent>
                   {message.role === "assistant" ? (
-                    <>
-                      <MessageResponse>{textOf(message)}</MessageResponse>
-                      {generatedImages[message.id] && (
-                        <div className="mt-3 max-w-full overflow-hidden rounded-lg border border-border">
-                          <img
-                            src={generatedImages[message.id].dataUrl}
-                            alt={`Generated image: ${generatedImages[message.id].prompt.slice(0, 160)}`}
-                            className="block h-auto max-h-[520px] w-full object-contain"
-                          />
-                          <div className="flex items-center justify-between gap-3 border-t border-border px-3 py-2">
-                            <span className="text-[10px] text-muted-foreground">Temporary preview</span>
-                            <a
-                              href={generatedImages[message.id].dataUrl}
-                              download={`ghanapathfinder-image-${message.id}.webp`}
-                              className="inline-flex min-h-8 items-center gap-1.5 rounded-md border border-border px-2.5 text-xs font-medium text-foreground hover:bg-muted"
+                    (() => {
+                      const preparedPrompt = imagePromptOf(message);
+                      return preparedPrompt ? (
+                        <div className="w-full space-y-3">
+                          <p className="text-sm font-medium text-foreground">Your image prompt is ready.</p>
+                          <div className="rounded-lg border border-border bg-muted/40 p-3">
+                            <p className="mb-2 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+                              Enhanced prompt
+                            </p>
+                            <p className="whitespace-pre-wrap break-words text-xs leading-relaxed text-foreground">
+                              {preparedPrompt}
+                            </p>
+                          </div>
+                          <div className="flex flex-wrap items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={async () => {
+                                try {
+                                  if (!navigator.clipboard?.writeText) throw new Error("Clipboard unavailable");
+                                  await navigator.clipboard.writeText(preparedPrompt);
+                                  setCopiedPromptId(message.id);
+                                } catch {
+                                  setError("Clipboard access is unavailable. Select the prompt above and copy it manually.");
+                                }
+                              }}
+                              className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-medium text-foreground hover:bg-muted"
                             >
-                              <Download className="size-3.5" />
-                              Download
+                              {copiedPromptId === message.id ? (
+                                <Check className="size-3.5" />
+                              ) : (
+                                <ClipboardCopy className="size-3.5" />
+                              )}
+                              {copiedPromptId === message.id ? "Copied" : "Copy prompt"}
+                            </button>
+                            <a
+                              href="https://designer.microsoft.com/"
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-flex min-h-9 items-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:opacity-90"
+                            >
+                              Open Microsoft Designer
+                              <ExternalLink className="size-3.5" />
                             </a>
                           </div>
+                          <p className="text-[10px] leading-relaxed text-muted-foreground">
+                            In Designer, paste the prompt and select Generate. Download your image there, then return to GhanaPathFinder and attach it in chat mode. Designer is free with monthly credits; a Microsoft account and age or regional eligibility may be required. Microsoft licenses Designer for personal, non-commercial use.
+                          </p>
                         </div>
-                      )}
-                    </>
+                      ) : (
+                        <MessageResponse>{textOf(message)}</MessageResponse>
+                      );
+                    })()
                   ) : (
                     <>
                       {textOf(message) && (
@@ -352,7 +353,6 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
             ))
           )}
           {status === "submitted" && <Shimmer className="text-sm">Thinking…</Shimmer>}
-          {isGeneratingImage && <Shimmer className="text-sm">Creating your image…</Shimmer>}
           {error && (
             <div className="flex flex-wrap items-center gap-2 text-xs text-destructive" role="alert">
               <span>{error}</span>
@@ -396,7 +396,7 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
           <PromptInputFooter className="justify-between">
             <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
               <PromptInputButton
-                disabled={isLoading || isGeneratingImage}
+                disabled={isLoading}
                 onClick={() => {
                   setImageMode((current) => !current);
                   setError(null);
@@ -408,18 +408,18 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
                 <ImagePlus className="size-4" />
                 <span className="hidden text-xs sm:inline">{imageMode ? "Chat mode" : "Create image"}</span>
               </PromptInputButton>
-              <AskAttachmentControls disabled={isLoading || isGeneratingImage || imageMode} />
+              <AskAttachmentControls disabled={isLoading || imageMode} />
             </div>
             <PromptInputSubmit
               status={status}
-              disabled={isLoading || isGeneratingImage}
+              disabled={isLoading}
               onStop={stop}
             />
           </PromptInputFooter>
         </PromptInput>
         <p className="mt-2 text-[10px] text-muted-foreground">
           {imageMode
-            ? "Image generation uses OpenAI API credits. Generated previews are temporary and are not saved to your account."
+            ? "GhanaPathFinder prepares your prompt for an external image creator. No paid image-generation API is used by this chatbot."
             : "Upload one PDF or image at a time, up to 2 MB. File contents are not saved in chat history."}
         </p>
       </div>
