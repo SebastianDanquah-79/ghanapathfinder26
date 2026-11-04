@@ -34,8 +34,15 @@ const UniversityProfile = () => {
   );
   const { data: programmes, isLoading: loadingProgrammes } = useProgrammes(uni?.id);
   const supportingSources = (uni?.source_urls ?? []).filter((url) => Boolean(url) && url !== uni?.source_url).slice(0, 3);
-  const verifiedAchievements = Array.isArray(uni?.achievements)
+  const institutionProfile = uni?.institution_profile ?? {};
+  const verifiedRegulatoryItems = Array.isArray(uni?.achievements)
     ? uni.achievements.filter((achievement) => achievement.verified && Boolean(achievement.title?.trim()) && Boolean(achievement.source_url?.trim()))
+    : [];
+  const profileMilestones = Array.isArray(institutionProfile.milestones)
+    ? institutionProfile.milestones.filter((item) => item.verified && Boolean(item.title?.trim()) && Boolean(item.source_url?.trim()))
+    : [];
+  const profileSources = Array.isArray(institutionProfile.sources)
+    ? institutionProfile.sources.filter((source) => Boolean(source.url?.trim()))
     : [];
   const gtecSourceUrl = (uni?.source_urls ?? []).find((url) => url.includes("gtec.edu.gh"));
   const gtecRegistryStatus = uni?.gtec_accreditation_status?.match(/^(Active|Expired) per GTEC/)?.[1] ?? null;
@@ -155,49 +162,144 @@ const UniversityProfile = () => {
                 </div>
 
                 <section className="mt-4 border-t border-border pt-4">
-                  <h2 className="mb-2 text-sm font-semibold text-foreground">Biography</h2>
-                  <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
-                    {uni.biography || uni.description || uni.short_description || (uni.name + " is listed in GhanaPathFinder’s tertiary institution directory. This profile will be expanded as additional institutional history is confirmed from reliable sources.")}
-                  </p>
-                  {(uni.biography_source_url || supportingSources.length > 0) && (
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <h2 className="mb-2 text-sm font-semibold text-foreground">About the institution</h2>
+                    <span className="border border-border px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+                      {institutionProfile.profile_status === "researched" ? "Researched profile" : institutionProfile.profile_status === "partial" ? "Partially researched" : "Profile research pending"}
+                    </span>
+                  </div>
+                  {(institutionProfile.overview || uni.biography) ? (
+                    <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-line">
+                      {institutionProfile.overview || uni.biography}
+                    </p>
+                  ) : (
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      A full institutional profile has not yet been researched for this entry. GhanaPathFinder will publish the school’s history, specialisms and reputation only when these can be confirmed from official institutional or regulator sources.
+                    </p>
+                  )}
+                  {(uni.biography_source_url || profileSources.length > 0 || supportingSources.length > 0) && (
                     <div className="mt-3 flex flex-wrap gap-2">
                       {uni.biography_source_url && (
-                        <a href={uni.biography_source_url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-9 items-center rounded-lg border border-border bg-secondary px-3 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground">
-                          Biography source
+                        <a href={uni.biography_source_url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-9 items-center border border-border bg-secondary px-3 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground">
+                          Official profile source
                         </a>
                       )}
+                      {profileSources.map((source) => (
+                        <a key={source.url} href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-9 items-center border border-border bg-secondary px-3 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground">
+                          {source.label || "Official source"}
+                        </a>
+                      ))}
                       {supportingSources.map((url) => (
-                        <a key={url} href={url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-9 items-center rounded-lg border border-border bg-secondary px-3 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground">
-                          Read supporting source
+                        <a key={url} href={url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-9 items-center border border-border bg-secondary px-3 text-xs font-medium text-muted-foreground transition-colors hover:text-foreground">
+                          Supporting source
                         </a>
                       ))}
                     </div>
                   )}
                 </section>
 
-                <section className="mt-4 border-t border-border pt-4">
-                  <h2 className="mb-2 text-sm font-semibold text-foreground">Achievements &amp; recognitions</h2>
-                  {verifiedAchievements.length > 0 ? (
-                    <div className="grid gap-3 sm:grid-cols-2">
-                      {verifiedAchievements.map((achievement, index) => (
-                        <article key={achievement.title + "-" + achievement.source_url + "-" + index} className="border border-border bg-background/50 p-3">
-                          <div className="flex items-start justify-between gap-2">
-                            <h3 className="text-sm font-semibold text-foreground">{achievement.title}</h3>
-                            {achievement.year && <span className="shrink-0 text-xs text-muted-foreground">{achievement.year}</span>}
-                          </div>
-                          {achievement.description && <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{achievement.description}</p>}
-                          <a href={achievement.source_url} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex text-xs font-semibold text-primary hover:underline">
-                            {achievement.source_name || "View source"}
-                          </a>
+                {institutionProfile.history && (
+                  <section className="mt-4 border-t border-border pt-4">
+                    <h2 className="mb-2 text-sm font-semibold text-foreground">History and development</h2>
+                    <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-line">{institutionProfile.history}</p>
+                  </section>
+                )}
+
+                {Array.isArray(institutionProfile.what_known_for) && institutionProfile.what_known_for.length > 0 && (
+                  <section className="mt-4 border-t border-border pt-4">
+                    <h2 className="mb-2 text-sm font-semibold text-foreground">What this school is known for</h2>
+                    <ul className="list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-muted-foreground">
+                      {institutionProfile.what_known_for.map((item, index) => <li key={index}>{item}</li>)}
+                    </ul>
+                  </section>
+                )}
+
+                {Array.isArray(institutionProfile.academic_strengths) && institutionProfile.academic_strengths.length > 0 && (
+                  <section className="mt-4 border-t border-border pt-4">
+                    <h2 className="mb-2 text-sm font-semibold text-foreground">Academic strengths and areas of study</h2>
+                    <ul className="list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-muted-foreground">
+                      {institutionProfile.academic_strengths.map((item, index) => <li key={index}>{item}</li>)}
+                    </ul>
+                  </section>
+                )}
+
+                {Array.isArray(institutionProfile.schools_and_faculties) && institutionProfile.schools_and_faculties.length > 0 && (
+                  <section className="mt-4 border-t border-border pt-4">
+                    <h2 className="mb-2 text-sm font-semibold text-foreground">Schools, faculties and institutes</h2>
+                    <ul className="grid gap-1.5 sm:grid-cols-2">
+                      {institutionProfile.schools_and_faculties.map((item, index) => <li key={index} className="border border-border px-3 py-2 text-sm text-muted-foreground">{item}</li>)}
+                    </ul>
+                  </section>
+                )}
+
+                {Array.isArray(institutionProfile.research_and_innovation) && institutionProfile.research_and_innovation.length > 0 && (
+                  <section className="mt-4 border-t border-border pt-4">
+                    <h2 className="mb-2 text-sm font-semibold text-foreground">Research, innovation and partnerships</h2>
+                    <ul className="list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-muted-foreground">
+                      {institutionProfile.research_and_innovation.map((item, index) => <li key={index}>{item}</li>)}
+                    </ul>
+                  </section>
+                )}
+
+                {(institutionProfile.campus_and_student_life || (Array.isArray(institutionProfile.facilities) && institutionProfile.facilities.length > 0)) && (
+                  <section className="mt-4 border-t border-border pt-4">
+                    <h2 className="mb-2 text-sm font-semibold text-foreground">Campus, facilities and student life</h2>
+                    {institutionProfile.campus_and_student_life && <p className="text-sm leading-relaxed text-muted-foreground">{institutionProfile.campus_and_student_life}</p>}
+                    {Array.isArray(institutionProfile.facilities) && institutionProfile.facilities.length > 0 && (
+                      <ul className="mt-2 list-disc space-y-1.5 pl-5 text-sm leading-relaxed text-muted-foreground">
+                        {institutionProfile.facilities.map((item, index) => <li key={index}>{item}</li>)}
+                      </ul>
+                    )}
+                  </section>
+                )}
+
+                {Array.isArray(institutionProfile.notable_alumni) && institutionProfile.notable_alumni.length > 0 && (
+                  <section className="mt-4 border-t border-border pt-4">
+                    <h2 className="mb-2 text-sm font-semibold text-foreground">Notable alumni</h2>
+                    <div className="grid gap-2 sm:grid-cols-2">
+                      {institutionProfile.notable_alumni.map((alumnus, index) => (
+                        <article key={alumnus.name + index} className="border border-border p-3">
+                          <h3 className="text-sm font-semibold text-foreground">{alumnus.name}</h3>
+                          {alumnus.description && <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{alumnus.description}</p>}
+                          {alumnus.source_url && <a href={alumnus.source_url} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex text-xs font-semibold text-primary hover:underline">Source</a>}
                         </article>
                       ))}
                     </div>
-                  ) : (
-                    <p className="text-sm leading-relaxed text-muted-foreground">
-                      No independently verified awards, milestones or recognitions have been published for this institution yet. GhanaPathFinder only lists achievement highlights when they are supported by a reliable institutional or regulator source.
-                    </p>
-                  )}
-                </section>
+                  </section>
+                )}
+
+                {profileMilestones.length > 0 && (
+                  <section className="mt-4 border-t border-border pt-4">
+                    <h2 className="mb-2 text-sm font-semibold text-foreground">Achievements and institutional milestones</h2>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      {profileMilestones.map((milestone, index) => (
+                        <article key={milestone.title + milestone.source_url + index} className="border border-border bg-background/50 p-3">
+                          <div className="flex items-start justify-between gap-2">
+                            <h3 className="text-sm font-semibold text-foreground">{milestone.title}</h3>
+                            {milestone.year && <span className="shrink-0 text-xs text-muted-foreground">{milestone.year}</span>}
+                          </div>
+                          {milestone.description && <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{milestone.description}</p>}
+                          <a href={milestone.source_url} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex text-xs font-semibold text-primary hover:underline">View source</a>
+                        </article>
+                      ))}
+                    </div>
+                  </section>
+                )}
+
+                {verifiedRegulatoryItems.length > 0 && (
+                  <section className="mt-4 border-t border-border pt-4">
+                    <h2 className="mb-2 text-sm font-semibold text-foreground">Accreditation and regulatory recognition</h2>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      {verifiedRegulatoryItems.map((item, index) => (
+                        <article key={item.title + item.source_url + index} className="border border-border bg-background/50 p-3">
+                          <h3 className="text-sm font-semibold text-foreground">{item.title}</h3>
+                          {item.description && <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{item.description}</p>}
+                          <a href={item.source_url} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex text-xs font-semibold text-primary hover:underline">{item.source_name || "View source"}</a>
+                        </article>
+                      ))}
+                    </div>
+                  </section>
+                )}
                 {uni.campus_vibe && (
                   <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{uni.campus_vibe}</p>
                 )}
