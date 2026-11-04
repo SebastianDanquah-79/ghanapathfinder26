@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type FileUIPart, type UIMessage } from "ai";
-import { FileText, Image as ImageIcon, Paperclip, RotateCcw, X } from "lucide-react";
+import { Download, FileText, Image as ImageIcon, ImagePlus, Paperclip, RotateCcw, X } from "lucide-react";
 import {
   Conversation,
   ConversationContent,
@@ -23,6 +23,11 @@ import { buildAskContext, type AskContextItem } from "@/lib/askContext";
 const STORAGE_KEY = "gpf.ask.history.v1";
 const MAX_STORED = 40;
 const MAX_ATTACHMENT_BYTES = 2 * 1024 * 1024;
+
+interface GeneratedImagePreview {
+  dataUrl: string;
+  prompt: string;
+}
 
 const textOf = (message: UIMessage) =>
   message.parts.map((part) => (part.type === "text" ? part.text : "")).join("");
@@ -104,6 +109,9 @@ const AskAttachmentControls = ({ disabled }: { disabled: boolean }) => {
 const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChatProps) => {
   const [input, setInput] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [imageMode, setImageMode] = useState(false);
+  const [isGeneratingImage, setIsGeneratingImage] = useState(false);
+  const [generatedImages, setGeneratedImages] = useState<Record<string, GeneratedImagePreview>>({});
   const contextRef = useRef(contextText);
   contextRef.current = contextText;
 
@@ -122,11 +130,25 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(historyWithoutBinaryFiles(messages)));
+      // Keep image bytes out of local storage. Preserve a clear note in history
+      // so learners know generated previews are temporary in this chat session.
+      const historyMessages = messages.map((message) => {
+        const generated = generatedImages[message.id];
+        return generated
+          ? {
+              ...message,
+              parts: [{
+                type: "text" as const,
+                text: `Generated image preview is not saved after this browser session. Prompt: ${generated.prompt}`,
+              }],
+            }
+          : message;
+      });
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(historyWithoutBinaryFiles(historyMessages)));
     } catch {
       /* storage full or unavailable — history is best-effort */
     }
-  }, [messages]);
+  }, [messages, generatedImages]);
 
   const ask = useCallback(
     async (text: string, files: FileUIPart[] = []) => {
@@ -164,6 +186,69 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
     [isLoading, sendMessage, setMessages],
   );
 
+  const createImage = useCallback(
+    async (text: string, files: FileUIPart[] = []) => {
+      const trimmed = text.trim();
+      if (!trimmed || isLoading || isGeneratingImage) return;
+
+      if (files.length > 0) {
+        setError("Remove the attached file before creating an image.");
+        return;
+      }
+
+      setError(null);
+      const userMessage: UIMessage = {
+        id: crypto.randomUUID(),
+        role: "user",
+        parts: [{ type: "text", text: trimmed }],
+      };
+      setMessages((current) => [...current, userMessage]);
+      setIsGeneratingImage(true);
+
+      try {
+        const response = await fetch("/api/images/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: trimmed }),
+        });
+        const payload = (await response.json().catch(() => ({}))) as {
+          image?: unknown;
+          error?: unknown;
+        };
+
+        if (!response.ok || typeof payload.image !== "string") {
+          throw new Error(
+            typeof payload.error === "string"
+              ? payload.error
+              : "The image could not be generated. Please try again.",
+          );
+        }
+
+        const assistantMessage: UIMessage = {
+          id: crypto.randomUUID(),
+          role: "assistant",
+          parts: [{ type: "text", text: "Here is the image I generated for you." }],
+        };
+        setMessages((current) => [...current, assistantMessage]);
+        setGeneratedImages((current) => ({
+          ...current,
+          [assistantMessage.id]: { dataUrl: payload.image as string, prompt: trimmed },
+        }));
+        setInput("");
+      } catch (generationError) {
+        console.error("GhanaPathFinder image generation failed", generationError);
+        setError(
+          generationError instanceof Error
+            ? generationError.message
+            : "The image could not be generated. Please try again.",
+        );
+      } finally {
+        setIsGeneratingImage(false);
+      }
+    },
+    [isGeneratingImage, isLoading, setMessages],
+  );
+
   return (
     <div className="flex flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm">
       <div className="flex items-center justify-between gap-2 border-b border-border px-3 py-2">
@@ -196,7 +281,7 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
                   <button
                     key={suggestion}
                     type="button"
-                    onClick={() => void ask(suggestion)}
+                    onClick={() => void (imageMode ? createImage(suggestion) : ask(suggestion))}
                     className="min-h-10 rounded-lg border border-border px-3 py-2 text-[11px] text-muted-foreground hover:border-primary/50 hover:text-foreground"
                   >
                     {suggestion}
@@ -209,7 +294,29 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
               <Message from={message.role} key={message.id}>
                 <MessageContent>
                   {message.role === "assistant" ? (
-                    <MessageResponse>{textOf(message)}</MessageResponse>
+                    <>
+                      <MessageResponse>{textOf(message)}</MessageResponse>
+                      {generatedImages[message.id] && (
+                        <div className="mt-3 max-w-full overflow-hidden rounded-lg border border-border">
+                          <img
+                            src={generatedImages[message.id].dataUrl}
+                            alt={`Generated image: ${generatedImages[message.id].prompt.slice(0, 160)}`}
+                            className="block h-auto max-h-[520px] w-full object-contain"
+                          />
+                          <div className="flex items-center justify-between gap-3 border-t border-border px-3 py-2">
+                            <span className="text-[10px] text-muted-foreground">Temporary preview</span>
+                            <a
+                              href={generatedImages[message.id].dataUrl}
+                              download={`ghanapathfinder-image-${message.id}.webp`}
+                              className="inline-flex min-h-8 items-center gap-1.5 rounded-md border border-border px-2.5 text-xs font-medium text-foreground hover:bg-muted"
+                            >
+                              <Download className="size-3.5" />
+                              Download
+                            </a>
+                          </div>
+                        </div>
+                      )}
+                    </>
                   ) : (
                     <>
                       {textOf(message) && (
@@ -245,6 +352,7 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
             ))
           )}
           {status === "submitted" && <Shimmer className="text-sm">Thinking…</Shimmer>}
+          {isGeneratingImage && <Shimmer className="text-sm">Creating your image…</Shimmer>}
           {error && (
             <div className="flex flex-wrap items-center gap-2 text-xs text-destructive" role="alert">
               <span>{error}</span>
@@ -273,25 +381,46 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
           onError={(attachmentError) => setError(attachmentError.message)}
           onSubmit={async (message, event) => {
             event.preventDefault();
-            await ask(message.text || input, message.files);
+            if (imageMode) {
+              await createImage(message.text || input, message.files);
+            } else {
+              await ask(message.text || input, message.files);
+            }
           }}
         >
           <PromptInputTextarea
             value={input}
             onChange={(event) => setInput(event.currentTarget.value)}
-            placeholder="Message GhanaPathFinder…"
+            placeholder={imageMode ? "Describe the image you want to create…" : "Message GhanaPathFinder…"}
           />
           <PromptInputFooter className="justify-between">
-            <AskAttachmentControls disabled={isLoading} />
+            <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
+              <PromptInputButton
+                disabled={isLoading || isGeneratingImage}
+                onClick={() => {
+                  setImageMode((current) => !current);
+                  setError(null);
+                }}
+                tooltip={imageMode ? "Switch back to chat" : "Create an image"}
+                aria-label={imageMode ? "Switch back to chat" : "Create an image"}
+                aria-pressed={imageMode}
+              >
+                <ImagePlus className="size-4" />
+                <span className="hidden text-xs sm:inline">{imageMode ? "Chat mode" : "Create image"}</span>
+              </PromptInputButton>
+              <AskAttachmentControls disabled={isLoading || isGeneratingImage || imageMode} />
+            </div>
             <PromptInputSubmit
               status={status}
-              disabled={isLoading}
+              disabled={isLoading || isGeneratingImage}
               onStop={stop}
             />
           </PromptInputFooter>
         </PromptInput>
         <p className="mt-2 text-[10px] text-muted-foreground">
-          Upload one PDF or image at a time, up to 2 MB. File contents are not saved in chat history.
+          {imageMode
+            ? "Image generation uses OpenAI API credits. Generated previews are temporary and are not saved to your account."
+            : "Upload one PDF or image at a time, up to 2 MB. File contents are not saved in chat history."}
         </p>
       </div>
     </div>
