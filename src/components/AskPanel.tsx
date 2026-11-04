@@ -301,17 +301,17 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
                               {copiedPromptId === message.id ? "Copied" : "Copy prompt"}
                             </button>
                             <a
-                              href="https://designer.microsoft.com/"
+                              href="https://gemini.google.com/app"
                               target="_blank"
                               rel="noreferrer"
                               className="inline-flex min-h-9 items-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:opacity-90"
                             >
-                              Open Microsoft Designer
+                              Open Gemini
                               <ExternalLink className="size-3.5" />
                             </a>
                           </div>
                           <p className="text-[10px] leading-relaxed text-muted-foreground">
-                            In Designer, paste the prompt and select Generate. Download your image there, then return to GhanaPathFinder and attach it in chat mode. Designer is free with monthly credits; a Microsoft account and age or regional eligibility may be required. Microsoft licenses Designer for personal, non-commercial use.
+                            In Gemini, paste the prompt and ask it to create an image. Download the result, then return to GhanaPathFinder and attach it in chat mode. Image-generation access and usage limits depend on your Google account, age eligibility, and region.
                           </p>
                         </div>
                       ) : (
