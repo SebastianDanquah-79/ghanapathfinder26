@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "@/lib/router-compat";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
@@ -18,6 +18,7 @@ type MentorForm = {
   mentorship_modes: string[];
   biography: string;
   public_profile_url: string;
+  mentor_confirmed_18_plus: boolean;
 };
 
 const initialForm: MentorForm = {
@@ -30,6 +31,7 @@ const initialForm: MentorForm = {
   mentorship_modes: ["online"],
   biography: "",
   public_profile_url: "",
+  mentor_confirmed_18_plus: false,
 };
 
 const fieldClass = "w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/40";
@@ -46,6 +48,7 @@ const Mentorship = () => {
   const [topic, setTopic] = useState("");
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
+  const [adminReviewChecks, setAdminReviewChecks] = useState<Record<string, boolean>>({});
 
   const rolesQuery = useQuery({
     queryKey: ["mentorship-account-roles", user?.id],
@@ -101,7 +104,7 @@ const Mentorship = () => {
     enabled: !!user && isAdmin,
     queryFn: async () => {
       const { data, error } = await db.from("mentor_applications")
-        .select("id,user_id,full_name,institution,programme,study_stage,region,expertise,mentorship_modes,biography,public_profile_url,created_at")
+        .select("id,user_id,full_name,institution,programme,study_stage,region,expertise,mentorship_modes,biography,public_profile_url,mentor_confirmed_18_plus,created_at")
         .eq("application_status", "pending")
         .order("created_at", { ascending: true })
         .limit(100);
@@ -115,6 +118,22 @@ const Mentorship = () => {
     [mentorQuery.data, user?.id],
   );
   const myApplication = applicationQuery.data;
+
+  useEffect(() => {
+    if (!myApplication) return;
+    setForm({
+      full_name: myApplication.full_name ?? "",
+      institution: myApplication.institution ?? "",
+      programme: myApplication.programme ?? "",
+      study_stage: myApplication.study_stage ?? "tertiary_year_3",
+      region: myApplication.region ?? "",
+      expertise: (myApplication.expertise ?? []).join(", "),
+      mentorship_modes: myApplication.mentorship_modes ?? ["online"],
+      biography: myApplication.biography ?? "",
+      public_profile_url: myApplication.public_profile_url ?? "",
+      mentor_confirmed_18_plus: Boolean(myApplication.mentor_confirmed_18_plus),
+    });
+  }, [myApplication]);
   const receivedRequests = (requestsQuery.data ?? []).filter((item: any) => item.mentor_id === user?.id);
   const sentRequests = (requestsQuery.data ?? []).filter((item: any) => item.student_id === user?.id);
   const visibleMentors = (mentorQuery.data ?? []).filter((mentor: any) => mentor.user_id !== user?.id);
@@ -140,6 +159,10 @@ const Mentorship = () => {
       toast.error("Choose at least one way you can mentor.");
       return;
     }
+    if (!form.mentor_confirmed_18_plus) {
+      toast.error("The mentor programme is only for applicants aged 18 or older.");
+      return;
+    }
     setApplying(true);
     try {
       const { error } = await db.from("mentor_applications").upsert({
@@ -153,6 +176,7 @@ const Mentorship = () => {
         mentorship_modes: form.mentorship_modes,
         biography: form.biography.trim().slice(0, 900),
         public_profile_url: null,
+        mentor_confirmed_18_plus: form.mentor_confirmed_18_plus,
         application_status: "pending",
         updated_at: new Date().toISOString(),
       }, { onConflict: "user_id" });
@@ -234,7 +258,7 @@ const Mentorship = () => {
 
         <div className="mb-5 flex items-start gap-3 rounded-xl border border-border bg-secondary/40 p-4">
           <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
-          <p className="text-xs leading-5 text-muted-foreground">Profiles are listed only after an administrator reviews the person's identity, institution and eligibility. Requests stay inside the platform. Do not share your home address, personal phone number, passwords or private documents in a mentorship message. Arrange any in-person meeting only through an appropriate school or guardian-approved setting.</p>
+          <p className="text-xs leading-5 text-muted-foreground">Only adult mentors (18+) can be listed, and an administrator must independently check identity and current institution or fellowship status before approval. Requests stay inside GhanaPathFinder. Do not share your home address, personal phone number, passwords or private documents. Do not arrange private meetings or move a mentorship conversation off-platform.</p>
         </div>
 
         <section className={cardClass + " mb-5"}>
@@ -283,7 +307,7 @@ const Mentorship = () => {
         {!myMentorProfile && (
           <section className={cardClass + " mb-5"}>
             <div className="flex items-center gap-2"><BadgeCheck className="h-5 w-5 text-primary" /><h2 className="font-semibold">Apply to become a mentor</h2></div>
-            <p className="mt-1 text-xs leading-5 text-muted-foreground">For upper-year university students and eligible technology fellows who can give responsible, practical peer guidance. Submitting an application does not make a profile public. An administrator must review and approve it first.</p>
+            <p className="mt-1 text-xs leading-5 text-muted-foreground">For university students, graduates and technology fellows aged 18 or older who can give responsible, practical peer guidance online. Submitting an application does not make a profile public. An administrator must independently check identity, age eligibility and institution or fellowship status before approval.</p>
             {myApplication && <p className="mt-3 rounded-lg bg-secondary/50 p-3 text-xs text-muted-foreground">Application status: <strong className="capitalize text-foreground">{myApplication.application_status}</strong>{myApplication.application_status === "pending" ? " · Awaiting review." : myApplication.application_status === "rejected" ? " · You may revise and resubmit your application." : ""}</p>}
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <label className="text-xs text-muted-foreground">Full name<input className={fieldClass + " mt-1"} value={form.full_name} onChange={(event) => updateForm("full_name", event.target.value)} maxLength={100} /></label>
@@ -294,7 +318,8 @@ const Mentorship = () => {
               <label className="text-xs text-muted-foreground sm:col-span-2">Areas you can advise on (comma separated)<input className={fieldClass + " mt-1"} value={form.expertise} onChange={(event) => updateForm("expertise", event.target.value)} maxLength={400} placeholder="Programme choices, campus life, software development, scholarships" /></label>
               <label className="text-xs text-muted-foreground sm:col-span-2">Short biography<textarea className={fieldClass + " mt-1 min-h-24 resize-y"} value={form.biography} onChange={(event) => updateForm("biography", event.target.value)} maxLength={900} placeholder="Describe what you study or do and what guidance you can offer." /></label>
             </div>
-            <div className="mt-3"><p className="text-xs font-semibold">How can you mentor?</p><div className="mt-2 flex flex-wrap gap-2">{["online","in-person","hybrid"].map((mode) => <button key={mode} type="button" aria-pressed={form.mentorship_modes.includes(mode)} onClick={() => toggleMode(mode)} className={`rounded-full border px-3 py-1.5 text-xs capitalize ${form.mentorship_modes.includes(mode) ? "border-primary bg-primary/10 text-primary" : "border-border text-muted-foreground"}`}>{mode}</button>)}</div></div>
+            <div className="mt-3"><p className="text-xs font-semibold">Mentorship format</p><p className="mt-1 text-xs text-muted-foreground">Online requests and guidance through GhanaPathFinder only.</p></div>
+            <label className="mt-4 flex items-start gap-2 text-xs leading-5 text-muted-foreground"><input type="checkbox" checked={form.mentor_confirmed_18_plus} onChange={(event) => updateForm("mentor_confirmed_18_plus", event.target.checked)} className="mt-0.5 h-4 w-4 accent-[hsl(var(--primary))]" />I confirm that I am at least 18 years old. I understand that GhanaPathFinder will independently review my identity and institution or fellowship status before any profile can be listed.</label>
             <button type="button" onClick={() => void submitApplication()} disabled={applying || myApplication?.application_status === "pending"} className="mt-4 inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground disabled:opacity-50">{applying ? <Loader2 className="h-4 w-4 animate-spin" /> : <CheckCircle2 className="h-4 w-4" />} {myApplication?.application_status === "pending" ? "Application under review" : "Submit for verification"}</button>
           </section>
         )}
@@ -305,7 +330,7 @@ const Mentorship = () => {
           <section className={cardClass + " mb-5"}>
             <div className="flex items-center justify-between gap-3"><div><h2 className="font-semibold">Administrator · Mentor verification queue</h2><p className="mt-1 text-xs text-muted-foreground">Check identity, current institution or fellowship status, age eligibility and suitability before approval.</p></div><span className="text-xs text-muted-foreground">{pendingApplicationsQuery.data?.length ?? 0} pending</span></div>
             {pendingApplicationsQuery.isLoading ? <p className="mt-3 text-sm text-muted-foreground">Loading applications…</p> : pendingApplicationsQuery.data?.length ? <div className="mt-3 space-y-3">
-              {pendingApplicationsQuery.data.map((application: any) => <article key={application.id} className="rounded-lg border border-border p-4"><h3 className="font-semibold">{application.full_name}</h3><p className="mt-1 text-xs text-muted-foreground">{application.institution}{application.programme ? ` · ${application.programme}` : ""} · {application.study_stage}</p><p className="mt-2 text-sm leading-6 text-muted-foreground">{application.biography}</p><p className="mt-2 text-xs text-muted-foreground">Expertise: {(application.expertise ?? []).join(", ") || "Not provided"} · Modes: {(application.mentorship_modes ?? []).join(", ")}</p><div className="mt-3 flex gap-2"><button type="button" onClick={() => void reviewApplication(application.id, "verified")} className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground"><CheckCircle2 className="h-3.5 w-3.5" /> Verify and publish</button><button type="button" onClick={() => void reviewApplication(application.id, "rejected")} className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-semibold"><XCircle className="h-3.5 w-3.5" /> Reject</button></div></article>)}
+              {pendingApplicationsQuery.data.map((application: any) => <article key={application.id} className="rounded-lg border border-border p-4"><h3 className="font-semibold">{application.full_name}</h3><p className="mt-1 text-xs text-muted-foreground">{application.institution}{application.programme ? ` · ${application.programme}` : ""} · {application.study_stage}</p><p className="mt-2 text-sm leading-6 text-muted-foreground">{application.biography}</p><p className="mt-2 text-xs text-muted-foreground">Expertise: {(application.expertise ?? []).join(", ") || "Not provided"} · Modes: {(application.mentorship_modes ?? []).join(", ")}</p><label className="mt-3 flex items-start gap-2 text-xs leading-5 text-muted-foreground"><input type="checkbox" checked={Boolean(adminReviewChecks[application.id])} onChange={(event) => setAdminReviewChecks((current) => ({ ...current, [application.id]: event.target.checked }))} className="mt-0.5 h-4 w-4 accent-[hsl(var(--primary))]" />I independently checked this applicant’s identity, age (18+), and current university or fellowship status using reliable evidence. I will not store identity-document copies here.</label><div className="mt-3 flex gap-2"><button type="button" disabled={!application.mentor_confirmed_18_plus || !adminReviewChecks[application.id]} onClick={() => void reviewApplication(application.id, "verified")} className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground"><CheckCircle2 className="h-3.5 w-3.5" /> Verify and publish</button><button type="button" onClick={() => void reviewApplication(application.id, "rejected")} className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-semibold"><XCircle className="h-3.5 w-3.5" /> Reject</button></div></article>)}
             </div> : <p className="mt-3 text-sm text-muted-foreground">No mentor applications are waiting for review.</p>}
           </section>
         )}
