@@ -180,7 +180,7 @@ export const useUniversities = (filters: UniversityFilters = {}) => useQuery(uni
 export const universityQueryOptions = (slug: string) =>
   queryOptions({
     queryKey: ["university", slug],
-    queryFn: async () => {
+    queryFn: async () => withOfflinePublicCache(`university-detail:${slug}`, async () => {
       const { data: exactMatch, error } = await supabase.from("universities").select("*").eq("slug", slug).maybeSingle();
       if (error) throw error;
 
@@ -198,7 +198,7 @@ export const universityQueryOptions = (slug: string) =>
 
       const university = row as University | null;
       return university && !isInstitutionGtecExpired2026(university) ? university : null;
-    },
+    }),
     staleTime: 60_000,
   });
 
@@ -227,12 +227,12 @@ export const useProgramme = (slug?: string) =>
   useQuery({
     queryKey: ["programme", slug],
     enabled: !!slug,
-    queryFn: async () => {
+    queryFn: async () => withOfflinePublicCache(`programme-detail:${slug}`, async () => {
       const { data, error } = await supabase.from("programmes").select("*, universities(*)").eq("slug", slug!).maybeSingle();
       if (error) throw error;
       const value = data as (Programme & { universities: University | null }) | null;
       return value && value.universities && !isInstitutionGtecExpired2026(value.universities) ? value : null;
-    },
+    }),
   });
 
 export const scholarshipRecordsQueryOptions = (search = "", type: string = "All") =>
