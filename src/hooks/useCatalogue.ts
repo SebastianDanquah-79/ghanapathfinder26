@@ -2,6 +2,7 @@ import { queryOptions, useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { groupFilter, type InstitutionGroup } from "@/lib/legal";
+import { withOfflinePublicCache } from "@/lib/offlineCache";
 
 export interface UniversityAchievement {
   title: string;
@@ -118,7 +119,7 @@ export const catalogueSearchQueryOptions = (
 ) =>
   queryOptions({
     queryKey: ["catalogue_search", query, kind, page],
-    queryFn: async () => {
+    queryFn: async () => withOfflinePublicCache(`catalogue-search:${kind}:${page}:${query.trim().toLowerCase()}`, async () => {
       const { data, error } = await supabase.rpc("search_catalogue", {
         _q: query,
         _kind: kind,
@@ -130,7 +131,7 @@ export const catalogueSearchQueryOptions = (
       return kind === "university" || kind === "all"
         ? rows.filter((r) => r.kind !== "university" || !Array.from(expiredNames).includes(normalizeInstitutionName(r.title)))
         : rows;
-    },
+    }),
     staleTime: 60_000,
   });
 
@@ -151,7 +152,7 @@ export const universitiesQueryOptions = (filters: UniversityFilters = {}) => {
   const { search = "", type = "All", region, category, group = "All", page = 0, pageSize = 24 } = filters;
   return queryOptions({
     queryKey: ["universities", search, type, region, category, group, page, pageSize],
-    queryFn: async () => {
+    queryFn: async () => withOfflinePublicCache(`universities:${JSON.stringify({ search, type, region, category, group, page, pageSize })}`, async () => {
       let q = supabase.from("universities").select("*", { count: "exact" }).order("name").range(page * pageSize, page * pageSize + pageSize - 1);
       if (group !== "All") {
         const gf = groupFilter(group);
@@ -169,7 +170,7 @@ export const universitiesQueryOptions = (filters: UniversityFilters = {}) => {
       if (error) throw error;
       const rows = ((data ?? []) as University[]).filter((u) => !isInstitutionGtecExpired2026(u));
       return { rows, count: Math.max(0, (count ?? 0) - (((data ?? []) as University[]).length - rows.length)) };
-    },
+    }),
     staleTime: 60_000,
   });
 };
@@ -179,7 +180,7 @@ export const useUniversities = (filters: UniversityFilters = {}) => useQuery(uni
 export const universityQueryOptions = (slug: string) =>
   queryOptions({
     queryKey: ["university", slug],
-    queryFn: async () => {
+    queryFn: async () => withOfflinePublicCache(`university-detail:${slug}`, async () => {
       const { data: exactMatch, error } = await supabase.from("universities").select("*").eq("slug", slug).maybeSingle();
       if (error) throw error;
 
@@ -197,7 +198,7 @@ export const universityQueryOptions = (slug: string) =>
 
       const university = row as University | null;
       return university && !isInstitutionGtecExpired2026(university) ? university : null;
-    },
+    }),
     staleTime: 60_000,
   });
 
@@ -206,7 +207,7 @@ export const useUniversity = (slug?: string) => useQuery({ ...universityQueryOpt
 export const programmesQueryOptions = (universityId?: string, search = "") =>
   queryOptions({
     queryKey: ["programmes", universityId, search],
-    queryFn: async () => {
+    queryFn: async () => withOfflinePublicCache(`programmes:${universityId ?? "all"}:${search.trim().toLowerCase()}`, async () => {
       let q = supabase.from("programmes").select("*").order("name").limit(500);
       if (universityId) q = q.eq("university_id", universityId);
       if (search.trim()) {
@@ -216,7 +217,7 @@ export const programmesQueryOptions = (universityId?: string, search = "") =>
       const { data, error } = await q;
       if (error) throw error;
       return (data ?? []) as Programme[];
-    },
+    }),
     staleTime: 60_000,
   });
 
@@ -226,18 +227,18 @@ export const useProgramme = (slug?: string) =>
   useQuery({
     queryKey: ["programme", slug],
     enabled: !!slug,
-    queryFn: async () => {
+    queryFn: async () => withOfflinePublicCache(`programme-detail:${slug}`, async () => {
       const { data, error } = await supabase.from("programmes").select("*, universities(*)").eq("slug", slug!).maybeSingle();
       if (error) throw error;
       const value = data as (Programme & { universities: University | null }) | null;
       return value && value.universities && !isInstitutionGtecExpired2026(value.universities) ? value : null;
-    },
+    }),
   });
 
 export const scholarshipRecordsQueryOptions = (search = "", type: string = "All") =>
   queryOptions({
     queryKey: ["scholarships_db", search, type],
-    queryFn: async () => {
+    queryFn: async () => withOfflinePublicCache(`scholarships:${search.trim().toLowerCase()}:${type}`, async () => {
       let q = supabase.from("scholarships").select("*").order("name").limit(100);
       if (type !== "All") q = q.eq("type", type);
       if (search.trim()) {
@@ -247,7 +248,7 @@ export const scholarshipRecordsQueryOptions = (search = "", type: string = "All"
       const { data, error } = await q;
       if (error) throw error;
       return (data ?? []) as ScholarshipRecord[];
-    },
+    }),
     staleTime: 60_000,
   });
 
