@@ -99,9 +99,16 @@ export const Route = createFileRoute("/api/images/generate")({
               providerError?.type ?? providerError?.code ?? "unknown",
             );
 
-            if (providerResponse.status === 429 || providerError?.code === "insufficient_quota") {
+            if (providerError?.code === "insufficient_quota") {
               return Response.json(
-                { error: "Image generation is temporarily unavailable because the API is busy or its usage limit has been reached. Please try again later." },
+                { error: "Image generation is disabled because this OpenAI API project has no remaining quota. The project owner must check API billing, usage limits and the project budget before image generation can work." },
+                { status: 503, headers: { "Cache-Control": "no-store" } },
+              );
+            }
+
+            if (providerResponse.status === 429) {
+              return Response.json(
+                { error: "Image generation is temporarily rate-limited by OpenAI. Please wait a moment before trying again." },
                 { status: 503, headers: { "Cache-Control": "no-store" } },
               );
             }
