@@ -100,15 +100,30 @@ const GrowthOS = () => {
     queryKey: ["growth-current-opportunities"],
     queryFn: async () => {
       const { data, error } = await db.from("opportunities")
-        .select("id,title,company_name,organisation,city,country,description,opportunity_type,type,category,application_url,apply_url,source_url,deadline_date,last_verified_at")
+        .select("id,title,company_name,organisation,city,country,country_code,description,opportunity_type,type,category,application_url,apply_url,source_url,deadline_date,last_verified_at,skills,skills_required,fields,eligibility,requirements")
         .eq("published", true).eq("is_active", true).eq("verified", true)
+        .or("country_code.eq.GH,country.eq.Ghana")
         .in("opportunity_type", ["internship", "national_service", "attachment", "graduate_programme"])
-        .order("posted_at", { ascending: false }).limit(12);
+        .order("posted_at", { ascending: false }).limit(24);
       if (error) throw error;
       const now = Date.now();
       return (data ?? []).filter((item: any) => !item.deadline_date || new Date(item.deadline_date).getTime() >= now);
     },
     staleTime: 120_000,
+  });
+
+  const pipelineQuery = useQuery({
+    queryKey: ["growth-opportunity-pipeline", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data, error } = await db.from("opportunity_pipeline")
+        .select("id,item_kind,item_ref,title,organisation,stage,deadline_date,url,notes,updated_at")
+        .eq("user_id", user!.id)
+        .order("updated_at", { ascending: false })
+        .limit(60);
+      if (error) throw error;
+      return data ?? [];
+    },
   });
 
   useEffect(() => {
@@ -198,6 +213,44 @@ const GrowthOS = () => {
     const { error } = await db.from("student_growth_milestones").delete().eq("id", id);
     if (error) toast.error("This milestone could not be removed.");
     else void queryClient.invalidateQueries({ queryKey: ["growth-milestones", user?.id] });
+  };
+
+  const trackOpportunity = async (item: any) => {
+    if (!user) return;
+    const itemKind = item.opportunity_type || "internship";
+    const url = item.application_url || item.apply_url || item.source_url || null;
+    const { error } = await db.from("opportunity_pipeline").upsert({
+      user_id: user.id,
+      item_kind: itemKind,
+      item_ref: String(item.id),
+      title: item.title,
+      organisation: item.company_name || item.organisation || null,
+      stage: "interested",
+      deadline_date: item.deadline_date || null,
+      url,
+      updated_at: new Date().toISOString(),
+    }, { onConflict: "user_id,item_kind,item_ref", ignoreDuplicates: true });
+    if (error) {
+      toast.error(error.message || "This opportunity could not be added.");
+      return;
+    }
+    toast.success("Added to your opportunity pipeline.");
+    void queryClient.invalidateQueries({ queryKey: ["growth-opportunity-pipeline", user.id] });
+  };
+
+  const updateOpportunityStage = async (id: string, stage: string) => {
+    const { error } = await db.from("opportunity_pipeline").update({
+      stage,
+      updated_at: new Date().toISOString(),
+    }).eq("id", id);
+    if (error) toast.error("The application stage could not be updated.");
+    else void queryClient.invalidateQueries({ queryKey: ["growth-opportunity-pipeline", user?.id] });
+  };
+
+  const removeOpportunityFromPipeline = async (id: string) => {
+    const { error } = await db.from("opportunity_pipeline").delete().eq("id", id);
+    if (error) toast.error("This opportunity could not be removed.");
+    else void queryClient.invalidateQueries({ queryKey: ["growth-opportunity-pipeline", user?.id] });
   };
 
   const setField = <K extends keyof Journey>(key: K, value: Journey[K]) => setJourney((current) => ({ ...current, [key]: value }));
@@ -314,12 +367,42 @@ const GrowthOS = () => {
                   <p className="mt-1 text-xs text-muted-foreground">{item.company_name || item.organisation || "Organisation"}{item.city ? ` · ${item.city}` : ""}</p>
                   {item.description && <p className="mt-2 line-clamp-3 text-xs leading-5 text-muted-foreground">{item.description}</p>}
                   {item.deadline_date && <p className="mt-2 text-xs text-muted-foreground">Deadline: {new Date(item.deadline_date).toLocaleDateString("en-GB")}</p>}
-                  {(item.application_url || item.apply_url || item.source_url) && <a className="mt-3 inline-flex text-xs font-semibold text-primary underline underline-offset-4" href={item.application_url || item.apply_url || item.source_url} target="_blank" rel="noopener noreferrer">Open source listing</a>}
+                  <div className="mt-3 flex flex-wrap items-center gap-3">
+                    {(item.application_url || item.apply_url || item.source_url) && <a className="inline-flex text-xs font-semibold text-primary underline underline-offset-4" href={item.application_url || item.apply_url || item.source_url} target="_blank" rel="noopener noreferrer">Open source listing</a>}
+                    <button type="button" onClick={() => void trackOpportunity(item)} disabled={(pipelineQuery.data ?? []).some((entry: any) => entry.item_ref === String(item.id) && entry.item_kind === item.opportunity_type)} className="min-h-8 rounded-lg border border-border px-3 text-xs font-semibold text-foreground disabled:opacity-50">
+                      {(pipelineQuery.data ?? []).some((entry: any) => entry.item_ref === String(item.id) && entry.item_kind === item.opportunity_type) ? "In your pipeline" : "Track this opening"}
+                    </button>
+                  </div>
                 </article>
               ))}
             </div>
           ) : <div className="mt-4 rounded-lg border border-dashed border-border p-4 text-sm text-muted-foreground">There are no current verified NSS or internship listings in this feed. The employer directory still has general application guidance and links.</div>}
-          <Link to="/internships" className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary">Browse the Ghana employer directory <BriefcaseBusiness className="h-4 w-4" /></Link>
+          <div className="mt-6 border-t border-border pt-5">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <h3 className="font-semibold text-foreground">My tracked applications</h3>
+              <span className="text-xs text-muted-foreground">{pipelineQuery.data?.length ?? 0} tracked</span>
+            </div>
+            {pipelineQuery.isLoading ? <p className="mt-3 text-sm text-muted-foreground">Loading your pipeline…</p> : pipelineQuery.data?.length ? (
+              <div className="mt-3 space-y-2">
+                {pipelineQuery.data.map((entry: any) => (
+                  <article key={entry.id} className="flex flex-col gap-2 rounded-lg border border-border p-3 sm:flex-row sm:items-center">
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-semibold text-foreground">{entry.title}</p>
+                      <p className="mt-0.5 text-xs text-muted-foreground">{entry.organisation || "Organisation"}{entry.deadline_date ? ` · Deadline ${new Date(entry.deadline_date).toLocaleDateString("en-GB")}` : ""}</p>
+                      {entry.url && <a href={entry.url} target="_blank" rel="noopener noreferrer" className="mt-1 inline-flex text-xs text-primary underline underline-offset-4">Open application source</a>}
+                    </div>
+                    <label className="text-xs text-muted-foreground">Stage
+                      <select className={inputClass + " mt-1 min-w-32"} value={entry.stage} onChange={(event) => void updateOpportunityStage(entry.id, event.target.value)}>
+                        {["interested","preparing","applied","interview","offered","completed","not_selected"].map((stage) => <option key={stage} value={stage}>{stage.replaceAll("_"," ")}</option>)}
+                      </select>
+                    </label>
+                    <button type="button" onClick={() => void removeOpportunityFromPipeline(entry.id)} aria-label={`Remove ${entry.title} from pipeline`} className="grid h-9 w-9 shrink-0 place-items-center rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive"><Trash2 className="h-4 w-4" /></button>
+                  </article>
+                ))}
+              </div>
+            ) : <p className="mt-3 text-sm text-muted-foreground">Save an opportunity above to track its stage here: interested, preparing, applied, interview, offer or completed.</p>}
+          </div>
+          <Link to="/internships/" className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary">Browse the Ghana employer directory <BriefcaseBusiness className="h-4 w-4" /></Link>
         </section>
 
         <section className="grid gap-3 sm:grid-cols-2">
