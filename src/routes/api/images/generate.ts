@@ -99,7 +99,7 @@ export const Route = createFileRoute("/api/images/generate")({
               providerError?.type ?? providerError?.code ?? "unknown",
             );
 
-            if (providerError?.code === "insufficient_quota") {
+            if (providerError?.code === "insufficient_quota" || providerError?.type === "insufficient_quota") {
               return Response.json(
                 { error: "Image generation is disabled because this OpenAI API project has no remaining quota. The project owner must check API billing, usage limits and the project budget before image generation can work." },
                 { status: 503, headers: { "Cache-Control": "no-store" } },
