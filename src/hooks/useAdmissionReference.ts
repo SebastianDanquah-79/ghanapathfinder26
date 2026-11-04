@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { withOfflinePublicCache } from "@/lib/offlineCache";
 import { useWassceResults } from "@/hooks/useAdmissionMatch";
 import {
   computeAggregate,
@@ -24,7 +25,7 @@ export const useAdmissionReference = (
   useQuery({
     queryKey: ["admission_reference", search, universityId, limit],
     enabled,
-    queryFn: async () => {
+    queryFn: async () => withOfflinePublicCache(`admission-reference:${search.trim().toLowerCase()}:${universityId ?? "all"}:${limit}`, async () => {
       const { data, error } = await supabase.rpc("admission_reference" as never, {
         _q: search,
         _university_id: universityId ?? null,
@@ -32,7 +33,7 @@ export const useAdmissionReference = (
       } as never);
       if (error) throw error;
       return (data ?? []) as unknown as AdmissionReference[];
-    },
+    }),
     // Always revalidate after a previous schema-cache/network failure. The
     // admission catalogue is used for decisions, so an old error should not
     // remain on screen after the RPC has recovered.
