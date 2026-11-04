@@ -12,11 +12,40 @@ export interface UniversityAchievement {
   verified: boolean;
 }
 
-export type University = Omit<Tables<"universities">, "biography" | "biography_source_url" | "achievements" | "slug_aliases"> & {
+export interface InstitutionProfileSource {
+  label: string;
+  url: string;
+  source_type?: string | null;
+}
+
+export interface InstitutionProfileAlumnus {
+  name: string;
+  description?: string | null;
+  source_url?: string | null;
+}
+
+export interface InstitutionProfileData {
+  profile_status?: "researched" | "partial" | "not_started";
+  overview?: string | null;
+  history?: string | null;
+  what_known_for?: string[];
+  academic_strengths?: string[];
+  schools_and_faculties?: string[];
+  research_and_innovation?: string[];
+  campus_and_student_life?: string | null;
+  facilities?: string[];
+  notable_alumni?: InstitutionProfileAlumnus[];
+  milestones?: UniversityAchievement[];
+  sources?: InstitutionProfileSource[];
+  last_researched_at?: string | null;
+}
+
+export type University = Omit<Tables<"universities">, "biography" | "biography_source_url" | "achievements" | "slug_aliases" | "institution_profile"> & {
   biography: string | null;
   biography_source_url: string | null;
   achievements: UniversityAchievement[];
   slug_aliases: string[];
+  institution_profile: InstitutionProfileData;
 };
 export type Programme = Tables<"programmes">;
 export type ScholarshipRecord = Tables<"scholarships">;
