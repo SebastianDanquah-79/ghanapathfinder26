@@ -15,6 +15,7 @@ import {
   useSavePreferences,
 } from "@/hooks/useMatchPreferences";
 import { supabase } from "@/integrations/supabase/client";
+import { getDataSaverPreference, setDataSaverPreference } from "@/lib/offlineCache";
 import Navbar from "@/components/Navbar";
 
 const REGIONS = [
@@ -42,6 +43,7 @@ const Preferences = () => {
   const [prefs, setPrefs] = useState<MatchPreferences>(DEFAULT_PREFERENCES);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const [dataSaverEnabled, setDataSaverEnabled] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -51,6 +53,10 @@ const Preferences = () => {
   useEffect(() => {
     if (saved) setPrefs(saved);
   }, [saved]);
+
+  useEffect(() => {
+    setDataSaverEnabled(getDataSaverPreference());
+  }, []);
 
   useEffect(() => {
     if (!user) return;
@@ -237,6 +243,30 @@ const Preferences = () => {
             </div>
           </div>
         </div>
+
+        <section className={`${card} mb-5`}>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="max-w-2xl">
+              <h2 className="font-display font-semibold text-foreground">Data saver &amp; offline access</h2>
+              <p className="mt-1 text-xs leading-5 text-muted-foreground">Save mobile data by reusing recently loaded public university, programme, scholarship and admission-reference catalogues for up to 12 hours. The app shell and static assets are cached for offline opening.</p>
+            </div>
+            <label className="inline-flex shrink-0 items-center gap-2 text-sm font-medium text-foreground">
+              <input
+                type="checkbox"
+                checked={dataSaverEnabled}
+                onChange={(event) => {
+                  const enabled = event.target.checked;
+                  setDataSaverEnabled(enabled);
+                  setDataSaverPreference(enabled);
+                  toast.success(enabled ? "Data Saver enabled on this device." : "Data Saver disabled.");
+                }}
+                className="h-4 w-4 accent-[hsl(var(--primary))]"
+              />
+              Enable Data Saver
+            </label>
+          </div>
+          <p className="mt-2 text-[11px] leading-5 text-muted-foreground">Personal WASSCE results, profile details, applications and mentorship messages are not included in the public offline cache. Cached reference data may be up to 12 hours old; verify deadlines and admission requirements with official sources when online.</p>
+        </section>
 
         <div className="space-y-5">
           <div className={`${card} grid gap-4 sm:grid-cols-2`}>
