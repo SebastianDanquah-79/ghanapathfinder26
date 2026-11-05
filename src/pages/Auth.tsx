@@ -8,6 +8,7 @@ import { TERMS_VERSION } from "@/lib/legal";
 import { useEffect } from "react";
 import SiteRating from "@/components/SiteRating";
 import { isValidPhone } from "@/components/ContactGate";
+import { normalizePortalRole, portalPathFor } from "@/lib/portals";
 
 type Mode = "signin" | "signup";
 
@@ -42,12 +43,26 @@ const Auth = ({ defaultMode = "signin" }: { defaultMode?: Mode }) => {
     let active = true;
     void (async () => {
       if (next) { window.location.replace(next); return; }
-      const { data: profile } = await supabase.from("profiles").select("onboarding_complete,account_role").eq("id", user.id).maybeSingle();
+      const { data: profile, error } = await supabase
+        .from("profiles")
+        .select("onboarding_complete,account_role,role,active_portal")
+        .eq("id", user.id)
+        .maybeSingle();
       if (!active) return;
-      if (!profile?.onboarding_complete || !profile.account_role) { navigate("/onboarding", { replace: true }); return; }
-      const role = profile.account_role;
-      const destination = role === "startup_founder" ? "/portal/founder" : role === "international_student" ? "/portal/international-student" : role === "student" || role === "employee" || role === "employer" ? "/portal/" + role : "/onboarding";
-      navigate(destination, { replace: true });
+      if (error) {
+        console.error("Could not load the account's active portal", error);
+        navigate("/onboarding", { replace: true });
+        return;
+      }
+      const role =
+        normalizePortalRole(profile?.active_portal) ??
+        normalizePortalRole(profile?.account_role) ??
+        normalizePortalRole(profile?.role);
+      if (!profile?.onboarding_complete) {
+        navigate("/onboarding" + (role ? "?role=" + role : ""), { replace: true });
+        return;
+      }
+      navigate(portalPathFor(role) ?? "/", { replace: true });
     })();
     return () => { active = false; };
   }, [user, navigate, next]);
