@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { Link, useNavigate } from "@/lib/router-compat";
 import {
   ArrowRight,
@@ -17,6 +17,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { activatePortalForUser, normalizePortalRole, portalPathFor, portalProfileExists, type PortalRole } from "@/lib/portals";
 
 const roles = [
   {
@@ -51,7 +53,7 @@ const roles = [
   },
 ] as const;
 
-type Role = (typeof roles)[number]["key"];
+type Role = PortalRole;
 
 const resourceLinks = [
   {
@@ -106,28 +108,91 @@ export default function RoleGateway() {
   const { user } = useAuth();
   const [choosing, setChoosing] = useState<Role | null>(null);
   const [search, setSearch] = useState("");
+  const [enabledPortals, setEnabledPortals] = useState<PortalRole[]>([]);
+  const [activePortal, setActivePortal] = useState<PortalRole | null>(null);
+  const [portalStateLoading, setPortalStateLoading] = useState(false);
 
+  useEffect(() => {
+    let cancelled = false;
 
+    async function loadPortalMemberships() {
+      if (!user) {
+        setEnabledPortals([]);
+        setActivePortal(null);
+        setPortalStateLoading(false);
+        return;
+      }
+
+      setPortalStateLoading(true);
+      try {
+        const { data, error } = await (supabase as any)
+          .from("profiles")
+          .select("enabled_portals,active_portal,account_role,role")
+          .eq("id", user.id)
+          .maybeSingle();
+        if (error) throw error;
+        if (cancelled) return;
+
+        const savedPortals = Array.isArray(data?.enabled_portals)
+          ? data.enabled_portals
+              .map((value: unknown) => normalizePortalRole(value))
+              .filter((value: PortalRole | null): value is PortalRole => value !== null)
+          : [];
+        const current =
+          normalizePortalRole(data?.active_portal) ??
+          normalizePortalRole(data?.account_role) ??
+          normalizePortalRole(data?.role);
+
+        setEnabledPortals(
+          Array.from(new Set<PortalRole>([
+            ...savedPortals,
+            ...(current ? [current] : []),
+          ])),
+        );
+        setActivePortal(current);
+      } catch (error) {
+        console.error("Could not load account portals", error);
+      } finally {
+        if (!cancelled) setPortalStateLoading(false);
+      }
+    }
+
+    void loadPortalMemberships();
+    return () => {
+      cancelled = true;
+    };
+  }, [user?.id]);
 
   async function chooseRole(role: Role) {
     setChoosing(role);
     localStorage.setItem("selectedRole", role);
 
-    if (user) {
-      const { error } = await supabase
-        .from("profiles")
-        .update({ role, account_role: role, account_type: role })
-        .eq("id", user.id);
-
-      if (error) {
-        console.error("Could not activate selected portal role", error);
-        toast.error("Could not switch portal yet. Please try again.");
-        setChoosing(null);
+    try {
+      if (!user) {
+        const next = "/onboarding?role=" + role;
+        navigate("/auth?next=" + encodeURIComponent(next));
         return;
       }
-    }
 
-    navigate("/onboarding?role=" + role);
+      const nextPortals = await activatePortalForUser(user.id, role);
+      setEnabledPortals(nextPortals);
+      setActivePortal(role);
+
+      const alreadyHasProfile = await portalProfileExists(user.id, role);
+      const destination = alreadyHasProfile
+        ? portalPathFor(role)
+        : "/onboarding?role=" + role;
+      navigate(destination ?? "/onboarding?role=" + role);
+    } catch (error) {
+      console.error("Could not activate selected portal", error);
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Could not switch portal yet. Please try again.",
+      );
+    } finally {
+      setChoosing(null);
+    }
   }
 
   function submitSearch(event: FormEvent<HTMLFormElement>) {
@@ -365,11 +430,11 @@ export default function RoleGateway() {
                 Your next step
               </p>
               <h2 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">
-                One platform. Five paths.
+                One account. Five portals.
               </h2>
               <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
-                Choose the workspace that matches your goal. Your portal will show relevant tools
-                and opportunities for your account type.
+                Switch between the workspaces you already use, or add another portal to this same
+                account. You do not need a second email or password.
               </p>
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
@@ -380,7 +445,7 @@ export default function RoleGateway() {
                   <button
                     key={item.key}
                     type="button"
-                    disabled={choosing !== null}
+                    disabled={choosing !== null || (Boolean(user) && portalStateLoading)}
                     onClick={function () {
                       void chooseRole(item.key);
                     }}
@@ -391,10 +456,25 @@ export default function RoleGateway() {
                     </span>
                     <span className="min-w-0 flex-1">
                       <span className="block font-semibold">
-                        {choosing === item.key ? "Opening " + item.label + "…" : item.label}
+                        {choosing === item.key
+                          ? "Opening " + item.label + "…"
+                          : activePortal === item.key
+                            ? "Open " + item.label
+                            : enabledPortals.includes(item.key)
+                              ? "Switch to " + item.label
+                              : "Add " + item.label + " portal"}
                       </span>
                       <span className="mt-1 block text-sm leading-5 text-muted-foreground">
                         {item.description}
+                      </span>
+                      <span className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-primary">
+                        {activePortal === item.key
+                          ? "Current portal"
+                          : enabledPortals.includes(item.key)
+                            ? "Already in your account"
+                            : user
+                              ? "Add to this account · No new login"
+                              : "Use this portal after creating an account"}
                       </span>
                     </span>
                     <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-1" />

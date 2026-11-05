@@ -4,6 +4,7 @@ import { Loader2, Plus, Trash2 } from "@/lib/icons";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { activatePortalForUser } from "@/lib/portals";
 
 const REGIONS = ["Greater Accra","Ashanti","Central","Eastern","Western","Volta","Northern","Upper East","Upper West","Bono","Ahafo","Oti","Savannah","North East","Western North","Bono East"];
 const GRADES = ["A1","B2","B3","C4","C5","C6","D7","E8","F9"];
@@ -103,11 +104,11 @@ const Onboarding = () => {
 
   useEffect(() => {
     if (!user) return;
-    void (supabase as any).from("profiles").select("full_name,role,account_role,bio,location,linkedin_url,avatar_url,instagram_url,x_url,whatsapp_number,is_linkedin_public,is_instagram_public,is_x_public,is_whatsapp_public,is_discoverable").eq("id",user.id).maybeSingle().then(({data}: { data: any }) => {
+    void (supabase as any).from("profiles").select("full_name,role,account_role,active_portal,bio,location,linkedin_url,avatar_url,instagram_url,x_url,whatsapp_number,is_linkedin_public,is_instagram_public,is_x_public,is_whatsapp_public,is_discoverable").eq("id",user.id).maybeSingle().then(({data}: { data: any }) => {
       if (!data) return;
       setFullName(data.full_name ?? "");
       if (!params.get("role") && (data.account_role || data.role)) {
-        const savedRole = data.account_role || data.role;
+        const savedRole = data.active_portal || data.account_role || data.role;
         const normalizedRole = savedRole === "founder" ? "startup_founder" : savedRole === "international-student" ? "international_student" : savedRole;
         if (normalizedRole === "student" || normalizedRole === "employee" || normalizedRole === "employer" || normalizedRole === "startup_founder" || normalizedRole === "international_student") setRole(normalizedRole);
       }
@@ -269,6 +270,9 @@ const Onboarding = () => {
 
       const wassceRows=results.filter((r)=>r.subject.trim()&&r.grade).map((r)=>({subject:r.subject.trim(),grade:r.grade}));
 
+      // Keep each workspace attached to the same signed-in account.
+      await activatePortalForUser(user.id, role);
+
       if (role === "student") {
         const {error:rpcError}=await (supabase.rpc as any)("save_profile_bundle",{
           p_full_name:fullName.trim()||"User", p_email:user.email??null, p_school:school.trim()||null,
@@ -316,12 +320,9 @@ const Onboarding = () => {
       } else {
         const {error}=await (supabase as any).from("profiles").upsert({
           id:user.id,email:user.email??null,full_name:fullName.trim()||null,role,account_role:role,
-          account_type:role,bio:bio.trim()||null,location:location.trim()||null,school:school.trim()||null,
-          region:region||null,target_career:career.trim()||null,university:university.trim()||null,
-          program:program.trim()||null,graduation_year:graduationYear?Number(graduationYear):null,
-          company:company.trim()||null,job_title:jobTitle.trim()||null,...socialProfileFields,
-          avatar_url:nextAvatarUrl,interests,skills:skillList,is_discoverable:discoverable,
-          onboarding_complete:true,onboarded:true,
+          account_type:role,bio:bio.trim()||null,location:location.trim()||null,
+          ...socialProfileFields,avatar_url:nextAvatarUrl,interests,skills:skillList,
+          is_discoverable:discoverable,onboarding_complete:true,onboarded:true,
         },{onConflict:"id"});
         if(error) throw new Error(`Profile update failed: ${error.message}`);
       }
@@ -365,10 +366,6 @@ const Onboarding = () => {
           const { error: directoryError } = await supabase.from("talent_directory").delete().eq("user_id", user.id);
           if (directoryError) throw new Error(`Public talent profile could not be removed: ${directoryError.message}`);
         }
-      } else {
-        // A role change removes the employee-only public directory projection.
-        const { error: directoryError } = await supabase.from("talent_directory").delete().eq("user_id", user.id);
-        if (directoryError) throw new Error(`Public talent profile could not be removed: ${directoryError.message}`);
       }
       if(role==="employer"){
         const {error}=await supabase.from("employer_profiles").upsert({

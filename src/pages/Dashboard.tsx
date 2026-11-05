@@ -4,18 +4,7 @@ import { Loader2, RefreshCw } from "@/lib/icons";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-
-const portalFor = (role: string | null | undefined) => {
-  switch (role) {
-    case "student": return "/portal/student";
-    case "employee": return "/portal/employee";
-    case "employer": return "/portal/employer";
-    case "startup_founder":
-    case "founder": return "/portal/founder";
-    case "international_student": return "/portal/international-student";
-    default: return null;
-  }
-};
+import { normalizePortalRole, portalPathFor } from "@/lib/portals";
 
 export default function Dashboard() {
   const { user, loading } = useAuth();
@@ -27,7 +16,7 @@ export default function Dashboard() {
       if (!user) return null;
       const { data, error } = await supabase
         .from("profiles")
-        .select("account_role,onboarding_complete,role")
+        .select("active_portal,account_role,onboarding_complete,role")
         .eq("id", user.id)
         .maybeSingle();
       if (error) throw error;
@@ -42,8 +31,11 @@ export default function Dashboard() {
       return;
     }
     if (profile.isLoading || profile.isError) return;
-    const role = profile.data?.account_role || profile.data?.role;
-    const destination = profile.data?.onboarding_complete ? portalFor(role) : null;
+    const role =
+      normalizePortalRole(profile.data?.active_portal) ??
+      normalizePortalRole(profile.data?.account_role) ??
+      normalizePortalRole(profile.data?.role);
+    const destination = profile.data?.onboarding_complete ? portalPathFor(role) : null;
     if (destination) {
       if (window.location.pathname !== destination) navigate(destination, { replace: true });
       return;

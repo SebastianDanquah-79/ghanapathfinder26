@@ -3622,6 +3622,7 @@ export type Database = {
         Row: {
           account_role: string
           account_type: string
+          active_portal: string
           availability: string | null
           avatar_url: string | null
           bio: string | null
@@ -3632,6 +3633,7 @@ export type Database = {
           cv_visibility: string
           discoverable_to_recruiters: boolean
           education_level: string | null
+          enabled_portals: string[]
           email: string | null
           full_name: string | null
           github_url: string | null
@@ -3665,6 +3667,7 @@ export type Database = {
         Insert: {
           account_role?: string
           account_type?: string
+          active_portal?: string
           availability?: string | null
           avatar_url?: string | null
           bio?: string | null
@@ -3675,6 +3678,7 @@ export type Database = {
           cv_visibility?: string
           discoverable_to_recruiters?: boolean
           education_level?: string | null
+          enabled_portals?: string[]
           email?: string | null
           full_name?: string | null
           github_url?: string | null
