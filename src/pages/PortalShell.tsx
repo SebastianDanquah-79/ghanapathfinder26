@@ -8,6 +8,7 @@ import Seo from "@/components/Seo";
 import AskPanel from "@/components/AskPanel";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { normalizePortalRole, portalPathFor } from "@/lib/portals";
 
 export type PortalRole = "student" | "employee" | "employer" | "founder" | "international-student";
 
@@ -25,7 +26,7 @@ function usePortal(role: PortalRole, userId: string | undefined) {
     enabled: Boolean(userId),
     queryFn: async function() {
       if (!userId) throw new Error("Authentication required");
-      const profileResult = await supabase.from("profiles").select("full_name,account_role,role,onboarding_complete,bio,avatar_url,linkedin_url,github_url,portfolio_url").eq("id", userId).single();
+      const profileResult = await supabase.from("profiles").select("full_name,account_role,role,active_portal,onboarding_complete,bio,avatar_url,linkedin_url,github_url,portfolio_url").eq("id", userId).single();
       if (profileResult.error) throw profileResult.error;
       const profile = profileResult.data;
       const result: {profile: typeof profile; items: Array<Record<string, unknown>>; roleComplete: boolean; roleProfile: Record<string, unknown> | null} = { profile, items: [], roleComplete: Boolean(profile.onboarding_complete), roleProfile: null };
@@ -137,12 +138,17 @@ export default function PortalShell(props: {role: PortalRole; children?: ReactNo
   }).filter(function(field) { return Boolean(field.value); });
   const editRole = props.role === "founder" ? "startup_founder" : props.role === "international-student" ? "international_student" : props.role;
   useEffect(() => {
-    const role = q.data?.profile.account_role ?? q.data?.profile.role;
-    if (!user || !role || q.isLoading) return;
-    const expected = role === "startup_founder" || role === "founder" ? "/portal/founder" : role === "international_student" || role === "international-student" ? "/portal/international-student" : role === "student" || role === "employee" || role === "employer" ? "/portal/" + role : null;
-    const current = props.role === "founder" ? "/portal/founder" : "/portal/" + props.role;
-    if (expected && expected !== current) navigate(expected, { replace: true });
-  }, [user, q.data?.profile.account_role, q.data?.profile.role, q.isLoading, props.role, navigate]);
+    const activeRole =
+      normalizePortalRole(q.data?.profile.active_portal) ??
+      normalizePortalRole(q.data?.profile.account_role) ??
+      normalizePortalRole(q.data?.profile.role);
+    const currentRole = normalizePortalRole(props.role);
+    if (!user || !activeRole || !currentRole || q.isLoading) return;
+    if (activeRole !== currentRole) {
+      const destination = portalPathFor(activeRole);
+      if (destination) navigate(destination, { replace: true });
+    }
+  }, [user, q.data?.profile.active_portal, q.data?.profile.account_role, q.data?.profile.role, q.isLoading, props.role, navigate]);
   const askItems = useMemo(function(){
     return (q.data?.items || []).slice(0,8).map(function(item,index){
       return {id:String(item.id || item.user_id || index),title:String(item.title || item.name || item.display_name || "Record"),subtitle:String(item.description || item.company_name || item.university_name || ""),metadata:item};
