@@ -16,26 +16,71 @@ type ReviewRow = {
 };
 
 const GRADE_OPTIONS = Object.keys(GRADE_POINTS);
+const MAX_DOCUMENT_BYTES = 5 * 1024 * 1024;
 const inputClass = "w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground focus:outline-hidden focus:ring-2 focus:ring-primary/40";
 
-async function compressToDataUrl(file: File): Promise<string> {
-  if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
-    throw new Error("Choose a JPG, PNG or WebP photo.");
+function readFileAsDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error("Your browser could not read this file. Try another copy."));
+    reader.onload = () => {
+      if (typeof reader.result !== "string") {
+        reject(new Error("The selected file could not be prepared. Try another copy."));
+        return;
+      }
+      resolve(reader.result);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+async function prepareDocumentAsDataUrl(file: File): Promise<string> {
+  const isPdf = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
+  if (isPdf) {
+    if (file.size <= 0 || file.size > MAX_DOCUMENT_BYTES) {
+      throw new Error("Choose a PDF under 5 MB.");
+    }
+    return readFileAsDataUrl(file);
   }
-  const bitmap = await createImageBitmap(file);
-  const maxDimension = 1800;
+
+  const supportedImage = ["image/jpeg", "image/png", "image/webp"].includes(file.type)
+    || /\.(jpe?g|png|webp)$/i.test(file.name);
+  if (!supportedImage) {
+    throw new Error("Choose a PDF, JPG, PNG or WebP file.");
+  }
+
+  let bitmap: ImageBitmap;
+  try {
+    bitmap = await createImageBitmap(file);
+  } catch {
+    throw new Error("This image could not be opened. Save it as JPG or PNG and try again.");
+  }
+
+  const maxDimension = 2600;
   const scale = Math.min(1, maxDimension / Math.max(bitmap.width, bitmap.height));
   const canvas = document.createElement("canvas");
   canvas.width = Math.max(1, Math.round(bitmap.width * scale));
   canvas.height = Math.max(1, Math.round(bitmap.height * scale));
   const context = canvas.getContext("2d");
-  if (!context) throw new Error("Your browser could not prepare this photo.");
+  if (!context) {
+    bitmap.close();
+    throw new Error("Your browser could not prepare this photo.");
+  }
+
+  context.fillStyle = "#ffffff";
+  context.fillRect(0, 0, canvas.width, canvas.height);
   context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
   bitmap.close();
-  const dataUrl = canvas.toDataURL("image/jpeg", 0.78);
-  const encoded = dataUrl.split(",")[1] ?? "";
-  const bytes = Math.floor((encoded.length * 3) / 4);
-  if (bytes > 2 * 1024 * 1024) {
+
+  let dataUrl = canvas.toDataURL("image/jpeg", 0.9);
+  let encoded = dataUrl.split(",")[1] ?? "";
+  let bytes = Math.floor((encoded.length * 3) / 4);
+  if (bytes > MAX_DOCUMENT_BYTES) {
+    dataUrl = canvas.toDataURL("image/jpeg", 0.78);
+    encoded = dataUrl.split(",")[1] ?? "";
+    bytes = Math.floor((encoded.length * 3) / 4);
+  }
+  if (bytes <= 0 || bytes > MAX_DOCUMENT_BYTES) {
     throw new Error("This photo is still too large. Crop it to show the result table and try again.");
   }
   return dataUrl;
@@ -69,7 +114,7 @@ const WaecScan = () => {
     setRows([]);
     setNotes("");
     try {
-      const imageDataUrl = await compressToDataUrl(photo);
+      const documentDataUrl = await prepareDocumentAsDataUrl(photo);
       const { data: sessionData } = await supabase.auth.getSession();
       const token = sessionData.session?.access_token;
       if (!token) throw new Error("Your session has expired. Sign in again.");
@@ -78,9 +123,9 @@ const WaecScan = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: "Bearer " + token,
         },
-        body: JSON.stringify({ imageDataUrl }),
+        body: JSON.stringify({ documentDataUrl }),
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(typeof payload.error === "string" ? payload.error : typeof payload.message === "string" ? payload.message : "The statement could not be read.");
@@ -139,21 +184,21 @@ const WaecScan = () => {
         <header className="mb-7">
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-primary">Academic profile</p>
           <h1 className="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Scan your WASSCE results</h1>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Take or upload a clear photo of the result table. GhanaPathFinder will read the subjects and grades, calculate your aggregate, and let you review everything before it updates your student profile.</p>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Upload a clear photo or the original PDF of your result statement. GhanaPathFinder will read the subjects and grades, calculate your aggregate, and let you review everything before it updates your student profile.</p>
         </header>
 
         <section className="rounded-xl border border-border bg-card p-5 sm:p-6">
           <div className="flex items-start gap-3">
             <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary"><Camera className="h-5 w-5" /></div>
             <div>
-              <h2 className="font-semibold text-foreground">1. Add a photo of your statement</h2>
-              <p className="mt-1 text-sm text-muted-foreground">Keep the page flat, well lit and in focus. Make sure every subject and grade is visible.</p>
+              <h2 className="font-semibold text-foreground">1. Add your result statement</h2>
+              <p className="mt-1 text-sm text-muted-foreground">For photos, keep the page flat, well lit and in focus. For PDFs, upload the original file where possible.</p>
             </div>
           </div>
           <input
             ref={fileRef}
             type="file"
-            accept="image/jpeg,image/png,image/webp"
+            accept=".pdf,application/pdf,image/jpeg,image/png,image/webp"
             capture="environment"
             className="sr-only"
             onChange={(event) => setPhoto(event.target.files?.[0] ?? null)}
@@ -163,17 +208,17 @@ const WaecScan = () => {
             {photo ? (
               <p className="mt-2 break-all text-sm font-medium text-foreground">{photo.name}</p>
             ) : (
-              <p className="mt-2 text-sm text-muted-foreground">No image selected yet</p>
+              <p className="mt-2 text-sm text-muted-foreground">No file selected yet</p>
             )}
             <button type="button" onClick={() => fileRef.current?.click()} className="mt-3 inline-flex min-h-10 items-center justify-center rounded-lg border border-border px-4 text-sm font-semibold text-foreground hover:bg-secondary">
-              {photo ? "Choose a different photo" : "Take photo or choose image"}
+              {photo ? "Choose a different file" : "Take photo or choose file"}
             </button>
-            <p className="mt-2 text-xs text-muted-foreground">JPG, PNG or WebP · up to 2 MB after compression</p>
+            <p className="mt-2 text-xs text-muted-foreground">PDF, JPG, PNG or WebP · up to 5 MB</p>
           </div>
 
           <label className="mt-4 flex cursor-pointer items-start gap-3 rounded-lg bg-secondary/50 p-3">
             <input type="checkbox" checked={consented} onChange={(event) => setConsented(event.target.checked)} className="mt-0.5 h-4 w-4 accent-[hsl(var(--primary))]" />
-            <span className="text-xs leading-5 text-muted-foreground">I understand that this photo is sent securely to the AI service to read the grades. GhanaPathFinder does not save the photo. I will check the extracted grades before saving them to my account.</span>
+            <span className="text-xs leading-5 text-muted-foreground">I understand that this file is sent securely to the AI service to read the grades. GhanaPathFinder does not save the file. I will check the extracted grades before saving them to my account.</span>
           </label>
           <button type="button" onClick={() => void scan()} disabled={!photo || !consented || scanning} className="mt-4 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50">
             {scanning ? <><Loader2 className="h-4 w-4 animate-spin" /> Reading result slip…</> : <><Camera className="h-4 w-4" /> Scan result slip</>}
@@ -204,13 +249,13 @@ const WaecScan = () => {
                       {GRADE_OPTIONS.map((grade) => <option key={grade} value={grade}>{grade}</option>)}
                     </select>
                   </label>
-                  <button type="button" aria-label={`Remove ${row.subject || "subject"}`} onClick={() => setRows((current) => current.filter((_, i) => i !== index))} className="mt-3 grid h-9 w-9 place-items-center rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive sm:mt-5">
+                  <button type="button" aria-label={"Remove " + (row.subject || "subject")} onClick={() => setRows((current) => current.filter((_, i) => i !== index))} className="mt-3 grid h-9 w-9 place-items-center rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive sm:mt-5">
                     <Trash2 className="h-4 w-4" />
                   </button>
                   <div className="sm:col-span-3">
                     <p className={row.grade && row.confidence >= 0.85 ? "text-xs text-muted-foreground" : "text-xs text-amber-600"}>
-                      {row.grade ? `Recognition confidence: ${Math.round(row.confidence * 100)}%` : "Grade needs manual review"}
-                      {row.issue ? ` · ${row.issue}` : ""}
+                      {row.grade ? "Recognition confidence: " + Math.round(row.confidence * 100) + "%" : "Grade needs manual review"}
+                      {row.issue ? " · " + row.issue : ""}
                     </p>
                   </div>
                 </div>
@@ -224,14 +269,14 @@ const WaecScan = () => {
               <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Calculated WASSCE aggregate</p>
               <p className="mt-1 text-3xl font-bold tabular-nums text-foreground">{aggregate.aggregate ?? "Not ready"}</p>
               {aggregate.aggregate !== null ? (
-                <p className="mt-2 text-xs leading-5 text-muted-foreground">Best six: {aggregate.usedSubjects.map((subject) => `${subject.subject} (${subject.grade})`).join(" · ")}</p>
+                <p className="mt-2 text-xs leading-5 text-muted-foreground">Best six: {aggregate.usedSubjects.map((subject) => subject.subject + " (" + subject.grade + ")").join(" · ")}</p>
               ) : (
                 <p className="mt-2 text-xs leading-5 text-muted-foreground">
-                  {aggregate.missingCores.length ? `Missing a C6-or-better pass in: ${aggregate.missingCores.join(", ")}. ` : ""}
+                  {aggregate.missingCores.length ? "Missing a C6-or-better pass in: " + aggregate.missingCores.join(", ") + ". " : ""}
                   Add three core subjects and at least three elective passes (C6 or better) to calculate the aggregate.
                 </p>
               )}
-              {!!aggregate.failedSubjects.length && <p className="mt-2 text-xs text-muted-foreground">Not counted: {aggregate.failedSubjects.map((s) => `${s.subject} (${s.grade})`).join(", ")}</p>}
+              {!!aggregate.failedSubjects.length && <p className="mt-2 text-xs text-muted-foreground">Not counted: {aggregate.failedSubjects.map((s) => s.subject + " (" + s.grade + ")").join(", ")}</p>}
             </div>
 
             {hasDuplicateSubjects && <p role="alert" className="mt-3 text-xs text-destructive">Two rows use the same subject name. Remove or rename the duplicate before saving.</p>}
@@ -243,7 +288,7 @@ const WaecScan = () => {
                 <RefreshCw className="h-4 w-4" /> Clear results
               </button>
             </div>
-            <p className="mt-3 text-xs leading-5 text-muted-foreground">Saving replaces the WASSCE grades currently attached to your student profile. The uploaded photo itself is not saved.</p>
+            <p className="mt-3 text-xs leading-5 text-muted-foreground">Saving replaces the WASSCE grades currently attached to your student profile. The uploaded file itself is not saved.</p>
           </section>
         )}
       </main>
