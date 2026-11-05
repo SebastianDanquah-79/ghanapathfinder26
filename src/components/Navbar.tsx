@@ -44,8 +44,8 @@ const Navbar = () => {
       return;
     }
     let cancelled = false;
-    void supabase.from("profiles").select("account_role,role").eq("id", user.id).maybeSingle().then(({ data }) => {
-      if (!cancelled) setAccountRole(data?.account_role ?? data?.role ?? null);
+    void supabase.from("profiles").select("active_portal,account_role,role").eq("id", user.id).maybeSingle().then(({ data }) => {
+      if (!cancelled) setAccountRole(data?.active_portal ?? data?.account_role ?? data?.role ?? null);
     });
     return () => { cancelled = true; };
   }, [user?.id]);
