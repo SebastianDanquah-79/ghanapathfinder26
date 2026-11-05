@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type FileUIPart, type UIMessage } from "ai";
-import { Check, ClipboardCopy, ExternalLink, FileText, Image as ImageIcon, ImagePlus, Paperclip, RotateCcw, X } from "lucide-react";
+import { ArrowRight, Check, ClipboardCopy, ExternalLink, FileText, Image as ImageIcon, ImagePlus, Paperclip, RotateCcw, Smile, X } from "lucide-react";
 import {
   Conversation,
   ConversationContent,
@@ -91,6 +91,7 @@ const AskAttachmentControls = ({ disabled }: { disabled: boolean }) => {
   return (
     <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
       <PromptInputButton
+        className="text-background/80 hover:bg-white/10 hover:text-background"
         disabled={disabled}
         onClick={attachments.openFileDialog}
         tooltip="Attach one PDF or image (up to 2 MB)"
@@ -101,7 +102,7 @@ const AskAttachmentControls = ({ disabled }: { disabled: boolean }) => {
       {attachments.files.map((file) => (
         <div
           key={file.id}
-          className="flex min-w-0 max-w-[190px] items-center gap-1.5 rounded-md border border-border px-2 py-1 text-[10px] text-muted-foreground"
+          className="flex min-w-0 max-w-[190px] items-center gap-1.5 rounded-md border border-white/20 bg-white/5 px-2 py-1 text-[10px] text-background/80"
         >
           {file.mediaType?.startsWith("image/") ? (
             <ImageIcon className="size-3.5 shrink-0" />
@@ -113,7 +114,7 @@ const AskAttachmentControls = ({ disabled }: { disabled: boolean }) => {
             type="button"
             onClick={() => attachments.remove(file.id)}
             aria-label={`Remove ${file.filename || "attachment"}`}
-            className="shrink-0 rounded p-0.5 hover:bg-muted"
+            className="shrink-0 rounded p-0.5 hover:bg-white/10"
           >
             <X className="size-3" />
           </button>
@@ -127,6 +128,7 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
   const [input, setInput] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [imageMode, setImageMode] = useState(false);
+  const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
   const [copiedPromptId, setCopiedPromptId] = useState<string | null>(null);
   const contextRef = useRef(contextText);
   contextRef.current = contextText;
@@ -222,7 +224,7 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
   );
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+    <div className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
       <div className="flex items-center justify-between gap-2 border-b border-border px-3 py-2">
         <div className="min-w-0">
           <p className="text-sm font-semibold text-foreground">Ask GhanaPathFinder</p>
@@ -373,14 +375,16 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
         <ConversationScrollButton />
       </Conversation>
 
-      <div className="p-3 pt-0">
+      <div className="border-t border-border/70 bg-muted/20 p-3 sm:p-4">
         <PromptInput
+          className="w-full [&_[data-slot=input-group]]:flex-col [&_[data-slot=input-group]]:items-stretch [&_[data-slot=input-group]]:gap-3 [&_[data-slot=input-group]]:rounded-[24px] [&_[data-slot=input-group]]:border-border/80 [&_[data-slot=input-group]]:bg-card [&_[data-slot=input-group]]:p-3 [&_[data-slot=input-group]]:shadow-sm [&_[data-slot=input-group]]:transition-colors [&_[data-slot=input-group]]:focus-within:border-ghana-gold/60 [&_[data-slot=input-group]]:focus-within:ring-2 [&_[data-slot=input-group]]:focus-within:ring-ghana-gold/15"
           accept="application/pdf,image/png,image/jpeg,image/webp"
           maxFiles={1}
           maxFileSize={MAX_ATTACHMENT_BYTES}
           onError={(attachmentError) => setError(attachmentError.message)}
           onSubmit={async (message, event) => {
             event.preventDefault();
+            setEmojiPickerOpen(false);
             if (imageMode) {
               await createImage(message.text || input, message.files);
             } else {
@@ -389,13 +393,49 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
           }}
         >
           <PromptInputTextarea
+            className="min-h-[112px] max-h-60 resize-y px-4 py-4 text-[15px] leading-7 text-foreground placeholder:text-muted-foreground/75 sm:min-h-[132px] sm:text-base"
             value={input}
             onChange={(event) => setInput(event.currentTarget.value)}
             placeholder={imageMode ? "Describe the image you want to create…" : "Message GhanaPathFinder…"}
           />
-          <PromptInputFooter className="justify-between">
-            <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
+          <PromptInputFooter className="!w-full !flex-nowrap !items-center !justify-between !gap-2 !rounded-full !bg-navy-deep !px-2 !py-2 sm:!px-3">
+            <div className="flex min-w-0 flex-1 items-center gap-1 sm:gap-2">
+              <div className="relative shrink-0">
+                <PromptInputButton
+                  className="text-background/80 hover:bg-white/10 hover:text-background"
+                  disabled={isLoading}
+                  onClick={() => setEmojiPickerOpen((current) => !current)}
+                  tooltip="Add an emoji"
+                  aria-label="Add an emoji"
+                  aria-expanded={emojiPickerOpen}
+                >
+                  <Smile className="size-5" />
+                </PromptInputButton>
+                {emojiPickerOpen && (
+                  <div
+                    className="absolute bottom-full left-0 z-30 mb-2 flex gap-1 rounded-xl border border-border bg-popover p-2 shadow-lg"
+                    role="group"
+                    aria-label="Quick emoji"
+                  >
+                    {["🙂", "🎓", "👏", "❤️", "✨"].map((emoji) => (
+                      <button
+                        key={emoji}
+                        type="button"
+                        onClick={() => {
+                          setInput((current) => `${current}${current.trim() ? " " : ""}${emoji}`);
+                          setEmojiPickerOpen(false);
+                        }}
+                        className="grid size-9 place-items-center rounded-full text-lg hover:bg-muted"
+                        aria-label={`Insert ${emoji} emoji`}
+                      >
+                        {emoji}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
               <PromptInputButton
+                className="shrink-0 text-background/80 hover:bg-white/10 hover:text-background"
                 disabled={isLoading}
                 onClick={() => {
                   setImageMode((current) => !current);
@@ -414,10 +454,13 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
               status={status}
               disabled={isLoading}
               onStop={stop}
-            />
+              className="!size-11 !shrink-0 !rounded-full !bg-ghana-gold !text-navy-deep hover:!bg-ghana-gold-light disabled:!opacity-60"
+            >
+              {isLoading ? <span className="size-2.5 rounded-sm bg-current" /> : <ArrowRight className="size-5" />}
+            </PromptInputSubmit>
           </PromptInputFooter>
         </PromptInput>
-        <p className="mt-2 text-[10px] text-muted-foreground">
+        <p className="mt-2 px-1 text-[10px] leading-relaxed text-muted-foreground">
           {imageMode
             ? "GhanaPathFinder prepares your prompt for an external image creator. No paid image-generation API is used by this chatbot."
             : "Upload one PDF or image at a time, up to 2 MB. File contents are not saved in chat history."}
