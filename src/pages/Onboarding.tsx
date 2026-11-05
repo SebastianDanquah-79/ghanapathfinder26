@@ -320,12 +320,9 @@ const Onboarding = () => {
       } else {
         const {error}=await (supabase as any).from("profiles").upsert({
           id:user.id,email:user.email??null,full_name:fullName.trim()||null,role,account_role:role,
-          account_type:role,bio:bio.trim()||null,location:location.trim()||null,school:school.trim()||null,
-          region:region||null,target_career:career.trim()||null,university:university.trim()||null,
-          program:program.trim()||null,graduation_year:graduationYear?Number(graduationYear):null,
-          company:company.trim()||null,job_title:jobTitle.trim()||null,...socialProfileFields,
-          avatar_url:nextAvatarUrl,interests,skills:skillList,is_discoverable:discoverable,
-          onboarding_complete:true,onboarded:true,
+          account_type:role,bio:bio.trim()||null,location:location.trim()||null,
+          ...socialProfileFields,avatar_url:nextAvatarUrl,interests,skills:skillList,
+          is_discoverable:discoverable,onboarding_complete:true,onboarded:true,
         },{onConflict:"id"});
         if(error) throw new Error(`Profile update failed: ${error.message}`);
       }
@@ -369,10 +366,6 @@ const Onboarding = () => {
           const { error: directoryError } = await supabase.from("talent_directory").delete().eq("user_id", user.id);
           if (directoryError) throw new Error(`Public talent profile could not be removed: ${directoryError.message}`);
         }
-      } else {
-        // A role change removes the employee-only public directory projection.
-        const { error: directoryError } = await supabase.from("talent_directory").delete().eq("user_id", user.id);
-        if (directoryError) throw new Error(`Public talent profile could not be removed: ${directoryError.message}`);
       }
       if(role==="employer"){
         const {error}=await supabase.from("employer_profiles").upsert({
