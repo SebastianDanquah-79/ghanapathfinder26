@@ -5,7 +5,8 @@ import { z } from "zod";
 import { checkApiRateLimit, rateLimitResponse, readJsonBody } from "@/lib/api-rate-limit";
 import { createOpenAIResponsesModel } from "@/lib/openai.server";
 
-const MAX_IMAGE_BYTES = 2 * 1024 * 1024;
+const MAX_DOCUMENT_BYTES = 5 * 1024 * 1024;
+const MAX_REQUEST_BYTES = 7 * 1024 * 1024;
 const imageTypes = ["image/jpeg", "image/png", "image/webp"] as const;
 const grades = ["A1", "B2", "B3", "C4", "C5", "C6", "D7", "E8", "F9"] as const;
 
@@ -21,7 +22,7 @@ const scanSchema = z.object({
   notes: z.string().nullable(),
 });
 
-type ScanBody = { imageDataUrl?: unknown };
+type ScanBody = { documentDataUrl?: unknown; imageDataUrl?: unknown };
 
 export const Route = createFileRoute("/api/waec-scan")({
   server: {
@@ -43,7 +44,7 @@ export const Route = createFileRoute("/api/waec-scan")({
         }
 
         const supabase = createClient(supabaseUrl, supabaseKey, {
-          global: { headers: { Authorization: `Bearer ${token}` } },
+          global: { headers: { Authorization: "Bearer " + token } },
           auth: { persistSession: false, autoRefreshToken: false },
         });
         const { data: claimsData, error: claimsError } = await supabase.auth.getClaims(token);
@@ -67,35 +68,48 @@ export const Route = createFileRoute("/api/waec-scan")({
 
         let body: ScanBody;
         try {
-          body = (await readJsonBody(request, 3 * 1024 * 1024)) as ScanBody;
+          body = (await readJsonBody(request, MAX_REQUEST_BYTES)) as ScanBody;
         } catch (error) {
           const tooLarge = error instanceof Error && error.message === "BODY_TOO_LARGE";
           return new Response(
-            tooLarge ? "The image is too large. Choose a compressed photo under 2 MB." : "A valid image request is required.",
+            tooLarge ? "The file is too large. Choose a PDF under 5 MB or a compressed photo." : "A valid file request is required.",
             { status: tooLarge ? 413 : 400 },
           );
         }
 
-        const imageDataUrl = typeof body?.imageDataUrl === "string" ? body.imageDataUrl : "";
-        const match = imageDataUrl.match(/^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/]+=*)$/);
-        if (!match) return new Response("Upload a JPG, PNG or WebP image.", { status: 415 });
+        // imageDataUrl is accepted temporarily for clients still running the previous scanner UI.
+        const documentDataUrl = typeof body?.documentDataUrl === "string"
+          ? body.documentDataUrl
+          : typeof body?.imageDataUrl === "string" ? body.imageDataUrl : "";
+        const match = documentDataUrl.match(/^data:(application\/pdf|image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/]+=*)$/);
+        if (!match) return new Response("Upload a PDF, JPG, PNG or WebP file.", { status: 415 });
 
         const mimeType = match[1]!;
-        if (!imageTypes.includes(mimeType as (typeof imageTypes)[number])) {
-          return new Response("This image format is not supported.", { status: 415 });
-        }
         const encoded = match[2]!;
+        if (mimeType !== "application/pdf" && !imageTypes.includes(mimeType as (typeof imageTypes)[number])) {
+          return new Response("This file format is not supported.", { status: 415 });
+        }
+
         const padding = encoded.endsWith("==") ? 2 : encoded.endsWith("=") ? 1 : 0;
         const bytes = Math.floor((encoded.length * 3) / 4) - padding;
-        if (bytes <= 0 || bytes > MAX_IMAGE_BYTES) {
-          return new Response("Choose a compressed photo under 2 MB.", { status: 413 });
+        if (bytes <= 0 || bytes > MAX_DOCUMENT_BYTES) {
+          return new Response("Choose a PDF under 5 MB or a compressed photo.", { status: 413 });
         }
 
         if (!process.env["OPENAI_API_KEY"]) {
-          return new Response("WAEC scanning is not configured. Add OPENAI_API_KEY to the Vercel project environment variables.", { status: 503 });
+          return new Response("WASSCE scanning is not configured. The site administrator must connect the AI service.", { status: 503 });
         }
 
         try {
+          const documentPart = mimeType === "application/pdf"
+            ? {
+                type: "file" as const,
+                data: documentDataUrl,
+                mediaType: "application/pdf",
+                filename: "wassce-results.pdf",
+              }
+            : { type: "image" as const, image: documentDataUrl };
+
           const result = await generateText({
             model: createOpenAIResponsesModel(process.env["OPENAI_WAEC_MODEL"] || process.env["OPENAI_MODEL"]),
             output: Output.object({ schema: scanSchema }),
@@ -106,38 +120,79 @@ export const Route = createFileRoute("/api/waec-scan")({
                   type: "text",
                   text: [
                     "Read this student's Ghana WASSCE statement of results.",
+                    "It may be headed WASSCE, West African Senior School Certificate Examination, or West African Examinations Council (WAEC).",
+                    "Read the subject table carefully, including small print. If the file is a PDF, inspect the page containing the subject and grade table.",
                     "Only extract subject names and the printed grades A1, B2, B3, C4, C5, C6, D7, E8 or F9.",
                     "Do not infer, guess, correct or fill in a missing grade. Set grade to null and explain the uncertainty when a row is unclear.",
                     "Do not extract the candidate's name, index number, date of birth, school code, serial number, or other personal identifiers.",
-                    "Set isWassceStatement to false if this is not clearly a WASSCE result statement.",
+                    "Set isWassceStatement to false only when there is no reasonable evidence that the file contains a WASSCE result statement.",
                     "Preserve subject names as printed. Confidence is your confidence in reading that subject-grade pair, from 0 to 1.",
-                    "Return at most 30 subject rows. A human will review every row before any result is saved.",
+                    "Return every visible subject row, up to 30. A human will review every row before any result is saved.",
                   ].join(" "),
                 },
-                { type: "image", image: imageDataUrl },
+                documentPart,
               ],
             }],
-            maxOutputTokens: 1_600,
+            maxOutputTokens: 2_000,
           });
 
           const extracted = result.output;
-          if (!extracted || !extracted.isWassceStatement) {
-            return Response.json({ error: "This image does not appear to be a readable WASSCE statement. Try a clearer, well-lit photo with all subject rows visible." }, { status: 422 });
-          }
-          if (!extracted.results.length) {
-            return Response.json({ error: "No subject grades could be read. Try a sharper photo or enter the grades manually." }, { status: 422 });
+          if (!extracted || !extracted.results.length) {
+            return Response.json({
+              error: "No subject grades could be read from this file. Try the original PDF or a sharper, well-lit photo showing the full subject table. You can also enter your grades manually.",
+            }, { status: 422 });
           }
 
-          // The image is processed in memory only. It is never uploaded to Supabase
-          // Storage or written to the application's database.
+          const visibleRows = extracted.results.filter((row) => row.subject.trim()).slice(0, 30);
+          if (!visibleRows.length) {
+            return Response.json({
+              error: "The file was received, but no subject rows were recognized. Try a clearer copy or enter your grades manually.",
+            }, { status: 422 });
+          }
+
+          const notes = [
+            extracted.notes,
+            !extracted.isWassceStatement ? "The document type was uncertain. Verify every subject and grade against the original statement before saving." : null,
+          ].filter(Boolean).join(" ");
+
+          // The file is processed in memory only. It is never uploaded to Supabase Storage
+          // or written to the application's database.
           return Response.json({
             examYear: extracted.examYear,
-            results: extracted.results,
-            notes: extracted.notes,
+            results: visibleRows,
+            notes: notes || null,
           });
         } catch (error) {
-          console.error("WAEC vision extraction failed", error instanceof Error ? error.message : "Unknown error");
-          return new Response("The result slip could not be read right now. Please retry or enter your grades manually.", { status: 502 });
+          const message = error instanceof Error ? error.message : String(error);
+          const normalized = message.toLowerCase();
+          console.error("WAEC vision extraction failed", {
+            name: error instanceof Error ? error.name : "UnknownError",
+            message: message.slice(0, 400),
+          });
+
+          if (/insufficient_quota|billing|quota/.test(normalized)) {
+            return Response.json({
+              error: "The result scanner's AI service has reached its usage limit. Please enter your grades manually for now.",
+            }, { status: 503 });
+          }
+          if (/rate_limit|too many requests|429/.test(normalized)) {
+            return Response.json({
+              error: "The scanner is temporarily busy. Wait a minute and try again.",
+            }, { status: 503 });
+          }
+          if (/invalid_api_key|incorrect api key|authentication|401/.test(normalized)) {
+            return Response.json({
+              error: "The result scanner is temporarily unavailable. The site administrator needs to check its AI connection.",
+            }, { status: 503 });
+          }
+          if (/timeout|timed out|deadline/.test(normalized)) {
+            return Response.json({
+              error: "Reading this file took too long. Try the original PDF or a clearer photo.",
+            }, { status: 504 });
+          }
+          return Response.json({
+            error: "We received your file, but could not extract the grades. Try the original PDF or a brighter, sharper photo, or enter your grades manually.",
+          }, { status: 502 });
         }
       },
     },
