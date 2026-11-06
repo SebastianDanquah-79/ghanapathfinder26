@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Link } from "@/lib/router-compat";
 import { useAuth } from "@/hooks/useAuth";
+import CommunityComposer from "@/components/CommunityComposer";
 import {
   INSIGHT_CATEGORIES,
   STUDENT_STATUSES,
@@ -309,16 +310,6 @@ const StudentInsights = ({ universityId, universityName }: Props) => {
             </div>
 
             <label className="text-xs text-muted-foreground space-y-1 block">
-              <span>Your experience</span>
-              <textarea
-                className={`${field} min-h-[110px]`}
-                maxLength={4000}
-                value={form.body}
-                placeholder="Academics, accommodation, food, transport, facilities, cost of living…"
-                onChange={(e) => setForm({ ...form, body: e.target.value })}
-              />
-            </label>
-            <label className="text-xs text-muted-foreground space-y-1 block">
               <span>What I wish I knew before coming here (optional)</span>
               <textarea
                 className={`${field} min-h-[70px]`}
@@ -336,25 +327,27 @@ const StudentInsights = ({ universityId, universityName }: Props) => {
                 onChange={(e) => setForm({ ...form, advice: e.target.value })}
               />
             </label>
+            <div className="space-y-1">
+              <label className="block text-xs text-muted-foreground">Your experience</label>
+              <CommunityComposer
+                value={form.body}
+                onChange={(value) => setForm({ ...form, body: value })}
+                onSubmit={submit}
+                placeholder="Academics, accommodation, food, transport, facilities, cost of living…"
+                actionLabel="Send student insight"
+                helperText="Shared anonymously"
+                canSubmit={form.body.trim().length >= 20}
+                isSending={create.isPending}
+                rows={4}
+                maxLength={4000}
+              />
+            </div>
 
             <p className="text-[11px] text-muted-foreground">
               Your name, email and contact details are never shown. Posts appear as “Anonymous —{" "}
               {form.student_status}”. Harassment, misinformation and personal attacks are removed.
             </p>
 
-          </div>
-          <div className="flex items-center justify-between gap-3 border-t border-border bg-card px-4 py-3">
-            <p className="min-w-0 flex-1 text-xs leading-5 text-muted-foreground">
-              Your post will be shared anonymously.
-            </p>
-            <button
-              type="button"
-              onClick={submit}
-              disabled={create.isPending}
-              className="min-h-12 min-w-[132px] shrink-0 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {create.isPending ? "Sending…" : "Send post"}
-            </button>
           </div>
         </div>
       )}

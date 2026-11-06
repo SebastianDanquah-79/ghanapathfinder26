@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
+import CommunityComposer from "@/components/CommunityComposer";
 import {
   useAddComment,
   useDeleteComment,
@@ -97,24 +98,18 @@ const CommentThread = ({ insightId, open }: Props) => {
       {/* Composer */}
       <div className="flex items-start gap-2">
         <Avatar label={user ? "Me" : "?"} />
-        <div className="flex-1">
-          <textarea
+        <div className="min-w-0 flex-1">
+          <CommunityComposer
             value={draft}
-            onChange={(e) => setDraft(e.target.value)}
-            rows={2}
-            placeholder={user ? "Write a comment…" : "Sign in to comment"}
+            onChange={setDraft}
+            onSubmit={() => post(draft, null, () => setDraft(""))}
+            placeholder={user ? "What would you like to add to the discussion?" : "Sign in to comment"}
+            actionLabel="Post comment"
+            helperText="Join the discussion"
             disabled={!user}
-            className="w-full resize-none rounded-2xl bg-secondary border border-border px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 disabled:opacity-60"
+            isSending={addComment.isPending}
+            rows={3}
           />
-          <div className="mt-1 flex justify-end">
-            <button
-              onClick={() => post(draft, null, () => setDraft(""))}
-              disabled={!user || addComment.isPending || !draft.trim()}
-              className="rounded-full bg-primary px-4 py-1.5 text-xs font-medium text-primary-foreground disabled:opacity-50"
-            >
-              {addComment.isPending ? "Posting…" : "Comment"}
-            </button>
-          </div>
         </div>
       </div>
 
@@ -160,22 +155,22 @@ const CommentThread = ({ insightId, open }: Props) => {
               {replyTo === c.id && (
                 <div className="mt-2 flex items-start gap-2">
                   <Avatar label={user ? "Me" : "?"} />
-                  <div className="flex-1">
-                    <input
+                  <div className="min-w-0 flex-1">
+                    <CommunityComposer
                       value={replyDraft}
-                      onChange={(e) => setReplyDraft(e.target.value)}
+                      onChange={setReplyDraft}
+                      onSubmit={() =>
+                        post(replyDraft, c.id, () => {
+                          setReplyDraft("");
+                          setReplyTo(null);
+                        })
+                      }
                       placeholder={user ? `Reply to ${c.author_label}…` : "Sign in to reply"}
+                      actionLabel="Send reply"
                       disabled={!user}
-                      className="w-full rounded-full bg-secondary border border-border px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 disabled:opacity-60"
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" && !e.shiftKey) {
-                          e.preventDefault();
-                          post(replyDraft, c.id, () => {
-                            setReplyDraft("");
-                            setReplyTo(null);
-                          });
-                        }
-                      }}
+                      isSending={addComment.isPending}
+                      rows={2}
+                      compact
                     />
                   </div>
                 </div>

@@ -7,6 +7,7 @@ import Seo from "@/components/Seo";
 import { toast } from "sonner";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { BadgeCheck, CheckCircle2, Loader2, MessageCircle, ShieldCheck, Users, XCircle } from "lucide-react";
+import CommunityComposer from "@/components/CommunityComposer";
 
 type MentorForm = {
   full_name: string;
@@ -285,10 +286,21 @@ const Mentorship = () => {
               <label className="text-xs text-muted-foreground">What do you want guidance about?
                 <input className={fieldClass + " mt-1"} maxLength={160} value={topic} onChange={(event) => setTopic(event.target.value)} placeholder="e.g. Choosing a Computer Science programme" />
               </label>
-              <label className="text-xs text-muted-foreground">Message
-                <textarea className={fieldClass + " mt-1 min-h-24 resize-y"} maxLength={1200} value={message} onChange={(event) => setMessage(event.target.value)} placeholder="Briefly explain what advice you are looking for. Do not include private contact details." />
-              </label>
-              <button type="button" onClick={() => void sendRequest()} disabled={sending} className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground disabled:opacity-50">{sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <MessageCircle className="h-4 w-4" />} Send request</button>
+              <div className="space-y-1">
+                <label className="block text-xs text-muted-foreground">Message</label>
+                <CommunityComposer
+                  value={message}
+                  onChange={setMessage}
+                  onSubmit={() => void sendRequest()}
+                  placeholder="Briefly explain what advice you are looking for. Do not include private contact details."
+                  actionLabel="Send mentorship request"
+                  helperText="Keep contact details private"
+                  canSubmit={topic.trim().length >= 3 && message.trim().length >= 10}
+                  isSending={sending}
+                  rows={3}
+                  maxLength={1200}
+                />
+              </div>
             </div>
           </section>
         )}
