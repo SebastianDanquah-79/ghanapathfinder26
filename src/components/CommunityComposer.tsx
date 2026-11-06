@@ -12,6 +12,7 @@ export interface CommunityComposerProps {
   helperText?: string;
   toolbarContent?: ReactNode;
   disabled?: boolean;
+  canSubmit?: boolean;
   isSending?: boolean;
   rows?: number;
   maxLength?: number;
@@ -27,13 +28,14 @@ const CommunityComposer = ({
   helperText,
   toolbarContent,
   disabled = false,
+  canSubmit = true,
   isSending = false,
   rows = 4,
   maxLength,
   compact = false,
 }: CommunityComposerProps) => {
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
-  const isDisabled = disabled || isSending || !value.trim();
+  const isDisabled = disabled || isSending || !canSubmit || !value.trim();
 
   return (
     <div className="relative overflow-hidden rounded-[24px] border border-border bg-card shadow-sm transition-colors focus-within:border-ghana-gold/60 focus-within:ring-2 focus-within:ring-ghana-gold/15">
