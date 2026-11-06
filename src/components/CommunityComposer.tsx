@@ -38,7 +38,7 @@ const CommunityComposer = ({
   const isDisabled = disabled || isSending || !canSubmit || !value.trim();
 
   return (
-    <div className="relative overflow-hidden rounded-[24px] border border-border bg-card shadow-sm transition-colors focus-within:border-ghana-gold/60 focus-within:ring-2 focus-within:ring-ghana-gold/15">
+    <div className="relative rounded-[24px] border border-border bg-card shadow-sm transition-colors focus-within:border-ghana-gold/60 focus-within:ring-2 focus-within:ring-ghana-gold/15">
       <textarea
         value={value}
         onChange={(event) => onChange(event.currentTarget.value)}
