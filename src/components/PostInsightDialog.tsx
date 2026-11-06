@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowRight } from "@/lib/icons";
+import { Paperclip } from "lucide-react";
+import CommunityComposer from "@/components/CommunityComposer";
 import { toast } from "sonner";
 import { useNavigate } from "@/lib/router-compat";
 import { supabase } from "@/integrations/supabase/client";
@@ -301,29 +302,35 @@ const PostInsightDialog = ({ open, onClose, universityId, editing }: Props) => {
           className={field}
         />
 
-        <textarea
+        <CommunityComposer
           value={body}
-          onChange={(e) => setBody(e.target.value)}
-          rows={5}
+          onChange={setBody}
+          onSubmit={() => void submit()}
           placeholder="What should other students know? Accommodation, fees, lecturers, transport, campus life…"
-          className={field}
+          actionLabel={editing ? "Save post changes" : "Send post"}
+          helperText={`${body.trim().length}/20 min`}
+          canSubmit={canPost}
+          isSending={busy}
+          rows={5}
+          toolbarContent={
+            <button
+              type="button"
+              onClick={() => fileRef.current?.click()}
+              disabled={totalImages >= MAX_IMAGES || busy}
+              aria-label="Attach a photo"
+              className="inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-xs font-medium text-background/80 transition-colors hover:bg-white/10 hover:text-background disabled:opacity-50"
+            >
+              <Paperclip className="size-4" />
+              <span className="hidden sm:inline">Photo</span>
+            </button>
+          }
         />
 
         {/* Photos */}
         <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-foreground">
-              Photos or screenshots (optional)
-            </span>
-            <button
-              type="button"
-              onClick={() => fileRef.current?.click()}
-              disabled={totalImages >= MAX_IMAGES}
-              className="px-3 py-1.5 rounded-lg bg-secondary border border-border text-xs font-medium text-foreground disabled:opacity-50"
-            >
-              Add photo
-            </button>
-          </div>
+          <p className="text-xs font-medium text-foreground">
+            Photos or screenshots (optional)
+          </p>
           <input
             ref={fileRef}
             type="file"
@@ -371,23 +378,10 @@ const PostInsightDialog = ({ open, onClose, universityId, editing }: Props) => {
         </div>
 
         </div>
-        <div className="z-20 shrink-0 border-t border-border bg-card px-4 py-3 pb-[max(env(safe-area-inset-bottom),0.75rem)] shadow-[0_-8px_20px_rgba(0,0,0,0.08)]">
-          <div className="flex items-center gap-3">
-            <span className="shrink-0 text-[11px] text-muted-foreground">{body.trim().length}/20 min</span>
-            <span className="ml-auto text-xs text-muted-foreground" role="status" aria-live="polite">
-              {uploading ? "Uploading…" : busy ? "Sending…" : editing ? "Save changes" : "Send post"}
-            </span>
-            <button
-              type="button"
-              onClick={() => void submit()}
-              disabled={!canPost || busy}
-              aria-label={editing ? "Save post changes" : "Send post"}
-              title={editing ? "Save post changes" : "Send post"}
-              className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              <ArrowRight className="h-5 w-5" />
-            </button>
-          </div>
+        <div className="z-20 shrink-0 border-t border-border bg-card px-4 py-3 pb-[max(env(safe-area-inset-bottom),0.75rem)]">
+          <p className="text-xs leading-5 text-muted-foreground">
+            Your experience is shared anonymously. Do not include names or private contact details.
+          </p>
         </div>
       </div>
     </div>
