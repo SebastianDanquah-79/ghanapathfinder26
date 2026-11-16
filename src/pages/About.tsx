@@ -64,17 +64,6 @@ const founders: Founder[] = [
     linkedin: "https://www.linkedin.com/in/som-emmanuel-egyir-b6a09a41b?utm_source=share_via&utm_content=profile&utm_medium=member_android",
     quote: "The right path can change a future; my goal is to use technology to help people discover theirs.",
   },
-  {
-    name: "Seraphine Enam Kattah",
-    role: "Chief Communications & Research Officer (CCRO)",
-    location: "Accra, Ghana",
-    photo: "/team/seraphine-enam-kattah-v2.jpg",
-    initials: "SK",
-    bio: "Seraphine Enam Kattah is an entrepreneur, youth advocate and Chief Communications & Research Officer at GhanaPathFinder. She leads communications and user research, helping ensure that product decisions are grounded in evidence and that the platform remains useful to young people across Ghana.",
-    responsibilities: ["Communications strategy", "User research", "Youth advocacy & partnerships"],
-    emails: ["enamseraphinekattah92@gmail.com"],
-    linkedin: "https://www.linkedin.com/in/seraphine-enam-kattah-b997a22bb?utm_source=share_via&utm_content=profile&utm_medium=member_android",
-  },
 ];
 
 const FounderCard = ({ f }: { f: Founder }) => {
