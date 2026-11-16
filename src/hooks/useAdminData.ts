@@ -16,23 +16,28 @@ export const ACCREDITATION_STATUSES = [
 
 export const VERIFICATION_STATUSES = ["verified", "needs_review", "outdated", "unverified"] as const;
 
-/** True when the signed-in user holds the admin role. */
+/** The single account permitted to administer GhanaPathFinder. */
+export const ADMIN_EMAIL = "tumikwabena79@gmail.com";
+
+/** Admin status requires both the allow-listed, verified account and its database role. */
 export const useIsAdmin = () => {
   const { user } = useAuth();
+  const isAllowListed = user?.email?.trim().toLowerCase() === ADMIN_EMAIL;
   return useQuery({
-    queryKey: ["is_admin", user?.id],
-    enabled: !!user?.id,
+    queryKey: ["is_admin", user?.id, user?.email?.toLowerCase()],
+    enabled: !!user?.id && isAllowListed,
     queryFn: async () => {
+      if (!isAllowListed || !user?.id) return false;
       const { data, error } = await supabase
         .from("user_roles")
         .select("role")
-        .eq("user_id", user!.id)
+        .eq("user_id", user.id)
         .eq("role", "admin")
         .maybeSingle();
       if (error) throw error;
       return !!data;
     },
-    staleTime: 300_000,
+    staleTime: 60_000,
   });
 };
 
