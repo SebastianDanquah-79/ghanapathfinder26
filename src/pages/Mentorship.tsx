@@ -60,7 +60,9 @@ const Mentorship = () => {
       return data ?? [];
     },
   });
-  const isAdmin = (rolesQuery.data ?? []).some((row: any) => row.role === "admin");
+  const isAdmin =
+    user?.email?.trim().toLowerCase() === "tumikwabena79@gmail.com" &&
+    (rolesQuery.data ?? []).some((row: any) => row.role === "admin");
 
   const applicationQuery = useQuery({
     queryKey: ["mentor-application", user?.id],
