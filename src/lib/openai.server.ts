@@ -70,7 +70,7 @@ export function createOpenAIResponsesModel(
 export type AIConfigurationDiagnostics = {
   provider: "openai" | "vercel-gateway";
   model: string;
-  credentialSource: "openai-api-key" | "gateway-api-key" | "vercel-oidc-env" | "missing";
+  credentialSource: "openai-api-key" | "gateway-api-key" | "vercel-oidc-auto-resolution" | "missing";
 };
 
 export function getAIConfigurationDiagnostics(
@@ -84,11 +84,12 @@ export function getAIConfigurationDiagnostics(
     } catch {
       // Return a safe diagnostic value without throwing from telemetry.
     }
+    // AI SDK's Gateway provider resolves OIDC from Vercel's request context
+    // when no API key is configured. That token may not be present in
+    // process.env, so do not incorrectly report "missing" here.
     const credentialSource = readEnv("AI_GATEWAY_API_KEY")
       ? "gateway-api-key"
-      : readEnv("VERCEL_OIDC_TOKEN")
-        ? "vercel-oidc-env"
-        : "missing";
+      : "vercel-oidc-auto-resolution";
     return { provider, model, credentialSource };
   }
 
