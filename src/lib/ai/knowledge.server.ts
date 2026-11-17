@@ -1,3 +1,4 @@
+import { embed } from "ai";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 export type KnowledgeSearchRecord = {
@@ -10,7 +11,7 @@ export type KnowledgeSearchRecord = {
   last_verified_at: string | null;
   verification_status: string;
   chunk_text: string;
-  similarity: number;
+  similarity: number | null;
 };
 
 export type KnowledgeSearchResult = {
@@ -19,7 +20,8 @@ export type KnowledgeSearchResult = {
   note?: string;
 };
 
-const EMBEDDING_MODEL = process.env["OPENAI_EMBEDDING_MODEL"] || "text-embedding-3-small";
+const EMBEDDING_MODEL =
+  process.env["AI_GATEWAY_MODEL_EMBEDDING"] || "openai/text-embedding-3-small";
 const EMBEDDING_DIMENSIONS = 1536;
 
 export async function searchGlobalKnowledge(
@@ -31,47 +33,27 @@ export async function searchGlobalKnowledge(
     return { available: true, records: [], note: "The search query is too short." };
   }
 
-  const apiKey = process.env["OPENAI_API_KEY"];
-  if (!apiKey) {
-    return { available: false, records: [], note: "Knowledge search is not configured." };
-  }
-
   try {
-    const embeddingResponse = await fetch("https://api.openai.com/v1/embeddings", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: EMBEDDING_MODEL,
-        input: normalizedQuery,
-        dimensions: EMBEDDING_DIMENSIONS,
-        encoding_format: "float",
-      }),
-      signal: AbortSignal.timeout(12_000),
+    // Use AI SDK's provider-neutral model routing. On Vercel this authenticates
+    // to AI Gateway through the deployment's OIDC token, avoiding a second
+    // direct OpenAI generation/embedding dependency in the application.
+    const { embedding } = await embed({
+      model: EMBEDDING_MODEL,
+      value: normalizedQuery,
+      maxRetries: 1,
+      abortSignal: AbortSignal.timeout(12_000),
     });
 
-    if (!embeddingResponse.ok) {
-      console.error("GhanaPathFinder knowledge embedding request failed", {
-        status: embeddingResponse.status,
+    if (!Array.isArray(embedding) || embedding.length !== EMBEDDING_DIMENSIONS) {
+      console.error("GhanaPathFinder query embedding had an unexpected dimension", {
+        expected: EMBEDDING_DIMENSIONS,
+        received: Array.isArray(embedding) ? embedding.length : 0,
       });
       return {
         available: false,
         records: [],
-        note: embeddingResponse.status === 429
-          ? "Semantic search is temporarily rate-limited."
-          : "Semantic search is temporarily unavailable.",
+        note: "The knowledge search model returned an incompatible vector.",
       };
-    }
-
-    const embeddingPayload = await embeddingResponse.json() as {
-      data?: Array<{ embedding?: number[] }>;
-    };
-    const embedding = embeddingPayload.data?.[0]?.embedding;
-    if (!Array.isArray(embedding) || embedding.length !== EMBEDDING_DIMENSIONS) {
-      console.error("GhanaPathFinder embedding response had an unexpected shape");
-      return { available: false, records: [], note: "Semantic search returned an invalid embedding." };
     }
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -103,6 +85,7 @@ export async function searchGlobalKnowledge(
   } catch (error) {
     console.error("GhanaPathFinder knowledge retrieval failed", {
       name: error instanceof Error ? error.name : "UnknownError",
+      message: error instanceof Error ? error.message.slice(0, 180) : "Unknown failure",
     });
     return {
       available: false,
