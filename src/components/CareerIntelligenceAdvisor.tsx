@@ -277,7 +277,7 @@ export default function CareerIntelligenceAdvisor({
                     </div>
                     <div className="shrink-0 text-right">
                       <p className="text-lg font-bold tabular-nums text-foreground">{recommendation.relevance}/100</p>
-                      <p className="text-[10px] text-muted-foreground">AI relevance</p>
+                      <p className="text-[10px] text-muted-foreground">Profile alignment</p>
                     </div>
                   </div>
                   <p className="mt-3 text-sm leading-6 text-muted-foreground">{recommendation.reason}</p>
@@ -350,7 +350,7 @@ export default function CareerIntelligenceAdvisor({
 
           {analysis.evidenceNote && <p className="mt-5 border-t border-border pt-3 text-xs leading-5 text-muted-foreground">{analysis.evidenceNote}</p>}
           <p className="mt-2 text-[11px] text-muted-foreground">
-            AI relevance scores are advisory comparisons of the information supplied. They are not predictions of career success, salary or employment.
+            Profile-alignment scores are deterministic comparisons of the information supplied. They are not predictions of career success, salary or employment.
           </p>
           {analysis.recommendations[0] && (
             <div className="mt-6">
