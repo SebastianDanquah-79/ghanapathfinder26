@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { getAIErrorDetails } from "./openai.server";
+import { getAIErrorDetails, getDeepSeekModelName } from "./openai.server";
+
+describe("AI provider configuration", () => {
+  it("uses the current DeepSeek Flash Responses model by default", () => {
+    expect(getDeepSeekModelName("chat")).toBe("deepseek-flash");
+    expect(getDeepSeekModelName("structured")).toBe("deepseek-flash");
+  });
+});
 
 describe("getAIErrorDetails", () => {
   it("identifies the AI Gateway credit-card prerequisite without exposing billing instructions", () => {
@@ -23,6 +30,13 @@ describe("getAIErrorDetails", () => {
     expect(result.message).toContain("project administrator");
     expect(result.message).toContain("conversation has been preserved");
     expect(result.message).not.toMatch(/add credits|payment method|billing portal/i);
+  });
+
+  it("classifies a DeepSeek insufficient-balance response as exhausted provider credits", () => {
+    const result = getAIErrorDetails(new Error("Insufficient Balance"));
+
+    expect(result.code).toBe("credits_exhausted");
+    expect(result.status).toBe(503);
   });
 
   it("classifies provider rate limits and returns a retry delay", () => {
