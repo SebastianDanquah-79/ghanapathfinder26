@@ -102,7 +102,7 @@ export function getAIConfigurationDiagnostics(
 
 export type AIErrorDetails = {
   status: 429 | 502 | 503 | 504;
-  code: "rate_limited" | "configuration_error" | "billing_setup_required" | "timeout" | "provider_error";
+  code: "rate_limited" | "configuration_error" | "billing_setup_required" | "credits_exhausted" | "timeout" | "provider_error";
   message: string;
   retryAfterSeconds?: number;
 };
@@ -137,18 +137,19 @@ export function getAIErrorDetails(error: unknown): AIErrorDetails {
   const message = rawMessage.toLowerCase();
   const status = readStatus(error);
 
+  // A depleted OpenAI balance can also arrive as HTTP 429. Check explicit
+  // quota messages before classifying all 429s as temporary rate limits.
   if (
-    status === 429 ||
-    message.includes("rate limit") ||
-    message.includes("rate_limit") ||
-    message.includes("too many requests") ||
-    message.includes("tokens per min")
+    message.includes("no credits remaining") ||
+    message.includes("insufficient_quota") ||
+    message.includes("exceeded your current quota") ||
+    message.includes("billing hard limit") ||
+    message.includes("credit balance is too low")
   ) {
     return {
-      status: 429,
-      code: "rate_limited",
-      message: "GhanaPathFinder AI is temporarily at capacity. Your conversation is saved; please wait before retrying.",
-      retryAfterSeconds: parseRetryAfter(rawMessage) ?? 60,
+      status: 503,
+      code: "credits_exhausted",
+      message: "GhanaPathFinder AI is unavailable because the AI provider account has no API credits remaining. Please contact the GhanaPathFinder project administrator. Your conversation has been preserved.",
     };
   }
 
@@ -165,10 +166,24 @@ export function getAIErrorDetails(error: unknown): AIErrorDetails {
   }
 
   if (
+    status === 429 ||
+    message.includes("rate limit") ||
+    message.includes("rate_limit") ||
+    message.includes("too many requests") ||
+    message.includes("tokens per min")
+  ) {
+    return {
+      status: 429,
+      code: "rate_limited",
+      message: "GhanaPathFinder AI is temporarily at capacity. Your conversation is saved; please wait before retrying.",
+      retryAfterSeconds: parseRetryAfter(rawMessage) ?? 60,
+    };
+  }
+
+  if (
     status === 401 || status === 403 ||
     message.includes("api key") ||
     message.includes("authentication") ||
-    message.includes("insufficient_quota") ||
     message.includes("billing") ||
     message.includes("not configured")
   ) {
