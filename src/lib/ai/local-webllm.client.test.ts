@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   buildLocalAIMessages,
   LOCAL_AI_MODEL_ID,
-} from "./local-webllm.client";
+} from "./local-webllm";
 
 describe("browser-local AI prompt preparation", () => {
   it("uses the registered lightweight WebLLM model", () => {
