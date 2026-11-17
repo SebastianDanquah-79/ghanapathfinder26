@@ -43,7 +43,7 @@ Set:
 
 Model IDs must use the Gateway's exact `provider/model` format. Vercel deployments can authenticate through Vercel OIDC; external/local environments should use a Gateway API key stored as a secret.
 
-**Account prerequisite:** the Gateway account may require billing setup before it accepts model requests. When Gateway returns the "valid credit card on file" error, the application reports that setup is required by the project owner/administrator. This is not a code-build failure. Do not disable the error handler or present it as a user input error.
+**Provider-account prerequisite:** the configured model provider must have active API access and a remaining credit balance. An OpenAI response such as "You have no credits remaining" is surfaced as a distinct `credits_exhausted` state, not mislabeled as a temporary rate limit. Vercel AI Gateway may separately require account setup before it accepts model requests; its "valid credit card on file" response is surfaced as `billing_setup_required`. These are provider-account conditions, not code-build failures. The project owner/administrator must resolve the relevant account status.
 
 ## Global knowledge ingestion
 
@@ -82,7 +82,7 @@ The current RAG document/chunk tables are initially empty. The platform's existi
 ## Reliability and operations
 
 - Chat history, uploaded attachments, input size, tool-step count and output tokens are bounded.
-- Provider rate limits, billing/setup errors, timeouts and generic provider failures are classified separately.
+- Provider rate limits, exhausted API credits, billing/setup errors, timeouts and generic provider failures are classified separately.
 - Failed requests preserve the conversation and return a retry/recovery message.
 - The in-memory rate limiter is best-effort per serverless instance, not a distributed quota system. Add a shared limiter before scaling heavy public AI traffic.
 - Do not promise 100% accuracy. Use source attribution, human-reviewed benchmark questions and regular data freshness checks.
