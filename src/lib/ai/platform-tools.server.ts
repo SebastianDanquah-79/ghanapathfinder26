@@ -72,7 +72,7 @@ async function runPublicSearch(
     const byId = new Map<string, Record<string, unknown>>();
     for (const result of results) {
       for (const row of result.data ?? []) {
-        const key = String(row.id ?? JSON.stringify(row));
+        const key = String(row["id"] ?? JSON.stringify(row));
         if (!byId.has(key)) byId.set(key, row);
       }
     }
@@ -108,8 +108,8 @@ async function searchProgrammes(query: string) {
             .in("id", institutionIds.slice(0, 20))
         : Promise.resolve({ data: [], error: null }),
     ]);
-    const universityMap = new Map((universities.data ?? []).map((row) => [String(row.id), row]));
-    const institutionMap = new Map((institutions.data ?? []).map((row) => [String(row.id), row]));
+    const universityMap = new Map((universities.data ?? []).map((row) => [String(row["id"]), row]));
+    const institutionMap = new Map((institutions.data ?? []).map((row) => [String(row["id"]), row]));
     return {
       ...result,
       records: result.records.map((row) => ({
