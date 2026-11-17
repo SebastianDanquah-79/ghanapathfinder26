@@ -2,7 +2,7 @@ type SearchRow = Record<string, unknown>;
 
 type SearchBuilder = {
   select(columns: string): SearchBuilder;
-  ilike(column: string, pattern: string): Promise<{ data: SearchRow[] | null; error: { code?: string; message: string } | null }>;
+  ilike(column: string, pattern: string): SearchBuilder;
   eq(column: string, value: string | boolean): SearchBuilder;
   limit(count: number): Promise<{ data: SearchRow[] | null; error: { code?: string; message: string } | null }>;
 };
@@ -89,7 +89,6 @@ export function rankCareerCandidates(
       ...candidate.entryLevelRoles,
       ...candidate.industries,
     ].join(" "));
-    const careerTokens = new Set(descriptionTokens);
     const targetHits = overlapCount(tokens(candidate.careerName + " " + candidate.major), targetTokens);
     const interestHits = overlapCount(descriptionTokens, interestTokens);
     const skillHits = overlapCount(descriptionTokens, skillTokens);
