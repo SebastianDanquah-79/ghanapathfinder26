@@ -125,3 +125,18 @@ The current automated suite covers deterministic career ranking, AI provider bil
 - Test Ask GhanaPathFinder, Career Intelligence, Career Path, WASSCE/image/PDF workflows and navigation on the actual production data.
 - Review Vercel runtime logs for 429s, timeouts and provider errors.
 - Review answer quality against a human-approved benchmark before releasing to all users.
+
+
+## Browser-local AI (zero API credits)
+
+GhanaPathFinder now has an optional browser-local chat engine for Ask GhanaPathFinder, Personal AI Tutor and AI Co-Founder. It uses WebLLM with the built-in Qwen2.5 0.5B Instruct 4-bit model.
+
+- The visitor must explicitly choose **Enable local AI** and confirm the download before the model is fetched.
+- WebGPU and a compatible GPU adapter are required. The model may need around 1 GB of GPU memory; some phones, integrated GPUs, older browsers and low-memory devices will not be able to run it.
+- The model is downloaded once and cached by the browser. The first download is large and requires an internet connection. Local generation itself does not use OpenAI, Groq, Gemini, DeepSeek, Vercel AI Gateway, or any hosted inference API.
+- Chat prompts and conversation content are passed to the local WebLLM engine in a browser worker. They are not sent to an inference server in local mode.
+- This compact model is materially less capable than a larger hosted model. Users should verify important admissions, scholarship and career information with official sources.
+- The current local model is text-only. PDF and image analysis remain unavailable in local mode; the UI blocks attachments rather than uploading them to a cloud provider.
+- If WebGPU is not available or model initialisation fails, the UI reports the reason and leaves the existing catalogue/database functionality available. A READY Vercel deployment does not, by itself, prove that the model can initialise on every visitor's device.
+- Career Intelligence and Career Path retain their source-backed deterministic fallback when no hosted provider quota is available. Those outputs must remain clearly labelled and must not be presented as model-generated or verified predictions.
+- Full hosted AI, document analysis and larger-model reasoning still require an authorised provider with available quota. Browser-local inference is the no-API-cost path for compatible devices, not a universal guarantee for every browser or phone.

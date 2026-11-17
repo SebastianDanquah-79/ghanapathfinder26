@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type FileUIPart, type UIMessage } from "ai";
-import { ArrowRight, Check, ClipboardCopy, ExternalLink, FileText, Image as ImageIcon, ImagePlus, Paperclip, RotateCcw, Smile, X } from "lucide-react";
+import { ArrowRight, Check, ClipboardCopy, Cpu, ExternalLink, FileText, Image as ImageIcon, ImagePlus, Paperclip, RotateCcw, Smile, X } from "lucide-react";
 import {
   Conversation,
   ConversationContent,
@@ -19,6 +19,14 @@ import {
 } from "@/components/ai-elements/prompt-input";
 import { Shimmer } from "@/components/ai-elements/shimmer";
 import { buildAskContext, type AskContextItem } from "@/lib/askContext";
+import {
+  buildLocalAIMessages,
+  checkLocalAIAvailability,
+  isLocalAIReady,
+  loadLocalAI,
+  streamLocalAIResponse,
+  unloadLocalAI,
+} from "@/lib/ai/local-webllm";
 
 const STORAGE_KEY = "gpf.ask.history.v1";
 const MAX_STORED = 40;
@@ -138,8 +146,23 @@ const AskChat = ({ initialMessages, contextText, suggestions, mode, storageKey, 
   const [imageMode, setImageMode] = useState(false);
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
   const [copiedPromptId, setCopiedPromptId] = useState<string | null>(null);
+  const [localAiEnabled, setLocalAiEnabled] = useState(false);
+  const [localAiLoading, setLocalAiLoading] = useState(false);
+  const [localAiProgress, setLocalAiProgress] = useState({ progress: 0, text: "" });
+  const [localAiReady, setLocalAiReady] = useState(false);
+  const [localAiError, setLocalAiError] = useState<string | null>(null);
+  const [localGenerating, setLocalGenerating] = useState(false);
+  const localAbortControllerRef = useRef<AbortController | null>(null);
   const contextRef = useRef(contextText);
   contextRef.current = contextText;
+
+  useEffect(() => {
+    try {
+      setLocalAiEnabled(window.localStorage.getItem("gpf.on-device-ai.enabled") === "true");
+    } catch {
+      setLocalAiEnabled(false);
+    }
+  }, []);
 
   const transport = useMemo(() => new DefaultChatTransport({ api: "/api/chat" }), []);
   const showChatError = useCallback((cause: unknown) => {
@@ -176,7 +199,63 @@ const AskChat = ({ initialMessages, contextText, suggestions, mode, storageKey, 
     },
   });
 
-  const isLoading = status === "submitted" || status === "streaming";
+  const isLoading = status === "submitted" || status === "streaming" || localAiLoading || localGenerating;
+
+  const enableOnDeviceAI = useCallback(async () => {
+    const confirmed = window.confirm(
+      "Enable on-device AI? This downloads a large language model once, may use around 1 GB of GPU memory, and requires a compatible WebGPU browser and an internet connection for the download. Prompts are then processed on this device, not sent to a cloud AI provider. Continue?",
+    );
+    if (!confirmed) return;
+
+    setLocalAiError(null);
+    setError(null);
+    setLocalAiLoading(true);
+    setLocalAiProgress({ progress: 0, text: "Checking this browser and device…" });
+    try {
+      const availability = await checkLocalAIAvailability();
+      if (!availability.available) {
+        throw new Error(availability.reason || "This device cannot run the on-device model.");
+      }
+      await loadLocalAI((progress) => setLocalAiProgress(progress));
+      setLocalAiReady(true);
+      setLocalAiEnabled(true);
+      try {
+        window.localStorage.setItem("gpf.on-device-ai.enabled", "true");
+      } catch {
+        /* Local mode remains enabled for this component session. */
+      }
+      setLocalAiProgress({ progress: 1, text: "On-device AI is ready on this device." });
+    } catch (cause) {
+      const detail = cause instanceof Error ? cause.message : "The local model could not be loaded.";
+      setLocalAiError(detail);
+      setLocalAiEnabled(false);
+      try {
+        window.localStorage.removeItem("gpf.on-device-ai.enabled");
+      } catch {
+        /* ignore */
+      }
+    } finally {
+      setLocalAiLoading(false);
+    }
+  }, []);
+
+  const disableOnDeviceAI = useCallback(async () => {
+    localAbortControllerRef.current?.abort();
+    setLocalAiEnabled(false);
+    setLocalAiReady(false);
+    setLocalAiError(null);
+    try {
+      window.localStorage.removeItem("gpf.on-device-ai.enabled");
+    } catch {
+      /* ignore */
+    }
+    await unloadLocalAI();
+  }, []);
+
+  const stopAllGeneration = useCallback(() => {
+    localAbortControllerRef.current?.abort();
+    stop();
+  }, [stop]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -220,6 +299,83 @@ const AskChat = ({ initialMessages, contextText, suggestions, mode, storageKey, 
         );
       }
 
+      if (localAiEnabled) {
+        if (filesToSend.length > 0) {
+          setError("On-device AI currently supports text chat only. Remove PDF/image attachments to continue locally. Your files have not been sent to an AI provider.");
+          return;
+        }
+
+        const promptText = trimmed;
+        if (!promptText) return;
+
+        const userMessage: UIMessage = {
+          id: crypto.randomUUID(),
+          role: "user",
+          parts: [{ type: "text", text: promptText }],
+        };
+        const assistantId = crypto.randomUUID();
+        const assistantMessage: UIMessage = {
+          id: assistantId,
+          role: "assistant",
+          parts: [{ type: "text", text: "" }],
+        };
+        const history = [...messages, userMessage].map((message) => ({
+          role: message.role as "user" | "assistant",
+          text: textOf(message),
+        }));
+        const localMessages = buildLocalAIMessages({
+          mode,
+          contextText: contextRef.current,
+          history,
+        });
+
+        setMessages((current) => [...current, userMessage, assistantMessage]);
+        setLocalGenerating(true);
+        const controller = new AbortController();
+        localAbortControllerRef.current = controller;
+        let responseText = "";
+
+        try {
+          if (!localAiReady || !isLocalAIReady()) {
+            setLocalAiLoading(true);
+            await loadLocalAI((progress) => setLocalAiProgress(progress));
+            setLocalAiReady(true);
+            setLocalAiLoading(false);
+          }
+
+          await streamLocalAIResponse({
+            messages: localMessages,
+            signal: controller.signal,
+            maxTokens: mode === "personal-tutor" ? 520 : 420,
+            onToken: (token) => {
+              responseText += token;
+              setMessages((current) => current.map((message) =>
+                message.id === assistantId
+                  ? { ...message, parts: [{ type: "text", text: responseText }] }
+                  : message,
+              ));
+            },
+          });
+
+          if (!responseText.trim()) {
+            throw new Error("The on-device model returned an empty response. Try a shorter question.");
+          }
+          setLocalAiProgress({ progress: 1, text: "On-device AI is active on this device." });
+        } catch (cause) {
+          setMessages((current) => current.filter((message) => message.id !== assistantId));
+          if (!(cause instanceof Error && cause.name === "AbortError")) {
+            const detail = cause instanceof Error ? cause.message : "Local generation failed.";
+            setLocalAiError(detail);
+            setError(`On-device AI could not complete this reply: ${detail}`);
+          }
+        } finally {
+          setLocalGenerating(false);
+          setLocalAiLoading(false);
+          localAbortControllerRef.current = null;
+        }
+        return;
+      }
+
       try {
         await sendMessage(
           {
@@ -235,7 +391,7 @@ const AskChat = ({ initialMessages, contextText, suggestions, mode, storageKey, 
         throw sendError;
       }
     },
-    [isLoading, sendMessage, setMessages, mode, sourceFiles, showChatError],
+    [isLoading, sendMessage, setMessages, mode, sourceFiles, showChatError, localAiEnabled, localAiReady, messages],
   );
 
   const createImage = useCallback(
@@ -278,7 +434,18 @@ const AskChat = ({ initialMessages, contextText, suggestions, mode, storageKey, 
           <p className="text-sm font-semibold text-foreground">{title}</p>
           <p className="truncate text-[11px] text-muted-foreground">{description}</p>
         </div>
-        {messages.length > 0 && (
+        <div className="flex shrink-0 items-center gap-2">
+          <button
+            type="button"
+            onClick={() => void (localAiEnabled ? disableOnDeviceAI() : enableOnDeviceAI())}
+            disabled={localAiLoading || localGenerating}
+            className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-border px-2.5 py-1.5 text-[10px] font-semibold text-foreground hover:bg-muted disabled:opacity-60 sm:px-3"
+            title="Runs a small language model on this device; no cloud API credits are used."
+          >
+            <Cpu className="size-3.5" />
+            <span>{localAiLoading ? "Preparing…" : localAiEnabled ? "On-device AI on" : "Enable local AI"}</span>
+          </button>
+          {messages.length > 0 && (
           <button
             type="button"
             onClick={onClear}
@@ -286,8 +453,31 @@ const AskChat = ({ initialMessages, contextText, suggestions, mode, storageKey, 
           >
             New chat
           </button>
-        )}
+          )}
+        </div>
       </div>
+
+      {localAiLoading && (
+        <div className="space-y-1 border-b border-border px-3 py-2" role="status" aria-live="polite">
+          <div className="flex items-center justify-between gap-2 text-[10px] text-muted-foreground">
+            <span className="truncate">{localAiProgress.text || "Preparing local model…"}</span>
+            <span>{Math.round(localAiProgress.progress * 100)}%</span>
+          </div>
+          <div className="h-1.5 overflow-hidden rounded-full bg-muted">
+            <div className="h-full rounded-full bg-primary transition-[width]" style={{ width: `${Math.round(localAiProgress.progress * 100)}%` }} />
+          </div>
+        </div>
+      )}
+      {localAiEnabled && (
+        <div className="border-b border-border bg-muted/20 px-3 py-2 text-[10px] leading-relaxed text-muted-foreground">
+          On-device AI is selected. Chat prompts stay in this browser; no cloud AI provider is called. This small text model can be less accurate than a larger hosted model. PDF and image analysis are not available in local mode.
+        </div>
+      )}
+      {localAiError && (
+        <div className="border-b border-destructive/20 bg-destructive/5 px-3 py-2 text-[11px] text-destructive" role="status">
+          {localAiError}
+        </div>
+      )}
 
       <Conversation className="max-h-[52vh] min-h-[180px] flex-1">
         <ConversationContent className="gap-4 p-3">
@@ -400,10 +590,20 @@ const AskChat = ({ initialMessages, contextText, suggestions, mode, storageKey, 
               </Message>
             ))
           )}
-          {status === "submitted" && <Shimmer className="text-sm">Thinking…</Shimmer>}
+          {(status === "submitted" || localGenerating) && <Shimmer className="text-sm">{localGenerating ? "Generating on this device…" : "Thinking…"}</Shimmer>}
           {error && (
             <div className="flex flex-wrap items-center gap-2 text-xs text-destructive" role="alert">
               <span>{error}</span>
+              {!localAiEnabled && !localAiLoading && /quota has been exhausted|provider quota/i.test(error) && (
+                <button
+                  type="button"
+                  onClick={() => void enableOnDeviceAI()}
+                  className="inline-flex min-h-9 items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 font-semibold text-primary-foreground hover:opacity-90"
+                >
+                  <Cpu className="size-3.5" />
+                  Enable on-device AI
+                </button>
+              )}
               {canRetry && (
                 <button
                   type="button"
@@ -497,12 +697,12 @@ const AskChat = ({ initialMessages, contextText, suggestions, mode, storageKey, 
                 <ImagePlus className="size-4" />
                 <span className="hidden text-xs sm:inline">{imageMode ? "Chat mode" : "Create image"}</span>
               </PromptInputButton>
-              <AskAttachmentControls disabled={isLoading || imageMode} tutor={mode === "personal-tutor"} />
+              <AskAttachmentControls disabled={isLoading || imageMode || localAiEnabled} tutor={mode === "personal-tutor"} />
             </div>
             <PromptInputSubmit
-              status={status}
+              status={isLoading ? "streaming" : status}
               disabled={isLoading}
-              onStop={stop}
+              onStop={stopAllGeneration}
               className="!size-11 !shrink-0 !rounded-full !bg-ghana-gold !text-navy-deep hover:!bg-ghana-gold-light disabled:!opacity-60"
             >
               {isLoading ? <span className="size-2.5 rounded-sm bg-current" /> : <ArrowRight className="size-5" />}
@@ -512,9 +712,11 @@ const AskChat = ({ initialMessages, contextText, suggestions, mode, storageKey, 
         <p className="mt-2 px-1 text-[10px] leading-relaxed text-muted-foreground">
           {imageMode
             ? "GhanaPathFinder prepares your prompt for an external image creator. No paid image-generation API is used by this chatbot."
-            : mode === "personal-tutor"
-              ? "Attach up to 3 PDF or image sources with 2 MB total. Source files stay in this active chat only and must be reattached after a reload."
-              : "Upload one PDF or image at a time, up to 2 MB. File contents are not saved in chat history."}
+            : localAiEnabled
+              ? "On-device mode uses a small model cached in your browser. The first download requires network access and compatible WebGPU hardware; your prompts are processed on this device."
+              : mode === "personal-tutor"
+                ? "Attach up to 3 PDF or image sources with 2 MB total. Source files stay in this active chat only and must be reattached after a reload."
+                : "Upload one PDF or image at a time, up to 2 MB. File contents are not saved in chat history."}
         </p>
       </div>
     </div>
