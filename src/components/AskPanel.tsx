@@ -88,6 +88,7 @@ interface AskChatProps {
   storageKey: string;
   title: string;
   description: string;
+  sourceFiles: FileUIPart[];
   onClear: () => void;
 }
 
@@ -130,7 +131,7 @@ const AskAttachmentControls = ({ disabled, tutor }: { disabled: boolean; tutor?:
   );
 };
 
-const AskChat = ({ initialMessages, contextText, suggestions, mode, storageKey, title, description, onClear }: AskChatProps) => {
+const AskChat = ({ initialMessages, contextText, suggestions, mode, storageKey, title, description, sourceFiles, onClear }: AskChatProps) => {
   const [input, setInput] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [imageMode, setImageMode] = useState(false);
@@ -170,15 +171,17 @@ const AskChat = ({ initialMessages, contextText, suggestions, mode, storageKey, 
   const ask = useCallback(
     async (text: string, files: FileUIPart[] = []) => {
       const trimmed = text.trim();
-      if ((!trimmed && files.length === 0) || isLoading) return;
+      const filesToSend = mode === "personal-tutor" ? [...sourceFiles, ...files] : files;
+      if ((!trimmed && filesToSend.length === 0) || isLoading) return;
 
-      if (mode === "personal-tutor" && files.length > 0) {
-        const approximateBytes = files.reduce((total, file) => {
+      if (mode === "personal-tutor" && filesToSend.length > 0) {
+        const approximateBytes = filesToSend.reduce((total, file) => {
           const encoded = typeof file.url === "string" ? file.url.split(",").pop() ?? "" : "";
-          return total + Math.floor((encoded.length * 3) / 4);
+          const padding = encoded.endsWith("==") ? 2 : encoded.endsWith("=") ? 1 : 0;
+          return total + Math.max(0, Math.floor((encoded.length * 3) / 4) - padding);
         }, 0);
-        if (files.length > 3 || approximateBytes > MAX_ATTACHMENT_BYTES) {
-          setError("A study notebook can contain up to 3 files with 2 MB total. Remove a file or choose smaller sources.");
+        if (filesToSend.length > 3 || approximateBytes > MAX_ATTACHMENT_BYTES) {
+          setError("Use up to 3 study sources with 2 MB total. Remove a source or select smaller files.");
           return;
         }
       }
@@ -186,9 +189,9 @@ const AskChat = ({ initialMessages, contextText, suggestions, mode, storageKey, 
       setError(null);
       setInput("");
 
-      // Keep only the most recently attached file in the live conversation.
-      // This keeps repeated turns within the serverless request-size limit.
-      if (files.length > 0) {
+      // Keep only the latest source pack in live history. The notebook library
+      // preserves uploaded sources while each request remains tightly bounded.
+      if (filesToSend.length > 0) {
         setMessages((current) =>
           current.map((message) => ({
             ...message,
@@ -203,7 +206,7 @@ const AskChat = ({ initialMessages, contextText, suggestions, mode, storageKey, 
             text: trimmed || (mode === "personal-tutor"
               ? "Please study these uploaded sources and help me understand their contents."
               : "Please analyse the attached file and explain its contents."),
-            ...(files.length > 0 ? { files } : {}),
+            ...(filesToSend.length > 0 ? { files: filesToSend } : {}),
           },
           { body: { context: contextRef.current, mode } },
         );
@@ -213,7 +216,7 @@ const AskChat = ({ initialMessages, contextText, suggestions, mode, storageKey, 
         throw sendError;
       }
     },
-    [isLoading, sendMessage, setMessages, mode],
+    [isLoading, sendMessage, setMessages, mode, sourceFiles],
   );
 
   const createImage = useCallback(
@@ -501,6 +504,7 @@ export interface AskPanelProps {
   items: AskContextItem[];
   suggestions?: string[];
   mode?: AskMode;
+  sourceFiles?: FileUIPart[];
 }
 
 const DEFAULT_SUGGESTIONS = [
@@ -509,7 +513,7 @@ const DEFAULT_SUGGESTIONS = [
   "Any scholarships that fit me?",
 ];
 
-const AskPanel = ({ query, items, suggestions, mode = "general" }: AskPanelProps) => {
+const AskPanel = ({ query, items, suggestions, mode = "general", sourceFiles = [] }: AskPanelProps) => {
   const [session, setSession] = useState(0);
   const [initialMessages, setInitialMessages] = useState<UIMessage[] | null>(null);
   const storageKey = mode === "general" ? STORAGE_KEY : `${STORAGE_KEY}.${mode}`;
@@ -545,6 +549,7 @@ const AskPanel = ({ query, items, suggestions, mode = "general" }: AskPanelProps
       contextText={contextText}
       suggestions={suggestions ?? DEFAULT_SUGGESTIONS}
       mode={mode}
+      sourceFiles={sourceFiles}
       storageKey={storageKey}
       title={panelTitle}
       description={panelDescription}
