@@ -4,6 +4,7 @@ type SearchBuilder = {
   select(columns: string): SearchBuilder;
   ilike(column: string, pattern: string): SearchBuilder;
   eq(column: string, value: string | boolean): SearchBuilder;
+  in(column: string, values: string[]): Promise<{ data: SearchRow[] | null; error: { code?: string; message: string } | null }>;
   limit(count: number): Promise<{ data: SearchRow[] | null; error: { code?: string; message: string } | null }>;
 };
 
@@ -160,7 +161,7 @@ async function searchRows(
 function dedupe(rows: SearchRow[], limit: number): SearchRow[] {
   const seen = new Set<string>();
   return rows.filter((row) => {
-    const id = String(row.id ?? JSON.stringify(row));
+    const id = String(row["id"] ?? JSON.stringify(row));
     if (seen.has(id)) return false;
     seen.add(id);
     return true;
@@ -245,10 +246,10 @@ export async function retrieveCareerEvidence(
 
     const programmes = all("programmes");
     const universityIds = Array.from(new Set(programmes
-      .map((row) => row.university_id)
+      .map((row) => row["university_id"])
       .filter((value): value is string => typeof value === "string"))).slice(0, 12);
     const institutionIds = Array.from(new Set(programmes
-      .map((row) => row.institution_id)
+      .map((row) => row["institution_id"])
       .filter((value): value is string => typeof value === "string"))).slice(0, 12);
 
     const [universities, institutions] = await Promise.all([
@@ -264,12 +265,12 @@ export async function retrieveCareerEvidence(
         : Promise.resolve({ data: [], error: null }),
     ]);
 
-    const universityMap = new Map((universities.data ?? []).map((row) => [String(row.id), row]));
-    const institutionMap = new Map((institutions.data ?? []).map((row) => [String(row.id), row]));
+    const universityMap = new Map((universities.data ?? []).map((row) => [String(row["id"]), row]));
+    const institutionMap = new Map((institutions.data ?? []).map((row) => [String(row["id"]), row]));
     const programmesWithInstitutions = programmes.map((row) => ({
       ...row,
-      university: universityMap.get(String(row.university_id)) ?? null,
-      institution: institutionMap.get(String(row.institution_id)) ?? null,
+      university: universityMap.get(String(row["university_id"])) ?? null,
+      institution: institutionMap.get(String(row["institution_id"])) ?? null,
     }));
 
     return {
