@@ -93,7 +93,7 @@ The current RAG document/chunk tables are initially empty. The platform's existi
 ## Reliability and operations
 
 - Chat history, uploaded attachments, input size, tool-step count and output tokens are bounded.
-- Provider rate limits, exhausted API credits, billing/setup errors, timeouts and generic provider failures are classified separately.
+- Provider rate limits, exhausted API credits, billing/setup errors, rejected API credentials, timeouts and generic provider failures are classified separately.
 - Failed requests preserve the conversation and return a retry/recovery message.
 - The in-memory rate limiter is best-effort per serverless instance, not a distributed quota system. Add a shared limiter before scaling heavy public AI traffic.
 - Do not promise 100% accuracy. Use source attribution, human-reviewed benchmark questions and regular data freshness checks.
