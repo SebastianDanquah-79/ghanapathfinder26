@@ -150,7 +150,15 @@ async function searchProgrammes(query: string) {
   }
 }
 
-const navigation = [
+type NavigationItem = {
+  section: string;
+  href: string;
+  description: string;
+  keywords: string[];
+  requiresSignIn?: boolean;
+};
+
+const navigation: NavigationItem[] = [
   { section: "Home", href: "/", description: "Open the GhanaPathFinder home page.", keywords: ["home", "homepage", "start", "main page"] },
   { section: "Feed", href: "/feed", description: "View the main community and platform feed.", keywords: ["feed", "posts", "updates", "timeline"] },
   { section: "For You", href: "/for-you", description: "View personalised recommendations and content.", keywords: ["for you", "personalised", "recommendations", "recommended"] },
@@ -221,7 +229,32 @@ const navigation = [
   { section: "Privacy Policy", href: "/privacy", description: "Read the privacy policy.", keywords: ["privacy", "privacy policy", "data protection"] },
   { section: "Terms", href: "/terms", description: "Read the terms and conditions.", keywords: ["terms", "terms of service", "conditions"] },
   { section: "Professional Councils", href: "/professional-councils", description: "Explore professional councils and regulatory bodies.", keywords: ["professional council", "professional councils", "regulatory body", "licensing"] },
-];;
+];
+
+export function findPlatformNavigation(query: string): Array<Omit<NavigationItem, "keywords">> {
+  const phrase = safeFilterTerm(query).toLowerCase();
+  if (phrase.length < 2) return [];
+
+  const words = phrase.split(" ").filter((word) =>
+    word.length > 1 && !SEARCH_STOP_WORDS.has(word),
+  );
+  if (words.length === 0) return [];
+
+  return navigation
+    .map((item) => {
+      const corpus = `${item.section} ${item.description} ${item.href} ${item.keywords.join(" ")}`.toLowerCase();
+      const wordHits = words.filter((word) => corpus.includes(word)).length;
+      const phraseHit = corpus.includes(phrase) ? 4 : 0;
+      const aliasHit = item.keywords.some((keyword) =>
+        keyword.includes(phrase) || phrase.includes(keyword),
+      ) ? 3 : 0;
+      return { ...item, score: wordHits * 2 + phraseHit + aliasHit };
+    })
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 5)
+    .map(({ score: _score, keywords: _keywords, ...item }) => item);
+}
 
 export function createPlatformTools() {
   return {
@@ -397,27 +430,9 @@ export function createPlatformTools() {
     searchPlatformNavigation: tool({
       description: "Find the correct GhanaPathFinder section and internal route. Use this when a user asks where to find a feature or how to navigate the platform. Return only routes from this verified route map.",
       inputSchema: querySchema,
-      execute: async ({ query }) => {
-        const phrase = safeFilterTerm(query).toLowerCase();
-        const words = phrase.split(" ").filter((word) =>
-          word.length > 1 && !SEARCH_STOP_WORDS.has(word),
-        );
-        const ranked = navigation
-          .map((item) => {
-            const corpus = `${item.section} ${item.description} ${item.href} ${item.keywords.join(" ")}`.toLowerCase();
-            const wordHits = words.filter((word) => corpus.includes(word)).length;
-            const phraseHit = corpus.includes(phrase) ? 4 : 0;
-            const aliasHit = item.keywords.some((keyword) =>
-              keyword.includes(phrase) || phrase.includes(keyword),
-            ) ? 3 : 0;
-            return { ...item, score: wordHits * 2 + phraseHit + aliasHit };
-          })
-          .filter((item) => item.score > 0)
-          .sort((a, b) => b.score - a.score)
-          .slice(0, 5)
-          .map(({ score: _score, keywords: _keywords, ...item }) => item);
-        return { records: ranked };
-      },
+      execute: async ({ query }) => ({
+        records: findPlatformNavigation(query),
+      }),
     }),
   };
 }
