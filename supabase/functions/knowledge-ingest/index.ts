@@ -8,9 +8,21 @@ const allowedOrigins = new Set([
   "http://127.0.0.1:5173",
 ]);
 
+function isAllowedOrigin(origin: string | null): boolean {
+  if (!origin) return false;
+  if (allowedOrigins.has(origin)) return true;
+  try {
+    const host = new URL(origin).hostname;
+    return host.startsWith("ghanapathfinder26-") &&
+      host.endsWith("-ghanapathfinder1.vercel.app");
+  } catch {
+    return false;
+  }
+}
+
 const headersFor = (origin: string | null) => ({
-  "Access-Control-Allow-Origin": origin && allowedOrigins.has(origin)
-    ? origin
+  "Access-Control-Allow-Origin": isAllowedOrigin(origin)
+    ? origin!
     : "https://ghanapathfinder.com",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
