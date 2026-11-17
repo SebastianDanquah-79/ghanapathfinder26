@@ -1,3 +1,4 @@
+import { createOpenAI } from "@ai-sdk/openai";
 import { embed } from "ai";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
@@ -20,9 +21,23 @@ export type KnowledgeSearchResult = {
   note?: string;
 };
 
-const EMBEDDING_MODEL =
-  process.env["AI_GATEWAY_MODEL_EMBEDDING"] || "openai/text-embedding-3-small";
 const EMBEDDING_DIMENSIONS = 1536;
+
+function getQueryEmbeddingModel() {
+  const useGateway = process.env["AI_PROVIDER"]?.trim().toLowerCase() === "vercel-gateway";
+  if (useGateway) {
+    const model = process.env["AI_GATEWAY_MODEL_EMBEDDING"] || "openai/text-embedding-3-small";
+    if (!model.includes("/")) {
+      throw new Error("Configure AI_GATEWAY_MODEL_EMBEDDING with a provider/model identifier.");
+    }
+    return model;
+  }
+
+  const apiKey = process.env["OPENAI_API_KEY"]?.trim();
+  if (!apiKey) throw new Error("OPENAI_API_KEY is not configured for knowledge search.");
+  const modelName = process.env["OPENAI_EMBEDDING_MODEL"]?.trim() || "text-embedding-3-small";
+  return createOpenAI({ apiKey }).embeddingModel(modelName);
+}
 
 export async function searchGlobalKnowledge(
   query: string,
@@ -38,9 +53,9 @@ export async function searchGlobalKnowledge(
     // to AI Gateway through the deployment's OIDC token, avoiding a second
     // direct OpenAI generation/embedding dependency in the application.
     const { embedding } = await embed({
-      model: EMBEDDING_MODEL,
+      model: getQueryEmbeddingModel(),
       value: normalizedQuery,
-      maxRetries: 1,
+      maxRetries: 0,
       abortSignal: AbortSignal.timeout(12_000),
     });
 
