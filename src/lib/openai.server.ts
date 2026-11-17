@@ -1,5 +1,4 @@
 import { createOpenAI } from "@ai-sdk/openai";
-import { gateway } from "ai";
 
 export type AIModelPurpose = "fast" | "chat" | "reasoning" | "structured";
 
@@ -56,7 +55,7 @@ export function createOpenAIResponsesModel(
     // Do not pass legacy plain OpenAI model names into the gateway. Gateway
     // model IDs must include their provider prefix (provider/model).
     const gatewayModel = getGatewayModelName(purpose);
-    return gateway(gatewayModel);
+    return gatewayModel;
   }
 
   const apiKey = readEnv("OPENAI_API_KEY");
