@@ -2,6 +2,16 @@ import { createFileRoute } from "@tanstack/react-router";
 import { checkApiRateLimit, rateLimitResponse, readJsonBody } from "@/lib/api-rate-limit";
 
 type DbError = { code?: string; message: string };
+type DbResult<T> = { data: T | null; error: DbError | null };
+type AdminQuery = PromiseLike<DbResult<unknown>> & {
+  select(columns?: string): AdminQuery;
+  eq(column: string, value: string): AdminQuery;
+  maybeSingle(): Promise<DbResult<Record<string, unknown>>>;
+  single(): Promise<DbResult<Record<string, unknown>>>;
+  upsert(values: Record<string, unknown>, options?: { onConflict?: string }): AdminQuery;
+  delete(): AdminQuery;
+  insert(values: Array<Record<string, unknown>>): AdminQuery;
+};
 type AdminClient = {
   auth: {
     getUser(token: string): Promise<{
@@ -9,7 +19,7 @@ type AdminClient = {
       error: DbError | null;
     }>;
   };
-  from(table: string): any;
+  from(table: string): AdminQuery;
 };
 
 const MAX_BODY_BYTES = 320_000;
@@ -137,15 +147,35 @@ function parseDocuments(body: unknown): KnowledgeDocumentInput[] {
   });
 }
 
-async function createEmbeddings(chunks: string[], apiKey: string): Promise<number[][]> {
-  const response = await fetch("https://api.openai.com/v1/embeddings", {
+async function createEmbeddings(chunks: string[]): Promise<number[][]> {
+  const useGateway = process.env["AI_PROVIDER"]?.trim().toLowerCase() === "vercel-gateway";
+  const apiKey = useGateway
+    ? process.env["AI_GATEWAY_API_KEY"]?.trim() || process.env["VERCEL_OIDC_TOKEN"]?.trim()
+    : process.env["OPENAI_API_KEY"]?.trim();
+
+  if (!apiKey) {
+    throw new Error(
+      useGateway
+        ? "The AI Gateway credential is not available on this deployment."
+        : "The OpenAI embedding credential is not configured on this deployment.",
+    );
+  }
+
+  const model = useGateway
+    ? process.env["AI_GATEWAY_MODEL_EMBEDDING"] || "openai/text-embedding-3-small"
+    : process.env["OPENAI_EMBEDDING_MODEL"] || "text-embedding-3-small";
+  const endpoint = useGateway
+    ? "https://ai-gateway.vercel.sh/v1/embeddings"
+    : "https://api.openai.com/v1/embeddings";
+
+  const response = await fetch(endpoint, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: process.env["OPENAI_EMBEDDING_MODEL"] || "text-embedding-3-small",
+      model,
       input: chunks,
       dimensions: EMBEDDING_DIMENSIONS,
       encoding_format: "float",
@@ -207,11 +237,6 @@ export const Route = createFileRoute("/api/knowledge-ingest")({
           return Response.json({ error: "Sign in with an administrator account to add knowledge." }, { status: 401 });
         }
 
-        const apiKey = process.env["OPENAI_API_KEY"];
-        if (!apiKey) {
-          return Response.json({ error: "The embedding service is not configured on this deployment." }, { status: 503 });
-        }
-
         let documents: KnowledgeDocumentInput[];
         try {
           documents = parseDocuments(body);
@@ -248,7 +273,7 @@ export const Route = createFileRoute("/api/knowledge-ingest")({
 
             // Generate vectors before replacing database chunks. A model/provider
             // error therefore leaves the previous searchable version untouched.
-            const vectors = await createEmbeddings(chunks, apiKey);
+            const vectors = await createEmbeddings(chunks);
             const contentHash = await sha256([
               document.title,
               document.sourceUrl,
