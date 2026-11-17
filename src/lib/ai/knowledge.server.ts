@@ -49,9 +49,9 @@ export async function searchGlobalKnowledge(
   }
 
   try {
-    // Use AI SDK's provider-neutral model routing. On Vercel this authenticates
-    // to AI Gateway through the deployment's OIDC token, avoiding a second
-    // direct OpenAI generation/embedding dependency in the application.
+    // Use the provider configured for this deployment. Vercel AI Gateway
+    // resolves Vercel OIDC for gateway model strings; production can use the
+    // existing direct OpenAI credential without depending on Gateway billing.
     const { embedding } = await embed({
       model: getQueryEmbeddingModel(),
       value: normalizedQuery,
