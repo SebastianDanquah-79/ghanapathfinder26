@@ -163,6 +163,49 @@ async function searchRows(
   }
 }
 
+export function matchesArrayTerms(value: unknown, searchTerms: string[]): boolean {
+  if (!Array.isArray(value)) return false;
+  const terms = searchTerms.map((term) => term.toLowerCase()).filter(Boolean);
+  return value.some((entry) => {
+    if (typeof entry !== "string") return false;
+    const field = entry.toLowerCase();
+    return terms.some((term) => field.includes(term) || term.includes(field));
+  });
+}
+
+async function searchArrayRows(
+  admin: AdminClient,
+  table: string,
+  select: string,
+  arrayColumn: string,
+  terms: string[],
+  filters?: (builder: SearchBuilder) => SearchBuilder,
+  limit = 8,
+): Promise<SearchRow[]> {
+  const cleanTerms = Array.from(new Set(terms.map(safeTerm))).filter((term) => term.length >= 3);
+  if (!cleanTerms.length) return [];
+
+  try {
+    // Fetch a bounded set of eligible rows, then match array values in memory.
+    // PostgREST ilike does not work against PostgreSQL text[] columns.
+    let builder = admin.from(table).select(select);
+    if (filters) builder = filters(builder);
+    const { data, error } = await builder.limit(120);
+    if (error) {
+      console.error("Career evidence array query failed", {
+        table,
+        code: error.code,
+        message: error.message.slice(0, 180),
+      });
+      return [];
+    }
+    return (data ?? []).filter((row) => matchesArrayTerms(row[arrayColumn], cleanTerms)).slice(0, limit);
+  } catch {
+    console.error("Career evidence array query failed", { table });
+    return [];
+  }
+}
+
 function dedupe(rows: SearchRow[], limit: number): SearchRow[] {
   const seen = new Set<string>();
   return rows.filter((row) => {
@@ -219,10 +262,17 @@ export async function retrieveCareerEvidence(
       searchRows(admin, "learning_resources",
         "id,provider,title,url,category,skills,level,country_code,source_url",
         ["title", "category", "provider"], terms, undefined, 8),
-      searchRows(admin, "scholarships",
-        "id,title,name,provider,study_level,fields,description,eligibility,academic_requirements,coverage,deadline,deadline_date,application_url,website_url,source_url,verified,last_verified_at",
-        ["title", "name", "description", "fields"], terms,
-        (builder) => builder.eq("verified", true), 6),
+      Promise.all([
+        // Search scalar text fields with ilike; fields is PostgreSQL text[].
+        searchRows(admin, "scholarships",
+          "id,title,name,provider,study_level,fields,description,eligibility,academic_requirements,coverage,deadline,deadline_date,application_url,website_url,source_url,verified,last_verified_at",
+          ["title", "name", "description"], terms,
+          (builder) => builder.eq("verified", true), 6),
+        // Preserve field-based matching without applying ilike to text[].
+        searchArrayRows(admin, "scholarships",
+          "id,title,name,provider,study_level,fields,description,eligibility,academic_requirements,coverage,deadline,deadline_date,application_url,website_url,source_url,verified,last_verified_at",
+          "fields", terms, (builder) => builder.eq("verified", true), 6),
+      ]).then(([textMatches, fieldMatches]) => dedupe([...textMatches, ...fieldMatches], 6)),
       searchRows(admin, "opportunities",
         "id,title,opportunity_type,company_name,country_code,country,location,description,requirements,eligibility,skills,skills_required,application_url,apply_url,source_name,source_url,posted_at,deadline,deadline_date,status,is_active,published,verified,last_verified_at",
         ["title", "description", "company_name"], terms,
