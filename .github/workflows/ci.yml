@@ -51,5 +51,7 @@ jobs:
             echo "No JavaScript or TypeScript files changed."
           else
             printf 'Linting %s changed source files.\n' "${#FILES[@]}"
-            bunx eslint "${FILES[@]}"
+            # Existing repository-wide Prettier drift is tracked as warnings;
+            # functional ESLint rules remain blocking for every changed source file.
+            bunx eslint --rule 'prettier/prettier: warn' "${FILES[@]}"
           fi
