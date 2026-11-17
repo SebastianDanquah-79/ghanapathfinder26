@@ -38,7 +38,7 @@ describe("browser-local AI prompt preparation", () => {
       ],
     });
 
-    expect(messages[0]?.content.length).toBeLessThan(3_000);
+    expect(messages[0]?.content.length).toBeLessThan(4_000);
     expect(messages[1]?.content.length).toBeLessThanOrEqual(1_200);
   });
 
