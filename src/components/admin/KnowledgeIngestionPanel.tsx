@@ -73,8 +73,18 @@ export default function KnowledgeIngestionPanel({ enabled }: { enabled: boolean 
 
     setBusy(true);
     try {
-      const { data, error } = await supabase.functions.invoke<IngestionResponse>("knowledge-ingest", {
-        body: {
+      const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError) throw sessionError;
+      const accessToken = sessionData.session?.access_token;
+      if (!accessToken) throw new Error("Your session has expired. Sign in again as an administrator.");
+
+      const response = await fetch("/api/knowledge-ingest", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
           documents: [{
             title: title.trim(),
             content: content.trim(),
@@ -88,14 +98,13 @@ export default function KnowledgeIngestionPanel({ enabled }: { enabled: boolean 
             isPublished: publish && canPublish,
             metadata: { ingestionMethod: "admin-console" },
           }],
-        },
+        }),
       });
-
-      if (error) {
-        const bodyText = await error.context?.text?.().catch(() => "");
-        throw new Error(bodyText || error.message || "The knowledge document could not be ingested.");
+      const data = await response.json().catch(() => ({})) as IngestionResponse;
+      if (!response.ok) {
+        throw new Error(data.error || "The knowledge document could not be ingested.");
       }
-      if (!data?.ok) throw new Error(data?.error || "The knowledge document could not be ingested.");
+      if (!data.ok) throw new Error(data.error || "The knowledge document could not be ingested.");
 
       setLastResult(data);
       const detail = data.results?.[0];
