@@ -141,9 +141,11 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
       console.error("GhanaPathFinder chat request failed", chatError);
       const message = chatError instanceof Error ? chatError.message : "";
       setError(
-        /rate limit|capacity|too many requests/i.test(message)
-          ? "GhanaPathFinder AI is temporarily at capacity. Your conversation is preserved; please wait a moment and try again."
-          : "I couldn't complete that reply. Your previous messages are preserved. Check your connection and try again.",
+        /project owner or administrator|provider account setup|valid credit card on file/i.test(message)
+          ? "GhanaPathFinder's AI provider needs setup by the project owner or administrator. Your conversation is preserved."
+          : /rate limit|capacity|too many requests/i.test(message)
+            ? "GhanaPathFinder AI is temporarily at capacity. Your conversation is preserved; please wait a moment and try again."
+            : "I couldn't complete that reply. Your previous messages are preserved. Check your connection and try again.",
       );
     },
   });
