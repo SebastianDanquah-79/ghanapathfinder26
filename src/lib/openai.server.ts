@@ -67,6 +67,38 @@ export function createOpenAIResponsesModel(
   return createOpenAI({ apiKey }).responses(modelName);
 }
 
+export type AIConfigurationDiagnostics = {
+  provider: "openai" | "vercel-gateway";
+  model: string;
+  credentialSource: "openai-api-key" | "gateway-api-key" | "vercel-oidc-env" | "missing";
+};
+
+export function getAIConfigurationDiagnostics(
+  purpose: AIModelPurpose = "chat",
+): AIConfigurationDiagnostics {
+  const provider = getAIProvider();
+  if (provider === "vercel-gateway") {
+    let model = "model-not-configured";
+    try {
+      model = getGatewayModelName(purpose);
+    } catch {
+      // Return a safe diagnostic value without throwing from telemetry.
+    }
+    const credentialSource = readEnv("AI_GATEWAY_API_KEY")
+      ? "gateway-api-key"
+      : readEnv("VERCEL_OIDC_TOKEN")
+        ? "vercel-oidc-env"
+        : "missing";
+    return { provider, model, credentialSource };
+  }
+
+  return {
+    provider,
+    model: getOpenAIModelName(purpose),
+    credentialSource: readEnv("OPENAI_API_KEY") ? "openai-api-key" : "missing",
+  };
+}
+
 export type AIErrorDetails = {
   status: 429 | 502 | 503 | 504;
   code: "rate_limited" | "configuration_error" | "timeout" | "provider_error";
