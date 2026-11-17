@@ -172,10 +172,25 @@ function validateAndTrimMessages(rawMessages: unknown[]): {
 
   // Bound the history sent to the model to reduce token consumption. The
   // current user message is always retained, including a current attachment.
-  const recent = validated.slice(-MAX_MODEL_MESSAGES);
+  let recent = validated.slice(-MAX_MODEL_MESSAGES);
+
+  // Preserve the most recently uploaded user document across follow-up turns.
+  // The client also keeps only one attachment live, so this is bounded to one
+  // PDF/image rather than replaying every historical upload.
+  const lastAttachment = [...validated].reverse().find((message) =>
+    message.role === "user" && message.parts.some((part) => part.type === "file"),
+  );
+  if (lastAttachment && !recent.some((message) => message.id === lastAttachment.id)) {
+    recent = [lastAttachment, ...recent];
+  }
+
+  // Allocate the text budget from newest to oldest so the current question is
+  // never crowded out by a long earlier conversation.
   let remaining = MAX_TOTAL_TEXT;
-  const trimmed = recent.map((message, index) => {
-    const isLatest = index === recent.length - 1;
+  const reversedTrimmed: UIMessage[] = [];
+  for (let index = recent.length - 1; index >= 0; index -= 1) {
+    const message = recent[index];
+    if (!message) continue;
     const parts = message.parts.flatMap((part) => {
       if (part.type !== "text") return [part];
       if (remaining <= 0) return [];
@@ -183,16 +198,15 @@ function validateAndTrimMessages(rawMessages: unknown[]): {
       remaining -= text.length;
       return text ? [{ type: "text" as const, text }] : [];
     });
-    // Keep attachments only from the newest user message so that an old PDF
-    // is not resent on every follow-up request.
-    const latestUserHasFile = isLatest &&
-      message.role === "user" &&
-      message.parts.some((part) => part.type === "file");
-    return {
-      ...message,
-      parts: parts.filter((part) => part.type !== "file" || latestUserHasFile),
-    } as UIMessage;
-  }).filter((message) => message.parts.length > 0);
+    const isLastAttachment = lastAttachment?.id === message.id;
+    const keptParts = parts.filter((part) =>
+      part.type !== "file" || isLastAttachment,
+    );
+    if (keptParts.length) {
+      reversedTrimmed.push({ ...message, parts: keptParts } as UIMessage);
+    }
+  }
+  const trimmed = reversedTrimmed.reverse();
 
   return { messages: trimmed, totalTextLength };
 }
