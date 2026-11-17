@@ -96,8 +96,8 @@ export const Route = createFileRoute("/api/waec-scan")({
           return new Response("Choose a PDF under 5 MB or a compressed photo.", { status: 413 });
         }
 
-        if (getAIProvider() === "openai" && !process.env["OPENAI_API_KEY"]) {
-          return new Response("WASSCE scanning is not configured. The site administrator must connect the AI service.", { status: 503 });
+        if (getAIProvider() === "groq" && !process.env["GROQ_API_KEY"]) {
+          return new Response("WASSCE scanning is not configured. The site administrator must connect the Groq AI service.", { status: 503 });
         }
         if (getAIProvider() === "vercel-gateway") {
           try {
@@ -118,7 +118,7 @@ export const Route = createFileRoute("/api/waec-scan")({
             : { type: "image" as const, image: documentDataUrl };
 
           const result = await generateText({
-            model: createOpenAIResponsesModel(process.env["OPENAI_WAEC_MODEL"] || process.env["OPENAI_MODEL"], "structured"),
+            model: createOpenAIResponsesModel(process.env["GROQ_WAEC_MODEL"] || "qwen/qwen3.8-27b", "structured"),
             output: Output.object({ schema: scanSchema }),
             messages: [{
               role: "user",
