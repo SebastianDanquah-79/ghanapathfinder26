@@ -58,13 +58,13 @@ function sourceRecords(evidence: ReturnType<typeof summarizeCareerEvidence>) {
   };
 
   for (const row of evidence.records.programmes.slice(0, 8)) {
-    add(row["name"], row["source_url"] || row["primary_source_url"], row.verification_status);
-    const university = row.university && typeof row.university === "object"
-      ? row.university as Record<string, unknown>
+    add(row["name"], row["source_url"] || row["primary_source_url"], row["verification_status"]);
+    const university = row["university"] && typeof row["university"] === "object"
+      ? row["university"] as Record<string, unknown>
       : null;
     if (university) add(university["name"], university["admissions_url"] || university["website_url"], university["verification_status"]);
-    const institution = row.institution && typeof row.institution === "object"
-      ? row.institution as Record<string, unknown>
+    const institution = row["institution"] && typeof row["institution"] === "object"
+      ? row["institution"] as Record<string, unknown>
       : null;
     if (institution) add(institution["official_name"], institution["primary_source_url"] || institution["website_url"], institution["verification_status"]);
   }
@@ -72,7 +72,7 @@ function sourceRecords(evidence: ReturnType<typeof summarizeCareerEvidence>) {
     add(row["title"], row["url"] || row["source_url"], "Catalogue resource");
   }
   for (const row of evidence.records.skills.slice(0, 5)) {
-    add(row["name"], row["primary_source_url"], row.verification_status);
+    add(row["name"], row["primary_source_url"], row["verification_status"]);
   }
   for (const row of evidence.records.scholarships.slice(0, 4)) {
     add(row["title"] || row["name"], row["source_url"] || row["application_url"], row["verified"] === true ? "Verified catalogue record" : "Verification not confirmed");
@@ -98,61 +98,61 @@ function compactEvidence(evidence: ReturnType<typeof summarizeCareerEvidence>) {
     },
     programmes: evidence.records.programmes.slice(0, 10).map((row) => ({
       name: row["name"],
-      field: row.field,
-      qualification: row.qualification,
-      qualification_level: row.qualification_level,
-      duration: row.duration,
-      entry_requirements: row.entry_requirements,
+      field: row["field"],
+      qualification: row["qualification"],
+      qualification_level: row["qualification_level"],
+      duration: row["duration"],
+      entry_requirements: row["entry_requirements"],
       source_url: row["source_url"] || row["primary_source_url"],
-      verification_status: row.verification_status,
+      verification_status: row["verification_status"],
       verified: row["verified"],
-      university: row.university,
-      institution: row.institution,
+      university: row["university"],
+      institution: row["institution"],
     })),
     careerLinks: evidence.records.careerLinks.slice(0, 8).map((row) => ({
-      career: row.career,
-      occupation: row.occupation,
-      description: row.description,
-      licence_note: row.licence_note,
-      last_verified: row.last_verified,
+      career: row["career"],
+      occupation: row["occupation"],
+      description: row["description"],
+      licence_note: row["licence_note"],
+      last_verified: row["last_verified"],
     })),
     skills: evidence.records.skills.slice(0, 8).map((row) => ({
       name: row["name"],
-      category: row.category,
-      description: row.description,
-      difficulty: row.difficulty,
-      prerequisites: row.prerequisites,
+      category: row["category"],
+      description: row["description"],
+      difficulty: row["difficulty"],
+      prerequisites: row["prerequisites"],
       primary_source_url: row["primary_source_url"],
     })),
     learningResources: evidence.records.learningResources.slice(0, 6).map((row) => ({
       title: row["title"],
-      provider: row.provider,
+      provider: row["provider"],
       url: row["url"],
-      category: row.category,
-      level: row.level,
-      country_code: row.country_code,
+      category: row["category"],
+      level: row["level"],
+      country_code: row["country_code"],
     })),
     scholarships: evidence.records.scholarships.slice(0, 4).map((row) => ({
       title: row["title"] || row["name"],
-      provider: row.provider,
-      eligibility: row.eligibility,
-      deadline_date: row.deadline_date,
+      provider: row["provider"],
+      eligibility: row["eligibility"],
+      deadline_date: row["deadline_date"],
       application_url: row["application_url"],
       source_url: row["source_url"],
       verified: row["verified"],
-      last_verified_at: row.last_verified_at,
+      last_verified_at: row["last_verified_at"],
     })),
     opportunities: evidence.records.opportunities.slice(0, 4).map((row) => ({
       title: row["title"],
-      company_name: row.company_name,
-      country_code: row.country_code,
-      location: row.location,
-      skills: row.skills || row.skills_required,
+      company_name: row["company_name"],
+      country_code: row["country_code"],
+      location: row["location"],
+      skills: row["skills"] || row["skills_required"],
       application_url: row["application_url"] || row["apply_url"],
-      deadline_date: row.deadline_date,
+      deadline_date: row["deadline_date"],
       source_url: row["source_url"],
       verified: row["verified"],
-      last_verified_at: row.last_verified_at,
+      last_verified_at: row["last_verified_at"],
     })),
   };
 }
