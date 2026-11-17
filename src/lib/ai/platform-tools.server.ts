@@ -151,29 +151,77 @@ async function searchProgrammes(query: string) {
 }
 
 const navigation = [
-  { section: "Ghana and universities", href: "/ghana", description: "Explore Ghanaian universities, tertiary institutions and education information." },
-  { section: "Universities", href: "/ghana", description: "Browse Ghanaian university profiles, locations and institution information." },
-  { section: "Programmes", href: "/programmes", description: "Search degree, diploma and other academic programmes." },
-  { section: "Scholarships", href: "/scholarships", description: "Explore scholarship and funding records." },
-  { section: "Admission matching", href: "/admission-match", description: "Use admission matching and WASSCE guidance." },
-  { section: "Career profiles", href: "/careers", description: "Explore career profiles, skills and related occupations." },
-  { section: "Career Path Intelligence", href: "/career-path", description: "Build a career progression plan based on your current position and goals." },
-  { section: "My Path", href: "/my-path", description: "View a personal education, funding, skills and career plan." },
-  { section: "Opportunities", href: "/opportunities", description: "Explore jobs, internships, scholarships and other opportunities." },
-  { section: "Internships", href: "/internships", description: "Explore internships, industrial attachments and graduate programmes." },
-  { section: "Jobs", href: "/jobs", description: "Explore jobs and employment opportunities." },
-  { section: "Companies", href: "/companies", description: "Explore organisations, employers and careers pages." },
-  { section: "Skills", href: "/skills", description: "Explore skills, prerequisites and related learning resources." },
-  { section: "Courses", href: "/courses", description: "Explore educational courses and learning materials." },
-  { section: "Global news", href: "/global-news", description: "Read Ghanaian, African and international news." },
-  { section: "Startups", href: "/startups", description: "Explore African startups and the innovation ecosystem." },
-  { section: "Explore Africa", href: "/explore", description: "Explore African countries, people and opportunities." },
-  { section: "Ask Africa", href: "/ask-africa", description: "Ask questions about Africa, education, careers and development." },
-  { section: "My Africa", href: "/my-africa", description: "Explore the My Africa experience." },
-  { section: "Study destinations", href: "/study-destinations", description: "Explore international study destinations and application guidance." },
-  { section: "Community", href: "/community", description: "Visit GhanaPathFinder's student and professional community." },
-  { section: "Applications", href: "/applications", description: "Track applications and important next steps." },
-];
+  { section: "Home", href: "/", description: "Open the GhanaPathFinder home page.", keywords: ["home", "homepage", "start", "main page"] },
+  { section: "Feed", href: "/feed", description: "View the main community and platform feed.", keywords: ["feed", "posts", "updates", "timeline"] },
+  { section: "For You", href: "/for-you", description: "View personalised recommendations and content.", keywords: ["for you", "personalised", "recommendations", "recommended"] },
+  { section: "About GhanaPathFinder", href: "/about", description: "Learn what GhanaPathFinder does and how the platform works.", keywords: ["about", "what is ghanapathfinder", "how it works"] },
+  { section: "University directory", href: "/ghana", description: "Browse Ghanaian universities and tertiary institutions.", keywords: ["university", "universities", "tertiary institution", "institution directory", "ghana universities", "campus"] },
+  { section: "University search", href: "/search?kind=university", description: "Search for a university by name or location.", keywords: ["find university", "search university", "university search", "school search"] },
+  { section: "Programmes", href: "/programmes", description: "Search degree, diploma and other academic programmes.", keywords: ["programme", "program", "course of study", "degree", "diploma", "major", "field of study"] },
+  { section: "Admission Match", href: "/admission-match", description: "Compare a student's WASSCE results with programme admission information.", keywords: ["admission", "admissions", "wassce matching", "cutoff", "cut off", "entry requirements", "eligible", "admission match"] },
+  { section: "WASSCE Scan", href: "/waec-scan", description: "Use the WASSCE result scanning and review tool.", keywords: ["waec scan", "wassce scan", "result slip", "upload results", "grades"] },
+  { section: "Scholarships", href: "/scholarships", description: "Find scholarship and funding records.", keywords: ["scholarship", "scholarships", "bursary", "funding", "financial aid", "grant"] },
+  { section: "Compare Scholarships", href: "/compare-scholarships", description: "Compare scholarship opportunities and their recorded requirements.", keywords: ["compare scholarships", "scholarship comparison", "funding comparison"] },
+  { section: "Compare", href: "/compare", description: "Compare education options available on the platform.", keywords: ["compare", "comparison", "side by side", "compare schools", "compare programmes"] },
+  { section: "Careers", href: "/careers", description: "Explore career profiles, occupations and related skills.", keywords: ["career", "careers", "occupation", "job role", "career profile"] },
+  { section: "Career Path", href: "/career-path", description: "Build a staged progression plan from a student's current position to a career goal.", keywords: ["career path", "career roadmap", "roadmap", "career plan", "career intelligence", "dream job"] },
+  { section: "My Path", href: "/my-path", description: "View a personal education, funding, skills and career plan.", keywords: ["my path", "personal path", "my plan", "saved pathway"], requiresSignIn: true },
+  { section: "Jobs", href: "/jobs", description: "Explore job and employment information listed on GhanaPathFinder.", keywords: ["job", "jobs", "employment", "vacancy", "hiring"] },
+  { section: "Opportunities", href: "/opportunities", description: "Browse jobs, internships, training and other opportunity listings.", keywords: ["opportunity", "opportunities", "internship", "training", "placement", "attachments"] },
+  { section: "Internships", href: "/internships", description: "Explore internships, industrial attachments and graduate programmes.", keywords: ["internship", "internships", "industrial attachment", "national service", "graduate programme"] },
+  { section: "Companies", href: "/companies", description: "Explore organisations, employers and their official careers pages.", keywords: ["company", "companies", "employer", "employers", "organisation", "careers page"] },
+  { section: "Hire from Africa", href: "/hire-from-africa", description: "Explore the employer-facing experience for discovering talent in Africa.", keywords: ["hire", "hire from africa", "recruit", "recruitment", "talent", "employer portal"] },
+  { section: "Skills Hub", href: "/skills", description: "Explore skills, prerequisites, difficulty levels and related learning resources.", keywords: ["skill", "skills", "skills hub", "prerequisites", "competencies"] },
+  { section: "Courses", href: "/courses", description: "Explore educational courses and learning materials.", keywords: ["course", "courses", "online learning", "study material", "lessons"] },
+  { section: "Startups", href: "/startups", description: "Explore African startups and the innovation ecosystem.", keywords: ["startup", "startups", "companies in africa", "entrepreneurship", "founders"] },
+  { section: "Build in Africa", href: "/build-in-africa", description: "Explore the Build in Africa hub for creating and growing projects.", keywords: ["build in africa", "build", "create a startup", "build a business", "founder"] },
+  { section: "Growth OS", href: "/growth", description: "Open the Growth OS workspace for planning and improving growth.", keywords: ["growth", "growth os", "business growth", "growth planning"] },
+  { section: "Work in Africa", href: "/work", description: "Explore work-related information and opportunities across Africa.", keywords: ["work", "work in africa", "careers in africa", "employment in africa"] },
+  { section: "Explore Africa", href: "/explore", description: "Explore African countries, people and opportunities.", keywords: ["explore africa", "africa", "countries", "continent"] },
+  { section: "Africa", href: "/africa", description: "Open the Africa hub and its country and regional content.", keywords: ["africa hub", "african countries", "regions"] },
+  { section: "Africa Now", href: "/africa-now", description: "Read Africa-wide reporting and news updates.", keywords: ["africa now", "africa news", "pan-african news"] },
+  { section: "Live Africa", href: "/live-africa", description: "Read recent published news records from across Africa.", keywords: ["live africa", "latest africa news", "recent africa news"] },
+  { section: "Global News", href: "/global-news", description: "Read Ghanaian, African and international news articles.", keywords: ["global news", "world news", "ghana news", "international news"] },
+  { section: "My Africa", href: "/my-africa", description: "Open the My Africa experience.", keywords: ["my africa", "africa experience"] },
+  { section: "Ask Africa", href: "/ask-africa", description: "Ask questions about Africa, education, careers and development.", keywords: ["ask africa", "questions about africa", "african development"] },
+  { section: "International Community", href: "/international-community", description: "Visit the international student and professional community.", keywords: ["international community", "global community", "international students"] },
+  { section: "Study Destinations", href: "/study-destinations", description: "Explore international study destinations and application guidance.", keywords: ["study abroad", "study destination", "study destinations", "international education", "overseas university"] },
+  { section: "Community", href: "/community", description: "Visit GhanaPathFinder's student and professional community.", keywords: ["community", "groups", "discussions", "chat", "forum"] },
+  { section: "People", href: "/people", description: "Explore people and profiles available on the platform.", keywords: ["people", "members", "profiles", "professionals"] },
+  { section: "Mentorship", href: "/mentorship", description: "Explore mentorship and guidance opportunities.", keywords: ["mentor", "mentorship", "guidance", "mentors"] },
+  { section: "Events", href: "/events", description: "Browse events and activities listed on GhanaPathFinder.", keywords: ["event", "events", "workshop", "conference", "webinar"] },
+  { section: "Stories", href: "/stories", description: "Read stories shared through GhanaPathFinder.", keywords: ["stories", "success stories", "testimonials"] },
+  { section: "Daily Drop", href: "/daily-drop", description: "Open the Daily Drop content experience.", keywords: ["daily drop", "daily content", "daily update"] },
+  { section: "Inspiration", href: "/inspiration", description: "Explore motivational and inspirational content.", keywords: ["inspiration", "motivation", "encouragement"] },
+  { section: "Heroes", href: "/heroes", description: "Discover people and profiles featured as heroes.", keywords: ["heroes", "role models", "inspiring people"] },
+  { section: "Life Game", href: "/life-game", description: "Open the Life Game decision and scenario experience.", keywords: ["life game", "life simulator", "simulation", "life decisions"] },
+  { section: "Travel", href: "/travel", description: "Explore travel-related country and destination information.", keywords: ["travel", "travelling", "visiting countries", "destinations"] },
+  { section: "Connect", href: "/connect", description: "Open the Connect hub for networking and making connections.", keywords: ["connect", "network", "networking", "connections"] },
+  { section: "Dashboard", href: "/dashboard", description: "Open the signed-in user's dashboard.", keywords: ["dashboard", "my dashboard", "account overview"], requiresSignIn: true },
+  { section: "Profile", href: "/profile", description: "View and manage the signed-in user's profile.", keywords: ["profile", "my profile", "account profile"], requiresSignIn: true },
+  { section: "Applications", href: "/applications", description: "Track applications and related next steps.", keywords: ["applications", "my applications", "application tracker"], requiresSignIn: true },
+  { section: "Saved", href: "/saved", description: "View universities, programmes and other items saved by the user.", keywords: ["saved", "bookmarks", "saved items", "favourites"], requiresSignIn: true },
+  { section: "Notifications", href: "/notifications", description: "View account and platform notifications.", keywords: ["notification", "notifications", "alerts"], requiresSignIn: true },
+  { section: "Settings", href: "/settings", description: "Manage account settings.", keywords: ["settings", "account settings", "security settings"], requiresSignIn: true },
+  { section: "Preferences", href: "/preferences", description: "Manage personal preferences used by the platform.", keywords: ["preferences", "personalisation", "personalization"], requiresSignIn: true },
+  { section: "Student Portal", href: "/portal/student", description: "Open the student portal. Sign-in and portal access rules may apply.", keywords: ["student portal", "student account"], requiresSignIn: true },
+  { section: "Employer Portal", href: "/portal/employer", description: "Open the employer portal for employer-facing tools. Sign-in and role access rules apply.", keywords: ["employer portal", "employer dashboard"], requiresSignIn: true },
+  { section: "Employee Portal", href: "/portal/employee", description: "Open the employee portal. Sign-in and role access rules apply.", keywords: ["employee portal", "employee dashboard"], requiresSignIn: true },
+  { section: "Founder Portal", href: "/portal/founder", description: "Open the founder portal for startup-related tools. Sign-in and role access rules apply.", keywords: ["founder portal", "startup founder"], requiresSignIn: true },
+  { section: "International Student Portal", href: "/portal/international-student", description: "Open the international student portal. Sign-in and role access rules apply.", keywords: ["international student portal", "international student account"], requiresSignIn: true },
+  { section: "Parent View", href: "/parent", description: "Open the parent and guardian view.", keywords: ["parent", "guardian", "parent view"] },
+  { section: "Study Destination Portal", href: "/portal/study-destinations", description: "Open the study destinations portal. Sign-in and role access rules may apply.", keywords: ["study destination portal", "destination portal"], requiresSignIn: true },
+  { section: "Onboarding", href: "/onboarding", description: "Complete initial setup for a new GhanaPathFinder account.", keywords: ["onboarding", "get started", "account setup"], requiresSignIn: true },
+  { section: "Sign In", href: "/auth", description: "Sign in or create a GhanaPathFinder account.", keywords: ["sign in", "login", "log in", "register", "create account"] },
+  { section: "FAQ", href: "/faq", description: "Read frequently asked questions about GhanaPathFinder.", keywords: ["faq", "frequently asked questions", "help"] },
+  { section: "Contact", href: "/contact", description: "Contact the GhanaPathFinder team.", keywords: ["contact", "support", "help desk", "reach the team"] },
+  { section: "References", href: "/references", description: "Read references and acknowledgements for platform information.", keywords: ["references", "acknowledgements", "sources"] },
+  { section: "Credits", href: "/credits", description: "View platform credits and source acknowledgements.", keywords: ["credits", "attributions"] },
+  { section: "Disclaimer", href: "/disclaimer", description: "Read the platform's information and guidance disclaimer.", keywords: ["disclaimer", "not official advice", "limitations"] },
+  { section: "Privacy Policy", href: "/privacy", description: "Read the privacy policy.", keywords: ["privacy", "privacy policy", "data protection"] },
+  { section: "Terms", href: "/terms", description: "Read the terms and conditions.", keywords: ["terms", "terms of service", "conditions"] },
+  { section: "Professional Councils", href: "/professional-councils", description: "Explore professional councils and regulatory bodies.", keywords: ["professional council", "professional councils", "regulatory body", "licensing"] },
+];;
 
 export function createPlatformTools() {
   return {
@@ -350,18 +398,24 @@ export function createPlatformTools() {
       description: "Find the correct GhanaPathFinder section and internal route. Use this when a user asks where to find a feature or how to navigate the platform. Return only routes from this verified route map.",
       inputSchema: querySchema,
       execute: async ({ query }) => {
-        const words = safeFilterTerm(query).toLowerCase().split(" ").filter(Boolean);
+        const phrase = safeFilterTerm(query).toLowerCase();
+        const words = phrase.split(" ").filter((word) =>
+          word.length > 1 && !SEARCH_STOP_WORDS.has(word),
+        );
         const ranked = navigation
-          .map((item) => ({
-            ...item,
-            score: words.filter((word) =>
-              `${item.section} ${item.description} ${item.href}`.toLowerCase().includes(word),
-            ).length,
-          }))
+          .map((item) => {
+            const corpus = `${item.section} ${item.description} ${item.href} ${item.keywords.join(" ")}`.toLowerCase();
+            const wordHits = words.filter((word) => corpus.includes(word)).length;
+            const phraseHit = corpus.includes(phrase) ? 4 : 0;
+            const aliasHit = item.keywords.some((keyword) =>
+              keyword.includes(phrase) || phrase.includes(keyword),
+            ) ? 3 : 0;
+            return { ...item, score: wordHits * 2 + phraseHit + aliasHit };
+          })
           .filter((item) => item.score > 0)
           .sort((a, b) => b.score - a.score)
           .slice(0, 5)
-          .map(({ score: _score, ...item }) => item);
+          .map(({ score: _score, keywords: _keywords, ...item }) => item);
         return { records: ranked };
       },
     }),
