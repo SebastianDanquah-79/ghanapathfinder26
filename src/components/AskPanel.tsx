@@ -510,7 +510,7 @@ const DEFAULT_SUGGESTIONS = [
 const AskPanel = ({ query, items, suggestions, mode = "general" }: AskPanelProps) => {
   const [session, setSession] = useState(0);
   const [initialMessages, setInitialMessages] = useState<UIMessage[] | null>(null);
-  const storageKey = `${STORAGE_KEY}.${mode}`;
+  const storageKey = mode === "general" ? STORAGE_KEY : `${STORAGE_KEY}.${mode}`;
   const panelTitle = mode === "personal-tutor"
     ? "Personal AI Tutor"
     : mode === "cofounder"
@@ -538,7 +538,7 @@ const AskPanel = ({ query, items, suggestions, mode = "general" }: AskPanelProps
 
   return (
     <AskChat
-      key={session}
+      key={`${mode}:${session}`}
       initialMessages={session === 0 ? initialMessages : []}
       contextText={contextText}
       suggestions={suggestions ?? DEFAULT_SUGGESTIONS}
