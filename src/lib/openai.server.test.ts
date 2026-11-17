@@ -20,6 +20,18 @@ describe("getAIErrorDetails", () => {
     expect(result.message).not.toMatch(/credit card|billing portal|payment method/i);
   });
 
+  it("explains that an invalid provider API key must be replaced by an administrator", () => {
+    const result = getAIErrorDetails(new Error(
+      "Authentication Fails, Your api key: ****tg4A is invalid",
+    ));
+
+    expect(result.code).toBe("configuration_error");
+    expect(result.status).toBe(503);
+    expect(result.message).toContain("administrator must replace");
+    expect(result.message).toContain("Vercel Environment Variables");
+    expect(result.message).not.toContain("****tg4A");
+  });
+
   it("distinguishes an exhausted provider credit balance from a temporary rate limit", () => {
     const result = getAIErrorDetails(new Error(
       "You have no credits remaining. Add credits to continue using the API.",
