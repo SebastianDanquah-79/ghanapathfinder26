@@ -152,7 +152,7 @@ async function searchProgrammes(query: string) {
 
 const navigation = [
   { section: "Ghana and universities", href: "/ghana", description: "Explore Ghanaian universities, tertiary institutions and education information." },
-  { section: "Universities", href: "/search?kind=university", description: "Search university profiles and compare institutions." },
+  { section: "Universities", href: "/ghana", description: "Browse Ghanaian university profiles, locations and institution information." },
   { section: "Programmes", href: "/programmes", description: "Search degree, diploma and other academic programmes." },
   { section: "Scholarships", href: "/scholarships", description: "Explore scholarship and funding records." },
   { section: "Admission matching", href: "/admission-match", description: "Use admission matching and WASSCE guidance." },
