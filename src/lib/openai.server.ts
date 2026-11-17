@@ -224,6 +224,19 @@ export function getAIErrorDetails(error: unknown): AIErrorDetails {
   }
 
   if (
+    message.includes("authentication fails") ||
+    message.includes("invalid api key") ||
+    (message.includes("api key") && message.includes("invalid")) ||
+    message.includes("invalid credential")
+  ) {
+    return {
+      status: 503,
+      code: "configuration_error",
+      message: "GhanaPathFinder's configured AI provider rejected its API key. A GhanaPathFinder administrator must replace the server-side provider key in Vercel Environment Variables and redeploy. Do not send an API key in chat.",
+    };
+  }
+
+  if (
     status === 401 || status === 403 ||
     message.includes("api key") ||
     message.includes("authentication") ||
