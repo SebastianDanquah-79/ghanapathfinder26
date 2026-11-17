@@ -27,15 +27,15 @@ type ChatRequestBody = {
 type ChatMode = "general" | "personal-tutor" | "cofounder";
 
 const MAX_MESSAGES = 60;
-const MAX_MODEL_MESSAGES = 18;
+const MAX_MODEL_MESSAGES = 12;
 const MAX_MESSAGE_TEXT = 4_000;
-const MAX_TOTAL_TEXT = 24_000;
+const MAX_TOTAL_TEXT = 9_000;
 const MAX_ATTACHMENT_BYTES = 2 * 1024 * 1024;
 const MAX_TOTAL_ATTACHMENT_BYTES = 2 * 1024 * 1024;
 const MAX_ATTACHMENTS = 3;
 const MAX_ATTACHMENT_DATA_URL_CHARS = 2_800_100;
 const MAX_REQUEST_BYTES = 4 * 1024 * 1024;
-const MAX_CONTEXT_CHARS = 6_000;
+const MAX_CONTEXT_CHARS = 2_500;
 
 const SYSTEM = `You are GhanaPathFinder's internationally knowledgeable education, career and opportunity assistant.
 
@@ -349,8 +349,8 @@ ${context}`
             system: systemPrompt,
             messages: await convertToModelMessages(validatedMessages),
             tools: mode === "personal-tutor" ? undefined : createPlatformTools(),
-            stopWhen: isStepCount(5),
-            maxOutputTokens: mode === "personal-tutor" ? 1_600 : 1_400,
+            stopWhen: isStepCount(3),
+            maxOutputTokens: mode === "personal-tutor" ? 1_000 : 700,
             maxRetries: 0,
             timeout: { totalMs: 50_000 },
             abortSignal: request.signal,
