@@ -10,8 +10,9 @@ type QueryResult = {
 type SearchBuilder = {
   select(columns: string): SearchBuilder;
   ilike(column: string, pattern: string): SearchBuilder;
-  limit(count: number): Promise<QueryResult>;
+  eq(column: string, value: string | boolean | number): SearchBuilder;
   in(column: string, values: string[]): Promise<QueryResult>;
+  limit(count: number): Promise<QueryResult>;
 };
 
 type PublicAdminClient = {
@@ -29,11 +30,7 @@ const globalKnowledgeSchema = z.object({
 });
 
 function safeFilterTerm(input: string): string {
-  return input
-    .replace(/[%,.*_()]/g, " ")
-    .replace(/\\s+/g, " ")
-    .trim()
-    .slice(0, 100);
+  return input.replace(/[%,.*_()]/g, " ").replace(/\s+/g, " ").trim().slice(0, 100);
 }
 
 async function getAdminClient(): Promise<PublicAdminClient> {
@@ -47,6 +44,7 @@ async function runPublicSearch(
   columnTerms: string[],
   query: string,
   limit = 8,
+  filters?: (builder: SearchBuilder) => SearchBuilder,
 ) {
   const term = safeFilterTerm(query);
   if (term.length < 2) return { records: [], note: "Provide a more specific search phrase." };
@@ -55,9 +53,11 @@ async function runPublicSearch(
     const admin = await getAdminClient();
     const pattern = `%${term}%`;
     const results = await Promise.all(
-      columnTerms.slice(0, 3).map((column) =>
-        admin.from(table).select(select).ilike(column, pattern).limit(limit),
-      ),
+      columnTerms.slice(0, 3).map((column) => {
+        let builder = admin.from(table).select(select);
+        if (filters) builder = filters(builder);
+        return builder.ilike(column, pattern).limit(limit);
+      }),
     );
     const failed = results.find((result) => result.error);
     if (failed?.error) {
@@ -86,31 +86,36 @@ async function runPublicSearch(
 async function searchProgrammes(query: string) {
   const result = await runPublicSearch(
     "programmes",
-    "id,name,field,description,duration,degree_type,qualification,qualification_level,entry_requirements,admission_summary,wassce_requirements,application_url,programme_url,source_url,verification_status,verified,last_verified_at,university_id",
+    "id,name,field,description,duration,degree_type,qualification,qualification_level,entry_requirements,admission_summary,wassce_requirements,application_url,programme_url,source_url,verification_status,verified,last_verified_at,university_id,institution_id",
     ["name", "field", "description"],
     query,
     8,
   );
-  const programmeIds = result.records
-    .map((row) => row["university_id"])
-    .filter((id): id is string => typeof id === "string");
-  if (!programmeIds.length) return result;
+  const universityIds = result.records.map((row) => row["university_id"]).filter((id): id is string => typeof id === "string");
+  const institutionIds = result.records.map((row) => row["institution_id"]).filter((id): id is string => typeof id === "string");
 
   try {
     const admin = await getAdminClient();
-    const { data, error } = await admin
-      .from("universities")
-      .select("id,name,short_name,city,region,country,website_url,admissions_url,source_url,verification_status,verified,last_verified_at")
-      .in("id", programmeIds.slice(0, 20));
-    if (error) return result;
-    const universities = new Map(
-      (data ?? []).map((row) => [String(row["id"]), row]),
-    );
+    const [universities, institutions] = await Promise.all([
+      universityIds.length
+        ? admin.from("universities")
+            .select("id,name,short_name,city,region,country,website_url,admissions_url,source_url,verification_status,verified,last_verified_at")
+            .in("id", universityIds.slice(0, 20))
+        : Promise.resolve({ data: [], error: null }),
+      institutionIds.length
+        ? admin.from("institutions")
+            .select("id,official_name,institution_type,town,region,website_url,gtec_accreditation_status,verification_status,last_verified_at,primary_source_url")
+            .in("id", institutionIds.slice(0, 20))
+        : Promise.resolve({ data: [], error: null }),
+    ]);
+    const universityMap = new Map((universities.data ?? []).map((row) => [String(row.id), row]));
+    const institutionMap = new Map((institutions.data ?? []).map((row) => [String(row.id), row]));
     return {
       ...result,
       records: result.records.map((row) => ({
         ...row,
-        institution: universities.get(String(row["university_id"])) ?? null,
+        university: universityMap.get(String(row["university_id"])) ?? null,
+        institution: institutionMap.get(String(row["institution_id"])) ?? null,
       })),
     };
   } catch {
@@ -119,38 +124,68 @@ async function searchProgrammes(query: string) {
 }
 
 const navigation = [
-  { section: "Universities", href: "/universities", description: "Explore and compare universities and tertiary institutions." },
-  { section: "Programmes", href: "/programmes", description: "Search degree, diploma and other academic programmes." },
-  { section: "Scholarships", href: "/scholarships", description: "Explore scholarships and funding records." },
-  { section: "Admissions", href: "/admissions", description: "Explore admission guidance and matching tools." },
-  { section: "Careers", href: "/careers", description: "Explore career profiles and career pathways." },
-  { section: "My Path", href: "/my-path", description: "View the student's saved education and career direction." },
+  { section: "Ghana and universities", href: "/ghana", description: "Explore Ghanaian universities, institutions and education information." },
+  { section: "Programmes", href: "/programmes/", description: "Search degree, diploma and other academic programmes." },
+  { section: "Scholarships", href: "/scholarships/", description: "Explore scholarships and funding records." },
+  { section: "Admissions and WASSCE matching", href: "/admission-match", description: "Use admission matching and WASSCE guidance." },
+  { section: "Careers", href: "/careers/", description: "Explore career profiles and career options." },
+  { section: "Career Path", href: "/career-path", description: "Build an education and career progression plan." },
+  { section: "My Path", href: "/my-path", description: "View a student's saved education and career direction." },
   { section: "Opportunities", href: "/opportunities", description: "Explore jobs, internships and other opportunities." },
-  { section: "Learning resources", href: "/learning-resources", description: "Find learning materials and skill-development resources." },
-  { section: "News", href: "/news", description: "Read Ghana, African and international news." },
+  { section: "Internships", href: "/internships/", description: "Explore internships, attachments and graduate programmes." },
+  { section: "Jobs", href: "/jobs", description: "Explore jobs and employment opportunities." },
+  { section: "Skills", href: "/skills/", description: "Explore skills, prerequisites and learning resources." },
+  { section: "Courses", href: "/courses", description: "Explore educational courses and learning materials." },
+  { section: "Global news", href: "/global-news", description: "Read Ghanaian, African and international news." },
   { section: "Startups", href: "/startups", description: "Explore African startups and the innovation ecosystem." },
+  { section: "Explore Africa", href: "/explore", description: "Explore African countries, people and opportunities." },
+  { section: "Ask Africa", href: "/ask-africa", description: "Ask questions about Africa and African development." },
+  { section: "My Africa", href: "/my-africa", description: "Explore the My Africa experience." },
+  { section: "Community", href: "/community", description: "Visit GhanaPathFinder's student and professional community." },
 ];
 
 export function createPlatformTools() {
   return {
     searchUniversities: tool({
-      description: "Search GhanaPathFinder's university and institution catalogue. Use this for questions about institutions, campuses, locations, official websites or admissions pages. Do not invent results.",
+      description: "Search GhanaPathFinder's university catalogue by university name, short name, country or city. Return verification metadata and official URLs.",
       inputSchema: querySchema,
       execute: async ({ query }) => runPublicSearch(
         "universities",
         "id,name,short_name,city,region,country,type,category,accreditation_status,gtec_accreditation_status,website_url,admissions_url,financial_aid_url,source_url,verified,verification_status,last_verified_at",
-        ["name", "short_name", "city"],
+        ["name", "country", "city"],
+        query,
+        8,
+      ),
+    }),
+    searchInstitutions: tool({
+      description: "Search GhanaPathFinder's institution registry for tertiary institutions and other education providers. Include GTEC accreditation and source/verification status.",
+      inputSchema: querySchema,
+      execute: async ({ query }) => runPublicSearch(
+        "institutions",
+        "id,official_name,institution_type,town,region,website_url,gtec_accreditation_status,verification_status,last_verified_at,primary_source_url,source_urls,needs_review",
+        ["official_name", "town", "region"],
         query,
         8,
       ),
     }),
     searchProgrammes: tool({
-      description: "Search GhanaPathFinder's live programme catalogue. Use this for programme names, fields of study, qualifications, durations and recorded admission requirements. Include institution and verification details when returned.",
+      description: "Search GhanaPathFinder's live programme catalogue. Use this for programme names, fields, qualifications, durations and recorded admission requirements. Include institution and verification details.",
       inputSchema: querySchema,
       execute: async ({ query }) => searchProgrammes(query),
     }),
+    searchProgrammeCareers: tool({
+      description: "Search the programme-to-career relationship catalogue for occupations connected to academic programmes. Do not interpret a relationship as a guaranteed job outcome.",
+      inputSchema: querySchema,
+      execute: async ({ query }) => runPublicSearch(
+        "programme_careers",
+        "id,career,occupation,description,licence_note,last_verified,salary_experience_level,salary_period,salary_range,salary_data_source,programme_id",
+        ["career", "occupation", "description"],
+        query,
+        8,
+      ),
+    }),
     searchScholarships: tool({
-      description: "Search the scholarship catalogue. Use this for funding, scholarship eligibility, deadlines, providers and application links. Treat a record as unverified unless its verification fields explicitly say otherwise.",
+      description: "Search scholarship records for funding, eligibility, deadlines, providers and application links. Inspect verified and last_verified_at fields and distinguish unverified records.",
       inputSchema: querySchema,
       execute: async ({ query }) => runPublicSearch(
         "scholarships",
@@ -161,7 +196,7 @@ export function createPlatformTools() {
       ),
     }),
     searchOpportunities: tool({
-      description: "Search job, internship, training and other opportunity records. Always inspect is_active, published, status, verified and deadline fields before saying an opportunity is currently open.",
+      description: "Search only active and published job, internship, training and other opportunity records. Verify deadlines and source details before calling an item open.",
       inputSchema: querySchema,
       execute: async ({ query }) => runPublicSearch(
         "opportunities",
@@ -169,10 +204,44 @@ export function createPlatformTools() {
         ["title", "description", "company_name"],
         query,
         8,
+        (builder) => builder.eq("is_active", true).eq("published", true),
+      ),
+    }),
+    searchInternshipProviders: tool({
+      description: "Search the employer and provider directory for organisations that may offer internships or industrial attachments. A provider directory entry is not proof of an open vacancy; inspect needs_review and verification evidence.",
+      inputSchema: querySchema,
+      execute: async ({ query }) => runPublicSearch(
+        "internship_providers",
+        "id,name,sector,provider_type,website_url,programme_summary,application_url,paid,source_urls,verification_method,verification_notes,needs_review,last_verified_at",
+        ["name", "sector", "programme_summary"],
+        query,
+        8,
+      ),
+    }),
+    searchCompanies: tool({
+      description: "Search GhanaPathFinder's organisation directory by company name, sector or description. Return official websites and verification metadata. Do not infer that a company is hiring.",
+      inputSchema: querySchema,
+      execute: async ({ query }) => runPublicSearch(
+        "companies",
+        "id,name,sector,location,region,description,website_url,careers_url,verification_status,verified,last_verified_at,primary_source_url",
+        ["name", "sector", "description"],
+        query,
+        8,
+      ),
+    }),
+    searchInvestors: tool({
+      description: "Search the investor directory by investor name, sector or country. Return the supplied website, source and verification fields.",
+      inputSchema: querySchema,
+      execute: async ({ query }) => runPublicSearch(
+        "investors",
+        "id,name,type,country_code,sectors,stages,website_url,source_url,description,verified",
+        ["name", "description", "country_code"],
+        query,
+        8,
       ),
     }),
     searchSkills: tool({
-      description: "Search the platform's skills catalogue for skill definitions, difficulty, prerequisites, learning resources and related jobs.",
+      description: "Search the skills catalogue for skill definitions, difficulty, prerequisites, learning resources and related jobs.",
       inputSchema: querySchema,
       execute: async ({ query }) => runPublicSearch(
         "skills",
@@ -183,12 +252,34 @@ export function createPlatformTools() {
       ),
     }),
     searchLearningResources: tool({
-      description: "Search learning resources by subject, provider, skill, level or country. Return the URLs stored in the catalogue.",
+      description: "Search learning resources by subject, provider, skill, level or country. Return URLs and any supplied source details.",
       inputSchema: querySchema,
       execute: async ({ query }) => runPublicSearch(
         "learning_resources",
         "id,provider,title,url,category,skills,level,country_code,source_url",
         ["title", "category", "provider"],
+        query,
+        8,
+      ),
+    }),
+    searchInternationalQualifications: tool({
+      description: "Search the international qualification catalogue by country, qualification name or qualification code. Include source and verification status; do not infer equivalence unless a supplied pathway rule confirms it.",
+      inputSchema: querySchema,
+      execute: async ({ query }) => runPublicSearch(
+        "international_qualification_catalog",
+        "id,country_code,country_name,qualification_code,qualification_name,level,notes,source_url,verification_status,last_verified_at",
+        ["country_name", "qualification_name", "qualification_code"],
+        query,
+        8,
+      ),
+    }),
+    searchCountryGuides: tool({
+      description: "Search country-specific international education application guides for outbound study and Ghana application guidance. Use the country code or name and retain official portal links and verification dates.",
+      inputSchema: querySchema,
+      execute: async ({ query }) => runPublicSearch(
+        "international_country_directory",
+        "country_code,country_name,region,outbound_application_summary,outbound_application_steps,outbound_official_portal_url,outbound_source_urls,ghana_application_summary,ghana_application_steps,ghana_source_urls,qualification_examples,verification_status,last_verified_at",
+        ["country_name", "country_code", "region"],
         query,
         8,
       ),
@@ -204,8 +295,19 @@ export function createPlatformTools() {
         8,
       ),
     }),
+    searchNews: tool({
+      description: "Search the news articles already indexed in GhanaPathFinder. Return source name, publication date, category, excerpt and original URL. Do not describe old articles as breaking news.",
+      inputSchema: querySchema,
+      execute: async ({ query }) => runPublicSearch(
+        "news_articles",
+        "id,title,excerpt,original_url,country_code,category,published_at,source_name,fetched_at",
+        ["title", "excerpt", "source_name"],
+        query,
+        8,
+      ),
+    }),
     searchGlobalKnowledge: tool({
-      description: "Search GhanaPathFinder's curated global knowledge library for sourced information about international education, countries, careers, technology, science, business and scholarships. Use this when a question needs information beyond the platform's structured Ghana catalogues. If no records are returned, say the knowledge library has no matching sourced record; do not pretend it did.",
+      description: "Search GhanaPathFinder's curated global knowledge library for sourced information about international education, countries, careers, technology, science, business and scholarships. If no records are returned, say the knowledge library has no matching sourced record.",
       inputSchema: globalKnowledgeSchema,
       execute: async ({ query, countryCode, category }) => searchGlobalKnowledge(query, {
         countryCode,
@@ -215,9 +317,7 @@ export function createPlatformTools() {
     }),
     searchPlatformNavigation: tool({
       description: "Find the correct GhanaPathFinder section and internal route. Use this when a user asks where to find a feature or how to navigate the platform. Return only routes from this verified route map.",
-      inputSchema: z.object({
-        query: z.string().trim().min(2).max(120),
-      }),
+      inputSchema: querySchema,
       execute: async ({ query }) => {
         const words = safeFilterTerm(query).toLowerCase().split(" ").filter(Boolean);
         const ranked = navigation
