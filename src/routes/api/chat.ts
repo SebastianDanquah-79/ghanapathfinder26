@@ -138,13 +138,14 @@ function validateAndTrimMessages(rawMessages: unknown[]): {
           throw new Error("The attachment data is invalid. Please select the file again.");
         }
 
+        const filename = typeof rawPart["filename"] === "string"
+          ? rawPart["filename"].slice(0, 180)
+          : undefined;
         safeParts.push({
           type: "file",
           mediaType,
-          filename: typeof rawPart["filename"] === "string"
-            ? rawPart["filename"].slice(0, 180)
-            : undefined,
           url,
+          ...(filename ? { filename } : {}),
         });
       }
 
@@ -191,13 +192,17 @@ function validateAndTrimMessages(rawMessages: unknown[]): {
   for (let index = recent.length - 1; index >= 0; index -= 1) {
     const message = recent[index];
     if (!message) continue;
-    const parts = message.parts.flatMap((part) => {
-      if (part.type !== "text") return [part];
-      if (remaining <= 0) return [];
+    const parts: UIMessage["parts"] = [];
+    for (const part of message.parts) {
+      if (part.type !== "text") {
+        parts.push(part);
+        continue;
+      }
+      if (remaining <= 0) continue;
       const text = part.text.slice(-remaining);
       remaining -= text.length;
-      return text ? [{ type: "text" as const, text }] : [];
-    });
+      if (text) parts.push({ type: "text", text });
+    }
     const isLastAttachment = lastAttachment?.id === message.id;
     const keptParts = parts.filter((part) =>
       part.type !== "file" || isLastAttachment,
