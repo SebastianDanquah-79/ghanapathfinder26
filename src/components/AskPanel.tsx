@@ -487,7 +487,9 @@ const AskChat = ({ initialMessages, contextText, suggestions, mode, storageKey, 
         <p className="mt-2 px-1 text-[10px] leading-relaxed text-muted-foreground">
           {imageMode
             ? "GhanaPathFinder prepares your prompt for an external image creator. No paid image-generation API is used by this chatbot."
-            : "Upload one PDF or image at a time, up to 2 MB. File contents are not saved in chat history."}
+            : mode === "personal-tutor"
+              ? "Attach up to 3 PDF or image sources with 2 MB total. Source files stay in this active chat only and must be reattached after a reload."
+              : "Upload one PDF or image at a time, up to 2 MB. File contents are not saved in chat history."}
         </p>
       </div>
     </div>
