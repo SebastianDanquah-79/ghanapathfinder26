@@ -314,8 +314,8 @@ export function createPlatformTools() {
       description: "Search GhanaPathFinder's curated global knowledge library for sourced information about international education, countries, careers, technology, science, business and scholarships. If no records are returned, say the knowledge library has no matching sourced record.",
       inputSchema: globalKnowledgeSchema,
       execute: async ({ query, countryCode, category }) => searchGlobalKnowledge(query, {
-        countryCode,
-        category,
+        ...(countryCode ? { countryCode } : {}),
+        ...(category ? { category } : {}),
         limit: 8,
       }),
     }),
