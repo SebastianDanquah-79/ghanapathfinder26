@@ -13,6 +13,18 @@ describe("getAIErrorDetails", () => {
     expect(result.message).not.toMatch(/credit card|billing portal|payment method/i);
   });
 
+  it("distinguishes an exhausted provider credit balance from a temporary rate limit", () => {
+    const result = getAIErrorDetails(new Error(
+      "You have no credits remaining. Add credits to continue using the API.",
+    ));
+
+    expect(result.code).toBe("credits_exhausted");
+    expect(result.status).toBe(503);
+    expect(result.message).toContain("project administrator");
+    expect(result.message).toContain("conversation has been preserved");
+    expect(result.message).not.toMatch(/add credits|payment method|billing portal/i);
+  });
+
   it("classifies provider rate limits and returns a retry delay", () => {
     const result = getAIErrorDetails(new Error(
       "Rate limit reached. Please try again in 30 seconds.",
