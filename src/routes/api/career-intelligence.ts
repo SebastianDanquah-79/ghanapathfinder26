@@ -242,7 +242,7 @@ export const Route = createFileRoute("/api/career-intelligence")({
           });
           const leadCandidate = topCandidates[0]?.candidate;
           const leadSkills = leadCandidate?.skills.slice(0, 2) ?? [];
-          const counts = compact.counts;
+          const fallbackCounts = compact.counts;
           deterministicFallback = {
             generationMode: "deterministic_fallback",
             summary: leadCandidate
@@ -275,7 +275,7 @@ export const Route = createFileRoute("/api/career-intelligence")({
                 ],
               },
             ],
-            evidenceNote: `Deterministic fallback: AI generation is unavailable because the configured provider quota is exhausted. Current catalogue evidence found ${counts.programmes} programmes, ${counts.programmeCareerLinks} programme-career links, ${counts.skills} skills, ${counts.learningResources} learning resources, ${counts.verifiedScholarships} verified scholarships and ${counts.currentVerifiedOpportunities} active verified opportunities. Confirm requirements, deadlines and availability with official sources.`,
+            evidenceNote: `Deterministic fallback: AI generation is unavailable because the configured provider quota is exhausted. Current catalogue evidence found ${fallbackCounts.programmes} programmes, ${fallbackCounts.programmeCareerLinks} programme-career links, ${fallbackCounts.skills} skills, ${fallbackCounts.learningResources} learning resources, ${fallbackCounts.verifiedScholarships} verified scholarships and ${fallbackCounts.currentVerifiedOpportunities} active verified opportunities. Confirm requirements, deadlines and availability with official sources.`,
           };
 
           const modelCandidates = topCandidates.map((item) => ({
