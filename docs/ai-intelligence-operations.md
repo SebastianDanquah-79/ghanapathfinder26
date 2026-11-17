@@ -48,6 +48,12 @@ Model IDs must use the Gateway's exact `provider/model` format. Vercel deploymen
 
 **Account prerequisite:** the Gateway account may require billing setup before it accepts model requests. When Gateway returns the "valid credit card on file" error, the application reports that setup is required by the project owner/administrator. This is not a code-build failure. Do not disable the error handler or present it as a user input error.
 
+## Groq TPM handling
+
+Groq rate limits are organisation-level and can include requests per minute/day and tokens per minute/day. Production logs have shown the 8,000-token/minute limit for `openai/gpt-oss-120b` being reached when a new prompt's reserved input/output tokens overlap with earlier traffic. A 429 is not automatically an invalid key or a provider outage.
+
+The shared Groq fetch wrapper respects short `Retry-After` windows and retries up to twice. Requests with daily reset windows are not held open. Chat history, on-screen context, output tokens and tool steps are capped to reduce per-request token reservations. If a full daily allowance is reached, the owner must check the organisation's exact limits and usage on Groq's Limits page; changing models alone does not guarantee a higher quota.
+
 ## Zero-spend degraded mode
 
 The primary text-generation provider is now Groq. Free-tier use is subject to organisation-level request and token limits; hitting those limits can temporarily stop responses. The application must not treat a daily or account-level limit as a short transient failure or repeatedly ask users to retry.
