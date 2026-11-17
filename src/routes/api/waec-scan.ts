@@ -111,7 +111,7 @@ export const Route = createFileRoute("/api/waec-scan")({
             : { type: "image" as const, image: documentDataUrl };
 
           const result = await generateText({
-            model: createOpenAIResponsesModel(process.env["OPENAI_WAEC_MODEL"] || process.env["OPENAI_MODEL"]),
+            model: createOpenAIResponsesModel(process.env["OPENAI_WAEC_MODEL"] || process.env["OPENAI_MODEL"], "structured"),
             output: Output.object({ schema: scanSchema }),
             messages: [{
               role: "user",
