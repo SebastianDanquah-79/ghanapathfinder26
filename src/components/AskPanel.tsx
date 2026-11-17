@@ -62,10 +62,10 @@ const historyWithoutBinaryFiles = (messages: UIMessage[]): UIMessage[] =>
     ),
   }));
 
-const loadHistory = (): UIMessage[] => {
+const loadHistory = (storageKey: string): UIMessage[] => {
   if (typeof window === "undefined") return [];
   try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
+    const raw = window.localStorage.getItem(storageKey);
     if (!raw) return [];
     const parsed = JSON.parse(raw) as UIMessage[];
     if (!Array.isArray(parsed)) return [];
@@ -78,14 +78,21 @@ const loadHistory = (): UIMessage[] => {
   }
 };
 
+type AskMode = "general" | "personal-tutor" | "cofounder";
+
 interface AskChatProps {
   initialMessages: UIMessage[];
   contextText: string;
   suggestions: string[];
+  mode: AskMode;
+  storageKey: string;
+  title: string;
+  description: string;
+  sourceFiles: FileUIPart[];
   onClear: () => void;
 }
 
-const AskAttachmentControls = ({ disabled }: { disabled: boolean }) => {
+const AskAttachmentControls = ({ disabled, tutor }: { disabled: boolean; tutor?: boolean }) => {
   const attachments = usePromptInputAttachments();
 
   return (
@@ -94,8 +101,8 @@ const AskAttachmentControls = ({ disabled }: { disabled: boolean }) => {
         className="text-background/80 hover:bg-white/10 hover:text-background"
         disabled={disabled}
         onClick={attachments.openFileDialog}
-        tooltip="Attach one PDF or image (up to 2 MB)"
-        aria-label="Attach a PDF or image"
+        tooltip={tutor ? "Attach up to 3 source files (2 MB total)" : "Attach one PDF or image (up to 2 MB)"}
+        aria-label={tutor ? "Attach study sources" : "Attach a PDF or image"}
       >
         <Paperclip className="size-4" />
       </PromptInputButton>
@@ -124,7 +131,7 @@ const AskAttachmentControls = ({ disabled }: { disabled: boolean }) => {
   );
 };
 
-const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChatProps) => {
+const AskChat = ({ initialMessages, contextText, suggestions, mode, storageKey, title, description, sourceFiles, onClear }: AskChatProps) => {
   const [input, setInput] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [imageMode, setImageMode] = useState(false);
@@ -139,7 +146,14 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
     transport,
     onError: (chatError) => {
       console.error("GhanaPathFinder chat request failed", chatError);
-      setError("I couldn't complete that reply. Please try again.");
+      const message = chatError instanceof Error ? chatError.message : "";
+      setError(
+        /project owner or administrator|provider account setup|valid credit card on file/i.test(message)
+          ? "GhanaPathFinder's AI provider needs setup by the project owner or administrator. Your conversation is preserved."
+          : /rate limit|capacity|too many requests/i.test(message)
+            ? "GhanaPathFinder AI is temporarily at capacity. Your conversation is preserved; please wait a moment and try again."
+            : "I couldn't complete that reply. Your previous messages are preserved. Check your connection and try again.",
+      );
     },
   });
 
@@ -148,23 +162,36 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(historyWithoutBinaryFiles(messages)));
+      window.localStorage.setItem(storageKey, JSON.stringify(historyWithoutBinaryFiles(messages)));
     } catch {
       /* storage full or unavailable — history is best-effort */
     }
-  }, [messages]);
+  }, [messages, storageKey]);
 
   const ask = useCallback(
     async (text: string, files: FileUIPart[] = []) => {
       const trimmed = text.trim();
-      if ((!trimmed && files.length === 0) || isLoading) return;
+      const filesToSend = mode === "personal-tutor" ? [...sourceFiles, ...files] : files;
+      if ((!trimmed && filesToSend.length === 0) || isLoading) return;
+
+      if (mode === "personal-tutor" && filesToSend.length > 0) {
+        const approximateBytes = filesToSend.reduce((total, file) => {
+          const encoded = typeof file.url === "string" ? file.url.split(",").pop() ?? "" : "";
+          const padding = encoded.endsWith("==") ? 2 : encoded.endsWith("=") ? 1 : 0;
+          return total + Math.max(0, Math.floor((encoded.length * 3) / 4) - padding);
+        }, 0);
+        if (filesToSend.length > 3 || approximateBytes > MAX_ATTACHMENT_BYTES) {
+          setError("Use up to 3 study sources with 2 MB total. Remove a source or select smaller files.");
+          return;
+        }
+      }
 
       setError(null);
       setInput("");
 
-      // Keep only the most recently attached file in the live conversation.
-      // This keeps repeated turns within the serverless request-size limit.
-      if (files.length > 0) {
+      // Keep only the latest source pack in live history. The notebook library
+      // preserves uploaded sources while each request remains tightly bounded.
+      if (filesToSend.length > 0) {
         setMessages((current) =>
           current.map((message) => ({
             ...message,
@@ -176,10 +203,12 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
       try {
         await sendMessage(
           {
-            text: trimmed || "Please analyse the attached file and explain its contents.",
-            ...(files.length > 0 ? { files } : {}),
+            text: trimmed || (mode === "personal-tutor"
+              ? "Please study these uploaded sources and help me understand their contents."
+              : "Please analyse the attached file and explain its contents."),
+            ...(filesToSend.length > 0 ? { files: filesToSend } : {}),
           },
-          { body: { context: contextRef.current } },
+          { body: { context: contextRef.current, mode } },
         );
       } catch (sendError) {
         console.error("GhanaPathFinder could not send the chat message", sendError);
@@ -187,7 +216,7 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
         throw sendError;
       }
     },
-    [isLoading, sendMessage, setMessages],
+    [isLoading, sendMessage, setMessages, mode, sourceFiles],
   );
 
   const createImage = useCallback(
@@ -227,10 +256,8 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
     <div className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
       <div className="flex items-center justify-between gap-2 border-b border-border px-3 py-2">
         <div className="min-w-0">
-          <p className="text-sm font-semibold text-foreground">Ask GhanaPathFinder</p>
-          <p className="truncate text-[11px] text-muted-foreground">
-            Ask follow-up questions, or attach a PDF or image for analysis.
-          </p>
+          <p className="text-sm font-semibold text-foreground">{title}</p>
+          <p className="truncate text-[11px] text-muted-foreground">{description}</p>
         </div>
         {messages.length > 0 && (
           <button
@@ -379,7 +406,7 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
         <PromptInput
           className="w-full [&_[data-slot=input-group]]:flex-col [&_[data-slot=input-group]]:items-stretch [&_[data-slot=input-group]]:gap-3 [&_[data-slot=input-group]]:rounded-[24px] [&_[data-slot=input-group]]:border-border/80 [&_[data-slot=input-group]]:bg-card [&_[data-slot=input-group]]:p-3 [&_[data-slot=input-group]]:shadow-sm [&_[data-slot=input-group]]:transition-colors [&_[data-slot=input-group]]:focus-within:border-ghana-gold/60 [&_[data-slot=input-group]]:focus-within:ring-2 [&_[data-slot=input-group]]:focus-within:ring-ghana-gold/15"
           accept="application/pdf,image/png,image/jpeg,image/webp"
-          maxFiles={1}
+          maxFiles={mode === "personal-tutor" ? 3 : 1}
           maxFileSize={MAX_ATTACHMENT_BYTES}
           onError={(attachmentError) => setError(attachmentError.message)}
           onSubmit={async (message, event) => {
@@ -448,7 +475,7 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
                 <ImagePlus className="size-4" />
                 <span className="hidden text-xs sm:inline">{imageMode ? "Chat mode" : "Create image"}</span>
               </PromptInputButton>
-              <AskAttachmentControls disabled={isLoading || imageMode} />
+              <AskAttachmentControls disabled={isLoading || imageMode} tutor={mode === "personal-tutor"} />
             </div>
             <PromptInputSubmit
               status={status}
@@ -463,7 +490,9 @@ const AskChat = ({ initialMessages, contextText, suggestions, onClear }: AskChat
         <p className="mt-2 px-1 text-[10px] leading-relaxed text-muted-foreground">
           {imageMode
             ? "GhanaPathFinder prepares your prompt for an external image creator. No paid image-generation API is used by this chatbot."
-            : "Upload one PDF or image at a time, up to 2 MB. File contents are not saved in chat history."}
+            : mode === "personal-tutor"
+              ? "Attach up to 3 PDF or image sources with 2 MB total. Source files stay in this active chat only and must be reattached after a reload."
+              : "Upload one PDF or image at a time, up to 2 MB. File contents are not saved in chat history."}
         </p>
       </div>
     </div>
@@ -474,6 +503,8 @@ export interface AskPanelProps {
   query: string;
   items: AskContextItem[];
   suggestions?: string[];
+  mode?: AskMode;
+  sourceFiles?: FileUIPart[];
 }
 
 const DEFAULT_SUGGESTIONS = [
@@ -482,13 +513,24 @@ const DEFAULT_SUGGESTIONS = [
   "Any scholarships that fit me?",
 ];
 
-const AskPanel = ({ query, items, suggestions }: AskPanelProps) => {
+const AskPanel = ({ query, items, suggestions, mode = "general", sourceFiles = [] }: AskPanelProps) => {
   const [session, setSession] = useState(0);
   const [initialMessages, setInitialMessages] = useState<UIMessage[] | null>(null);
+  const storageKey = mode === "general" ? STORAGE_KEY : `${STORAGE_KEY}.${mode}`;
+  const panelTitle = mode === "personal-tutor"
+    ? "Personal AI Tutor"
+    : mode === "cofounder"
+      ? "AI Co-Founder"
+      : "Ask GhanaPathFinder";
+  const panelDescription = mode === "personal-tutor"
+    ? "Ask questions grounded in your uploaded study sources."
+    : mode === "cofounder"
+      ? "Pressure-test decisions, customers, products and execution."
+      : "Ask follow-up questions, or attach a PDF or image for analysis.";
 
   useEffect(() => {
-    setInitialMessages(loadHistory());
-  }, []);
+    setInitialMessages(loadHistory(storageKey));
+  }, [storageKey]);
 
   const contextText = useMemo(() => buildAskContext(query, items), [query, items]);
 
@@ -502,13 +544,18 @@ const AskPanel = ({ query, items, suggestions }: AskPanelProps) => {
 
   return (
     <AskChat
-      key={session}
+      key={`${mode}:${session}`}
       initialMessages={session === 0 ? initialMessages : []}
       contextText={contextText}
       suggestions={suggestions ?? DEFAULT_SUGGESTIONS}
+      mode={mode}
+      sourceFiles={sourceFiles}
+      storageKey={storageKey}
+      title={panelTitle}
+      description={panelDescription}
       onClear={() => {
         try {
-          window.localStorage.removeItem(STORAGE_KEY);
+          window.localStorage.removeItem(storageKey);
         } catch {
           /* ignore */
         }

@@ -95,7 +95,7 @@ export const Route = createFileRoute("/api/admission-recommendation")({
 
         try {
           const result = await generateText({
-            model: createOpenAIResponsesModel(),
+            model: createOpenAIResponsesModel(undefined, "structured"),
             output: Output.object({ schema: admissionRecommendationOutputSchema }),
             system: `You are GhanaPathFinder's admissions decision assistant. Explain and prioritise only the programme matches and student data supplied. Never change the rule-based match category or confidence. Never invent admission requirements, cut-offs, official sources, deadlines, fees, eligibility or probabilities. Clearly distinguish official cut-offs, estimates and cases where no benchmark is available. Do not treat the AI summary as an admissions decision. Return a valid JSON object only.`,
             prompt: `STUDENT PROFILE

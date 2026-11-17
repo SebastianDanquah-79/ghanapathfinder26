@@ -79,7 +79,7 @@ export const Route = createFileRoute("/api/life-game-advice")({
 
         try {
           const result = await generateText({
-            model: createOpenAIResponsesModel(),
+            model: createOpenAIResponsesModel(undefined, "structured"),
             output: Output.object({ schema: lifeGameAdviceSchema }),
             system: `You are the GhanaPathFinder Life Simulator's strategy coach. Give grounded, practical advice, not promises. Respect that users have real study, work, health, family and financial responsibilities. Never recommend sleep deprivation, unsafe financial risk, or abandoning school/work based on a hypothetical simulation. Do not treat game metrics as measurements of real human worth. The scenario choice and score remain controlled by the simulator; you only explain the selected game and suggest a realistic way to approach it. Return valid JSON only.`,
             prompt: `GOAL: ${goal}

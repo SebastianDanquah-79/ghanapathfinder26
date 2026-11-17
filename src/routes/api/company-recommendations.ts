@@ -144,7 +144,7 @@ export const Route = createFileRoute("/api/company-recommendations")({
 
         try {
           const result = await generateText({
-            model: createOpenAIResponsesModel(),
+            model: createOpenAIResponsesModel(undefined, "structured"),
             output: Output.object({ schema: companyRecommendationsOutputSchema }),
             system: `You are GhanaPathFinder's company and early-career opportunity adviser. Match a learner's programme and career goal to the supplied company directory and internship records. Select only supplied IDs and names. Never claim a company is hiring unless a current internship/job record supplied here confirms it. Career-page links are routes to investigate, not proof of a vacancy. Internship providers marked needsReview are unverified directory leads, not confirmed placements. Be practical and Ghana/Africa-aware. Return valid JSON only.`,
             prompt: `CAREER GOAL: ${career || "Not specified"}
