@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { checkApiRateLimit, rateLimitResponse, readJsonBody } from "@/lib/api-rate-limit";
 
 type DbError = { code?: string; message: string };
@@ -9,7 +10,7 @@ type AdminClient = {
       error: DbError | null;
     }>;
   };
-  from(table: string): any;
+  from(table: string): ReturnType<SupabaseClient["from"]>;
 };
 
 const MAX_BODY_BYTES = 320_000;
