@@ -121,7 +121,6 @@
   },
   "version": "0.0.0",
   "overrides": {
-    "entities": "4.5.0",
     "remend": "1.4.0"
   },
   "pnpm": {
