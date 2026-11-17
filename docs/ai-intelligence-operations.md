@@ -30,6 +30,17 @@ Set:
 
 Use model IDs enabled for the OpenAI project. The current AI reliability Preview branch is configured for `gpt-5.4-mini` on chat and structured tasks to reduce pressure on the larger model's token-per-minute quota. Confirm a model is enabled for the API organisation before changing it. Keep Preview deployments limited to trusted repository branches because server-side API credentials are available to that environment.
 
+### DeepSeek
+
+Set:
+
+- `AI_PROVIDER=deepseek`
+- `DEEPSEEK_API_KEY`
+- Optionally `DEEPSEEK_MODEL`
+- Optionally `DEEPSEEK_MODEL_FAST`, `DEEPSEEK_MODEL_CHAT`, `DEEPSEEK_MODEL_REASONING` and `DEEPSEEK_MODEL_STRUCTURED`
+
+The default model is `deepseek-flash`, which uses DeepSeek's OpenAI-compatible Responses API at `https://api.deepseek.com`. Confirm the DeepSeek API account has an active balance; a configured key alone does not prove that inference is funded.
+
 ### Vercel AI Gateway
 
 Set:
@@ -43,7 +54,7 @@ Set:
 
 Model IDs must use the Gateway's exact `provider/model` format. Vercel deployments can authenticate through Vercel OIDC; external/local environments should use a Gateway API key stored as a secret.
 
-**Provider-account prerequisite:** the configured model provider must have active API access and a remaining credit balance. An OpenAI response such as "You have no credits remaining" is surfaced as a distinct `credits_exhausted` state, not mislabeled as a temporary rate limit. Vercel AI Gateway may separately require account setup before it accepts model requests; its "valid credit card on file" response is surfaced as `billing_setup_required`. These are provider-account conditions, not code-build failures. The project owner/administrator must resolve the relevant account status.
+**Provider-account prerequisite:** the configured model provider must have active API access and a remaining credit balance. An OpenAI response such as "You have no credits remaining" or a DeepSeek "Insufficient Balance" response is surfaced as a distinct `credits_exhausted` state, not mislabeled as a temporary rate limit. Vercel AI Gateway may separately require account setup before it accepts model requests; its "valid credit card on file" response is surfaced as `billing_setup_required`. These are provider-account conditions, not code-build failures. The project owner/administrator must resolve the relevant account status.
 
 ## Global knowledge ingestion
 
