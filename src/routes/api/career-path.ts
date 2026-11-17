@@ -335,6 +335,7 @@ export const Route = createFileRoute("/api/career-path")({
           deterministicFallback = buildDeterministicCareerPath(dreamJob, profile, evidence, sources);
 
           const result = await generateText({
+            maxRetries: 0,
             model: createOpenAIResponsesModel(undefined, "structured"),
             output: Output.object({ schema: careerPathOutputSchema }),
             system: `You are GhanaPathFinder's evidence-aware career progression adviser.
