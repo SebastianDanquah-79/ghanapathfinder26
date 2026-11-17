@@ -26,7 +26,7 @@ import {
   loadLocalAI,
   streamLocalAIResponse,
   unloadLocalAI,
-} from "@/lib/ai/local-webllm.client";
+} from "@/lib/ai/local-webllm";
 
 const STORAGE_KEY = "gpf.ask.history.v1";
 const MAX_STORED = 40;
