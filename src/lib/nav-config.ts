@@ -89,6 +89,7 @@ export const navSections: NavSection[] = [
     href: "/build",
     items: [
       { label: "Build your startup", href: "/build", desc: "Resources for starting and growing a business" },
+      { label: "AI Co-Founder", href: "/ai-cofounder", desc: "Challenge startup ideas, product strategy and execution" },
       { label: "Startup directory", href: "/startups", desc: "Explore African startups" },
       { label: "Founder opportunities", href: "/opportunities", desc: "Find grants, accelerators and support" },
       { label: "Hire from Africa", href: "/hire-from-africa", desc: "Explore African talent and hiring" },
@@ -124,6 +125,7 @@ export const navSections: NavSection[] = [
     href: "/ask-africa",
     items: [
       { label: "AI study coach", href: "/ask-africa", desc: "Explain topics, practise questions, plan revision and explore pathways" },
+      { label: "Personal AI Tutor", href: "/personal-tutor", desc: "Study directly from your lecture slides and notes" },
       { label: "My Growth OS", href: "/growth", desc: "Track the journey from school to work" },
       { label: "WAEC result scanner", href: "/waec-scan", desc: "Scan, review and save WASSCE grades" },
       { label: "My Path", href: "/my-path", desc: "Turn study and career goals into practical steps" },
@@ -151,6 +153,7 @@ const portalNavSections: Record<string, NavSection[]> = {
   student: [
     { id: "study", label: "Study", icon: GraduationCap, href: "/admission-match", items: [
       { label: "Admission matches", href: "/admission-match" },
+      { label: "Personal AI Tutor", href: "/personal-tutor" },
       { label: "University search", href: "/search?kind=university" },
       { label: "Programmes", href: "/programmes/" },
       { label: "Scholarships", href: "/scholarships/" },
@@ -191,6 +194,7 @@ const portalNavSections: Record<string, NavSection[]> = {
   startup_founder: [
     { id: "startup", label: "Startup", icon: Rocket, href: "/build", items: [
       { label: "Build your startup", href: "/build" },
+      { label: "AI Co-Founder", href: "/ai-cofounder" },
       { label: "Startup directory", href: "/startups" },
       { label: "Founder opportunities", href: "/opportunities" },
       { label: "Founder community", href: "/community" },
