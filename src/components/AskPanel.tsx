@@ -147,11 +147,13 @@ const AskChat = ({ initialMessages, contextText, suggestions, mode, storageKey, 
       console.error("GhanaPathFinder chat request failed", chatError);
       const message = chatError instanceof Error ? chatError.message : "";
       setError(
-        /project owner or administrator|provider account setup|valid credit card on file/i.test(message)
-          ? "GhanaPathFinder's AI provider needs setup by the project owner or administrator. Your conversation is preserved."
-          : /rate limit|capacity|too many requests/i.test(message)
-            ? "GhanaPathFinder AI is temporarily at capacity. Your conversation is preserved; please wait a moment and try again."
-            : "I couldn't complete that reply. Your previous messages are preserved. Check your connection and try again.",
+        /no credits remaining|insufficient_quota|credits_exhausted|provider account has no api credits/i.test(message)
+          ? "GhanaPathFinder AI is unavailable because its provider account has no API credits remaining. Your conversation is preserved. Please contact the project administrator."
+          : /project owner or administrator|provider account setup|valid credit card on file|billing_setup_required/i.test(message)
+            ? "GhanaPathFinder's AI provider needs setup by the project owner or administrator. Your conversation is preserved."
+            : /rate limit|capacity|too many requests|tokens per min/i.test(message)
+              ? "GhanaPathFinder AI is temporarily at capacity. Your conversation is preserved; please wait a moment and try again."
+              : "I couldn't complete that reply. Your previous messages are preserved. Check your connection and try again.",
       );
     },
   });
