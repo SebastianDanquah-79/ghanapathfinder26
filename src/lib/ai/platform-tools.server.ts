@@ -204,7 +204,7 @@ export function createPlatformTools() {
       inputSchema: querySchema,
       execute: async ({ query }) => runPublicSearch(
         "opportunities",
-        "id,title,opportunity_type,company_name,organisation,country_code,country,location,city,remote,is_remote,employment_type,description,requirements,eligibility,skills,skills_required,application_url,apply_url,source_name,source_url,posted_at,deadline,deadline_date,status,is_active,published,verified,last_verified_at",
+        "id,title,opportunity_type,company_name,organisation,country_code,country,location,remote,is_remote,employment_type,description,requirements,eligibility,skills,skills_required,application_url,apply_url,source_name,source_url,posted_at,deadline,deadline_date,status,is_active,published,verified,last_verified_at",
         ["title", "description", "company_name"],
         query,
         8,
