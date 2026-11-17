@@ -52,4 +52,32 @@ describe("getAIErrorDetails", () => {
     expect(result.code).toBe("timeout");
     expect(result.status).toBe(504);
   });
+  it("routes legacy OpenAI configuration to Groq", async () => {
+    const previous = process.env["AI_PROVIDER"];
+    process.env["AI_PROVIDER"] = "openai";
+    try {
+      const { getAIProvider } = await import("./openai.server");
+      expect(getAIProvider()).toBe("groq");
+    } finally {
+      if (previous === undefined) delete process.env["AI_PROVIDER"];
+      else process.env["AI_PROVIDER"] = previous;
+    }
+  });
+
+  it("uses the configured Groq model for structured generation", async () => {
+    const previousProvider = process.env["AI_PROVIDER"];
+    const previousModel = process.env["GROQ_MODEL_STRUCTURED"];
+    process.env["AI_PROVIDER"] = "groq";
+    process.env["GROQ_MODEL_STRUCTURED"] = "openai/gpt-oss-20b";
+    try {
+      const { getGroqModelName } = await import("./openai.server");
+      expect(getGroqModelName("structured")).toBe("openai/gpt-oss-20b");
+    } finally {
+      if (previousProvider === undefined) delete process.env["AI_PROVIDER"];
+      else process.env["AI_PROVIDER"] = previousProvider;
+      if (previousModel === undefined) delete process.env["GROQ_MODEL_STRUCTURED"];
+      else process.env["GROQ_MODEL_STRUCTURED"] = previousModel;
+    }
+  });
+
 });
