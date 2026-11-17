@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from "react";
 import { Link } from "@tanstack/react-router";
 import type { FileUIPart } from "ai";
 import type { SupabaseClient } from "@supabase/supabase-js";
@@ -229,7 +229,7 @@ export default function PersonalTutorPage() {
     };
   }, [selectedSourceIds, sources]);
 
-  const createNotebook = async (event: React.FormEvent<HTMLFormElement>) => {
+  const createNotebook = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!userId) return;
     const title = notebookTitle.trim() || "New study notebook";
@@ -259,7 +259,7 @@ export default function PersonalTutorPage() {
     }
   };
 
-  const uploadSources = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const uploadSources = async (event: ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.currentTarget.files ?? []);
     event.currentTarget.value = "";
     if (files.length === 0 || !userId || !selectedNotebookId) return;
