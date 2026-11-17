@@ -202,6 +202,11 @@ const AskChat = ({ initialMessages, contextText, suggestions, mode, storageKey, 
   const isLoading = status === "submitted" || status === "streaming" || localAiLoading || localGenerating;
 
   const enableOnDeviceAI = useCallback(async () => {
+    const confirmed = window.confirm(
+      "Enable on-device AI? This downloads a large language model once, may use around 1 GB of GPU memory, and requires a compatible WebGPU browser and an internet connection for the download. Prompts are then processed on this device, not sent to a cloud AI provider. Continue?",
+    );
+    if (!confirmed) return;
+
     setLocalAiError(null);
     setError(null);
     setLocalAiLoading(true);
