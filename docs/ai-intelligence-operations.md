@@ -11,7 +11,7 @@ The application uses a central server-side model selector in `src/lib/openai.ser
 - `/api/career-path` generates a staged path from a student's current position and live catalogue evidence.
 - Admission, scholarship, company, life-game and WASSCE scanning endpoints use the same model selector.
 - Supabase PostgreSQL/pgvector stores curated reference documents for hybrid keyword and semantic retrieval.
-- The admin-only `knowledge-ingest` Supabase Edge Function chunks approved material and generates embeddings.
+- The authenticated `/api/knowledge-ingest` Vercel route verifies administrator access, chunks approved material and generates embeddings. A separately deployed Supabase Edge Function remains available for controlled integrations.
 
 The model is not fine-tuned by adding documents. The knowledge library is a retrieval system: source material is stored, embedded and retrieved at query time.
 
@@ -28,7 +28,7 @@ Set:
 - Optionally `OPENAI_MODEL`
 - Optionally `OPENAI_MODEL_FAST`, `OPENAI_MODEL_CHAT`, `OPENAI_MODEL_REASONING` and `OPENAI_MODEL_STRUCTURED`
 
-Use model IDs enabled for the OpenAI project. Do not copy production credentials into Preview environments.
+Use model IDs enabled for the OpenAI project. The current AI reliability Preview branch is configured for `gpt-5.4-mini` on chat and structured tasks to reduce pressure on the larger model's token-per-minute quota. Confirm a model is enabled for the API organisation before changing it. Keep Preview deployments limited to trusted repository branches because server-side API credentials are available to that environment.
 
 ### Vercel AI Gateway
 
