@@ -102,7 +102,7 @@ export function getAIConfigurationDiagnostics(
 
 export type AIErrorDetails = {
   status: 429 | 502 | 503 | 504;
-  code: "rate_limited" | "configuration_error" | "timeout" | "provider_error";
+  code: "rate_limited" | "configuration_error" | "billing_setup_required" | "timeout" | "provider_error";
   message: string;
   retryAfterSeconds?: number;
 };
@@ -149,6 +149,18 @@ export function getAIErrorDetails(error: unknown): AIErrorDetails {
       code: "rate_limited",
       message: "GhanaPathFinder AI is temporarily at capacity. Your conversation is saved; please wait before retrying.",
       retryAfterSeconds: parseRetryAfter(rawMessage) ?? 60,
+    };
+  }
+
+  if (
+    message.includes("requires a valid credit card on file") ||
+    message.includes("valid credit card on file") ||
+    message.includes("unlock your free credits")
+  ) {
+    return {
+      status: 503,
+      code: "billing_setup_required",
+      message: "GhanaPathFinder's AI provider needs setup by the project owner or administrator. Please ask them to complete the provider account setup, then try again.",
     };
   }
 
