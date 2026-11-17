@@ -11,6 +11,76 @@ function readEnv(name: string): string | undefined {
   return value || undefined;
 }
 
+function readProviderErrorMessage(response: Response): Promise<string> {
+  return response.clone().json().then((payload: unknown) => {
+    if (!payload || typeof payload !== "object") return "";
+    const root = payload as Record<string, unknown>;
+    const error = root["error"];
+    if (typeof error === "string") return error;
+    if (error && typeof error === "object" && "message" in error) {
+      const message = (error as { message?: unknown }).message;
+      return typeof message === "string" ? message : "";
+    }
+    return typeof root["message"] === "string" ? root["message"] : "";
+  }).catch(() => "");
+}
+
+function parseRetryAfterHeader(value: string | null): number | undefined {
+  if (!value) return undefined;
+  const seconds = Number(value);
+  if (Number.isFinite(seconds) && seconds >= 0) return seconds;
+  const date = Date.parse(value);
+  return Number.isNaN(date) ? undefined : Math.max(0, (date - Date.now()) / 1000);
+}
+
+function waitForRetry(milliseconds: number, signal: AbortSignal): Promise<void> {
+  if (signal.aborted) {
+    return Promise.reject(signal.reason ?? new DOMException("The request was aborted.", "AbortError"));
+  }
+
+  return new Promise((resolve, reject) => {
+    const finish = () => {
+      signal.removeEventListener("abort", abort);
+      resolve();
+    };
+    const timer = setTimeout(finish, milliseconds);
+    const abort = () => {
+      clearTimeout(timer);
+      signal.removeEventListener("abort", abort);
+      reject(signal.reason ?? new DOMException("The request was aborted.", "AbortError"));
+    };
+    signal.addEventListener("abort", abort, { once: true });
+  });
+}
+
+/**
+ * Groq returns a precise reset estimate with 429 responses. Wait for short
+ * TPM/RPM windows and retry twice instead of returning an immediate stream
+ * error. Long daily quota resets are surfaced to the caller without sleeping.
+ */
+async function groqFetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
+  const requestTemplate = new Request(input, init);
+  const signal = requestTemplate.signal;
+  const perform = () => fetch(requestTemplate.clone());
+
+  let response = await perform();
+  for (let attempt = 0; response.status === 429 && attempt < 2; attempt += 1) {
+    const providerMessage = await readProviderErrorMessage(response);
+    const retryAfter = parseRetryAfterHeader(response.headers.get("retry-after"))
+      ?? parseRetryAfter(providerMessage);
+
+    // Do not hold a streaming request open for daily quota resets or an
+    // unknown limit. The caller receives the provider's original 429 instead.
+    if (retryAfter === undefined || retryAfter > 30) break;
+
+    const delayMs = Math.max(250, Math.ceil(retryAfter * 1000) + 250);
+    await waitForRetry(delayMs, signal);
+    response = await perform();
+  }
+
+  return response;
+}
+
 /**
  * Generation now defaults to Groq. The legacy AI_PROVIDER=openai value is
  * deliberately treated as Groq so an old Vercel variable cannot silently
@@ -74,6 +144,7 @@ export function createOpenAIResponsesModel(
     apiKey,
     baseURL: GROQ_BASE_URL,
     name: "groq",
+    fetch: groqFetch,
   }).responses(modelName);
 }
 
@@ -131,12 +202,12 @@ function readMessage(error: unknown): string {
 }
 
 function parseRetryAfter(message: string): number | undefined {
-  const match = message.match(/try again in\s+(\d+)\s*(seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h)/i);
+  const match = message.match(/try again in\s+(\d+(?:\.\d+)?)\s*(seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h)/i);
   if (!match) return undefined;
   const amount = Number(match[1]);
   const unit = match[2]?.toLowerCase() ?? "s";
   const multiplier = unit.startsWith("h") ? 3600 : unit.startsWith("m") ? 60 : 1;
-  return Math.max(1, Math.min(86_400, amount * multiplier));
+  return Math.max(1, Math.min(86_400, Math.ceil(amount * multiplier)));
 }
 
 export function getAIErrorDetails(error: unknown): AIErrorDetails {
@@ -167,11 +238,17 @@ export function getAIErrorDetails(error: unknown): AIErrorDetails {
     message.includes("too many requests") ||
     message.includes("tokens per min")
   ) {
+    const retryAfterSeconds = parseRetryAfter(rawMessage) ?? 15;
+    const isDailyLimit = message.includes("per day") ||
+      message.includes("(rpd)") ||
+      message.includes("(tpd)");
     return {
       status: 429,
       code: "rate_limited",
-      message: "GhanaPathFinder AI is temporarily at capacity. Your conversation is saved; please wait before retrying.",
-      retryAfterSeconds: parseRetryAfter(rawMessage) ?? 60,
+      message: isDailyLimit
+        ? `Groq's daily token or request allowance has been reached. Your conversation is saved. The provider reset estimate is about ${retryAfterSeconds} seconds; if it is longer, try again after the displayed reset time.`
+        : `Groq's per-minute token allowance is temporarily full. Your conversation is saved. GhanaPathFinder automatically waits for short provider reset windows and retries. Please try again in about ${retryAfterSeconds} seconds if this attempt still fails.`,
+      retryAfterSeconds,
     };
   }
 
