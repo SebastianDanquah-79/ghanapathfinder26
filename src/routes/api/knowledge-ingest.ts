@@ -1,4 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { createOpenAI } from "@ai-sdk/openai";
+import { embedMany } from "ai";
 import { checkApiRateLimit, rateLimitResponse, readJsonBody } from "@/lib/api-rate-limit";
 
 type DbError = { code?: string; message: string };
@@ -149,70 +151,41 @@ function parseDocuments(body: unknown): KnowledgeDocumentInput[] {
 
 async function createEmbeddings(chunks: string[]): Promise<number[][]> {
   const useGateway = process.env["AI_PROVIDER"]?.trim().toLowerCase() === "vercel-gateway";
-  const apiKey = useGateway
-    ? process.env["AI_GATEWAY_API_KEY"]?.trim() || process.env["VERCEL_OIDC_TOKEN"]?.trim()
-    : process.env["OPENAI_API_KEY"]?.trim();
+  let model: string | ReturnType<ReturnType<typeof createOpenAI>["embeddingModel"]>;
 
-  if (!apiKey) {
-    throw new Error(
-      useGateway
-        ? "The AI Gateway credential is not available on this deployment."
-        : "The OpenAI embedding credential is not configured on this deployment.",
-    );
+  if (useGateway) {
+    const gatewayModel = process.env["AI_GATEWAY_MODEL_EMBEDDING"]?.trim() || "openai/text-embedding-3-small";
+    if (!gatewayModel.includes("/")) {
+      throw new Error("Configure AI_GATEWAY_MODEL_EMBEDDING with a provider/model identifier.");
+    }
+    // A plain provider/model string uses AI Gateway's Vercel OIDC
+    // authentication in deployed Vercel functions; no OIDC token is read
+    // from process.env or manually forwarded by application code.
+    model = gatewayModel;
+  } else {
+    const apiKey = process.env["OPENAI_API_KEY"]?.trim();
+    if (!apiKey) {
+      throw new Error("The OpenAI embedding credential is not configured on this deployment.");
+    }
+    const modelName = process.env["OPENAI_EMBEDDING_MODEL"]?.trim() || "text-embedding-3-small";
+    model = createOpenAI({ apiKey }).embeddingModel(modelName);
   }
 
-  const model = useGateway
-    ? process.env["AI_GATEWAY_MODEL_EMBEDDING"] || "openai/text-embedding-3-small"
-    : process.env["OPENAI_EMBEDDING_MODEL"] || "text-embedding-3-small";
-  const endpoint = useGateway
-    ? "https://ai-gateway.vercel.sh/v1/embeddings"
-    : "https://api.openai.com/v1/embeddings";
-
-  const response = await fetch(endpoint, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model,
-      input: chunks,
-      dimensions: EMBEDDING_DIMENSIONS,
-      encoding_format: "float",
-    }),
-    signal: AbortSignal.timeout(30_000),
+  const { embeddings } = await embedMany({
+    model,
+    values: chunks,
+    maxRetries: 0,
+    maxParallelCalls: 2,
+    abortSignal: AbortSignal.timeout(30_000),
   });
 
-  if (!response.ok) {
-    const message = await response.text().catch(() => "");
-    console.error("Knowledge embedding provider failed", {
-      status: response.status,
-      message: message.slice(0, 300),
-    });
-    if (response.status === 429) throw new Error("Embedding service is temporarily rate-limited. Please retry later.");
-    throw new Error("The embedding provider could not process this source text.");
+  if (embeddings.length !== chunks.length || embeddings.some(
+    (vector) => !Array.isArray(vector) || vector.length !== EMBEDDING_DIMENSIONS ||
+      vector.some((value) => !Number.isFinite(value)),
+  )) {
+    throw new Error("The embedding provider returned an incomplete or invalid vector set.");
   }
-
-  const payload = await response.json() as {
-    data?: Array<{ index: number; embedding: number[] }>;
-  };
-  const vectors = payload.data ?? [];
-  if (vectors.length !== chunks.length) {
-    throw new Error("The embedding provider returned an incomplete result.");
-  }
-
-  const ordered: number[][] = new Array(chunks.length);
-  for (const vector of vectors) {
-    if (!Number.isInteger(vector.index) || vector.index < 0 || vector.index >= chunks.length ||
-        !Array.isArray(vector.embedding) || vector.embedding.length !== EMBEDDING_DIMENSIONS) {
-      throw new Error("The embedding provider returned an invalid vector.");
-    }
-    ordered[vector.index] = vector.embedding;
-  }
-  if (ordered.some((vector) => !Array.isArray(vector))) {
-    throw new Error("The embedding provider returned an incomplete vector set.");
-  }
-  return ordered;
+  return embeddings;
 }
 
 export const Route = createFileRoute("/api/knowledge-ingest")({
