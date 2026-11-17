@@ -60,7 +60,7 @@ export async function searchGlobalKnowledge(
     const client = supabaseAdmin as unknown as SupabaseClient;
     const { data, error } = await client.rpc("search_ai_knowledge" as never, {
       p_query_text: normalizedQuery,
-      p_query_embedding: JSON.stringify(embedding),
+      p_query_embedding: embedding,
       p_match_count: Math.min(Math.max(options.limit ?? 8, 1), 12),
       p_country_filter: options.countryCode?.toUpperCase() ?? null,
       p_category_filter: options.category ?? null,
