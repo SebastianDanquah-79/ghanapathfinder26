@@ -2,6 +2,22 @@ import { tool } from "ai";
 import { z } from "zod";
 import { searchGlobalKnowledge } from "./knowledge.server";
 
+type QueryResult = {
+  data: Array<Record<string, unknown>> | null;
+  error: { code?: string; message: string } | null;
+};
+
+type SearchBuilder = {
+  select(columns: string): SearchBuilder;
+  ilike(column: string, pattern: string): SearchBuilder;
+  limit(count: number): Promise<QueryResult>;
+  in(column: string, values: string[]): Promise<QueryResult>;
+};
+
+type PublicAdminClient = {
+  from(table: string): SearchBuilder;
+};
+
 const querySchema = z.object({
   query: z.string().trim().min(2).max(120).describe("The topic, institution, programme, skill, scholarship, employer or opportunity to search for."),
 });
@@ -15,14 +31,14 @@ const globalKnowledgeSchema = z.object({
 function safeFilterTerm(input: string): string {
   return input
     .replace(/[%,.*_()]/g, " ")
-    .replace(/\s+/g, " ")
+    .replace(/\\s+/g, " ")
     .trim()
     .slice(0, 100);
 }
 
-async function getAdminClient() {
+async function getAdminClient(): Promise<PublicAdminClient> {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  return supabaseAdmin;
+  return supabaseAdmin as unknown as PublicAdminClient;
 }
 
 async function runPublicSearch(
@@ -31,7 +47,6 @@ async function runPublicSearch(
   columnTerms: string[],
   query: string,
   limit = 8,
-  filters?: (builder: any) => any,
 ) {
   const term = safeFilterTerm(query);
   if (term.length < 2) return { records: [], note: "Provide a more specific search phrase." };
@@ -40,11 +55,9 @@ async function runPublicSearch(
     const admin = await getAdminClient();
     const pattern = `%${term}%`;
     const results = await Promise.all(
-      columnTerms.slice(0, 3).map(async (column) => {
-        let builder = admin.from(table).select(select).ilike(column, pattern).limit(limit);
-        if (filters) builder = filters(builder);
-        return builder;
-      }),
+      columnTerms.slice(0, 3).map((column) =>
+        admin.from(table).select(select).ilike(column, pattern).limit(limit),
+      ),
     );
     const failed = results.find((result) => result.error);
     if (failed?.error) {
@@ -60,7 +73,7 @@ async function runPublicSearch(
     for (const result of results) {
       for (const row of result.data ?? []) {
         const key = String(row.id ?? JSON.stringify(row));
-        if (!byId.has(key)) byId.set(key, row as Record<string, unknown>);
+        if (!byId.has(key)) byId.set(key, row);
       }
     }
     return { records: Array.from(byId.values()).slice(0, limit), note: undefined };
@@ -78,7 +91,9 @@ async function searchProgrammes(query: string) {
     query,
     8,
   );
-  const programmeIds = result.records.map((row) => row.university_id).filter((id): id is string => typeof id === "string");
+  const programmeIds = result.records
+    .map((row) => row["university_id"])
+    .filter((id): id is string => typeof id === "string");
   if (!programmeIds.length) return result;
 
   try {
@@ -88,12 +103,14 @@ async function searchProgrammes(query: string) {
       .select("id,name,short_name,city,region,country,website_url,admissions_url,source_url,verification_status,verified,last_verified_at")
       .in("id", programmeIds.slice(0, 20));
     if (error) return result;
-    const universities = new Map((data ?? []).map((row) => [String(row.id), row]));
+    const universities = new Map(
+      (data ?? []).map((row) => [String(row["id"]), row]),
+    );
     return {
       ...result,
       records: result.records.map((row) => ({
         ...row,
-        institution: universities.get(String(row.university_id)) ?? null,
+        institution: universities.get(String(row["university_id"])) ?? null,
       })),
     };
   } catch {
@@ -144,7 +161,7 @@ export function createPlatformTools() {
       ),
     }),
     searchOpportunities: tool({
-      description: "Search current and historical job, internship, training and other opportunity records. Always inspect is_active, published, status, verified and deadline fields before saying an opportunity is currently open.",
+      description: "Search job, internship, training and other opportunity records. Always inspect is_active, published, status, verified and deadline fields before saying an opportunity is currently open.",
       inputSchema: querySchema,
       execute: async ({ query }) => runPublicSearch(
         "opportunities",
