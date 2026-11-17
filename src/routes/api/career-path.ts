@@ -175,7 +175,7 @@ function buildDeterministicCareerPath(
     .map((row) => row["name"])
     .filter((value): value is string => typeof value === "string" && value.trim().length > 0)
     .slice(0, 5);
-  const existingSkills = profile.skills.split(/[,;\\n]+/).map((item) => item.trim()).filter(Boolean);
+  const existingSkills = profile.skills.split(/[,;\\s]+/).map((item) => item.trim()).filter(Boolean);
   const suggestedSkills = evidenceSkills.length ? evidenceSkills : existingSkills.slice(0, 5);
 
   return {
