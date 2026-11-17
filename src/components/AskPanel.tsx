@@ -134,6 +134,7 @@ const AskAttachmentControls = ({ disabled, tutor }: { disabled: boolean; tutor?:
 const AskChat = ({ initialMessages, contextText, suggestions, mode, storageKey, title, description, sourceFiles, onClear }: AskChatProps) => {
   const [input, setInput] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [canRetry, setCanRetry] = useState(false);
   const [imageMode, setImageMode] = useState(false);
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
   const [copiedPromptId, setCopiedPromptId] = useState<string | null>(null);
@@ -141,19 +142,37 @@ const AskChat = ({ initialMessages, contextText, suggestions, mode, storageKey, 
   contextRef.current = contextText;
 
   const transport = useMemo(() => new DefaultChatTransport({ api: "/api/chat" }), []);
+  const showChatError = useCallback((cause: unknown) => {
+    const message = cause instanceof Error ? cause.message : String(cause ?? "");
+    if (/credits_exhausted|no credits remaining|insufficient_quota|provider quota has been exhausted/i.test(message)) {
+      setCanRetry(false);
+      setError("AI replies are unavailable because GhanaPathFinder's AI provider quota has been exhausted. Your previous messages are saved. AI generation can resume only when the platform owner restores an authorised provider quota.");
+      return;
+    }
+    if (/project owner or administrator|provider account setup|valid credit card on file|configuration_error/i.test(message)) {
+      setCanRetry(false);
+      setError("GhanaPathFinder's AI provider is not configured to complete this request. Your previous messages are saved.");
+      return;
+    }
+    if (/rate limit|capacity|too many requests|temporarily at capacity/i.test(message)) {
+      setCanRetry(true);
+      setError("GhanaPathFinder AI is temporarily rate-limited. Your previous messages are saved; wait briefly, then retry.");
+      return;
+    }
+    if (/timeout|timed out|aborterror|network|fetch/i.test(message)) {
+      setCanRetry(true);
+      setError("The request could not finish. Your previous messages are saved; check your connection and retry.");
+      return;
+    }
+    setCanRetry(false);
+    setError("I couldn't complete that reply. Your previous messages are preserved. Try again later.");
+  }, []);
+
   const { messages, sendMessage, status, stop, regenerate, setMessages } = useChat({
     messages: initialMessages,
     transport,
     onError: (chatError) => {
-      console.error("GhanaPathFinder chat request failed", chatError);
-      const message = chatError instanceof Error ? chatError.message : "";
-      setError(
-        /project owner or administrator|provider account setup|valid credit card on file/i.test(message)
-          ? "GhanaPathFinder's AI provider needs setup by the project owner or administrator. Your conversation is preserved."
-          : /rate limit|capacity|too many requests/i.test(message)
-            ? "GhanaPathFinder AI is temporarily at capacity. Your conversation is preserved; please wait a moment and try again."
-            : "I couldn't complete that reply. Your previous messages are preserved. Check your connection and try again.",
-      );
+      showChatError(chatError);
     },
   });
 
@@ -187,6 +206,7 @@ const AskChat = ({ initialMessages, contextText, suggestions, mode, storageKey, 
       }
 
       setError(null);
+      setCanRetry(false);
       setInput("");
 
       // Keep only the latest source pack in live history. The notebook library
@@ -211,12 +231,11 @@ const AskChat = ({ initialMessages, contextText, suggestions, mode, storageKey, 
           { body: { context: contextRef.current, mode } },
         );
       } catch (sendError) {
-        console.error("GhanaPathFinder could not send the chat message", sendError);
-        setError("Your message could not be sent. Check your connection and try again.");
+        showChatError(sendError);
         throw sendError;
       }
     },
-    [isLoading, sendMessage, setMessages, mode, sourceFiles],
+    [isLoading, sendMessage, setMessages, mode, sourceFiles, showChatError],
   );
 
   const createImage = useCallback(
@@ -385,17 +404,20 @@ const AskChat = ({ initialMessages, contextText, suggestions, mode, storageKey, 
           {error && (
             <div className="flex flex-wrap items-center gap-2 text-xs text-destructive" role="alert">
               <span>{error}</span>
-              <button
-                type="button"
-                onClick={() => {
-                  setError(null);
-                  void regenerate();
-                }}
-                className="inline-flex items-center gap-1 rounded-md border border-border px-2 py-1 text-foreground hover:bg-muted"
-              >
-                <RotateCcw className="size-3" />
-                Retry
-              </button>
+              {canRetry && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setError(null);
+                    setCanRetry(false);
+                    void regenerate();
+                  }}
+                  className="inline-flex items-center gap-1 rounded-md border border-border px-2 py-1 text-foreground hover:bg-muted"
+                >
+                  <RotateCcw className="size-3" />
+                  Retry
+                </button>
+              )}
             </div>
           )}
         </ConversationContent>
