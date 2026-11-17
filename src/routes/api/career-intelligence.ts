@@ -113,7 +113,7 @@ function compactEvidence(evidence: ReturnType<typeof summarizeCareerEvidence>) {
       deadline_date: row["deadline_date"],
       source_url: row["source_url"],
       verified: row["verified"],
-      last_verified_at: row["last_verified"]_at,
+      last_verified_at: row["last_verified_at"],
     })),
   };
 }
