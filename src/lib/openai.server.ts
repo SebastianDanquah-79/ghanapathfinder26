@@ -1,30 +1,65 @@
 import { createOpenAI } from "@ai-sdk/openai";
+import { gateway } from "ai";
 
 export type AIModelPurpose = "fast" | "chat" | "reasoning" | "structured";
 
-const DEFAULT_MODEL = "gpt-6-luna";
+const DEFAULT_OPENAI_MODEL = "gpt-6-luna";
+
+function readEnv(name: string): string | undefined {
+  const value = process.env[name]?.trim();
+  return value || undefined;
+}
+
+export function getAIProvider(): "openai" | "vercel-gateway" {
+  return readEnv("AI_PROVIDER")?.toLowerCase() === "vercel-gateway"
+    ? "vercel-gateway"
+    : "openai";
+}
 
 export function getOpenAIModelName(purpose: AIModelPurpose = "chat"): string {
-  const shared = process.env["OPENAI_MODEL"] || DEFAULT_MODEL;
-  const configuredByPurpose: Record<AIModelPurpose, string | undefined> = {
-    fast: process.env["OPENAI_MODEL_FAST"],
-    chat: process.env["OPENAI_MODEL_CHAT"],
-    reasoning: process.env["OPENAI_MODEL_REASONING"],
-    structured: process.env["OPENAI_MODEL_STRUCTURED"],
+  const shared = readEnv("OPENAI_MODEL") || DEFAULT_OPENAI_MODEL;
+  const byPurpose: Record<AIModelPurpose, string | undefined> = {
+    fast: readEnv("OPENAI_MODEL_FAST"),
+    chat: readEnv("OPENAI_MODEL_CHAT"),
+    reasoning: readEnv("OPENAI_MODEL_REASONING"),
+    structured: readEnv("OPENAI_MODEL_STRUCTURED"),
   };
-  return configuredByPurpose[purpose] || shared;
+  return byPurpose[purpose] || shared;
+}
+
+export function getGatewayModelName(purpose: AIModelPurpose = "chat"): string {
+  const byPurpose: Record<AIModelPurpose, string | undefined> = {
+    fast: readEnv("AI_GATEWAY_MODEL_FAST"),
+    chat: readEnv("AI_GATEWAY_MODEL_CHAT"),
+    reasoning: readEnv("AI_GATEWAY_MODEL_REASONING"),
+    structured: readEnv("AI_GATEWAY_MODEL_STRUCTURED"),
+  };
+  const configured = byPurpose[purpose] || readEnv("AI_GATEWAY_MODEL");
+  if (!configured || !configured.includes("/")) {
+    throw new Error(
+      `Set AI_GATEWAY_MODEL_${purpose.toUpperCase()} or AI_GATEWAY_MODEL to a provider/model identifier before enabling Vercel AI Gateway.`,
+    );
+  }
+  return configured;
 }
 
 /**
- * The only server-side OpenAI model factory used by GhanaPathFinder.
- * Keep model selection environment-driven so task-specific models can be
- * configured without changing application code or exposing credentials.
+ * Central server-side model factory. The default remains the existing OpenAI
+ * provider for backwards compatibility. Set AI_PROVIDER=vercel-gateway and
+ * configure AI_GATEWAY_MODEL_* values to route calls through Vercel AI Gateway.
  */
 export function createOpenAIResponsesModel(
   modelOverride?: string,
   purpose: AIModelPurpose = "chat",
 ) {
-  const apiKey = process.env["OPENAI_API_KEY"];
+  if (getAIProvider() === "vercel-gateway") {
+    // Do not pass legacy plain OpenAI model names into the gateway. Gateway
+    // model IDs must include their provider prefix (provider/model).
+    const gatewayModel = getGatewayModelName(purpose);
+    return gateway(gatewayModel);
+  }
+
+  const apiKey = readEnv("OPENAI_API_KEY");
   if (!apiKey) {
     throw new Error("OPENAI_API_KEY is not configured in the Vercel project environment variables.");
   }
@@ -42,7 +77,7 @@ export type AIErrorDetails = {
 
 function readStatus(error: unknown): number | undefined {
   if (!error || typeof error !== "object") return undefined;
-  const candidate = error as { status?: unknown; statusCode?: unknown; cause?: unknown };
+  const candidate = error as { status?: unknown; statusCode?: unknown };
   const value = candidate.statusCode ?? candidate.status;
   return typeof value === "number" ? value : undefined;
 }
@@ -74,7 +109,8 @@ export function getAIErrorDetails(error: unknown): AIErrorDetails {
     status === 429 ||
     message.includes("rate limit") ||
     message.includes("rate_limit") ||
-    message.includes("too many requests")
+    message.includes("too many requests") ||
+    message.includes("tokens per min")
   ) {
     return {
       status: 429,
@@ -89,7 +125,8 @@ export function getAIErrorDetails(error: unknown): AIErrorDetails {
     message.includes("api key") ||
     message.includes("authentication") ||
     message.includes("insufficient_quota") ||
-    message.includes("billing")
+    message.includes("billing") ||
+    message.includes("not configured")
   ) {
     return {
       status: 503,
