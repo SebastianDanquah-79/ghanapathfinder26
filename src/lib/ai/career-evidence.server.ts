@@ -221,7 +221,9 @@ export async function retrieveCareerEvidence(
         ["title", "category", "provider"], terms, undefined, 8),
       searchRows(admin, "scholarships",
         "id,title,name,provider,study_level,fields,description,eligibility,academic_requirements,coverage,deadline,deadline_date,application_url,website_url,source_url,verified,last_verified_at",
-        ["title", "name", "description", "fields"], terms,
+        // "fields" is a text[] column in Supabase; ilike only supports text.
+        // Keep it in the returned record, but search its scalar text columns.
+        ["title", "name", "description", "provider"], terms,
         (builder) => builder.eq("verified", true), 6),
       searchRows(admin, "opportunities",
         "id,title,opportunity_type,company_name,country_code,country,location,description,requirements,eligibility,skills,skills_required,application_url,apply_url,source_name,source_url,posted_at,deadline,deadline_date,status,is_active,published,verified,last_verified_at",
