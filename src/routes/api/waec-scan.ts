@@ -3,7 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import { Output, generateText } from "ai";
 import { z } from "zod";
 import { checkApiRateLimit, rateLimitResponse, readJsonBody } from "@/lib/api-rate-limit";
-import { createOpenAIResponsesModel } from "@/lib/openai.server";
+import { createOpenAIResponsesModel, getAIProvider, getGatewayModelName } from "@/lib/openai.server";
 
 const MAX_DOCUMENT_BYTES = 5 * 1024 * 1024;
 const MAX_REQUEST_BYTES = 7 * 1024 * 1024;
@@ -96,8 +96,15 @@ export const Route = createFileRoute("/api/waec-scan")({
           return new Response("Choose a PDF under 5 MB or a compressed photo.", { status: 413 });
         }
 
-        if (!process.env["OPENAI_API_KEY"]) {
+        if (getAIProvider() === "openai" && !process.env["OPENAI_API_KEY"]) {
           return new Response("WASSCE scanning is not configured. The site administrator must connect the AI service.", { status: 503 });
+        }
+        if (getAIProvider() === "vercel-gateway") {
+          try {
+            getGatewayModelName("structured");
+          } catch {
+            return new Response("WASSCE scanning is not configured. The site administrator must configure the AI Gateway model.", { status: 503 });
+          }
         }
 
         try {
