@@ -3,6 +3,7 @@ type SearchRow = Record<string, unknown>;
 type SearchBuilder = {
   select(columns: string): SearchBuilder;
   ilike(column: string, pattern: string): SearchBuilder;
+  or(filters: string): SearchBuilder;
   eq(column: string, value: string | boolean): SearchBuilder;
   in(column: string, values: string[]): Promise<{ data: SearchRow[] | null; error: { code?: string; message: string } | null }>;
   limit(count: number): Promise<{ data: SearchRow[] | null; error: { code?: string; message: string } | null }>;
@@ -131,21 +132,25 @@ async function searchRows(
   admin: AdminClient,
   table: string,
   select: string,
-  column: string,
-  term: string,
+  columns: string[],
+  terms: string[],
   filters?: (builder: SearchBuilder) => SearchBuilder,
-  limit = 5,
+  limit = 8,
 ): Promise<SearchRow[]> {
-  const clean = safeTerm(term);
-  if (clean.length < 3) return [];
+  const cleanTerms = Array.from(new Set(terms.map(safeTerm))).filter((term) => term.length >= 3);
+  if (!cleanTerms.length || !columns.length) return [];
+
   try {
-    let builder = admin.from(table).select(select);
+    const clauses = columns.flatMap((column) =>
+      cleanTerms.map((term) => `${column}.ilike.%${term}%`),
+    );
+    let builder = admin.from(table).select(select).or(clauses.join(","));
     if (filters) builder = filters(builder);
-    const { data, error } = await builder.ilike(column, `%${clean}%`).limit(limit);
+
+    const { data, error } = await builder.limit(limit);
     if (error) {
       console.error("Career evidence query failed", {
         table,
-        column,
         code: error.code,
         message: error.message.slice(0, 180),
       });
@@ -153,7 +158,7 @@ async function searchRows(
     }
     return data ?? [];
   } catch {
-    console.error("Career evidence query failed", { table, column });
+    console.error("Career evidence query failed", { table });
     return [];
   }
 }
@@ -191,60 +196,46 @@ export async function retrieveCareerEvidence(
       ...tokens(profile.existingSkills).slice(0, 2),
     ].map((value) => safeTerm(value)).filter((value) => value.length >= 3))).slice(0, 7);
 
-    const queryGroups = await Promise.all(terms.map(async (term) => {
-      const [
-        programmeName,
-        programmeField,
-        careerName,
-        occupation,
-        skillName,
-        resourceTitle,
-        scholarshipTitle,
-        opportunityTitle,
-      ] = await Promise.all([
-        searchRows(admin, "programmes",
-          "id,name,field,description,qualification,qualification_level,duration,entry_requirements,admission_summary,wassce_requirements,application_url,programme_url,source_url,primary_source_url,verification_status,verified,last_verified_at,university_id,institution_id",
-          "name", term),
-        searchRows(admin, "programmes",
-          "id,name,field,description,qualification,qualification_level,duration,entry_requirements,admission_summary,wassce_requirements,application_url,programme_url,source_url,primary_source_url,verification_status,verified,last_verified_at,university_id,institution_id",
-          "field", term),
-        searchRows(admin, "programme_careers",
-          "id,career,occupation,description,licence_note,last_verified,programme_id",
-          "career", term),
-        searchRows(admin, "programme_careers",
-          "id,career,occupation,description,licence_note,last_verified,programme_id",
-          "occupation", term),
-        searchRows(admin, "skills",
-          "id,name,category,description,difficulty,prerequisites,learning_resources,projects,related_jobs,verification_status,primary_source_url,last_checked_at",
-          "name", term),
-        searchRows(admin, "learning_resources",
-          "id,provider,title,url,category,skills,level,country_code,source_url",
-          "title", term),
-        searchRows(admin, "scholarships",
-          "id,title,name,provider,study_level,fields,description,eligibility,academic_requirements,coverage,deadline,deadline_date,application_url,website_url,source_url,verified,last_verified_at",
-          "title", term,
-          (builder) => builder.eq("verified", true)),
-        searchRows(admin, "opportunities",
-          "id,title,opportunity_type,company_name,country_code,country,location,description,requirements,eligibility,skills,skills_required,application_url,apply_url,source_name,source_url,posted_at,deadline,deadline_date,status,is_active,published,verified,last_verified_at",
-          "title", term,
-          (builder) => builder.eq("is_active", true).eq("published", true).eq("verified", true)),
-      ]);
-      return {
-        programmes: [...programmeName, ...programmeField],
-        careerLinks: [...careerName, ...occupation],
-        skills: skillName,
-        learningResources: resourceTitle,
-        scholarships: scholarshipTitle,
-        opportunities: opportunityTitle,
-      };
-    }));
+    // One bounded hybrid catalogue request per table. The previous
+    // implementation issued up to 56 concurrent PostgREST calls per user;
+    // a combined OR filter retrieves the same candidate terms in 6 calls.
+    const [
+      programmes,
+      careerLinks,
+      skills,
+      learningResources,
+      scholarships,
+      opportunities,
+    ] = await Promise.all([
+      searchRows(admin, "programmes",
+        "id,name,field,description,qualification,qualification_level,duration,entry_requirements,admission_summary,wassce_requirements,application_url,programme_url,source_url,primary_source_url,verification_status,verified,last_verified_at,university_id,institution_id",
+        ["name", "field", "description"], terms, undefined, 12),
+      searchRows(admin, "programme_careers",
+        "id,career,occupation,description,licence_note,last_verified,programme_id",
+        ["career", "occupation", "description"], terms, undefined, 12),
+      searchRows(admin, "skills",
+        "id,name,category,description,difficulty,prerequisites,learning_resources,projects,related_jobs,verification_status,primary_source_url,last_checked_at",
+        ["name", "category", "description"], terms, undefined, 8),
+      searchRows(admin, "learning_resources",
+        "id,provider,title,url,category,skills,level,country_code,source_url",
+        ["title", "category", "provider"], terms, undefined, 8),
+      searchRows(admin, "scholarships",
+        "id,title,name,provider,study_level,fields,description,eligibility,academic_requirements,coverage,deadline,deadline_date,application_url,website_url,source_url,verified,last_verified_at",
+        ["title", "name", "description", "fields"], terms,
+        (builder) => builder.eq("verified", true), 6),
+      searchRows(admin, "opportunities",
+        "id,title,opportunity_type,company_name,country_code,country,location,description,requirements,eligibility,skills,skills_required,application_url,apply_url,source_name,source_url,posted_at,deadline,deadline_date,status,is_active,published,verified,last_verified_at",
+        ["title", "description", "company_name"], terms,
+        (builder) => builder.eq("is_active", true).eq("published", true).eq("verified", true), 6),
+    ]);
+    const all = (rows: SearchRow[], limit: number) => dedupe(rows, limit);
 
-    const all = (key: keyof CareerEvidence) => dedupe(
-      queryGroups.flatMap((group) => group[key]),
-      key === "programmes" ? 12 : key === "careerLinks" ? 12 : 8,
-    );
-
-    const programmes = all("programmes");
+    const programmeRows = all(programmes, 12);
+    const careerLinkRows = all(careerLinks, 12);
+    const skillRows = all(skills, 8);
+    const resourceRows = all(learningResources, 8);
+    const scholarshipRows = all(scholarships, 6);
+    const opportunityRows = all(opportunities, 6);
     const universityIds = Array.from(new Set(programmes
       .map((row) => row["university_id"])
       .filter((value): value is string => typeof value === "string"))).slice(0, 12);
@@ -267,7 +258,7 @@ export async function retrieveCareerEvidence(
 
     const universityMap = new Map((universities.data ?? []).map((row) => [String(row["id"]), row]));
     const institutionMap = new Map((institutions.data ?? []).map((row) => [String(row["id"]), row]));
-    const programmesWithInstitutions = programmes.map((row) => ({
+    const programmesWithInstitutions = programmeRows.map((row) => ({
       ...row,
       university: universityMap.get(String(row["university_id"])) ?? null,
       institution: institutionMap.get(String(row["institution_id"])) ?? null,
@@ -275,11 +266,11 @@ export async function retrieveCareerEvidence(
 
     return {
       programmes: programmesWithInstitutions,
-      careerLinks: all("careerLinks"),
-      skills: all("skills"),
-      learningResources: all("learningResources"),
-      scholarships: all("scholarships"),
-      opportunities: all("opportunities"),
+      careerLinks: careerLinkRows,
+      skills: skillRows,
+      learningResources: resourceRows,
+      scholarships: scholarshipRows,
+      opportunities: opportunityRows,
     };
   } catch {
     console.error("Career evidence retrieval is temporarily unavailable");
