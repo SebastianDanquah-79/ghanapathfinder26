@@ -4,6 +4,7 @@ import { Loader2, Database, ShieldCheck, AlertTriangle, Upload, Search as Search
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SourceManager from "@/components/admin/SourceManager";
+import KnowledgeIngestionPanel from "@/components/admin/KnowledgeIngestionPanel";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import {
@@ -266,6 +267,7 @@ const AdminData = () => {
             )}
           </section>
 
+          <KnowledgeIngestionPanel enabled={enabled} />
           <SourceManager enabled={enabled} />
         </div>
       </main>
