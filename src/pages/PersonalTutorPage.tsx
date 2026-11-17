@@ -132,6 +132,7 @@ export default function PersonalTutorPage() {
       );
     } catch (loadError) {
       console.error("Personal Tutor notebook library could not load", loadError);
+      setAuthChecked(true);
       setError(loadError instanceof Error ? loadError.message : "Your study library could not be loaded.");
     } finally {
       setLoading(false);
@@ -449,9 +450,17 @@ export default function PersonalTutorPage() {
             <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
               Your notebooks and source files are private to your GhanaPathFinder account. Sign in to create a study library that stays available when you return.
             </p>
-            <Link to="/auth" className="mt-5 inline-flex min-h-10 items-center rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground">
-              Sign in to GhanaPathFinder
-            </Link>
+            {error && <p className="mt-3 text-xs text-destructive" role="alert">{error}</p>}
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link to="/auth" className="inline-flex min-h-10 items-center rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground">
+                Sign in to GhanaPathFinder
+              </Link>
+              {error && (
+                <button type="button" onClick={() => void loadLibrary()} className="min-h-10 rounded-lg border border-border px-4 text-sm font-medium text-foreground">
+                  Retry
+                </button>
+              )}
+            </div>
           </section>
         ) : (
           <>
