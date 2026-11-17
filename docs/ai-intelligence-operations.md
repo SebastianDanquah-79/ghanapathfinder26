@@ -45,6 +45,24 @@ Model IDs must use the Gateway's exact `provider/model` format. Vercel deploymen
 
 **Account prerequisite:** the Gateway account may require billing setup before it accepts model requests. When Gateway returns the "valid credit card on file" error, the application reports that setup is required by the project owner/administrator. This is not a code-build failure. Do not disable the error handler or present it as a user input error.
 
+## Zero-spend degraded mode
+
+The production OpenAI provider currently reports that its account has no remaining API credits. The application must not treat this account-level condition as a transient HTTP 429 rate limit or repeatedly ask users to retry.
+
+When the provider explicitly reports exhausted credits:
+
+- Ask GhanaPathFinder, Personal AI Tutor and AI Co-Founder cannot provide new open-domain model-generated responses. Existing conversation history remains saved. The UI explains the provider-quota problem and hides the futile retry control.
+- Career Intelligence can return a clearly labelled deterministic profile match using the supplied profile, the local career catalogue and retrieved database evidence.
+- Career Path can return a clearly labelled deterministic starter plan using the supplied profile and actual catalogue records.
+- Deterministic results are rule-based guidance, not LLM-generated analysis, predictions, admissions advice or guarantees. They must not invent programmes, vacancies, salaries, fees, deadlines or outcomes.
+- Users can continue to browse the structured university, programme, scholarship and opportunity catalogues. Only verified scholarship records and active, published, verified opportunities should be described with those statuses.
+
+Full generative chat, source-grounded tutoring, AI Co-Founder reasoning and document analysis require an authorised AI provider with an available quota. A deterministic fallback is not a substitute for those model capabilities. No new paid provider is configured by this degraded mode.
+
+## Career evidence array search
+
+The scholarships table stores its fields column as PostgreSQL text[]. Do not include fields in a PostgREST ilike OR clause: ilike is a scalar text operator and produces PostgreSQL error 42883 for text[]. Career evidence retrieval searches scalar scholarship columns with ilike and performs bounded, case-insensitive matching against the selected fields array separately. The verified=true filter must remain in place for scholarship evidence.
+
 ## Global knowledge ingestion
 
 1. Open the admin data console with an authorised administrator account.

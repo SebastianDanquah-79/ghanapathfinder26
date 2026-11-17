@@ -20,6 +20,7 @@ interface CareerSource {
   status: string;
 }
 interface CareerPlan {
+  generationMode?: string;
   title: string;
   summary: string;
   current_state: string;
@@ -70,6 +71,7 @@ const CareerPath = () => {
       }
 
       setPlan({
+        generationMode: typeof payload.generationMode === "string" ? payload.generationMode : "ai_generated",
         title: String(payload.title ?? ""),
         summary: String(payload.summary ?? ""),
         current_state: String(payload.current_state ?? ""),
@@ -161,6 +163,11 @@ const CareerPath = () => {
                   </div>
                   <div>
                     <h2 className="font-display text-xl font-bold text-foreground sm:text-2xl">{plan.title}</h2>
+                    {plan.generationMode === "deterministic_fallback" && (
+                      <p className="mt-2 rounded-lg border border-amber-500/30 bg-amber-500/5 px-3 py-2 text-xs leading-5 text-foreground">
+                        Deterministic fallback: this structured plan uses your profile and available catalogue records. It is not an AI-generated assessment.
+                      </p>
+                    )}
                     <p className="mt-2 text-sm leading-6 text-muted-foreground">{plan.summary}</p>
                   </div>
                 </div>

@@ -102,7 +102,7 @@ export function getAIConfigurationDiagnostics(
 
 export type AIErrorDetails = {
   status: 429 | 502 | 503 | 504;
-  code: "rate_limited" | "configuration_error" | "billing_setup_required" | "timeout" | "provider_error";
+  code: "rate_limited" | "credits_exhausted" | "configuration_error" | "billing_setup_required" | "timeout" | "provider_error";
   message: string;
   retryAfterSeconds?: number;
 };
@@ -136,6 +136,22 @@ export function getAIErrorDetails(error: unknown): AIErrorDetails {
   const rawMessage = readMessage(error);
   const message = rawMessage.toLowerCase();
   const status = readStatus(error);
+
+  // Some providers report exhausted account credits as HTTP 429. Detect that
+  // account-level condition before treating every 429 as a transient rate limit.
+  if (
+    message.includes("no credits remaining") ||
+    message.includes("insufficient_quota") ||
+    message.includes("exceeded your current quota") ||
+    message.includes("credit balance is too low") ||
+    message.includes("billing hard limit has been reached")
+  ) {
+    return {
+      status: 503,
+      code: "credits_exhausted",
+      message: "AI replies are unavailable because the platform's AI provider quota has been exhausted. Your conversation is saved. The platform owner must restore an authorised provider quota before AI generation can resume.",
+    };
+  }
 
   if (
     status === 429 ||
