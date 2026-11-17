@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { generateText, Output } from "ai";
 import { z } from "zod";
 import { checkApiRateLimit, readJsonBody, rateLimitResponse } from "@/lib/api-rate-limit";
-import { aiErrorResponse, createOpenAIResponsesModel } from "@/lib/openai.server";
+import { aiErrorResponse, createOpenAIResponsesModel, getAIErrorDetails } from "@/lib/openai.server";
 import {
   retrieveCareerEvidence,
   summarizeCareerEvidence,
@@ -157,6 +157,122 @@ function compactEvidence(evidence: ReturnType<typeof summarizeCareerEvidence>) {
   };
 }
 
+function buildDeterministicCareerPath(
+  dreamJob: string,
+  profile: Record<string, string>,
+  evidence: ReturnType<typeof summarizeCareerEvidence>,
+  sources: Array<{ title: string; url: string; status: string }>,
+) {
+  const evidenceSkills = evidence.records.skills
+    .map((row) => row["name"])
+    .filter((value): value is string => typeof value === "string" && value.trim().length > 0)
+    .slice(0, 6);
+  const resourceTitles = evidence.records.learningResources
+    .map((row) => row["title"])
+    .filter((value): value is string => typeof value === "string" && value.trim().length > 0)
+    .slice(0, 3);
+  const programmeNames = evidence.records.programmes
+    .map((row) => row["name"])
+    .filter((value): value is string => typeof value === "string" && value.trim().length > 0)
+    .slice(0, 5);
+  const existingSkills = profile.skills.split(/[,;\\n]+/).map((item) => item.trim()).filter(Boolean);
+  const suggestedSkills = evidenceSkills.length ? evidenceSkills : existingSkills.slice(0, 5);
+
+  return {
+    generationMode: "deterministic_fallback",
+    title: `A practical starting path towards ${dreamJob}`,
+    summary: `This is a structured, deterministic plan based on the information you supplied and the GhanaPathFinder records currently available. It is a starting framework, not an AI-generated assessment or a guarantee of admission, employment or a particular outcome.`,
+    current_state: [
+      profile.education ? `Education: ${profile.education}.` : "Your education stage was not specified.",
+      profile.skills ? `Skills and experience supplied: ${profile.skills.slice(0, 220)}.` : "Your current skills were not specified.",
+      profile.projects ? `Projects supplied: ${profile.projects.slice(0, 180)}.` : "No project experience was supplied.",
+      profile.location ? `Preferred location: ${profile.location}.` : "",
+    ].filter(Boolean).join(" "),
+    stages: [
+      {
+        name: "Clarify the foundations",
+        timeframe: "First 2–4 weeks (estimate)",
+        focus: `Identify the prerequisite knowledge and core skills for ${dreamJob}. Use your current education and interests to decide what to learn first.`,
+        skills: suggestedSkills.slice(0, 4),
+        actions: [
+          "Write down the main knowledge areas and prerequisites for the role.",
+          resourceTitles.length
+            ? `Review these matching platform resources: ${resourceTitles.join(", ")}.`
+            : "Find a reputable introductory learning resource and check who provides it.",
+          "Break the first learning goal into small weekly tasks.",
+        ],
+        milestones: [
+          "A written list of learning priorities.",
+          "A realistic weekly learning routine.",
+        ],
+      },
+      {
+        name: "Build a small portfolio project",
+        timeframe: "Weeks 5–12 (estimate)",
+        focus: `Apply what you have learned to a small project related to ${dreamJob}. Prefer a complete, understandable project over an ambitious unfinished one.`,
+        skills: suggestedSkills.slice(0, 5),
+        actions: [
+          "Choose one project with a clear problem and a manageable scope.",
+          "Record the tools, decisions and steps used to build it.",
+          "Test the result and write down limitations and possible improvements.",
+        ],
+        milestones: [
+          "One completed project or documented practical exercise.",
+          "A short explanation of the problem, approach and result.",
+        ],
+      },
+      {
+        name: "Get feedback and strengthen experience",
+        timeframe: "Months 3–6 (estimate)",
+        focus: "Use feedback to identify gaps, improve your work and understand what entry-level roles or further study require.",
+        skills: suggestedSkills.slice(0, 5),
+        actions: [
+          "Ask a lecturer, mentor or knowledgeable practitioner to review your work.",
+          "Improve the project using specific feedback.",
+          "Review only current, published and verified opportunities in the platform; confirm details with the provider.",
+        ],
+        milestones: [
+          "A revised portfolio item.",
+          "A short list of skills or experience gaps to address next.",
+        ],
+      },
+      {
+        name: "Plan the next progression step",
+        timeframe: "Months 6–12 (estimate)",
+        focus: "Compare suitable further-study and experience options using current, attributable information.",
+        skills: suggestedSkills.slice(0, 5),
+        actions: [
+          programmeNames.length
+            ? `Compare these programme records: ${programmeNames.join(", ")}. Confirm entry requirements with each institution.`
+            : "Search the programme directory and verify requirements directly with institutions.",
+          "Update your CV or portfolio with completed work and evidence of skills.",
+          "Choose the next specialisation based on your progress and feedback.",
+        ],
+        milestones: [
+          "A verified shortlist of further-study or experience options.",
+          "A revised learning and portfolio plan.",
+        ],
+      },
+    ],
+    next_step: "Choose one foundational skill or prerequisite from the first stage and schedule a small, specific task to begin this week.",
+    faq: [
+      { question: "Are the timeframes guaranteed?", answer: "No. They are planning estimates. Your starting point, available time, access to resources and progress will change the pace." },
+      { question: "Does this confirm I qualify for a programme or job?", answer: "No. Check current entry requirements, licensing rules and opportunity details with the official institution or provider." },
+      { question: "Why is this a deterministic plan?", answer: "The configured AI provider has exhausted its available quota. This plan was assembled from your inputs and available catalogue records using fixed rules; it was not generated by a language model." },
+    ],
+    evidenceNote: `Deterministic fallback: AI generation is unavailable because the configured provider quota is exhausted. The catalogue contained ${evidence.programmesFound} programmes, ${evidence.programmeCareerLinksFound} career links, ${evidence.skillsFound} skill records, ${evidence.learningResourcesFound} learning resources, ${evidence.verifiedScholarshipsFound} verified scholarship records and ${evidence.currentVerifiedOpportunitiesFound} active verified opportunity records. ${sources.length} source links were attached. Verify all current requirements, deadlines and availability with the relevant official source.`,
+    sources,
+    evidenceCounts: {
+      programmes: evidence.programmesFound,
+      careerLinks: evidence.programmeCareerLinksFound,
+      skills: evidence.skillsFound,
+      learningResources: evidence.learningResourcesFound,
+      verifiedScholarships: evidence.verifiedScholarshipsFound,
+      currentVerifiedOpportunities: evidence.currentVerifiedOpportunitiesFound,
+    },
+  };
+}
+
 export const Route = createFileRoute("/api/career-path")({
   server: {
     handlers: {
@@ -206,6 +322,7 @@ export const Route = createFileRoute("/api/career-path")({
           industries: [],
         };
 
+        let deterministicFallback: Record<string, unknown> | null = null;
         try {
           const rawEvidence = await retrieveCareerEvidence({
             targetCareer: dreamJob,
@@ -215,6 +332,7 @@ export const Route = createFileRoute("/api/career-path")({
           const evidence = summarizeCareerEvidence(rawEvidence);
           const compact = compactEvidence(evidence);
           const sources = sourceRecords(evidence);
+          deterministicFallback = buildDeterministicCareerPath(dreamJob, profile, evidence, sources);
 
           const result = await generateText({
             model: createOpenAIResponsesModel(undefined, "structured"),
@@ -260,6 +378,9 @@ Create a pathway with 3–7 logical stages. Begin at the user's current level, i
           }, { headers: { "Cache-Control": "no-store" } });
         } catch (error) {
           console.error("Career Path generation failed", error instanceof Error ? error.message : "Unknown error");
+          if (getAIErrorDetails(error).code === "credits_exhausted" && deterministicFallback) {
+            return Response.json(deterministicFallback, { headers: { "Cache-Control": "no-store" } });
+          }
           return aiErrorResponse(error, "Career Path could not be built. Please try again.");
         }
       },
