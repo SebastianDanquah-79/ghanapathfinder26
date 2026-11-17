@@ -383,6 +383,7 @@ ${context}`
           console.error("GhanaPathFinder AI request failed", {
             code: getAIErrorDetails(error).code,
             status: getAIErrorDetails(error).status,
+            ...getAIConfigurationDiagnostics("chat"),
           });
           return aiErrorResponse(error);
         }
