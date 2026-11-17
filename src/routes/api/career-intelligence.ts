@@ -293,6 +293,7 @@ export const Route = createFileRoute("/api/career-intelligence")({
           }));
 
           const result = await generateText({
+            maxRetries: 0,
             model: createOpenAIResponsesModel(undefined, "structured"),
             output: Output.object({ schema: outputSchema }),
             system: `You are GhanaPathFinder's Career Intelligence adviser.
