@@ -131,7 +131,7 @@ const AdminData = () => {
                 <div className="bg-glass rounded-xl p-4">
                   <p className="text-xs uppercase tracking-wide text-muted-foreground mb-2">By category</p>
                   <ul className="space-y-1 text-sm">
-                    {r.byCategory.map((c: any) => (
+                    {r.byCategory.map((c) => (
                       <li key={c.category} className="flex justify-between text-muted-foreground">
                         <span>{c.category}</span>
                         <span className="text-foreground font-medium">{c.count}</span>
@@ -142,7 +142,7 @@ const AdminData = () => {
                 <div className="bg-glass rounded-xl p-4">
                   <p className="text-xs uppercase tracking-wide text-muted-foreground mb-2">By region</p>
                   <ul className="space-y-1 text-sm">
-                    {r.byRegion.map((c: any) => (
+                    {r.byRegion.map((c) => (
                       <li key={c.region} className="flex justify-between text-muted-foreground">
                         <span>{c.region}</span>
                         <span className="text-foreground font-medium">{c.count}</span>
@@ -177,8 +177,8 @@ const AdminData = () => {
                     const res = await importer.mutateAsync(parsed);
                     toast.success(`Imported ${res.inserted.length}, skipped ${res.skipped.length} duplicates`);
                     setCsv("");
-                  } catch (e: any) {
-                    toast.error(e.message ?? "Import failed");
+                  } catch (e: unknown) {
+                    toast.error(e instanceof Error ? e.message : "Import failed");
                   }
                 }}
                 className="px-4 min-h-[44px] rounded-lg bg-primary text-primary-foreground text-sm font-semibold disabled:opacity-50"
