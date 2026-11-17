@@ -2,28 +2,35 @@ import { createOpenAI } from "@ai-sdk/openai";
 
 export type AIModelPurpose = "fast" | "chat" | "reasoning" | "structured";
 
-const DEFAULT_OPENAI_MODEL = "gpt-6-luna";
+const GROQ_BASE_URL = "https://api.groq.com/openai/v1";
+const DEFAULT_GROQ_MODEL = "openai/gpt-oss-120b";
+const DEFAULT_GROQ_FAST_MODEL = "openai/gpt-oss-20b";
 
 function readEnv(name: string): string | undefined {
   const value = process.env[name]?.trim();
   return value || undefined;
 }
 
-export function getAIProvider(): "openai" | "vercel-gateway" {
+/**
+ * Generation now defaults to Groq. The legacy AI_PROVIDER=openai value is
+ * deliberately treated as Groq so an old Vercel variable cannot silently
+ * keep production traffic on the exhausted OpenAI account.
+ */
+export function getAIProvider(): "groq" | "vercel-gateway" {
   return readEnv("AI_PROVIDER")?.toLowerCase() === "vercel-gateway"
     ? "vercel-gateway"
-    : "openai";
+    : "groq";
 }
 
-export function getOpenAIModelName(purpose: AIModelPurpose = "chat"): string {
-  const shared = readEnv("OPENAI_MODEL") || DEFAULT_OPENAI_MODEL;
+export function getGroqModelName(purpose: AIModelPurpose = "chat"): string {
+  const shared = readEnv("GROQ_MODEL") || DEFAULT_GROQ_MODEL;
   const byPurpose: Record<AIModelPurpose, string | undefined> = {
-    fast: readEnv("OPENAI_MODEL_FAST"),
-    chat: readEnv("OPENAI_MODEL_CHAT"),
-    reasoning: readEnv("OPENAI_MODEL_REASONING"),
-    structured: readEnv("OPENAI_MODEL_STRUCTURED"),
+    fast: readEnv("GROQ_MODEL_FAST"),
+    chat: readEnv("GROQ_MODEL_CHAT"),
+    reasoning: readEnv("GROQ_MODEL_REASONING"),
+    structured: readEnv("GROQ_MODEL_STRUCTURED"),
   };
-  return byPurpose[purpose] || shared;
+  return byPurpose[purpose] || (purpose === "fast" ? DEFAULT_GROQ_FAST_MODEL : shared);
 }
 
 export function getGatewayModelName(purpose: AIModelPurpose = "chat"): string {
@@ -43,34 +50,37 @@ export function getGatewayModelName(purpose: AIModelPurpose = "chat"): string {
 }
 
 /**
- * Central server-side model factory. The default remains the existing OpenAI
- * provider for backwards compatibility. Set AI_PROVIDER=vercel-gateway and
- * configure AI_GATEWAY_MODEL_* values to route calls through Vercel AI Gateway.
+ * Shared server-side Responses API model factory.
+ *
+ * Groq currently exposes an OpenAI-compatible Responses API at
+ * /openai/v1/responses, so existing AI SDK routes keep their current
+ * generateText/streamText and structured-output call sites.
  */
 export function createOpenAIResponsesModel(
   modelOverride?: string,
   purpose: AIModelPurpose = "chat",
 ) {
   if (getAIProvider() === "vercel-gateway") {
-    // Do not pass legacy plain OpenAI model names into the gateway. Gateway
-    // model IDs must include their provider prefix (provider/model).
-    const gatewayModel = getGatewayModelName(purpose);
-    return gatewayModel;
+    return getGatewayModelName(purpose);
   }
 
-  const apiKey = readEnv("OPENAI_API_KEY");
+  const apiKey = readEnv("GROQ_API_KEY");
   if (!apiKey) {
-    throw new Error("OPENAI_API_KEY is not configured in the Vercel project environment variables.");
+    throw new Error("GROQ_API_KEY is not configured in the Vercel project environment variables.");
   }
 
-  const modelName = modelOverride || getOpenAIModelName(purpose);
-  return createOpenAI({ apiKey }).responses(modelName);
+  const modelName = modelOverride || getGroqModelName(purpose);
+  return createOpenAI({
+    apiKey,
+    baseURL: GROQ_BASE_URL,
+    name: "groq",
+  }).responses(modelName);
 }
 
 export type AIConfigurationDiagnostics = {
-  provider: "openai" | "vercel-gateway";
+  provider: "groq" | "vercel-gateway";
   model: string;
-  credentialSource: "openai-api-key" | "gateway-api-key" | "vercel-oidc-auto-resolution" | "missing";
+  credentialSource: "groq-api-key" | "gateway-api-key" | "vercel-oidc-auto-resolution" | "missing";
 };
 
 export function getAIConfigurationDiagnostics(
@@ -84,9 +94,6 @@ export function getAIConfigurationDiagnostics(
     } catch {
       // Return a safe diagnostic value without throwing from telemetry.
     }
-    // AI SDK's Gateway provider resolves OIDC from Vercel's request context
-    // when no API key is configured. That token may not be present in
-    // process.env, so do not incorrectly report "missing" here.
     const credentialSource = readEnv("AI_GATEWAY_API_KEY")
       ? "gateway-api-key"
       : "vercel-oidc-auto-resolution";
@@ -95,8 +102,8 @@ export function getAIConfigurationDiagnostics(
 
   return {
     provider,
-    model: getOpenAIModelName(purpose),
-    credentialSource: readEnv("OPENAI_API_KEY") ? "openai-api-key" : "missing",
+    model: getGroqModelName(purpose),
+    credentialSource: readEnv("GROQ_API_KEY") ? "groq-api-key" : "missing",
   };
 }
 
