@@ -42,6 +42,7 @@ const SEARCH_STOP_WORDS = new Set([
   "a", "an", "and", "are", "at", "be", "by", "for", "from", "how", "in",
   "into", "is", "it", "of", "on", "or", "the", "to", "what", "where",
   "which", "with", "who", "within", "does", "do", "can", "could", "my",
+  "me", "page", "pages", "take", "that", "exist", "existing", "thing",
 ]);
 
 async function runPublicSearch(
