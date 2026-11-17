@@ -52,6 +52,18 @@ describe("getAIErrorDetails", () => {
     expect(result.code).toBe("timeout");
     expect(result.status).toBe(504);
   });
+  it("parses fractional Groq retry delays and explains the per-minute token limit", () => {
+    const result = getAIErrorDetails(Object.assign(
+      new Error("Rate limit reached on tokens per minute (TPM). Please try again in 12.645s."),
+      { status: 429 },
+    ));
+
+    expect(result.code).toBe("rate_limited");
+    expect(result.retryAfterSeconds).toBe(13);
+    expect(result.message).toContain("per-minute token allowance");
+    expect(result.message).toContain("13 seconds");
+  });
+
   it("routes legacy OpenAI configuration to Groq", async () => {
     const previous = process.env["AI_PROVIDER"];
     process.env["AI_PROVIDER"] = "openai";
