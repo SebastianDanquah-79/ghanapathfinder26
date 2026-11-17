@@ -38,6 +38,12 @@ async function getAdminClient(): Promise<PublicAdminClient> {
   return supabaseAdmin as unknown as PublicAdminClient;
 }
 
+const SEARCH_STOP_WORDS = new Set([
+  "a", "an", "and", "are", "at", "be", "by", "for", "from", "how", "in",
+  "into", "is", "it", "of", "on", "or", "the", "to", "what", "where",
+  "which", "with", "who", "within", "does", "do", "can", "could", "my",
+]);
+
 async function runPublicSearch(
   table: string,
   select: string,
@@ -46,19 +52,29 @@ async function runPublicSearch(
   limit = 8,
   filters?: (builder: SearchBuilder) => SearchBuilder,
 ) {
-  const term = safeFilterTerm(query);
-  if (term.length < 2) return { records: [], note: "Provide a more specific search phrase." };
+  const phrase = safeFilterTerm(query);
+  if (phrase.length < 2) return { records: [], note: "Provide a more specific search phrase." };
+
+  // Search the complete phrase first, then a few meaningful terms. This finds
+  // records for natural questions such as "Computer Science at GCTU" even
+  // when the full phrase is not stored as one contiguous database string.
+  const keywords = phrase.toLowerCase()
+    .split(/\s+/)
+    .filter((word) => word.length >= 3 && !SEARCH_STOP_WORDS.has(word))
+    .slice(0, 3);
+  const searchTerms = Array.from(new Set([phrase, ...keywords])).slice(0, 4);
+  const columns = columnTerms.slice(0, 4);
 
   try {
     const admin = await getAdminClient();
-    const pattern = `%${term}%`;
-    const results = await Promise.all(
-      columnTerms.slice(0, 3).map((column) => {
+    const requests = searchTerms.flatMap((term) =>
+      columns.map((column) => {
         let builder = admin.from(table).select(select);
         if (filters) builder = filters(builder);
-        return builder.ilike(column, pattern).limit(limit);
+        return builder.ilike(column, `%${term}%`).limit(limit);
       }),
     );
+    const results = await Promise.all(requests);
     const failed = results.find((result) => result.error);
     if (failed?.error) {
       console.error("GhanaPathFinder platform search failed", {
@@ -69,14 +85,25 @@ async function runPublicSearch(
       return { records: [], note: "The platform catalogue search is temporarily unavailable." };
     }
 
-    const byId = new Map<string, Record<string, unknown>>();
-    for (const result of results) {
+    const ranked = new Map<string, { row: Record<string, unknown>; score: number }>();
+    results.forEach((result, resultIndex) => {
+      const termIndex = Math.floor(resultIndex / columns.length);
+      const columnIndex = resultIndex % columns.length;
+      const score = (termIndex === 0 ? 5 : 1) + (columnIndex === 0 ? 2 : 0);
       for (const row of result.data ?? []) {
         const key = String(row["id"] ?? JSON.stringify(row));
-        if (!byId.has(key)) byId.set(key, row);
+        const existing = ranked.get(key);
+        if (existing) existing.score += score;
+        else ranked.set(key, { row, score });
       }
-    }
-    return { records: Array.from(byId.values()).slice(0, limit), note: undefined };
+    });
+
+    const records = Array.from(ranked.values())
+      .sort((a, b) => b.score - a.score)
+      .slice(0, Math.min(Math.max(limit, 1), 20))
+      .map((item) => item.row);
+
+    return { records, note: undefined };
   } catch {
     console.error("GhanaPathFinder platform search failed", { table });
     return { records: [], note: "The platform catalogue search is temporarily unavailable." };
@@ -156,7 +183,7 @@ export function createPlatformTools() {
       execute: async ({ query }) => runPublicSearch(
         "universities",
         "id,name,short_name,city,region,country,type,category,accreditation_status,gtec_accreditation_status,website_url,admissions_url,financial_aid_url,source_url,verified,verification_status,last_verified_at",
-        ["name", "country", "city"],
+        ["name", "short_name", "country", "city"],
         query,
         8,
       ),
