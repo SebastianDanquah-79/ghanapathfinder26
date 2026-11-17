@@ -8,8 +8,8 @@ import {
 import {
   aiErrorResponse,
   createOpenAIResponsesModel,
+  getAIConfigurationDiagnostics,
   getAIErrorDetails,
-  getOpenAIModelName,
 } from "@/lib/openai.server";
 import { createPlatformTools } from "@/lib/ai/platform-tools.server";
 import {
@@ -279,7 +279,7 @@ ${context}`
               console.error("GhanaPathFinder AI stream failed", {
                 code: details.code,
                 status: details.status,
-                model: getOpenAIModelName("chat"),
+                ...getAIConfigurationDiagnostics("chat"),
               });
             },
           });
