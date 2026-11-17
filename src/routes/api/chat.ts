@@ -276,10 +276,17 @@ ${context}`
             abortSignal: request.signal,
             onError: (event) => {
               const details = getAIErrorDetails(event.error);
+              const providerError = event.error instanceof Error
+                ? {
+                    name: event.error.name,
+                    message: event.error.message.slice(0, 240),
+                  }
+                : { name: "UnknownError", message: "No provider error message was available." };
               console.error("GhanaPathFinder AI stream failed", {
                 code: details.code,
                 status: details.status,
                 ...getAIConfigurationDiagnostics("chat"),
+                providerError,
               });
             },
           });
