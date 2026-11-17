@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { rankCareerCandidates, type CareerCandidate } from "./career-evidence.server";
+import { matchesArrayTerms, rankCareerCandidates, type CareerCandidate } from "./career-evidence.server";
 
 const candidates: CareerCandidate[] = [
   {
@@ -80,5 +80,13 @@ describe("rankCareerCandidates", () => {
     expect(ranked[0]?.evidence).toContain(
       "This is an adjacent option from the platform career catalogue; more profile information would improve the comparison.",
     );
+  });
+});
+
+describe("matchesArrayTerms", () => {
+  it("matches text[] fields case-insensitively without SQL ilike", () => {
+    expect(matchesArrayTerms(["Computer Science", "Engineering"], ["computer science"])).toBe(true);
+    expect(matchesArrayTerms(["Arts", "Business"], ["computer science"])).toBe(false);
+    expect(matchesArrayTerms("Computer Science", ["computer science"])).toBe(false);
   });
 });
