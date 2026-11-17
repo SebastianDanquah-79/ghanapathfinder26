@@ -73,7 +73,7 @@ Return ONLY a JSON object with this shape:
 
     try {
       const result = await generateText({
-        model: createOpenAIResponsesModel(),
+        model: createOpenAIResponsesModel(undefined, "structured"),
         output: Output.object({ schema: scholarshipMatchOutputSchema }),
         system: "You are a precise scholarship advisor for GhanaPathFinder. Analyse only the supplied records. Return valid JSON without Markdown fences.",
         prompt,
