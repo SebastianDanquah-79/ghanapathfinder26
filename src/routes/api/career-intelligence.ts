@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { generateText, Output } from "ai";
 import { z } from "zod";
 import { checkApiRateLimit, readJsonBody, rateLimitResponse } from "@/lib/api-rate-limit";
-import { aiErrorResponse, createOpenAIResponsesModel } from "@/lib/openai.server";
+import { aiErrorResponse, createOpenAIResponsesModel, getAIErrorDetails } from "@/lib/openai.server";
 import {
   rankCareerCandidates,
   retrieveCareerEvidence,
@@ -197,11 +197,86 @@ export const Route = createFileRoute("/api/career-intelligence")({
           }, { status: 400 });
         }
 
+        let deterministicFallback: Record<string, unknown> | null = null;
         try {
           const ranked = rankCareerCandidates(candidates, profile, wassceResults);
           const topCandidates = ranked.slice(0, 12);
           const evidence = await retrieveCareerEvidence(profile, ranked);
           const compact = compactEvidence(summarizeCareerEvidence(evidence));
+
+          // Keep a useful, clearly labelled profile-matching result available
+          // when the hosted model account has exhausted its quota.
+          const fallbackRecommendations = topCandidates.slice(0, 4).map((item) => {
+            const candidate = item.candidate;
+            const knownSkills = new Set(
+              profile.existingSkills.toLowerCase().split(/[^a-z0-9+#.]+/).filter(Boolean),
+            );
+            const skillsToDevelop = candidate.skills
+              .filter((skill) => !knownSkills.has(skill.toLowerCase()))
+              .slice(0, 5);
+            const starterProjects = candidate.skills.slice(0, 3).map((skill) =>
+              `Create a small, documented ${candidate.careerName} project that demonstrates ${skill}.`,
+            );
+            const programmeSummary = candidate.recommendedProgrammes.length
+              ? candidate.recommendedProgrammes.slice(0, 3).join(", ")
+              : candidate.major;
+            return {
+              id: candidate.id,
+              careerName: candidate.careerName,
+              major: candidate.major,
+              relevantSubjects: candidate.relevantSubjects,
+              recommendedProgrammes: candidate.recommendedProgrammes,
+              entryLevelRoles: candidate.entryLevelRoles,
+              industries: candidate.industries,
+              relevance: item.relevance,
+              reason: item.evidence.join(" "),
+              matchingEvidence: item.evidence,
+              skillsToDevelop,
+              starterProjects,
+              nextActions: [
+                `Compare the catalogue's ${programmeSummary} options and confirm entry requirements with the official institution.`,
+                "Choose one skill to practise consistently and record what you learn.",
+                "Keep a short portfolio note explaining the problem, your approach and what you improved.",
+              ],
+            };
+          });
+          const leadCandidate = topCandidates[0]?.candidate;
+          const leadSkills = leadCandidate?.skills.slice(0, 2) ?? [];
+          const counts = compact.counts;
+          deterministicFallback = {
+            generationMode: "deterministic_fallback",
+            summary: leadCandidate
+              ? `Your supplied profile aligns most closely with ${leadCandidate.careerName} in the platform career catalogue. This comparison uses overlap between your stated goal, interests, skills, study stage and WASSCE subjects. The score is a profile-alignment measure, not a prediction of career success.`
+              : "The supplied profile could not be matched to a sufficiently relevant career in the current platform catalogue. Add more detail or explore the career directory.",
+            recommendations: fallbackRecommendations,
+            next90Days: [
+              {
+                period: "Days 1–30",
+                focus: "Strengthen the foundations",
+                actions: [
+                  leadSkills[0] ? `Start practising ${leadSkills[0]} using a beginner-friendly learning resource.` : "Identify the prerequisite knowledge for your chosen career.",
+                  "Review the programme and skill records returned by the platform; confirm formal requirements with official sources.",
+                ],
+              },
+              {
+                period: "Days 31–60",
+                focus: "Create evidence of learning",
+                actions: [
+                  leadSkills[1] ? `Use ${leadSkills[1]} in a small project related to your career goal.` : "Build one small project related to your career goal.",
+                  "Document your work, decisions and what you would improve next.",
+                ],
+              },
+              {
+                period: "Days 61–90",
+                focus: "Get feedback and refine",
+                actions: [
+                  "Ask a lecturer, mentor or knowledgeable practitioner to review your project.",
+                  "Use the feedback to improve your project and update your skills plan.",
+                ],
+              },
+            ],
+            evidenceNote: `Deterministic fallback: AI generation is unavailable because the configured provider quota is exhausted. Current catalogue evidence found ${counts.programmes} programmes, ${counts.programmeCareerLinks} programme-career links, ${counts.skills} skills, ${counts.learningResources} learning resources, ${counts.verifiedScholarships} verified scholarships and ${counts.currentVerifiedOpportunities} active verified opportunities. Confirm requirements, deadlines and availability with official sources.`,
+          };
 
           const modelCandidates = topCandidates.map((item) => ({
             id: item.candidate.id,
@@ -296,6 +371,9 @@ Return at most four career recommendations, ordered by the deterministic profile
           }, { headers: { "Cache-Control": "no-store" } });
         } catch (error) {
           console.error("Career Intelligence analysis failed", error instanceof Error ? error.message : "Unknown error");
+          if (getAIErrorDetails(error).code === "credits_exhausted" && deterministicFallback) {
+            return Response.json(deterministicFallback, { headers: { "Cache-Control": "no-store" } });
+          }
           return aiErrorResponse(error, "Career Intelligence could not complete the analysis. Please try again.");
         }
       },
