@@ -19,17 +19,20 @@ The model is not fine-tuned by adding documents. The knowledge library is a retr
 
 Choose one provider per deployment environment.
 
-### Direct OpenAI
+### Groq (generation provider)
 
 Set:
 
-- `AI_PROVIDER=openai` (or leave unset; this is the default)
-- `OPENAI_API_KEY`
-- Optionally `OPENAI_MODEL`
-- Optionally `OPENAI_MODEL_FAST`, `OPENAI_MODEL_CHAT`, `OPENAI_MODEL_REASONING` and `OPENAI_MODEL_STRUCTURED`
+- `AI_PROVIDER=groq`
+- `GROQ_API_KEY`
+- Optionally `GROQ_MODEL` (defaults to `openai/gpt-oss-120b`)
+- Optionally `GROQ_MODEL_FAST` (defaults to `openai/gpt-oss-20b`)
+- Optionally `GROQ_MODEL_CHAT`, `GROQ_MODEL_REASONING` and `GROQ_MODEL_STRUCTURED`
+- Optionally `GROQ_WAEC_MODEL` (defaults to the vision-capable `qwen/qwen3.8-27b`)
 
-Use model IDs enabled for the OpenAI project. The current AI reliability Preview branch is configured for `gpt-5.4-mini` on chat and structured tasks to reduce pressure on the larger model's token-per-minute quota. Confirm a model is enabled for the API organisation before changing it. Keep Preview deployments limited to trusted repository branches because server-side API credentials are available to that environment.
+The server-side model factory sends generation requests to Groq's OpenAI-compatible Responses API at `https://api.groq.com/openai/v1`. Existing chat, tool-calling and structured-output route interfaces are retained. Groq's Responses API is documented as beta, so verify each document and tool workflow against the live account before enabling it for all users.
 
+The application defaults to Groq even when an old `AI_PROVIDER=openai` value is still present. This prevents an old deployment variable from silently routing generation back to the exhausted OpenAI account.
 ### Vercel AI Gateway
 
 Set:
@@ -47,7 +50,7 @@ Model IDs must use the Gateway's exact `provider/model` format. Vercel deploymen
 
 ## Zero-spend degraded mode
 
-The production OpenAI provider currently reports that its account has no remaining API credits. The application must not treat this account-level condition as a transient HTTP 429 rate limit or repeatedly ask users to retry.
+The primary text-generation provider is now Groq. Free-tier use is subject to organisation-level request and token limits; hitting those limits can temporarily stop responses. The application must not treat a daily or account-level limit as a short transient failure or repeatedly ask users to retry.
 
 When the provider explicitly reports exhausted credits:
 
@@ -78,7 +81,7 @@ The Edge Function requires:
 - A valid Supabase Auth JWT.
 - A matching `admin` record in `public.user_roles`.
 - Supabase `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` Edge Function secrets.
-- `OPENAI_API_KEY` as a Supabase Edge Function secret for the embedding request.
+- `GROQ_API_KEY` for text generation; `OPENAI_API_KEY` is separate and used only by the legacy 1536-dimensional knowledge-embedding pipeline, if enabled. as a Supabase Edge Function secret only if the separate OpenAI embedding pipeline is still enabled. Groq generation does not provide the 1536-dimensional embedding model used by the existing pgvector index, so do not point embedding requests at Groq's text-generation endpoint. Existing stored vectors can remain in place; without a working embedding provider, semantic query retrieval and new knowledge ingestion are unavailable.
 
 The ingestion function accepts 1–5 documents per call; each source text is 100–50,000 characters and each document is split into bounded overlapping chunks.
 
