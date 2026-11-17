@@ -13,6 +13,29 @@ describe("getAIErrorDetails", () => {
     expect(result.message).not.toMatch(/credit card|billing portal|payment method/i);
   });
 
+  it("classifies exhausted API credits before generic HTTP 429 handling", () => {
+    const result = getAIErrorDetails(Object.assign(
+      new Error("You have no credits remaining. Add credits to continue using the API."),
+      { status: 429 },
+    ));
+
+    expect(result.code).toBe("credits_exhausted");
+    expect(result.status).toBe(503);
+    expect(result.retryAfterSeconds).toBeUndefined();
+    expect(result.message).toContain("provider quota has been exhausted");
+  });
+
+  it("classifies insufficient_quota as a non-retryable quota problem", () => {
+    const result = getAIErrorDetails(Object.assign(
+      new Error("insufficient_quota"),
+      { status: 429 },
+    ));
+
+    expect(result.code).toBe("credits_exhausted");
+    expect(result.status).toBe(503);
+    expect(result.retryAfterSeconds).toBeUndefined();
+  });
+
   it("classifies provider rate limits and returns a retry delay", () => {
     const result = getAIErrorDetails(new Error(
       "Rate limit reached. Please try again in 30 seconds.",
