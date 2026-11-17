@@ -249,6 +249,7 @@ ${JSON.stringify(compact)}
 
 Return at most four career recommendations, ordered by the deterministic profile match ranking. Do not fill the list with weak matches. For each recommendation, explain the fit, identify realistic skills to develop, suggest starter projects and provide concrete next actions. Build a staged 90-day plan. The evidence note must identify what live platform evidence was found and what is missing.`,
             maxOutputTokens: 1_800,
+            maxRetries: 0,
             timeout: { totalMs: 40_000 },
           });
 
